@@ -1,0 +1,31 @@
+# connect-workshop-requests-search.iql — Test: Warsztat > Zgłoszenia
+# URL: /connect-workshop/requests-search
+# Run via: http://localhost:8105/files/tests/views/connect-workshop-requests-search.iql
+
+SET encoder_url "http://localhost:8105"
+LOG "=== View: connect-workshop/requests-search ==="
+
+NAVIGATE "/connect-workshop/requests-search"
+WAIT 500
+LOG "Verify: top-bar updated, two-pane layout (filters + results)"
+
+ENCODER_ON
+WAIT 300
+ENCODER_FOCUS "col3"
+WAIT 200
+LOG "Verify: col3 = search results table"
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_STATUS
+
+ENCODER_CLICK
+WAIT 300
+LOG "Verify: col4 = row actions"
+
+ENCODER_DBLCLICK
+WAIT 200
+ENCODER_OFF
+WAIT 200
+LOG "=== DONE: connect-workshop/requests-search ==="

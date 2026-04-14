@@ -1,0 +1,26 @@
+# connect-config-tables.iql — Test: Konfiguracja > Tabele
+# URL: /connect-config-tables
+# Run via: http://localhost:8105/files/tests/views/connect-config-tables.iql
+
+SET encoder_url "http://localhost:8105"
+LOG "=== View: connect-config-tables ==="
+
+NAVIGATE "/connect-config-tables"
+WAIT 500
+LOG "Verify: top-bar = 'Connect Config - Tabele', database tables viewer"
+
+ENCODER_ON
+WAIT 300
+ENCODER_FOCUS "col3"
+WAIT 200
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_STATUS
+LOG "Verify: table row highlighted"
+ENCODER_DBLCLICK
+WAIT 200
+ENCODER_OFF
+WAIT 200
+LOG "=== DONE: connect-config-tables ==="

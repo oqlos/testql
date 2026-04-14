@@ -1,0 +1,56 @@
+# Example DSL Script - DSL Objects Test
+# Tests DSL object/function/parameter endpoints
+# 
+# Run with: python3 scripts/dsl-cli.py scripts/examples/test-dsl-objects.dsl -u http://localhost:8101
+
+LOG "📦 Testing DSL object system" {"level": "info"}
+
+# ============================================================================
+# Load DSL Objects
+# ============================================================================
+
+API GET "/api/v3/data/dsl_objects?limit=100"
+ASSERT_STATUS 200
+LOG "Loaded DSL objects" {"level": "info"}
+
+# ============================================================================
+# Load DSL Functions
+# ============================================================================
+
+API GET "/api/v3/data/dsl_functions?limit=100"
+ASSERT_STATUS 200
+LOG "Loaded DSL functions" {"level": "info"}
+
+# ============================================================================
+# Load DSL Parameters
+# ============================================================================
+
+API GET "/api/v3/data/dsl_params?limit=100"
+ASSERT_STATUS 200
+LOG "Loaded DSL params" {"level": "info"}
+
+# ============================================================================
+# Load DSL Units
+# ============================================================================
+
+API GET "/api/v3/data/dsl_units?limit=100"
+ASSERT_STATUS 200
+LOG "Loaded DSL units" {"level": "info"}
+
+# ============================================================================
+# Load Object-Function mappings
+# ============================================================================
+
+API GET "/api/v3/data/dsl_object_functions?limit=1000"
+ASSERT_STATUS 200
+LOG "Loaded object-function mappings" {"level": "info"}
+
+# ============================================================================
+# Load Param-Unit mappings
+# ============================================================================
+
+API GET "/api/v3/data/dsl_param_units?limit=1000"
+ASSERT_STATUS 200
+LOG "Loaded param-unit mappings" {"level": "info"}
+
+LOG "✅ DSL objects test completed" {"level": "info"}

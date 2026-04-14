@@ -1,0 +1,17 @@
+# health-check.tql — generic health check scenario
+# Usage: testql testql/scenarios/generic/health-check.tql --url http://localhost:8101
+
+SET api_url "$TARGET_URL"
+
+LOG "=== Health Check ==="
+
+API GET "/health"
+ASSERT_STATUS 200
+ASSERT_JSON status == "ok"
+LOG "health OK"
+
+API GET "/api/v3/version"
+ASSERT_STATUS 200
+LOG "version endpoint OK"
+
+LOG "=== Health Check PASSED ==="

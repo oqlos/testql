@@ -1,0 +1,10 @@
+# api-health.tql — basic health check for c2004
+# Usage: testql testql/scenarios/c2004/smoke/api-health.tql --url http://localhost:8101
+
+LOG "=== c2004 Health Check ==="
+
+API GET "/health"
+ASSERT_STATUS 200
+ASSERT_JSON status == "ok"
+
+LOG "=== Health OK ==="

@@ -1,0 +1,37 @@
+# connect-id-qr.iql — Test: Identyfikacja > QR Code
+# URL: /connect-id/qr
+# Run via: http://localhost:8105/files/tests/views/connect-id-qr.iql
+
+SET encoder_url "http://localhost:8105"
+LOG "=== View: connect-id/qr ==="
+
+NAVIGATE "/connect-id/qr"
+WAIT 500
+LOG "Verify: top-bar = 'Identyfikacja - QR', scanner tabs + qr-table"
+
+CLICK "#btn-simulate-qr"
+WAIT 300
+CLICK "#btn-simulate-qr"
+WAIT 200
+LOG "Verify: 2+ scans in qr-table"
+
+ENCODER_ON
+WAIT 300
+ENCODER_FOCUS "col3"
+WAIT 200
+LOG "Verify: col3 = 'Skany QR' (data-enc-zone on qr-table)"
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_STATUS
+
+ENCODER_CLICK
+WAIT 300
+LOG "Verify: col4 = row actions (Wybierz)"
+
+ENCODER_DBLCLICK
+WAIT 200
+ENCODER_OFF
+WAIT 200
+LOG "=== DONE: connect-id/qr ==="

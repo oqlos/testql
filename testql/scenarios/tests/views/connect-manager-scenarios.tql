@@ -1,0 +1,30 @@
+# connect-manager-scenarios.iql — Test: Manager > Scenariusze
+# URL: /connect-manager/scenarios
+# Run via: http://localhost:8105/files/tests/views/connect-manager-scenarios.iql
+
+SET encoder_url "http://localhost:8105"
+LOG "=== View: connect-manager/scenarios ==="
+
+NAVIGATE "/connect-manager/scenarios"
+WAIT 800
+ASSERT "#top-bar-section-title" text "Manager"
+ASSERT ".module-main-content" exists
+
+ENCODER_ON
+WAIT 300
+ENCODER_FOCUS "col3"
+WAIT 200
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_STATUS
+ASSERT ".encoder-focus" exists
+ENCODER_CLICK
+WAIT 300
+ENCODER_DBLCLICK
+WAIT 200
+ENCODER_OFF
+WAIT 200
+ASSERT ".encoder-focus" exists false
+LOG "=== DONE: connect-manager/scenarios ==="

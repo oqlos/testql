@@ -1,0 +1,26 @@
+# api-smoke.tql — smoke test for all main c2004 API endpoints
+# Usage: testql testql/scenarios/c2004/smoke/api-smoke.tql --url http://localhost:8101
+
+LOG "=== API Smoke Test ==="
+
+API GET "/health"
+ASSERT_STATUS 200
+LOG "health OK"
+
+API GET "/api/v3/version"
+ASSERT_OK
+LOG "version OK"
+
+API GET "/api/v3/data/devices"
+ASSERT_OK
+LOG "devices OK"
+
+API GET "/api/v3/data/users"
+ASSERT_OK
+LOG "users OK"
+
+API GET "/api/v3/data/scenarios"
+ASSERT_OK
+LOG "scenarios OK"
+
+LOG "=== API Smoke Test PASSED ==="

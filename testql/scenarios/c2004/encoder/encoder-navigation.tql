@@ -1,0 +1,32 @@
+# encoder-navigation.tql — encoder hardware navigation test
+# Usage: testql testql/scenarios/c2004/encoder/encoder-navigation.tql --url http://localhost:8101
+
+LOG "=== Encoder Navigation Test ==="
+
+ENCODER_ON
+WAIT 200
+ENCODER_STATUS
+LOG "encoder activated"
+
+ENCODER_SCROLL 1
+WAIT 100
+ENCODER_SCROLL 1
+WAIT 100
+ENCODER_CLICK
+LOG "selected item via encoder"
+
+ENCODER_PAGE_NEXT
+WAIT 200
+LOG "page next"
+
+ENCODER_PAGE_PREV
+WAIT 200
+LOG "page prev"
+
+ENCODER_DBLCLICK
+LOG "cancelled via double click"
+
+ENCODER_OFF
+LOG "encoder deactivated"
+
+LOG "=== Encoder Navigation PASSED ==="

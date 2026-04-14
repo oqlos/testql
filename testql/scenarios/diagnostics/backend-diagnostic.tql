@@ -1,0 +1,52 @@
+# Backend Diagnostic Tests
+# Run with: python dsl/cli/dsl-shell.py dsl/examples/backend-diagnostic.dsl
+
+LOG "=== Backend API Diagnostic Tests ===" {"level": "info"}
+
+# 1. Health check
+LOG "Testing health endpoints..." {"level": "info"}
+API GET "/api/v3/health"
+
+# 2. Template JSON Data API
+LOG "Testing template-json API..." {"level": "info"}
+API GET "/api/v3/template-json"
+API GET "/api/v3/template-json/default"
+
+# 3. Report Templates API (via generic data endpoint)
+LOG "Testing report-templates API..." {"level": "info"}
+API GET "/api/v3/data/report_templates"
+
+# 4. Devices API
+LOG "Testing devices API..." {"level": "info"}
+API GET "/api/v3/devices"
+
+# 5. Customers API
+LOG "Testing customers API..." {"level": "info"}
+API GET "/api/v3/customers"
+
+# 6. DSL API
+LOG "Testing DSL API..." {"level": "info"}
+API GET "/api/v3/dsl/objects"
+API GET "/api/v3/dsl/functions"
+API GET "/api/v3/dsl/params"
+API GET "/api/v3/dsl/units"
+
+# 7. Config API
+LOG "Testing config API..." {"level": "info"}
+API GET "/api/v3/config/system"
+
+# 8. Schema API
+LOG "Testing schema API..." {"level": "info"}
+API GET "/api/v3/schema/devices"
+API GET "/api/v3/schema/customers"
+API GET "/api/v3/schema/protocols"
+
+# 9. Protocols API
+LOG "Testing protocols API..." {"level": "info"}
+API GET "/api/v3/data/protocols"
+
+# 10. Auth session
+LOG "Testing auth API..." {"level": "info"}
+API GET "/api/v3/auth/session"
+
+LOG "=== Diagnostic Tests Complete ===" {"level": "info"}

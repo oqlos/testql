@@ -1,0 +1,67 @@
+# Example DSL Script - Protocol Flow Test (Read-Only)
+# Tests protocol-related API endpoints
+#
+# Run: python3 scripts/dsl-cli.py scripts/examples/test-protocol-flow.dsl -u http://localhost:8101
+
+LOG "🚀 Starting protocol flow test" {"level": "info"}
+
+# ============================================================================
+# Step 1: Load devices
+# ============================================================================
+
+API GET "/api/v3/data/devices?limit=5"
+ASSERT_STATUS 200
+LOG "✅ Loaded devices" {"level": "info"}
+
+# ============================================================================
+# Step 2: Load customers
+# ============================================================================
+
+API GET "/api/v3/data/customers?limit=5"
+ASSERT_STATUS 200
+LOG "✅ Loaded customers" {"level": "info"}
+
+# ============================================================================
+# Step 3: Load test scenarios
+# ============================================================================
+
+API GET "/api/v3/data/test_scenarios?limit=10"
+ASSERT_STATUS 200
+LOG "✅ Loaded scenarios" {"level": "info"}
+
+# ============================================================================
+# Step 4: Load intervals
+# ============================================================================
+
+API GET "/api/v3/data/intervals?limit=10"
+ASSERT_STATUS 200
+LOG "✅ Loaded intervals" {"level": "info"}
+
+# ============================================================================
+# Step 5: Load SGI assignments
+# ============================================================================
+
+API GET "/api/v3/data/scenario_goal_intervals?limit=20"
+ASSERT_STATUS 200
+LOG "✅ Loaded SGI assignments" {"level": "info"}
+
+# ============================================================================
+# Step 6: Load existing protocols
+# ============================================================================
+
+API GET "/api/v3/data/protocols?limit=10"
+ASSERT_STATUS 200
+LOG "✅ Loaded protocols" {"level": "info"}
+
+# ============================================================================
+# Semantic: Protocol workflow simulation (browser only)
+# ============================================================================
+
+SELECT_DEVICE "d-001" {"type": "MSA_G1", "serial": "AO73138"}
+SELECT_INTERVAL "36m" {"code": "periodic_36m"}
+START_TEST "ts-c20" {"scenario": "C20 standard"}
+PROTOCOL_CREATED "pro-example" {"via": "cqrs"}
+STEP_COMPLETE "step-1" {"name": "Test ciśnienia", "status": "passed"}
+PROTOCOL_FINALIZE "pro-example" {"status": "executed"}
+
+LOG "🏁 Protocol flow test completed" {"level": "info"}

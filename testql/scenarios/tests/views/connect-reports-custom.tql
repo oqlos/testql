@@ -1,0 +1,36 @@
+# connect-reports-custom.iql — Test: Raporty > Niestandardowy
+# URL: /connect-reports/custom?filter=all
+# Run via: http://localhost:8105/files/tests/views/connect-reports-custom.iql
+
+SET encoder_url "http://localhost:8105"
+LOG "=== View: connect-reports/custom ==="
+
+NAVIGATE "/connect-reports/custom?filter=all"
+WAIT 800
+ASSERT "#top-bar-section-title" text "Niestandardow"
+ASSERT ".custom-filters-panel" exists
+
+ENCODER_ON
+WAIT 300
+ENCODER_FOCUS "col3"
+WAIT 200
+ASSERT "[data-enc-zone='col3']" exists
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_STATUS
+
+# Move to results table zone
+ENCODER_DBLCLICK
+WAIT 200
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_STATUS
+
+ENCODER_DBLCLICK
+WAIT 200
+ENCODER_OFF
+WAIT 200
+ASSERT ".encoder-focus" exists false
+LOG "=== DONE: connect-reports/custom ==="

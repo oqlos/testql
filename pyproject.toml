@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "testql"
+version = "0.1.0"
+description = "TestQL — Interface Query Language for GUI/API/encoder testing"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+dependencies = [
+    "httpx>=0.27",
+    "click>=8.0",
+    "rich>=13.0",
+]
+
+[project.scripts]
+testql = "testql.cli:main"
+
+[project.optional-dependencies]
+playwright = ["playwright>=1.40"]
+dev = ["pytest", "pytest-asyncio"]
+
+[tool.setuptools.packages.find]
+include = ["testql*"]
