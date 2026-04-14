@@ -15,8 +15,21 @@ from fastapi.responses import PlainTextResponse, JSONResponse
 if TYPE_CHECKING:
     from typing import Any
 
-from hub import hub
-from models import RunLineRequest, RunFileRequest
+try:
+    from hub import hub
+except ImportError:
+    hub = None  # type: ignore[assignment]
+
+try:
+    from models import RunLineRequest, RunFileRequest
+except ImportError:
+    from pydantic import BaseModel
+
+    class RunLineRequest(BaseModel):  # type: ignore[no-redef]
+        line: str = ""
+
+    class RunFileRequest(BaseModel):  # type: ignore[no-redef]
+        path: str = ""
 
 router = APIRouter(prefix="/iql", tags=["iql"])
 
@@ -82,18 +95,8 @@ def _format_log_detail(cmd: str, result: dict) -> str:
     return ""
 
 
-async def _execute_iql_line(line: str) -> dict[str, Any]:
-    """Execute a single IQL command line. Returns structured result dict."""
-    line = line.strip()
-    if not line or line.startswith("#"):
-        return {"ok": True, "skipped": True}
-
-    parts = line.split(None, 1)
-    cmd = parts[0].upper()
-    raw_arg = parts[1].strip() if len(parts) > 1 else ""
-    arg = raw_arg.strip('"\'')
-
-    # ── Simple encoder commands (no args) ──
+async def _exec_encoder_cmd(cmd: str, arg: str) -> dict[str, Any]:
+    """Handle ENCODER_* commands."""
     if cmd in _ENCODER_SIMPLE_CMDS:
         result = await hub.send_command(_ENCODER_SIMPLE_CMDS[cmd])
         return {"ok": True, "command": cmd, "result": result}
@@ -103,8 +106,11 @@ async def _execute_iql_line(line: str) -> dict[str, Any]:
     if cmd == "ENCODER_FOCUS":
         result = await hub.send_command("focus", zone=arg or "col3")
         return {"ok": True, "command": cmd, "result": result}
+    return None  # type: ignore[return-value]
 
-    # ── Browser interaction commands ──
+
+async def _exec_browser_cmd(cmd: str, arg: str, raw_arg: str) -> dict[str, Any]:
+    """Handle NAVIGATE, CLICK, QUERY commands."""
     if cmd == "NAVIGATE":
         url = arg or "/"
         result = await hub.send_iql_command("navigate", url=url)
@@ -119,28 +125,52 @@ async def _execute_iql_line(line: str) -> dict[str, Any]:
         selector, prop = (m.group(1), m.group(2).strip() or "exists") if m else (arg, "exists")
         result = await hub.send_iql_command("query", selector=selector, prop=prop)
         return {"ok": result.get("ok", False), "command": cmd, "selector": selector, "result": result}
+    return None  # type: ignore[return-value]
+
+
+async def _exec_assert_cmd(raw_arg: str) -> dict[str, Any]:
+    """Handle ASSERT command."""
+    m = re.match(r'"([^"]+)"\s*(.*)', raw_arg) if raw_arg else None
+    if not m:
+        return {"ok": False, "command": "ASSERT", "error": "syntax: ASSERT \"selector\" [prop] [expected]"}
+    selector = m.group(1)
+    rest = m.group(2).strip().split(None, 1)
+    prop = rest[0] if rest else "exists"
+    expected = rest[1].strip('"\'') if len(rest) > 1 else None
+
+    result = await hub.send_iql_command("query", selector=selector, prop=prop)
+    if not result.get("ok"):
+        return {"ok": False, "command": "ASSERT", "selector": selector, "error": result.get("error", "query_failed"), "result": result}
+
+    actual, passed = _evaluate_assertion(result, prop, expected)
+    return {
+        "ok": passed, "command": "ASSERT", "selector": selector,
+        "prop": prop, "expected": expected, "actual": actual,
+        "assertion": "PASS" if passed else "FAIL",
+        "result": result,
+    }
+
+
+async def _execute_iql_line(line: str) -> dict[str, Any]:
+    """Execute a single IQL command line. Returns structured result dict."""
+    line = line.strip()
+    if not line or line.startswith("#"):
+        return {"ok": True, "skipped": True}
+
+    parts = line.split(None, 1)
+    cmd = parts[0].upper()
+    raw_arg = parts[1].strip() if len(parts) > 1 else ""
+    arg = raw_arg.strip('"\'')
+
+    if cmd.startswith("ENCODER_"):
+        return await _exec_encoder_cmd(cmd, arg)
+
+    if cmd in ("NAVIGATE", "CLICK", "QUERY"):
+        return await _exec_browser_cmd(cmd, arg, raw_arg)
+
     if cmd == "ASSERT":
-        m = re.match(r'"([^"]+)"\s*(.*)', raw_arg) if raw_arg else None
-        if not m:
-            return {"ok": False, "command": cmd, "error": "syntax: ASSERT \"selector\" [prop] [expected]"}
-        selector = m.group(1)
-        rest = m.group(2).strip().split(None, 1)
-        prop = rest[0] if rest else "exists"
-        expected = rest[1].strip('"\'') if len(rest) > 1 else None
+        return await _exec_assert_cmd(raw_arg)
 
-        result = await hub.send_iql_command("query", selector=selector, prop=prop)
-        if not result.get("ok"):
-            return {"ok": False, "command": cmd, "selector": selector, "error": result.get("error", "query_failed"), "result": result}
-
-        actual, passed = _evaluate_assertion(result, prop, expected)
-        return {
-            "ok": passed, "command": cmd, "selector": selector,
-            "prop": prop, "expected": expected, "actual": actual,
-            "assertion": "PASS" if passed else "FAIL",
-            "result": result,
-        }
-
-    # ── Utility commands ──
     if cmd == "WAIT":
         ms = int(arg) if arg else DEFAULT_WAIT_MS
         await asyncio.sleep(ms / 1000.0)

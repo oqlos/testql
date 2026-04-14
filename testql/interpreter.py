@@ -153,6 +153,33 @@ class IqlInterpreter(BaseInterpreter):
 
     # ── API calls ────────────────────────────────────────────────────────
 
+    def _do_http_request(self, method: str, url: str, body_data: dict | None) -> tuple[int, dict]:
+        """Execute an HTTP request and return (status, response_dict)."""
+        req_body = json.dumps(body_data).encode("utf-8") if body_data else None
+        req = urllib.request.Request(
+            url, data=req_body, method=method,
+            headers={"Content-Type": "application/json"},
+        )
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            status = resp.status
+            text = resp.read().decode("utf-8")
+            try:
+                data = json.loads(text)
+            except Exception:
+                data = {"text": text[:500]}
+            return status, data
+
+    def _store_api_response(self, status: int, response: dict) -> None:
+        """Store API response in interpreter state and variables."""
+        self.last_status = status
+        self.last_response = response
+        self.vars.set("_status", status)
+        self.vars.set("_response", response)
+        if isinstance(response, dict):
+            data = response.get("data")
+            if isinstance(data, list):
+                self.vars.set("_count", len(data))
+
     def _cmd_api(self, args: str, line: IqlLine) -> None:
         parts = args.strip().split(None, 2)
         if len(parts) < 2:
@@ -163,7 +190,6 @@ class IqlInterpreter(BaseInterpreter):
         url = parts[1].strip('"\'')
         body_str = parts[2] if len(parts) > 2 else ""
 
-        # Resolve relative URLs
         if url.startswith("/"):
             url = f"{self.api_url}{url}"
 
@@ -175,60 +201,36 @@ class IqlInterpreter(BaseInterpreter):
             except json.JSONDecodeError:
                 body_data = {"raw": body_str}
 
+        label = f"API {method} {url}"
+
         if self.dry_run:
-            self.out.step("🌐", f"API {method} {url} (dry-run)")
+            self.out.step("🌐", f"{label} (dry-run)")
             self.last_status = 200
             self.last_response = {"data": [], "_dry_run": True}
-            self.results.append(StepResult(
-                name=f"API {method} {url}", status=StepStatus.PASSED,
-            ))
+            self.results.append(StepResult(name=label, status=StepStatus.PASSED))
             return
 
         try:
-            req_body = json.dumps(body_data).encode("utf-8") if body_data else None
-            req = urllib.request.Request(
-                url, data=req_body, method=method,
-                headers={"Content-Type": "application/json"},
-            )
-            with urllib.request.urlopen(req, timeout=15) as resp:
-                self.last_status = resp.status
-                text = resp.read().decode("utf-8")
-                try:
-                    self.last_response = json.loads(text)
-                except Exception:
-                    self.last_response = {"text": text[:500]}
-
-            icon = "✅" if self.last_status < 400 else "❌"
-            self.out.step(icon, f"API {method} {url} → {self.last_status}")
-
-            # Store response data in variables
-            self.vars.set("_status", self.last_status)
-            self.vars.set("_response", self.last_response)
-            if isinstance(self.last_response, dict):
-                data = self.last_response.get("data")
-                if isinstance(data, list):
-                    self.vars.set("_count", len(data))
-
+            status, response = self._do_http_request(method, url, body_data)
+            self._store_api_response(status, response)
+            icon = "✅" if status < 400 else "❌"
+            self.out.step(icon, f"{label} → {status}")
             self.results.append(StepResult(
-                name=f"API {method} {url}", status=StepStatus.PASSED,
-                details={"status": self.last_status},
+                name=label, status=StepStatus.PASSED, details={"status": status},
             ))
-
         except urllib.error.HTTPError as e:
             self.last_status = e.code
             self.last_response = {}
-            self.out.fail(f"API {method} {url} → {e.code}")
+            self.out.fail(f"{label} → {e.code}")
             self.results.append(StepResult(
-                name=f"API {method} {url}", status=StepStatus.FAILED,
-                message=f"HTTP {e.code}",
+                name=label, status=StepStatus.FAILED, message=f"HTTP {e.code}",
             ))
         except Exception as e:
             self.last_status = 0
             self.last_response = {}
-            self.out.fail(f"API {method} {url} → {e}")
+            self.out.fail(f"{label} → {e}")
             self.results.append(StepResult(
-                name=f"API {method} {url}", status=StepStatus.ERROR,
-                message=str(e),
+                name=label, status=StepStatus.ERROR, message=str(e),
             ))
 
     # ── Assertions ───────────────────────────────────────────────────────
