@@ -1,0 +1,16 @@
+# connect-workshop-transport.tql — GUI test for workshop transport view
+# Usage: testql scenarios/c2004/gui/connect-workshop-transport.tql --url http://localhost:8101
+
+LOG "=== GUI: Workshop / Transport ==="
+
+NAVIGATE "/connect-workshop-transport"
+WAIT 500
+
+ASSERT_VISIBLE "[data-view='workshop-transport']"
+LOG "transport view loaded"
+
+CLICK "[data-action='search']"
+WAIT 300
+LOG "search activated"
+
+LOG "=== Workshop Transport PASSED ==="
