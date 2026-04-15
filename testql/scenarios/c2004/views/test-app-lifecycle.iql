@@ -1,0 +1,73 @@
+# DSL Script - Application Lifecycle Test
+# Demonstrates semantic logging for app, module, and page events
+#
+# Run: python3 scripts/dsl-cli.py scripts/examples/test-app-lifecycle.dsl -u http://localhost:8101
+
+LOG "🚀 Testing Application Lifecycle DSL" {"level": "info"}
+
+# ============================================================================
+# PART 1: App Lifecycle Events (Semantic - logged in CLI)
+# ============================================================================
+
+APP_START "C2004 Connect System" {"phase": "startup"}
+APP_INIT "shell" {"step": "mounted"}
+APP_INIT "modules" {"step": "registered", "count": 7}
+APP_INIT "menu" {"step": "configured"}
+APP_INIT "router" {"step": "configured", "routes": 12}
+APP_READY "C2004 Connect System" {"status": "initialized"}
+
+LOG "✅ App lifecycle events logged" {"level": "info"}
+
+# ============================================================================
+# PART 2: Module Lifecycle Events (Semantic - logged in CLI)
+# ============================================================================
+
+MODULE_LOAD "connect-test" {"path": "/connect-test", "status": "starting"}
+MODULE_READY "connect-test" {"title": "Testowanie", "status": "rendered"}
+
+MODULE_LOAD "connect-reports" {"path": "/connect-reports", "status": "starting"}
+MODULE_READY "connect-reports" {"title": "Raporty", "status": "rendered"}
+
+LOG "✅ Module lifecycle events logged" {"level": "info"}
+
+# ============================================================================
+# PART 3: Page Lifecycle Events (Semantic - logged in CLI)
+# ============================================================================
+
+PAGE_SETUP "reports" {"action": "initialize"}
+PAGE_RENDER "reports" {"template": "c10", "items": 25}
+
+PAGE_SETUP "protocol-steps" {"action": "initialize"}
+PAGE_RENDER "protocol-steps" {"steps": 5, "status": "pending"}
+
+LOG "✅ Page lifecycle events logged" {"level": "info"}
+
+# ============================================================================
+# PART 4: Report Actions (Semantic - logged in CLI)
+# ============================================================================
+
+REPORT_AUTOOPEN "check" {"protocolId": "pro-123456"}
+REPORT_FETCH "pro-123456" {"status": "found"}
+REPORT_OPEN "pro-123456" {"action": "modal"}
+REPORT_PRINT "pro-123456" {"template": "c10", "format": "pdf"}
+
+LOG "✅ Report action events logged" {"level": "info"}
+
+# ============================================================================
+# PART 5: API Tests (Universal - executed in CLI)
+# ============================================================================
+
+API GET "/api/v3/data/protocols?limit=3"
+ASSERT_STATUS 200
+LOG "✅ Protocols API works" {"level": "info"}
+
+API GET "/api/v3/data/test_scenarios?limit=3"
+ASSERT_STATUS 200
+LOG "✅ Scenarios API works" {"level": "info"}
+
+# ============================================================================
+# SUMMARY
+# ============================================================================
+
+LOG "🏁 Application lifecycle test completed" {"level": "info"}
+LOG "📊 Results: All lifecycle events logged correctly" {"level": "info"}

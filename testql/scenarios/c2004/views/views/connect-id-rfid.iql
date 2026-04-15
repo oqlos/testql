@@ -1,0 +1,36 @@
+# connect-id-rfid.iql — Test: Identyfikacja > RFID
+# URL: /connect-id/rfid
+# Run via: http://localhost:8105/files/tests/views/connect-id-rfid.iql
+
+SET encoder_url "http://localhost:8105"
+LOG "=== View: connect-id/rfid ==="
+
+# ── Mouse + Keyboard ──
+NAVIGATE "/connect-id/rfid"
+WAIT 800
+ASSERT "#top-bar-section-title" text "Connect ID"
+ASSERT ".module-main-content" exists
+
+# ── Encoder ──
+ENCODER_ON
+WAIT 300
+ENCODER_FOCUS "col3"
+WAIT 200
+ASSERT "[data-enc-zone='col3']" exists
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_STATUS
+ASSERT ".encoder-focus" exists
+
+ENCODER_CLICK
+WAIT 300
+ENCODER_STATUS
+
+ENCODER_DBLCLICK
+WAIT 200
+ENCODER_OFF
+WAIT 200
+ASSERT ".encoder-focus" exists false
+LOG "=== DONE: connect-id/rfid ==="

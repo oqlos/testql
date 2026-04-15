@@ -1,0 +1,111 @@
+# Full System Diagnostic - API + Routes + DSL
+# Run: python dsl/cli/dsl-shell.py dsl/examples/full-diagnostic.dsl
+
+LOG "============================================" {"level": "info"}
+LOG "   FULL SYSTEM DIAGNOSTIC TEST" {"level": "info"}
+LOG "============================================" {"level": "info"}
+
+# =============================================
+# SECTION 1: CORE API ENDPOINTS
+# =============================================
+LOG "--- 1. Core API Endpoints ---" {"level": "info"}
+API GET "/api/v3/health"
+API GET "/api/v3/auth/session"
+API GET "/api/v3/config/system"
+
+# =============================================
+# SECTION 2: DATA API (CRUD)
+# =============================================
+LOG "--- 2. Data API (Tables) ---" {"level": "info"}
+API GET "/api/v3/data/devices"
+API GET "/api/v3/data/customers"
+API GET "/api/v3/data/protocols"
+API GET "/api/v3/data/report_templates"
+API GET "/api/v3/data/test_scenarios"
+API GET "/api/v3/data/workshops"
+
+# =============================================
+# SECTION 3: SCHEMA API
+# =============================================
+LOG "--- 3. Schema API ---" {"level": "info"}
+API GET "/api/v3/schema/devices"
+API GET "/api/v3/schema/customers"
+API GET "/api/v3/schema/protocols"
+
+# =============================================
+# SECTION 4: DSL API (Objects/Functions/Params/Units)
+# =============================================
+LOG "--- 4. DSL API ---" {"level": "info"}
+API GET "/api/v3/dsl/objects"
+API GET "/api/v3/dsl/functions"
+API GET "/api/v3/dsl/params"
+API GET "/api/v3/dsl/units"
+
+# =============================================
+# SECTION 5: TEMPLATE API
+# =============================================
+LOG "--- 5. Template API ---" {"level": "info"}
+API GET "/api/v3/template-json"
+API GET "/api/v3/template-json/default"
+
+# =============================================
+# SECTION 6: DEDICATED ENDPOINTS
+# =============================================
+LOG "--- 6. Dedicated Endpoints ---" {"level": "info"}
+API GET "/api/v3/customers"
+API GET "/api/v3/devices"
+
+# =============================================
+# SECTION 7: V1 LEGACY ENDPOINTS (if available)
+# =============================================
+LOG "--- 7. V1 Legacy Endpoints ---" {"level": "info"}
+API GET "/api/v1/data/devices"
+API GET "/api/v1/data/customers"
+API GET "/api/v1/schema/devices"
+
+# =============================================
+# SECTION 8: DSL SHELL COMMANDS TEST
+# =============================================
+LOG "--- 8. DSL Shell Commands ---" {"level": "info"}
+
+# Navigation
+NAVIGATE "/connect-test"
+WAIT 100
+
+# Events
+EMIT "diagnostic.test" {"status": "running"}
+
+# Layout
+LAYOUT "default"
+
+# State management
+STATE_SAVE "diagnostic-checkpoint"
+
+# Process simulation
+PROCESS_START "diagnostic-process" {"step": 1}
+PROCESS_NEXT {"step": 2}
+
+# =============================================
+# SECTION 9: FRONTEND ROUTES TEST
+# =============================================
+LOG "--- 9. Frontend Routes Validation ---" {"level": "info"}
+
+# Main modules
+NAVIGATE "/connect-id"
+NAVIGATE "/connect-test"
+NAVIGATE "/connect-test-device"
+NAVIGATE "/connect-test-protocol"
+NAVIGATE "/connect-test-full"
+NAVIGATE "/connect-data"
+NAVIGATE "/connect-workshop"
+NAVIGATE "/connect-config"
+NAVIGATE "/connect-reports"
+NAVIGATE "/connect-manager"
+NAVIGATE "/connect-scenario"
+NAVIGATE "/connect-template2"
+NAVIGATE "/connect-menu-editor"
+NAVIGATE "/connect-router"
+
+LOG "============================================" {"level": "info"}
+LOG "   DIAGNOSTIC COMPLETE" {"level": "info"}
+LOG "============================================" {"level": "info"}

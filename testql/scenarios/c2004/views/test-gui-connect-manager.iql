@@ -1,0 +1,127 @@
+# test-gui-connect-manager.iql — GUI tests for Connect Manager module
+# Tests: mouse+keyboard navigation, encoder navigation, page content verification
+# Usage: python -m interpreter.iql tests/test-gui-connect-manager.iql
+#   or:  python -m interpreter.iql --dry-run tests/test-gui-connect-manager.iql
+
+SET encoder_url "http://localhost:8105"
+SET api_url "http://localhost:8101"
+
+LOG "=== Connect Manager — GUI Test Suite ==="
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Part 1: Mouse + Keyboard Navigation
+# ═══════════════════════════════════════════════════════════════════════════════
+
+LOG "--- Part 1: Mouse + Keyboard ---"
+
+# 1.1 Navigate to Connect Manager module
+NAVIGATE "/connect-manager"
+WAIT 500
+LOG "Verify: top-bar-section-title updated, menu + content layout"
+
+# 1.2 Scenario editor subpage
+NAVIGATE "/connect-manager/scenario-editor"
+WAIT 300
+LOG "Verify: scenario editor with drag&drop blocks"
+
+# 1.3 Activities subpage
+NAVIGATE "/connect-manager/activities"
+WAIT 300
+LOG "Verify: activities table with categories"
+
+# 1.4 Test types subpage
+NAVIGATE "/connect-manager/test-types"
+WAIT 300
+LOG "Verify: device-to-interval assignment form"
+
+# 1.5 Intervals subpage
+NAVIGATE "/connect-manager/intervals"
+WAIT 300
+LOG "Verify: intervals management table"
+
+# 1.6 Library subpage
+NAVIGATE "/connect-manager/library"
+WAIT 300
+LOG "Verify: scenario library browser"
+
+# 1.7 Variables subpage
+NAVIGATE "/connect-manager/variables"
+WAIT 300
+LOG "Verify: variables editor"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Part 2: Encoder Navigation
+# ═══════════════════════════════════════════════════════════════════════════════
+
+LOG "--- Part 2: Encoder Mode ---"
+
+ENCODER_ON
+WAIT 300
+
+# 2.1 Navigate to Connect Manager in col1
+ENCODER_FOCUS "col1"
+WAIT 200
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_STATUS
+
+# 2.2 Confirm → col2 (Manager submenu)
+ENCODER_CLICK
+WAIT 500
+ENCODER_STATUS
+LOG "Verify: col2 shows Manager submenu (Scenariusze, Czynności, Rodzaj Testu)"
+
+# 2.3 Navigate to Activities
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_STATUS
+
+# 2.4 Confirm → col3 (activities content)
+ENCODER_CLICK
+WAIT 500
+ENCODER_STATUS
+LOG "Verify: col3 shows activities table"
+
+# 2.5 Navigate table rows
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_STATUS
+
+# 2.6 Cancel back
+ENCODER_DBLCLICK
+WAIT 200
+ENCODER_DBLCLICK
+WAIT 200
+ENCODER_DBLCLICK
+WAIT 200
+
+ENCODER_OFF
+WAIT 200
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Part 3: API Verification
+# ═══════════════════════════════════════════════════════════════════════════════
+
+LOG "--- Part 3: API Verification ---"
+
+API GET "/api/v3/data/test_scenarios?limit=5"
+ASSERT_OK
+LOG "Scenarios API accessible"
+
+API GET "/api/v3/data/intervals?limit=5"
+ASSERT_OK
+LOG "Intervals API accessible"
+
+API GET "/api/v3/activities?limit=5"
+ASSERT_OK
+LOG "Activities API accessible"
+
+LOG "=== Connect Manager — GUI Test Complete ==="

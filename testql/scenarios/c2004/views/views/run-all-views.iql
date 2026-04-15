@@ -1,0 +1,60 @@
+# run-all-views.iql — Master runner for all per-view IQL tests
+# Run via: http://localhost:8105/files/tests/views/run-all-views.iql
+# Or: python -m interpreter.iql --dry-run tests/views/run-all-views.iql
+
+SET encoder_url "http://localhost:8105"
+
+LOG "╔══════════════════════════════════════════════════════════════╗"
+LOG "║     C2004 — Per-View GUI Tests (mouse + encoder)           ║"
+LOG "╚══════════════════════════════════════════════════════════════╝"
+
+# ── Connect ID (5 views) ──
+INCLUDE "connect-id-rfid.iql"
+INCLUDE "connect-id-qr.iql"
+INCLUDE "connect-id-manual.iql"
+INCLUDE "connect-id-list.iql"
+INCLUDE "connect-id-barcode.iql"
+
+# ── Connect Test (8 views) ──
+INCLUDE "connect-test-devices-search.iql"
+INCLUDE "connect-test-testing-search.iql"
+INCLUDE "connect-test-testing-rfid.iql"
+INCLUDE "connect-test-testing-qr.iql"
+INCLUDE "connect-test-testing-barcode.iql"
+INCLUDE "connect-test-full-test.iql"
+INCLUDE "connect-test-scenario-view.iql"
+INCLUDE "connect-test-protocols.iql"
+
+# ── Connect Workshop (4 views) ──
+INCLUDE "connect-workshop-requests-search.iql"
+INCLUDE "connect-workshop-services-search.iql"
+INCLUDE "connect-workshop-transport-search.iql"
+INCLUDE "connect-workshop-dispositions-search.iql"
+
+# ── Connect Manager (5 views) ──
+INCLUDE "connect-manager-scenarios.iql"
+INCLUDE "connect-manager-activities.iql"
+INCLUDE "connect-manager-intervals.iql"
+INCLUDE "connect-manager-test-types.iql"
+INCLUDE "connect-manager-library.iql"
+
+# ── Connect Reports (7 views) ──
+INCLUDE "connect-reports-week.iql"
+INCLUDE "connect-reports-month.iql"
+INCLUDE "connect-reports-quarter.iql"
+INCLUDE "connect-reports-year.iql"
+INCLUDE "connect-reports-chart.iql"
+INCLUDE "connect-reports-custom.iql"
+INCLUDE "connect-reports-filter.iql"
+
+# ── Connect Config (5 key views) ──
+INCLUDE "connect-config-settings.iql"
+INCLUDE "connect-config-theme.iql"
+INCLUDE "connect-config-labels.iql"
+INCLUDE "connect-config-users.iql"
+INCLUDE "connect-config-tables.iql"
+INCLUDE "connect-config-feature-flags.iql"
+
+LOG "╔══════════════════════════════════════════════════════════════╗"
+LOG "║     All Per-View Tests Complete                             ║"
+LOG "╚══════════════════════════════════════════════════════════════╝"

@@ -1,0 +1,26 @@
+# connect-config-users.iql — Test: Konfiguracja > Użytkownicy
+# URL: /connect-config-users
+# Run via: http://localhost:8105/files/tests/views/connect-config-users.iql
+
+SET encoder_url "http://localhost:8105"
+LOG "=== View: connect-config-users ==="
+
+NAVIGATE "/connect-config-users"
+WAIT 500
+LOG "Verify: top-bar = 'Connect Config - Użytkownicy', users table"
+
+ENCODER_ON
+WAIT 300
+ENCODER_FOCUS "col3"
+WAIT 200
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_STATUS
+LOG "Verify: user row highlighted"
+ENCODER_DBLCLICK
+WAIT 200
+ENCODER_OFF
+WAIT 200
+LOG "=== DONE: connect-config-users ==="

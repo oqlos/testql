@@ -1,0 +1,19 @@
+# =============================================================================
+# DSL: Uruchomienie protokołu testu maski DRAGER FPS 7000
+# Używa: dsl-cli.py do wywołań REST API
+# =============================================================================
+
+# 1. Sprawdź czy scenariusz istnieje
+API GET "/api/v3/scenarios/scn-drager-fps-7000-maska-nadcisnieniowa?include_content=true"
+
+# 2. Uruchom protokół testowy
+API POST "/api/v3/protocols" {"scenario_id":"scn-drager-fps-7000-maska-nadcisnieniowa","template_id":"tpl-default","device_id":"dv00003","execution_mode":"step_by_step"}
+
+# 3. Poczekaj na inicjalizację
+WAIT 1000
+
+# 4. Sprawdź status (wymaga ręcznego podania protocol_id)
+# API GET "/api/v3/protocols/{protocol_id}"
+
+# 5. Zakończ (wymaga ręcznego podania protocol_id)
+# API POST "/api/v3/protocols/{protocol_id}/complete" {"final_status":"passed","summary":"Test OK"}

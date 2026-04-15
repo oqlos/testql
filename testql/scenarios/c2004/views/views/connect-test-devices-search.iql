@@ -1,0 +1,34 @@
+# connect-test-devices-search.iql — Test: Testowanie > Wyszukiwanie urządzeń
+# URL: /connect-test/device-devices-search
+# Run via: http://localhost:8105/files/tests/views/connect-test-devices-search.iql
+
+SET encoder_url "http://localhost:8105"
+LOG "=== View: connect-test/device-devices-search ==="
+
+NAVIGATE "/connect-test/device-devices-search"
+WAIT 500
+LOG "Verify: top-bar = 'Connect Test - Urządzenia'"
+LOG "Verify: search bar + filters + result table + inline-add"
+
+ENCODER_ON
+WAIT 300
+ENCODER_FOCUS "col3"
+WAIT 200
+LOG "Verify: col3 = sort headers or inline-add (auto-discovered table structure)"
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_STATUS
+LOG "Verify: table row highlighted"
+
+ENCODER_CLICK
+WAIT 300
+LOG "Verify: col4 = row actions (Testuj, Edytuj, Usuń)"
+ENCODER_STATUS
+
+ENCODER_DBLCLICK
+WAIT 200
+ENCODER_OFF
+WAIT 200
+LOG "=== DONE: connect-test/device-devices-search ==="

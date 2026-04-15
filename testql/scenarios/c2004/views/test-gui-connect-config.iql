@@ -1,0 +1,140 @@
+# test-gui-connect-config.iql — GUI tests for Connect Config module
+# Tests: mouse+keyboard navigation, encoder navigation, page content verification
+# Usage: python -m interpreter.iql tests/test-gui-connect-config.iql
+#   or:  python -m interpreter.iql --dry-run tests/test-gui-connect-config.iql
+
+SET encoder_url "http://localhost:8105"
+SET api_url "http://localhost:8101"
+
+LOG "=== Connect Config — GUI Test Suite ==="
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Part 1: Mouse + Keyboard Navigation
+# ═══════════════════════════════════════════════════════════════════════════════
+
+LOG "--- Part 1: Mouse + Keyboard ---"
+
+# 1.1 Navigate to Connect Config module
+NAVIGATE "/connect-config"
+WAIT 500
+LOG "Verify: top-bar-section-title updated, flat sidebar"
+
+# 1.2 System settings
+NAVIGATE "/connect-config/system"
+WAIT 300
+LOG "Verify: system configuration page"
+
+# 1.3 Devices settings
+NAVIGATE "/connect-config/devices"
+WAIT 300
+LOG "Verify: devices configuration page"
+
+# 1.4 Security settings
+NAVIGATE "/connect-config/security"
+WAIT 300
+LOG "Verify: security configuration page"
+
+# 1.5 Theme settings
+NAVIGATE "/connect-config/theme"
+WAIT 300
+LOG "Verify: theme selector with preview"
+
+# 1.6 Labels / i18n
+NAVIGATE "/connect-config/labels"
+WAIT 300
+LOG "Verify: labels table with language columns"
+
+# 1.7 Feature flags
+NAVIGATE "/connect-config/feature-flags"
+WAIT 300
+LOG "Verify: feature flags toggle list"
+
+# 1.8 Tables management
+NAVIGATE "/connect-config/tables"
+WAIT 300
+LOG "Verify: database tables viewer"
+
+# 1.9 Sitemap
+NAVIGATE "/connect-config/sitemap"
+WAIT 300
+LOG "Verify: sitemap / route tree"
+
+# 1.10 Module registry
+NAVIGATE "/connect-config/module-registry"
+WAIT 300
+LOG "Verify: registered modules list"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Part 2: Encoder Navigation
+# ═══════════════════════════════════════════════════════════════════════════════
+
+LOG "--- Part 2: Encoder Mode ---"
+
+ENCODER_ON
+WAIT 300
+
+# 2.1 Navigate to Config in col1 (last item usually)
+ENCODER_FOCUS "col1"
+WAIT 200
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_STATUS
+
+# 2.2 Confirm -> col2 (Config submenu: Urzadzenia, System, Bezpieczenstwo)
+ENCODER_CLICK
+WAIT 500
+ENCODER_STATUS
+LOG "Verify: col2 shows Config categories"
+
+# 2.3 Scroll to System
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_STATUS
+
+# 2.4 Confirm -> col3 (config page content)
+ENCODER_CLICK
+WAIT 500
+ENCODER_STATUS
+LOG "Verify: col3 shows configuration form/table"
+
+# 2.5 Navigate config items
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_SCROLL 1
+WAIT 150
+ENCODER_STATUS
+
+# 2.6 Cancel back through zones
+ENCODER_DBLCLICK
+WAIT 200
+ENCODER_DBLCLICK
+WAIT 200
+ENCODER_DBLCLICK
+WAIT 200
+
+ENCODER_OFF
+WAIT 200
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Part 3: API Verification
+# ═══════════════════════════════════════════════════════════════════════════════
+
+LOG "--- Part 3: API Verification ---"
+
+API GET "/api/v3/config/settings"
+ASSERT_OK
+LOG "Config settings API accessible"
+
+API GET "/api/v3/feature-flags"
+ASSERT_OK
+LOG "Feature flags API accessible"
+
+LOG "=== Connect Config — GUI Test Complete ==="

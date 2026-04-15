@@ -1,0 +1,64 @@
+# Example DSL Script - API Endpoints Test
+# Tests all major data API endpoints
+# 
+# Run with: python3 scripts/dsl-cli.py scripts/examples/test-ui-navigation.dsl -u http://localhost:8101
+
+LOG "🔌 Starting API endpoints test" {"level": "info"}
+
+# ============================================================================
+# Test devices API
+# ============================================================================
+
+API GET "/api/v3/data/devices?limit=5"
+ASSERT_STATUS 200
+LOG "Devices endpoint OK" {"level": "info"}
+
+# ============================================================================
+# Test customers API
+# ============================================================================
+
+API GET "/api/v3/data/customers?limit=5"
+ASSERT_STATUS 200
+LOG "Customers endpoint OK" {"level": "info"}
+
+# ============================================================================
+# Test protocols API
+# ============================================================================
+
+API GET "/api/v3/data/protocols?limit=10"
+ASSERT_STATUS 200
+LOG "Protocols endpoint OK" {"level": "info"}
+
+# ============================================================================
+# Test scenarios API
+# ============================================================================
+
+API GET "/api/v3/data/test_scenarios?limit=10"
+ASSERT_STATUS 200
+LOG "Scenarios endpoint OK" {"level": "info"}
+
+# ============================================================================
+# Test intervals API
+# ============================================================================
+
+API GET "/api/v3/data/intervals?limit=10"
+ASSERT_STATUS 200
+LOG "Intervals endpoint OK" {"level": "info"}
+
+# ============================================================================
+# Test SGI API
+# ============================================================================
+
+API GET "/api/v3/data/scenario_goal_intervals?limit=10"
+ASSERT_STATUS 200
+LOG "SGI endpoint OK" {"level": "info"}
+
+# ============================================================================
+# Test labels API
+# ============================================================================
+
+API GET "/api/v3/data/labels?limit=10"
+ASSERT_STATUS 200
+LOG "Labels endpoint OK" {"level": "info"}
+
+LOG "✅ API endpoints test completed" {"level": "info"}
