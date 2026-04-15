@@ -1,7 +1,7 @@
 # test-encoder.iql — Encoder navigation tests via IQL
 # Requires: encoder-control service on port 8105 + browser with client.js loaded
-# Usage: python -m interpreter.iql tests/test-encoder.iql
-#   or:  python -m interpreter.iql --dry-run tests/test-encoder.iql
+# Usage: python -m testql.cli testql/scenarios/c2004/views/test-encoder.iql
+#   or:  python -m testql.cli testql/scenarios/c2004/views/test-encoder.iql --dry-run
 
 SET encoder_url "http://localhost:8105"
 LOG "=== Encoder Navigation Test ==="

@@ -35,8 +35,8 @@ router = APIRouter(prefix="/iql", tags=["iql"])
 
 # ── Paths ─────────────────────────────────────────────────────────
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
-IQL_DIR = PROJECT_ROOT / "db" / "dsl" / "iql"
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+IQL_DIR = PROJECT_ROOT / "testql" / "scenarios"
 LOG_DIR = IQL_DIR / "logs"
 
 LOG_DIR.mkdir(parents=True, exist_ok=True)
@@ -44,6 +44,34 @@ LOG_DIR.mkdir(parents=True, exist_ok=True)
 DEFAULT_WAIT_MS = 100
 HTTP_BAD_REQUEST = 400
 HTTP_NOT_FOUND = 404
+
+LEGACY_C2004_ROOT_SEGMENT = "db/dsl/iql/"
+TESTQL_SCENARIOS_SEGMENT = "testql/scenarios/"
+
+
+def _normalize_iql_path(path: str) -> str:
+    """Map legacy c2004 IQL paths to the canonical testql scenario layout."""
+    candidate = (path or "").strip().replace("\\", "/")
+    if not candidate:
+        return ""
+
+    candidate = candidate.removeprefix("./")
+    if LEGACY_C2004_ROOT_SEGMENT in candidate:
+        candidate = candidate.split(LEGACY_C2004_ROOT_SEGMENT, 1)[1]
+    if TESTQL_SCENARIOS_SEGMENT in candidate:
+        candidate = candidate.split(TESTQL_SCENARIOS_SEGMENT, 1)[1]
+
+    candidate = candidate.lstrip("/")
+    if candidate.startswith("tests/views/"):
+        return f"c2004/views/views/{candidate[len('tests/views/') :]}"
+    if candidate.startswith("tests/"):
+        return f"c2004/views/{candidate[len('tests/') :]}"
+    return candidate
+
+
+def _resolve_iql_path(path: str) -> tuple[str, Path]:
+    normalized_path = _normalize_iql_path(path)
+    return normalized_path, (IQL_DIR / normalized_path).resolve()
 
 
 # ── IQL command executor ──────────────────────────────────────────
@@ -201,19 +229,24 @@ async def iql_list_files():
 @router.get("/file")
 async def iql_read_file(path: str = Query(...)):
     """Read an IQL file content."""
-    target = (IQL_DIR / path).resolve()
+    normalized_path, target = _resolve_iql_path(path)
     if not str(target).startswith(str(IQL_DIR)):
         return JSONResponse({"error": "path_traversal"}, status_code=HTTP_BAD_REQUEST)
     if not target.is_file():
         return JSONResponse({"error": "not_found"}, status_code=HTTP_NOT_FOUND)
     content = target.read_text(encoding="utf-8")
-    return {"path": path, "content": content, "lines": content.count("\n") + 1}
+    return {
+        "path": normalized_path,
+        "requested_path": path,
+        "content": content,
+        "lines": content.count("\n") + 1,
+    }
 
 
 @router.get("/tables")
 async def iql_list_tables(path: str = Query(...)):
     """Extract table names from an IQL file."""
-    target = (IQL_DIR / path).resolve()
+    normalized_path, target = _resolve_iql_path(path)
     if not str(target).startswith(str(IQL_DIR)):
         return JSONResponse({"error": "path_traversal"}, status_code=HTTP_BAD_REQUEST)
     if not target.is_file():
@@ -238,7 +271,7 @@ async def iql_list_tables(path: str = Query(...)):
     # Remove duplicates and sort
     tables = sorted(list(set(tables)))
     
-    return {"path": path, "tables": tables}
+    return {"path": normalized_path, "requested_path": path, "tables": tables}
 
 
 @router.post("/run-line")
@@ -250,11 +283,11 @@ async def iql_run_line(req: RunLineRequest):
 @router.post("/run-file")
 async def iql_run_file(req: RunFileRequest):
     """Run an entire IQL file with validation. Returns structured results + saves log."""
-    target = (IQL_DIR / req.path).resolve()
+    normalized_path, target = _resolve_iql_path(req.path)
     if not str(target).startswith(str(IQL_DIR)):
         return JSONResponse({"error": "path_traversal"}, status_code=HTTP_BAD_REQUEST)
     if not target.is_file():
-        return JSONResponse({"error": "not_found", "path": req.path}, status_code=HTTP_NOT_FOUND)
+        return JSONResponse({"error": "not_found", "path": normalized_path}, status_code=HTTP_NOT_FOUND)
 
     content = target.read_text(encoding="utf-8")
     lines = content.splitlines()
@@ -271,7 +304,7 @@ async def iql_run_file(req: RunFileRequest):
     start_time = time.monotonic()
 
     log_lines: list[str] = [
-        f"# IQL Test Log: {req.path}",
+        f"# IQL Test Log: {normalized_path}",
         f"# Started: {datetime.now().isoformat()}",
         f"# Lines: {len(lines)}",
         "",
@@ -316,7 +349,8 @@ async def iql_run_file(req: RunFileRequest):
     total_time = round((time.monotonic() - start_time) * 1000)
 
     summary = {
-        "file": req.path,
+        "file": normalized_path,
+        "requested_path": req.path,
         "total_lines": len(lines),
         "executed": passed + failed,
         "passed": passed,
