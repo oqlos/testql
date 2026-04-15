@@ -16,6 +16,7 @@ dependencies = [
     "goal>=2.1.0",
     "costs>=0.1.20",
     "pfix>=0.1.60",
+    "websockets>=13.0",
 ]
 
 [project.scripts]
