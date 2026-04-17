@@ -1,4 +1,4 @@
-# SCENARIO: connect-config-users.tql — GUI test for config/users view
+# SCENARIO: connect-config-users.testql.toon.yaml — GUI test for config/users view
 # TYPE: gui
 # VERSION: 1.0
 
