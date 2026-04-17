@@ -1,7 +1,7 @@
 """JUnit XML reporter for TestQL results.
 
 Mirrors the oqlos JUnit reporter so CI/CD pipelines get identical output
-whether running hardware (.oql) or API/GUI (.tql/.iql) test suites.
+whether running hardware (.oql) or test (.testql.toon.yaml) suites.
 
 Usage:
     from testql.reporters.junit import report_junit
@@ -9,7 +9,7 @@ Usage:
     Path("api-results.xml").write_text(xml)
 
 CLI:
-    testql run test.tql --output junit > api-results.xml
+    testql run test.testql.toon.yaml --output junit > api-results.xml
 """
 
 from __future__ import annotations

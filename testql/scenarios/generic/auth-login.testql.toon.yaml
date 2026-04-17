@@ -1,0 +1,11 @@
+# SCENARIO: auth-login.tql — generic authentication login test template
+# TYPE: api
+# VERSION: 1.0
+
+# ── Konfiguracja ──────────────────────────────────────
+CONFIG[1]{key, value}:
+  api_url,  $TARGET_URL
+
+# ── Wywołania API ─────────────────────────────────────
+API[1]{method, endpoint, status, assert_key, assert_value}:
+  POST,  /api/v3/auth/login",  200,  "token",  -

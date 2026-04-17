@@ -1,0 +1,48 @@
+# SCENARIO: test-gui-connect-reports.iql — GUI tests for Connect Reports module
+# TYPE: gui
+# VERSION: 1.0
+
+# ── Konfiguracja ──────────────────────────────────────
+CONFIG[2]{key, value}:
+  encoder_url,  http://localhost:8105
+  api_url,  http://localhost:8101
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[8]{path, wait_ms}:
+  /connect-reports,  500
+  /connect-reports/week,  300
+  /connect-reports/month,  300
+  /connect-reports/quarter,  300
+  /connect-reports/year,  300
+  /connect-reports/custom,  300
+  /connect-reports/filter,  300
+  /connect-reports/chart,  300
+
+# ── Encoder HW ────────────────────────────────────────
+ENCODER[22]{action, target, value, wait_ms}:
+  on,  -,  -,  300
+  focus,  col1,  -,  200
+  scroll,  -,  1,  150
+  scroll,  -,  1,  150
+  status,  -,  -,  -
+  click,  -,  -,  500
+  status,  -,  -,  -
+  scroll,  -,  1,  150
+  scroll,  -,  1,  150
+  status,  -,  -,  -
+  click,  -,  -,  500
+  status,  -,  -,  -
+  scroll,  -,  1,  150
+  scroll,  -,  1,  150
+  status,  -,  -,  -
+  page_next,  -,  -,  300
+  status,  -,  -,  -
+  page_prev,  -,  -,  300
+  dblclick,  -,  -,  200
+  dblclick,  -,  -,  200
+  dblclick,  -,  -,  200
+  off,  -,  -,  200
+
+# ── Wywołania API ─────────────────────────────────────
+API[1]{method, endpoint, status}:
+  GET,  /api/v3/data/protocols?limit=5,  200

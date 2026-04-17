@@ -1,4 +1,4 @@
-"""TestQL CLI — run .tql scenarios from the command line."""
+"""TestQL CLI — run .testql.toon.yaml scenarios from the command line."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ import click
 )
 @click.option("--quiet", is_flag=True, help="Suppress step-by-step output")
 def main(file: str, url: str, dry_run: bool, output: str, quiet: bool) -> None:
-    """Run a TestQL (.tql) scenario."""
+    """Run a TestQL (.testql.toon.yaml) scenario."""
     from testql.interpreter import IqlInterpreter
 
     source = Path(file).read_text(encoding="utf-8")

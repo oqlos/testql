@@ -11,12 +11,26 @@ from __future__ import annotations
 
 from .interpreter import IqlInterpreter
 from ._parser import IqlLine, IqlScript, parse_iql
+from ._testtoon_parser import (
+    ToonScript,
+    ToonSection,
+    parse_testtoon,
+    testtoon_to_iql,
+    validate_testtoon,
+)
+from ._converter import convert_iql_to_testtoon
 
 __all__ = [
     "IqlInterpreter",
     "IqlLine",
     "IqlScript",
     "parse_iql",
+    "ToonScript",
+    "ToonSection",
+    "parse_testtoon",
+    "testtoon_to_iql",
+    "validate_testtoon",
+    "convert_iql_to_testtoon",
     "main",
 ]
 
@@ -28,8 +42,8 @@ def main() -> None:
     from pathlib import Path
     from typing import Any
 
-    parser = argparse.ArgumentParser(description="IQL Interpreter — Interface Query Language")
-    parser.add_argument("file", nargs="?", help="IQL file to execute")
+    parser = argparse.ArgumentParser(description="TestQL Interpreter — runs .testql.toon.yaml scenarios")
+    parser.add_argument("file", nargs="?", help="TestQL scenario file (.testql.toon.yaml / .iql / .tql)")
     parser.add_argument("-u", "--url", default="http://localhost:8101")
     parser.add_argument("-q", "--quiet", action="store_true")
     parser.add_argument("-n", "--dry-run", action="store_true")

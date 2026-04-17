@@ -1,0 +1,45 @@
+# SCENARIO: Session Recording Example
+# TYPE: interaction
+# VERSION: 1.0
+
+# ── Nagrywanie sesji ──────────────────────────────────
+RECORD_START[1]{session_id}:
+  demo-session-001
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-id/device-rfid,  300
+
+# ── Wybory domenowe ───────────────────────────────────
+SELECT[1]{action, id, meta}:
+  device,  d-demo-001,  {type:PSS-7000, serial:PS12345}
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-test/testing,  300
+
+# ── Wybory domenowe ───────────────────────────────────
+SELECT[1]{action, id, meta}:
+  interval,  3m,  {code:periodic_3m, description:3 miesiące}
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[2]{command, target, meta}:
+  start_test,  ts-demo,  {name:Demo Test, steps:3}
+  step_complete,  step-1,  {name:Initialization, status:passed}
+
+WAIT[1]{ms}:
+  200
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[1]{command, target, meta}:
+  step_complete,  step-2,  {name:Pressure Check, status:passed, value:15.2 mbar}
+
+WAIT[1]{ms}:
+  200
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[1]{command, target, meta}:
+  step_complete,  step-3,  {name:Finalization, status:passed}
+
+RECORD_STOP:
+  

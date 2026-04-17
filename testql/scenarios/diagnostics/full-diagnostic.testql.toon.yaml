@@ -1,0 +1,66 @@
+# SCENARIO: Full System Diagnostic - API + Routes + DSL
+# TYPE: gui
+# VERSION: 1.0
+
+# ── Wywołania API ─────────────────────────────────────
+API[23]{method, endpoint, status}:
+  GET,  /api/v3/health,  200
+  GET,  /api/v3/auth/session,  200
+  GET,  /api/v3/config/system,  200
+  GET,  /api/v3/data/devices,  200
+  GET,  /api/v3/data/customers,  200
+  GET,  /api/v3/data/protocols,  200
+  GET,  /api/v3/data/report_templates,  200
+  GET,  /api/v3/data/test_scenarios,  200
+  GET,  /api/v3/data/workshops,  200
+  GET,  /api/v3/schema/devices,  200
+  GET,  /api/v3/schema/customers,  200
+  GET,  /api/v3/schema/protocols,  200
+  GET,  /api/v3/dsl/objects,  200
+  GET,  /api/v3/dsl/functions,  200
+  GET,  /api/v3/dsl/params,  200
+  GET,  /api/v3/dsl/units,  200
+  GET,  /api/v3/template-json,  200
+  GET,  /api/v3/template-json/default,  200
+  GET,  /api/v3/customers,  200
+  GET,  /api/v3/devices,  200
+  GET,  /api/v1/data/devices,  200
+  GET,  /api/v1/data/customers,  200
+  GET,  /api/v1/schema/devices,  200
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-test,  100
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[1]{command, target, meta}:
+  emit,  diagnostic.test,  {status:running}
+
+FLOW[1]{command, target, meta}:
+  layout,  default,  -
+
+FLOW[1]{command, target, meta}:
+  state_save,  diagnostic-checkpoint,  -
+
+FLOW[1]{command, target, meta}:
+  process_start,  diagnostic-process,  {step:1}
+
+FLOW[1]{command, target, meta}:
+  process_next,  {"step":,  {step:2}
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[14]{path, wait_ms}:
+  /connect-id,  300
+  /connect-test,  300
+  /connect-test-device,  300
+  /connect-test-protocol,  300
+  /connect-test-full,  300
+  /connect-data,  300
+  /connect-workshop,  300
+  /connect-config,  300
+  /connect-reports,  300
+  /connect-manager,  300
+  /connect-scenario,  300
+  /connect-template2,  300
+  /connect-menu-editor,  300
+  /connect-router,  300

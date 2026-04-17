@@ -1,0 +1,50 @@
+# SCENARIO: test-gui-connect-config.iql — GUI tests for Connect Config module
+# TYPE: gui
+# VERSION: 1.0
+
+# ── Konfiguracja ──────────────────────────────────────
+CONFIG[2]{key, value}:
+  encoder_url,  http://localhost:8105
+  api_url,  http://localhost:8101
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[10]{path, wait_ms}:
+  /connect-config,  500
+  /connect-config/system,  300
+  /connect-config/devices,  300
+  /connect-config/security,  300
+  /connect-config/theme,  300
+  /connect-config/labels,  300
+  /connect-config/feature-flags,  300
+  /connect-config/tables,  300
+  /connect-config/sitemap,  300
+  /connect-config/module-registry,  300
+
+# ── Encoder HW ────────────────────────────────────────
+ENCODER[21]{action, target, value, wait_ms}:
+  on,  -,  -,  300
+  focus,  col1,  -,  200
+  scroll,  -,  1,  150
+  scroll,  -,  1,  150
+  scroll,  -,  1,  150
+  scroll,  -,  1,  150
+  scroll,  -,  1,  150
+  status,  -,  -,  -
+  click,  -,  -,  500
+  status,  -,  -,  -
+  scroll,  -,  1,  150
+  status,  -,  -,  -
+  click,  -,  -,  500
+  status,  -,  -,  -
+  scroll,  -,  1,  150
+  scroll,  -,  1,  150
+  status,  -,  -,  -
+  dblclick,  -,  -,  200
+  dblclick,  -,  -,  200
+  dblclick,  -,  -,  200
+  off,  -,  -,  200
+
+# ── Wywołania API ─────────────────────────────────────
+API[2]{method, endpoint, status}:
+  GET,  /api/v3/config/settings,  200
+  GET,  /api/v3/feature-flags,  200

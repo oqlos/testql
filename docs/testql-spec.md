@@ -2,7 +2,7 @@
 
 ## Overview
 
-TestQL (Test Query Language) is a declarative DSL for testing GUI, REST API, and hardware encoder interfaces. Files use the `.tql` extension (legacy: `.iql`).
+TestQL (Test Query Language) is a declarative DSL for testing GUI, REST API, and hardware encoder interfaces. Files use the `.testql.toon.yaml` extension (TestTOON tabular format) and `.testql.less` for shared configuration. Legacy formats: `.tql`, `.iql`.
 
 ## Variables
 
@@ -67,7 +67,7 @@ ENCODER_STATUS            # Print current state
 ## Script Composition
 
 ```
-INCLUDE <file>            # INCLUDE "common-setup.tql"
+INCLUDE <file>            # INCLUDE "common-setup.testql.toon.yaml"
 ```
 
 ## Control Flow (planned)

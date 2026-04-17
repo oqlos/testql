@@ -1,0 +1,16 @@
+# SCENARIO: connect-workshop-transport.tql — GUI test for workshop transport view
+# TYPE: gui
+# VERSION: 1.0
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-workshop-transport,  500
+
+FLOW[1]{command, target, meta}:
+  assert_visible,  [data-view='workshop-transport'],  -
+
+FLOW[1]{command, target, meta}:
+  click,  [data-action='search'],  -
+
+WAIT[1]{ms}:
+  300

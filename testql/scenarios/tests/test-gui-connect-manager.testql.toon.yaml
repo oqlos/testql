@@ -1,0 +1,47 @@
+# SCENARIO: test-gui-connect-manager.iql — GUI tests for Connect Manager module
+# TYPE: gui
+# VERSION: 1.0
+
+# ── Konfiguracja ──────────────────────────────────────
+CONFIG[2]{key, value}:
+  encoder_url,  http://localhost:8105
+  api_url,  http://localhost:8101
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[7]{path, wait_ms}:
+  /connect-manager,  500
+  /connect-manager/scenario-editor,  300
+  /connect-manager/activities,  300
+  /connect-manager/test-types,  300
+  /connect-manager/intervals,  300
+  /connect-manager/library,  300
+  /connect-manager/variables,  300
+
+# ── Encoder HW ────────────────────────────────────────
+ENCODER[20]{action, target, value, wait_ms}:
+  on,  -,  -,  300
+  focus,  col1,  -,  200
+  scroll,  -,  1,  150
+  scroll,  -,  1,  150
+  scroll,  -,  1,  150
+  scroll,  -,  1,  150
+  status,  -,  -,  -
+  click,  -,  -,  500
+  status,  -,  -,  -
+  scroll,  -,  1,  150
+  status,  -,  -,  -
+  click,  -,  -,  500
+  status,  -,  -,  -
+  scroll,  -,  1,  150
+  scroll,  -,  1,  150
+  status,  -,  -,  -
+  dblclick,  -,  -,  200
+  dblclick,  -,  -,  200
+  dblclick,  -,  -,  200
+  off,  -,  -,  200
+
+# ── Wywołania API ─────────────────────────────────────
+API[3]{method, endpoint, status}:
+  GET,  /api/v3/data/test_scenarios?limit=5,  200
+  GET,  /api/v3/data/intervals?limit=5,  200
+  GET,  /api/v3/activities?limit=5,  200

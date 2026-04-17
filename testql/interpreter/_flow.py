@@ -82,7 +82,7 @@ class FlowMixin:
         self.out.emit(args)
 
     def _cmd_include(self, args: str, line: IqlLine) -> None:
-        """INCLUDE "relative/path.iql" — inline and execute another script."""
+        """INCLUDE "relative/path.testql.toon.yaml" — inline and execute another script."""
         rel_path = args.strip().strip("\"'")
         resolved: Path | None = None
         for base in self.include_paths:

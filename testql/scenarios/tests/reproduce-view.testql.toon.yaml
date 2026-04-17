@@ -1,0 +1,26 @@
+# SCENARIO: Reproduce View - Connect Manager with Scenario Selection
+# TYPE: gui
+# VERSION: 1.0
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-manager,  300
+
+FLOW[1]{command, target, meta}:
+  click,  #sidebar-col-2,  -
+
+WAIT[2]{ms}:
+  200
+  500
+
+FLOW[1]{command, target, meta}:
+  click,  #scenario-list-body,  -
+
+WAIT[1]{ms}:
+  200
+
+FLOW[1]{command, target, meta}:
+  click,  .scenario-header,  -
+
+WAIT[1]{ms}:
+  100

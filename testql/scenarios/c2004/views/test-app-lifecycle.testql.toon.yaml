@@ -1,0 +1,29 @@
+# SCENARIO: DSL Script - Application Lifecycle Test
+# TYPE: api
+# VERSION: 1.0
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[18]{command, target, meta}:
+  app_start,  C2004 Connect System,  {phase:startup}
+  app_init,  shell,  {step:mounted}
+  app_init,  modules,  {step:registered, count:7}
+  app_init,  menu,  {step:configured}
+  app_init,  router,  {step:configured, routes:12}
+  app_ready,  C2004 Connect System,  {status:initialized}
+  module_load,  connect-test,  {path:/connect-test, status:starting}
+  module_ready,  connect-test,  {title:Testowanie, status:rendered}
+  module_load,  connect-reports,  {path:/connect-reports, status:starting}
+  module_ready,  connect-reports,  {title:Raporty, status:rendered}
+  page_setup,  reports,  {action:initialize}
+  page_render,  reports,  {template:c10, items:25}
+  page_setup,  protocol-steps,  {action:initialize}
+  page_render,  protocol-steps,  {steps:5, status:pending}
+  report_autoopen,  check,  {protocolId:pro-123456}
+  report_fetch,  pro-123456,  {status:found}
+  report_open,  pro-123456,  {action:modal}
+  report_print,  pro-123456,  {template:c10, format:pdf}
+
+# ── Wywołania API ─────────────────────────────────────
+API[2]{method, endpoint, status}:
+  GET,  /api/v3/data/protocols?limit=3,  200
+  GET,  /api/v3/data/test_scenarios?limit=3,  200

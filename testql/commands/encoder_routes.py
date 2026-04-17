@@ -50,7 +50,10 @@ TESTQL_SCENARIOS_SEGMENT = "testql/scenarios/"
 
 
 def _normalize_iql_path(path: str) -> str:
-    """Map legacy c2004 IQL paths to the canonical testql scenario layout."""
+    """Map legacy c2004 IQL paths to the canonical testql scenario layout.
+    
+    Supports .testql.toon.yaml, .iql, and .tql extensions.
+    """
     candidate = (path or "").strip().replace("\\", "/")
     if not candidate:
         return ""
@@ -62,10 +65,20 @@ def _normalize_iql_path(path: str) -> str:
         candidate = candidate.split(TESTQL_SCENARIOS_SEGMENT, 1)[1]
 
     candidate = candidate.lstrip("/")
+
+    # Migrate legacy extensions to new format in path
+    for old_ext in ('.iql', '.tql'):
+        if candidate.endswith(old_ext):
+            new_candidate = candidate[:-len(old_ext)] + '.testql.toon.yaml'
+            new_target = IQL_DIR / new_candidate
+            if new_target.is_file():
+                candidate = new_candidate
+                break
+
     if candidate.startswith("tests/views/"):
-        return f"c2004/views/views/{candidate[len('tests/views/') :]}"
+        return f"c2004/views/views/{candidate[len('tests/views/'):]}"
     if candidate.startswith("tests/"):
-        return f"c2004/views/{candidate[len('tests/') :]}"
+        return f"c2004/views/{candidate[len('tests/'):]}"
     return candidate
 
 
@@ -212,23 +225,31 @@ async def _execute_iql_line(line: str) -> dict[str, Any]:
 
 @router.get("/files")
 async def iql_list_files():
-    """List all .iql files in the project."""
+    """List all .testql.toon.yaml files in the project (with .iql/.tql fallback)."""
     files = []
     if IQL_DIR.is_dir():
-        for f in sorted(IQL_DIR.rglob("*.iql")):
-            rel = f.relative_to(IQL_DIR)
-            files.append({
-                "path": str(rel),
-                "name": f.name,
-                "dir": str(rel.parent) if str(rel.parent) != "." else "",
-                "size": f.stat().st_size,
-            })
-    return {"files": files, "base_dir": str(IQL_DIR)}
+        for pattern in ("*.testql.toon.yaml", "*.iql", "*.tql"):
+            for f in sorted(IQL_DIR.rglob(pattern)):
+                rel = f.relative_to(IQL_DIR)
+                files.append({
+                    "path": str(rel),
+                    "name": f.name,
+                    "dir": str(rel.parent) if str(rel.parent) != "." else "",
+                    "size": f.stat().st_size,
+                })
+    # Deduplicate by path (prefer .testql.toon.yaml)
+    seen = set()
+    unique = []
+    for f in files:
+        if f["path"] not in seen:
+            seen.add(f["path"])
+            unique.append(f)
+    return {"files": unique, "base_dir": str(IQL_DIR)}
 
 
 @router.get("/file")
 async def iql_read_file(path: str = Query(...)):
-    """Read an IQL file content."""
+    """Read a TestQL file content (.testql.toon.yaml / .iql / .tql)."""
     normalized_path, target = _resolve_iql_path(path)
     if not str(target).startswith(str(IQL_DIR)):
         return JSONResponse({"error": "path_traversal"}, status_code=HTTP_BAD_REQUEST)

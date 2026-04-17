@@ -1,0 +1,43 @@
+// config.testql.less — shared TestQL test configuration
+// Compiled by lessc → CSS for test runner config
+// Usage: @import "config.testql.less";
+
+// ── Endpoints ────────────────────────────────────────────────────
+@api_url: http://localhost:8101;
+@encoder_url: http://localhost:8105;
+@base_url: http://localhost:8000;
+
+// ── Timeouts ─────────────────────────────────────────────────────
+@timeout_ms: 30000;
+@wait_short: 200;
+@wait_medium: 500;
+@wait_long: 1000;
+
+// ── Auth ─────────────────────────────────────────────────────────
+@auth_method: jwt;
+
+// ── Mixins ───────────────────────────────────────────────────────
+
+.test-defaults() {
+  api_url: @api_url;
+  encoder_url: @encoder_url;
+  timeout_ms: @timeout_ms;
+  auth: @auth_method;
+}
+
+.api-test(@method, @endpoint) {
+  method: @method;
+  endpoint: @endpoint;
+  expect_status: 200;
+  timeout_ms: @timeout_ms;
+}
+
+.encoder-step(@action) {
+  action: @action;
+  wait_ms: @wait_short;
+}
+
+.navigate-step(@path) {
+  path: @path;
+  wait_ms: @wait_medium;
+}

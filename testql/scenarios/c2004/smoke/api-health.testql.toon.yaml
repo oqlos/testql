@@ -1,0 +1,7 @@
+# SCENARIO: api-health.tql — basic health check for c2004
+# TYPE: api
+# VERSION: 1.0
+
+# ── Wywołania API ─────────────────────────────────────
+API[1]{method, endpoint, status, assert_key, assert_value}:
+  GET,  /health,  200,  status,  ok

@@ -1,0 +1,28 @@
+// c2004.testql.less — c2004 project test configuration
+// Extends shared config with project-specific variables
+@import "../config.testql.less";
+
+// ── c2004-specific config ────────────────────────────────────────
+@device_model: PSS 7000;
+@project_code: c2004;
+
+// ── Device scenarios ─────────────────────────────────────────────
+
+.device-test(@device_id, @device_type, @serial) {
+  device_id: @device_id;
+  device_type: @device_type;
+  serial: @serial;
+}
+
+.pss7000-test(@device_id, @serial) {
+  .device-test(@device_id, PSS_7000, @serial);
+  model: @device_model;
+}
+
+// ── View test pattern ────────────────────────────────────────────
+
+.view-test(@path) {
+  .navigate-step(@path);
+  .encoder-step(on);
+  encoder_wait: @wait_short;
+}

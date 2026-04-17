@@ -1,0 +1,23 @@
+# SCENARIO: connect-test-testing-search.iql — Test: Testowanie > Wyszukiwanie testów
+# TYPE: gui
+# VERSION: 1.0
+
+# ── Konfiguracja ──────────────────────────────────────
+CONFIG[1]{key, value}:
+  encoder_url,  http://localhost:8105
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-test/testing-search,  500
+
+# ── Encoder HW ────────────────────────────────────────
+ENCODER[9]{action, target, value, wait_ms}:
+  on,  -,  -,  300
+  focus,  col3,  -,  200
+  scroll,  -,  1,  150
+  scroll,  -,  1,  150
+  status,  -,  -,  -
+  click,  -,  -,  300
+  status,  -,  -,  -
+  dblclick,  -,  -,  200
+  off,  -,  -,  200

@@ -1,0 +1,11 @@
+# SCENARIO: api-smoke.tql — smoke test for all main c2004 API endpoints
+# TYPE: api
+# VERSION: 1.0
+
+# ── Wywołania API ─────────────────────────────────────
+API[5]{method, endpoint, status}:
+  GET,  /health,  200
+  GET,  /api/v3/version,  200
+  GET,  /api/v3/data/devices,  200
+  GET,  /api/v3/data/users,  200
+  GET,  /api/v3/data/scenarios,  200

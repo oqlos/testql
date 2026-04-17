@@ -13,6 +13,7 @@ from typing import Any
 from testql.base import BaseInterpreter, ScriptResult, StepResult, StepStatus
 
 from ._parser import IqlLine, IqlScript, parse_iql
+from ._testtoon_parser import testtoon_to_iql
 from ._api_runner import ApiRunnerMixin
 from ._assertions import AssertionsMixin
 from ._encoder import EncoderMixin
@@ -23,7 +24,10 @@ from ._websockets import WebSocketMixin
 
 class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, WebSocketMixin, BaseInterpreter):
     """
-    IQL interpreter — runs .iql / .tql scripts.
+    IQL interpreter — runs .testql.toon.yaml / .iql / .tql scripts.
+
+    Supports both legacy IQL format and the new TestTOON tabular format.
+    TestTOON files are automatically detected and expanded to IQL commands.
 
     Features:
       - SET/GET variables with ${var} interpolation
@@ -55,7 +59,19 @@ class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, W
         self._included: set[str] = set()  # prevent circular includes
 
     def parse(self, source: str, filename: str = "<string>") -> IqlScript:
+        """Auto-detect format: TestTOON (.testql.toon.yaml) vs legacy IQL."""
+        if self._is_testtoon(source, filename):
+            return testtoon_to_iql(source, filename)
         return parse_iql(source, filename)
+
+    @staticmethod
+    def _is_testtoon(source: str, filename: str) -> bool:
+        """Detect TestTOON format by extension or content."""
+        if filename.endswith('.testql.toon.yaml') or filename.endswith('.testtoon'):
+            return True
+        # Content-based detection: look for TOON section headers
+        import re
+        return bool(re.search(r'^[A-Z_]+(?:\[\d+\])?\{[^}]+\}:', source, re.MULTILINE))
 
     def execute(self, parsed: IqlScript) -> ScriptResult:
         t0 = time.monotonic()

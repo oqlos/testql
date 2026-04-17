@@ -1,0 +1,12 @@
+# SCENARIO: health-check.tql — generic health check scenario
+# TYPE: api
+# VERSION: 1.0
+
+# ── Konfiguracja ──────────────────────────────────────
+CONFIG[1]{key, value}:
+  api_url,  $TARGET_URL
+
+# ── Wywołania API ─────────────────────────────────────
+API[2]{method, endpoint, status, assert_key, assert_value}:
+  GET,  /health,  200,  status,  ok
+  GET,  /api/v3/version,  200,  -,  -

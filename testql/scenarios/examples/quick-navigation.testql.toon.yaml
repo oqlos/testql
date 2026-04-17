@@ -1,0 +1,11 @@
+# SCENARIO: Quick Navigation Example
+# TYPE: gui
+# VERSION: 1.0
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[5]{path, wait_ms}:
+  /,  300
+  /connect-id,  300
+  /connect-test,  300
+  /connect-data,  300
+  /connect-reports,  300

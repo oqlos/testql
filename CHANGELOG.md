@@ -14,9 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Test
 - Update testql/commands/encoder_routes.py
-- Update testql/scenarios/c2004/views/test-encoder.iql
-- Update testql/scenarios/recordings/recorded-test-session.iql
-- Update testql/scenarios/recordings/session-recording.iql
+- Update testql/scenarios/c2004/views/test-encoder.testql.toon.yaml
+- Update testql/scenarios/recordings/recorded-test-session.testql.toon.yaml
+- Update testql/scenarios/recordings/session-recording.testql.toon.yaml
 
 ### Other
 - Update .env.example

@@ -1,0 +1,150 @@
+# SCENARIO: Generate Test Reports Scenario
+# TYPE: interaction
+# VERSION: 1.0
+
+# ── Nagrywanie sesji ──────────────────────────────────
+RECORD_START[1]{session_id}:
+  report-generation
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-id/device-rfid,  300
+
+# ── Wybory domenowe ───────────────────────────────────
+SELECT[1]{action, id, meta}:
+  device,  d-msa-7000,  {type:MSA_G1, serial:AO73138}
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-test/testing,  300
+
+# ── Wybory domenowe ───────────────────────────────────
+SELECT[1]{action, id, meta}:
+  interval,  3m,  {code:periodic_3m}
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[3]{command, target, meta}:
+  start_test,  ts-pressure,  {name:Test ciśnienia MSA, steps:3}
+  protocol_created,  pro-msa-001,  {device_id:d-msa-7000, status:IN_PROGRESS}
+  step_complete,  step-1,  {name:Inicjalizacja, status:passed}
+
+WAIT[1]{ms}:
+  200
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[1]{command, target, meta}:
+  step_complete,  step-2,  {name:Test ciśnienia 15 mbar, status:passed, value:15.2 mbar}
+
+WAIT[1]{ms}:
+  200
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[2]{command, target, meta}:
+  step_complete,  step-3,  {name:Weryfikacja, status:passed}
+  protocol_finalize,  pro-msa-001,  {"status": "COMPLETED", "summary": {"passed": 3, "failed": 0}
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-id/device-rfid,  300
+
+# ── Wybory domenowe ───────────────────────────────────
+SELECT[1]{action, id, meta}:
+  device,  d-pss-5000,  {type:PSS_5000, serial:PS12345}
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-test/testing,  300
+
+# ── Wybory domenowe ───────────────────────────────────
+SELECT[1]{action, id, meta}:
+  interval,  6m,  {code:periodic_6m}
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[3]{command, target, meta}:
+  start_test,  ts-flow,  {name:Test przepływu PSS, steps:4}
+  protocol_created,  pro-pss-001,  {device_id:d-pss-5000, status:IN_PROGRESS}
+  step_complete,  step-1,  {name:Kalibracja, status:passed}
+
+WAIT[1]{ms}:
+  200
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[1]{command, target, meta}:
+  step_complete,  step-2,  {name:Test przepływu min, status:passed, value:2.5 l/min}
+
+WAIT[1]{ms}:
+  200
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[1]{command, target, meta}:
+  step_complete,  step-3,  {name:Test przepływu max, status:passed, value:15.0 l/min}
+
+WAIT[1]{ms}:
+  200
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[2]{command, target, meta}:
+  step_complete,  step-4,  {name:Finalizacja, status:passed}
+  protocol_finalize,  pro-pss-001,  {"status": "COMPLETED", "summary": {"passed": 4, "failed": 0}
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-id/device-rfid,  300
+
+# ── Wybory domenowe ───────────────────────────────────
+SELECT[1]{action, id, meta}:
+  device,  d-reg-001,  {type:REG_3000, serial:RG98765}
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-test/testing,  300
+
+# ── Wybory domenowe ───────────────────────────────────
+SELECT[1]{action, id, meta}:
+  interval,  12m,  {code:annual}
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[3]{command, target, meta}:
+  start_test,  ts-maintenance,  {name:Konserwacja regulatora, steps:5}
+  protocol_created,  pro-reg-001,  {device_id:d-reg-001, status:IN_PROGRESS}
+  step_complete,  step-1,  {name:Kontrola wizualna, status:passed}
+
+WAIT[1]{ms}:
+  200
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[1]{command, target, meta}:
+  step_complete,  step-2,  {name:Czyszczenie, status:passed}
+
+WAIT[1]{ms}:
+  200
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[1]{command, target, meta}:
+  step_complete,  step-3,  {name:Wymiana uszczelek, status:passed}
+
+WAIT[1]{ms}:
+  200
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[1]{command, target, meta}:
+  step_complete,  step-4,  {name:Test szczelności, status:passed, value:OK}
+
+WAIT[1]{ms}:
+  200
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[2]{command, target, meta}:
+  step_complete,  step-5,  {name:Dokumentacja, status:passed}
+  protocol_finalize,  pro-reg-001,  {"status": "COMPLETED", "summary": {"passed": 5, "failed": 0}
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-reports,  500
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[1]{command, target, meta}:
+  emit,  reports.refresh_requested,  {view:week, filter:executed}
+
+RECORD_STOP:
+  

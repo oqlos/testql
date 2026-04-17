@@ -1,0 +1,24 @@
+# SCENARIO: Example DSL Script - Protocol Flow Test (Read-Only)
+# TYPE: api
+# VERSION: 1.0
+
+# ── Wywołania API ─────────────────────────────────────
+API[6]{method, endpoint, status}:
+  GET,  /api/v3/data/devices?limit=5,  200
+  GET,  /api/v3/data/customers?limit=5,  200
+  GET,  /api/v3/data/test_scenarios?limit=10,  200
+  GET,  /api/v3/data/intervals?limit=10,  200
+  GET,  /api/v3/data/scenario_goal_intervals?limit=20,  200
+  GET,  /api/v3/data/protocols?limit=10,  200
+
+# ── Wybory domenowe ───────────────────────────────────
+SELECT[2]{action, id, meta}:
+  device,  d-001,  {type:MSA_G1, serial:AO73138}
+  interval,  36m,  {code:periodic_36m}
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[4]{command, target, meta}:
+  start_test,  ts-c20,  {scenario:C20 standard}
+  protocol_created,  pro-example,  {via:cqrs}
+  step_complete,  step-1,  {name:Test ciśnienia, status:passed}
+  protocol_finalize,  pro-example,  {status:executed}

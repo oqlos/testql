@@ -1,0 +1,17 @@
+# SCENARIO: Example DSL Script - API Testing
+# TYPE: api
+# VERSION: 1.0
+
+# ── Wywołania API ─────────────────────────────────────
+API[4]{method, endpoint, status}:
+  GET,  /api/v3/data/devices?limit=5,  200
+  GET,  /api/v3/data/customers?limit=5,  200
+  GET,  /api/v3/data/intervals?limit=5,  200
+  GET,  /api/v3/data/test_scenarios?limit=5,  200
+
+WAIT[1]{ms}:
+  100
+
+# ── Wywołania API ─────────────────────────────────────
+API[1]{method, endpoint, status}:
+  GET,  /api/v3/menu/configurations?limit=10,  200

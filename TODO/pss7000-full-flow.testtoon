@@ -1,0 +1,46 @@
+# SCENARIO: PSS 7000 — Pełny Test E2E
+# TYPE: e2e
+# VERSION: 1.0
+# BASE_URL: http://localhost:8000
+# AUTHOR: ops@softreck.dev
+
+# ── Konfiguracja sesji ────────────────────────────
+CONFIG{key, value}:
+  auth,         jwt
+  timeout_ms,   30000
+  device_model, PSS 7000
+
+# ── Nawigacja UI ──────────────────────────────────
+NAVIGATE[2]{path, wait_ms}:
+  /connect-test/testing,   500
+  /connect-id/device-rfid, 300
+
+# ── Wybory domenowe ───────────────────────────────
+SELECT[2]{action, id, meta}:
+  device,   d-001, {type:PSS_7000, serial:PS12345}
+  interval, 12m,   {code:periodic_12m}
+
+# ── Wywołania API ─────────────────────────────────
+API[3]{method, endpoint, status}:
+  GET,  /api/v3/devices/d-001,        200
+  POST, /api/v3/devices/d-001/start,  201
+  GET,  /api/v3/devices/d-001/status, 200
+
+# ── Kroki protokołu ───────────────────────────────
+STEPS[5]{name, status, value}:
+  Oględziny wizualne,  passed, -
+  Test szczelności,    passed, -10.5 mbar
+  Ciśnienie otwarcia,  passed, 145 bar
+  Test funkcjonalny,   passed, -
+  Weryfikacja końcowa, passed, -
+
+# ── Hardware OQL ──────────────────────────────────
+OQL[1]{file, device, mode}:
+  scenarios/pss7000-full-test.oql, d-001, execute
+
+# ── Asercje finalne ───────────────────────────────
+ASSERT[4]{field, op, expected}:
+  status,          ==, executed
+  summary.passed,  ==, 5
+  summary.failed,  ==, 0
+  device.status,   ==, ready

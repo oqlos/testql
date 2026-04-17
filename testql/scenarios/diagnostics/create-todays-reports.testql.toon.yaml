@@ -1,0 +1,58 @@
+# SCENARIO: Create Today's Reports
+# TYPE: gui
+# VERSION: 1.0
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-test/testing,  300
+
+# ── Wybory domenowe ───────────────────────────────────
+SELECT[1]{action, id, meta}:
+  device,  d-morning-001,  {type:MSA_G1, serial:MRN001}
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[5]{command, target, meta}:
+  start_test,  ts-inspection,  {name:Poranna inspekcja MSA}
+  protocol_created,  pro-today-001,  {device_id:d-morning-001, status:executed, scheduled_date:today_08:30}
+  step_complete,  step-1,  {name:Kontrola wizualna, status:passed}
+  step_complete,  step-2,  {name:Test funkcjonalny, status:passed}
+  protocol_finalize,  pro-today-001,  {status:executed}
+
+# ── Wybory domenowe ───────────────────────────────────
+SELECT[1]{action, id, meta}:
+  device,  d-midday-001,  {type:PSS_7000, serial:MID001}
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[6]{command, target, meta}:
+  start_test,  ts-calibration,  {name:Kalibracja PSS}
+  protocol_created,  pro-today-002,  {device_id:d-midday-001, status:executed, scheduled_date:today_12:00}
+  step_complete,  step-1,  {name:Zerowanie, status:passed}
+  step_complete,  step-2,  {name:Kalibracja ciśnienia, status:passed}
+  step_complete,  step-3,  {name:Weryfikacja, status:passed}
+  protocol_finalize,  pro-today-002,  {status:executed}
+
+# ── Wybory domenowe ───────────────────────────────────
+SELECT[1]{action, id, meta}:
+  device,  d-afternoon-001,  {type:REG_3000, serial:AFT001}
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[2]{command, target, meta}:
+  start_test,  ts-maintenance,  {name:Konserwacja regulatora}
+  protocol_created,  pro-today-003,  {device_id:d-afternoon-001, status:planned, scheduled_date:today_14:30}
+
+# ── Wybory domenowe ───────────────────────────────────
+SELECT[1]{action, id, meta}:
+  device,  d-evening-001,  {type:MSA_G1, serial:EVN001}
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[2]{command, target, meta}:
+  start_test,  ts-pressure,  {name:Test ciśnienia wieczorny}
+  protocol_created,  pro-today-004,  {device_id:d-evening-001, status:overdue, scheduled_date:today_16:00}
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-reports,  300
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[1]{command, target, meta}:
+  emit,  reports.refresh_requested,  {view:week}

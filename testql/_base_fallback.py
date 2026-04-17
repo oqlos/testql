@@ -125,12 +125,13 @@ class InterpreterOutput:
 class BaseInterpreter(ABC):
     """Abstract base for language interpreters."""
 
-    def __init__(self, variables: dict[str, Any] | None = None, quiet: bool = False):
+    def __init__(self, variables: dict[str, Any] | None = None, quiet: bool = False, bridge_url: str | None = None):
         self.vars = VariableStore(variables)
         self.out = InterpreterOutput(quiet=quiet)
         self.results: list[StepResult] = []
         self.errors: list[str] = []
         self.warnings: list[str] = []
+        self.bridge_url = bridge_url
 
     @abstractmethod
     def parse(self, source: str, filename: str = "<string>") -> Any:

@@ -37,16 +37,16 @@ pip install -e ".[dev]"
 
 ```bash
 # Run a test scenario
-testql scenarios/tests/test-api.tql --url http://localhost:8101
+testql scenarios/tests/test-api.testql.toon.yaml --url http://localhost:8101
 
 # Dry-run (parse + validate only)
-testql scenarios/views/connect-id-barcode.tql --dry-run
+testql scenarios/views/connect-id-barcode.testql.toon.yaml --dry-run
 
 # JSON output for CI integration
-testql scenarios/tests/test-api.tql --output json
+testql scenarios/tests/test-api.testql.toon.yaml --output json
 
 # Run with verbose logging
-testql scenarios/tests/test-api.tql --verbose
+testql scenarios/tests/test-api.testql.toon.yaml --verbose
 ```
 
 ## Language Reference
@@ -138,10 +138,10 @@ ENCODER_OFF                   # Deactivate encoder mode
 
 ```testql
 # Include common setup
-INCLUDE "common-setup.tql"
+INCLUDE "common-setup.testql.toon.yaml"
 
 # Include relative paths
-INCLUDE "../helpers/auth.tql"
+INCLUDE "../helpers/auth.testql.toon.yaml"
 ```
 
 ### Control Flow (Planned)
@@ -182,15 +182,52 @@ testql/
 
 ## Scenario Organization
 
-TestQL scenarios are `.tql` files organized by category:
+TestQL scenarios use two formats:
+- `*.testql.toon.yaml` — TestTOON tabular format for test sequences (preserves order)
+- `*.testql.less` — LESS format for shared test configuration (variables, mixins)
 
 | Directory | Purpose | Example |
-|-----------|---------|---------|
-| `scenarios/tests/` | API/integration tests | `test-api.tql` |
-| `scenarios/views/` | GUI view tests | `connect-id-barcode.tql` |
-| `scenarios/diagnostics/` | System checks | `health-check.tql` |
-| `scenarios/examples/` | Learning samples | `hello-world.tql` |
-| `scenarios/recordings/` | Recorded sessions | `user-flow-1.tql` |
+|-----------|---------|----------|
+| `scenarios/tests/` | API/integration tests | `test-api.testql.toon.yaml` |
+| `scenarios/views/` | GUI view tests | `connect-id-barcode.testql.toon.yaml` |
+| `scenarios/diagnostics/` | System checks | `health-check.testql.toon.yaml` |
+| `scenarios/examples/` | Learning samples | `device-identification.testql.toon.yaml` |
+| `scenarios/recordings/` | Recorded sessions | `session-recording.testql.toon.yaml` |
+
+### TestTOON Format
+
+Test files use the tabular TestTOON format where each section declares its schema:
+
+```testtoon
+# SCENARIO: API Smoke Test
+# TYPE: api
+# VERSION: 1.0
+
+API[3]{method, endpoint, status}:
+  GET,  /api/v3/health,   200
+  GET,  /api/v3/devices,  200
+  POST, /api/v3/start,    201
+
+ASSERT[2]{field, op, expected}:
+  status,  ==, ok
+  count,   >,  0
+```
+
+### LESS Configuration
+
+Shared test configuration uses LESS for variables and mixins:
+
+```less
+// config.testql.less
+@api_url: http://localhost:8101;
+@timeout_ms: 30000;
+
+.api-test(@method, @endpoint) {
+  method: @method;
+  endpoint: @endpoint;
+  expect_status: 200;
+}
+```
 
 ## CLI Options
 
@@ -220,23 +257,22 @@ pytest tests/test_runner.py -v
 
 ## Example Scenario
 
-```testql
-# scenarios/tests/test-api.tql
+```testtoon
+# scenarios/tests/test-api.testql.toon.yaml
+# SCENARIO: Device API Test
+# TYPE: api
+# VERSION: 1.0
 
-SET base_url "http://localhost:8101"
-LOG "Testing device API"
+CONFIG[1]{key, value}:
+  base_url,  http://localhost:8101
 
-# Test GET endpoint
-API GET "${base_url}/api/v3/data/devices"
-ASSERT_OK
-ASSERT_JSON data.length > 0
+API[2]{method, endpoint, status}:
+  GET,   /api/v3/data/devices,   200
+  POST,  /api/v3/scenarios,      201
 
-# Test POST endpoint
-API POST "${base_url}/api/v3/scenarios" {"name": "Test Scenario"}
-ASSERT_STATUS 201
-ASSERT_JSON data.id != null
-
-LOG "All tests passed!"
+ASSERT[2]{field, op, expected}:
+  data.length,  >,   0
+  data.id,      !=,  null
 ```
 
 ## Documentation

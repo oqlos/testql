@@ -1,0 +1,112 @@
+# SCENARIO: run-all-views.iql — Master runner for all per-view IQL tests
+# TYPE: api
+# VERSION: 1.0
+
+# ── Konfiguracja ──────────────────────────────────────
+CONFIG[1]{key, value}:
+  encoder_url,  http://localhost:8105
+
+INCLUDE[1]{file}:
+  connect-id-rfid.iql
+
+INCLUDE[1]{file}:
+  connect-id-qr.iql
+
+INCLUDE[1]{file}:
+  connect-id-manual.iql
+
+INCLUDE[1]{file}:
+  connect-id-list.iql
+
+INCLUDE[1]{file}:
+  connect-id-barcode.iql
+
+INCLUDE[1]{file}:
+  connect-test-devices-search.iql
+
+INCLUDE[1]{file}:
+  connect-test-testing-search.iql
+
+INCLUDE[1]{file}:
+  connect-test-testing-rfid.iql
+
+INCLUDE[1]{file}:
+  connect-test-testing-qr.iql
+
+INCLUDE[1]{file}:
+  connect-test-testing-barcode.iql
+
+INCLUDE[1]{file}:
+  connect-test-full-test.iql
+
+INCLUDE[1]{file}:
+  connect-test-scenario-view.iql
+
+INCLUDE[1]{file}:
+  connect-test-protocols.iql
+
+INCLUDE[1]{file}:
+  connect-workshop-requests-search.iql
+
+INCLUDE[1]{file}:
+  connect-workshop-services-search.iql
+
+INCLUDE[1]{file}:
+  connect-workshop-transport-search.iql
+
+INCLUDE[1]{file}:
+  connect-workshop-dispositions-search.iql
+
+INCLUDE[1]{file}:
+  connect-manager-scenarios.iql
+
+INCLUDE[1]{file}:
+  connect-manager-activities.iql
+
+INCLUDE[1]{file}:
+  connect-manager-intervals.iql
+
+INCLUDE[1]{file}:
+  connect-manager-test-types.iql
+
+INCLUDE[1]{file}:
+  connect-manager-library.iql
+
+INCLUDE[1]{file}:
+  connect-reports-week.iql
+
+INCLUDE[1]{file}:
+  connect-reports-month.iql
+
+INCLUDE[1]{file}:
+  connect-reports-quarter.iql
+
+INCLUDE[1]{file}:
+  connect-reports-year.iql
+
+INCLUDE[1]{file}:
+  connect-reports-chart.iql
+
+INCLUDE[1]{file}:
+  connect-reports-custom.iql
+
+INCLUDE[1]{file}:
+  connect-reports-filter.iql
+
+INCLUDE[1]{file}:
+  connect-config-settings.iql
+
+INCLUDE[1]{file}:
+  connect-config-theme.iql
+
+INCLUDE[1]{file}:
+  connect-config-labels.iql
+
+INCLUDE[1]{file}:
+  connect-config-users.iql
+
+INCLUDE[1]{file}:
+  connect-config-tables.iql
+
+INCLUDE[1]{file}:
+  connect-config-feature-flags.iql

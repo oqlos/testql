@@ -1,0 +1,10 @@
+# SCENARIO: test-devices-crud.tql — full CRUD test for devices API
+# TYPE: api
+# VERSION: 1.0
+
+# ── Wywołania API ─────────────────────────────────────
+API[4]{method, endpoint, status, assert_key, assert_value}:
+  GET,  /api/v3/data/devices,  200,  data.length,  0
+  POST,  /api/v3/data/devices",  200,  -,  -
+  GET,  /api/v3/data/devices?search=TQL-TEST-001,  200,  "TQL-TEST-001",  -
+  DELETE,  /api/v3/data/devices/TQL-TEST-001,  200,  -,  -

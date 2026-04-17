@@ -1,0 +1,42 @@
+# SCENARIO: connect-reports-chart.iql — Test: Raporty > Wykres
+# TYPE: gui
+# VERSION: 1.0
+
+# ── Konfiguracja ──────────────────────────────────────
+CONFIG[1]{key, value}:
+  encoder_url,  http://localhost:8105
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-reports/chart?filter=all,  800
+
+FLOW[1]{command, target, meta}:
+  assert,  #top-bar-section-title,  -
+
+FLOW[1]{command, target, meta}:
+  assert,  .bar,  -
+
+# ── Encoder HW ────────────────────────────────────────
+ENCODER[2]{action, target, value, wait_ms}:
+  on,  -,  -,  300
+  focus,  col3,  -,  200
+
+FLOW[1]{command, target, meta}:
+  assert,  [data-enc-zone='col3'],  -
+
+# ── Encoder HW ────────────────────────────────────────
+ENCODER[3]{action, target, value, wait_ms}:
+  scroll,  -,  1,  150
+  scroll,  -,  1,  150
+  status,  -,  -,  -
+
+FLOW[1]{command, target, meta}:
+  assert,  .encoder-focus,  -
+
+# ── Encoder HW ────────────────────────────────────────
+ENCODER[2]{action, target, value, wait_ms}:
+  dblclick,  -,  -,  200
+  off,  -,  -,  200
+
+FLOW[1]{command, target, meta}:
+  assert,  .encoder-focus,  -

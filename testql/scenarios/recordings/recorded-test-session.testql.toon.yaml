@@ -1,0 +1,52 @@
+# SCENARIO: DSL Session Recording
+# TYPE: gui
+# VERSION: 1.0
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-test-device,  500
+
+FLOW[1]{command, target, meta}:
+  click,  [data-id='d-001'] .btn-test-item,  {label:🧪}
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[1]{command, target, meta}:
+  open_interval_dialog,  d-001,  {customerId:cu-001}
+
+WAIT[1]{ms}:
+  300
+
+# ── Wybory domenowe ───────────────────────────────────
+SELECT[2]{action, id, meta}:
+  select,  #interval-select,  {value:36m, text:36 miesięcy}
+  interval,  36m,  {deviceId:d-001}
+
+FLOW[1]{command, target, meta}:
+  click,  #interval-start,  {action:confirm_interval}
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[1]{command, target, meta}:
+  start_test,  ts-c20,  {interval:36m, deviceId:d-001, deviceType:MSA_G1}
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-test-protocol?protocol=pro-example123&step=1,  500
+
+FLOW[1]{command, target, meta}:
+  click,  .btn.btn-primary,  {label:OK}
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[1]{command, target, meta}:
+  step_complete,  step-1,  {name:Wytworzyć podciśnienie, status:passed}
+
+FLOW[1]{command, target, meta}:
+  click,  .btn.btn-primary,  {label:OK}
+
+# ── Kroki semantyczne ─────────────────────────────────
+FLOW[2]{command, target, meta}:
+  step_complete,  final,  {name:Uwagi końcowe, status:passed}
+  protocol_finalize,  pro-example123,  {status:executed}
+
+# ── Nawigacja UI ──────────────────────────────────────
+NAVIGATE[1]{path, wait_ms}:
+  /connect-test/reports?protocol=pro-example123,  300
