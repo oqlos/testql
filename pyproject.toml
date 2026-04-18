@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "testql"
-version = "0.4.1"
-description = "TestQL — Interface Query Language with endpoint detection and OpenAPI generation"
+version = "0.4.2"
+description = "TestQL with endpoint detection, OpenAPI generation, and AI echo"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "Apache-2.0"

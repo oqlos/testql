@@ -1,0 +1,594 @@
+{
+  "project_name": "TestQL — Interface Query Language for Testing",
+  "description": "TestQL with endpoint detection, OpenAPI generation, and AI echo",
+  "sections": [
+    {
+      "name": "metadata",
+      "type": "metadata",
+      "content": "- **name**: `testql`\n- **version**: `0.4.2`\n- **python_requires**: `>=3.10`\n- **license**: Apache-2.0\n- **ai_model**: `openrouter/qwen/qwen3-coder-next`\n- **ecosystem**: SUMD + DOQL + testql + taskfile\n- **openapi_title**: testql API v1.0.0\n- **generated_from**: pyproject.toml, Taskfile.yml, testql(74), openapi(7 ep), app.doql.less, app.doql.css, pyqual.yaml, goal.yaml, .env.example, src(11 mod)",
+      "level": 2
+    },
+    {
+      "name": "intent",
+      "type": "intent",
+      "content": "TestQL with endpoint detection, OpenAPI generation, and AI echo",
+      "level": 2
+    },
+    {
+      "name": "architecture",
+      "type": "architecture",
+      "content": "```\nSUMD (description) → DOQL/source (code) → taskfile (automation) → testql (verification)\n```",
+      "level": 2
+    },
+    {
+      "name": "# doql application declaration (`app.doql.less`, `app.doql.css`)",
+      "type": "unknown",
+      "content": "```less\napp {\n  name: testql;\n  version: 0.2.1;\n}\n```",
+      "level": 2
+    },
+    {
+      "name": "# doql interfaces",
+      "type": "unknown",
+      "content": "- `interface[type=\"cli\"]` page=`testql` —",
+      "level": 2
+    },
+    {
+      "name": "# source modules",
+      "type": "unknown",
+      "content": "- `testql._base_fallback`\n- `testql.base`\n- `testql.cli`\n- `testql.doql_parser`\n- `testql.echo_schemas`\n- `testql.endpoint_detector`\n- `testql.generator`\n- `testql.interpreter`\n- `testql.openapi_generator`\n- `testql.runner`\n- `testql.toon_parser`",
+      "level": 2
+    },
+    {
+      "name": "interfaces",
+      "type": "interfaces",
+      "content": "",
+      "level": 2
+    },
+    {
+      "name": "# cli entry points",
+      "type": "unknown",
+      "content": "- `testql`",
+      "level": 2
+    },
+    {
+      "name": "# rest api (from `openapi.yaml`)",
+      "type": "unknown",
+      "content": "| Method | Path | OperationId | Summary |\n|--------|------|-------------|---------|\n| `GET` | `/iql/file` | `iql_read_file` | Read a TestQL file content (.testql.toon.yaml / .iql / .tql). |\n| `GET` | `/iql/files` | `iql_list_files` | List all .testql.toon.yaml files in the project (with .iql/.tql fallback). |\n| `GET` | `/iql/log` | `iql_read_log` | Read a specific log file. |\n| `GET` | `/iql/logs` | `iql_list_logs` | List available log files. |\n| `POST` | `/iql/run-file` | `iql_run_file` | Run an entire IQL file with validation. Returns structured results + saves log. |\n| `POST` | `/iql/run-line` | `iql_run_line` | Execute a single IQL command line via the encoder bridge. |\n| `GET` | `/iql/tables` | `iql_list_tables` | Extract table names from an IQL file. |\n\n**Schemas**: `Error`, `HealthCheck`",
+      "level": 2
+    },
+    {
+      "name": "# testql scenarios",
+      "type": "unknown",
+      "content": "",
+      "level": 2
+    },
+    {
+      "name": "## `api-crud-template.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: api-crud-template.testql.toon.yaml — generic CRUD test template\n- **type**: `api`\n- **entity**: `items`\n- **base_path**: `/api/v3/data/items`",
+      "level": 2
+    },
+    {
+      "name": "## `api-health.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: api-health.testql.toon.yaml — basic health check for c2004\n- **type**: `api`\n- **endpoints**:\n  - `GET /health` → `200`",
+      "level": 2
+    },
+    {
+      "name": "## `api-smoke.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: api-smoke.testql.toon.yaml — smoke test for all main c2004 API endpoints\n- **type**: `api`\n- **endpoints**:\n  - `GET /health` → `200`\n  - `GET /api/v3/version` → `200`\n  - `GET /api/v3/data/devices` → `200`\n  - `GET /api/v3/data/users` → `200`\n  - `GET /api/v3/data/scenarios` → `200`",
+      "level": 2
+    },
+    {
+      "name": "## `auth-login.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: auth-login.testql.toon.yaml — generic authentication login test template\n- **type**: `api`\n- **api_url**: `$TARGET_URL`\n- **endpoints**:\n  - `POST /api/v3/auth/login\"` → `200`",
+      "level": 2
+    },
+    {
+      "name": "## `backend-diagnostic.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: Backend Diagnostic Tests\n- **type**: `api`\n- **endpoints**:\n  - `GET /api/v3/health` → `200`\n  - `GET /api/v3/template-json` → `200`\n  - `GET /api/v3/template-json/default` → `200`\n  - `GET /api/v3/data/report_templates` → `200`\n  - `GET /api/v3/devices` → `200`\n  - `GET /api/v3/customers` → `200`\n  - `GET /api/v3/dsl/objects` → `200`\n  - `GET /api/v3/dsl/functions` → `200`\n  - `GET /api/v3/dsl/params` → `200`\n  - `GET /api/v3/dsl/units` → `200`\n  - `GET /api/v3/config/system` → `200`\n  - `GET /api/v3/schema/devices` → `200`\n  - `GET /api/v3/schema/customers` → `200`\n  - `GET /api/v3/schema/protocols` → `200`\n  - `GET /api/v3/data/protocols` → `200`\n  - `GET /api/v3/auth/session` → `200`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-config-feature-flags.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-config-feature-flags.testql.toon.yaml — Test: Konfiguracja > Feature Flags\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-config-feature-flags,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-config-labels.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-config-labels.testql.toon.yaml — Test: Konfiguracja > Etykiety\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-config-labels,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-config-settings.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-config-settings.testql.toon.yaml — Test: Konfiguracja > Ustawienia\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-config-settings,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-config-tables.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-config-tables.testql.toon.yaml — Test: Konfiguracja > Tabele\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-config-tables,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-config-theme.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-config-theme.testql.toon.yaml — Test: Konfiguracja > Motyw\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-config-theme,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-config-users.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-config-users.testql.toon.yaml — Test: Konfiguracja > Użytkownicy\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-config-users,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-id-barcode.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-id-barcode.testql.toon.yaml — Test: Identyfikacja > Barcode\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-id/barcode,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-id-list.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-id-list.testql.toon.yaml — Test: Identyfikacja > Lista użytkowników\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-id/list,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-id-manual.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-id-manual.testql.toon.yaml — Test: Identyfikacja > Logowanie ręczne\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-id/manual,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-id-qr.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-id-qr.testql.toon.yaml — Test: Identyfikacja > QR Code\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-id/qr,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-id-rfid.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-id-rfid.testql.toon.yaml — Test: Identyfikacja > RFID\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-id/rfid,  800`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-manager-activities.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-manager-activities.testql.toon.yaml — Test: Manager > Czynności\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-manager/activities,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-manager-intervals.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-manager-intervals.testql.toon.yaml — Test: Manager > Interwały\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-manager/intervals,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-manager-library.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-manager-library.testql.toon.yaml — Test: Manager > Biblioteka\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-manager/library,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-manager-scenarios.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-manager-scenarios.testql.toon.yaml — Test: Manager > Scenariusze\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-manager/scenarios,  800`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-manager-test-types.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-manager-test-types.testql.toon.yaml — Test: Manager > Rodzaj Testu\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-manager/test-types,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-reports-chart.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-reports-chart.testql.toon.yaml — Test: Raporty > Wykres\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-reports/chart?filter=all,  800`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-reports-custom.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-reports-custom.testql.toon.yaml — Test: Raporty > Niestandardowy\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-reports/custom?filter=all,  800`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-reports-filter.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-reports-filter.testql.toon.yaml — Test: Raporty > Filtruj\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-reports/filter?filter=all,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-reports-month.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-reports-month.testql.toon.yaml — Test: Raporty > Miesiąc\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-reports/month?filter=all,  800`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-reports-quarter.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-reports-quarter.testql.toon.yaml — Test: Raporty > Kwartał\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-reports/quarter?filter=all,  800`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-reports-week.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-reports-week.testql.toon.yaml — Test: Raporty > Tydzień\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-reports/week?filter=all,  800`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-reports-year.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-reports-year.testql.toon.yaml — Test: Raporty > Rok\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-reports/year?filter=all,  1500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-test-devices-search.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-test-devices-search.testql.toon.yaml — Test: Testowanie > Wyszukiwanie urządzeń\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-test/device-devices-search,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-test-full-test.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-test-full-test.testql.toon.yaml — Test: Testowanie > Test automatyczny\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-test/full-test,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-test-protocols.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-test-protocols.testql.toon.yaml — Test: Testowanie > Raporty (protokoły)\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-test/protocols,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-test-scenario-view.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-test-scenario-view.testql.toon.yaml — Test: Testowanie > Scenariusz/Interwały\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-test/scenario-view,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-test-testing-barcode.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-test-testing-barcode.testql.toon.yaml — Test: Testowanie > Barcode\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-test/testing-barcode,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-test-testing-qr.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-test-testing-qr.testql.toon.yaml — Test: Testowanie > QR\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-test/testing-qr,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-test-testing-rfid.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-test-testing-rfid.testql.toon.yaml — Test: Testowanie > RFID\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-test/testing-rfid,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-test-testing-search.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-test-testing-search.testql.toon.yaml — Test: Testowanie > Wyszukiwanie testów\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-test/testing-search,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-workshop-dispositions-search.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-workshop-dispositions-search.testql.toon.yaml — Test: Warsztat > Dyspozycje\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-workshop/dispositions-search,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-workshop-requests-search.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-workshop-requests-search.testql.toon.yaml — Test: Warsztat > Zgłoszenia\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-workshop/requests-search,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-workshop-services-search.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-workshop-services-search.testql.toon.yaml — Test: Warsztat > Serwisy\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-workshop/services-search,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-workshop-transport-search.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-workshop-transport-search.testql.toon.yaml — Test: Warsztat > Transport\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **navigate**: `/connect-workshop/transport-search,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `connect-workshop-transport.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: connect-workshop-transport.testql.toon.yaml — GUI test for workshop transport view\n- **type**: `gui`\n- **navigate**: `/connect-workshop-transport,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `create-todays-reports.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: Create Today's Reports\n- **type**: `gui`\n- **navigate**: `/connect-test/testing,  300`, `/connect-reports,  300`",
+      "level": 2
+    },
+    {
+      "name": "## `device-identification.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: Device Identification Example\n- **type**: `gui`\n- **navigate**: `/connect-id/device-rfid,  300`, `/connect-test/testing,  300`",
+      "level": 2
+    },
+    {
+      "name": "## `encoder-navigation.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: encoder-navigation.testql.toon.yaml — encoder hardware navigation test\n- **type**: `gui`",
+      "level": 2
+    },
+    {
+      "name": "## `encoder-workshop.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: encoder-workshop.testql.toon.yaml — encoder navigation in workshop context\n- **type**: `gui`\n- **navigate**: `/connect-workshop,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `full-diagnostic.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: Full System Diagnostic - API + Routes + DSL\n- **type**: `gui`\n- **endpoints**:\n  - `GET /api/v3/health` → `200`\n  - `GET /api/v3/auth/session` → `200`\n  - `GET /api/v3/config/system` → `200`\n  - `GET /api/v3/data/devices` → `200`\n  - `GET /api/v3/data/customers` → `200`\n  - `GET /api/v3/data/protocols` → `200`\n  - `GET /api/v3/data/report_templates` → `200`\n  - `GET /api/v3/data/test_scenarios` → `200`\n  - `GET /api/v3/data/workshops` → `200`\n  - `GET /api/v3/schema/devices` → `200`\n  - `GET /api/v3/schema/customers` → `200`\n  - `GET /api/v3/schema/protocols` → `200`\n  - `GET /api/v3/dsl/objects` → `200`\n  - `GET /api/v3/dsl/functions` → `200`\n  - `GET /api/v3/dsl/params` → `200`\n  - `GET /api/v3/dsl/units` → `200`\n  - `GET /api/v3/template-json` → `200`\n  - `GET /api/v3/template-json/default` → `200`\n  - `GET /api/v3/customers` → `200`\n  - `GET /api/v3/devices` → `200`\n  - `GET /api/v1/data/devices` → `200`\n  - `GET /api/v1/data/customers` → `200`\n  - `GET /api/v1/schema/devices` → `200`: ── Nawigacja UI ──────────────────────────────────────\n- **navigate**: `/connect-test,  100`, `/connect-id,  300`, `/connect-test,  300`, `/connect-test-device,  300`, `/connect-test-protocol,  300`, `/connect-test-full,  300`, `/connect-data,  300`, `/connect-workshop,  300`, `/connect-config,  300`, `/connect-reports,  300`, `/connect-manager,  300`, `/connect-scenario,  300`, `/connect-template2,  300`, `/connect-menu-editor,  300`, `/connect-router,  300`",
+      "level": 2
+    },
+    {
+      "name": "## `generate-test-reports.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: Generate Test Reports Scenario\n- **type**: `interaction`\n- **navigate**: `/connect-id/device-rfid,  300`, `/connect-test/testing,  300`, `/connect-id/device-rfid,  300`, `/connect-test/testing,  300`, `/connect-id/device-rfid,  300`, `/connect-test/testing,  300`, `/connect-reports,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `generated-api-integration.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: API Integration Tests\n- **type**: `api`\n- **base_url**: `http://localhost:8101`\n- **timeout_ms**: `30000`\n- **retry_count**: `3`\n- **endpoints**:\n  - `GET /health` → `200`\n  - `GET /api/v1/status` → `200`\n  - `POST /api/v1/test` → `201`\n  - `GET /api/v1/docs` → `200`\n- **asserts**:\n  - `status == ok`\n  - `response_time < 1000`",
+      "level": 2
+    },
+    {
+      "name": "## `generated-api-smoke.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: Auto-generated API Smoke Tests\n- **type**: `api`\n- **detectors**: FastAPIDetector\n- **base_url**: `http://localhost:8101`\n- **timeout_ms**: `10000`\n- **retry_count**: `3`\n- **endpoints**:\n  - `GET /iql/files` → `200` — `iql_list_files`: List all .testql.toon.yaml files in the project (w\n  - `GET /iql/file` → `200` — `iql_read_file`: Read a TestQL file content (.testql.toon.yaml / .i\n  - `GET /iql/tables` → `200` — `iql_list_tables`: Extract table names from an IQL file.\n  - `POST /iql/run-line` → `201` — `iql_run_line`: Execute a single IQL command line via the encoder\n  - `POST /iql/run-file` → `201` — `iql_run_file`: Run an entire IQL file with validation. Returns st\n  - `GET /iql/logs` → `200` — `iql_list_logs`: List available log files.\n  - `GET /iql/log` → `200` — `iql_read_log`: Read a specific log file.\n- **asserts**:\n  - `status < 500`\n  - `response_time < 2000`",
+      "level": 2
+    },
+    {
+      "name": "## `generated-cli-tests.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: CLI Command Tests\n- **type**: `cli`\n- **cli_command**: `python -mtestql`\n- **timeout_ms**: `10000`",
+      "level": 2
+    },
+    {
+      "name": "## `generated-from-pytests.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: Auto-generated from Python Tests\n- **type**: `integration`",
+      "level": 2
+    },
+    {
+      "name": "## `health-check.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: health-check.testql.toon.yaml — generic health check scenario\n- **type**: `api`\n- **api_url**: `$TARGET_URL`\n- **endpoints**:\n  - `GET /health` → `200`\n  - `GET /api/v3/version` → `200`",
+      "level": 2
+    },
+    {
+      "name": "## `quick-navigation.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: Quick Navigation Example\n- **type**: `gui`\n- **navigate**: `/,  300`, `/connect-id,  300`, `/connect-test,  300`, `/connect-data,  300`, `/connect-reports,  300`",
+      "level": 2
+    },
+    {
+      "name": "## `recorded-test-session.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: DSL Session Recording\n- **type**: `gui`\n- **navigate**: `/connect-test-device,  500`, `/connect-test-protocol?protocol=pro-example123&step=1,  500`, `/connect-test/reports?protocol=pro-example123,  300`",
+      "level": 2
+    },
+    {
+      "name": "## `reproduce-view.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: Reproduce View - Connect Manager with Scenario Selection\n- **type**: `gui`\n- **navigate**: `/connect-manager,  300`",
+      "level": 2
+    },
+    {
+      "name": "## `run-all-views.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: run-all-views.testql.toon.yaml — Master runner for all per-view IQL tests\n- **type**: `api`\n- **encoder_url**: `http://localhost:8105`",
+      "level": 2
+    },
+    {
+      "name": "## `run-mask-test-protocol.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: =============================================================================\n- **type**: `api`\n- **endpoints**:\n  - `GET /api/v3/scenarios/scn-drager-fps-7000-maska-nadcisnieniowa?include_content=true` → `200`\n  - `POST /api/v3/protocols\"` → `200`",
+      "level": 2
+    },
+    {
+      "name": "## `session-recording.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: Session Recording Example\n- **type**: `interaction`\n- **navigate**: `/connect-id/device-rfid,  300`, `/connect-test/testing,  300`",
+      "level": 2
+    },
+    {
+      "name": "## `test-api.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: Example DSL Script - API Testing\n- **type**: `api`\n- **endpoints**:\n  - `GET /api/v3/data/devices?limit=5` → `200`\n  - `GET /api/v3/data/customers?limit=5` → `200`\n  - `GET /api/v3/data/intervals?limit=5` → `200`\n  - `GET /api/v3/data/test_scenarios?limit=5` → `200`\n  - `GET /api/v3/menu/configurations?limit=10` → `200`",
+      "level": 2
+    },
+    {
+      "name": "## `test-app-lifecycle.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: DSL Script - Application Lifecycle Test\n- **type**: `api`\n- **endpoints**:\n  - `GET /api/v3/data/protocols?limit=3` → `200`\n  - `GET /api/v3/data/test_scenarios?limit=3` → `200`",
+      "level": 2
+    },
+    {
+      "name": "## `test-device-flow.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: DSL Example: Complete Device Test Flow\n- **type**: `interaction`\n- **navigate**: `/connect-id/device-rfid,  300`, `/connect-test/testing,  300`, `/connect-test-protocol?protocol=pro-example-001&step=1,  300`, `/connect-test/reports?protocol=pro-example-001,  300`, `RECORD_STOP:`",
+      "level": 2
+    },
+    {
+      "name": "## `test-devices-crud.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: Example DSL Script - Devices CRUD Operations\n- **type**: `api`\n- **endpoints**:\n  - `GET /api/v3/data/devices?limit=10` → `200`\n  - `GET /api/v3/data/customers?limit=5` → `200`\n  - `GET /api/v3/data/intervals?limit=10` → `200`\n  - `GET /api/v3/data/scenario_goal_intervals?limit=10` → `200`",
+      "level": 2
+    },
+    {
+      "name": "## `test-dsl-objects.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: Example DSL Script - DSL Objects Test\n- **type**: `api`\n- **endpoints**:\n  - `GET /api/v3/data/dsl_objects?limit=100` → `200`\n  - `GET /api/v3/data/dsl_functions?limit=100` → `200`\n  - `GET /api/v3/data/dsl_params?limit=100` → `200`\n  - `GET /api/v3/data/dsl_units?limit=100` → `200`\n  - `GET /api/v3/data/dsl_object_functions?limit=1000` → `200`\n  - `GET /api/v3/data/dsl_param_units?limit=1000` → `200`",
+      "level": 2
+    },
+    {
+      "name": "## `test-encoder.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: test-encoder.testql.toon.yaml — Encoder navigation tests via IQL\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`",
+      "level": 2
+    },
+    {
+      "name": "## `test-gui-all.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: test-gui-all.testql.toon.yaml — Master GUI test suite — runs all module GUI tests\n- **type**: `api`\n- **encoder_url**: `http://localhost:8105`\n- **api_url**: `http://localhost:8101`",
+      "level": 2
+    },
+    {
+      "name": "## `test-gui-connect-config.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: test-gui-connect-config.testql.toon.yaml — GUI tests for Connect Config module\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **api_url**: `http://localhost:8101`\n- **endpoints**:\n  - `GET /api/v3/config/settings` → `200`\n  - `GET /api/v3/feature-flags` → `200`\n- **navigate**: `/connect-config,  500`, `/connect-config/system,  300`, `/connect-config/devices,  300`, `/connect-config/security,  300`, `/connect-config/theme,  300`, `/connect-config/labels,  300`, `/connect-config/feature-flags,  300`, `/connect-config/tables,  300`, `/connect-config/sitemap,  300`, `/connect-config/module-registry,  300`",
+      "level": 2
+    },
+    {
+      "name": "## `test-gui-connect-id.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: test-gui-connect-id.testql.toon.yaml — GUI tests for Connect ID module\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **api_url**: `http://localhost:8101`\n- **endpoints**:\n  - `GET /api/v3/auth/users` → `200`\n- **navigate**: `/connect-id,  500`, `/connect-id/rfid,  300`, `/connect-id/qr,  300`, `/connect-id/manual,  300`, `/connect-id/list,  300`, `/connect-id/barcode,  300`",
+      "level": 2
+    },
+    {
+      "name": "## `test-gui-connect-manager.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: test-gui-connect-manager.testql.toon.yaml — GUI tests for Connect Manager module\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **api_url**: `http://localhost:8101`\n- **endpoints**:\n  - `GET /api/v3/data/test_scenarios?limit=5` → `200`\n  - `GET /api/v3/data/intervals?limit=5` → `200`\n  - `GET /api/v3/activities?limit=5` → `200`\n- **navigate**: `/connect-manager,  500`, `/connect-manager/scenario-editor,  300`, `/connect-manager/activities,  300`, `/connect-manager/test-types,  300`, `/connect-manager/intervals,  300`, `/connect-manager/library,  300`, `/connect-manager/variables,  300`",
+      "level": 2
+    },
+    {
+      "name": "## `test-gui-connect-reports.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: test-gui-connect-reports.testql.toon.yaml — GUI tests for Connect Reports module\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **api_url**: `http://localhost:8101`\n- **endpoints**:\n  - `GET /api/v3/data/protocols?limit=5` → `200`\n- **navigate**: `/connect-reports,  500`, `/connect-reports/week,  300`, `/connect-reports/month,  300`, `/connect-reports/quarter,  300`, `/connect-reports/year,  300`, `/connect-reports/custom,  300`, `/connect-reports/filter,  300`, `/connect-reports/chart,  300`",
+      "level": 2
+    },
+    {
+      "name": "## `test-gui-connect-test.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: test-gui-connect-test.testql.toon.yaml — GUI tests for Connect Test module\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **api_url**: `http://localhost:8101`\n- **endpoints**:\n  - `GET /api/v3/data/devices?limit=5` → `200`\n  - `GET /api/v3/data/test_scenarios?limit=5` → `200`\n  - `GET /api/v3/data/protocols?limit=5` → `200`\n- **navigate**: `/connect-test,  500`, `/connect-test/testing-rfid,  300`, `/connect-test/testing-qr,  300`, `/connect-test/testing-search,  300`, `/connect-test/testing-barcode,  300`, `/connect-test/devices-search,  300`, `/connect-test/scenario-view,  300`, `/connect-test/test-run,  300`, `/connect-test/protocols,  300`",
+      "level": 2
+    },
+    {
+      "name": "## `test-gui-connect-workshop.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: test-gui-connect-workshop.testql.toon.yaml — GUI tests for Connect Workshop module\n- **type**: `gui`\n- **encoder_url**: `http://localhost:8105`\n- **api_url**: `http://localhost:8101`\n- **endpoints**:\n  - `GET /api/v3/data/customers?limit=5` → `200`\n- **navigate**: `/connect-workshop,  500`, `/connect-workshop/requests-search,  300`, `/connect-workshop/services-search,  300`, `/connect-workshop/transport-search,  300`, `/connect-workshop/dispositions-search,  300`, `/connect-workshop/requests-new-request,  300`",
+      "level": 2
+    },
+    {
+      "name": "## `test-mixed-workflow.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: DSL Mixed Workflow Example\n- **type**: `e2e`\n- **endpoints**:\n  - `GET /api/v3/data/devices?limit=3` → `200`\n  - `GET /api/v3/data/customers?limit=3` → `200`\n  - `GET /api/v3/data/intervals?limit=3` → `200`: ── Nawigacja UI ──────────────────────────────────────\n  - `GET /api/v3/data/protocols?limit=3` → `200`\n  - `GET /api/v3/data/test_scenarios?limit=3` → `200`\n- **navigate**: `/connect-test-device,  500`",
+      "level": 2
+    },
+    {
+      "name": "## `test-protocol-flow.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: Example DSL Script - Protocol Flow Test (Read-Only)\n- **type**: `api`\n- **endpoints**:\n  - `GET /api/v3/data/devices?limit=5` → `200`\n  - `GET /api/v3/data/customers?limit=5` → `200`\n  - `GET /api/v3/data/test_scenarios?limit=10` → `200`\n  - `GET /api/v3/data/intervals?limit=10` → `200`\n  - `GET /api/v3/data/scenario_goal_intervals?limit=20` → `200`\n  - `GET /api/v3/data/protocols?limit=10` → `200`: ── Wybory domenowe ───────────────────────────────────",
+      "level": 2
+    },
+    {
+      "name": "## `test-ui-navigation.testql.toon.yaml`",
+      "type": "unknown",
+      "content": "- **name**: Example DSL Script - API Endpoints Test\n- **type**: `api`\n- **endpoints**:\n  - `GET /api/v3/data/devices?limit=5` → `200`\n  - `GET /api/v3/data/customers?limit=5` → `200`\n  - `GET /api/v3/data/protocols?limit=10` → `200`\n  - `GET /api/v3/data/test_scenarios?limit=10` → `200`\n  - `GET /api/v3/data/intervals?limit=10` → `200`\n  - `GET /api/v3/data/scenario_goal_intervals?limit=10` → `200`\n  - `GET /api/v3/data/labels?limit=10` → `200`",
+      "level": 2
+    },
+    {
+      "name": "workflows",
+      "type": "workflows",
+      "content": "",
+      "level": 2
+    },
+    {
+      "name": "# doql workflows (`app.doql.less`, `app.doql.css`)",
+      "type": "unknown",
+      "content": "- **install** `[manual]`: `pip install -e .[dev]`\n- **quality** `[manual]`: `pyqual run`\n- **quality:fix** `[manual]`: `pyqual run --fix`\n- **quality:report** `[manual]`: `pyqual report`\n- **test** `[manual]`: `pytest -q`\n- **lint** `[manual]`: `ruff check .`\n- **fmt** `[manual]`: `ruff format .`\n- **build** `[manual]`: `python -m build`\n- **clean** `[manual]`: `rm -rf build/ dist/ *.egg-info`\n- **iql:run** `[manual]`: `testql run {{.CLI_ARGS}}`\n- **iql:shell** `[manual]`: `testql shell`\n- **doql:adopt** `[manual]`: `if ! command -v {{.DOQL_CMD}} >/dev/null 2>&1; then`\n- **doql:validate** `[manual]`: `if [ ! -f \"{{.DOQL_OUTPUT}}\" ]; then`\n- **doql:doctor** `[manual]`: `{{.DOQL_CMD}} doctor`\n- **doql:build** `[manual]`: `if [ ! -f \"{{.DOQL_OUTPUT}}\" ]; then`\n- **docker:build** `[manual]`: `docker-compose build`\n- **docker:up** `[manual]`: `docker-compose up -d`\n- **docker:down** `[manual]`: `docker-compose down`\n- **publish** `[manual]`: `twine upload dist/*`\n- **help** `[manual]`: `task --list`",
+      "level": 2
+    },
+    {
+      "name": "# taskfile tasks (`taskfile.yml`)",
+      "type": "unknown",
+      "content": "```yaml\ntasks:\n  install:\n    desc: \"Install Python dependencies (editable)\"\n    cmds:\n      - pip install -e .[dev]\n  quality:\n    desc: \"Run pyqual quality pipeline (test + lint + format check)\"\n    cmds:\n      - pyqual run\n  quality:fix:\n    desc: \"Run pyqual with auto-fix (format + lint fix)\"\n    cmds:\n      - pyqual run --fix\n  quality:report:\n    desc: \"Generate pyqual quality report\"\n    cmds:\n      - pyqual report\n  test:\n    desc: \"Run pytest suite\"\n    cmds:\n      - pytest -q\n  lint:\n    desc: \"Run ruff lint check\"\n    cmds:\n      - ruff check .\n  fmt:\n    desc: \"Auto-format with ruff\"\n    cmds:\n      - ruff format .\n  build:\n    desc: \"Build wheel + sdist\"\n    cmds:\n      - python -m build\n  clean:\n    desc: \"Remove build artefacts\"\n    cmds:\n      - rm -rf build/ dist/ *.egg-info\n  all:\n    desc: \"Run install, quality check, test\"\n  iql:run:\n    desc: \"Run IQL scenario file\"\n    cmds:\n      - testql run {{.CLI_ARGS}}\n  iql:shell:\n    desc: \"Start IQL interactive shell\"\n    cmds:\n      - testql shell\n  doql:adopt:\n    desc: \"Reverse-engineer testql project structure\"\n    cmds:\n      - if ! command -v {{.DOQL_CMD}} >/dev/null 2>&1; then\n  echo \"⚠️  doql not installed. Install: pip install doql\"\n  exit 1\nfi\n  doql:validate:\n    desc: \"Validate app.doql.less syntax\"\n    cmds:\n      - if [ ! -f \"{{.DOQL_OUTPUT}}\" ]; then\n  echo \"❌ {{.DOQL_OUTPUT}} not found. Run: task doql:adopt\"\n  exit 1\nfi\n  doql:doctor:\n    desc: \"Run doql health checks\"\n    cmds:\n      - {{.DOQL_CMD}} doctor\n  doql:build:\n    desc: \"Generate code from app.doql.less\"\n    cmds:\n      - if [ ! -f \"{{.DOQL_OUTPUT}}\" ]; then\n  echo \"❌ {{.DOQL_OUTPUT}} not found. Run: task doql:adopt\"\n  exit 1\nfi\n  analyze:\n    desc: \"Full doql analysis (adopt + validate + doctor)\"\n  docker:build:\n    desc: \"Build Docker image via docker-compose\"\n    cmds:\n      - docker-compose build\n  docker:up:\n    desc: \"Start Docker containers\"\n    cmds:\n      - docker-compose up -d\n  docker:down:\n    desc: \"Stop Docker containers\"\n    cmds:\n      - docker-compose down\n  publish:\n    desc: \"Build and publish package\"\n    cmds:\n      - twine upload dist/*\n  help:\n    desc: \"Show available tasks\"\n    cmds:\n      - task --list\n```",
+      "level": 2
+    },
+    {
+      "name": "quality pipeline (`pyqual.yaml`)",
+      "type": "unknown",
+      "content": "**Pipeline**: `quality-loop`",
+      "level": 2
+    },
+    {
+      "name": "# metrics / thresholds",
+      "type": "unknown",
+      "content": "- `cc_max`: `10`\n- `vallm_pass_min`: `60`",
+      "level": 2
+    },
+    {
+      "name": "# stages",
+      "type": "unknown",
+      "content": "- **analyze**: `code2llm-filtered`\n- **validate**: `vallm-filtered`\n- **prefact**: `prefact` *(optional)*\n- **fix**: `llx-fix` *(optional)*\n- **security**: `bandit` *(optional)*\n- **typecheck**: `mypy`\n- **test**: `pytest`\n- **push**: `git-push` *(optional)*",
+      "level": 2
+    },
+    {
+      "name": "# loop behavior",
+      "type": "unknown",
+      "content": "- `max_iterations`: `3`\n- `on_fail`: `report`\n- `ticket_backends`: `['markdown']`",
+      "level": 2
+    },
+    {
+      "name": "configuration",
+      "type": "configuration",
+      "content": "```yaml\nproject:\n  name: testql\n  version: 0.4.2\n  env: local\n```",
+      "level": 2
+    },
+    {
+      "name": "dependencies",
+      "type": "dependencies",
+      "content": "",
+      "level": 2
+    },
+    {
+      "name": "# runtime",
+      "type": "unknown",
+      "content": "- `httpx>=0.27`\n- `click>=8.0`\n- `rich>=13.0`\n- `pyyaml>=6.0`\n- `goal>=2.1.0`\n- `costs>=0.1.20`\n- `pfix>=0.1.60`\n- `websockets>=13.0`",
+      "level": 2
+    },
+    {
+      "name": "# development",
+      "type": "unknown",
+      "content": "- `pytest`\n- `pytest-asyncio`\n- `fastapi`\n- `goal>=2.1.0`\n- `costs>=0.1.20`\n- `pfix>=0.1.60`",
+      "level": 2
+    },
+    {
+      "name": "deployment",
+      "type": "deployment",
+      "content": "```bash\npip install testql\n\n# development install\npip install -e .[dev]\n```",
+      "level": 2
+    },
+    {
+      "name": "environment variables (`.env.example`)",
+      "type": "unknown",
+      "content": "| Variable | Default | Description |\n|----------|---------|-------------|\n| `OPENROUTER_API_KEY` | `*(not set)*` | Required: OpenRouter API key (https://openrouter.ai/keys) |\n| `LLM_MODEL` | `openrouter/qwen/qwen3-coder-next` | Model (default: openrouter/qwen/qwen3-coder-next) |\n| `PFIX_AUTO_APPLY` | `true` | true = apply fixes without asking |\n| `PFIX_AUTO_INSTALL_DEPS` | `true` | true = auto pip/uv install |\n| `PFIX_AUTO_RESTART` | `false` | true = os.execv restart after fix |\n| `PFIX_MAX_RETRIES` | `3` |  |\n| `PFIX_DRY_RUN` | `false` |  |\n| `PFIX_ENABLED` | `true` |  |\n| `PFIX_GIT_COMMIT` | `false` | true = auto-commit fixes |\n| `PFIX_GIT_PREFIX` | `pfix:` | commit message prefix |\n| `PFIX_CREATE_BACKUPS` | `false` | false = disable .pfix_backups/ directory |",
+      "level": 2
+    },
+    {
+      "name": "release management (`goal.yaml`)",
+      "type": "unknown",
+      "content": "- **versioning**: `semver`\n- **commits**: `conventional` scope=`testql`\n- **changelog**: `keep-a-changelog`\n- **build strategies**: `python`, `nodejs`, `rust`\n- **version files**: `VERSION`, `pyproject.toml:version`, `testql/__init__.py:__version__`",
+      "level": 2
+    }
+  ]
+}

@@ -113,6 +113,50 @@ ASSERT[3]{field, operator, expected}:
   status, <, 500
 ```
 
+## Project Echo (AI Context)
+
+Generate AI-friendly project metadata by combining TESTQL scenarios with DOQL system models:
+
+```bash
+# Generate unified project context
+testql echo --toon-path testql-scenarios/ --doql-path app.doql.less
+
+# JSON output for LLM consumption
+testql echo --toon-path ./tests --doql-path ./app.doql.less --format json -o context.json
+
+# Text output (human-readable)
+testql echo --doql-path ./app.doql.less --format text
+```
+
+### Echo Layers
+
+| Layer | Source | Content |
+|-------|--------|---------|
+| **API Contract** | `*.testql.toon.yaml` | Endpoints, methods, assertions |
+| **System Model** | `*.doql.less` | Entities, workflows, interfaces |
+| **Unified Context** | Combined | Complete project metadata for AI |
+
+### Example Output
+
+```
+📦 Project: weboql (0.1.2)
+
+🧠 Type:
+  • API (fastapi)
+
+🛠️ Workflows:
+  • install: pip install -e .
+  • test: pytest
+  • run: HARDWARE_MODE=mock weboql-server
+
+🌐 API scenarios:
+  • API Health Check (api) - 4 endpoint(s)
+
+💡 LLM suggestions:
+  • Run tests: task test
+  • Start server: task run
+```
+
 ## Language Reference
 
 ### Variables

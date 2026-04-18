@@ -52,3 +52,36 @@ tasks:
     cmds:
       - testql run testql/scenarios/tests/test-api.testql.toon.yaml
       - testql run testql/scenarios/tests/test-encoder.testql.toon.yaml || true
+
+  # Echo: Generate AI-friendly project context
+  echo:
+    desc: Generate AI project context from toon + doql
+    cmds:
+      - testql echo --toon-path {{.TESTQL_DIR}} --doql-path app.doql.less --format text
+
+  echo:json:
+    desc: Generate AI context as JSON
+    cmds:
+      - testql echo --toon-path {{.TESTQL_DIR}} --doql-path app.doql.less --format json -o project-context.json
+
+  # OpenAPI: Generate API specifications
+  openapi:
+    desc: Generate OpenAPI spec from endpoints
+    cmds:
+      - testql openapi . --format yaml
+
+  openapi:json:
+    desc: Generate OpenAPI spec as JSON
+    cmds:
+      - testql openapi . --format json --contract-tests
+
+  # Endpoints: List detected API endpoints
+  endpoints:
+    desc: List all detected API endpoints
+    cmds:
+      - testql endpoints . --format table
+
+  endpoints:json:
+    desc: List endpoints as JSON
+    cmds:
+      - testql endpoints . --format json

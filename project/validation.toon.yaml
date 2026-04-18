@@ -1,28 +1,46 @@
-# vallm batch | 55f | 33✓ 3⚠ 0✗ | 2026-04-18
+# vallm batch | 65f | 42✓ 5⚠ 0✗ | 2026-04-18
 
 SUMMARY:
-  scanned: 55  passed: 33 (60.0%)  warnings: 3  errors: 0  unsupported: 22
+  scanned: 65  passed: 42 (64.6%)  warnings: 5  errors: 0  unsupported: 23
 
-WARNINGS[3]{path,score}:
-  testql/cli.py,0.90
-    issues[6]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,suite has cyclomatic complexity 47 (max: 15),524
-      complexity.cyclomatic,warning,list has cyclomatic complexity 24 (max: 15),715
-      complexity.maintainability,warning,Low maintainability index: 17.5 (threshold: 20),
-      complexity.lizard_cc,warning,suite: CC=43 exceeds limit 15,524
-      complexity.lizard_length,warning,suite: 120 lines exceeds limit 100,524
-      complexity.lizard_cc,warning,list: CC=24 exceeds limit 15,715
+WARNINGS[5]{path,score}:
+  testql/cli.py,0.80
+    issues[12]{rule,severity,message,line}:
+      complexity.cyclomatic,warning,analyze has cyclomatic complexity 16 (max: 15),125
+      complexity.cyclomatic,warning,endpoints has cyclomatic complexity 21 (max: 15),201
+      complexity.cyclomatic,warning,suite has cyclomatic complexity 47 (max: 15),671
+      complexity.cyclomatic,warning,list has cyclomatic complexity 21 (max: 15),862
+      complexity.cyclomatic,warning,echo has cyclomatic complexity 16 (max: 15),941
+      complexity.maintainability,warning,Low maintainability index: 8.8 (threshold: 20),
+      complexity.lizard_cc,warning,analyze: CC=16 exceeds limit 15,125
+      complexity.lizard_cc,warning,endpoints: CC=21 exceeds limit 15,201
+      complexity.lizard_cc,warning,suite: CC=43 exceeds limit 15,671
+      complexity.lizard_length,warning,suite: 120 lines exceeds limit 100,671
+      complexity.lizard_cc,warning,list: CC=21 exceeds limit 15,862
+      complexity.lizard_cc,warning,echo: CC=16 exceeds limit 15,941
+  testql/commands/echo.py,0.93
+    issues[4]{rule,severity,message,line}:
+      complexity.cyclomatic,warning,parse_doql_less has cyclomatic complexity 29 (max: 15),14
+      complexity.cyclomatic,warning,format_text_output has cyclomatic complexity 19 (max: 15),175
+      complexity.lizard_cc,warning,parse_doql_less: CC=29 exceeds limit 15,14
+      complexity.lizard_cc,warning,format_text_output: CC=19 exceeds limit 15,175
   testql/interpreter/_converter.py,0.93
     issues[3]{rule,severity,message,line}:
       complexity.cyclomatic,warning,convert_iql_to_testtoon has cyclomatic complexity 66 (max: 15),100
       complexity.lizard_cc,warning,convert_iql_to_testtoon: CC=66 exceeds limit 15,100
       complexity.lizard_length,warning,convert_iql_to_testtoon: 280 lines exceeds limit 100,100
-  testql/generator.py,0.98
-    issues[1]{rule,severity,message,line}:
-      complexity.maintainability,warning,Low maintainability index: 17.9 (threshold: 20),
+  testql/endpoint_detector.py,0.96
+    issues[2]{rule,severity,message,line}:
+      complexity.cyclomatic,warning,generate_testql_scenario has cyclomatic complexity 16 (max: 15),768
+      complexity.maintainability,warning,Low maintainability index: 6.6 (threshold: 20),
+  testql/generator.py,0.96
+    issues[3]{rule,severity,message,line}:
+      complexity.cyclomatic,warning,_generate_api_tests has cyclomatic complexity 26 (max: 15),342
+      complexity.maintainability,warning,Low maintainability index: 14.4 (threshold: 20),
+      complexity.lizard_cc,warning,_generate_api_tests: CC=26 exceeds limit 15,342
 
 UNSUPPORTED[4]{bucket,count}:
-  *.md,7
+  *.md,8
   *.txt,1
   *.yml,2
   other,12

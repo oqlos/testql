@@ -79,3 +79,47 @@ GOTO <label>
 LABEL <name>
 REPEAT <n> { ... }
 ```
+
+## CLI Commands
+
+### Project Echo (AI Context)
+
+Generate AI-friendly project metadata combining TESTQL scenarios with DOQL system models:
+
+```bash
+# Generate unified project context
+testql echo --toon-path testql-scenarios/ --doql-path app.doql.less
+
+# JSON output for LLM consumption
+testql echo --toon-path ./tests --doql-path ./app.doql.less --format json -o context.json
+
+# Text output (human-readable)
+testql echo --doql-path ./app.doql.less --format text
+```
+
+**Echo Layers:**
+
+| Layer | Source | Content |
+|-------|--------|---------|
+| API Contract | `*.testql.toon.yaml` | Endpoints, methods, assertions |
+| System Model | `*.doql.less` | Entities, workflows, interfaces |
+| Unified Context | Combined | Complete metadata for AI |
+
+### Other CLI Commands
+
+```bash
+# Run test scenarios
+testql run scenario.testql.toon.yaml --url http://localhost:8101
+testql suite smoke                          # Run suite from testql.yaml
+testql list                                 # List all test files
+
+# Generate and analyze
+testql endpoints ./my-project               # Detect API endpoints
+testql analyze ./my-project                 # Project structure analysis
+testql openapi ./my-project -o spec.yaml    # Generate OpenAPI spec
+testql generate ./my-project                # Generate test scenarios
+
+# Initialize project
+testql init --type api                      # Create testql.yaml and templates
+testql create my-test --type api            # Create new test file
+```
