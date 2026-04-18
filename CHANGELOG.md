@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **New CLI commands for test management:**
+  - `testql init` — Initialize project with directory structure, config file, and starter templates
+  - `testql create <name>` — Generate test files from templates (gui, api, mixed, encoder, performance, workflow)
+  - `testql suite [name]` — Run predefined or custom test suites with filtering
+  - `testql list` — List all tests with metadata (type, tags, module)
+  - `testql watch` — Watch mode for automatic test re-runs on file changes
+- **Test templates:**
+  - `gui` — GUI navigation and interaction tests
+  - `api` — REST API endpoint tests
+  - `mixed` — Combined API + GUI workflow tests
+  - `encoder` — Hardware encoder interaction tests
+  - `performance` — Load time and performance benchmarks
+  - `workflow` — Multi-step business process tests
+- **Suite configuration** via `testql.yaml` with predefined test suites (smoke, regression, api)
+- **Filtering support:** by type, tags, and custom patterns
+- **Report formats:** console, JSON, JUnit XML
+- **Parallel execution** support with `-j` flag
+- **Fail-fast mode** with `--fail-fast` flag
+
 ## [0.1.1] - 2026-04-15
 
 ### Docs

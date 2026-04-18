@@ -1,0 +1,29 @@
+# vallm batch | 51f | 27✓ 1⚠ 3✗ | 2026-04-18
+
+SUMMARY:
+  scanned: 51  passed: 27 (52.9%)  warnings: 1  errors: 3  unsupported: 21
+
+WARNINGS[1]{path,score}:
+  testql/interpreter/_converter.py,0.93
+    issues[3]{rule,severity,message,line}:
+      complexity.cyclomatic,warning,convert_iql_to_testtoon has cyclomatic complexity 66 (max: 15),100
+      complexity.lizard_cc,warning,convert_iql_to_testtoon: CC=66 exceeds limit 15,100
+      complexity.lizard_length,warning,convert_iql_to_testtoon: 280 lines exceeds limit 100,100
+
+ERRORS[3]{path,score}:
+  testql/commands/encoder_routes.py,0.92
+    issues[2]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'fastapi' not found,12
+      python.import.resolvable,error,Module 'fastapi.responses' not found,13
+  testql/_base_fallback.py,0.95
+    issues[1]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'websockets' not found,186
+  testql/interpreter/_websockets.py,0.95
+    issues[1]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'websockets' not found,48
+
+UNSUPPORTED[4]{bucket,count}:
+  *.md,7
+  *.txt,1
+  *.yml,1
+  other,12

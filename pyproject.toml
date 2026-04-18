@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "testql"
-version = "0.1.1"
-description = "TestQL — Interface Query Language for GUI/API/encoder testing"
+version = "0.2.0"
+description = "TestQL — Interface Query Language for GUI/API/encoder testing with auto-generation"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "Apache-2.0"
@@ -13,6 +13,7 @@ dependencies = [
     "httpx>=0.27",
     "click>=8.0",
     "rich>=13.0",
+    "pyyaml>=6.0",
     "goal>=2.1.0",
     "costs>=0.1.20",
     "pfix>=0.1.60",
