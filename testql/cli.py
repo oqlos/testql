@@ -174,7 +174,7 @@ def init(path: str, name: str | None, project_type: str) -> None:
     project_name = name or target_path.name
 
     # Create directories
-    dirs = ["testql/scenarios/tests", "testql/scenarios/views", "testql/fixtures", "testql/reports"]
+    dirs = ["testql", "testql/fixtures", "testql/reports"]
     for d in dirs:
         (target_path / d).mkdir(parents=True, exist_ok=True)
 
@@ -195,11 +195,11 @@ defaults:
 
 suites:
   smoke:
-    - testql/scenarios/tests/test-gui-*.testql.toon.yaml
+    - testql/test-gui-*.testql.toon.yaml
   regression:
-    - testql/scenarios/tests/test-*.testql.toon.yaml
+    - testql/test-*.testql.toon.yaml
   api:
-    - testql/scenarios/tests/test-api*.testql.toon.yaml
+    - testql/test-api*.testql.toon.yaml
 
 # Type-specific settings
 types:
@@ -215,7 +215,7 @@ types:
         click.echo(f"✅ Created {config_file}")
 
     # Generate starter templates based on type
-    templates_dir = target_path / "testql/scenarios/tests"
+    templates_dir = target_path / "testql"
 
     if project_type in ("api", "all", "mixed"):
         api_template = templates_dir / "test-api-health.testql.toon.yaml"
@@ -292,7 +292,7 @@ LOG "Encoder test passed"
 @click.argument("name")
 @click.option("--type", "-t", "test_type", type=click.Choice(["gui", "api", "mixed", "encoder", "performance", "workflow"]), default="gui", help="Test type template")
 @click.option("--module", "-m", help="Target module (e.g., connect-id, connect-test)")
-@click.option("--output", "-o", type=click.Path(), help="Output directory (default: testql/scenarios/tests/)")
+@click.option("--output", "-o", type=click.Path(), help="Output directory (default: testql/)")
 @click.option("--force", is_flag=True, help="Overwrite existing file")
 def create(name: str, test_type: str, module: str | None, output: str | None, force: bool) -> None:
     """Create new test file from template."""
@@ -302,7 +302,7 @@ def create(name: str, test_type: str, module: str | None, output: str | None, fo
     if output:
         out_dir = Path(output)
     else:
-        out_dir = Path("testql/scenarios/tests")
+        out_dir = Path("testql")
 
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -562,7 +562,7 @@ def suite(suite_name: str | None, base_path: str, pattern: str | None, tags: tup
     else:
         # Default: find all test files
         test_dirs = [
-            target_path / "testql/scenarios/tests",
+            target_path / "testql",
             target_path / "tests",
             target_path,
         ]
@@ -695,7 +695,7 @@ def list(path: str, test_type: str, tag: str | None, fmt: str) -> None:
 
     # Search directories
     search_dirs = [
-        target_path / "testql/scenarios/tests",
+        target_path / "testql",
         target_path / "tests",
         target_path,
     ]

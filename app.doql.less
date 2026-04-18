@@ -44,6 +44,7 @@ workflow[name="clean"] {
 
 workflow[name="iql:run"] {
   trigger: "manual";
+  step-1: run cmd=testql run {{.CLI_ARGS}};
 }
 
 workflow[name="iql:shell"] {
@@ -53,19 +54,40 @@ workflow[name="iql:shell"] {
 
 workflow[name="doql:adopt"] {
   trigger: "manual";
+  step-1: run cmd=if ! command -v {{.DOQL_CMD}} >/dev/null 2>&1; then
+echo "⚠️  doql not installed. Install: pip install doql"
+exit 1
+fi;
+  step-2: run cmd={{.DOQL_CMD}} adopt {{.PWD}} --output app.doql.css --force;
+  step-3: run cmd={{.DOQL_CMD}} export --format less -o {{.DOQL_OUTPUT}};
+  step-4: run cmd=echo "✅ Project structure captured in {{.DOQL_OUTPUT}}";
 }
 
 workflow[name="doql:validate"] {
   trigger: "manual";
+  step-1: run cmd=if [ ! -f "{{.DOQL_OUTPUT}}" ]; then
+echo "❌ {{.DOQL_OUTPUT}} not found. Run: task doql:adopt"
+exit 1
+fi;
+  step-2: run cmd={{.DOQL_CMD}} validate;
 }
 
 workflow[name="doql:doctor"] {
   trigger: "manual";
+  step-1: run cmd={{.DOQL_CMD}} doctor;
 }
 
 workflow[name="doql:build"] {
   trigger: "manual";
-  step-1: run cmd=# Regenerate LESS from CSS if CSS exists;
+  step-1: run cmd=if [ ! -f "{{.DOQL_OUTPUT}}" ]; then
+echo "❌ {{.DOQL_OUTPUT}} not found. Run: task doql:adopt"
+exit 1
+fi;
+  step-2: run cmd=# Regenerate LESS from CSS if CSS exists
+if [ -f "app.doql.css" ]; then
+{{.DOQL_CMD}} export --format less -o {{.DOQL_OUTPUT}}
+fi;
+  step-3: run cmd={{.DOQL_CMD}} build app.doql.css --out build/;
 }
 
 workflow[name="help"] {
