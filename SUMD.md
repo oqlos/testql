@@ -16,6 +16,8 @@ TestQL with endpoint detection, OpenAPI, and SUMD generation
 - [Release Management (`goal.yaml`)](#release-management-goalyaml)
 - [Code Analysis](#code-analysis)
 - [Source Map](#source-map)
+- [API Stubs](#api-stubs)
+- [Test Contracts](#test-contracts)
 - [Intent](#intent)
 
 ## Metadata
@@ -27,7 +29,7 @@ TestQL with endpoint detection, OpenAPI, and SUMD generation
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
 - **ecosystem**: SUMD + DOQL + testql + taskfile
 - **openapi_title**: testql API v1.0.0
-- **generated_from**: pyproject.toml, Taskfile.yml, testql(74), openapi(7 ep), app.doql.less, pyqual.yaml, goal.yaml, .env.example, src(12 mod), project/(1 analysis files)
+- **generated_from**: pyproject.toml, Taskfile.yml, testql(74), openapi(7 ep), app.doql.less, pyqual.yaml, goal.yaml, .env.example, src(13 mod), project/(1 analysis files)
 
 ## Architecture
 
@@ -37,7 +39,7 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 ### DOQL Application Declaration (`app.doql.less`)
 
-```less markpact:file path=app.doql.less
+```less markpact:doql path=app.doql.less
 // LESS format — define @variables here as needed
 
 app {
@@ -199,6 +201,7 @@ environment[name="local"] {
 - `testql.openapi_generator`
 - `testql.runner`
 - `testql.sumd_generator`
+- `testql.sumd_parser`
 - `testql.toon_parser`
 
 ## Interfaces
@@ -209,7 +212,7 @@ environment[name="local"] {
 
 ### REST API (from `openapi.yaml`)
 
-```yaml markpact:file path=openapi.yaml
+```yaml markpact:openapi path=openapi.yaml
 components:
   schemas:
     Error:
@@ -391,7 +394,7 @@ servers:
 
 #### `testql/scenarios/generic/api-crud-template.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/generic/api-crud-template.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/generic/api-crud-template.testql.toon.yaml
 # SCENARIO: api-crud-template.testql.toon.yaml — generic CRUD test template
 # TYPE: api
 # VERSION: 1.0
@@ -410,7 +413,7 @@ API[3]{method, endpoint, status}:
 
 #### `testql/scenarios/c2004/smoke/api-health.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/c2004/smoke/api-health.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/c2004/smoke/api-health.testql.toon.yaml
 # SCENARIO: api-health.testql.toon.yaml — basic health check for c2004
 # TYPE: api
 # VERSION: 1.0
@@ -422,7 +425,7 @@ API[1]{method, endpoint, status, assert_key, assert_value}:
 
 #### `testql/scenarios/c2004/smoke/api-smoke.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/c2004/smoke/api-smoke.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/c2004/smoke/api-smoke.testql.toon.yaml
 # SCENARIO: api-smoke.testql.toon.yaml — smoke test for all main c2004 API endpoints
 # TYPE: api
 # VERSION: 1.0
@@ -438,7 +441,7 @@ API[5]{method, endpoint, status}:
 
 #### `testql/scenarios/generic/auth-login.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/generic/auth-login.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/generic/auth-login.testql.toon.yaml
 # SCENARIO: auth-login.testql.toon.yaml — generic authentication login test template
 # TYPE: api
 # VERSION: 1.0
@@ -454,7 +457,7 @@ API[1]{method, endpoint, status, assert_key, assert_value}:
 
 #### `testql/scenarios/diagnostics/backend-diagnostic.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/diagnostics/backend-diagnostic.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/diagnostics/backend-diagnostic.testql.toon.yaml
 # SCENARIO: Backend Diagnostic Tests
 # TYPE: api
 # VERSION: 1.0
@@ -481,7 +484,7 @@ API[16]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/views/connect-config-feature-flags.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-config-feature-flags.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-config-feature-flags.testql.toon.yaml
 # SCENARIO: connect-config-feature-flags.testql.toon.yaml — Test: Konfiguracja > Feature Flags
 # TYPE: gui
 # VERSION: 1.0
@@ -507,7 +510,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-config-labels.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-config-labels.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-config-labels.testql.toon.yaml
 # SCENARIO: connect-config-labels.testql.toon.yaml — Test: Konfiguracja > Etykiety
 # TYPE: gui
 # VERSION: 1.0
@@ -534,7 +537,7 @@ ENCODER[8]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-config-settings.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-config-settings.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-config-settings.testql.toon.yaml
 # SCENARIO: connect-config-settings.testql.toon.yaml — Test: Konfiguracja > Ustawienia
 # TYPE: gui
 # VERSION: 1.0
@@ -560,7 +563,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-config-tables.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-config-tables.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-config-tables.testql.toon.yaml
 # SCENARIO: connect-config-tables.testql.toon.yaml — Test: Konfiguracja > Tabele
 # TYPE: gui
 # VERSION: 1.0
@@ -586,7 +589,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-config-theme.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-config-theme.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-config-theme.testql.toon.yaml
 # SCENARIO: connect-config-theme.testql.toon.yaml — Test: Konfiguracja > Motyw
 # TYPE: gui
 # VERSION: 1.0
@@ -612,7 +615,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-config-users.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-config-users.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-config-users.testql.toon.yaml
 # SCENARIO: connect-config-users.testql.toon.yaml — Test: Konfiguracja > Użytkownicy
 # TYPE: gui
 # VERSION: 1.0
@@ -638,7 +641,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-id-barcode.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-id-barcode.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-id-barcode.testql.toon.yaml
 # SCENARIO: connect-id-barcode.testql.toon.yaml — Test: Identyfikacja > Barcode
 # TYPE: gui
 # VERSION: 1.0
@@ -664,7 +667,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-id-list.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-id-list.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-id-list.testql.toon.yaml
 # SCENARIO: connect-id-list.testql.toon.yaml — Test: Identyfikacja > Lista użytkowników
 # TYPE: gui
 # VERSION: 1.0
@@ -691,7 +694,7 @@ ENCODER[8]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-id-manual.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-id-manual.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-id-manual.testql.toon.yaml
 # SCENARIO: connect-id-manual.testql.toon.yaml — Test: Identyfikacja > Logowanie ręczne
 # TYPE: gui
 # VERSION: 1.0
@@ -717,7 +720,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-id-qr.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-id-qr.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-id-qr.testql.toon.yaml
 # SCENARIO: connect-id-qr.testql.toon.yaml — Test: Identyfikacja > QR Code
 # TYPE: gui
 # VERSION: 1.0
@@ -756,7 +759,7 @@ ENCODER[8]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-id-rfid.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-id-rfid.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-id-rfid.testql.toon.yaml
 # SCENARIO: connect-id-rfid.testql.toon.yaml — Test: Identyfikacja > RFID
 # TYPE: gui
 # VERSION: 1.0
@@ -805,7 +808,7 @@ FLOW[1]{command, target, meta}:
 
 #### `testql/scenarios/tests/views/connect-manager-activities.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-manager-activities.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-manager-activities.testql.toon.yaml
 # SCENARIO: connect-manager-activities.testql.toon.yaml — Test: Manager > Czynności
 # TYPE: gui
 # VERSION: 1.0
@@ -832,7 +835,7 @@ ENCODER[8]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-manager-intervals.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-manager-intervals.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-manager-intervals.testql.toon.yaml
 # SCENARIO: connect-manager-intervals.testql.toon.yaml — Test: Manager > Interwały
 # TYPE: gui
 # VERSION: 1.0
@@ -859,7 +862,7 @@ ENCODER[8]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-manager-library.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-manager-library.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-manager-library.testql.toon.yaml
 # SCENARIO: connect-manager-library.testql.toon.yaml — Test: Manager > Biblioteka
 # TYPE: gui
 # VERSION: 1.0
@@ -884,7 +887,7 @@ ENCODER[6]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-manager-scenarios.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-manager-scenarios.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-manager-scenarios.testql.toon.yaml
 # SCENARIO: connect-manager-scenarios.testql.toon.yaml — Test: Manager > Scenariusze
 # TYPE: gui
 # VERSION: 1.0
@@ -926,7 +929,7 @@ FLOW[1]{command, target, meta}:
 
 #### `testql/scenarios/tests/views/connect-manager-test-types.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-manager-test-types.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-manager-test-types.testql.toon.yaml
 # SCENARIO: connect-manager-test-types.testql.toon.yaml — Test: Manager > Rodzaj Testu
 # TYPE: gui
 # VERSION: 1.0
@@ -951,7 +954,7 @@ ENCODER[6]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-reports-chart.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-reports-chart.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-reports-chart.testql.toon.yaml
 # SCENARIO: connect-reports-chart.testql.toon.yaml — Test: Raporty > Wykres
 # TYPE: gui
 # VERSION: 1.0
@@ -998,7 +1001,7 @@ FLOW[1]{command, target, meta}:
 
 #### `testql/scenarios/tests/views/connect-reports-custom.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-reports-custom.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-reports-custom.testql.toon.yaml
 # SCENARIO: connect-reports-custom.testql.toon.yaml — Test: Raporty > Niestandardowy
 # TYPE: gui
 # VERSION: 1.0
@@ -1042,7 +1045,7 @@ FLOW[1]{command, target, meta}:
 
 #### `testql/scenarios/tests/views/connect-reports-filter.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-reports-filter.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-reports-filter.testql.toon.yaml
 # SCENARIO: connect-reports-filter.testql.toon.yaml — Test: Raporty > Filtruj
 # TYPE: gui
 # VERSION: 1.0
@@ -1068,7 +1071,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-reports-month.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-reports-month.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-reports-month.testql.toon.yaml
 # SCENARIO: connect-reports-month.testql.toon.yaml — Test: Raporty > Miesiąc
 # TYPE: gui
 # VERSION: 1.0
@@ -1118,7 +1121,7 @@ FLOW[1]{command, target, meta}:
 
 #### `testql/scenarios/tests/views/connect-reports-quarter.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-reports-quarter.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-reports-quarter.testql.toon.yaml
 # SCENARIO: connect-reports-quarter.testql.toon.yaml — Test: Raporty > Kwartał
 # TYPE: gui
 # VERSION: 1.0
@@ -1165,7 +1168,7 @@ FLOW[1]{command, target, meta}:
 
 #### `testql/scenarios/tests/views/connect-reports-week.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-reports-week.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-reports-week.testql.toon.yaml
 # SCENARIO: connect-reports-week.testql.toon.yaml — Test: Raporty > Tydzień
 # TYPE: gui
 # VERSION: 1.0
@@ -1213,7 +1216,7 @@ FLOW[1]{command, target, meta}:
 
 #### `testql/scenarios/tests/views/connect-reports-year.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-reports-year.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-reports-year.testql.toon.yaml
 # SCENARIO: connect-reports-year.testql.toon.yaml — Test: Raporty > Rok
 # TYPE: gui
 # VERSION: 1.0
@@ -1267,7 +1270,7 @@ FLOW[1]{command, target, meta}:
 
 #### `testql/scenarios/tests/views/connect-test-devices-search.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-test-devices-search.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-test-devices-search.testql.toon.yaml
 # SCENARIO: connect-test-devices-search.testql.toon.yaml — Test: Testowanie > Wyszukiwanie urządzeń
 # TYPE: gui
 # VERSION: 1.0
@@ -1295,7 +1298,7 @@ ENCODER[9]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-test-full-test.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-test-full-test.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-test-full-test.testql.toon.yaml
 # SCENARIO: connect-test-full-test.testql.toon.yaml — Test: Testowanie > Test automatyczny
 # TYPE: gui
 # VERSION: 1.0
@@ -1321,7 +1324,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-test-protocols.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-test-protocols.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-test-protocols.testql.toon.yaml
 # SCENARIO: connect-test-protocols.testql.toon.yaml — Test: Testowanie > Raporty (protokoły)
 # TYPE: gui
 # VERSION: 1.0
@@ -1349,7 +1352,7 @@ ENCODER[9]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-test-scenario-view.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-test-scenario-view.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-test-scenario-view.testql.toon.yaml
 # SCENARIO: connect-test-scenario-view.testql.toon.yaml — Test: Testowanie > Scenariusz/Interwały
 # TYPE: gui
 # VERSION: 1.0
@@ -1374,7 +1377,7 @@ ENCODER[6]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-test-testing-barcode.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-test-testing-barcode.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-test-testing-barcode.testql.toon.yaml
 # SCENARIO: connect-test-testing-barcode.testql.toon.yaml — Test: Testowanie > Barcode
 # TYPE: gui
 # VERSION: 1.0
@@ -1399,7 +1402,7 @@ ENCODER[6]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-test-testing-qr.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-test-testing-qr.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-test-testing-qr.testql.toon.yaml
 # SCENARIO: connect-test-testing-qr.testql.toon.yaml — Test: Testowanie > QR
 # TYPE: gui
 # VERSION: 1.0
@@ -1424,7 +1427,7 @@ ENCODER[6]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-test-testing-rfid.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-test-testing-rfid.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-test-testing-rfid.testql.toon.yaml
 # SCENARIO: connect-test-testing-rfid.testql.toon.yaml — Test: Testowanie > RFID
 # TYPE: gui
 # VERSION: 1.0
@@ -1450,7 +1453,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-test-testing-search.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-test-testing-search.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-test-testing-search.testql.toon.yaml
 # SCENARIO: connect-test-testing-search.testql.toon.yaml — Test: Testowanie > Wyszukiwanie testów
 # TYPE: gui
 # VERSION: 1.0
@@ -1478,7 +1481,7 @@ ENCODER[9]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-workshop-dispositions-search.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-workshop-dispositions-search.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-workshop-dispositions-search.testql.toon.yaml
 # SCENARIO: connect-workshop-dispositions-search.testql.toon.yaml — Test: Warsztat > Dyspozycje
 # TYPE: gui
 # VERSION: 1.0
@@ -1504,7 +1507,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-workshop-requests-search.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-workshop-requests-search.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-workshop-requests-search.testql.toon.yaml
 # SCENARIO: connect-workshop-requests-search.testql.toon.yaml — Test: Warsztat > Zgłoszenia
 # TYPE: gui
 # VERSION: 1.0
@@ -1531,7 +1534,7 @@ ENCODER[8]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-workshop-services-search.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-workshop-services-search.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-workshop-services-search.testql.toon.yaml
 # SCENARIO: connect-workshop-services-search.testql.toon.yaml — Test: Warsztat > Serwisy
 # TYPE: gui
 # VERSION: 1.0
@@ -1558,7 +1561,7 @@ ENCODER[8]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-workshop-transport-search.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/connect-workshop-transport-search.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/connect-workshop-transport-search.testql.toon.yaml
 # SCENARIO: connect-workshop-transport-search.testql.toon.yaml — Test: Warsztat > Transport
 # TYPE: gui
 # VERSION: 1.0
@@ -1584,7 +1587,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/c2004/gui/connect-workshop-transport.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/c2004/gui/connect-workshop-transport.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/c2004/gui/connect-workshop-transport.testql.toon.yaml
 # SCENARIO: connect-workshop-transport.testql.toon.yaml — GUI test for workshop transport view
 # TYPE: gui
 # VERSION: 1.0
@@ -1605,7 +1608,7 @@ WAIT[1]{ms}:
 
 #### `testql/scenarios/diagnostics/create-todays-reports.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/diagnostics/create-todays-reports.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/diagnostics/create-todays-reports.testql.toon.yaml
 # SCENARIO: Create Today's Reports
 # TYPE: gui
 # VERSION: 1.0
@@ -1668,7 +1671,7 @@ FLOW[1]{command, target, meta}:
 
 #### `testql/scenarios/examples/device-identification.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/examples/device-identification.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/examples/device-identification.testql.toon.yaml
 # SCENARIO: Device Identification Example
 # TYPE: gui
 # VERSION: 1.0
@@ -1692,7 +1695,7 @@ NAVIGATE[1]{path, wait_ms}:
 
 #### `testql/scenarios/c2004/encoder/encoder-navigation.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/c2004/encoder/encoder-navigation.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/c2004/encoder/encoder-navigation.testql.toon.yaml
 # SCENARIO: encoder-navigation.testql.toon.yaml — encoder hardware navigation test
 # TYPE: gui
 # VERSION: 1.0
@@ -1712,7 +1715,7 @@ ENCODER[9]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/c2004/encoder/encoder-workshop.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/c2004/encoder/encoder-workshop.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/c2004/encoder/encoder-workshop.testql.toon.yaml
 # SCENARIO: encoder-workshop.testql.toon.yaml — encoder navigation in workshop context
 # TYPE: gui
 # VERSION: 1.0
@@ -1736,7 +1739,7 @@ ENCODER[9]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/diagnostics/full-diagnostic.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/diagnostics/full-diagnostic.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/diagnostics/full-diagnostic.testql.toon.yaml
 # SCENARIO: Full System Diagnostic - API + Routes + DSL
 # TYPE: gui
 # VERSION: 1.0
@@ -1807,7 +1810,7 @@ NAVIGATE[14]{path, wait_ms}:
 
 #### `testql/scenarios/diagnostics/generate-test-reports.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/diagnostics/generate-test-reports.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/diagnostics/generate-test-reports.testql.toon.yaml
 # SCENARIO: Generate Test Reports Scenario
 # TYPE: interaction
 # VERSION: 1.0
@@ -1961,7 +1964,7 @@ RECORD_STOP:
 
 #### `testql-scenarios/generated-api-integration.testql.toon.yaml`
 
-```toon markpact:file path=testql-scenarios/generated-api-integration.testql.toon.yaml
+```toon markpact:testql path=testql-scenarios/generated-api-integration.testql.toon.yaml
 # SCENARIO: API Integration Tests
 # TYPE: api
 # GENERATED: true
@@ -1984,7 +1987,7 @@ ASSERT[2]{field, operator, expected}:
 
 #### `testql-scenarios/generated-api-smoke.testql.toon.yaml`
 
-```toon markpact:file path=testql-scenarios/generated-api-smoke.testql.toon.yaml
+```toon markpact:testql path=testql-scenarios/generated-api-smoke.testql.toon.yaml
 # SCENARIO: Auto-generated API Smoke Tests
 # TYPE: api
 # GENERATED: true
@@ -2016,7 +2019,7 @@ ASSERT[2]{field, operator, expected}:
 
 #### `testql-scenarios/generated-cli-tests.testql.toon.yaml`
 
-```toon markpact:file path=testql-scenarios/generated-cli-tests.testql.toon.yaml
+```toon markpact:testql path=testql-scenarios/generated-cli-tests.testql.toon.yaml
 # SCENARIO: CLI Command Tests
 # TYPE: cli
 # GENERATED: true
@@ -2033,7 +2036,7 @@ LOG[3]{message}:
 
 #### `testql-scenarios/generated-from-pytests.testql.toon.yaml`
 
-```toon markpact:file path=testql-scenarios/generated-from-pytests.testql.toon.yaml
+```toon markpact:testql path=testql-scenarios/generated-from-pytests.testql.toon.yaml
 # SCENARIO: Auto-generated from Python Tests
 # TYPE: integration
 # GENERATED: true
@@ -2053,7 +2056,7 @@ LOG[20]{message}:
 
 #### `testql/scenarios/generic/health-check.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/generic/health-check.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/generic/health-check.testql.toon.yaml
 # SCENARIO: health-check.testql.toon.yaml — generic health check scenario
 # TYPE: api
 # VERSION: 1.0
@@ -2070,7 +2073,7 @@ API[2]{method, endpoint, status, assert_key, assert_value}:
 
 #### `testql/scenarios/examples/quick-navigation.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/examples/quick-navigation.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/examples/quick-navigation.testql.toon.yaml
 # SCENARIO: Quick Navigation Example
 # TYPE: gui
 # VERSION: 1.0
@@ -2086,7 +2089,7 @@ NAVIGATE[5]{path, wait_ms}:
 
 #### `testql/scenarios/recordings/recorded-test-session.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/recordings/recorded-test-session.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/recordings/recorded-test-session.testql.toon.yaml
 # SCENARIO: DSL Session Recording
 # TYPE: gui
 # VERSION: 1.0
@@ -2143,7 +2146,7 @@ NAVIGATE[1]{path, wait_ms}:
 
 #### `testql/scenarios/tests/reproduce-view.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/reproduce-view.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/reproduce-view.testql.toon.yaml
 # SCENARIO: Reproduce View - Connect Manager with Scenario Selection
 # TYPE: gui
 # VERSION: 1.0
@@ -2174,7 +2177,7 @@ WAIT[1]{ms}:
 
 #### `testql/scenarios/tests/views/run-all-views.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/views/run-all-views.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/views/run-all-views.testql.toon.yaml
 # SCENARIO: run-all-views.testql.toon.yaml — Master runner for all per-view IQL tests
 # TYPE: api
 # VERSION: 1.0
@@ -2291,7 +2294,7 @@ INCLUDE[1]{file}:
 
 #### `testql/scenarios/tests/run-mask-test-protocol.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/run-mask-test-protocol.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/run-mask-test-protocol.testql.toon.yaml
 # SCENARIO: =============================================================================
 # TYPE: api
 # VERSION: 1.0
@@ -2307,7 +2310,7 @@ WAIT[1]{ms}:
 
 #### `testql/scenarios/recordings/session-recording.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/recordings/session-recording.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/recordings/session-recording.testql.toon.yaml
 # SCENARIO: Session Recording Example
 # TYPE: interaction
 # VERSION: 1.0
@@ -2356,7 +2359,7 @@ RECORD_STOP:
 
 #### `testql/scenarios/tests/test-api.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/test-api.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/test-api.testql.toon.yaml
 # SCENARIO: Example DSL Script - API Testing
 # TYPE: api
 # VERSION: 1.0
@@ -2378,7 +2381,7 @@ API[1]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-app-lifecycle.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/test-app-lifecycle.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/test-app-lifecycle.testql.toon.yaml
 # SCENARIO: DSL Script - Application Lifecycle Test
 # TYPE: api
 # VERSION: 1.0
@@ -2412,7 +2415,7 @@ API[2]{method, endpoint, status}:
 
 #### `testql/scenarios/examples/test-device-flow.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/examples/test-device-flow.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/examples/test-device-flow.testql.toon.yaml
 # SCENARIO: DSL Example: Complete Device Test Flow
 # TYPE: interaction
 # VERSION: 1.0
@@ -2492,7 +2495,7 @@ RECORD_STOP:
 
 #### `testql/scenarios/tests/test-devices-crud.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/test-devices-crud.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/test-devices-crud.testql.toon.yaml
 # SCENARIO: Example DSL Script - Devices CRUD Operations
 # TYPE: api
 # VERSION: 1.0
@@ -2507,7 +2510,7 @@ API[4]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-dsl-objects.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/test-dsl-objects.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/test-dsl-objects.testql.toon.yaml
 # SCENARIO: Example DSL Script - DSL Objects Test
 # TYPE: api
 # VERSION: 1.0
@@ -2524,7 +2527,7 @@ API[6]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-encoder.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/test-encoder.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/test-encoder.testql.toon.yaml
 # SCENARIO: test-encoder.testql.toon.yaml — Encoder navigation tests via IQL
 # TYPE: gui
 # VERSION: 1.0
@@ -2570,7 +2573,7 @@ ENCODER[31]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/test-gui-all.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/test-gui-all.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/test-gui-all.testql.toon.yaml
 # SCENARIO: test-gui-all.testql.toon.yaml — Master GUI test suite — runs all module GUI tests
 # TYPE: api
 # VERSION: 1.0
@@ -2601,7 +2604,7 @@ INCLUDE[1]{file}:
 
 #### `testql/scenarios/tests/test-gui-connect-config.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/test-gui-connect-config.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/test-gui-connect-config.testql.toon.yaml
 # SCENARIO: test-gui-connect-config.testql.toon.yaml — GUI tests for Connect Config module
 # TYPE: gui
 # VERSION: 1.0
@@ -2656,7 +2659,7 @@ API[2]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-gui-connect-id.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/test-gui-connect-id.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/test-gui-connect-id.testql.toon.yaml
 # SCENARIO: test-gui-connect-id.testql.toon.yaml — GUI tests for Connect ID module
 # TYPE: gui
 # VERSION: 1.0
@@ -2731,7 +2734,7 @@ API[1]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-gui-connect-manager.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/test-gui-connect-manager.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/test-gui-connect-manager.testql.toon.yaml
 # SCENARIO: test-gui-connect-manager.testql.toon.yaml — GUI tests for Connect Manager module
 # TYPE: gui
 # VERSION: 1.0
@@ -2783,7 +2786,7 @@ API[3]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-gui-connect-reports.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/test-gui-connect-reports.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/test-gui-connect-reports.testql.toon.yaml
 # SCENARIO: test-gui-connect-reports.testql.toon.yaml — GUI tests for Connect Reports module
 # TYPE: gui
 # VERSION: 1.0
@@ -2836,7 +2839,7 @@ API[1]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-gui-connect-test.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/test-gui-connect-test.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/test-gui-connect-test.testql.toon.yaml
 # SCENARIO: test-gui-connect-test.testql.toon.yaml — GUI tests for Connect Test module
 # TYPE: gui
 # VERSION: 1.0
@@ -2902,7 +2905,7 @@ API[3]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-gui-connect-workshop.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/test-gui-connect-workshop.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/test-gui-connect-workshop.testql.toon.yaml
 # SCENARIO: test-gui-connect-workshop.testql.toon.yaml — GUI tests for Connect Workshop module
 # TYPE: gui
 # VERSION: 1.0
@@ -2972,7 +2975,7 @@ API[1]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-mixed-workflow.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/test-mixed-workflow.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/test-mixed-workflow.testql.toon.yaml
 # SCENARIO: DSL Mixed Workflow Example
 # TYPE: e2e
 # VERSION: 1.0
@@ -3017,7 +3020,7 @@ API[2]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-protocol-flow.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/test-protocol-flow.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/test-protocol-flow.testql.toon.yaml
 # SCENARIO: Example DSL Script - Protocol Flow Test (Read-Only)
 # TYPE: api
 # VERSION: 1.0
@@ -3046,7 +3049,7 @@ FLOW[4]{command, target, meta}:
 
 #### `testql/scenarios/tests/test-ui-navigation.testql.toon.yaml`
 
-```toon markpact:file path=testql/scenarios/tests/test-ui-navigation.testql.toon.yaml
+```toon markpact:testql path=testql/scenarios/tests/test-ui-navigation.testql.toon.yaml
 # SCENARIO: Example DSL Script - API Endpoints Test
 # TYPE: api
 # VERSION: 1.0
@@ -3066,7 +3069,7 @@ API[7]{method, endpoint, status}:
 
 ### Taskfile Tasks (`Taskfile.yml`)
 
-```yaml markpact:file path=Taskfile.yml
+```yaml markpact:taskfile path=Taskfile.yml
 # Taskfile.yml — testql (Test Query Language) project runner
 # https://taskfile.dev
 
@@ -3240,7 +3243,7 @@ tasks:
 
 ## Quality Pipeline (`pyqual.yaml`)
 
-```yaml markpact:file path=pyqual.yaml
+```yaml markpact:pyqual path=pyqual.yaml
 pipeline:
   name: quality-loop
 
@@ -3386,7 +3389,7 @@ pip install -e .[dev]
 
 ### `project/map.toon.yaml`
 
-```toon markpact:file path=project/map.toon.yaml
+```toon markpact:analysis path=project/map.toon.yaml
 # testql | 40f 7569L | python:34,less:3,shell:2,css:1 | 2026-04-18
 # stats: 86 func | 56 cls | 40 mod | CC̄=7.2 | critical:22 | cycles:0
 # alerts[5]: CC convert_iql_to_testtoon=66; CC suite=47; CC parse_doql_less=29; CC endpoints=21; CC list=21
@@ -3833,6 +3836,252 @@ class DslCliExecutor:
     def run_script(content, stop_on_error)  # CC=11 ⚠
     def _format_cmd(cmd)  # CC=2
 ```
+
+## API Stubs
+
+*testql API v1.0.0 — auto-generated stubs from `openapi.yaml`.*
+
+```python markpact:openapi path=openapi.yaml
+# fastapi
+def iql_read_file() -> Response:  # Read a TestQL file content (.testql.toon.yaml / .iql / .tql).
+    "GET /iql/file"
+def iql_list_files() -> Response:  # List all .testql.toon.yaml files in the project (with .iql/.tql fallback).
+    "GET /iql/files"
+def iql_read_log() -> Response:  # Read a specific log file.
+    "GET /iql/log"
+def iql_list_logs() -> Response:  # List available log files.
+    "GET /iql/logs"
+def iql_run_file() -> Response:  # Run an entire IQL file with validation. Returns structured results + saves log.
+    "POST /iql/run-file"
+def iql_run_line() -> Response:  # Execute a single IQL command line via the encoder bridge.
+    "POST /iql/run-line"
+def iql_list_tables() -> Response:  # Extract table names from an IQL file.
+    "GET /iql/tables"
+
+```
+
+**Schemas**: `Error`, `HealthCheck`
+
+## Test Contracts
+
+*Scenarios as contract signatures — what the system guarantees.*
+
+### Api (17)
+
+**`api-crud-template.testql.toon.yaml — generic CRUD test template`**
+
+**`api-health.testql.toon.yaml — basic health check for c2004`**
+- `GET /health` → `200`
+
+**`api-smoke.testql.toon.yaml — smoke test for all main c2004 API endpoints`**
+- `GET /health` → `200`
+- `GET /api/v3/version` → `200`
+- `GET /api/v3/data/devices` → `200`
+
+**`auth-login.testql.toon.yaml — generic authentication login test template`**
+- `POST /api/v3/auth/login"` → `200`
+
+**`Backend Diagnostic Tests`**
+- `GET /api/v3/health` → `200`
+- `GET /api/v3/template-json` → `200`
+- `GET /api/v3/template-json/default` → `200`
+
+**`API Integration Tests`**
+- `GET /health` → `200`
+- `GET /api/v1/status` → `200`
+- `POST /api/v1/test` → `201`
+- assert `status == ok`
+- assert `response_time < 1000`
+
+**`Auto-generated API Smoke Tests`**
+- `GET /iql/files` → `200` — `iql_list_files`
+- `GET /iql/file` → `200` — `iql_read_file`
+- `GET /iql/tables` → `200` — `iql_list_tables`
+- assert `status < 500`
+- assert `response_time < 2000`
+- detectors: FastAPIDetector
+
+**`health-check.testql.toon.yaml — generic health check scenario`**
+- `GET /health` → `200`
+- `GET /api/v3/version` → `200`
+
+**`run-all-views.testql.toon.yaml — Master runner for all per-view IQL tests`**
+
+**`=============================================================================`**
+- `GET /api/v3/scenarios/scn-drager-fps-7000-maska-nadcisnieniowa?include_content=true` → `200`
+- `POST /api/v3/protocols"` → `200`
+
+**`Example DSL Script - API Testing`**
+- `GET /api/v3/data/devices?limit=5` → `200`
+- `GET /api/v3/data/customers?limit=5` → `200`
+- `GET /api/v3/data/intervals?limit=5` → `200`
+
+**`DSL Script - Application Lifecycle Test`**
+- `GET /api/v3/data/protocols?limit=3` → `200`
+- `GET /api/v3/data/test_scenarios?limit=3` → `200`
+
+**`Example DSL Script - Devices CRUD Operations`**
+- `GET /api/v3/data/devices?limit=10` → `200`
+- `GET /api/v3/data/customers?limit=5` → `200`
+- `GET /api/v3/data/intervals?limit=10` → `200`
+
+**`Example DSL Script - DSL Objects Test`**
+- `GET /api/v3/data/dsl_objects?limit=100` → `200`
+- `GET /api/v3/data/dsl_functions?limit=100` → `200`
+- `GET /api/v3/data/dsl_params?limit=100` → `200`
+
+**`test-gui-all.testql.toon.yaml — Master GUI test suite — runs all module GUI tests`**
+
+**`Example DSL Script - Protocol Flow Test (Read-Only)`**
+- `GET /api/v3/data/devices?limit=5` → `200`
+- `GET /api/v3/data/customers?limit=5` → `200`
+- `GET /api/v3/data/test_scenarios?limit=10` → `200`
+
+**`Example DSL Script - API Endpoints Test`**
+- `GET /api/v3/data/devices?limit=5` → `200`
+- `GET /api/v3/data/customers?limit=5` → `200`
+- `GET /api/v3/data/protocols?limit=10` → `200`
+
+### Cli (1)
+
+**`CLI Command Tests`**
+
+### E2E (1)
+
+**`DSL Mixed Workflow Example`**
+- `GET /api/v3/data/devices?limit=3` → `200`
+- `GET /api/v3/data/customers?limit=3` → `200`
+- `GET /api/v3/data/intervals?limit=3` → `200`
+
+### Gui (51)
+
+**`connect-config-feature-flags.testql.toon.yaml — Test: Konfiguracja > Feature Flags`**
+
+**`connect-config-labels.testql.toon.yaml — Test: Konfiguracja > Etykiety`**
+
+**`connect-config-settings.testql.toon.yaml — Test: Konfiguracja > Ustawienia`**
+
+**`connect-config-tables.testql.toon.yaml — Test: Konfiguracja > Tabele`**
+
+**`connect-config-theme.testql.toon.yaml — Test: Konfiguracja > Motyw`**
+
+**`connect-config-users.testql.toon.yaml — Test: Konfiguracja > Użytkownicy`**
+
+**`connect-id-barcode.testql.toon.yaml — Test: Identyfikacja > Barcode`**
+
+**`connect-id-list.testql.toon.yaml — Test: Identyfikacja > Lista użytkowników`**
+
+**`connect-id-manual.testql.toon.yaml — Test: Identyfikacja > Logowanie ręczne`**
+
+**`connect-id-qr.testql.toon.yaml — Test: Identyfikacja > QR Code`**
+
+**`connect-id-rfid.testql.toon.yaml — Test: Identyfikacja > RFID`**
+
+**`connect-manager-activities.testql.toon.yaml — Test: Manager > Czynności`**
+
+**`connect-manager-intervals.testql.toon.yaml — Test: Manager > Interwały`**
+
+**`connect-manager-library.testql.toon.yaml — Test: Manager > Biblioteka`**
+
+**`connect-manager-scenarios.testql.toon.yaml — Test: Manager > Scenariusze`**
+
+**`connect-manager-test-types.testql.toon.yaml — Test: Manager > Rodzaj Testu`**
+
+**`connect-reports-chart.testql.toon.yaml — Test: Raporty > Wykres`**
+
+**`connect-reports-custom.testql.toon.yaml — Test: Raporty > Niestandardowy`**
+
+**`connect-reports-filter.testql.toon.yaml — Test: Raporty > Filtruj`**
+
+**`connect-reports-month.testql.toon.yaml — Test: Raporty > Miesiąc`**
+
+**`connect-reports-quarter.testql.toon.yaml — Test: Raporty > Kwartał`**
+
+**`connect-reports-week.testql.toon.yaml — Test: Raporty > Tydzień`**
+
+**`connect-reports-year.testql.toon.yaml — Test: Raporty > Rok`**
+
+**`connect-test-devices-search.testql.toon.yaml — Test: Testowanie > Wyszukiwanie urządzeń`**
+
+**`connect-test-full-test.testql.toon.yaml — Test: Testowanie > Test automatyczny`**
+
+**`connect-test-protocols.testql.toon.yaml — Test: Testowanie > Raporty (protokoły)`**
+
+**`connect-test-scenario-view.testql.toon.yaml — Test: Testowanie > Scenariusz/Interwały`**
+
+**`connect-test-testing-barcode.testql.toon.yaml — Test: Testowanie > Barcode`**
+
+**`connect-test-testing-qr.testql.toon.yaml — Test: Testowanie > QR`**
+
+**`connect-test-testing-rfid.testql.toon.yaml — Test: Testowanie > RFID`**
+
+**`connect-test-testing-search.testql.toon.yaml — Test: Testowanie > Wyszukiwanie testów`**
+
+**`connect-workshop-dispositions-search.testql.toon.yaml — Test: Warsztat > Dyspozycje`**
+
+**`connect-workshop-requests-search.testql.toon.yaml — Test: Warsztat > Zgłoszenia`**
+
+**`connect-workshop-services-search.testql.toon.yaml — Test: Warsztat > Serwisy`**
+
+**`connect-workshop-transport-search.testql.toon.yaml — Test: Warsztat > Transport`**
+
+**`connect-workshop-transport.testql.toon.yaml — GUI test for workshop transport view`**
+
+**`Create Today's Reports`**
+
+**`Device Identification Example`**
+
+**`encoder-navigation.testql.toon.yaml — encoder hardware navigation test`**
+
+**`encoder-workshop.testql.toon.yaml — encoder navigation in workshop context`**
+
+**`Full System Diagnostic - API + Routes + DSL`**
+- `GET /api/v3/health` → `200`
+- `GET /api/v3/auth/session` → `200`
+- `GET /api/v3/config/system` → `200`
+
+**`Quick Navigation Example`**
+
+**`DSL Session Recording`**
+
+**`Reproduce View - Connect Manager with Scenario Selection`**
+
+**`test-encoder.testql.toon.yaml — Encoder navigation tests via IQL`**
+
+**`test-gui-connect-config.testql.toon.yaml — GUI tests for Connect Config module`**
+- `GET /api/v3/config/settings` → `200`
+- `GET /api/v3/feature-flags` → `200`
+
+**`test-gui-connect-id.testql.toon.yaml — GUI tests for Connect ID module`**
+- `GET /api/v3/auth/users` → `200`
+
+**`test-gui-connect-manager.testql.toon.yaml — GUI tests for Connect Manager module`**
+- `GET /api/v3/data/test_scenarios?limit=5` → `200`
+- `GET /api/v3/data/intervals?limit=5` → `200`
+- `GET /api/v3/activities?limit=5` → `200`
+
+**`test-gui-connect-reports.testql.toon.yaml — GUI tests for Connect Reports module`**
+- `GET /api/v3/data/protocols?limit=5` → `200`
+
+**`test-gui-connect-test.testql.toon.yaml — GUI tests for Connect Test module`**
+- `GET /api/v3/data/devices?limit=5` → `200`
+- `GET /api/v3/data/test_scenarios?limit=5` → `200`
+- `GET /api/v3/data/protocols?limit=5` → `200`
+
+**`test-gui-connect-workshop.testql.toon.yaml — GUI tests for Connect Workshop module`**
+- `GET /api/v3/data/customers?limit=5` → `200`
+
+### Integration (1)
+
+**`Auto-generated from Python Tests`**
+
+### Interaction (3)
+
+**`Generate Test Reports Scenario`**
+
+**`Session Recording Example`**
+
+**`DSL Example: Complete Device Test Flow`**
 
 ## Intent
 

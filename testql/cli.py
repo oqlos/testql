@@ -1085,6 +1085,45 @@ def watch(path: str, pattern: str, command: str, debounce: float) -> None:
     observer.join()
 
 
+@cli.command()
+@click.argument("sumd_file", type=click.Path(exists=True))
+@click.option("--output", "-o", type=click.Path(), help="Output testql file (default: auto-generated)")
+@click.option("--dry-run", is_flag=True, help="Print scenario without saving")
+def from_sumd(sumd_file: str, output: str | None, dry_run: bool) -> None:
+    """Generate TestQL scenarios from SUMD.md documentation."""
+    import pathlib
+    from testql.sumd_parser import SumdParser
+
+    sumd_path = pathlib.Path(sumd_file)
+    parser = SumdParser()
+
+    click.echo(f"📄 Parsing SUMD: {sumd_path}")
+    doc = parser.parse_file(sumd_path)
+
+    # Show parsed info
+    click.echo(f"   Project: {doc.metadata.name} ({doc.metadata.version})")
+    click.echo(f"   Interfaces: {len(doc.interfaces)}")
+    click.echo(f"   Workflows: {len(doc.workflows)}")
+    click.echo(f"   Scenarios: {len(doc.testql_scenarios)}")
+
+    # Generate testql content
+    scenario_content = parser.generate_testql_scenarios(doc)
+
+    if dry_run:
+        click.echo("\n📋 Generated TestQL scenario:\n")
+        click.echo(scenario_content)
+        return
+
+    # Determine output path
+    if output:
+        out_path = pathlib.Path(output)
+    else:
+        out_path = sumd_path.parent / f"{doc.metadata.name}-from-sumd.testql.toon.yaml"
+
+    out_path.write_text(scenario_content, encoding="utf-8")
+    click.echo(f"✅ Saved TestQL scenario: {out_path}")
+
+
 def main():
     """Entry point for console script."""
     cli()

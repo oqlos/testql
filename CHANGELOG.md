@@ -27,6 +27,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Parallel execution** support with `-j` flag
 - **Fail-fast mode** with `--fail-fast` flag
 
+## [0.5.2] - 2026-04-18
+
+### Docs
+- Update README.md
+- Update SUMD.md
+
+### Test
+- Update testql/cli.py
+- Update testql/sumd_parser.py
+
+### Other
+- Update sumd.json
+
 ## [0.5.1] - 2026-04-18
 
 ### Docs
