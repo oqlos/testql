@@ -1124,6 +1124,54 @@ def from_sumd(sumd_file: str, output: str | None, dry_run: bool) -> None:
     click.echo(f"✅ Saved TestQL scenario: {out_path}")
 
 
+@cli.command()
+@click.argument("data_json", type=click.Path(exists=True), required=False)
+@click.option("--output", "-o", type=click.Path(), help="Output HTML file (default: report.html)")
+@click.option("--example", is_flag=True, help="Generate example report with dummy data")
+def report(data_json: str | None, output: str | None, example: bool) -> None:
+    """Generate HTML report from test data.json."""
+    import pathlib
+    import json
+    from testql.report_generator import (
+        generate_report, ReportDataParser, HTMLReportGenerator, TestSuiteReport, TestResult
+    )
+
+    out_path = pathlib.Path(output) if output else pathlib.Path("report.html")
+
+    if example:
+        # Generate example report
+        example_data = {
+            "suite_name": "Example Test Suite",
+            "total": 5,
+            "passed": 3,
+            "failed": 1,
+            "skipped": 1,
+            "duration_ms": 2450,
+            "tests": [
+                {"name": "test_health_check", "status": "passed", "duration_ms": 120, "assertions": 2, "failures": []},
+                {"name": "test_user_list", "status": "passed", "duration_ms": 340, "assertions": 4, "failures": []},
+                {"name": "test_user_create", "status": "passed", "duration_ms": 560, "assertions": 5, "failures": []},
+                {"name": "test_auth_fail", "status": "failed", "duration_ms": 890, "assertions": 3, "failures": ["Expected 401, got 200"]},
+                {"name": "test_delete_user", "status": "skipped", "duration_ms": 0, "assertions": 0, "failures": []},
+            ]
+        }
+        data_file = pathlib.Path("/tmp/example_data.json")
+        data_file.write_text(json.dumps(example_data))
+        result = generate_report(data_file, out_path)
+        click.echo(f"✅ Example report generated: {result}")
+        click.echo(f"   Open in browser: file://{result.absolute()}")
+        return
+
+    if not data_json:
+        click.echo("❌ Error: Provide data.json file or use --example")
+        sys.exit(1)
+
+    data_path = pathlib.Path(data_json)
+    result = generate_report(data_path, out_path)
+    click.echo(f"✅ Report generated: {result}")
+    click.echo(f"   Open in browser: file://{result.absolute()}")
+
+
 def main():
     """Entry point for console script."""
     cli()

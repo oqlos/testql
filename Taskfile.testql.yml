@@ -70,6 +70,17 @@ tasks:
       - testql echo --toon-path {{.TESTQL_DIR}} --doql-path app.doql.less --format sumd -o SUMD.md
       - echo "✅ Generated SUMD.md"
 
+  from-sumd:
+    desc: Generate testql scenarios from SUMD.md
+    cmds:
+      - testql from-sumd SUMD.md --dry-run
+
+  from-sumd:save:
+    desc: Save testql scenarios from SUMD.md
+    cmds:
+      - testql from-sumd SUMD.md -o {{.TESTQL_DIR}}/from-sumd.testql.toon.yaml
+      - echo "✅ Saved to {{.TESTQL_DIR}}/from-sumd.testql.toon.yaml"
+
   # OpenAPI: Generate API specifications
   openapi:
     desc: Generate OpenAPI spec from endpoints
@@ -91,3 +102,16 @@ tasks:
     desc: List endpoints as JSON
     cmds:
       - testql endpoints . --format json
+
+  # Report: Generate HTML reports
+  report:example:
+    desc: Generate example HTML report
+    cmds:
+      - testql report --example -o report.html
+      - echo "✅ Report: file://$(pwd)/report.html"
+
+  report:
+    desc: Generate HTML report from data.json
+    cmds:
+      - testql report data.json -o report.html
+      - echo "✅ Report: file://$(pwd)/report.html"

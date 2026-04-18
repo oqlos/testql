@@ -1,6 +1,6 @@
 {
   "project_name": "TestQL — Interface Query Language for Testing",
-  "description": "TestQL with endpoint detection, OpenAPI, and SUMD generation",
+  "description": "TestQL with endpoint detection, OpenAPI, SUMD generation and SUMD parser",
   "sections": [
     {
       "name": "contents",
@@ -11,7 +11,7 @@
     {
       "name": "metadata",
       "type": "metadata",
-      "content": "- **name**: `testql`\n- **version**: `0.5.1`\n- **python_requires**: `>=3.10`\n- **license**: Apache-2.0\n- **ai_model**: `openrouter/qwen/qwen3-coder-next`\n- **ecosystem**: SUMD + DOQL + testql + taskfile\n- **openapi_title**: testql API v1.0.0\n- **generated_from**: pyproject.toml, Taskfile.yml, testql(74), openapi(7 ep), app.doql.less, pyqual.yaml, goal.yaml, .env.example, src(13 mod), project/(1 analysis files)",
+      "content": "- **name**: `testql`\n- **version**: `0.5.2`\n- **python_requires**: `>=3.10`\n- **license**: Apache-2.0\n- **ai_model**: `openrouter/qwen/qwen3-coder-next`\n- **ecosystem**: SUMD + DOQL + testql + taskfile\n- **openapi_title**: testql API v1.0.0\n- **generated_from**: pyproject.toml, Taskfile.yml, testql(74), openapi(7 ep), app.doql.less, pyqual.yaml, goal.yaml, .env.example, src(13 mod), project/(1 analysis files)",
       "level": 2
     },
     {
@@ -521,7 +521,7 @@
     {
       "name": "configuration",
       "type": "configuration",
-      "content": "```yaml\nproject:\n  name: testql\n  version: 0.5.1\n  env: local\n```",
+      "content": "```yaml\nproject:\n  name: testql\n  version: 0.5.2\n  env: local\n```",
       "level": 2
     },
     {
@@ -599,7 +599,7 @@
     {
       "name": "# `testql.openapi_generator` (`testql/openapi_generator.py`)",
       "type": "unknown",
-      "content": "```python\ndef generate_openapi_spec(project_path, output, format)  # CC=1, fan=3\ndef generate_contract_tests_from_spec(spec_path, output)  # CC=1, fan=2\nclass OpenAPISpec:  # OpenAPI specification container.\n    def to_dict()  # CC=1\n    def to_json(indent)  # CC=1\n    def to_yaml()  # CC=1\nclass OpenAPIGenerator:  # Generate OpenAPI specs from detected endpoints.\n    def __init__(project_path)  # CC=3\n    def generate(title, version)  # CC=5\n    def _normalize_path(path)  # CC=2\n    def _build_operation(ep)  # CC=7\n    def _infer_tags(ep)  # CC=7\n    def _extract_parameters(ep)  # CC=11 ⚠\n    def _build_request_body(ep)  # CC=6\n    def _build_responses(ep)  # CC=3\n    def save(output_path, format)  # CC=3\nclass ContractTestGenerator:  # Generate contract tests from OpenAPI specs.\n    def __init__(spec)  # CC=3\n    def _load_spec(path)  # CC=2\n    def generate_contract_tests(output_file)  # CC=6\n    def _get_expected_status(method, operation)  # CC=4\n    def validate_response(endpoint, method, response)  # CC=4\n```",
+      "content": "```python\ndef generate_openapi_spec(project_path, output, format)  # CC=1, fan=3\ndef generate_contract_tests_from_spec(spec_path, output)  # CC=1, fan=2\nclass OpenAPISpec:  # OpenAPI specification container.\n    def to_dict()  # CC=1\n    def to_json(indent)  # CC=1\n    def to_yaml()  # CC=1\nclass OpenAPIGenerator:  # Generate OpenAPI specs from detected endpoints.\n    def __init__(project_path)  # CC=3\n    def generate(title, version)  # CC=5\n    def _normalize_path(path)  # CC=2\n    def _build_operation(ep)  # CC=7\n    def _infer_tags(ep)  # CC=7\n    def _extract_parameters(ep)  # CC=11 ⚠\n    def _build_request_body(ep)  # CC=6\n    def _build_responses(ep)  # CC=3\n    def save(output_path, format)  # CC=3\nclass ContractTestGenerator:  # Generate contract tests from OpenAPI specs.\n    def __init__(spec)  # CC=3\n    def _load_spec(path)  # CC=2\n    def generate_contract_tests(output_file)  # CC=6\n    def _get_expected_status(method, operation)  # CC=4\n    def validate_response(endpoint, method, response)  # CC=11 ⚠\n```",
       "level": 2
     },
     {
@@ -659,7 +659,7 @@
     {
       "name": "intent",
       "type": "intent",
-      "content": "TestQL with endpoint detection, OpenAPI, and SUMD generation",
+      "content": "TestQL with endpoint detection, OpenAPI, SUMD generation and SUMD parser",
       "level": 2
     }
   ]

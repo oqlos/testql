@@ -407,8 +407,22 @@ class ContractTestGenerator:
         if status_code not in responses:
             errors.append(f"Unexpected status code: {status_code}")
 
-        # TODO: Validate response schema
-        # TODO: Validate content-type
+        # Validate content-type
+        expected_content_types = ['application/json', 'application/json; charset=utf-8']
+        content_type = response.get('content_type', '')
+        if content_type and not any(ct in content_type for ct in expected_content_types):
+            errors.append(f"Unexpected content-type: {content_type}")
+
+        # Validate response schema exists
+        response_spec = responses.get(status_code, {})
+        if 'content' in response_spec:
+            content_spec = response_spec['content']
+            if 'application/json' in content_spec:
+                schema = content_spec['application/json'].get('schema')
+                if schema:
+                    response_body = response.get('body', {})
+                    if not isinstance(response_body, dict):
+                        errors.append("Response body is not a valid JSON object")
 
         return errors
 

@@ -389,13 +389,8 @@ class TestGenerator:
                 sections.append(f"API[{len(unique_routes[:25])}]{{method, endpoint, expected_status}}:")
                 for route in unique_routes[:25]:
                     expected = 200 if route['method'] == 'GET' else 201
-                    # Add comment with handler name if available
-                    handler = route.get('handler', '')
-                    summary = route.get('summary', '')
-                    comment = f"  # {handler}" if handler else ""
-                    if summary and summary != handler:
-                        comment += f" - {summary[:50]}"
-                    sections.append(f"  {route['method']}, {route['path']}, {expected}{comment}")
+                    # No inline comments in data rows - they break the table parser
+                    sections.append(f"  {route['method']}, {route['path']}, {expected}")
                 sections.append("")
 
         # GraphQL endpoints

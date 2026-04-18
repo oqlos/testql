@@ -1,6 +1,6 @@
 # TestQL — Interface Query Language for Testing
 
-TestQL with endpoint detection, OpenAPI, and SUMD generation
+TestQL with endpoint detection, OpenAPI, SUMD generation and SUMD parser
 
 ## Contents
 
@@ -23,7 +23,7 @@ TestQL with endpoint detection, OpenAPI, and SUMD generation
 ## Metadata
 
 - **name**: `testql`
-- **version**: `0.5.1`
+- **version**: `0.5.2`
 - **python_requires**: `>=3.10`
 - **license**: Apache-2.0
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -3322,7 +3322,7 @@ pipeline:
 ```yaml
 project:
   name: testql
-  version: 0.5.1
+  version: 0.5.2
   env: local
 ```
 
@@ -3808,7 +3808,7 @@ class ContractTestGenerator:  # Generate contract tests from OpenAPI specs.
     def _load_spec(path)  # CC=2
     def generate_contract_tests(output_file)  # CC=6
     def _get_expected_status(method, operation)  # CC=4
-    def validate_response(endpoint, method, response)  # CC=4
+    def validate_response(endpoint, method, response)  # CC=11 ⚠
 ```
 
 ### `testql.runner` (`testql/runner.py`)
@@ -4085,4 +4085,4 @@ def iql_list_tables() -> Response:  # Extract table names from an IQL file.
 
 ## Intent
 
-TestQL with endpoint detection, OpenAPI, and SUMD generation
+TestQL with endpoint detection, OpenAPI, SUMD generation and SUMD parser
