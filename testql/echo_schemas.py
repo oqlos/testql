@@ -29,8 +29,8 @@ class Entity:
 class Workflow:
     """Workflow from doql."""
     name: str
-    trigger: str
-    cmd: str
+    trigger: str = "manual"
+    cmd: str = ""
     intent: Optional[str] = None
     domain: Optional[str] = None
     description: Optional[str] = None

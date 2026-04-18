@@ -27,6 +27,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Parallel execution** support with `-j` flag
 - **Fail-fast mode** with `--fail-fast` flag
 
+## [0.4.1] - 2026-04-18
+
+### Docs
+- Update README.md
+
+### Test
+- Update testql/__init__.py
+- Update testql/echo_schemas.py
+
+### Other
+- Update VERSION
+
 ## [0.2.1] - 2026-04-18
 
 ### Docs
