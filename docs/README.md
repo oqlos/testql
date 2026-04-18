@@ -151,7 +151,7 @@ Content outside the markers is preserved when regenerating. Enable this with `sy
 ## Requirements
 
 - Python >= >=3.10
-- httpx >=0.27- click >=8.0- rich >=13.0- goal >=2.1.0- costs >=0.1.20- pfix >=0.1.60- websockets >=13.0
+- httpx >=0.27- click >=8.0- rich >=13.0- pyyaml >=6.0- goal >=2.1.0- costs >=0.1.20- pfix >=0.1.60- websockets >=13.0
 
 ## Contributing
 
