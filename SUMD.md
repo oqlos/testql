@@ -5,7 +5,6 @@ TestQL with endpoint detection, OpenAPI, and SUMD generation
 ## Contents
 
 - [Metadata](#metadata)
-- [Intent](#intent)
 - [Architecture](#architecture)
 - [Interfaces](#interfaces)
 - [Workflows](#workflows)
@@ -16,21 +15,19 @@ TestQL with endpoint detection, OpenAPI, and SUMD generation
 - [Environment Variables (`.env.example`)](#environment-variables-envexample)
 - [Release Management (`goal.yaml`)](#release-management-goalyaml)
 - [Code Analysis](#code-analysis)
+- [Source Map](#source-map)
+- [Intent](#intent)
 
 ## Metadata
 
 - **name**: `testql`
-- **version**: `0.5.0`
+- **version**: `0.5.1`
 - **python_requires**: `>=3.10`
 - **license**: Apache-2.0
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
 - **ecosystem**: SUMD + DOQL + testql + taskfile
 - **openapi_title**: testql API v1.0.0
 - **generated_from**: pyproject.toml, Taskfile.yml, testql(74), openapi(7 ep), app.doql.less, pyqual.yaml, goal.yaml, .env.example, src(12 mod), project/(1 analysis files)
-
-## Intent
-
-TestQL with endpoint detection, OpenAPI, and SUMD generation
 
 ## Architecture
 
@@ -3322,7 +3319,7 @@ pipeline:
 ```yaml
 project:
   name: testql
-  version: 0.5.0
+  version: 0.5.1
   env: local
 ```
 
@@ -3642,3 +3639,201 @@ D:
     TestTestTOONExpansion: test_api_expansion(0),test_encoder_expansion(0),test_config_expansion(0),test_navigate_expansion(0)
     TestIqlInterpreter: test_dry_run_api(0),test_set_get(0),test_testtoon_dry_run(0)
 ```
+
+## Source Map
+
+*Top 5 modules by symbol density — signatures for LLM orientation.*
+
+### `testql.endpoint_detector` (`testql/endpoint_detector.py`)
+
+```python
+def detect_endpoints(project_path)  # CC=1, fan=2
+class EndpointInfo:  # Standardized endpoint information.
+    def to_testql_api_call(base_url)  # CC=2
+    def _infer_expected_status()  # CC=1
+class ServiceInfo:  # Information about a service/application.
+class BaseEndpointDetector:  # Base class for endpoint detectors.
+    def __init__(project_path)  # CC=1
+    def detect()  # CC=3
+    def _find_files(pattern, exclude_dirs)  # CC=6
+class FastAPIDetector:  # Detect FastAPI endpoints using AST analysis.
+    def detect()  # CC=3
+    def _analyze_file(py_file)  # CC=7
+    def _detect_router_assignment(node, routers)  # CC=9
+    def _detect_app_assignment(node)  # CC=1
+    def _extract_include_router(node)  # CC=6
+    def _analyze_route_handler(node, py_file, content, routers)  # CC=4
+    def _extract_route_info(decorator)  # CC=6
+    def _get_router_prefix(decorator, routers)  # CC=6
+    def _extract_parameters(node)  # CC=4
+    def _get_annotation_name(annotation)  # CC=4
+    def _extract_docstring(node)  # CC=5
+class FlaskDetector:  # Detect Flask endpoints including Blueprints.
+    def detect()  # CC=3
+    def _analyze_flask_file(py_file)  # CC=4
+    def _detect_blueprint(node, blueprints)  # CC=9
+    def _analyze_flask_route(node, py_file, content, blueprints)  # CC=5
+    def _extract_flask_route_info(decorator, blueprints)  # CC=13 ⚠
+class DjangoDetector:  # Detect Django URL patterns.
+    def detect()  # CC=3
+    def _analyze_urls_py(urls_file)  # CC=3
+class ExpressDetector:  # Detect Express.js routes from JavaScript/TypeScript files.
+    def detect()  # CC=3
+    def _analyze_express_file(js_file)  # CC=4
+class OpenAPIDetector:  # Detect endpoints from OpenAPI/Swagger specifications.
+    def detect()  # CC=3
+    def _parse_spec(spec_file)  # CC=10 ⚠
+class TestEndpointDetector:  # Detect API calls in test files to infer endpoints.
+    def detect()  # CC=3
+    def _analyze_test_file(test_file)  # CC=6
+class GraphQLDetector:  # Detect GraphQL schemas and resolvers.
+    def detect()  # CC=3
+    def _analyze_schema(schema_file)  # CC=3
+    def _analyze_python_graphql(py_file)  # CC=4
+class WebSocketDetector:  # Detect WebSocket endpoints.
+    def detect()  # CC=3
+class ConfigEndpointDetector:  # Detect endpoints from configuration files.
+    def detect()  # CC=3
+    def _analyze_docker_compose(compose_file)  # CC=9
+    def _infer_protocol(port)  # CC=1
+class UnifiedEndpointDetector:  # Unified detector that runs all specialized detectors.
+    def __init__(project_path)  # CC=1
+    def detect_all()  # CC=4
+    def _deduplicate_endpoints(endpoints)  # CC=3
+    def get_endpoints_by_type(endpoint_type)  # CC=3
+    def get_endpoints_by_framework(framework)  # CC=3
+    def generate_testql_scenario(output_file)  # CC=16 ⚠
+```
+
+### `testql._base_fallback` (`testql/_base_fallback.py`)
+
+```python
+class StepStatus:
+class StepResult:
+class ScriptResult:
+    def passed()  # CC=3
+    def failed()  # CC=3
+    def summary()  # CC=2
+class VariableStore:  # Simple key-value store with interpolation support.
+    def __init__(initial)  # CC=1
+    def set(key, value)  # CC=1
+    def get(key, default)  # CC=1
+    def has(key)  # CC=1
+    def all()  # CC=1
+    def clear()  # CC=1
+    def interpolate(text)  # CC=1
+class InterpreterOutput:  # Collects interpreter output lines for display or testing.
+    def __init__(quiet)  # CC=1
+    def emit(msg)  # CC=2
+    def info(msg)  # CC=1
+    def ok(msg)  # CC=1
+    def fail(msg)  # CC=1
+    def warn(msg)  # CC=1
+    def error(msg)  # CC=1
+    def step(icon, msg)  # CC=1
+class BaseInterpreter:  # Abstract base for language interpreters.
+    def __init__(variables, quiet, bridge_url)  # CC=1
+    def parse(source, filename)  # CC=1
+    def execute(parsed)  # CC=1
+    def run(source, filename)  # CC=1
+    def run_file(path)  # CC=1
+    def strip_comments(lines)  # CC=3
+class EventBridge:  # Optional WebSocket bridge to DSL Event Server (port 8104).
+    def __init__(url)  # CC=1
+    def connect()  # CC=2
+    def disconnect()  # CC=3
+    def send_event(event_type, payload)  # CC=4
+    def connected()  # CC=1
+```
+
+### `testql.generator` (`testql/generator.py`)
+
+```python
+def generate_for_project(project_path)  # CC=1, fan=2
+def generate_for_workspace(workspace_path)  # CC=1, fan=3
+class TestPattern:  # Discovered test pattern from source code.
+class ProjectProfile:  # Analyzed project profile.
+class TestGenerator:  # Base class for test generators.
+    def __init__(project_path)  # CC=1
+    def _detect_project_type()  # CC=12 ⚠
+    def analyze()  # CC=1
+    def _scan_directory_structure()  # CC=8
+    def _analyze_python_tests()  # CC=12 ⚠
+    def _extract_test_pattern(node, content, class_name, source_file)  # CC=14 ⚠
+    def _analyze_config_files()  # CC=6
+    def _analyze_api_routes()  # CC=3
+    def _analyze_api_routes_fallback()  # CC=4
+    def _analyze_scenarios()  # CC=5
+    def generate_tests(output_dir)  # CC=12 ⚠
+    def _generate_api_tests(output_dir)  # CC=26 ⚠
+    def _generate_from_python_tests(output_dir)  # CC=12 ⚠
+    def _generate_from_scenarios(output_dir)  # CC=3
+    def _generate_api_integration_tests(output_dir)  # CC=1
+    def _generate_cli_tests(output_dir)  # CC=1
+    def _generate_lib_tests(output_dir)  # CC=1
+    def _generate_frontend_tests(output_dir)  # CC=1
+    def _generate_hardware_tests(output_dir)  # CC=1
+class MultiProjectTestGenerator:  # Generator that operates across multiple projects.
+    def __init__(workspace_path)  # CC=1
+    def discover_projects()  # CC=6
+    def analyze_all()  # CC=2
+    def generate_all()  # CC=2
+    def generate_cross_project_tests(output_dir)  # CC=3
+```
+
+### `testql.openapi_generator` (`testql/openapi_generator.py`)
+
+```python
+def generate_openapi_spec(project_path, output, format)  # CC=1, fan=3
+def generate_contract_tests_from_spec(spec_path, output)  # CC=1, fan=2
+class OpenAPISpec:  # OpenAPI specification container.
+    def to_dict()  # CC=1
+    def to_json(indent)  # CC=1
+    def to_yaml()  # CC=1
+class OpenAPIGenerator:  # Generate OpenAPI specs from detected endpoints.
+    def __init__(project_path)  # CC=3
+    def generate(title, version)  # CC=5
+    def _normalize_path(path)  # CC=2
+    def _build_operation(ep)  # CC=7
+    def _infer_tags(ep)  # CC=7
+    def _extract_parameters(ep)  # CC=11 ⚠
+    def _build_request_body(ep)  # CC=6
+    def _build_responses(ep)  # CC=3
+    def save(output_path, format)  # CC=3
+class ContractTestGenerator:  # Generate contract tests from OpenAPI specs.
+    def __init__(spec)  # CC=3
+    def _load_spec(path)  # CC=2
+    def generate_contract_tests(output_file)  # CC=6
+    def _get_expected_status(method, operation)  # CC=4
+    def validate_response(endpoint, method, response)  # CC=4
+```
+
+### `testql.runner` (`testql/runner.py`)
+
+```python
+def parse_line(line)  # CC=9, fan=8
+def parse_script(content)  # CC=3, fan=2
+def main()  # CC=10, fan=14 ⚠
+class DslCommand:
+class ExecutionResult:
+class DslCliExecutor:
+    def __init__(base_url, verbose)  # CC=1
+    def execute(cmd)  # CC=2
+    def _dispatch(cmd)  # CC=6
+    def cmd_api(cmd)  # CC=7
+    def cmd_wait(cmd)  # CC=1
+    def cmd_log(cmd)  # CC=2
+    def cmd_print(cmd)  # CC=2
+    def cmd_store(cmd)  # CC=2
+    def cmd_env(cmd)  # CC=2
+    def cmd_assert_status(cmd)  # CC=2
+    def cmd_assert_json(cmd)  # CC=12 ⚠
+    def cmd_set_header(cmd)  # CC=2
+    def cmd_set_base_url(cmd)  # CC=1
+    def run_script(content, stop_on_error)  # CC=11 ⚠
+    def _format_cmd(cmd)  # CC=2
+```
+
+## Intent
+
+TestQL with endpoint detection, OpenAPI, and SUMD generation
