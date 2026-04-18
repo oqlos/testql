@@ -1,6 +1,6 @@
 app {
   name: "testql";
-  version: "0.2.1";
+  version: "0.4.2";
 }
 
 interface[type="cli"] {
@@ -126,6 +126,12 @@ workflow[name="publish"] {
 workflow[name="help"] {
   trigger: "manual";
   step-1: run cmd=task --list;
+}
+
+workflow[name="analyze"] {
+  trigger: "manual";
+  step-1: run cmd=echo "🔬 Running project analysis...";
+  step-2: run cmd=testql analyze . --tools code2llm,redup,vallm;
 }
 
 deploy {

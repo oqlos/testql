@@ -2,6 +2,21 @@
 
 TestQL with endpoint detection, OpenAPI generation, and AI echo
 
+## Contents
+
+- [Metadata](#metadata)
+- [Intent](#intent)
+- [Architecture](#architecture)
+- [Interfaces](#interfaces)
+- [Workflows](#workflows)
+- [Quality Pipeline (`pyqual.yaml`)](#quality-pipeline-pyqualyaml)
+- [Configuration](#configuration)
+- [Dependencies](#dependencies)
+- [Deployment](#deployment)
+- [Environment Variables (`.env.example`)](#environment-variables-envexample)
+- [Release Management (`goal.yaml`)](#release-management-goalyaml)
+- [Code Analysis](#code-analysis)
+
 ## Metadata
 
 - **name**: `testql`
@@ -11,7 +26,7 @@ TestQL with endpoint detection, OpenAPI generation, and AI echo
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
 - **ecosystem**: SUMD + DOQL + testql + taskfile
 - **openapi_title**: testql API v1.0.0
-- **generated_from**: pyproject.toml, Taskfile.yml, testql(74), openapi(7 ep), app.doql.less, app.doql.css, pyqual.yaml, goal.yaml, .env.example, src(11 mod), project/(10 analysis files)
+- **generated_from**: pyproject.toml, Taskfile.yml, testql(74), openapi(7 ep), app.doql.less, pyqual.yaml, goal.yaml, .env.example, src(11 mod), project/(1 analysis files)
 
 ## Intent
 
@@ -23,14 +38,14 @@ TestQL with endpoint detection, OpenAPI generation, and AI echo
 SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (verification)
 ```
 
-### DOQL Application Declaration (`app.doql.less`, `app.doql.css`)
+### DOQL Application Declaration (`app.doql.less`)
 
-```less
+```less markpact:file path=app.doql.less
 // LESS format — define @variables here as needed
 
 app {
   name: testql;
-  version: 0.2.1;
+  version: 0.4.2;
 }
 
 interface[type="cli"] {
@@ -97,147 +112,6 @@ workflow[name="iql:shell"] {
 
 workflow[name="doql:adopt"] {
   trigger: manual;
-  step-1: run cmd=if ! command -v {{.DOQL_CMD}} >/dev/null 2>&1; then
-echo "⚠️  doql not installed. Install: pip install doql"
-exit 1
-fi;
-  step-2: run cmd={{.DOQL_CMD}} adopt {{.PWD}} --output app.doql.css --force;
-  step-3: run cmd={{.DOQL_CMD}} export --format less -o {{.DOQL_OUTPUT}};
-  step-4: run cmd=echo "✅ Project structure captured in {{.DOQL_OUTPUT}}";
-}
-
-workflow[name="doql:validate"] {
-  trigger: manual;
-  step-1: run cmd=if [ ! -f "{{.DOQL_OUTPUT}}" ]; then
-echo "❌ {{.DOQL_OUTPUT}} not found. Run: task doql:adopt"
-exit 1
-fi;
-  step-2: run cmd={{.DOQL_CMD}} validate;
-}
-
-workflow[name="doql:doctor"] {
-  trigger: manual;
-  step-1: run cmd={{.DOQL_CMD}} doctor;
-}
-
-workflow[name="doql:build"] {
-  trigger: manual;
-  step-1: run cmd=if [ ! -f "{{.DOQL_OUTPUT}}" ]; then
-echo "❌ {{.DOQL_OUTPUT}} not found. Run: task doql:adopt"
-exit 1
-fi;
-  step-2: run cmd=# Regenerate LESS from CSS if CSS exists
-if [ -f "app.doql.css" ]; then
-{{.DOQL_CMD}} export --format less -o {{.DOQL_OUTPUT}}
-fi;
-  step-3: run cmd={{.DOQL_CMD}} build app.doql.css --out build/;
-}
-
-workflow[name="docker:build"] {
-  trigger: manual;
-  step-1: run cmd=docker-compose build;
-}
-
-workflow[name="docker:up"] {
-  trigger: manual;
-  step-1: run cmd=docker-compose up -d;
-}
-
-workflow[name="docker:down"] {
-  trigger: manual;
-  step-1: run cmd=docker-compose down;
-}
-
-workflow[name="publish"] {
-  trigger: manual;
-  step-1: run cmd=twine upload dist/*;
-}
-
-workflow[name="help"] {
-  trigger: manual;
-  step-1: run cmd=task --list;
-}
-
-deploy {
-  target: docker-compose;
-}
-
-environment[name="local"] {
-  runtime: docker-compose;
-  env_file: .env;
-}
-```
-
-```css
-app {
-  name: "testql";
-  version: "0.2.1";
-}
-
-interface[type="cli"] {
-  framework: click;
-}
-interface[type="cli"] page[name="testql"] {
-
-}
-
-workflow[name="install"] {
-  trigger: "manual";
-  step-1: run cmd=pip install -e .[dev];
-}
-
-workflow[name="quality"] {
-  trigger: "manual";
-  step-1: run cmd=pyqual run;
-}
-
-workflow[name="quality:fix"] {
-  trigger: "manual";
-  step-1: run cmd=pyqual run --fix;
-}
-
-workflow[name="quality:report"] {
-  trigger: "manual";
-  step-1: run cmd=pyqual report;
-}
-
-workflow[name="test"] {
-  trigger: "manual";
-  step-1: run cmd=pytest -q;
-}
-
-workflow[name="lint"] {
-  trigger: "manual";
-  step-1: run cmd=ruff check .;
-}
-
-workflow[name="fmt"] {
-  trigger: "manual";
-  step-1: run cmd=ruff format .;
-}
-
-workflow[name="build"] {
-  trigger: "manual";
-  step-1: run cmd=python -m build;
-}
-
-workflow[name="clean"] {
-  trigger: "manual";
-  step-1: run cmd=rm -rf build/ dist/ *.egg-info;
-}
-
-workflow[name="iql:run"] {
-  trigger: "manual";
-  step-1: run cmd=testql run {{.CLI_ARGS}};
-}
-
-workflow[name="iql:shell"] {
-  trigger: "manual";
-  step-1: run cmd=testql shell;
-}
-
-workflow[name="doql:adopt"] {
-  trigger: "manual";
   step-1: run cmd=if ! command -v {{.DOQL_CMD}} >/dev/null 2>&1; then
   echo "⚠️  doql not installed. Install: pip install doql"
   exit 1
@@ -248,7 +122,7 @@ fi;
 }
 
 workflow[name="doql:validate"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=if [ ! -f "{{.DOQL_OUTPUT}}" ]; then
   echo "❌ {{.DOQL_OUTPUT}} not found. Run: task doql:adopt"
   exit 1
@@ -257,12 +131,12 @@ fi;
 }
 
 workflow[name="doql:doctor"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd={{.DOQL_CMD}} doctor;
 }
 
 workflow[name="doql:build"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=if [ ! -f "{{.DOQL_OUTPUT}}" ]; then
   echo "❌ {{.DOQL_OUTPUT}} not found. Run: task doql:adopt"
   exit 1
@@ -275,28 +149,34 @@ fi;
 }
 
 workflow[name="docker:build"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=docker-compose build;
 }
 
 workflow[name="docker:up"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=docker-compose up -d;
 }
 
 workflow[name="docker:down"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=docker-compose down;
 }
 
 workflow[name="publish"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=twine upload dist/*;
 }
 
 workflow[name="help"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=task --list;
+}
+
+workflow[name="analyze"] {
+  trigger: manual;
+  step-1: run cmd=echo "🔬 Running project analysis...";
+  step-2: run cmd=testql analyze . --tools code2llm,redup,vallm;
 }
 
 deploy {
@@ -305,7 +185,7 @@ deploy {
 
 environment[name="local"] {
   runtime: docker-compose;
-  env_file: ".env";
+  env_file: .env;
 }
 ```
 
@@ -331,7 +211,7 @@ environment[name="local"] {
 
 ### REST API (from `openapi.yaml`)
 
-```yaml
+```yaml markpact:file path=openapi.yaml
 components:
   schemas:
     Error:
@@ -513,7 +393,7 @@ servers:
 
 #### `testql/scenarios/generic/api-crud-template.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/generic/api-crud-template.testql.toon.yaml
 # SCENARIO: api-crud-template.testql.toon.yaml — generic CRUD test template
 # TYPE: api
 # VERSION: 1.0
@@ -532,7 +412,7 @@ API[3]{method, endpoint, status}:
 
 #### `testql/scenarios/c2004/smoke/api-health.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/c2004/smoke/api-health.testql.toon.yaml
 # SCENARIO: api-health.testql.toon.yaml — basic health check for c2004
 # TYPE: api
 # VERSION: 1.0
@@ -544,7 +424,7 @@ API[1]{method, endpoint, status, assert_key, assert_value}:
 
 #### `testql/scenarios/c2004/smoke/api-smoke.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/c2004/smoke/api-smoke.testql.toon.yaml
 # SCENARIO: api-smoke.testql.toon.yaml — smoke test for all main c2004 API endpoints
 # TYPE: api
 # VERSION: 1.0
@@ -560,7 +440,7 @@ API[5]{method, endpoint, status}:
 
 #### `testql/scenarios/generic/auth-login.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/generic/auth-login.testql.toon.yaml
 # SCENARIO: auth-login.testql.toon.yaml — generic authentication login test template
 # TYPE: api
 # VERSION: 1.0
@@ -576,7 +456,7 @@ API[1]{method, endpoint, status, assert_key, assert_value}:
 
 #### `testql/scenarios/diagnostics/backend-diagnostic.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/diagnostics/backend-diagnostic.testql.toon.yaml
 # SCENARIO: Backend Diagnostic Tests
 # TYPE: api
 # VERSION: 1.0
@@ -603,7 +483,7 @@ API[16]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/views/connect-config-feature-flags.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-config-feature-flags.testql.toon.yaml
 # SCENARIO: connect-config-feature-flags.testql.toon.yaml — Test: Konfiguracja > Feature Flags
 # TYPE: gui
 # VERSION: 1.0
@@ -629,7 +509,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-config-labels.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-config-labels.testql.toon.yaml
 # SCENARIO: connect-config-labels.testql.toon.yaml — Test: Konfiguracja > Etykiety
 # TYPE: gui
 # VERSION: 1.0
@@ -656,7 +536,7 @@ ENCODER[8]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-config-settings.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-config-settings.testql.toon.yaml
 # SCENARIO: connect-config-settings.testql.toon.yaml — Test: Konfiguracja > Ustawienia
 # TYPE: gui
 # VERSION: 1.0
@@ -682,7 +562,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-config-tables.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-config-tables.testql.toon.yaml
 # SCENARIO: connect-config-tables.testql.toon.yaml — Test: Konfiguracja > Tabele
 # TYPE: gui
 # VERSION: 1.0
@@ -708,7 +588,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-config-theme.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-config-theme.testql.toon.yaml
 # SCENARIO: connect-config-theme.testql.toon.yaml — Test: Konfiguracja > Motyw
 # TYPE: gui
 # VERSION: 1.0
@@ -734,7 +614,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-config-users.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-config-users.testql.toon.yaml
 # SCENARIO: connect-config-users.testql.toon.yaml — Test: Konfiguracja > Użytkownicy
 # TYPE: gui
 # VERSION: 1.0
@@ -760,7 +640,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-id-barcode.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-id-barcode.testql.toon.yaml
 # SCENARIO: connect-id-barcode.testql.toon.yaml — Test: Identyfikacja > Barcode
 # TYPE: gui
 # VERSION: 1.0
@@ -786,7 +666,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-id-list.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-id-list.testql.toon.yaml
 # SCENARIO: connect-id-list.testql.toon.yaml — Test: Identyfikacja > Lista użytkowników
 # TYPE: gui
 # VERSION: 1.0
@@ -813,7 +693,7 @@ ENCODER[8]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-id-manual.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-id-manual.testql.toon.yaml
 # SCENARIO: connect-id-manual.testql.toon.yaml — Test: Identyfikacja > Logowanie ręczne
 # TYPE: gui
 # VERSION: 1.0
@@ -839,7 +719,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-id-qr.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-id-qr.testql.toon.yaml
 # SCENARIO: connect-id-qr.testql.toon.yaml — Test: Identyfikacja > QR Code
 # TYPE: gui
 # VERSION: 1.0
@@ -878,7 +758,7 @@ ENCODER[8]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-id-rfid.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-id-rfid.testql.toon.yaml
 # SCENARIO: connect-id-rfid.testql.toon.yaml — Test: Identyfikacja > RFID
 # TYPE: gui
 # VERSION: 1.0
@@ -927,7 +807,7 @@ FLOW[1]{command, target, meta}:
 
 #### `testql/scenarios/tests/views/connect-manager-activities.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-manager-activities.testql.toon.yaml
 # SCENARIO: connect-manager-activities.testql.toon.yaml — Test: Manager > Czynności
 # TYPE: gui
 # VERSION: 1.0
@@ -954,7 +834,7 @@ ENCODER[8]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-manager-intervals.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-manager-intervals.testql.toon.yaml
 # SCENARIO: connect-manager-intervals.testql.toon.yaml — Test: Manager > Interwały
 # TYPE: gui
 # VERSION: 1.0
@@ -981,7 +861,7 @@ ENCODER[8]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-manager-library.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-manager-library.testql.toon.yaml
 # SCENARIO: connect-manager-library.testql.toon.yaml — Test: Manager > Biblioteka
 # TYPE: gui
 # VERSION: 1.0
@@ -1006,7 +886,7 @@ ENCODER[6]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-manager-scenarios.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-manager-scenarios.testql.toon.yaml
 # SCENARIO: connect-manager-scenarios.testql.toon.yaml — Test: Manager > Scenariusze
 # TYPE: gui
 # VERSION: 1.0
@@ -1048,7 +928,7 @@ FLOW[1]{command, target, meta}:
 
 #### `testql/scenarios/tests/views/connect-manager-test-types.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-manager-test-types.testql.toon.yaml
 # SCENARIO: connect-manager-test-types.testql.toon.yaml — Test: Manager > Rodzaj Testu
 # TYPE: gui
 # VERSION: 1.0
@@ -1073,7 +953,7 @@ ENCODER[6]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-reports-chart.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-reports-chart.testql.toon.yaml
 # SCENARIO: connect-reports-chart.testql.toon.yaml — Test: Raporty > Wykres
 # TYPE: gui
 # VERSION: 1.0
@@ -1120,7 +1000,7 @@ FLOW[1]{command, target, meta}:
 
 #### `testql/scenarios/tests/views/connect-reports-custom.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-reports-custom.testql.toon.yaml
 # SCENARIO: connect-reports-custom.testql.toon.yaml — Test: Raporty > Niestandardowy
 # TYPE: gui
 # VERSION: 1.0
@@ -1164,7 +1044,7 @@ FLOW[1]{command, target, meta}:
 
 #### `testql/scenarios/tests/views/connect-reports-filter.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-reports-filter.testql.toon.yaml
 # SCENARIO: connect-reports-filter.testql.toon.yaml — Test: Raporty > Filtruj
 # TYPE: gui
 # VERSION: 1.0
@@ -1190,7 +1070,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-reports-month.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-reports-month.testql.toon.yaml
 # SCENARIO: connect-reports-month.testql.toon.yaml — Test: Raporty > Miesiąc
 # TYPE: gui
 # VERSION: 1.0
@@ -1240,7 +1120,7 @@ FLOW[1]{command, target, meta}:
 
 #### `testql/scenarios/tests/views/connect-reports-quarter.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-reports-quarter.testql.toon.yaml
 # SCENARIO: connect-reports-quarter.testql.toon.yaml — Test: Raporty > Kwartał
 # TYPE: gui
 # VERSION: 1.0
@@ -1287,7 +1167,7 @@ FLOW[1]{command, target, meta}:
 
 #### `testql/scenarios/tests/views/connect-reports-week.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-reports-week.testql.toon.yaml
 # SCENARIO: connect-reports-week.testql.toon.yaml — Test: Raporty > Tydzień
 # TYPE: gui
 # VERSION: 1.0
@@ -1335,7 +1215,7 @@ FLOW[1]{command, target, meta}:
 
 #### `testql/scenarios/tests/views/connect-reports-year.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-reports-year.testql.toon.yaml
 # SCENARIO: connect-reports-year.testql.toon.yaml — Test: Raporty > Rok
 # TYPE: gui
 # VERSION: 1.0
@@ -1389,7 +1269,7 @@ FLOW[1]{command, target, meta}:
 
 #### `testql/scenarios/tests/views/connect-test-devices-search.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-test-devices-search.testql.toon.yaml
 # SCENARIO: connect-test-devices-search.testql.toon.yaml — Test: Testowanie > Wyszukiwanie urządzeń
 # TYPE: gui
 # VERSION: 1.0
@@ -1417,7 +1297,7 @@ ENCODER[9]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-test-full-test.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-test-full-test.testql.toon.yaml
 # SCENARIO: connect-test-full-test.testql.toon.yaml — Test: Testowanie > Test automatyczny
 # TYPE: gui
 # VERSION: 1.0
@@ -1443,7 +1323,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-test-protocols.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-test-protocols.testql.toon.yaml
 # SCENARIO: connect-test-protocols.testql.toon.yaml — Test: Testowanie > Raporty (protokoły)
 # TYPE: gui
 # VERSION: 1.0
@@ -1471,7 +1351,7 @@ ENCODER[9]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-test-scenario-view.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-test-scenario-view.testql.toon.yaml
 # SCENARIO: connect-test-scenario-view.testql.toon.yaml — Test: Testowanie > Scenariusz/Interwały
 # TYPE: gui
 # VERSION: 1.0
@@ -1496,7 +1376,7 @@ ENCODER[6]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-test-testing-barcode.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-test-testing-barcode.testql.toon.yaml
 # SCENARIO: connect-test-testing-barcode.testql.toon.yaml — Test: Testowanie > Barcode
 # TYPE: gui
 # VERSION: 1.0
@@ -1521,7 +1401,7 @@ ENCODER[6]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-test-testing-qr.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-test-testing-qr.testql.toon.yaml
 # SCENARIO: connect-test-testing-qr.testql.toon.yaml — Test: Testowanie > QR
 # TYPE: gui
 # VERSION: 1.0
@@ -1546,7 +1426,7 @@ ENCODER[6]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-test-testing-rfid.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-test-testing-rfid.testql.toon.yaml
 # SCENARIO: connect-test-testing-rfid.testql.toon.yaml — Test: Testowanie > RFID
 # TYPE: gui
 # VERSION: 1.0
@@ -1572,7 +1452,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-test-testing-search.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-test-testing-search.testql.toon.yaml
 # SCENARIO: connect-test-testing-search.testql.toon.yaml — Test: Testowanie > Wyszukiwanie testów
 # TYPE: gui
 # VERSION: 1.0
@@ -1600,7 +1480,7 @@ ENCODER[9]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-workshop-dispositions-search.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-workshop-dispositions-search.testql.toon.yaml
 # SCENARIO: connect-workshop-dispositions-search.testql.toon.yaml — Test: Warsztat > Dyspozycje
 # TYPE: gui
 # VERSION: 1.0
@@ -1626,7 +1506,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-workshop-requests-search.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-workshop-requests-search.testql.toon.yaml
 # SCENARIO: connect-workshop-requests-search.testql.toon.yaml — Test: Warsztat > Zgłoszenia
 # TYPE: gui
 # VERSION: 1.0
@@ -1653,7 +1533,7 @@ ENCODER[8]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-workshop-services-search.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-workshop-services-search.testql.toon.yaml
 # SCENARIO: connect-workshop-services-search.testql.toon.yaml — Test: Warsztat > Serwisy
 # TYPE: gui
 # VERSION: 1.0
@@ -1680,7 +1560,7 @@ ENCODER[8]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/views/connect-workshop-transport-search.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/connect-workshop-transport-search.testql.toon.yaml
 # SCENARIO: connect-workshop-transport-search.testql.toon.yaml — Test: Warsztat > Transport
 # TYPE: gui
 # VERSION: 1.0
@@ -1706,7 +1586,7 @@ ENCODER[7]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/c2004/gui/connect-workshop-transport.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/c2004/gui/connect-workshop-transport.testql.toon.yaml
 # SCENARIO: connect-workshop-transport.testql.toon.yaml — GUI test for workshop transport view
 # TYPE: gui
 # VERSION: 1.0
@@ -1727,7 +1607,7 @@ WAIT[1]{ms}:
 
 #### `testql/scenarios/diagnostics/create-todays-reports.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/diagnostics/create-todays-reports.testql.toon.yaml
 # SCENARIO: Create Today's Reports
 # TYPE: gui
 # VERSION: 1.0
@@ -1790,7 +1670,7 @@ FLOW[1]{command, target, meta}:
 
 #### `testql/scenarios/examples/device-identification.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/examples/device-identification.testql.toon.yaml
 # SCENARIO: Device Identification Example
 # TYPE: gui
 # VERSION: 1.0
@@ -1814,7 +1694,7 @@ NAVIGATE[1]{path, wait_ms}:
 
 #### `testql/scenarios/c2004/encoder/encoder-navigation.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/c2004/encoder/encoder-navigation.testql.toon.yaml
 # SCENARIO: encoder-navigation.testql.toon.yaml — encoder hardware navigation test
 # TYPE: gui
 # VERSION: 1.0
@@ -1834,7 +1714,7 @@ ENCODER[9]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/c2004/encoder/encoder-workshop.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/c2004/encoder/encoder-workshop.testql.toon.yaml
 # SCENARIO: encoder-workshop.testql.toon.yaml — encoder navigation in workshop context
 # TYPE: gui
 # VERSION: 1.0
@@ -1858,7 +1738,7 @@ ENCODER[9]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/diagnostics/full-diagnostic.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/diagnostics/full-diagnostic.testql.toon.yaml
 # SCENARIO: Full System Diagnostic - API + Routes + DSL
 # TYPE: gui
 # VERSION: 1.0
@@ -1929,7 +1809,7 @@ NAVIGATE[14]{path, wait_ms}:
 
 #### `testql/scenarios/diagnostics/generate-test-reports.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/diagnostics/generate-test-reports.testql.toon.yaml
 # SCENARIO: Generate Test Reports Scenario
 # TYPE: interaction
 # VERSION: 1.0
@@ -2083,7 +1963,7 @@ RECORD_STOP:
 
 #### `testql-scenarios/generated-api-integration.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql-scenarios/generated-api-integration.testql.toon.yaml
 # SCENARIO: API Integration Tests
 # TYPE: api
 # GENERATED: true
@@ -2106,7 +1986,7 @@ ASSERT[2]{field, operator, expected}:
 
 #### `testql-scenarios/generated-api-smoke.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql-scenarios/generated-api-smoke.testql.toon.yaml
 # SCENARIO: Auto-generated API Smoke Tests
 # TYPE: api
 # GENERATED: true
@@ -2138,7 +2018,7 @@ ASSERT[2]{field, operator, expected}:
 
 #### `testql-scenarios/generated-cli-tests.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql-scenarios/generated-cli-tests.testql.toon.yaml
 # SCENARIO: CLI Command Tests
 # TYPE: cli
 # GENERATED: true
@@ -2155,7 +2035,7 @@ LOG[3]{message}:
 
 #### `testql-scenarios/generated-from-pytests.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql-scenarios/generated-from-pytests.testql.toon.yaml
 # SCENARIO: Auto-generated from Python Tests
 # TYPE: integration
 # GENERATED: true
@@ -2175,7 +2055,7 @@ LOG[20]{message}:
 
 #### `testql/scenarios/generic/health-check.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/generic/health-check.testql.toon.yaml
 # SCENARIO: health-check.testql.toon.yaml — generic health check scenario
 # TYPE: api
 # VERSION: 1.0
@@ -2192,7 +2072,7 @@ API[2]{method, endpoint, status, assert_key, assert_value}:
 
 #### `testql/scenarios/examples/quick-navigation.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/examples/quick-navigation.testql.toon.yaml
 # SCENARIO: Quick Navigation Example
 # TYPE: gui
 # VERSION: 1.0
@@ -2208,7 +2088,7 @@ NAVIGATE[5]{path, wait_ms}:
 
 #### `testql/scenarios/recordings/recorded-test-session.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/recordings/recorded-test-session.testql.toon.yaml
 # SCENARIO: DSL Session Recording
 # TYPE: gui
 # VERSION: 1.0
@@ -2265,7 +2145,7 @@ NAVIGATE[1]{path, wait_ms}:
 
 #### `testql/scenarios/tests/reproduce-view.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/reproduce-view.testql.toon.yaml
 # SCENARIO: Reproduce View - Connect Manager with Scenario Selection
 # TYPE: gui
 # VERSION: 1.0
@@ -2296,7 +2176,7 @@ WAIT[1]{ms}:
 
 #### `testql/scenarios/tests/views/run-all-views.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/views/run-all-views.testql.toon.yaml
 # SCENARIO: run-all-views.testql.toon.yaml — Master runner for all per-view IQL tests
 # TYPE: api
 # VERSION: 1.0
@@ -2413,7 +2293,7 @@ INCLUDE[1]{file}:
 
 #### `testql/scenarios/tests/run-mask-test-protocol.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/run-mask-test-protocol.testql.toon.yaml
 # SCENARIO: =============================================================================
 # TYPE: api
 # VERSION: 1.0
@@ -2429,7 +2309,7 @@ WAIT[1]{ms}:
 
 #### `testql/scenarios/recordings/session-recording.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/recordings/session-recording.testql.toon.yaml
 # SCENARIO: Session Recording Example
 # TYPE: interaction
 # VERSION: 1.0
@@ -2478,7 +2358,7 @@ RECORD_STOP:
 
 #### `testql/scenarios/tests/test-api.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/test-api.testql.toon.yaml
 # SCENARIO: Example DSL Script - API Testing
 # TYPE: api
 # VERSION: 1.0
@@ -2500,7 +2380,7 @@ API[1]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-app-lifecycle.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/test-app-lifecycle.testql.toon.yaml
 # SCENARIO: DSL Script - Application Lifecycle Test
 # TYPE: api
 # VERSION: 1.0
@@ -2534,7 +2414,7 @@ API[2]{method, endpoint, status}:
 
 #### `testql/scenarios/examples/test-device-flow.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/examples/test-device-flow.testql.toon.yaml
 # SCENARIO: DSL Example: Complete Device Test Flow
 # TYPE: interaction
 # VERSION: 1.0
@@ -2614,7 +2494,7 @@ RECORD_STOP:
 
 #### `testql/scenarios/tests/test-devices-crud.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/test-devices-crud.testql.toon.yaml
 # SCENARIO: Example DSL Script - Devices CRUD Operations
 # TYPE: api
 # VERSION: 1.0
@@ -2629,7 +2509,7 @@ API[4]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-dsl-objects.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/test-dsl-objects.testql.toon.yaml
 # SCENARIO: Example DSL Script - DSL Objects Test
 # TYPE: api
 # VERSION: 1.0
@@ -2646,7 +2526,7 @@ API[6]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-encoder.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/test-encoder.testql.toon.yaml
 # SCENARIO: test-encoder.testql.toon.yaml — Encoder navigation tests via IQL
 # TYPE: gui
 # VERSION: 1.0
@@ -2692,7 +2572,7 @@ ENCODER[31]{action, target, value, wait_ms}:
 
 #### `testql/scenarios/tests/test-gui-all.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/test-gui-all.testql.toon.yaml
 # SCENARIO: test-gui-all.testql.toon.yaml — Master GUI test suite — runs all module GUI tests
 # TYPE: api
 # VERSION: 1.0
@@ -2723,7 +2603,7 @@ INCLUDE[1]{file}:
 
 #### `testql/scenarios/tests/test-gui-connect-config.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/test-gui-connect-config.testql.toon.yaml
 # SCENARIO: test-gui-connect-config.testql.toon.yaml — GUI tests for Connect Config module
 # TYPE: gui
 # VERSION: 1.0
@@ -2778,7 +2658,7 @@ API[2]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-gui-connect-id.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/test-gui-connect-id.testql.toon.yaml
 # SCENARIO: test-gui-connect-id.testql.toon.yaml — GUI tests for Connect ID module
 # TYPE: gui
 # VERSION: 1.0
@@ -2853,7 +2733,7 @@ API[1]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-gui-connect-manager.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/test-gui-connect-manager.testql.toon.yaml
 # SCENARIO: test-gui-connect-manager.testql.toon.yaml — GUI tests for Connect Manager module
 # TYPE: gui
 # VERSION: 1.0
@@ -2905,7 +2785,7 @@ API[3]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-gui-connect-reports.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/test-gui-connect-reports.testql.toon.yaml
 # SCENARIO: test-gui-connect-reports.testql.toon.yaml — GUI tests for Connect Reports module
 # TYPE: gui
 # VERSION: 1.0
@@ -2958,7 +2838,7 @@ API[1]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-gui-connect-test.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/test-gui-connect-test.testql.toon.yaml
 # SCENARIO: test-gui-connect-test.testql.toon.yaml — GUI tests for Connect Test module
 # TYPE: gui
 # VERSION: 1.0
@@ -3024,7 +2904,7 @@ API[3]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-gui-connect-workshop.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/test-gui-connect-workshop.testql.toon.yaml
 # SCENARIO: test-gui-connect-workshop.testql.toon.yaml — GUI tests for Connect Workshop module
 # TYPE: gui
 # VERSION: 1.0
@@ -3094,7 +2974,7 @@ API[1]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-mixed-workflow.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/test-mixed-workflow.testql.toon.yaml
 # SCENARIO: DSL Mixed Workflow Example
 # TYPE: e2e
 # VERSION: 1.0
@@ -3139,7 +3019,7 @@ API[2]{method, endpoint, status}:
 
 #### `testql/scenarios/tests/test-protocol-flow.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/test-protocol-flow.testql.toon.yaml
 # SCENARIO: Example DSL Script - Protocol Flow Test (Read-Only)
 # TYPE: api
 # VERSION: 1.0
@@ -3168,7 +3048,7 @@ FLOW[4]{command, target, meta}:
 
 #### `testql/scenarios/tests/test-ui-navigation.testql.toon.yaml`
 
-```toon
+```toon markpact:file path=testql/scenarios/tests/test-ui-navigation.testql.toon.yaml
 # SCENARIO: Example DSL Script - API Endpoints Test
 # TYPE: api
 # VERSION: 1.0
@@ -3188,106 +3068,181 @@ API[7]{method, endpoint, status}:
 
 ### Taskfile Tasks (`Taskfile.yml`)
 
-```yaml
+```yaml markpact:file path=Taskfile.yml
+# Taskfile.yml — testql (Test Query Language) project runner
+# https://taskfile.dev
+
+version: "3"
+
+vars:
+  APP_NAME: testql
+  DOQL_OUTPUT: app.doql.less
+  DOQL_CMD: "{{if eq OS \"windows\"}}doql.exe{{else}}doql{{end}}"
+
+env:
+  PYTHONPATH: "{{.PWD}}"
+
 tasks:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Development
+  # ─────────────────────────────────────────────────────────────────────────────
+
   install:
-    desc: "Install Python dependencies (editable)"
+    desc: Install Python dependencies (editable)
     cmds:
       - pip install -e .[dev]
+
   quality:
-    desc: "Run pyqual quality pipeline (test + lint + format check)"
+    desc: Run pyqual quality pipeline (test + lint + format check)
     cmds:
       - pyqual run
+
   quality:fix:
-    desc: "Run pyqual with auto-fix (format + lint fix)"
+    desc: Run pyqual with auto-fix (format + lint fix)
     cmds:
       - pyqual run --fix
+
   quality:report:
-    desc: "Generate pyqual quality report"
+    desc: Generate pyqual quality report
     cmds:
       - pyqual report
+
   test:
-    desc: "Run pytest suite"
+    desc: Run pytest suite
     cmds:
       - pytest -q
+
   lint:
-    desc: "Run ruff lint check"
+    desc: Run ruff lint check
     cmds:
       - ruff check .
+
   fmt:
-    desc: "Auto-format with ruff"
+    desc: Auto-format with ruff
     cmds:
       - ruff format .
+
   build:
-    desc: "Build wheel + sdist"
+    desc: Build wheel + sdist
     cmds:
       - python -m build
+
   clean:
-    desc: "Remove build artefacts"
+    desc: Remove build artefacts
     cmds:
       - rm -rf build/ dist/ *.egg-info
+
   all:
-    desc: "Run install, quality check, test"
+    desc: Run install, quality check, test
+    cmds:
+      - task: install
+      - task: quality
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # IQL / Test Execution
+  # ─────────────────────────────────────────────────────────────────────────────
+
   iql:run:
-    desc: "Run IQL scenario file"
+    desc: Run IQL scenario file
     cmds:
       - testql run {{.CLI_ARGS}}
+
   iql:shell:
-    desc: "Start IQL interactive shell"
+    desc: Start IQL interactive shell
     cmds:
       - testql shell
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Doql Integration
+  # ─────────────────────────────────────────────────────────────────────────────
+
   doql:adopt:
-    desc: "Reverse-engineer testql project structure"
+    desc: Reverse-engineer testql project structure
     cmds:
-      - if ! command -v {{.DOQL_CMD}} >/dev/null 2>&1; then
-  echo "⚠️  doql not installed. Install: pip install doql"
-  exit 1
-fi
+      - |
+        if ! command -v {{.DOQL_CMD}} >/dev/null 2>&1; then
+          echo "⚠️  doql not installed. Install: pip install doql"
+          exit 1
+        fi
+      - "{{.DOQL_CMD}} adopt {{.PWD}} --output app.doql.css --force"
+      - "{{.DOQL_CMD}} export --format less -o {{.DOQL_OUTPUT}}"
+      - echo "✅ Project structure captured in {{.DOQL_OUTPUT}}"
+
   doql:validate:
-    desc: "Validate app.doql.less syntax"
+    desc: Validate app.doql.less syntax
     cmds:
-      - if [ ! -f "{{.DOQL_OUTPUT}}" ]; then
-  echo "❌ {{.DOQL_OUTPUT}} not found. Run: task doql:adopt"
-  exit 1
-fi
+      - |
+        if [ ! -f "{{.DOQL_OUTPUT}}" ]; then
+          echo "❌ {{.DOQL_OUTPUT}} not found. Run: task doql:adopt"
+          exit 1
+        fi
+      - "{{.DOQL_CMD}} validate"
+
   doql:doctor:
-    desc: "Run doql health checks"
+    desc: Run doql health checks
     cmds:
-      - {{.DOQL_CMD}} doctor
+      - "{{.DOQL_CMD}} doctor"
+
   doql:build:
-    desc: "Generate code from app.doql.less"
+    desc: Generate code from app.doql.less
     cmds:
-      - if [ ! -f "{{.DOQL_OUTPUT}}" ]; then
-  echo "❌ {{.DOQL_OUTPUT}} not found. Run: task doql:adopt"
-  exit 1
-fi
+      - |
+        if [ ! -f "{{.DOQL_OUTPUT}}" ]; then
+          echo "❌ {{.DOQL_OUTPUT}} not found. Run: task doql:adopt"
+          exit 1
+        fi
+      - |
+        # Regenerate LESS from CSS if CSS exists
+        if [ -f "app.doql.css" ]; then
+          {{.DOQL_CMD}} export --format less -o {{.DOQL_OUTPUT}}
+        fi
+      - "{{.DOQL_CMD}} build app.doql.css --out build/"
+
   analyze:
-    desc: "Full doql analysis (adopt + validate + doctor)"
+    desc: Full doql analysis (adopt + validate + doctor)
+    cmds:
+      - task: doql:adopt
+      - task: doql:validate
+      - task: doql:doctor
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Docker & Deployment
+  # ─────────────────────────────────────────────────────────────────────────────
+
   docker:build:
-    desc: "Build Docker image via docker-compose"
+    desc: Build Docker image via docker-compose
     cmds:
       - docker-compose build
+
   docker:up:
-    desc: "Start Docker containers"
+    desc: Start Docker containers
     cmds:
       - docker-compose up -d
+
   docker:down:
-    desc: "Stop Docker containers"
+    desc: Stop Docker containers
     cmds:
       - docker-compose down
+
   publish:
-    desc: "Build and publish package"
+    desc: Build and publish package
     cmds:
+      - task: build
       - twine upload dist/*
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Utility
+  # ─────────────────────────────────────────────────────────────────────────────
+
   help:
-    desc: "Show available tasks"
+    desc: Show available tasks
     cmds:
       - task --list
 ```
 
 ## Quality Pipeline (`pyqual.yaml`)
 
-```yaml
+```yaml markpact:file path=pyqual.yaml
 pipeline:
   name: quality-loop
 
@@ -3374,27 +3329,31 @@ project:
 
 ### Runtime
 
-- `httpx>=0.27`
-- `click>=8.0`
-- `rich>=13.0`
-- `pyyaml>=6.0`
-- `goal>=2.1.0`
-- `costs>=0.1.20`
-- `pfix>=0.1.60`
-- `websockets>=13.0`
+```text markpact:deps python
+httpx>=0.27
+click>=8.0
+rich>=13.0
+pyyaml>=6.0
+goal>=2.1.0
+costs>=0.1.20
+pfix>=0.1.60
+websockets>=13.0
+```
 
 ### Development
 
-- `pytest`
-- `pytest-asyncio`
-- `fastapi`
-- `goal>=2.1.0`
-- `costs>=0.1.20`
-- `pfix>=0.1.60`
+```text markpact:deps python scope=dev
+pytest
+pytest-asyncio
+fastapi
+goal>=2.1.0
+costs>=0.1.20
+pfix>=0.1.60
+```
 
 ## Deployment
 
-```bash
+```bash markpact:run
 pip install testql
 
 # development install
@@ -3427,30 +3386,9 @@ pip install -e .[dev]
 
 ## Code Analysis
 
-### `project/analysis.toon.yaml`
-
-```toon
-# code2llm | 0f 0L | unknown | 2026-04-18
-# CC̄=0.0 | critical:0/0 | dups:0 | cycles:0
-
-HEALTH[0]: ok
-
-REFACTOR[0]: none needed
-
-PIPELINES[0]: none detected
-
-LAYERS:
-
-COUPLING: no cross-package imports detected
-
-EXTERNAL:
-  validation: run `vallm batch .` → validation.toon
-  duplication: run `redup scan .` → duplication.toon
-```
-
 ### `project/project.toon.yaml`
 
-```toon
+```toon markpact:file path=project/project.toon.yaml
 # testql | 0 func | 0f | 4929L | unknown | 2026-04-18
 
 HEALTH:
@@ -3461,210 +3399,3 @@ MODULES[0] (top by size):
 EVOLUTION:
   2026-04-18 CC̄=0.0 crit=0 4929L // Automated analysis
 ```
-
-### `project/evolution.toon.yaml`
-
-```toon
-# code2llm/evolution | 0 func | 1f | 2026-04-18
-
-NEXT[2] (ranked by impact):
-  [1] !! SPLIT           testql/cli.py
-      WHY: 887L, 0 classes, max CC=0
-      EFFORT: ~4h  IMPACT: 0
-
-  [2] !! SPLIT           testql/generator.py
-      WHY: 645L, 0 classes, max CC=0
-      EFFORT: ~4h  IMPACT: 0
-
-
-RISKS[2]:
-  ⚠ Splitting testql/cli.py may break 0 import paths
-  ⚠ Splitting testql/generator.py may break 0 import paths
-
-METRICS-TARGET:
-  CC̄:          0.0 → ≤0.0
-  max-CC:      0 → ≤0
-  god-modules: 2 → 0
-  high-CC(≥15): 0 → ≤0
-  hub-types:   0 → ≤0
-
-PATTERNS (language parser shared logic):
-  _extract_declarations() in base.py — unified extraction for:
-    - TypeScript: interfaces, types, classes, functions, arrow funcs
-    - PHP: namespaces, traits, classes, functions, includes
-    - Ruby: modules, classes, methods, requires
-    - C++: classes, structs, functions, #includes
-    - C#: classes, interfaces, methods, usings
-    - Java: classes, interfaces, methods, imports
-    - Go: packages, functions, structs
-    - Rust: modules, functions, traits, use statements
-
-  Shared regex patterns per language:
-    - import: language-specific import/require/using patterns
-    - class: class/struct/trait declarations with inheritance
-    - function: function/method signatures with visibility
-    - brace_tracking: for C-family languages ({ })
-    - end_keyword_tracking: for Ruby (module/class/def...end)
-
-  Benefits:
-    - Consistent extraction logic across all languages
-    - Reduced code duplication (~70% reduction in parser LOC)
-    - Easier maintenance: fix once, apply everywhere
-    - Standardized FunctionInfo/ClassInfo models
-
-HISTORY:
-  prev CC̄=0.0 → now CC̄=0.0
-```
-
-### `project/map.toon.yaml`
-
-```toon
-# testql | 0f 0L | unknown | 2026-04-18
-# stats: 0 func | 0 cls | 0 mod | CC̄=0.0 | critical:0 | cycles:0
-# alerts[0]: none
-# hotspots[0]: none
-# evolution: CC̄ 0.0→0.0 (flat 0.0)
-# Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[0]:
-D:
-```
-
-### `project/duplication.toon.yaml`
-
-```toon
-# redup/duplication | 0 groups | 0f 0L | 2026-04-18
-
-SUMMARY:
-  files_scanned: 0
-  total_lines:   0
-  dup_groups:    0
-  dup_fragments: 0
-  saved_lines:   0
-  scan_ms:       4002
-```
-
-### `project/validation.toon.yaml`
-
-```toon
-# vallm batch | 65f | 42✓ 5⚠ 0✗ | 2026-04-18
-
-SUMMARY:
-  scanned: 65  passed: 42 (64.6%)  warnings: 5  errors: 0  unsupported: 23
-
-WARNINGS[5]{path,score}:
-  testql/cli.py,0.80
-    issues[12]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,analyze has cyclomatic complexity 16 (max: 15),125
-      complexity.cyclomatic,warning,endpoints has cyclomatic complexity 21 (max: 15),201
-      complexity.cyclomatic,warning,suite has cyclomatic complexity 47 (max: 15),671
-      complexity.cyclomatic,warning,list has cyclomatic complexity 21 (max: 15),862
-      complexity.cyclomatic,warning,echo has cyclomatic complexity 16 (max: 15),941
-      complexity.maintainability,warning,Low maintainability index: 8.8 (threshold: 20),
-      complexity.lizard_cc,warning,analyze: CC=16 exceeds limit 15,125
-      complexity.lizard_cc,warning,endpoints: CC=21 exceeds limit 15,201
-      complexity.lizard_cc,warning,suite: CC=43 exceeds limit 15,671
-      complexity.lizard_length,warning,suite: 120 lines exceeds limit 100,671
-      complexity.lizard_cc,warning,list: CC=21 exceeds limit 15,862
-      complexity.lizard_cc,warning,echo: CC=16 exceeds limit 15,941
-  testql/commands/echo.py,0.93
-    issues[4]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,parse_doql_less has cyclomatic complexity 29 (max: 15),14
-      complexity.cyclomatic,warning,format_text_output has cyclomatic complexity 19 (max: 15),175
-      complexity.lizard_cc,warning,parse_doql_less: CC=29 exceeds limit 15,14
-      complexity.lizard_cc,warning,format_text_output: CC=19 exceeds limit 15,175
-  testql/interpreter/_converter.py,0.93
-    issues[3]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,convert_iql_to_testtoon has cyclomatic complexity 66 (max: 15),100
-      complexity.lizard_cc,warning,convert_iql_to_testtoon: CC=66 exceeds limit 15,100
-      complexity.lizard_length,warning,convert_iql_to_testtoon: 280 lines exceeds limit 100,100
-  testql/endpoint_detector.py,0.96
-    issues[2]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,generate_testql_scenario has cyclomatic complexity 16 (max: 15),768
-      complexity.maintainability,warning,Low maintainability index: 6.6 (threshold: 20),
-  testql/generator.py,0.96
-    issues[3]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,_generate_api_tests has cyclomatic complexity 26 (max: 15),342
-      complexity.maintainability,warning,Low maintainability index: 14.4 (threshold: 20),
-      complexity.lizard_cc,warning,_generate_api_tests: CC=26 exceeds limit 15,342
-
-UNSUPPORTED[4]{bucket,count}:
-  *.md,8
-  *.txt,1
-  *.yml,2
-  other,12
-```
-
-### `project/compact_flow.mmd`
-
-```mermaid
-flowchart TD
-```
-
-### `project/calls.mmd`
-
-```mermaid
-flowchart LR
-```
-
-### `project/flow.mmd`
-
-```mermaid
-flowchart TD
-
-    %% Entry points (blue)
-    classDef entry fill:#4dabf7,stroke:#1971c2,color:#fff
-```
-
-### `project/context.md`
-
-# System Architecture Analysis
-
-## Overview
-
-- **Project**: /home/tom/github/oqlos/testql
-- **Primary Language**: unknown
-- **Languages**: 
-- **Analysis Mode**: static
-- **Total Functions**: 0
-- **Total Classes**: 0
-- **Modules**: 0
-- **Entry Points**: 0
-
-## Architecture by Module
-
-## Key Entry Points
-
-Main execution flows into the system:
-
-## Process Flows
-
-Key execution flows identified:
-
-## Data Transformation Functions
-
-Key functions that process and transform data:
-
-## Public API Surface
-
-Functions exposed as public API (no underscore prefix):
-
-
-## System Interactions
-
-How components interact:
-
-```mermaid
-graph TD
-```
-
-## Reverse Engineering Guidelines
-
-1. **Entry Points**: Start analysis from the entry points listed above
-2. **Core Logic**: Focus on classes with many methods
-3. **Data Flow**: Follow data transformation functions
-4. **Process Flows**: Use the flow diagrams for execution paths
-5. **API Surface**: Public API functions reveal the interface
-
-## Context for LLM
-
-Maintain the identified architectural patterns and public API surface when suggesting changes.
