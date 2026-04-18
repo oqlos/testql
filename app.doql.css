@@ -88,6 +88,26 @@ fi;
   step-3: run cmd={{.DOQL_CMD}} build app.doql.css --out build/;
 }
 
+workflow[name="docker:build"] {
+  trigger: "manual";
+  step-1: run cmd=docker-compose build;
+}
+
+workflow[name="docker:up"] {
+  trigger: "manual";
+  step-1: run cmd=docker-compose up -d;
+}
+
+workflow[name="docker:down"] {
+  trigger: "manual";
+  step-1: run cmd=docker-compose down;
+}
+
+workflow[name="publish"] {
+  trigger: "manual";
+  step-1: run cmd=twine upload dist/*;
+}
+
 workflow[name="help"] {
   trigger: "manual";
   step-1: run cmd=task --list;

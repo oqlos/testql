@@ -21,20 +21,35 @@ tasks:
     cmds:
       - pip install -e .[dev]
 
-  test:
-    desc: Run pytest suite
+  quality:
+    desc: Run pyqual quality pipeline (test + lint + format check)
     cmds:
-      - pytest -q
+      - pyqual run
+
+  quality:fix:
+    desc: Run pyqual with auto-fix (format + lint fix)
+    cmds:
+      - pyqual run --fix
+
+  quality:report:
+    desc: Generate pyqual quality report
+    cmds:
+      - pyqual report
+
+  test:
+    desc: Run pytest suite via pyqual
+    cmds:
+      - pyqual run --stage test
 
   lint:
-    desc: Run ruff lint check
+    desc: Run ruff lint check via pyqual
     cmds:
-      - ruff check .
+      - pyqual run --stage lint
 
   fmt:
-    desc: Auto-format with ruff
+    desc: Auto-format with ruff via pyqual
     cmds:
-      - ruff format .
+      - pyqual run --stage format --fix
 
   build:
     desc: Build wheel + sdist
@@ -47,11 +62,10 @@ tasks:
       - rm -rf build/ dist/ *.egg-info
 
   all:
-    desc: Run install, lint, test
+    desc: Run install, quality check, test
     cmds:
       - task: install
-      - task: lint
-      - task: test
+      - task: quality
 
   # ─────────────────────────────────────────────────────────────────────────────
   # IQL / Test Execution
@@ -119,6 +133,31 @@ tasks:
       - task: doql:adopt
       - task: doql:validate
       - task: doql:doctor
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Docker & Deployment
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  docker:build:
+    desc: Build Docker image via docker-compose
+    cmds:
+      - docker-compose build
+
+  docker:up:
+    desc: Start Docker containers
+    cmds:
+      - docker-compose up -d
+
+  docker:down:
+    desc: Stop Docker containers
+    cmds:
+      - docker-compose down
+
+  publish:
+    desc: Build and publish package
+    cmds:
+      - task: build
+      - twine upload dist/*
 
   # ─────────────────────────────────────────────────────────────────────────────
   # Utility

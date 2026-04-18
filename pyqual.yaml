@@ -40,8 +40,18 @@ pipeline:
       when: any_stage_fail
       timeout: 1800
 
+    - name: security
+      tool: bandit
+      optional: true
+      timeout: 120
+
+    - name: typecheck
+      tool: mypy
+      timeout: 300
+
     - name: test
       tool: pytest
+      timeout: 600
 
     - name: push
       tool: git-push            # built-in: git add + commit + push

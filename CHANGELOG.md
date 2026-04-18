@@ -27,6 +27,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Parallel execution** support with `-j` flag
 - **Fail-fast mode** with `--fail-fast` flag
 
+## [0.2.1] - 2026-04-18
+
+### Docs
+- Update README.md
+
+### Test
+- Update testql/__init__.py
+
+### Other
+- Update Taskfile.yml
+- Update VERSION
+- Update app.doql.css
+- Update app.doql.less
+- Update app.doql.sass
+- Update project/duplication.toon.yaml
+- Update project/evolution.toon.yaml
+- Update project/index.html
+- Update project/map.toon.yaml
+- Update project/project.toon.yaml
+- ... and 3 more files
+
 ## [0.1.1] - 2026-04-15
 
 ### Docs

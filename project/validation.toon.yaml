@@ -6,12 +6,12 @@ SUMMARY:
 WARNINGS[3]{path,score}:
   testql/cli.py,0.90
     issues[6]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,suite has cyclomatic complexity 47 (max: 15),526
-      complexity.cyclomatic,warning,list has cyclomatic complexity 24 (max: 15),716
-      complexity.maintainability,warning,Low maintainability index: 16.8 (threshold: 20),
-      complexity.lizard_cc,warning,suite: CC=43 exceeds limit 15,526
-      complexity.lizard_length,warning,suite: 119 lines exceeds limit 100,526
-      complexity.lizard_cc,warning,list: CC=24 exceeds limit 15,716
+      complexity.cyclomatic,warning,suite has cyclomatic complexity 47 (max: 15),524
+      complexity.cyclomatic,warning,list has cyclomatic complexity 24 (max: 15),715
+      complexity.maintainability,warning,Low maintainability index: 17.5 (threshold: 20),
+      complexity.lizard_cc,warning,suite: CC=43 exceeds limit 15,524
+      complexity.lizard_length,warning,suite: 120 lines exceeds limit 100,524
+      complexity.lizard_cc,warning,list: CC=24 exceeds limit 15,715
   testql/interpreter/_converter.py,0.93
     issues[3]{rule,severity,message,line}:
       complexity.cyclomatic,warning,convert_iql_to_testtoon has cyclomatic complexity 66 (max: 15),100
@@ -19,7 +19,7 @@ WARNINGS[3]{path,score}:
       complexity.lizard_length,warning,convert_iql_to_testtoon: 280 lines exceeds limit 100,100
   testql/generator.py,0.98
     issues[1]{rule,severity,message,line}:
-      complexity.maintainability,warning,Low maintainability index: 17.8 (threshold: 20),
+      complexity.maintainability,warning,Low maintainability index: 17.9 (threshold: 20),
 
 UNSUPPORTED[4]{bucket,count}:
   *.md,7
