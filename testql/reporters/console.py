@@ -31,7 +31,7 @@ def report_console(result: ScriptResult) -> str:
         f"{result.failed} failed ({result.duration_ms:.0f}ms)"
     )
     if result.errors:
-        lines.append(f"  Errors:")
+        lines.append("  Errors:")
         for err in result.errors:
             lines.append(f"    • {err}")
     lines.append("")

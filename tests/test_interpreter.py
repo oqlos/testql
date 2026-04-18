@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from testql.base import StepStatus
 from testql.interpreter import (
     IqlInterpreter,
     parse_iql,

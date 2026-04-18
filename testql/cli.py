@@ -126,7 +126,6 @@ def analyze(path: str) -> None:
     """Analyze project structure and show testability report."""
     from testql.generator import TestGenerator
     from pathlib import Path
-    import json
 
     target_path = Path(path)
     gen = TestGenerator(target_path)
@@ -135,7 +134,7 @@ def analyze(path: str) -> None:
     click.echo(f"\n📁 Project: {profile.name}")
     click.echo(f"📂 Path: {profile.root_path}")
     click.echo(f"🔧 Type: {profile.project_type}")
-    click.echo(f"\n📊 Discovered Files:")
+    click.echo("\n📊 Discovered Files:")
 
     for category, files in sorted(profile.discovered_files.items()):
         click.echo(f"  • {category}: {len(files)} files")
@@ -168,7 +167,6 @@ def analyze(path: str) -> None:
 def init(path: str, name: str | None, project_type: str) -> None:
     """Initialize TestQL project with templates and config."""
     from pathlib import Path
-    import os
 
     target_path = Path(path).resolve()
     project_name = name or target_path.name
@@ -282,10 +280,10 @@ LOG "Encoder test passed"
     click.echo(f"\n🎯 TestQL initialized in {target_path}")
     click.echo(f"   Project: {project_name}")
     click.echo(f"   Types: {project_type}")
-    click.echo(f"\nNext steps:")
-    click.echo(f"  testql create <name> --type <type>  # Create new test")
-    click.echo(f"  testql suite smoke                    # Run smoke tests")
-    click.echo(f"  testql list                           # List all tests")
+    click.echo("\nNext steps:")
+    click.echo("  testql create <name> --type <type>  # Create new test")
+    click.echo("  testql suite smoke                    # Run smoke tests")
+    click.echo("  testql list                           # List all tests")
 
 
 @cli.command()
@@ -311,7 +309,7 @@ def create(name: str, test_type: str, module: str | None, output: str | None, fo
 
     if filepath.exists() and not force:
         click.echo(f"❌ File exists: {filepath}")
-        click.echo(f"   Use --force to overwrite")
+        click.echo("   Use --force to overwrite")
         sys.exit(1)
 
     # Build test content based on type
@@ -509,7 +507,7 @@ LOG "Encoder test {name} completed"
     click.echo(f"   Type: {test_type}")
     if module:
         click.echo(f"   Module: {module}")
-    click.echo(f"\nEdit the file to add your test steps.")
+    click.echo("\nEdit the file to add your test steps.")
 
 
 @cli.command()
@@ -542,6 +540,35 @@ def suite(suite_name: str | None, base_path: str, pattern: str | None, tags: tup
     # Determine test files to run
     test_files = []
 
+    def find_files(base_dir: Path, file_pattern: str) -> list:
+        """Find files matching pattern using fnmatch."""
+        import os
+        matched = []
+        if not base_dir.exists():
+            return matched
+
+        # Check if pattern has path components
+        if '/' in file_pattern or '\\' in file_pattern:
+            # Pattern has path - join with base and use rglob
+            pattern_parts = file_pattern.replace('\\', '/').split('/')
+            search_dir = base_dir
+            for part in pattern_parts[:-1]:
+                search_dir = search_dir / part
+            file_only_pattern = pattern_parts[-1]
+        else:
+            # Pattern is just filename
+            search_dir = base_dir
+            file_only_pattern = file_pattern
+
+        if not search_dir.exists():
+            return matched
+
+        for root, dirs, files in os.walk(search_dir):
+            for filename in files:
+                if fnmatch.fnmatch(filename, file_only_pattern):
+                    matched.append(Path(root) / filename)
+        return matched
+
     if suite_name and config.get("suites", {}).get(suite_name):
         # Use predefined suite from config
         suite_patterns = config["suites"][suite_name]
@@ -549,28 +576,29 @@ def suite(suite_name: str | None, base_path: str, pattern: str | None, tags: tup
             suite_patterns = [suite_patterns]
         for p in suite_patterns:
             base = target_path if target_path.is_dir() else target_path.parent
-            matched = list(base.glob(p))
+            matched = find_files(base, str(p))
             test_files.extend(matched)
     elif pattern:
         # Use provided pattern
         base = target_path if target_path.is_dir() else target_path.parent
         pattern_str = str(pattern)
-        test_files = list(base.glob(pattern_str))
+        test_files = find_files(base, pattern_str)
     elif target_path.is_file():
         # Single file
         test_files = [target_path]
     else:
-        # Default: find all test files
+        # Default: find all test files (backward compatible with old and new structure)
         test_dirs = [
-            target_path / "testql",
+            target_path / "testql",                    # New structure
+            target_path / "testql/scenarios/tests",    # Old structure (backward compat)
             target_path / "tests",
             target_path,
         ]
         for td in test_dirs:
             if td.exists():
-                test_files.extend(td.glob("*.testql.toon.yaml"))
-                test_files.extend(td.glob("*.testtoon"))
-                test_files.extend(td.glob("*.iql"))
+                test_files.extend(find_files(td, "*.testql.toon.yaml"))
+                test_files.extend(find_files(td, "*.testtoon"))
+                test_files.extend(find_files(td, "*.iql"))
 
     # Remove duplicates and filter
     seen = set()
@@ -670,7 +698,7 @@ def suite(suite_name: str | None, base_path: str, pattern: str | None, tags: tup
                 if r.get("errors"):
                     for e in r["errors"]:
                         junit_xml += f'    <failure message="{e}"/>\n'
-                junit_xml += f'  </testsuite>\n'
+                junit_xml += '  </testsuite>\n'
             junit_xml += '</testsuites>'
             Path(report_file).write_text(junit_xml)
 
@@ -693,9 +721,10 @@ def list(path: str, test_type: str, tag: str | None, fmt: str) -> None:
     target_path = Path(path)
     test_files = []
 
-    # Search directories
+    # Search directories (backward compatible with old and new structure)
     search_dirs = [
-        target_path / "testql",
+        target_path / "testql",                    # New structure
+        target_path / "testql/scenarios/tests",    # Old structure (backward compat)
         target_path / "tests",
         target_path,
     ]
@@ -732,7 +761,7 @@ def list(path: str, test_type: str, tag: str | None, fmt: str) -> None:
                         parsed = yaml.safe_load("meta:\n" + "\n".join(meta_lines))
                         if parsed and "meta" in parsed:
                             meta.update(parsed["meta"])
-                    except:
+                    except Exception:
                         pass
 
             # Filter by type
@@ -788,7 +817,7 @@ def watch(path: str, pattern: str, command: str, debounce: float) -> None:
     target_path = Path(path).resolve()
     click.echo(f"👁️  Watching {target_path}/{pattern}")
     click.echo(f"   Debounce: {debounce}s")
-    click.echo(f"   Press Ctrl+C to stop\n")
+    click.echo("   Press Ctrl+C to stop\n")
 
     last_run = 0
 
@@ -806,7 +835,7 @@ def watch(path: str, pattern: str, command: str, debounce: float) -> None:
             last_run = now
 
             click.echo(f"📝 Changed: {Path(event.src_path).name}")
-            click.echo(f"   Re-running...")
+            click.echo("   Re-running...")
 
             # Run command
             import subprocess
@@ -827,9 +856,9 @@ def watch(path: str, pattern: str, command: str, debounce: float) -> None:
                     )
 
                 if result.returncode == 0:
-                    click.echo(f"   ✅ Tests passed")
+                    click.echo("   ✅ Tests passed")
                 else:
-                    click.echo(f"   ❌ Tests failed")
+                    click.echo("   ❌ Tests failed")
                     if result.stdout:
                         click.echo(result.stdout[-500:])  # Last 500 chars
             except Exception as e:

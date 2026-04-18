@@ -1,29 +1,28 @@
-# vallm batch | 51f | 27✓ 1⚠ 3✗ | 2026-04-18
+# vallm batch | 55f | 33✓ 3⚠ 0✗ | 2026-04-18
 
 SUMMARY:
-  scanned: 51  passed: 27 (52.9%)  warnings: 1  errors: 3  unsupported: 21
+  scanned: 55  passed: 33 (60.0%)  warnings: 3  errors: 0  unsupported: 22
 
-WARNINGS[1]{path,score}:
+WARNINGS[3]{path,score}:
+  testql/cli.py,0.90
+    issues[6]{rule,severity,message,line}:
+      complexity.cyclomatic,warning,suite has cyclomatic complexity 47 (max: 15),526
+      complexity.cyclomatic,warning,list has cyclomatic complexity 24 (max: 15),716
+      complexity.maintainability,warning,Low maintainability index: 16.8 (threshold: 20),
+      complexity.lizard_cc,warning,suite: CC=43 exceeds limit 15,526
+      complexity.lizard_length,warning,suite: 119 lines exceeds limit 100,526
+      complexity.lizard_cc,warning,list: CC=24 exceeds limit 15,716
   testql/interpreter/_converter.py,0.93
     issues[3]{rule,severity,message,line}:
       complexity.cyclomatic,warning,convert_iql_to_testtoon has cyclomatic complexity 66 (max: 15),100
       complexity.lizard_cc,warning,convert_iql_to_testtoon: CC=66 exceeds limit 15,100
       complexity.lizard_length,warning,convert_iql_to_testtoon: 280 lines exceeds limit 100,100
-
-ERRORS[3]{path,score}:
-  testql/commands/encoder_routes.py,0.92
-    issues[2]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'fastapi' not found,12
-      python.import.resolvable,error,Module 'fastapi.responses' not found,13
-  testql/_base_fallback.py,0.95
+  testql/generator.py,0.98
     issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'websockets' not found,186
-  testql/interpreter/_websockets.py,0.95
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'websockets' not found,48
+      complexity.maintainability,warning,Low maintainability index: 17.8 (threshold: 20),
 
 UNSUPPORTED[4]{bucket,count}:
   *.md,7
   *.txt,1
-  *.yml,1
+  *.yml,2
   other,12

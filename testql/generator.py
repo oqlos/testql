@@ -17,11 +17,8 @@ from __future__ import annotations
 import ast
 import json
 import re
-import os
-import inspect
 from pathlib import Path
 from dataclasses import dataclass, field
-from typing import Any, Callable
 from collections import defaultdict
 
 
@@ -261,7 +258,7 @@ class TestGenerator:
                 content = scenario_file.read_text()
 
                 # Extract CONFIG blocks
-                config_matches = re.findall(r"CONFIG:\s*(.*?)(?=\n\w|$)", content, re.DOTALL)
+                _config_matches = re.findall(r"CONFIG:\s*(.*?)(?=\n\w|$)", content, re.DOTALL)
 
                 # Extract SET commands
                 set_matches = re.findall(r"SET\s+'([^']+)'\s+'([^']*)'", content)

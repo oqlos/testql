@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from pathlib import Path
 
 from testql.commands.encoder_routes import IQL_DIR, _normalize_iql_path, _resolve_iql_path
 
