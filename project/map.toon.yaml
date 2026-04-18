@@ -1,4 +1,4 @@
-# testql | 40f 7557L | python:34,less:3,shell:2,css:1 | 2026-04-18
+# testql | 40f 7569L | python:34,less:3,shell:2,css:1 | 2026-04-18
 # stats: 86 func | 56 cls | 40 mod | CC̄=7.2 | critical:22 | cycles:0
 # alerts[5]: CC convert_iql_to_testtoon=66; CC suite=47; CC parse_doql_less=29; CC endpoints=21; CC list=21
 # hotspots[5]: suite fan=32; iql_run_file fan=26; list fan=22; convert_iql_to_testtoon fan=21; generate fan=20
@@ -6,8 +6,8 @@
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
 M[40]:
   TODO/testtoon_parser.py,142
-  app.doql.css,139
-  app.doql.less,141
+  app.doql.css,145
+  app.doql.less,147
   project.sh,35
   testql/__init__.py,4
   testql/__main__.py,7

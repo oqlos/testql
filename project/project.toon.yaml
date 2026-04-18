@@ -1,4 +1,4 @@
-# testql | 0 func | 0f | 4929L | unknown | 2026-04-18
+# testql | 0 func | 0f | 7170L | unknown | 2026-04-18
 
 HEALTH:
   CC̄=0.0  critical=0 (limit:10)  dup=0  cycles=0
@@ -6,4 +6,4 @@ HEALTH:
 MODULES[0] (top by size):
 
 EVOLUTION:
-  2026-04-18 CC̄=0.0 crit=0 4929L // Automated analysis
+  2026-04-18 CC̄=0.0 crit=0 7170L // Automated analysis

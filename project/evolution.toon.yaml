@@ -1,23 +1,28 @@
 # code2llm/evolution | 0 func | 1f | 2026-04-18
 
-NEXT[2] (ranked by impact):
+NEXT[3] (ranked by impact):
   [1] !! SPLIT           testql/cli.py
-      WHY: 887L, 0 classes, max CC=0
+      WHY: 1089L, 0 classes, max CC=0
       EFFORT: ~4h  IMPACT: 0
 
-  [2] !! SPLIT           testql/generator.py
-      WHY: 645L, 0 classes, max CC=0
+  [2] !! SPLIT           testql/endpoint_detector.py
+      WHY: 827L, 0 classes, max CC=0
+      EFFORT: ~4h  IMPACT: 0
+
+  [3] !! SPLIT           testql/generator.py
+      WHY: 714L, 0 classes, max CC=0
       EFFORT: ~4h  IMPACT: 0
 
 
-RISKS[2]:
+RISKS[3]:
   ⚠ Splitting testql/cli.py may break 0 import paths
+  ⚠ Splitting testql/endpoint_detector.py may break 0 import paths
   ⚠ Splitting testql/generator.py may break 0 import paths
 
 METRICS-TARGET:
   CC̄:          0.0 → ≤0.0
   max-CC:      0 → ≤0
-  god-modules: 2 → 0
+  god-modules: 3 → 0
   high-CC(≥15): 0 → ≤0
   hub-types:   0 → ≤0
 

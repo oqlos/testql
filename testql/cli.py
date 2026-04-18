@@ -936,9 +936,10 @@ def list(path: str, test_type: str, tag: str | None, fmt: str) -> None:
 @cli.command()
 @click.option("--toon-path", type=click.Path(), help="Path to toon test files")
 @click.option("--doql-path", type=click.Path(), help="Path to doql LESS file (app.doql.less)")
-@click.option("--format", "fmt", type=click.Choice(["json", "text"]), default="text", help="Output format")
+@click.option("--format", "fmt", type=click.Choice(["json", "text", "sumd"]), default="text", help="Output format (sumd=AI markdown)")
 @click.option("--output", "-o", type=click.Path(), help="Save output to file")
-def echo(toon_path: str | None, doql_path: str | None, fmt: str, output: str | None) -> None:
+@click.option("--project-path", type=click.Path(), default=".", help="Project path for sumd generation")
+def echo(toon_path: str | None, doql_path: str | None, fmt: str, output: str | None, project_path: str) -> None:
     """Generate AI-friendly project metadata echo from toon tests and doql model."""
     from pathlib import Path
     import json
@@ -947,6 +948,7 @@ def echo(toon_path: str | None, doql_path: str | None, fmt: str, output: str | N
     from testql.doql_parser import parse_doql_file
 
     project_echo = ProjectEcho()
+    project_path_obj = Path(project_path)
 
     # Parse toon tests if provided
     if toon_path:
@@ -988,6 +990,9 @@ def echo(toon_path: str | None, doql_path: str | None, fmt: str, output: str | N
     # Generate output
     if fmt == "json":
         output_str = json.dumps(project_echo.to_dict(), indent=2)
+    elif fmt == "sumd":
+        from testql.sumd_generator import generate_sumd
+        output_str = generate_sumd(project_echo, project_path_obj)
     else:
         output_str = project_echo.to_text()
 

@@ -64,6 +64,12 @@ tasks:
     cmds:
       - testql echo --toon-path {{.TESTQL_DIR}} --doql-path app.doql.less --format json -o project-context.json
 
+  sumd:
+    desc: Generate SUMD.md from project context
+    cmds:
+      - testql echo --toon-path {{.TESTQL_DIR}} --doql-path app.doql.less --format sumd -o SUMD.md
+      - echo "✅ Generated SUMD.md"
+
   # OpenAPI: Generate API specifications
   openapi:
     desc: Generate OpenAPI spec from endpoints

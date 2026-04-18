@@ -1,7 +1,7 @@
-# vallm batch | 65f | 42✓ 5⚠ 0✗ | 2026-04-18
+# vallm batch | 66f | 40✓ 5⚠ 3✗ | 2026-04-18
 
 SUMMARY:
-  scanned: 65  passed: 42 (64.6%)  warnings: 5  errors: 0  unsupported: 23
+  scanned: 66  passed: 40 (60.6%)  warnings: 5  errors: 3  unsupported: 23
 
 WARNINGS[5]{path,score}:
   testql/cli.py,0.80
@@ -38,6 +38,18 @@ WARNINGS[5]{path,score}:
       complexity.cyclomatic,warning,_generate_api_tests has cyclomatic complexity 26 (max: 15),342
       complexity.maintainability,warning,Low maintainability index: 14.4 (threshold: 20),
       complexity.lizard_cc,warning,_generate_api_tests: CC=26 exceeds limit 15,342
+
+ERRORS[3]{path,score}:
+  testql/commands/encoder_routes.py,0.92
+    issues[2]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'fastapi' not found,12
+      python.import.resolvable,error,Module 'fastapi.responses' not found,13
+  testql/interpreter/_websockets.py,0.93
+    issues[1]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'websockets' not found,46
+  testql/_base_fallback.py,0.95
+    issues[1]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'websockets' not found,186
 
 UNSUPPORTED[4]{bucket,count}:
   *.md,8
