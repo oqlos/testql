@@ -47,6 +47,72 @@ testql scenarios/tests/test-api.testql.toon.yaml --output json
 testql scenarios/tests/test-api.testql.toon.yaml --verbose
 ```
 
+## API Endpoint Detection
+
+TestQL includes advanced endpoint detection for multiple frameworks:
+
+```bash
+# List all detected endpoints in a project
+testql endpoints ./my-project
+testql endpoints ./my-project --format json
+testql endpoints ./my-project --framework fastapi
+
+# Analyze project structure and generate tests
+testql analyze ./my-project
+testql generate ./my-project
+```
+
+### Supported Frameworks
+
+- **FastAPI** — Detects routers, decorators, include_router patterns
+- **Flask** — Blueprints, MethodView, route decorators
+- **Django** — URL patterns from urls.py
+- **Express.js** — JavaScript/TypeScript route definitions
+- **OpenAPI/Swagger** — Spec file parsing (JSON/YAML)
+- **GraphQL** — Schema and resolver detection
+- **WebSocket** — WS endpoint detection
+
+### Endpoint Detection Features
+
+- **Framework Detection**: Automatically identifies the web framework
+- **Handler Names**: Extracts function/method names for documentation
+- **Parameters**: Detects path/query/body parameters
+- **Docstrings**: Uses function docstrings for test descriptions
+- **Test Inference**: Analyzes existing tests to discover endpoints
+
+## OpenAPI Generation
+
+Generate OpenAPI 3.0 specifications from your code:
+
+```bash
+# Generate OpenAPI spec (YAML format)
+testql openapi ./my-project
+testql openapi ./my-project --format json
+
+# Generate with contract tests
+testql openapi ./my-project --contract-tests
+
+# Custom output file
+testql openapi ./my-project -o ./docs/api-spec.yaml --title "My API"
+```
+
+### Contract Testing
+
+TestQL generates contract tests from OpenAPI specs:
+
+```yaml
+# Auto-generated from openapi.yaml
+API[25]{method, endpoint, expected_status}:
+  GET, /api/v1/users, 200
+  POST, /api/v1/users, 201
+  ...
+
+ASSERT[3]{field, operator, expected}:
+  content_type, ==, application/json
+  schema_valid, ==, true
+  status, <, 500
+```
+
 ## Language Reference
 
 ### Variables

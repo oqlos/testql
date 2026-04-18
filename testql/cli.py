@@ -147,17 +147,164 @@ def analyze(path: str) -> None:
 
     if profile.config.get('discovered_routes'):
         routes = profile.config['discovered_routes']
+        frameworks = profile.config.get('endpoint_frameworks', [])
+
         click.echo(f"\n🌐 API Routes Discovered: {len(routes)}")
-        for route in routes[:5]:
-            click.echo(f"  • {route['method']} {route['path']}")
-        if len(routes) > 5:
-            click.echo(f"  ... and {len(routes) - 5} more")
+        if frameworks:
+            click.echo(f"   Detectors used: {', '.join(frameworks)}")
+
+        # Group by framework
+        routes_by_fw = {}
+        routes_by_type = {}
+        for route in routes:
+            fw = route.get('framework', 'unknown')
+            et = route.get('endpoint_type', 'rest')
+            routes_by_fw[fw] = routes_by_fw.get(fw, 0) + 1
+            routes_by_type[et] = routes_by_type.get(et, 0) + 1
+
+        if routes_by_fw:
+            click.echo("   By Framework:")
+            for fw, count in sorted(routes_by_fw.items(), key=lambda x: -x[1]):
+                click.echo(f"     • {fw}: {count} endpoints")
+
+        if len(routes_by_type) > 1:
+            click.echo("   By Type:")
+            for et, count in routes_by_type.items():
+                click.echo(f"     • {et}: {count}")
+
+        # Show sample routes with handler info
+        click.echo("   Sample Endpoints:")
+        for route in routes[:8]:
+            fw = route.get('framework', '?')
+            handler = route.get('handler', '')
+            summary = route.get('summary', '')
+            info = f"{route['method']} {route['path']}"
+            if handler:
+                info += f" → {handler}"
+            click.echo(f"     • [{fw}] {info}")
+        if len(routes) > 8:
+            click.echo(f"     ... and {len(routes) - 8} more")
 
     if profile.config.get('scenario_patterns'):
         scenarios = profile.config['scenario_patterns']
         click.echo(f"\n⚙️ OQL/CQL Scenarios: {len(scenarios)}")
         for s in scenarios[:5]:
             click.echo(f"  • {s['name']}")
+
+
+@cli.command()
+@click.argument("path", type=click.Path(exists=True), default=".")
+@click.option("--format", "fmt", type=click.Choice(["table", "json", "csv"]), default="table")
+@click.option("--framework", help="Filter by framework (fastapi, flask, django, express)")
+@click.option("--type", "endpoint_type", help="Filter by type (rest, graphql, websocket)")
+@click.option("--output", "-o", type=click.Path(), help="Save to file")
+def endpoints(path: str, fmt: str, framework: str | None, endpoint_type: str | None, output: str | None) -> None:
+    """List all detected API endpoints in a project."""
+    from testql.endpoint_detector import UnifiedEndpointDetector
+    from pathlib import Path
+    import json
+    import csv
+    import io
+
+    target_path = Path(path)
+    detector = UnifiedEndpointDetector(target_path)
+    eps = detector.detect_all()
+
+    # Apply filters
+    if framework:
+        eps = [ep for ep in eps if ep.framework == framework]
+    if endpoint_type:
+        eps = [ep for ep in eps if ep.endpoint_type == endpoint_type]
+
+    if not eps:
+        click.echo("❌ No endpoints detected")
+        sys.exit(1)
+
+    # Format output
+    if fmt == "json":
+        data = [{
+            "path": ep.path,
+            "method": ep.method,
+            "framework": ep.framework,
+            "type": ep.endpoint_type,
+            "handler": ep.handler_name,
+            "file": str(ep.source_file.relative_to(target_path)) if ep.source_file else None,
+            "line": ep.line_number,
+            "summary": ep.summary,
+        } for ep in eps]
+        output_str = json.dumps(data, indent=2)
+
+    elif fmt == "csv":
+        output_buffer = io.StringIO()
+        writer = csv.writer(output_buffer)
+        writer.writerow(["method", "path", "framework", "type", "handler", "file", "line", "summary"])
+        for ep in eps:
+            writer.writerow([
+                ep.method, ep.path, ep.framework, ep.endpoint_type,
+                ep.handler_name or "",
+                str(ep.source_file.relative_to(target_path)) if ep.source_file else "",
+                ep.line_number,
+                ep.summary or "",
+            ])
+        output_str = output_buffer.getvalue()
+
+    else:  # table
+        lines = []
+        lines.append(f"{'Method':<8} {'Path':<40} {'Framework':<12} {'Handler':<30}")
+        lines.append("-" * 90)
+        for ep in eps:
+            handler = ep.handler_name or "-"
+            if len(handler) > 28:
+                handler = handler[:25] + "..."
+            path = ep.path if len(ep.path) < 38 else ep.path[:35] + "..."
+            lines.append(f"{ep.method:<8} {path:<40} {ep.framework:<12} {handler:<30}")
+        lines.append("")
+        lines.append(f"Total: {len(eps)} endpoints (detectors: {', '.join(detector.detectors_used)})")
+        output_str = "\n".join(lines)
+
+    # Output
+    if output:
+        Path(output).write_text(output_str)
+        click.echo(f"✅ Saved {len(eps)} endpoints to {output}")
+    else:
+        click.echo(output_str)
+
+
+@cli.command()
+@click.argument("path", type=click.Path(exists=True), default=".")
+@click.option("--output", "-o", type=click.Path(), help="Output file (default: openapi.yaml)")
+@click.option("--format", type=click.Choice(["yaml", "json"]), default="yaml", help="Output format")
+@click.option("--title", help="API title (default: project name)")
+@click.option("--version", default="1.0.0", help="API version")
+@click.option("--contract-tests", is_flag=True, help="Also generate contract tests")
+def openapi(path: str, output: str | None, format: str, title: str | None, version: str, contract_tests: bool) -> None:
+    """Generate OpenAPI spec from detected endpoints."""
+    from testql.openapi_generator import OpenAPIGenerator, ContractTestGenerator
+    from pathlib import Path
+
+    target_path = Path(path)
+    generator = OpenAPIGenerator(target_path)
+
+    click.echo(f"🔍 Detecting endpoints in {target_path}...")
+    spec = generator.generate(title=title, version=version)
+
+    # Determine output path
+    if output:
+        out_path = Path(output)
+    else:
+        out_path = target_path / f"openapi.{format}"
+
+    generator.save(out_path, format)
+    click.echo(f"✅ OpenAPI spec saved: {out_path}")
+    click.echo(f"   Endpoints: {len(spec.paths)}")
+    click.echo(f"   Format: {format}")
+
+    # Generate contract tests if requested
+    if contract_tests:
+        test_file = out_path.parent / "testql-contracts.testql.toon.yaml"
+        contract_gen = ContractTestGenerator(spec)
+        contract_gen.generate_contract_tests(test_file)
+        click.echo(f"✅ Contract tests saved: {test_file}")
 
 
 @cli.command()
@@ -784,17 +931,67 @@ def list(path: str, test_type: str, tag: str | None, fmt: str) -> None:
     # Output
     if fmt == "json":
         print(json.dumps(tests, indent=2))
-    elif fmt == "simple":
-        for t in tests:
-            click.echo(f"{t['file']}")
-    else:  # table
-        click.echo(f"{'File':<50} {'Name':<30} {'Type':<12} {'Tags'}")
-        click.echo("-" * 100)
-        for t in tests:
-            tags = ", ".join(t['tags'][:3])
-            click.echo(f"{t['file']:<50} {t['name']:<30} {t['type']:<12} {tags}")
 
-    click.echo(f"\nTotal: {len(tests)} tests")
+
+@cli.command()
+@click.option("--toon-path", type=click.Path(), help="Path to toon test files")
+@click.option("--doql-path", type=click.Path(), help="Path to doql LESS file (app.doql.less)")
+@click.option("--format", "fmt", type=click.Choice(["json", "text"]), default="text", help="Output format")
+@click.option("--output", "-o", type=click.Path(), help="Save output to file")
+def echo(toon_path: str | None, doql_path: str | None, fmt: str, output: str | None) -> None:
+    """Generate AI-friendly project metadata echo from toon tests and doql model."""
+    from pathlib import Path
+    import json
+    from testql.echo_schemas import ProjectEcho
+    from testql.toon_parser import parse_toon_file
+    from testql.doql_parser import parse_doql_file
+
+    project_echo = ProjectEcho()
+
+    # Parse toon tests if provided
+    if toon_path:
+        toon_file = Path(toon_path)
+        if toon_file.is_dir():
+            # Find toon files in directory
+            toon_files = list(toon_file.glob("*.testql.toon.yaml")) + list(toon_file.glob("*.testtoon"))
+            if toon_files:
+                for tf in toon_files:
+                    contract = parse_toon_file(tf)
+                    # Merge contracts
+                    project_echo.api_contract.endpoints.extend(contract.endpoints)
+                    project_echo.api_contract.asserts.extend(contract.asserts)
+                    if contract.base_url and not project_echo.api_contract.base_url:
+                        project_echo.api_contract.base_url = contract.base_url
+                click.echo(f"📄 Parsed {len(toon_files)} toon file(s)")
+        elif toon_file.exists():
+            contract = parse_toon_file(toon_file)
+            project_echo.api_contract = contract
+            click.echo(f"📄 Parsed toon file: {toon_file}")
+        else:
+            click.echo(f"⚠️  Toon path not found: {toon_path}")
+
+    # Parse doql LESS if provided
+    if doql_path:
+        doql_file = Path(doql_path)
+        if doql_file.exists():
+            system_model = parse_doql_file(doql_file)
+            project_echo.system_model = system_model
+            click.echo(f"📄 Parsed doql file: {doql_file}")
+        else:
+            click.echo(f"⚠️  Doql path not found: {doql_path}")
+
+    # Generate output
+    if fmt == "json":
+        output_str = json.dumps(project_echo.to_dict(), indent=2)
+    else:
+        output_str = project_echo.to_text()
+
+    # Save or print
+    if output:
+        Path(output).write_text(output_str, encoding="utf-8")
+        click.echo(f"✅ Saved echo to {output}")
+    else:
+        click.echo("\n" + output_str)
 
 
 @cli.command()

@@ -212,10 +212,39 @@ class TestGenerator:
         self.profile.config = config_data
 
     def _analyze_api_routes(self):
-        """Analyze API routes from Python source files."""
+        """Analyze API routes using advanced endpoint detection."""
+        try:
+            from .endpoint_detector import UnifiedEndpointDetector
+
+            detector = UnifiedEndpointDetector(self.project_path)
+            endpoints = detector.detect_all()
+
+            # Convert EndpointInfo to legacy format for compatibility
+            route_patterns = []
+            for ep in endpoints:
+                route_patterns.append({
+                    'method': ep.method.upper(),
+                    'path': ep.path,
+                    'source': str(ep.source_file),
+                    'framework': ep.framework,
+                    'endpoint_type': ep.endpoint_type,
+                    'handler': ep.handler_name,
+                    'summary': ep.summary,
+                })
+
+            self.profile.config['discovered_routes'] = route_patterns
+            self.profile.config['endpoint_frameworks'] = detector.detectors_used
+            self.profile.config['endpoint_objects'] = endpoints  # Keep full objects for advanced use
+
+        except Exception as e:
+            # Fallback to simple regex detection
+            self._analyze_api_routes_fallback()
+
+    def _analyze_api_routes_fallback(self):
+        """Fallback simple regex-based route detection."""
         route_patterns = []
 
-        for py_file in self.profile.discovered_files.get('python_source', [])[:50]:  # Limit for performance
+        for py_file in self.profile.discovered_files.get('python_source', [])[:50]:
             try:
                 content = py_file.read_text()
 
@@ -230,19 +259,6 @@ class TestGenerator:
                         'path': path,
                         'source': str(py_file)
                     })
-
-                # Flask route patterns
-                flask_routes = re.findall(
-                    r'@app\.route\s*\(\s*["\']([^"\']+)["\'][^)]*methods\s*=\s*\[([^\]]+)\]',
-                    content, re.IGNORECASE
-                )
-                for path, methods in flask_routes:
-                    for method in methods.replace("'", '"').replace(' ', '').split(','):
-                        route_patterns.append({
-                            'method': method.strip('"').upper(),
-                            'path': path,
-                            'source': str(py_file)
-                        })
 
             except Exception:
                 continue
@@ -324,39 +340,92 @@ class TestGenerator:
         return generated_files
 
     def _generate_api_tests(self, output_dir: Path) -> Path | None:
-        """Generate API smoke tests from discovered routes."""
+        """Generate comprehensive API tests from discovered routes."""
         routes = self.profile.config.get('discovered_routes', [])
+        frameworks = self.profile.config.get('endpoint_frameworks', [])
+
         if not routes:
             return None
+
+        # Group routes by framework for better organization
+        routes_by_framework = {}
+        for r in routes:
+            fw = r.get('framework', 'unknown')
+            if fw not in routes_by_framework:
+                routes_by_framework[fw] = []
+            routes_by_framework[fw].append(r)
 
         sections = ["# SCENARIO: Auto-generated API Smoke Tests"]
         sections.append("# TYPE: api")
         sections.append("# GENERATED: true")
+        sections.append(f"# DETECTORS: {', '.join(frameworks)}")
         sections.append("")
 
-        # CONFIG section
-        sections.append("CONFIG[2]{key, value}:")
+        # CONFIG section with detected framework info
+        sections.append("CONFIG[4]{key, value}:")
         sections.append("  base_url, http://localhost:8101")
-        sections.append("  timeout_ms, 5000")
+        sections.append("  timeout_ms, 10000")
+        sections.append("  retry_count, 3")
+        sections.append(f"  detected_frameworks, {', '.join(frameworks)}")
         sections.append("")
 
-        # API section
-        unique_routes = []
-        seen = set()
-        for r in routes:
-            key = (r['method'], r['path'])
-            if key not in seen and '{' not in r['path']:  # Skip parameterized routes
-                seen.add(key)
-                unique_routes.append(r)
+        # Group by endpoint type
+        rest_routes = [r for r in routes if r.get('endpoint_type') == 'rest']
+        graphql_routes = [r for r in routes if r.get('endpoint_type') == 'graphql']
+        ws_routes = [r for r in routes if r.get('endpoint_type') == 'websocket']
 
-        sections.append(f"API[{len(unique_routes)}]{{method, endpoint, expected_status}}:")
-        for route in unique_routes[:20]:  # Limit to 20 routes
-            expected = 200 if route['method'] == 'GET' else 201
-            sections.append(f"  {route['method']}, {route['path']}, {expected}")
+        # REST API endpoints
+        if rest_routes:
+            unique_routes = []
+            seen = set()
+            for r in rest_routes:
+                key = (r['method'], r['path'])
+                if key not in seen and '{' not in r['path']:
+                    seen.add(key)
+                    unique_routes.append(r)
 
-        sections.append("")
-        sections.append("ASSERT[1]{field, operator, expected}:")
-        sections.append("  status, <, 400")
+            if unique_routes:
+                sections.append(f"# REST API Endpoints ({len(unique_routes)} unique)")
+                sections.append(f"API[{len(unique_routes[:25])}]{{method, endpoint, expected_status}}:")
+                for route in unique_routes[:25]:
+                    expected = 200 if route['method'] == 'GET' else 201
+                    # Add comment with handler name if available
+                    handler = route.get('handler', '')
+                    summary = route.get('summary', '')
+                    comment = f"  # {handler}" if handler else ""
+                    if summary and summary != handler:
+                        comment += f" - {summary[:50]}"
+                    sections.append(f"  {route['method']}, {route['path']}, {expected}{comment}")
+                sections.append("")
+
+        # GraphQL endpoints
+        if graphql_routes:
+            sections.append(f"# GraphQL Endpoints ({len(graphql_routes)} detected)")
+            sections.append(f"GRAPHQL[{len(graphql_routes[:10])}]{{query, variables}}:")
+            for route in graphql_routes[:10]:
+                handler = route.get('handler', 'query')
+                sections.append(f'  {handler}, {{}}')
+            sections.append("")
+
+        # WebSocket endpoints
+        if ws_routes:
+            sections.append(f"# WebSocket Endpoints ({len(ws_routes)} detected)")
+            sections.append(f"WEBSOCKET[{len(ws_routes[:5])}]{{url, action}}:")
+            for route in ws_routes[:5]:
+                sections.append(f'  ws://localhost:8101{route["path"]}, connect')
+            sections.append("")
+
+        # Assertions
+        sections.append("ASSERT[2]{field, operator, expected}:")
+        sections.append("  status, <, 500")
+        sections.append("  response_time, <, 2000")
+
+        # Summary by framework
+        if routes_by_framework:
+            sections.append("")
+            sections.append("# Summary by Framework:")
+            for fw, fw_routes in routes_by_framework.items():
+                sections.append(f"#   {fw}: {len(fw_routes)} endpoints")
 
         content = '\n'.join(sections)
         output_file = output_dir / 'generated-api-smoke.testql.toon.yaml'

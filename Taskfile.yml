@@ -37,19 +37,19 @@ tasks:
       - pyqual report
 
   test:
-    desc: Run pytest suite via pyqual
+    desc: Run pytest suite
     cmds:
-      - pyqual run --stage test
+      - pytest -q
 
   lint:
-    desc: Run ruff lint check via pyqual
+    desc: Run ruff lint check
     cmds:
-      - pyqual run --stage lint
+      - ruff check .
 
   fmt:
-    desc: Auto-format with ruff via pyqual
+    desc: Auto-format with ruff
     cmds:
-      - pyqual run --stage format --fix
+      - ruff format .
 
   build:
     desc: Build wheel + sdist

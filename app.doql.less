@@ -1,6 +1,8 @@
+// LESS format — define @variables here as needed
+
 app {
-  name: "testql";
-  version: "0.2.1";
+  name: testql;
+  version: 0.2.1;
 }
 
 interface[type="cli"] {
@@ -11,65 +13,65 @@ interface[type="cli"] page[name="testql"] {
 }
 
 workflow[name="install"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=pip install -e .[dev];
 }
 
 workflow[name="quality"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=pyqual run;
 }
 
 workflow[name="quality:fix"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=pyqual run --fix;
 }
 
 workflow[name="quality:report"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=pyqual report;
 }
 
 workflow[name="test"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=pytest -q;
 }
 
 workflow[name="lint"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=ruff check .;
 }
 
 workflow[name="fmt"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=ruff format .;
 }
 
 workflow[name="build"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=python -m build;
 }
 
 workflow[name="clean"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=rm -rf build/ dist/ *.egg-info;
 }
 
 workflow[name="iql:run"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=testql run {{.CLI_ARGS}};
 }
 
 workflow[name="iql:shell"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=testql shell;
 }
 
 workflow[name="doql:adopt"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=if ! command -v {{.DOQL_CMD}} >/dev/null 2>&1; then
-  echo "⚠️  doql not installed. Install: pip install doql"
-  exit 1
+echo "⚠️  doql not installed. Install: pip install doql"
+exit 1
 fi;
   step-2: run cmd={{.DOQL_CMD}} adopt {{.PWD}} --output app.doql.css --force;
   step-3: run cmd={{.DOQL_CMD}} export --format less -o {{.DOQL_OUTPUT}};
@@ -77,54 +79,54 @@ fi;
 }
 
 workflow[name="doql:validate"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=if [ ! -f "{{.DOQL_OUTPUT}}" ]; then
-  echo "❌ {{.DOQL_OUTPUT}} not found. Run: task doql:adopt"
-  exit 1
+echo "❌ {{.DOQL_OUTPUT}} not found. Run: task doql:adopt"
+exit 1
 fi;
   step-2: run cmd={{.DOQL_CMD}} validate;
 }
 
 workflow[name="doql:doctor"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd={{.DOQL_CMD}} doctor;
 }
 
 workflow[name="doql:build"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=if [ ! -f "{{.DOQL_OUTPUT}}" ]; then
-  echo "❌ {{.DOQL_OUTPUT}} not found. Run: task doql:adopt"
-  exit 1
+echo "❌ {{.DOQL_OUTPUT}} not found. Run: task doql:adopt"
+exit 1
 fi;
   step-2: run cmd=# Regenerate LESS from CSS if CSS exists
 if [ -f "app.doql.css" ]; then
-  {{.DOQL_CMD}} export --format less -o {{.DOQL_OUTPUT}}
+{{.DOQL_CMD}} export --format less -o {{.DOQL_OUTPUT}}
 fi;
   step-3: run cmd={{.DOQL_CMD}} build app.doql.css --out build/;
 }
 
 workflow[name="docker:build"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=docker-compose build;
 }
 
 workflow[name="docker:up"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=docker-compose up -d;
 }
 
 workflow[name="docker:down"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=docker-compose down;
 }
 
 workflow[name="publish"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=twine upload dist/*;
 }
 
 workflow[name="help"] {
-  trigger: "manual";
+  trigger: manual;
   step-1: run cmd=task --list;
 }
 
@@ -134,5 +136,5 @@ deploy {
 
 environment[name="local"] {
   runtime: docker-compose;
-  env_file: ".env";
+  env_file: .env;
 }
