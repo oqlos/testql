@@ -27,14 +27,10 @@ def _parse_testtoon_header(content: str) -> dict | None:
     return meta
 
 
-def _parse_yaml_meta_block(content: str, yaml_module) -> dict | None:
-    """Extract and parse YAML meta: block from content."""
-    if "meta:" not in content:
-        return None
-
+def _collect_meta_lines(content: str) -> list[str]:
+    """Return the indented lines under the first 'meta:' key in *content*."""
     meta_lines: list[str] = []
     in_meta = False
-
     for line in content.split("\n"):
         if line.strip() == "meta:":
             in_meta = True
@@ -43,10 +39,16 @@ def _parse_yaml_meta_block(content: str, yaml_module) -> dict | None:
             if line.strip() and not line.startswith(" ") and not line.startswith("\t"):
                 break
             meta_lines.append(line)
+    return meta_lines
 
+
+def _parse_yaml_meta_block(content: str, yaml_module) -> dict | None:
+    """Extract and parse YAML meta: block from content."""
+    if "meta:" not in content:
+        return None
+    meta_lines = _collect_meta_lines(content)
     if not meta_lines:
         return None
-
     parsed = yaml_module.safe_load("meta:\n" + "\n".join(meta_lines))
     return parsed.get("meta") if parsed and "meta" in parsed else None
 

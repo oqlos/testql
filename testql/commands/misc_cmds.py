@@ -16,6 +16,23 @@ from .templates import (
 )
 
 
+_TEMPLATE_MAP = [
+    (("api", "all", "mixed"), "test-api-health.testql.toon.yaml", lambda: API_TEMPLATE),
+    (("gui", "all", "mixed"), "test-gui-navigation.testql.toon.yaml", lambda: GUI_TEMPLATE),
+    (("encoder", "all", "mixed"), "test-encoder-basic.testql.toon.yaml", lambda: ENCODER_TEMPLATE),
+]
+
+
+def _create_templates(templates_dir: Path, project_type: str) -> None:
+    """Write default test template files for the requested project type."""
+    for types, filename, get_content in _TEMPLATE_MAP:
+        if project_type in types:
+            tpl = templates_dir / filename
+            if not tpl.exists():
+                tpl.write_text(get_content())
+                click.echo(f"✅ Created {tpl.name}")
+
+
 @click.command()
 @click.option("--path", "-p", type=click.Path(), default=".", help="Project path to initialize")
 @click.option("--name", "-n", help="Project name (default: directory name)")
@@ -53,25 +70,7 @@ suites:
 ''')
         click.echo(f"✅ Created {config_file}")
 
-    templates_dir = target_path / "testql"
-
-    if project_type in ("api", "all", "mixed"):
-        tpl = templates_dir / "test-api-health.testql.toon.yaml"
-        if not tpl.exists():
-            tpl.write_text(API_TEMPLATE)
-            click.echo(f"✅ Created {tpl.name}")
-
-    if project_type in ("gui", "all", "mixed"):
-        tpl = templates_dir / "test-gui-navigation.testql.toon.yaml"
-        if not tpl.exists():
-            tpl.write_text(GUI_TEMPLATE)
-            click.echo(f"✅ Created {tpl.name}")
-
-    if project_type in ("encoder", "all", "mixed"):
-        tpl = templates_dir / "test-encoder-basic.testql.toon.yaml"
-        if not tpl.exists():
-            tpl.write_text(ENCODER_TEMPLATE)
-            click.echo(f"✅ Created {tpl.name}")
+    _create_templates(target_path / "testql", project_type)
 
     click.echo(f"\n🎯 TestQL initialized in {target_path}")
     click.echo(f"   Project: {project_name}")

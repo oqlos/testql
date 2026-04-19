@@ -49,37 +49,46 @@ LEGACY_C2004_ROOT_SEGMENT = "db/dsl/iql/"
 TESTQL_SCENARIOS_SEGMENT = "testql/scenarios/"
 
 
-def _normalize_iql_path(path: str) -> str:
-    """Map legacy c2004 IQL paths to the canonical testql scenario layout.
-    
-    Supports .testql.toon.yaml, .iql, and .tql extensions.
-    """
-    candidate = (path or "").strip().replace("\\", "/")
-    if not candidate:
-        return ""
-
+def _strip_path_segments(candidate: str) -> str:
+    """Remove known legacy prefix segments, returning the relative tail."""
     candidate = candidate.removeprefix("./")
     if LEGACY_C2004_ROOT_SEGMENT in candidate:
         candidate = candidate.split(LEGACY_C2004_ROOT_SEGMENT, 1)[1]
     if TESTQL_SCENARIOS_SEGMENT in candidate:
         candidate = candidate.split(TESTQL_SCENARIOS_SEGMENT, 1)[1]
+    return candidate.lstrip("/")
 
-    candidate = candidate.lstrip("/")
 
-    # Migrate legacy extensions to new format in path
+def _migrate_legacy_extension(candidate: str) -> str:
+    """Replace .iql/.tql with .testql.toon.yaml when the target file exists."""
     for old_ext in ('.iql', '.tql'):
         if candidate.endswith(old_ext):
             new_candidate = candidate[:-len(old_ext)] + '.testql.toon.yaml'
-            new_target = IQL_DIR / new_candidate
-            if new_target.is_file():
-                candidate = new_candidate
-                break
+            if (IQL_DIR / new_candidate).is_file():
+                return new_candidate
+    return candidate
 
+
+def _remap_tests_prefix(candidate: str) -> str:
+    """Remap legacy tests/ prefix to c2004/views/ hierarchy."""
     if candidate.startswith("tests/views/"):
         return f"c2004/views/views/{candidate[len('tests/views/'):]}"
     if candidate.startswith("tests/"):
         return f"c2004/views/{candidate[len('tests/'):]}"
     return candidate
+
+
+def _normalize_iql_path(path: str) -> str:
+    """Map legacy c2004 IQL paths to the canonical testql scenario layout.
+
+    Supports .testql.toon.yaml, .iql, and .tql extensions.
+    """
+    candidate = (path or "").strip().replace("\\", "/")
+    if not candidate:
+        return ""
+    candidate = _strip_path_segments(candidate)
+    candidate = _migrate_legacy_extension(candidate)
+    return _remap_tests_prefix(candidate)
 
 
 def _resolve_iql_path(path: str) -> tuple[str, Path]:
@@ -100,23 +109,42 @@ _ENCODER_SIMPLE_CMDS = {
 }
 
 
+def _assert_bool_prop(result: dict, prop: str, expected: str | None) -> tuple[Any, bool]:
+    actual = result.get(prop, False)
+    passed = bool(actual) if expected is None else (str(actual).lower() == expected.lower())
+    return actual, passed
+
+
+def _assert_count_prop(result: dict, expected: str | None) -> tuple[Any, bool]:
+    actual = result.get("count", 0)
+    passed = (str(actual) == expected) if expected else actual > 0
+    return actual, passed
+
+
+def _assert_text_prop(result: dict, expected: str | None) -> tuple[Any, bool]:
+    actual = result.get("text", "")
+    passed = (expected in actual) if expected else len(actual) > 0
+    return actual, passed
+
+
+def _assert_classes_prop(result: dict, expected: str | None) -> tuple[Any, bool]:
+    actual = result.get("classes", "")
+    passed = (expected in actual) if expected else True
+    return actual, passed
+
+
 def _evaluate_assertion(result: dict, prop: str, expected: str | None) -> tuple[Any, bool]:
     """Evaluate an ASSERT property check. Returns (actual, passed)."""
     if prop in ("exists", "visible"):
-        actual = result.get(prop, False)
-        passed = bool(actual) if expected is None else (str(actual).lower() == expected.lower())
-    elif prop == "count":
-        actual = result.get("count", 0)
-        passed = (str(actual) == expected) if expected else actual > 0
-    elif prop == "text":
-        actual = result.get("text", "")
-        passed = (expected in actual) if expected else len(actual) > 0
-    elif prop == "classes":
-        actual = result.get("classes", "")
-        passed = (expected in actual) if expected else True
-    else:
-        actual = result.get(prop, None)
-        passed = (str(actual) == expected) if expected else actual is not None
+        return _assert_bool_prop(result, prop, expected)
+    if prop == "count":
+        return _assert_count_prop(result, expected)
+    if prop == "text":
+        return _assert_text_prop(result, expected)
+    if prop == "classes":
+        return _assert_classes_prop(result, expected)
+    actual = result.get(prop, None)
+    passed = (str(actual) == expected) if expected else actual is not None
     return actual, passed
 
 
@@ -221,6 +249,8 @@ async def _execute_iql_line(line: str) -> dict[str, Any]:
     return {"ok": False, "error": f"unknown command: {cmd}"}
 
 
+
+
 # ── Route handlers ────────────────────────────────────────────────
 
 @router.get("/files")
@@ -272,27 +302,24 @@ async def iql_list_tables(path: str = Query(...)):
         return JSONResponse({"error": "path_traversal"}, status_code=HTTP_BAD_REQUEST)
     if not target.is_file():
         return JSONResponse({"error": "not_found"}, status_code=HTTP_NOT_FOUND)
-    
+
     content = target.read_text(encoding="utf-8")
-    tables = []
-    
-    # Extract table references from IQL commands
-    # Pattern for TABLE commands or table references
-    table_patterns = [
-        r'TABLE\s+["\']?(\w+)["\']?',  # TABLE "tablename"
-        r'FROM\s+["\']?(\w+)["\']?',     # FROM tablename
-        r'INTO\s+["\']?(\w+)["\']?',     # INTO tablename
-        r'JOIN\s+["\']?(\w+)["\']?',     # JOIN tablename
-    ]
-    
-    for pattern in table_patterns:
-        matches = re.findall(pattern, content, re.IGNORECASE)
-        tables.extend(matches)
-    
-    # Remove duplicates and sort
-    tables = sorted(list(set(tables)))
-    
+    tables = _extract_table_names(content)
     return {"path": normalized_path, "requested_path": path, "tables": tables}
+
+
+def _extract_table_names(content: str) -> list[str]:
+    """Return sorted unique table names referenced in IQL content."""
+    table_patterns = [
+        r'TABLE\s+["\']?(\w+)["\']?',
+        r'FROM\s+["\']?(\w+)["\']?',
+        r'INTO\s+["\']?(\w+)["\']?',
+        r'JOIN\s+["\']?(\w+)["\']?',
+    ]
+    tables: list[str] = []
+    for pattern in table_patterns:
+        tables.extend(re.findall(pattern, content, re.IGNORECASE))
+    return sorted(set(tables))
 
 
 @router.post("/run-line")
@@ -310,26 +337,29 @@ async def iql_run_file(req: RunFileRequest):
     if not target.is_file():
         return JSONResponse({"error": "not_found", "path": normalized_path}, status_code=HTTP_NOT_FOUND)
 
-    content = target.read_text(encoding="utf-8")
-    lines = content.splitlines()
+    lines = target.read_text(encoding="utf-8").splitlines()
+    results, counters, log_lines = await _run_iql_lines(lines, normalized_path)
+    summary = _build_run_summary(normalized_path, req.path, lines, results, counters)
 
-    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-    test_name = Path(req.path).stem
-    log_file = LOG_DIR / f"{test_name}_{ts}.log"
+    log_file = _write_run_log(normalized_path, lines, log_lines, summary)
+    summary["log_file"] = str(log_file.relative_to(IQL_DIR))
 
-    results: list[dict] = []
-    passed = 0
-    failed = 0
-    asserts_pass = 0
-    asserts_fail = 0
-    start_time = time.monotonic()
+    return {"summary": summary, "results": results}
 
+
+async def _run_iql_lines(
+    lines: list[str], label: str
+) -> tuple[list[dict], dict[str, int], list[str]]:
+    """Execute lines of IQL, returning (results, counters, log_lines)."""
     log_lines: list[str] = [
-        f"# IQL Test Log: {normalized_path}",
+        f"# IQL Test Log: {label}",
         f"# Started: {datetime.now().isoformat()}",
         f"# Lines: {len(lines)}",
         "",
     ]
+    results: list[dict] = []
+    counters = {"passed": 0, "failed": 0, "asserts_pass": 0, "asserts_fail": 0}
+    start_time = time.monotonic()
 
     for i, raw_line in enumerate(lines):
         line = raw_line.strip()
@@ -350,52 +380,75 @@ async def iql_run_file(req: RunFileRequest):
         result["elapsed_ms"] = elapsed_ms
         results.append(result)
 
-        ok = result.get("ok", False)
-        if ok:
-            passed += 1
-        else:
-            failed += 1
+        _update_counters(counters, result)
 
-        cmd = result.get("command", "?")
-        if cmd == "ASSERT":
-            if result.get("assertion") == "PASS":
-                asserts_pass += 1
-            else:
-                asserts_fail += 1
-
-        status_mark = "✅" if ok else "❌"
-        detail = _format_log_detail(cmd, result)
+        status_mark = "✅" if result.get("ok") else "❌"
+        detail = _format_log_detail(result.get("command", "?"), result)
         log_lines.append(f"L{line_num:>4}: {status_mark} [{elapsed_ms:>5}ms] {line}{detail}")
 
-    total_time = round((time.monotonic() - start_time) * 1000)
+    counters["total_ms"] = round((time.monotonic() - start_time) * 1000)
+    return results, counters, log_lines
 
-    summary = {
+
+def _update_counters(counters: dict[str, int], result: dict) -> None:
+    """Update passed/failed/assert counters from a single result."""
+    if result.get("ok"):
+        counters["passed"] += 1
+    else:
+        counters["failed"] += 1
+    if result.get("command") == "ASSERT":
+        if result.get("assertion") == "PASS":
+            counters["asserts_pass"] += 1
+        else:
+            counters["asserts_fail"] += 1
+
+
+def _build_run_summary(
+    normalized_path: str,
+    requested_path: str,
+    lines: list[str],
+    results: list[dict],
+    counters: dict[str, int],
+) -> dict:
+    """Build the summary dict for a completed file run."""
+    passed = counters["passed"]
+    failed = counters["failed"]
+    return {
         "file": normalized_path,
-        "requested_path": req.path,
+        "requested_path": requested_path,
         "total_lines": len(lines),
         "executed": passed + failed,
         "passed": passed,
         "failed": failed,
-        "asserts_pass": asserts_pass,
-        "asserts_fail": asserts_fail,
-        "total_ms": total_time,
-        "log_file": str(log_file.relative_to(IQL_DIR)),
+        "asserts_pass": counters["asserts_pass"],
+        "asserts_fail": counters["asserts_fail"],
+        "total_ms": counters["total_ms"],
         "status": "PASS" if failed == 0 else "FAIL",
     }
+
+
+def _write_run_log(
+    normalized_path: str,
+    lines: list[str],
+    log_lines: list[str],
+    summary: dict,
+) -> "Path":
+    """Append summary footer to log_lines and write to disk. Returns log Path."""
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    test_name = Path(normalized_path).stem
+    log_file = LOG_DIR / f"{test_name}_{ts}.log"
 
     log_lines.extend([
         "",
         "# ── Summary ──────────────────────────────────────",
-        f"# Status:  {summary['status']}",
-        f"# Executed: {summary['executed']} | Passed: {passed} | Failed: {failed}",
-        f"# Asserts:  {asserts_pass} pass / {asserts_fail} fail",
-        f"# Time:    {total_time}ms",
+        f"# Status:   {summary['status']}",
+        f"# Executed: {summary['executed']} | Passed: {summary['passed']} | Failed: {summary['failed']}",
+        f"# Asserts:  {summary['asserts_pass']} pass / {summary['asserts_fail']} fail",
+        f"# Time:     {summary['total_ms']}ms",
         f"# Finished: {datetime.now().isoformat()}",
     ])
-
     log_file.write_text("\n".join(log_lines), encoding="utf-8")
-
-    return {"summary": summary, "results": results}
+    return log_file
 
 
 @router.get("/logs")

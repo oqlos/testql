@@ -44,6 +44,39 @@ class SumdDocument:
     architecture: str = ""
 
 
+def _parse_block_interfaces(content: str) -> list[SumdInterface]:
+    """Parse ``interface[type=...]{ ... }`` blocks from SUMD content."""
+    interfaces: list[SumdInterface] = []
+    for match in re.finditer(r'interface\[type="([^"]+)"\]\s*\{([^}]+)\}', content):
+        iface = SumdInterface(type=match.group(1))
+        fw = re.search(r'framework:\s*(\w+)', match.group(2))
+        if fw:
+            iface.framework = fw.group(1)
+        interfaces.append(iface)
+    return interfaces
+
+
+def _parse_api_interfaces(content: str) -> list[SumdInterface]:
+    """Parse REST API endpoint blocks from toon/markpact code fences."""
+    interfaces: list[SumdInterface] = []
+    api_pattern = r'```toon.*?markpact:testql[^`]*API\[(\d+)\]\{([^}]+)\}:\s*\n(.*?)```'
+    for match in re.finditer(api_pattern, content, re.DOTALL):
+        iface = SumdInterface(type="api", framework="rest")
+        for line in match.group(3).strip().split('\n'):
+            line = line.split('#')[0].strip()
+            if ',' in line:
+                vals = [v.strip() for v in line.split(',')]
+                if len(vals) >= 2:
+                    iface.endpoints.append({
+                        "method": vals[0],
+                        "path": vals[1],
+                        "status": vals[2] if len(vals) > 2 else "200",
+                    })
+        if iface.endpoints:
+            interfaces.append(iface)
+    return interfaces
+
+
 class SumdParser:
     """Parser for SUMD markdown files."""
     
@@ -110,50 +143,7 @@ class SumdParser:
     
     def _parse_interfaces(self, content: str) -> list[SumdInterface]:
         """Parse interfaces from SUMD."""
-        interfaces = []
-        
-        # Look for interface blocks in code
-        interface_pattern = r'interface\[type="([^"]+)"\]\s*\{([^}]+)\}'
-        for match in re.finditer(interface_pattern, content):
-            iface = SumdInterface(type=match.group(1))
-            body = match.group(2)
-            
-            # Extract framework
-            framework_match = re.search(r'framework:\s*(\w+)', body)
-            if framework_match:
-                iface.framework = framework_match.group(1)
-            
-            interfaces.append(iface)
-        
-        # Also look for REST API endpoints in code blocks
-        api_pattern = r'```toon.*?markpact:testql[^`]*API\[(\d+)\]\{([^}]+)\}:\s*\n(.*?)```'
-        for match in re.finditer(api_pattern, content, re.DOTALL):
-            count = match.group(1)
-            fields = match.group(2)
-            body = match.group(3)
-            
-            iface = SumdInterface(type="api", framework="rest")
-            
-            # Parse API entries
-            for line in body.strip().split('\n'):
-                line = line.strip()
-                if not line or line.startswith('#'):
-                    continue
-                # Parse: GET, /path, 200 # comment
-                parts = line.split('#')[0].strip()
-                if ',' in parts:
-                    vals = [v.strip() for v in parts.split(',')]
-                    if len(vals) >= 2:
-                        iface.endpoints.append({
-                            "method": vals[0],
-                            "path": vals[1],
-                            "status": vals[2] if len(vals) > 2 else "200",
-                        })
-            
-            if iface.endpoints:
-                interfaces.append(iface)
-        
-        return interfaces
+        return _parse_block_interfaces(content) + _parse_api_interfaces(content)
     
     def _parse_workflows(self, content: str) -> list[SumdWorkflow]:
         """Parse workflows from SUMD."""

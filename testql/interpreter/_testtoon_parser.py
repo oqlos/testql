@@ -78,43 +78,51 @@ def _parse_value(v: str):
     return v.strip('"')
 
 
+def _make_section(m: re.Match) -> ToonSection:
+    """Build a ToonSection from a HEADER_RE match."""
+    cols = [c.strip() for c in m.group(3).split(',') if c.strip()]
+    return ToonSection(
+        type=m.group(1),
+        columns=cols,
+        rows=[],
+        expected_count=int(m.group(2)) if m.group(2) else None,
+    )
+
+
+def _make_data_row(raw: str, section: ToonSection) -> dict:
+    """Parse one indented data line into a column→value dict."""
+    line = raw.strip()
+    sep = _detect_separator(line)
+    parts = line.split(sep, len(section.columns) - 1)
+    return {col: _parse_value(val) for col, val in zip(section.columns, parts)}
+
+
 def parse_testtoon(text: str, filename: str = "<string>") -> ToonScript:
     """Parse TestTOON source into structured ToonScript."""
     script = ToonScript()
     current: ToonSection | None = None
 
     for raw in text.splitlines():
-        if not raw.strip():
+        stripped = raw.strip()
+        if not stripped:
             continue
 
-        m = META_RE.match(raw.strip())
+        m = META_RE.match(stripped)
         if m:
             script.meta[m.group(1).lower()] = m.group(2).strip()
             continue
 
-        if raw.strip().startswith('#'):
+        if stripped.startswith('#'):
             continue
 
-        m = HEADER_RE.match(raw.strip())
+        m = HEADER_RE.match(stripped)
         if m:
-            cols = [c.strip() for c in m.group(3).split(',') if c.strip()]
-            current = ToonSection(
-                type=m.group(1),
-                columns=cols,
-                rows=[],
-                expected_count=int(m.group(2)) if m.group(2) else None,
-            )
+            current = _make_section(m)
             script.sections.append(current)
             continue
 
         if current and raw.startswith('  '):
-            line = raw.strip()
-            sep = _detect_separator(line)
-            parts = line.split(sep, len(current.columns) - 1)
-            row = {}
-            for col, val in zip(current.columns, parts):
-                row[col] = _parse_value(val)
-            current.rows.append(row)
+            current.rows.append(_make_data_row(raw, current))
 
     return script
 

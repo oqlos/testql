@@ -213,44 +213,8 @@ class OpenAPIGenerator:
 
     def _extract_parameters(self, ep: EndpointInfo) -> list[dict]:
         """Extract path and query parameters."""
-        parameters = []
-
-        # Path parameters from URL pattern
-        import re
-        path_params = re.findall(r'\{([^}]+)\}', ep.path)
-        for param in path_params:
-            param_schema = {"type": "string"}
-            if 'id' in param.lower():
-                param_schema = {"type": "string"}  # Could be UUID or string ID
-            elif 'int' in param.lower() or param.endswith('_id'):
-                param_schema = {"type": "integer"}
-
-            parameters.append({
-                "name": param,
-                "in": "path",
-                "required": True,
-                "schema": param_schema,
-            })
-
-        # Use endpoint parameters if available
-        for p in ep.parameters:
-            if isinstance(p, dict):
-                param_in = p.get('in', 'query')
-                if param_in == 'path' and not any(param["name"] == p.get('name') for param in parameters):
-                    parameters.append({
-                        "name": p.get('name', 'unknown'),
-                        "in": "path",
-                        "required": True,
-                        "schema": {"type": p.get('type', 'string').lower()},
-                    })
-                elif param_in == 'query':
-                    parameters.append({
-                        "name": p.get('name', 'unknown'),
-                        "in": "query",
-                        "required": p.get('required', False),
-                        "schema": {"type": p.get('type', 'string').lower()},
-                    })
-
+        parameters = _extract_path_params(ep.path)
+        parameters.extend(_extract_ep_params(ep.parameters, parameters))
         return parameters
 
     def _build_request_body(self, ep: EndpointInfo) -> dict:
@@ -425,6 +389,37 @@ class ContractTestGenerator:
                         errors.append("Response body is not a valid JSON object")
 
         return errors
+
+
+def _extract_path_params(path: str) -> list[dict]:
+    """Build parameter dicts for all {name} placeholders in *path*."""
+    import re
+    params: list[dict] = []
+    for param in re.findall(r'\{([^}]+)\}', path):
+        # id-containing params are strings (could be UUID); int/integer names are integers
+        if 'int' in param.lower() and 'id' not in param.lower():
+            schema: dict = {"type": "integer"}
+        else:
+            schema = {"type": "string"}
+        params.append({"name": param, "in": "path", "required": True, "schema": schema})
+    return params
+
+
+def _extract_ep_params(ep_params: list, existing: list[dict]) -> list[dict]:
+    """Convert raw endpoint parameter dicts to OpenAPI parameter objects."""
+    existing_names = {p["name"] for p in existing}
+    result: list[dict] = []
+    for p in ep_params:
+        if not isinstance(p, dict):
+            continue
+        param_in = p.get('in', 'query')
+        name = p.get('name', 'unknown')
+        schema = {"type": p.get('type', 'string').lower()}
+        if param_in == 'path' and name not in existing_names:
+            result.append({"name": name, "in": "path", "required": True, "schema": schema})
+        elif param_in == 'query':
+            result.append({"name": name, "in": "query", "required": p.get('required', False), "schema": schema})
+    return result
 
 
 def generate_openapi_spec(project_path: str | Path, output: Path | None = None, format: str = "yaml") -> Path:

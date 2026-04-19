@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.12] - 2026-04-19
+
+### Docs
+- Update README.md
+
+### Test
+- Update testql/commands/echo_helpers.py
+- Update testql/commands/encoder_routes.py
+- Update testql/commands/generate_cmd.py
+- Update testql/commands/misc_cmds.py
+- Update testql/commands/suite/listing.py
+- Update testql/interpreter/_api_runner.py
+- Update testql/interpreter/_testtoon_parser.py
+- Update testql/interpreter/converter/handlers/encoder.py
+- Update testql/openapi_generator.py
+- Update testql/sumd_parser.py
+
+### Other
+- Update coverage.json
+
 ## [0.6.11] - 2026-04-19
 
 ### Docs

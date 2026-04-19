@@ -144,25 +144,33 @@ class ApiRunnerMixin:
         ))
 
 
+def _resolve_length(root: Any, path: str) -> int | None:
+    """Return len() of the list at *path* (without the trailing .length)."""
+    parent: Any = root
+    for key in path.rsplit(".", 1)[0].split("."):
+        parent = parent.get(key) if isinstance(parent, dict) else None
+    return len(parent) if isinstance(parent, list) else None
+
+
+def _navigate_step(obj: Any, key: str) -> Any:
+    """Descend one level into a JSON object by key (or integer index)."""
+    if isinstance(obj, dict):
+        return obj.get(key)
+    if isinstance(obj, list):
+        try:
+            return obj[int(key)]
+        except (ValueError, IndexError):
+            return None
+    return None
+
+
 def _navigate_json_path(root: Any, path: str) -> Any:
     """Navigate a dotted JSON path, supporting list index and .length."""
     obj = root
     for key in path.split("."):
-        if isinstance(obj, dict):
-            obj = obj.get(key)
-        elif isinstance(obj, list):
-            try:
-                obj = obj[int(key)]
-            except (ValueError, IndexError):
-                obj = None
-        else:
-            obj = None
-
-    # Handle list.length shorthand
+        obj = _navigate_step(obj, key)
     if path.endswith(".length") and isinstance(root, dict):
-        parent = root
-        for key in path.rsplit(".", 1)[0].split("."):
-            parent = parent.get(key) if isinstance(parent, dict) else None
-        if isinstance(parent, list):
-            obj = len(parent)
+        length = _resolve_length(root, path)
+        if length is not None:
+            obj = length
     return obj

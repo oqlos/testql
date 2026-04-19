@@ -104,6 +104,14 @@ def analyze(path: str) -> None:
     _print_scenarios_section(profile)
 
 
+def _count_routes_by(routes: list, key: str) -> dict[str, int]:
+    """Count routes by a given dict key."""
+    counts: dict[str, int] = {}
+    for route in routes:
+        counts[route.get(key, "unknown")] = counts.get(route.get(key, "unknown"), 0) + 1
+    return counts
+
+
 def _print_routes_section(profile) -> None:
     if not profile.config.get("discovered_routes"):
         return
@@ -115,13 +123,8 @@ def _print_routes_section(profile) -> None:
     if frameworks:
         click.echo(f"   Detectors used: {', '.join(frameworks)}")
 
-    routes_by_fw: dict[str, int] = {}
-    routes_by_type: dict[str, int] = {}
-    for route in routes:
-        fw = route.get("framework", "unknown")
-        et = route.get("endpoint_type", "rest")
-        routes_by_fw[fw] = routes_by_fw.get(fw, 0) + 1
-        routes_by_type[et] = routes_by_type.get(et, 0) + 1
+    routes_by_fw = _count_routes_by(routes, "framework")
+    routes_by_type = _count_routes_by(routes, "endpoint_type")
 
     if routes_by_fw:
         click.echo("   By Framework:")
