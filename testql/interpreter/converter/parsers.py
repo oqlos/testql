@@ -65,11 +65,12 @@ def parse_commands(source: str) -> tuple[list[tuple[str, str]], list[str]]:
 
 def detect_scenario_type(commands: list[tuple[str, str]]) -> str:
     """Heuristic to detect test type from commands."""
-    has_api = any(c == 'API' for c, _ in commands)
-    has_navigate = any(c == 'NAVIGATE' for c, _ in commands)
-    has_encoder = any(c.startswith('ENCODER_') for c, _ in commands)
-    has_select = any(c.startswith('SELECT_') for c, _ in commands)
-    has_record = any(c in ('RECORD_START', 'RECORD_STOP') for c, _ in commands)
+    cmd_set = {c for c, _ in commands}
+    has_record = bool(cmd_set & {'RECORD_START', 'RECORD_STOP'})
+    has_navigate = any(c == 'NAVIGATE' for c in cmd_set)
+    has_api = 'API' in cmd_set
+    has_encoder = any(c.startswith('ENCODER_') for c in cmd_set)
+    has_select = any(c.startswith('SELECT_') for c in cmd_set)
 
     if has_record:
         return 'interaction'

@@ -50,44 +50,35 @@ def endpoints(
         click.echo(output_str)
 
 
-def _format_endpoints(eps, fmt: str, target_path: Path, detector) -> str:
-    import csv
-    import io
+def _format_endpoints_json(eps, target_path: Path) -> str:
     import json
+    data = [
+        {
+            "path": ep.path, "method": ep.method, "framework": ep.framework,
+            "type": ep.endpoint_type, "handler": ep.handler_name,
+            "file": str(ep.source_file.relative_to(target_path)) if ep.source_file else None,
+            "line": ep.line_number, "summary": ep.summary,
+        }
+        for ep in eps
+    ]
+    return json.dumps(data, indent=2)
 
-    if fmt == "json":
-        data = [
-            {
-                "path": ep.path,
-                "method": ep.method,
-                "framework": ep.framework,
-                "type": ep.endpoint_type,
-                "handler": ep.handler_name,
-                "file": str(ep.source_file.relative_to(target_path)) if ep.source_file else None,
-                "line": ep.line_number,
-                "summary": ep.summary,
-            }
-            for ep in eps
-        ]
-        return json.dumps(data, indent=2)
 
-    if fmt == "csv":
-        buf = io.StringIO()
-        writer = csv.writer(buf)
-        writer.writerow(["method", "path", "framework", "type", "handler", "file", "line", "summary"])
-        for ep in eps:
-            writer.writerow([
-                ep.method,
-                ep.path,
-                ep.framework,
-                ep.endpoint_type,
-                ep.handler_name or "",
-                str(ep.source_file.relative_to(target_path)) if ep.source_file else "",
-                ep.line_number,
-                ep.summary or "",
-            ])
-        return buf.getvalue()
+def _format_endpoints_csv(eps, target_path: Path) -> str:
+    import csv, io
+    buf = io.StringIO()
+    writer = csv.writer(buf)
+    writer.writerow(["method", "path", "framework", "type", "handler", "file", "line", "summary"])
+    for ep in eps:
+        writer.writerow([
+            ep.method, ep.path, ep.framework, ep.endpoint_type, ep.handler_name or "",
+            str(ep.source_file.relative_to(target_path)) if ep.source_file else "",
+            ep.line_number, ep.summary or "",
+        ])
+    return buf.getvalue()
 
+
+def _format_endpoints_table(eps, detector) -> str:
     lines = [f"{'Method':<8} {'Path':<40} {'Framework':<12} {'Handler':<30}", "-" * 90]
     for ep in eps:
         handler = ep.handler_name or "-"
@@ -98,6 +89,14 @@ def _format_endpoints(eps, fmt: str, target_path: Path, detector) -> str:
     lines.append("")
     lines.append(f"Total: {len(eps)} endpoints (detectors: {', '.join(detector.detectors_used)})")
     return "\n".join(lines)
+
+
+def _format_endpoints(eps, fmt: str, target_path: Path, detector) -> str:
+    if fmt == "json":
+        return _format_endpoints_json(eps, target_path)
+    if fmt == "csv":
+        return _format_endpoints_csv(eps, target_path)
+    return _format_endpoints_table(eps, detector)
 
 
 @click.command()

@@ -17,30 +17,40 @@ from .base import BaseAnalyzer, TestPattern
 class ProjectAnalyzer(BaseAnalyzer):
     """Analyzes project structure to discover testable patterns."""
 
+    _FRONTEND_MARKERS = frozenset(['package.json', 'vite.config.js', 'index.html'])
+    _FRONTEND_E2E_MARKERS = frozenset(['playwright.config.js', 'e2e'])
+    _HARDWARE_DIRS = ('scenarios', 'hardware', 'firmware')
+
+    def _detect_web_frontend(self, names: frozenset[str]) -> str | None:
+        if names & self._FRONTEND_MARKERS:
+            if names & self._FRONTEND_E2E_MARKERS:
+                return 'web-frontend'
+        return None
+
+    def _detect_python_type(self, names: frozenset[str]) -> str | None:
+        if 'pyproject.toml' not in names:
+            return None
+        content = (self.project_path / 'pyproject.toml').read_text(errors='ignore').lower()
+        if 'fastapi' in content or 'flask' in content:
+            return 'python-api'
+        if 'click' in content:
+            return 'python-cli'
+        return 'python-lib'
+
+    def _detect_hardware(self) -> str | None:
+        if any((self.project_path / d).exists() for d in self._HARDWARE_DIRS):
+            return 'hardware'
+        return None
+
     def detect_project_type(self) -> str:
         """Detect project type from files and structure."""
-        files = list(self.project_path.iterdir())
-        names = {f.name for f in files}
-
-        # Check for web frontend
-        if any(n in names for n in ['package.json', 'vite.config.js', 'index.html']):
-            if 'playwright.config.js' in names or 'e2e' in names:
-                return 'web-frontend'
-
-        # Check for Python API/service
-        if 'pyproject.toml' in names:
-            content = (self.project_path / 'pyproject.toml').read_text(errors='ignore')
-            if 'fastapi' in content.lower() or 'flask' in content.lower():
-                return 'python-api'
-            if 'click' in content.lower():
-                return 'python-cli'
-            return 'python-lib'
-
-        # Check for hardware/firmware
-        if any((self.project_path / d).exists() for d in ['scenarios', 'hardware', 'firmware']):
-            return 'hardware'
-
-        return 'mixed'
+        names = frozenset(f.name for f in self.project_path.iterdir())
+        return (
+            self._detect_web_frontend(names)
+            or self._detect_python_type(names)
+            or self._detect_hardware()
+            or 'mixed'
+        )
 
     def run_full_analysis(self) -> None:
         """Run complete project analysis."""
@@ -83,32 +93,31 @@ class ProjectAnalyzer(BaseAnalyzer):
                 except Exception:
                     continue
 
+    def _collect_patterns_from_tree(self, tree: ast.Module, content: str, source_file: Path) -> list:
+        """Walk AST and collect TestPatterns from top-level and class-level test functions."""
+        patterns = []
+        for node in ast.walk(tree):
+            if isinstance(node, ast.FunctionDef) and node.name.startswith('test_'):
+                p = self._extract_test_pattern(node, content, source_file=source_file)
+                if p:
+                    patterns.append(p)
+            elif isinstance(node, ast.ClassDef):
+                for item in node.body:
+                    if isinstance(item, ast.FunctionDef) and item.name.startswith('test_'):
+                        p = self._extract_test_pattern(item, content, class_name=node.name, source_file=source_file)
+                        if p:
+                            patterns.append(p)
+        return patterns
+
     def _analyze_python_tests(self) -> None:
         """Analyze existing Python test files for patterns."""
-        test_files = self.profile.discovered_files.get('python_tests', [])
-
-        for test_file in test_files:
+        for test_file in self.profile.discovered_files.get('python_tests', []):
             try:
                 content = test_file.read_text()
                 tree = ast.parse(content)
-
-                for node in ast.walk(tree):
-                    if isinstance(node, ast.FunctionDef):
-                        if node.name.startswith('test_'):
-                            pattern = self._extract_test_pattern(
-                                node, content, source_file=test_file
-                            )
-                            if pattern:
-                                self.profile.test_patterns.append(pattern)
-
-                    elif isinstance(node, ast.ClassDef):
-                        for item in node.body:
-                            if isinstance(item, ast.FunctionDef) and item.name.startswith('test_'):
-                                pattern = self._extract_test_pattern(
-                                    item, content, class_name=node.name, source_file=test_file
-                                )
-                                if pattern:
-                                    self.profile.test_patterns.append(pattern)
+                self.profile.test_patterns.extend(
+                    self._collect_patterns_from_tree(tree, content, test_file)
+                )
             except SyntaxError:
                 continue
 

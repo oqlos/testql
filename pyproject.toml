@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "testql"
-version = "0.6.9"
+version = "0.6.10"
 description = "TestQL with endpoint detection, OpenAPI, SUMD generation, SUMD parser and HTML report generation"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -25,7 +25,7 @@ testql = "testql.cli:main"
 
 [project.optional-dependencies]
 playwright = ["playwright>=1.40"]
-dev = ["pytest", "pytest-asyncio",
+dev = ["pytest", "pytest-asyncio", "pytest-cov",
     "fastapi",
     "goal>=2.1.0",
     "costs>=0.1.20",
@@ -38,6 +38,11 @@ include = ["testql*"]
 [tool.pfix]
 # Self-healing Python configuration
 model = "openrouter/qwen/qwen3-coder-next"
+
+[tool.pytest.ini_options]
+addopts = "--cov=testql --cov-report=term-missing --cov-report=json"
+testpaths = ["tests"]
+
 auto_apply = true
 auto_install_deps = true
 auto_restart = false

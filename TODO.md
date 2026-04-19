@@ -6,8 +6,8 @@
 
 ## P0 — Blockers
 
-- [ ] Pokrycie testów zgłaszane jako `null` — naprawić konfigurację `pytest-cov` w `pyqual.yaml`
-- [ ] Wersja w `app.doql.less` niezsynchronizowana z VERSION (0.4.2 vs 0.6.6)
+- [ ] Pokrycie testów: 16% — cel to ≥ 50% (brakuje testów dla `runner.py`, `sumd_generator.py`, `toon_parser.py`, `sumd_parser.py`)
+- [ ] `pyqual.yaml` `coverage_min` ustawiony na 16 — podnosić wraz z postępem testów
 
 ---
 

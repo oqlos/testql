@@ -56,43 +56,55 @@ class APIGeneratorMixin:
             "",
         ]
 
+    def _build_rest_section(self, routes: list[dict]) -> list[str]:
+        """Build REST API section lines."""
+        unique_routes = self._deduplicate_rest_routes(routes)
+        if not unique_routes:
+            return []
+        lines = [
+            f"# REST API Endpoints ({len(unique_routes)} unique)",
+            f"API[{len(unique_routes[:25])}]{{method, endpoint, expected_status}}:",
+        ]
+        for route in unique_routes[:25]:
+            expected = 200 if route['method'] == 'GET' else 201
+            lines.append(f"  {route['method']}, {route['path']}, {expected}")
+        lines.append("")
+        return lines
+
+    def _build_graphql_section(self, routes: list[dict]) -> list[str]:
+        """Build GraphQL section lines."""
+        lines = [
+            f"# GraphQL Endpoints ({len(routes)} detected)",
+            f"GRAPHQL[{len(routes[:10])}]{{query, variables}}:",
+        ]
+        for route in routes[:10]:
+            lines.append(f"  {route.get('handler', 'query')}, {{}}")
+        lines.append("")
+        return lines
+
+    def _build_websocket_section(self, routes: list[dict]) -> list[str]:
+        """Build WebSocket section lines."""
+        lines = [
+            f"# WebSocket Endpoints ({len(routes)} detected)",
+            f"WEBSOCKET[{len(routes[:5])}]{{url, action}}:",
+        ]
+        for route in routes[:5]:
+            lines.append(f"  ws://localhost:8101{route['path']}, connect")
+        lines.append("")
+        return lines
+
     def _build_api_test_endpoints(self, routes: list[dict]) -> list[str]:
         """Build endpoint sections for API test scenario."""
-        sections = []
-
-        # Group by endpoint type
+        sections: list[str] = []
         rest_routes = [r for r in routes if r.get('endpoint_type') == 'rest']
         graphql_routes = [r for r in routes if r.get('endpoint_type') == 'graphql']
         ws_routes = [r for r in routes if r.get('endpoint_type') == 'websocket']
-
-        # REST API endpoints
         if rest_routes:
-            unique_routes = self._deduplicate_rest_routes(rest_routes)
-            if unique_routes:
-                sections.append(f"# REST API Endpoints ({len(unique_routes)} unique)")
-                sections.append(f"API[{len(unique_routes[:25])}]{{method, endpoint, expected_status}}:")
-                for route in unique_routes[:25]:
-                    expected = 200 if route['method'] == 'GET' else 201
-                    sections.append(f"  {route['method']}, {route['path']}, {expected}")
-                sections.append("")
-
-        # GraphQL endpoints
+            sections.extend(self._build_rest_section(rest_routes))
         if graphql_routes:
-            sections.append(f"# GraphQL Endpoints ({len(graphql_routes)} detected)")
-            sections.append(f"GRAPHQL[{len(graphql_routes[:10])}]{{query, variables}}:")
-            for route in graphql_routes[:10]:
-                handler = route.get('handler', 'query')
-                sections.append(f'  {handler}, {{}}')
-            sections.append("")
-
-        # WebSocket endpoints
+            sections.extend(self._build_graphql_section(graphql_routes))
         if ws_routes:
-            sections.append(f"# WebSocket Endpoints ({len(ws_routes)} detected)")
-            sections.append(f"WEBSOCKET[{len(ws_routes[:5])}]{{url, action}}:")
-            for route in ws_routes[:5]:
-                sections.append(f'  ws://localhost:8101{route["path"]}, connect')
-            sections.append("")
-
+            sections.extend(self._build_websocket_section(ws_routes))
         return sections
 
     def _deduplicate_rest_routes(self, routes: list[dict]) -> list[dict]:

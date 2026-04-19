@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.10] - 2026-04-19
+
+### Docs
+- Update README.md
+- Update SUMR.md
+- Update TODO.md
+
+### Test
+- Update testql/commands/echo.py
+- Update testql/commands/echo/__init__.py
+- Update testql/commands/echo/cli.py
+- Update testql/commands/echo/context.py
+- Update testql/commands/echo/formatters/__init__.py
+- Update testql/commands/echo/formatters/text.py
+- Update testql/commands/echo/parsers/__init__.py
+- Update testql/commands/echo/parsers/doql.py
+- Update testql/commands/echo/parsers/toon.py
+- Update testql/commands/endpoints_cmd.py
+- ... and 34 more files
+
+### Other
+- Update Taskfile.yml
+- Update app.doql.less
+- Update coverage.json
+- Update pyqual.yaml
+
 ## [0.6.9] - 2026-04-19
 
 ### Docs
