@@ -5,39 +5,26 @@ flowchart TD
 
     subgraph CLI
         testql__cli__cli["cli"]
-        testql__cli__run["run"]
-        testql__cli__generate["generate"]
-        testql__cli__analyze["analyze"]
-        testql__cli__endpoints["endpoints"]
-        testql__cli__openapi["openapi"]
-        testql__cli__init["init"]
-        testql__cli__create["create"]
-        testql__cli__suite["suite"]
-        testql__cli__list["list"]
-        testql__cli__echo["echo"]
-        testql__cli__watch["watch"]
-        testql__cli__from_sumd["from_sumd"]
-        testql__cli__report["report"]
         testql__cli__main["main"]
     end
 
     subgraph Core
-        TODO__testtoon_parser__Section__to_dicts["to_dicts"]
-        TODO__testtoon_parser__Section__validate["validate"]
-        TODO__testtoon_parser__parse_testtoon["parse_testtoon"]
-        TODO__testtoon_parser__print_parsed["print_parsed"]
         testql__report_generator__ReportDataParser__parse_testql_results["parse_testql_results"]
         testql__report_generator__ReportDataParser__to_json["to_json"]
         testql__report_generator__HTMLReportGenerator__generate["generate"]
         testql__report_generator__HTMLReportGenerator___render_html["_render_html"]
         testql__report_generator__HTMLReportGenerator___render_test_row["_render_test_row"]
-        testql__doql_parser__DoqlParser__parse_file["parse_file"]
-        testql__doql_parser__DoqlParser__parse["parse"]
-        testql__doql_parser__DoqlParser___parse_app_block["_parse_app_block"]
-        testql__doql_parser__DoqlParser___parse_entity_block["_parse_entity_block"]
-        testql__doql_parser__DoqlParser___parse_workflow_block["_parse_workflow_block"]
-        testql__doql_parser__DoqlParser___parse_interface_block["_parse_interface_block"]
-        ...["+209 more"]
+        testql__generator__TestGenerator___detect_project_type["_detect_project_type"]
+        testql__generator__TestGenerator__analyze["analyze"]
+        testql__generator__TestGenerator___scan_directory_structure["_scan_directory_structure"]
+        testql__generator__TestGenerator___analyze_python_tests["_analyze_python_tests"]
+        testql__generator__TestGenerator___extract_test_pattern["_extract_test_pattern"]
+        testql__generator__TestGenerator___analyze_config_files["_analyze_config_files"]
+        testql__generator__TestGenerator___analyze_api_routes["_analyze_api_routes"]
+        testql__generator__TestGenerator___analyze_api_routes_fallback["_analyze_api_routes_fallback"]
+        testql__generator__TestGenerator___analyze_scenarios["_analyze_scenarios"]
+        testql__generator__TestGenerator__generate_tests["generate_tests"]
+        ...["+226 more"]
     end
 
-    class TODO__testtoon_parser__Section__to_dicts,TODO__testtoon_parser__Section__validate,TODO__testtoon_parser__parse_testtoon,TODO__testtoon_parser__print_parsed,testql__report_generator__ReportDataParser__parse_testql_results,testql__report_generator__ReportDataParser__to_json,testql__report_generator__HTMLReportGenerator__generate,testql__report_generator__HTMLReportGenerator___render_html,testql__report_generator__HTMLReportGenerator___render_test_row,testql__doql_parser__DoqlParser__parse_file entry
+    class testql__cli__cli,testql__cli__main,testql__report_generator__ReportDataParser__parse_testql_results,testql__report_generator__ReportDataParser__to_json,testql__report_generator__HTMLReportGenerator__generate,testql__report_generator__HTMLReportGenerator___render_html,testql__report_generator__HTMLReportGenerator___render_test_row,testql__generator__TestGenerator___detect_project_type,testql__generator__TestGenerator__analyze,testql__generator__TestGenerator___scan_directory_structure entry

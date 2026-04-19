@@ -1,27 +1,22 @@
 flowchart TD
     testql___base_fallback["testql._base_fallback<br/>26 funcs"]
-    testql__cli["testql.cli<br/>15 funcs"]
-    testql__commands["testql.commands<br/>20 funcs"]
+    testql__commands["testql.commands<br/>43 funcs"]
     testql__doql_parser["testql.doql_parser<br/>9 funcs"]
-    testql__endpoint_detector["testql.endpoint_detector<br/>43 funcs"]
+    testql__endpoint_detector["testql.endpoint_detector<br/>46 funcs"]
     testql__generator["testql.generator<br/>26 funcs"]
     testql__interpreter["testql.interpreter<br/>69 funcs"]
     testql__openapi_generator["testql.openapi_generator<br/>19 funcs"]
     testql__report_generator["testql.report_generator<br/>8 funcs"]
     testql__runner["testql.runner<br/>18 funcs"]
-    testql__sumd_generator["testql.sumd_generator<br/>2 funcs"]
+    testql__sumd_generator["testql.sumd_generator<br/>11 funcs"]
     testql__toon_parser["testql.toon_parser<br/>7 funcs"]
-    testql__commands ==>|4| testql__cli
-    testql__commands -->|3| testql___base_fallback
+    testql__commands ==>|5| testql___base_fallback
     testql__interpreter -->|3| testql___base_fallback
-    testql__generator -->|2| testql__cli
     testql__generator -->|2| testql___base_fallback
-    testql__cli -->|2| testql___base_fallback
-    testql__cli -->|2| testql__toon_parser
-    testql__cli -->|2| testql__report_generator
-    testql__runner -->|1| testql___base_fallback
-    testql__openapi_generator -->|1| testql__cli
+    testql__commands -->|2| testql__report_generator
+    testql__commands -->|2| testql__toon_parser
     testql__openapi_generator -->|1| testql___base_fallback
-    testql__cli -->|1| testql__doql_parser
-    testql__cli -->|1| testql__sumd_generator
+    testql__runner -->|1| testql___base_fallback
     testql__endpoint_detector -->|1| testql___base_fallback
+    testql__commands -->|1| testql__doql_parser
+    testql__commands -->|1| testql__sumd_generator

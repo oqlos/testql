@@ -1,23 +1,28 @@
-# testql | 36f 7765L | shell:2,python:34 | 2026-04-19
-# stats: 286 func | 0 cls | 36 mod | CC̄=4.9 | critical:11 | cycles:0
-# alerts[5]: CC convert_iql_to_testtoon=66; CC suite=47; fan-out suite=41; fan-out convert_iql_to_testtoon=40; CC generate_sumd=29
-# hotspots[5]: suite fan=41; convert_iql_to_testtoon fan=40; iql_run_file fan=28; list fan=24; echo fan=24
-# evolution: CC̄ 4.9→4.9 (flat 0.0)
+# testql | 41f 7839L | shell:2,python:39 | 2026-04-19
+# stats: 308 func | 0 cls | 41 mod | CC̄=4.6 | critical:7 | cycles:0
+# alerts[5]: CC convert_iql_to_testtoon=66; fan-out convert_iql_to_testtoon=40; CC parse_doql_less=29; fan-out iql_run_file=28; fan-out suite=26
+# hotspots[5]: convert_iql_to_testtoon fan=40; iql_run_file fan=28; suite fan=26; generate fan=22; echo fan=22
+# evolution: CC̄ 4.9→4.6 (improved -0.3)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[36]:
+M[41]:
   TODO/testtoon_parser.py,141
   project.sh,35
   testql/__init__.py,3
   testql/__main__.py,6
   testql/_base_fallback.py,221
   testql/base.py,37
-  testql/cli.py,1181
-  testql/commands/__init__.py,5
+  testql/cli.py,41
+  testql/commands/__init__.py,27
   testql/commands/echo.py,262
   testql/commands/encoder_routes.py,424
+  testql/commands/endpoints_cmd.py,137
+  testql/commands/generate_cmd.py,140
+  testql/commands/misc_cmds.py,529
+  testql/commands/run_cmd.py,56
+  testql/commands/suite_cmd.py,314
   testql/doql_parser.py,172
   testql/echo_schemas.py,153
-  testql/endpoint_detector.py,827
+  testql/endpoint_detector.py,835
   testql/generator.py,709
   testql/interpreter/__init__.py,89
   testql/interpreter/_api_runner.py,168
@@ -37,7 +42,7 @@ M[36]:
   testql/reporters/junit.py,79
   testql/runner.py,371
   testql/runners/__init__.py,0
-  testql/sumd_generator.py,200
+  testql/sumd_generator.py,208
   testql/sumd_parser.py,287
   testql/toon_parser.py,110
   tree.sh,1
@@ -54,27 +59,6 @@ D:
     convert_iql_to_testtoon(source;filename)
     convert_file(src)
     convert_directory(dir_path)
-  testql/cli.py:
-    e: cli,run,generate,analyze,endpoints,openapi,init,create,suite,list,echo,watch,from_sumd,report,main
-    cli()
-    run(file;url;dry_run;output;quiet)
-    generate(path;output_dir;analyze_only;fmt)
-    analyze(path)
-    endpoints(path;fmt;framework;endpoint_type;output)
-    openapi(path;output;format;title;version;contract_tests)
-    init(path;name;project_type)
-    create(name;test_type;module;output;force)
-    suite(suite_name;base_path;pattern;tags;test_types;parallel;fail_fast;output;report;url)
-    list(path;test_type;tag;fmt)
-    echo(toon_path;doql_path;fmt;output;project_path)
-    watch(path;pattern;command;debounce)
-    from_sumd(sumd_file;output;dry_run)
-    report(data_json;output;example)
-    main()
-  testql/sumd_generator.py:
-    e: generate_sumd,save_sumd
-    generate_sumd(project_echo;project_path)
-    save_sumd(project_echo;project_path;output_path)
   testql/commands/echo.py:
     e: parse_doql_less,parse_toon_scenarios,generate_context,format_text_output,echo
     parse_doql_less(filepath)
@@ -90,6 +74,38 @@ D:
     MultiProjectTestGenerator: __init__(1),discover_projects(0),analyze_all(0),generate_all(0),generate_cross_project_tests(1)  # Generator that operates across multiple projects...
     generate_for_project(project_path)
     generate_for_workspace(workspace_path)
+  testql/commands/suite_cmd.py:
+    e: _find_files,_collect_test_files,_run_single_file,_build_report_data,_save_report,suite,list_tests,_parse_meta
+    _find_files(base_dir;file_pattern)
+    _collect_test_files(target_path;suite_name;pattern;config)
+    _run_single_file(test_file;interp)
+    _build_report_data(suite_name;results;total_passed;total_failed;total_duration)
+    _save_report(report_data;report_file;output)
+    suite(suite_name;base_path;pattern;tags;test_types;parallel;fail_fast;output;report;url)
+    list_tests(path;test_type;tag;fmt)
+    _parse_meta(tf;yaml)
+  testql/commands/misc_cmds.py:
+    e: _build_test_content,init,create,watch,from_sumd,report,echo
+    _build_test_content(test_type;name;meta_module;tags)
+    init(path;name;project_type)
+    create(name;test_type;module;output;force)
+    watch(path;pattern;command;debounce)
+    from_sumd(sumd_file;output;dry_run)
+    report(data_json;output;example)
+    echo(toon_path;doql_path;fmt;output;project_path)
+  TODO/testtoon_parser.py:
+    e: Section,detect_separator,parse_value,parse_testtoon,validate,print_parsed
+    Section: to_dicts(0),validate(0)
+    detect_separator(line)
+    parse_value(v)
+    parse_testtoon(text)
+    validate(parsed)
+    print_parsed(parsed)
+  testql/commands/endpoints_cmd.py:
+    e: endpoints,_format_endpoints,openapi
+    endpoints(path;fmt;framework;endpoint_type;output)
+    _format_endpoints(eps;fmt;target_path;detector)
+    openapi(path;output;format;title;version;contract_tests)
   testql/endpoint_detector.py:
     e: EndpointInfo,ServiceInfo,BaseEndpointDetector,FastAPIDetector,FlaskDetector,DjangoDetector,ExpressDetector,OpenAPIDetector,TestEndpointDetector,GraphQLDetector,WebSocketDetector,ConfigEndpointDetector,UnifiedEndpointDetector,detect_endpoints
     EndpointInfo: to_testql_api_call(1),_infer_expected_status(0)  # Standardized endpoint information...
@@ -104,24 +120,8 @@ D:
     GraphQLDetector(BaseEndpointDetector): detect(0),_analyze_schema(1),_analyze_python_graphql(1)  # Detect GraphQL schemas and resolvers...
     WebSocketDetector(BaseEndpointDetector): detect(0)  # Detect WebSocket endpoints...
     ConfigEndpointDetector(BaseEndpointDetector): detect(0),_analyze_docker_compose(1),_infer_protocol(1)  # Detect endpoints from configuration files...
-    UnifiedEndpointDetector: __init__(1),detect_all(0),_deduplicate_endpoints(1),get_endpoints_by_type(1),get_endpoints_by_framework(1),generate_testql_scenario(1)  # Unified detector that runs all specialized detectors...
+    UnifiedEndpointDetector: __init__(1),detect_all(0),_deduplicate_endpoints(1),get_endpoints_by_type(1),get_endpoints_by_framework(1),generate_testql_scenario(1),_rest_block(1),_graphql_block(1),_ws_block(1)  # Unified detector that runs all specialized detectors...
     detect_endpoints(project_path)
-  TODO/testtoon_parser.py:
-    e: Section,detect_separator,parse_value,parse_testtoon,validate,print_parsed
-    Section: to_dicts(0),validate(0)
-    detect_separator(line)
-    parse_value(v)
-    parse_testtoon(text)
-    validate(parsed)
-    print_parsed(parsed)
-  testql/runner.py:
-    e: DslCommand,ExecutionResult,DslCliExecutor,parse_line,parse_script,main
-    DslCommand:
-    ExecutionResult:
-    DslCliExecutor: __init__(2),execute(1),_dispatch(1),cmd_api(1),cmd_wait(1),cmd_log(1),cmd_print(1),cmd_store(1),cmd_env(1),cmd_assert_status(1),cmd_assert_json(1),cmd_set_header(1),cmd_set_base_url(1),run_script(2),_format_cmd(1)
-    parse_line(line)
-    parse_script(content)
-    main()
   testql/sumd_parser.py:
     e: SumdMetadata,SumdInterface,SumdWorkflow,SumdDocument,SumdParser,parse_sumd_file
     SumdMetadata:  # Metadata from SUMD...
@@ -130,6 +130,14 @@ D:
     SumdDocument:  # Parsed SUMD document...
     SumdParser: parse_file(1),parse(1),_parse_metadata(1),_parse_interfaces(1),_parse_workflows(1),_parse_testql_scenarios(1),_parse_architecture(1),_extract_section(2),generate_testql_scenarios(1)  # Parser for SUMD markdown files...
     parse_sumd_file(path)
+  testql/runner.py:
+    e: DslCommand,ExecutionResult,DslCliExecutor,parse_line,parse_script,main
+    DslCommand:
+    ExecutionResult:
+    DslCliExecutor: __init__(2),execute(1),_dispatch(1),cmd_api(1),cmd_wait(1),cmd_log(1),cmd_print(1),cmd_store(1),cmd_env(1),cmd_assert_status(1),cmd_assert_json(1),cmd_set_header(1),cmd_set_base_url(1),run_script(2),_format_cmd(1)
+    parse_line(line)
+    parse_script(content)
+    main()
   testql/interpreter/_testtoon_parser.py:
     e: ToonSection,ToonScript,_detect_separator,_parse_value,parse_testtoon,validate_testtoon,_expand_config,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_generic,testtoon_to_iql
     ToonSection: validate(0)
@@ -176,6 +184,12 @@ D:
     ContractTestGenerator: __init__(1),_load_spec(1),generate_contract_tests(1),_get_expected_status(2),validate_response(3)  # Generate contract tests from OpenAPI specs...
     generate_openapi_spec(project_path;output;format)
     generate_contract_tests_from_spec(spec_path;output)
+  testql/commands/generate_cmd.py:
+    e: generate,analyze,_print_routes_section,_print_scenarios_section
+    generate(path;output_dir;analyze_only;fmt)
+    analyze(path)
+    _print_routes_section(profile)
+    _print_scenarios_section(profile)
   testql/interpreter/_api_runner.py:
     e: ApiRunnerMixin,_navigate_json_path
     ApiRunnerMixin: _do_http_request(3),_store_api_response(2),_cmd_api(2),_cmd_capture(2)  # Mixin providing HTTP API execution commands: API, CAPTURE...
@@ -201,6 +215,19 @@ D:
     e: JUnitReporter,report_junit
     JUnitReporter: generate(2),_add_testcase(2)  # Generate JUnit XML from a TestQL ScriptResult...
     report_junit(result;suite_name)
+  testql/sumd_generator.py:
+    e: generate_sumd,_header_section,_metadata_section,_architecture_section,_doql_declaration_section,_api_contract_section,_workflows_table_section,_configuration_section,_llm_suggestions_section,_workflow_snippet,save_sumd
+    generate_sumd(project_echo;project_path)
+    _header_section(project_name;version)
+    _metadata_section(project_name;version)
+    _architecture_section()
+    _doql_declaration_section(project_echo;project_name;version)
+    _api_contract_section(project_echo)
+    _workflows_table_section(project_echo)
+    _configuration_section(project_echo;project_name;version)
+    _llm_suggestions_section(project_echo)
+    _workflow_snippet(workflows;name;comment;cmd)
+    save_sumd(project_echo;project_path;output_path)
   testql/doql_parser.py:
     e: DoqlParser,parse_doql_file
     DoqlParser: __init__(0),parse_file(1),parse(1),_parse_app_block(1),_parse_entity_block(2),_parse_workflow_block(2),_parse_interface_block(2),_parse_deploy_block(1)  # Parser for doql LESS files...
@@ -245,9 +272,16 @@ D:
   testql/interpreter/interpreter.py:
     e: IqlInterpreter
     IqlInterpreter(ApiRunnerMixin,AssertionsMixin,EncoderMixin,FlowMixin,WebSocketMixin,BaseInterpreter): __init__(6),parse(2),_is_testtoon(1),execute(1),_dispatch(3),_cmd_set(2),_cmd_get(2)  # IQL interpreter — runs .testql.toon.yaml / .iql / .tql scrip...
+  testql/commands/run_cmd.py:
+    e: run
+    run(file;url;dry_run;output;quiet)
   testql/reporters/json_reporter.py:
     e: report_json
     report_json(result)
+  testql/cli.py:
+    e: cli,main
+    cli()
+    main()
   tree.sh:
   project.sh:
   testql/base.py:

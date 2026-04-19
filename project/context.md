@@ -4,17 +4,17 @@
 
 - **Project**: /home/tom/github/oqlos/testql
 - **Primary Language**: python
-- **Languages**: python: 34, shell: 2
+- **Languages**: python: 39, shell: 2
 - **Analysis Mode**: static
-- **Total Functions**: 286
+- **Total Functions**: 308
 - **Total Classes**: 61
-- **Modules**: 36
-- **Entry Points**: 246
+- **Modules**: 41
+- **Entry Points**: 250
 
 ## Architecture by Module
 
 ### testql.endpoint_detector
-- **Functions**: 43
+- **Functions**: 46
 - **Classes**: 13
 - **File**: `endpoint_detector.py`
 
@@ -43,13 +43,13 @@
 - **Classes**: 3
 - **File**: `runner.py`
 
-### testql.cli
-- **Functions**: 15
-- **File**: `cli.py`
-
 ### testql.commands.encoder_routes
 - **Functions**: 15
 - **File**: `encoder_routes.py`
+
+### testql.sumd_generator
+- **Functions**: 11
+- **File**: `sumd_generator.py`
 
 ### testql.interpreter._encoder
 - **Functions**: 11
@@ -71,6 +71,10 @@
 - **Classes**: 4
 - **File**: `report_generator.py`
 
+### testql.commands.suite_cmd
+- **Functions**: 8
+- **File**: `suite_cmd.py`
+
 ### testql.interpreter._converter
 - **Functions**: 8
 - **Classes**: 2
@@ -85,6 +89,10 @@
 - **Functions**: 7
 - **Classes**: 1
 - **File**: `toon_parser.py`
+
+### testql.commands.misc_cmds
+- **Functions**: 7
+- **File**: `misc_cmds.py`
 
 ### testql.interpreter._websockets
 - **Functions**: 7
@@ -101,57 +109,44 @@
 - **Classes**: 1
 - **File**: `_flow.py`
 
-### testql.commands.echo
-- **Functions**: 5
-- **File**: `echo.py`
-
-### testql.interpreter._api_runner
-- **Functions**: 5
-- **Classes**: 1
-- **File**: `_api_runner.py`
-
 ## Key Entry Points
 
 Main execution flows into the system:
 
-### testql.cli.suite
+### testql.commands.suite_cmd.suite
 > Run test suite(s) — predefined or custom pattern.
-- **Calls**: cli.command, click.argument, click.option, click.option, click.option, click.option, click.option, click.option
+- **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, click.option, click.option
 
 ### testql.generator.TestGenerator._generate_api_tests
 > Generate comprehensive API tests from discovered routes.
 - **Calls**: self.profile.config.get, self.profile.config.get, sections.append, sections.append, sections.append, sections.append, sections.append, sections.append
 
-### testql.cli.analyze
-> Analyze project structure and show testability report.
-- **Calls**: cli.command, click.argument, Path, TestGenerator, gen.analyze, click.echo, click.echo, click.echo
-
-### testql.cli.generate
+### testql.commands.generate_cmd.generate
 > Generate TestQL scenarios from project structure.
-- **Calls**: cli.command, click.argument, click.option, click.option, click.option, Path, any, sys.exit
+- **Calls**: click.command, click.argument, click.option, click.option, click.option, Path, any, sys.exit
 
 ### testql.commands.encoder_routes.iql_run_file
 > Run an entire IQL file with validation. Returns structured results + saves log.
 - **Calls**: router.post, testql.commands.encoder_routes._resolve_iql_path, target.read_text, content.splitlines, None.strftime, time.monotonic, enumerate, round
 
-### testql.cli.echo
+### testql.commands.misc_cmds.echo
 > Generate AI-friendly project metadata echo from toon tests and doql model.
-- **Calls**: cli.command, click.option, click.option, click.option, click.option, click.option, ProjectEcho, Path
+- **Calls**: click.command, click.option, click.option, click.option, click.option, click.option, ProjectEcho, Path
 
-### testql.cli.endpoints
-> List all detected API endpoints in a project.
-- **Calls**: cli.command, click.argument, click.option, click.option, click.option, click.option, Path, UnifiedEndpointDetector
-
-### testql.cli.watch
+### testql.commands.misc_cmds.watch
 > Watch for file changes and re-run tests automatically.
-- **Calls**: cli.command, click.option, click.option, click.option, click.option, None.resolve, click.echo, click.echo
+- **Calls**: click.command, click.option, click.option, click.option, click.option, None.resolve, click.echo, click.echo
 
 ### TODO.testtoon_parser.parse_testtoon
 - **Calls**: text.splitlines, META_RE.match, None.startswith, HEADER_RE.match, raw.strip, raw.strip, None.strip, raw.strip
 
-### testql.cli.init
+### testql.commands.misc_cmds.init
 > Initialize TestQL project with templates and config.
-- **Calls**: cli.command, click.option, click.option, click.option, None.resolve, click.echo, click.echo, click.echo
+- **Calls**: click.command, click.option, click.option, click.option, None.resolve, click.echo, click.echo, click.echo
+
+### testql.commands.suite_cmd.list_tests
+> List all available tests with metadata.
+- **Calls**: click.command, click.option, click.option, click.option, click.option, Path, sorted, sd.exists
 
 ### testql.interpreter.main
 > CLI entry point — unchanged from original.
@@ -161,59 +156,67 @@ Main execution flows into the system:
 > API METHOD /path [json-body]
 - **Calls**: None.split, None.upper, None.strip, url.startswith, len, self.out.fail, self.vars.interpolate, self.out.step
 
-### testql.runner.main
-- **Calls**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.parse_args, DslCliExecutor
-
 ### testql.sumd_parser.SumdParser._parse_interfaces
 > Parse interfaces from SUMD.
 - **Calls**: re.finditer, re.finditer, SumdInterface, match.group, re.search, interfaces.append, match.group, match.group
+
+### testql.runner.main
+- **Calls**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.parse_args, DslCliExecutor
 
 ### testql.interpreter._websockets.WebSocketMixin._cmd_ws_receive
 > WS_RECEIVE alias [timeout_ms]
 - **Calls**: None.split, self._get_ws_context, self.out.error, self.out.step, self.results.append, asyncio.run, None.append, self.out.step
 
-### testql.cli.openapi
+### testql.commands.endpoints_cmd.openapi
 > Generate OpenAPI spec from detected endpoints.
-- **Calls**: cli.command, click.argument, click.option, click.option, click.option, click.option, click.option, Path
+- **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, click.option, Path
 
-### testql.cli.from_sumd
+### testql.commands.misc_cmds.from_sumd
 > Generate TestQL scenarios from SUMD.md documentation.
-- **Calls**: cli.command, click.argument, click.option, click.option, pathlib.Path, SumdParser, click.echo, parser.parse_file
+- **Calls**: click.command, click.argument, click.option, click.option, Path, SumdParser, click.echo, parser.parse_file
 
 ### testql.openapi_generator.ContractTestGenerator.generate_contract_tests
 > Generate TestQL contract tests from OpenAPI spec.
 - **Calls**: self.spec.get, paths.items, lines.append, lines.append, lines.append, lines.append, lines.append, lines.append
 
-### testql.cli.report
-> Generate HTML report from test data.json.
-- **Calls**: cli.command, click.argument, click.option, click.option, pathlib.Path, testql.report_generator.generate_report, click.echo, click.echo
-
 ### testql.sumd_parser.SumdParser.generate_testql_scenarios
 > Generate testql scenario content from SUMD document.
 - **Calls**: lines.append, lines.append, lines.append, lines.append, lines.append, lines.append, lines.append, lines.append
 
-### testql.cli.create
+### testql.commands.generate_cmd.analyze
+> Analyze project structure and show testability report.
+- **Calls**: click.command, click.argument, Path, TestGenerator, gen.analyze, click.echo, click.echo, click.echo
+
+### testql.commands.misc_cmds.report
+> Generate HTML report from test data.json.
+- **Calls**: click.command, click.argument, click.option, click.option, testql.report_generator.generate_report, click.echo, click.echo, Path
+
+### testql.commands.misc_cmds.create
 > Create new test file from template.
-- **Calls**: cli.command, click.argument, click.option, click.option, click.option, click.option, out_dir.mkdir, filepath.write_text
-
-### testql.endpoint_detector.UnifiedEndpointDetector.generate_testql_scenario
-> Generate TestQL scenario from detected endpoints.
-- **Calls**: lines.append, lines.append, None.join, lines.append, lines.append, lines.append, lines.append, lines.append
-
-### testql.runner.DslCliExecutor.run_script
-> Execute a DSL script
-- **Calls**: testql.runner.parse_script, print, print, print, print, enumerate, print, sum
+- **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, out_dir.mkdir, testql.commands.misc_cmds._build_test_content
 
 ### testql.echo_schemas.ProjectEcho.to_text
 > Convert to human-readable text format.
 - **Calls**: lines.append, lines.append, lines.append, lines.append, lines.append, lines.append, lines.append, lines.append
 
-### testql.cli.run
+### testql.runner.DslCliExecutor.run_script
+> Execute a DSL script
+- **Calls**: testql.runner.parse_script, print, print, print, print, enumerate, print, sum
+
+### testql.commands.run_cmd.run
 > Run a TestQL (.testql.toon.yaml) scenario.
-- **Calls**: cli.command, click.argument, click.option, click.option, click.option, click.option, None.read_text, IqlInterpreter
+- **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, None.read_text, IqlInterpreter
+
+### testql.commands.endpoints_cmd.endpoints
+> List all detected API endpoints in a project.
+- **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, Path, UnifiedEndpointDetector
 
 ### testql.interpreter._encoder.EncoderMixin._encoder_call
 - **Calls**: self.out.step, self.results.append, urllib.request.Request, self._encoder_url, StepResult, None.encode, urllib.request.urlopen, None.decode
+
+### testql.generator.TestGenerator._generate_api_integration_tests
+> Generate API integration tests.
+- **Calls**: sections.append, sections.append, sections.append, sections.append, sections.append, sections.append, sections.append, sections.append
 
 ### testql.doql_parser.DoqlParser.parse
 > Parse doql LESS content.
@@ -225,18 +228,14 @@ Returns:
     SystemModel: Extracted system model
 - **Calls**: SystemModel, re.search, re.finditer, re.finditer, re.finditer, re.search, app_match.group, self._parse_app_block
 
-### testql.generator.TestGenerator._generate_api_integration_tests
-> Generate API integration tests.
-- **Calls**: sections.append, sections.append, sections.append, sections.append, sections.append, sections.append, sections.append, sections.append
+### testql.endpoint_detector.OpenAPIDetector._parse_spec
+> Parse OpenAPI specification.
+- **Calls**: spec_file.read_text, None.items, json.loads, yaml.safe_load, spec.get, None.get, methods.items, isinstance
 
 ### testql.interpreter._flow.FlowMixin._cmd_wait_for
 > WAIT_FOR "selector" VISIBLE 5000
 WAIT_FOR NETWORK_IDLE 10000
 - **Calls**: None.split, None.strip, self.out.step, time.time, self.out.step, self.results.append, len, self.out.step
-
-### testql.endpoint_detector.OpenAPIDetector._parse_spec
-> Parse OpenAPI specification.
-- **Calls**: spec_file.read_text, None.items, json.loads, yaml.safe_load, spec.get, None.get, methods.items, isinstance
 
 ## Process Flows
 
@@ -244,7 +243,7 @@ Key execution flows identified:
 
 ### Flow 1: suite
 ```
-suite [testql.cli]
+suite [testql.commands.suite_cmd]
 ```
 
 ### Flow 2: _generate_api_tests
@@ -252,46 +251,46 @@ suite [testql.cli]
 _generate_api_tests [testql.generator.TestGenerator]
 ```
 
-### Flow 3: analyze
+### Flow 3: generate
 ```
-analyze [testql.cli]
-```
-
-### Flow 4: generate
-```
-generate [testql.cli]
+generate [testql.commands.generate_cmd]
 ```
 
-### Flow 5: iql_run_file
+### Flow 4: iql_run_file
 ```
 iql_run_file [testql.commands.encoder_routes]
   └─> _resolve_iql_path
       └─> _normalize_iql_path
 ```
 
-### Flow 6: echo
+### Flow 5: echo
 ```
-echo [testql.cli]
-```
-
-### Flow 7: endpoints
-```
-endpoints [testql.cli]
+echo [testql.commands.misc_cmds]
 ```
 
-### Flow 8: watch
+### Flow 6: watch
 ```
-watch [testql.cli]
+watch [testql.commands.misc_cmds]
 ```
 
-### Flow 9: parse_testtoon
+### Flow 7: parse_testtoon
 ```
 parse_testtoon [TODO.testtoon_parser]
 ```
 
-### Flow 10: init
+### Flow 8: init
 ```
-init [testql.cli]
+init [testql.commands.misc_cmds]
+```
+
+### Flow 9: list_tests
+```
+list_tests [testql.commands.suite_cmd]
+```
+
+### Flow 10: main
+```
+main [testql.interpreter]
 ```
 
 ## Key Classes
@@ -305,16 +304,16 @@ init [testql.cli]
 - **Methods**: 15
 - **Key Methods**: testql.runner.DslCliExecutor.__init__, testql.runner.DslCliExecutor.execute, testql.runner.DslCliExecutor._dispatch, testql.runner.DslCliExecutor.cmd_api, testql.runner.DslCliExecutor.cmd_wait, testql.runner.DslCliExecutor.cmd_log, testql.runner.DslCliExecutor.cmd_print, testql.runner.DslCliExecutor.cmd_store, testql.runner.DslCliExecutor.cmd_env, testql.runner.DslCliExecutor.cmd_assert_status
 
-### testql.interpreter._encoder.EncoderMixin
-> Mixin providing all ENCODER_* hardware control commands.
-- **Methods**: 11
-- **Key Methods**: testql.interpreter._encoder.EncoderMixin._encoder_url, testql.interpreter._encoder.EncoderMixin._encoder_call, testql.interpreter._encoder.EncoderMixin._cmd_encoder_on, testql.interpreter._encoder.EncoderMixin._cmd_encoder_off, testql.interpreter._encoder.EncoderMixin._cmd_encoder_scroll, testql.interpreter._encoder.EncoderMixin._cmd_encoder_click, testql.interpreter._encoder.EncoderMixin._cmd_encoder_dblclick, testql.interpreter._encoder.EncoderMixin._cmd_encoder_focus, testql.interpreter._encoder.EncoderMixin._cmd_encoder_status, testql.interpreter._encoder.EncoderMixin._cmd_encoder_page_next
-
 ### testql.endpoint_detector.FastAPIDetector
 > Detect FastAPI endpoints using AST analysis.
 - **Methods**: 11
 - **Key Methods**: testql.endpoint_detector.FastAPIDetector.detect, testql.endpoint_detector.FastAPIDetector._analyze_file, testql.endpoint_detector.FastAPIDetector._detect_router_assignment, testql.endpoint_detector.FastAPIDetector._detect_app_assignment, testql.endpoint_detector.FastAPIDetector._extract_include_router, testql.endpoint_detector.FastAPIDetector._analyze_route_handler, testql.endpoint_detector.FastAPIDetector._extract_route_info, testql.endpoint_detector.FastAPIDetector._get_router_prefix, testql.endpoint_detector.FastAPIDetector._extract_parameters, testql.endpoint_detector.FastAPIDetector._get_annotation_name
 - **Inherits**: BaseEndpointDetector
+
+### testql.interpreter._encoder.EncoderMixin
+> Mixin providing all ENCODER_* hardware control commands.
+- **Methods**: 11
+- **Key Methods**: testql.interpreter._encoder.EncoderMixin._encoder_url, testql.interpreter._encoder.EncoderMixin._encoder_call, testql.interpreter._encoder.EncoderMixin._cmd_encoder_on, testql.interpreter._encoder.EncoderMixin._cmd_encoder_off, testql.interpreter._encoder.EncoderMixin._cmd_encoder_scroll, testql.interpreter._encoder.EncoderMixin._cmd_encoder_click, testql.interpreter._encoder.EncoderMixin._cmd_encoder_dblclick, testql.interpreter._encoder.EncoderMixin._cmd_encoder_focus, testql.interpreter._encoder.EncoderMixin._cmd_encoder_status, testql.interpreter._encoder.EncoderMixin._cmd_encoder_page_next
 
 ### testql.openapi_generator.OpenAPIGenerator
 > Generate OpenAPI specs from detected endpoints.
@@ -325,6 +324,11 @@ init [testql.cli]
 > Parser for SUMD markdown files.
 - **Methods**: 9
 - **Key Methods**: testql.sumd_parser.SumdParser.parse_file, testql.sumd_parser.SumdParser.parse, testql.sumd_parser.SumdParser._parse_metadata, testql.sumd_parser.SumdParser._parse_interfaces, testql.sumd_parser.SumdParser._parse_workflows, testql.sumd_parser.SumdParser._parse_testql_scenarios, testql.sumd_parser.SumdParser._parse_architecture, testql.sumd_parser.SumdParser._extract_section, testql.sumd_parser.SumdParser.generate_testql_scenarios
+
+### testql.endpoint_detector.UnifiedEndpointDetector
+> Unified detector that runs all specialized detectors.
+- **Methods**: 9
+- **Key Methods**: testql.endpoint_detector.UnifiedEndpointDetector.__init__, testql.endpoint_detector.UnifiedEndpointDetector.detect_all, testql.endpoint_detector.UnifiedEndpointDetector._deduplicate_endpoints, testql.endpoint_detector.UnifiedEndpointDetector.get_endpoints_by_type, testql.endpoint_detector.UnifiedEndpointDetector.get_endpoints_by_framework, testql.endpoint_detector.UnifiedEndpointDetector.generate_testql_scenario, testql.endpoint_detector.UnifiedEndpointDetector._rest_block, testql.endpoint_detector.UnifiedEndpointDetector._graphql_block, testql.endpoint_detector.UnifiedEndpointDetector._ws_block
 
 ### testql.doql_parser.DoqlParser
 > Parser for doql LESS files.
@@ -370,20 +374,15 @@ Supports both legacy IQL format and
 - **Methods**: 6
 - **Key Methods**: testql.interpreter._flow.FlowMixin._cmd_wait_for, testql.interpreter._flow.FlowMixin._cmd_wait, testql.interpreter._flow.FlowMixin._cmd_log, testql.interpreter._flow.FlowMixin._cmd_print, testql.interpreter._flow.FlowMixin._cmd_include, testql.interpreter._flow.FlowMixin._emit_event
 
-### testql.endpoint_detector.UnifiedEndpointDetector
-> Unified detector that runs all specialized detectors.
-- **Methods**: 6
-- **Key Methods**: testql.endpoint_detector.UnifiedEndpointDetector.__init__, testql.endpoint_detector.UnifiedEndpointDetector.detect_all, testql.endpoint_detector.UnifiedEndpointDetector._deduplicate_endpoints, testql.endpoint_detector.UnifiedEndpointDetector.get_endpoints_by_type, testql.endpoint_detector.UnifiedEndpointDetector.get_endpoints_by_framework, testql.endpoint_detector.UnifiedEndpointDetector.generate_testql_scenario
+### testql.generator.MultiProjectTestGenerator
+> Generator that operates across multiple projects.
+- **Methods**: 5
+- **Key Methods**: testql.generator.MultiProjectTestGenerator.__init__, testql.generator.MultiProjectTestGenerator.discover_projects, testql.generator.MultiProjectTestGenerator.analyze_all, testql.generator.MultiProjectTestGenerator.generate_all, testql.generator.MultiProjectTestGenerator.generate_cross_project_tests
 
 ### testql.openapi_generator.ContractTestGenerator
 > Generate contract tests from OpenAPI specs.
 - **Methods**: 5
 - **Key Methods**: testql.openapi_generator.ContractTestGenerator.__init__, testql.openapi_generator.ContractTestGenerator._load_spec, testql.openapi_generator.ContractTestGenerator.generate_contract_tests, testql.openapi_generator.ContractTestGenerator._get_expected_status, testql.openapi_generator.ContractTestGenerator.validate_response
-
-### testql.generator.MultiProjectTestGenerator
-> Generator that operates across multiple projects.
-- **Methods**: 5
-- **Key Methods**: testql.generator.MultiProjectTestGenerator.__init__, testql.generator.MultiProjectTestGenerator.discover_projects, testql.generator.MultiProjectTestGenerator.analyze_all, testql.generator.MultiProjectTestGenerator.generate_all, testql.generator.MultiProjectTestGenerator.generate_cross_project_tests
 
 ### testql._base_fallback.EventBridge
 > Optional WebSocket bridge to DSL Event Server (port 8104).
@@ -407,6 +406,10 @@ When connected, events emitted by interp
 
 Key functions that process and transform data:
 
+### testql.report_generator.ReportDataParser.parse_testql_results
+> Parse testql run results from log/json file.
+- **Output to**: TestSuiteReport
+
 ### TODO.testtoon_parser.Section.validate
 - **Output to**: errors.append, len, len
 
@@ -423,9 +426,51 @@ Key functions that process and transform data:
 ### TODO.testtoon_parser.print_parsed
 - **Output to**: print, print, print, TODO.testtoon_parser.validate, print
 
-### testql.report_generator.ReportDataParser.parse_testql_results
-> Parse testql run results from log/json file.
-- **Output to**: TestSuiteReport
+### testql.openapi_generator.ContractTestGenerator.validate_response
+> Validate a response against the spec.
+- **Output to**: self.spec.get, None.get, str, operation.get, response.get
+
+### testql.toon_parser.ToonParser.parse_file
+> Parse a toon test file.
+
+Args:
+    path: Path to the toon test file
+    
+Returns:
+    APIContract: E
+- **Output to**: path.read_text, self.parse
+
+### testql.toon_parser.ToonParser.parse
+> Parse toon test content.
+
+Args:
+    content: Toon test content
+    
+Returns:
+    APIContract: Extrac
+- **Output to**: APIContract, re.finditer, re.finditer, re.finditer, None.strip
+
+### testql.toon_parser.ToonParser._parse_api_block
+> Parse API block content.
+- **Output to**: re.search, method_match.group, method_match.group, re.search, self.contract.endpoints.append
+
+### testql.toon_parser.ToonParser._parse_assert_block
+> Parse ASSERT block content.
+- **Output to**: re.search, assert_match.group, assert_match.group, None.strip, self.contract.asserts.append
+
+### testql.toon_parser.ToonParser._parse_log_block
+> Parse LOG block content for base_url.
+- **Output to**: re.search, url_match.group
+
+### testql.toon_parser.parse_toon_file
+> Parse a toon test file.
+
+Args:
+    path: Path to the toon test file
+    
+Returns:
+    APIContract: E
+- **Output to**: ToonParser, parser.parse_file
 
 ### testql.doql_parser.DoqlParser.parse_file
 > Parse a doql LESS file.
@@ -477,67 +522,21 @@ Returns:
     SystemModel: E
 - **Output to**: DoqlParser, parser.parse_file
 
-### testql.toon_parser.ToonParser.parse_file
-> Parse a toon test file.
-
-Args:
-    path: Path to the toon test file
-    
-Returns:
-    APIContract: E
-- **Output to**: path.read_text, self.parse
-
-### testql.toon_parser.ToonParser.parse
-> Parse toon test content.
-
-Args:
-    content: Toon test content
-    
-Returns:
-    APIContract: Extrac
-- **Output to**: APIContract, re.finditer, re.finditer, re.finditer, None.strip
-
-### testql.toon_parser.ToonParser._parse_api_block
-> Parse API block content.
-- **Output to**: re.search, method_match.group, method_match.group, re.search, self.contract.endpoints.append
-
-### testql.toon_parser.ToonParser._parse_assert_block
-> Parse ASSERT block content.
-- **Output to**: re.search, assert_match.group, assert_match.group, None.strip, self.contract.asserts.append
-
-### testql.toon_parser.ToonParser._parse_log_block
-> Parse LOG block content for base_url.
-- **Output to**: re.search, url_match.group
-
-### testql.toon_parser.parse_toon_file
-> Parse a toon test file.
-
-Args:
-    path: Path to the toon test file
-    
-Returns:
-    APIContract: E
-- **Output to**: ToonParser, parser.parse_file
-
-### testql.runner.parse_line
-> Parse a single DSL line
-- **Output to**: line.strip, re.match, re.match, re.match, re.match
-
-### testql.runner.parse_script
-> Parse DSL script into commands
-- **Output to**: content.split, testql.runner.parse_line
-
-### testql.runner.DslCliExecutor._format_cmd
-> Format command for display
-- **Output to**: json.dumps
-
-### testql.openapi_generator.ContractTestGenerator.validate_response
-> Validate a response against the spec.
-- **Output to**: self.spec.get, None.get, str, operation.get, response.get
-
 ### testql.sumd_parser.SumdParser.parse_file
 > Parse SUMD.md file.
 - **Output to**: path.read_text, self.parse
+
+### testql.sumd_parser.SumdParser.parse
+> Parse SUMD content.
+- **Output to**: SumdDocument, self._parse_metadata, self._parse_interfaces, self._parse_workflows, self._parse_testql_scenarios
+
+### testql.sumd_parser.SumdParser._parse_metadata
+> Parse metadata section.
+- **Output to**: SumdMetadata, self._extract_section, re.search, re.search, re.search
+
+### testql.sumd_parser.SumdParser._parse_interfaces
+> Parse interfaces from SUMD.
+- **Output to**: re.finditer, re.finditer, SumdInterface, match.group, re.search
 
 ## Behavioral Patterns
 
@@ -561,35 +560,33 @@ Returns:
 Functions exposed as public API (no underscore prefix):
 
 - `testql.interpreter._converter.convert_iql_to_testtoon` - 116 calls
-- `testql.sumd_generator.generate_sumd` - 108 calls
-- `testql.cli.suite` - 108 calls
 - `testql.commands.echo.parse_doql_less` - 85 calls
-- `testql.cli.analyze` - 50 calls
+- `testql.commands.suite_cmd.suite` - 52 calls
 - `testql.commands.echo.format_text_output` - 46 calls
-- `testql.cli.generate` - 45 calls
+- `testql.commands.generate_cmd.generate` - 45 calls
 - `testql.commands.encoder_routes.iql_run_file` - 43 calls
-- `testql.cli.echo` - 42 calls
-- `testql.cli.endpoints` - 39 calls
-- `testql.cli.list` - 36 calls
-- `testql.cli.watch` - 35 calls
+- `testql.commands.misc_cmds.echo` - 41 calls
+- `testql.commands.misc_cmds.watch` - 35 calls
 - `TODO.testtoon_parser.parse_testtoon` - 31 calls
 - `testql.interpreter._testtoon_parser.parse_testtoon` - 31 calls
-- `testql.cli.init` - 28 calls
+- `testql.commands.misc_cmds.init` - 28 calls
+- `testql.commands.suite_cmd.list_tests` - 27 calls
 - `testql.interpreter.main` - 26 calls
 - `testql.runner.main` - 24 calls
-- `testql.cli.openapi` - 23 calls
-- `testql.cli.from_sumd` - 23 calls
+- `testql.commands.endpoints_cmd.openapi` - 23 calls
+- `testql.commands.misc_cmds.from_sumd` - 23 calls
 - `testql.openapi_generator.ContractTestGenerator.generate_contract_tests` - 22 calls
-- `testql.cli.report` - 22 calls
 - `testql.sumd_parser.SumdParser.generate_testql_scenarios` - 22 calls
-- `testql.cli.create` - 21 calls
+- `testql.commands.generate_cmd.analyze` - 22 calls
+- `testql.commands.misc_cmds.report` - 22 calls
 - `testql.commands.echo.parse_toon_scenarios` - 21 calls
-- `testql.endpoint_detector.UnifiedEndpointDetector.generate_testql_scenario` - 21 calls
+- `testql.commands.misc_cmds.create` - 21 calls
 - `testql.report_generator.generate_report` - 20 calls
+- `testql.echo_schemas.ProjectEcho.to_text` - 20 calls
 - `testql.runner.parse_line` - 20 calls
 - `testql.runner.DslCliExecutor.run_script` - 20 calls
-- `testql.echo_schemas.ProjectEcho.to_text` - 20 calls
-- `testql.cli.run` - 20 calls
+- `testql.commands.run_cmd.run` - 20 calls
+- `testql.commands.endpoints_cmd.endpoints` - 20 calls
 - `testql.doql_parser.DoqlParser.parse` - 19 calls
 - `testql.generator.MultiProjectTestGenerator.generate_cross_project_tests` - 18 calls
 - `testql.openapi_generator.ContractTestGenerator.validate_response` - 17 calls
@@ -598,8 +595,10 @@ Functions exposed as public API (no underscore prefix):
 - `testql.interpreter.interpreter.IqlInterpreter.execute` - 16 calls
 - `testql.reporters.junit.JUnitReporter.generate` - 15 calls
 - `testql.commands.encoder_routes.iql_list_tables` - 15 calls
-- `TODO.testtoon_parser.parse_value` - 14 calls
 - `testql.generator.TestGenerator.generate_tests` - 14 calls
+- `TODO.testtoon_parser.parse_value` - 14 calls
+- `testql.commands.encoder_routes.iql_list_files` - 14 calls
+- `testql.toon_parser.ToonParser.parse` - 13 calls
 
 ## System Interactions
 
@@ -612,11 +611,6 @@ graph TD
     suite --> option
     _generate_api_tests --> get
     _generate_api_tests --> append
-    analyze --> command
-    analyze --> argument
-    analyze --> Path
-    analyze --> TestGenerator
-    analyze --> analyze
     generate --> command
     generate --> argument
     generate --> option
@@ -627,9 +621,6 @@ graph TD
     iql_run_file --> strftime
     echo --> command
     echo --> option
-    endpoints --> command
-    endpoints --> argument
-    endpoints --> option
     watch --> command
     watch --> option
     parse_testtoon --> splitlines
@@ -637,6 +628,14 @@ graph TD
     parse_testtoon --> startswith
     parse_testtoon --> strip
     init --> command
+    init --> option
+    init --> resolve
+    list_tests --> command
+    list_tests --> option
+    main --> ArgumentParser
+    main --> add_argument
+    _cmd_api --> split
+    _cmd_api --> upper
 ```
 
 ## Reverse Engineering Guidelines

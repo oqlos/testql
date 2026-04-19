@@ -1,61 +1,60 @@
-# code2llm | 36f 7765L | python:34,shell:2 | 2026-04-19
-# CC̄=4.9 | critical:11/286 | dups:0 | cycles:2
+# code2llm | 41f 7839L | python:39,shell:2 | 2026-04-19
+# CC̄=4.6 | critical:7/308 | dups:0 | cycles:2
 
-HEALTH[13]:
+HEALTH[9]:
   🔴 GOD   testql/generator.py = 709L, 4 classes, 26m, max CC=23
-  🔴 GOD   testql/endpoint_detector.py = 827L, 13 classes, 43m, max CC=16
-  🟡 CC    generate_sumd CC=29 (limit:15)
+  🔴 GOD   testql/endpoint_detector.py = 835L, 13 classes, 46m, max CC=13
   🟡 CC    _generate_api_tests CC=23 (limit:15)
-  🟡 CC    analyze CC=16 (limit:15)
-  🟡 CC    endpoints CC=21 (limit:15)
-  🟡 CC    suite CC=47 (limit:15)
-  🟡 CC    list CC=21 (limit:15)
-  🟡 CC    echo CC=17 (limit:15)
   🟡 CC    parse_doql_less CC=29 (limit:15)
   🟡 CC    format_text_output CC=19 (limit:15)
-  🟡 CC    generate_testql_scenario CC=16 (limit:15)
+  🟡 CC    echo CC=16 (limit:15)
+  🟡 CC    _collect_test_files CC=15 (limit:15)
+  🟡 CC    suite CC=18 (limit:15)
   🟡 CC    convert_iql_to_testtoon CC=66 (limit:15)
 
 REFACTOR[4]:
   1. split testql/generator.py  (god module)
   2. split testql/endpoint_detector.py  (god module)
-  3. split 11 high-CC methods  (CC>15)
+  3. split 7 high-CC methods  (CC>15)
   4. break 2 circular dependencies
 
-PIPELINES[232]:
-  [1] Src [validate]: validate
+PIPELINES[236]:
+  [1] Src [main]: main → cli
       PURITY: 100% pure
-  [2] Src [parse_testtoon]: parse_testtoon → detect_separator
+  [2] Src [parse_testql_results]: parse_testql_results
       PURITY: 100% pure
-  [3] Src [print_parsed]: print_parsed → validate
+  [3] Src [to_json]: to_json
       PURITY: 100% pure
-  [4] Src [parse_testql_results]: parse_testql_results
+  [4] Src [__init__]: __init__
       PURITY: 100% pure
-  [5] Src [to_json]: to_json
+  [5] Src [generate]: generate
       PURITY: 100% pure
 
 LAYERS:
   TODO/                           CC̄=5.9    ←in:0  →out:0
   │ testtoon_parser            141L  1C    7m  CC=14     ←0
   │
-  testql/                         CC̄=4.9    ←in:10  →out:0
-  │ !! cli                       1181L  0C   15m  CC=47     ←4
-  │ !! endpoint_detector          827L  13C   43m  CC=16     ←0
+  testql/                         CC̄=4.6    ←in:14  →out:0
+  │ !! endpoint_detector          835L  13C   46m  CC=13     ←0
   │ !! generator                  709L  4C   26m  CC=23     ←0
+  │ !! misc_cmds                  529L  0C    7m  CC=16     ←0
   │ !! _converter                 475L  2C    8m  CC=66     ←0
   │ openapi_generator          449L  3C   19m  CC=11     ←0
   │ encoder_routes             424L  0C   15m  CC=12     ←0
   │ _testtoon_parser           393L  2C   19m  CC=12     ←1
   │ runner                     371L  3C   18m  CC=12     ←0
+  │ !! suite_cmd                  314L  0C    8m  CC=18     ←0
   │ sumd_parser                287L  5C   10m  CC=12     ←0
   │ !! echo                       262L  0C    5m  CC=29     ←0
   │ report_generator           248L  4C    8m  CC=5      ←1
   │ _base_fallback             221L  7C   26m  CC=4      ←9
-  │ !! sumd_generator             200L  0C    2m  CC=29     ←1
+  │ sumd_generator             208L  0C   11m  CC=7      ←1
   │ doql_parser                172L  1C    9m  CC=6      ←1
   │ _websockets                172L  1C    7m  CC=9      ←0
   │ _api_runner                168L  1C    5m  CC=10     ←1
   │ echo_schemas               153L  6C    2m  CC=8      ←0
+  │ generate_cmd               140L  0C    4m  CC=11     ←0
+  │ endpoints_cmd              137L  0C    3m  CC=13     ←0
   │ _flow                      136L  1C    6m  CC=9      ←0
   │ interpreter                125L  1C    7m  CC=4      ←0
   │ toon_parser                110L  1C    7m  CC=4      ←1
@@ -63,13 +62,15 @@ LAYERS:
   │ __init__                    89L  0C    1m  CC=8      ←0
   │ junit                       79L  1C    3m  CC=8      ←0
   │ _encoder                    73L  1C   11m  CC=6      ←0
+  │ run_cmd                     56L  0C    1m  CC=3      ←0
+  │ cli                         41L  0C    2m  CC=1      ←0
   │ console                     38L  0C    1m  CC=6      ←0
   │ base                        37L  0C    0m  CC=0.0    ←0
   │ _parser                     33L  2C    1m  CC=5      ←2
   │ json_reporter               33L  0C    1m  CC=2      ←0
+  │ __init__                    27L  0C    0m  CC=0.0    ←0
   │ __main__                     6L  0C    0m  CC=0.0    ←0
   │ __init__                     6L  0C    0m  CC=0.0    ←0
-  │ __init__                     5L  0C    0m  CC=0.0    ←0
   │ __init__                     3L  0C    0m  CC=0.0    ←0
   │ __init__                     0L  0C    0m  CC=0.0    ←0
   │
@@ -82,11 +83,12 @@ LAYERS:
 
 COUPLING:
                                   testql     testql.commands  testql.interpreter
-              testql                  ──                  ←7                  ←3  hub
-     testql.commands                   7                  ──                    
+              testql                  ──                 ←11                  ←3  hub
+     testql.commands                  11                  ──                      !! fan-out
   testql.interpreter                   3                                      ──
   CYCLES: 2
-  HUB: testql/ (fan-in=10)
+  HUB: testql/ (fan-in=14)
+  SMELL: testql.commands/ fan-out=11 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon

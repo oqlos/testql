@@ -770,45 +770,53 @@ class UnifiedEndpointDetector:
         if not self.all_endpoints:
             return ""
 
+        rest_eps = [ep for ep in self.all_endpoints if ep.endpoint_type == "rest"]
+        graphql_eps = [ep for ep in self.all_endpoints if ep.endpoint_type == "graphql"]
+        ws_eps = [ep for ep in self.all_endpoints if ep.endpoint_type == "websocket"]
+
         lines = ["# SCENARIO: Auto-detected API Endpoints", "# TYPE: api", ""]
+        lines.extend(self._rest_block(rest_eps))
+        lines.extend(self._graphql_block(graphql_eps))
+        lines.extend(self._ws_block(ws_eps))
+        lines += ["ASSERT[1]{field, operator, expected}:", "  status, <, 500"]
 
-        # Group by type
-        rest_endpoints = [ep for ep in self.all_endpoints if ep.endpoint_type == 'rest']
-        graphql_endpoints = [ep for ep in self.all_endpoints if ep.endpoint_type == 'graphql']
-        ws_endpoints = [ep for ep in self.all_endpoints if ep.endpoint_type == 'websocket']
-
-        if rest_endpoints:
-            lines.append("CONFIG[2]{key, value}:")
-            lines.append("  base_url, ${api_url:-http://localhost:8101}")
-            lines.append("  timeout_ms, 10000")
-            lines.append("")
-            lines.append(f"API[{len(rest_endpoints[:30])}]{{method, endpoint, expected_status}}:")
-            for ep in rest_endpoints[:30]:
-                expected = ep._infer_expected_status()
-                lines.append(f"  {ep.method}, {ep.path}, {expected}")
-            lines.append("")
-
-        if graphql_endpoints:
-            lines.append(f"GRAPHQL[{len(graphql_endpoints[:10])}]{{query, variables}}:")
-            for ep in graphql_endpoints[:10]:
-                lines.append(f'  {ep.handler_name or "query"}, {{}}')
-            lines.append("")
-
-        if ws_endpoints:
-            lines.append(f"WEBSOCKET[{len(ws_endpoints[:5])}]{{url, action}}:")
-            for ep in ws_endpoints[:5]:
-                lines.append(f'  ws://localhost:8101{ep.path}, connect')
-            lines.append("")
-
-        lines.append("ASSERT[1]{field, operator, expected}:")
-        lines.append("  status, <, 500")
-
-        content = '\n'.join(lines)
-
+        content = "\n".join(lines)
         if output_file:
             output_file.write_text(content)
-
         return content
+
+    def _rest_block(self, rest_eps: list) -> list[str]:
+        if not rest_eps:
+            return []
+        lines = [
+            "CONFIG[2]{key, value}:",
+            "  base_url, ${api_url:-http://localhost:8101}",
+            "  timeout_ms, 10000",
+            "",
+            f"API[{len(rest_eps[:30])}]{{method, endpoint, expected_status}}:",
+        ]
+        for ep in rest_eps[:30]:
+            lines.append(f"  {ep.method}, {ep.path}, {ep._infer_expected_status()}")
+        lines.append("")
+        return lines
+
+    def _graphql_block(self, graphql_eps: list) -> list[str]:
+        if not graphql_eps:
+            return []
+        lines = [f"GRAPHQL[{len(graphql_eps[:10])}]{{query, variables}}:"]
+        for ep in graphql_eps[:10]:
+            lines.append(f'  {ep.handler_name or "query"}, {{}}')
+        lines.append("")
+        return lines
+
+    def _ws_block(self, ws_eps: list) -> list[str]:
+        if not ws_eps:
+            return []
+        lines = [f"WEBSOCKET[{len(ws_eps[:5])}]{{url, action}}:"]
+        for ep in ws_eps[:5]:
+            lines.append(f"  ws://localhost:8101{ep.path}, connect")
+        lines.append("")
+        return lines
 
 
 def detect_endpoints(project_path: str | Path) -> list[EndpointInfo]:
