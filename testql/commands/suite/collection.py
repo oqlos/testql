@@ -14,22 +14,24 @@ DEFAULT_TEST_EXTENSIONS = ("*.testql.toon.yaml", "*.testtoon", "*.iql")
 DEFAULT_TEST_DIRS = ("testql", "testql/scenarios/tests", "tests", ".")
 
 
+def _resolve_search_dir_and_pattern(base_dir: Path, file_pattern: str) -> tuple[Path, str]:
+    """Split *file_pattern* into (search_dir, filename_glob), resolving path separators."""
+    if "/" in file_pattern or "\\" in file_pattern:
+        parts = file_pattern.replace("\\", "/").split("/")
+        search_dir = base_dir
+        for part in parts[:-1]:
+            search_dir = search_dir / part
+        return search_dir, parts[-1]
+    return base_dir, file_pattern
+
+
 def _find_files(base_dir: Path, file_pattern: str) -> list[Path]:
     """Find files matching *file_pattern* under *base_dir*."""
     matched: list[Path] = []
     if not base_dir.exists():
         return matched
 
-    # Handle path separators in pattern
-    if "/" in file_pattern or "\\" in file_pattern:
-        parts = file_pattern.replace("\\", "/").split("/")
-        search_dir = base_dir
-        for part in parts[:-1]:
-            search_dir = search_dir / part
-        file_only = parts[-1]
-    else:
-        search_dir = base_dir
-        file_only = file_pattern
+    search_dir, file_only = _resolve_search_dir_and_pattern(base_dir, file_pattern)
 
     if not search_dir.exists():
         return matched

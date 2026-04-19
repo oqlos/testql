@@ -16,6 +16,25 @@ class EncoderMixin:
     def _encoder_url(self) -> str:
         return self.vars.get("encoder_url", "http://localhost:8105")
 
+    def _encoder_do_http(
+        self, method: str, url: str, body: dict | None, label: str
+    ) -> None:
+        """Execute the encoder HTTP call and record the result step."""
+        req_body = json.dumps(body).encode("utf-8") if body else None
+        req = urllib.request.Request(
+            url, data=req_body, method=method,
+            headers={"Content-Type": "application/json"} if req_body else {},
+        )
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            text = resp.read().decode("utf-8")
+            try:
+                data = json.loads(text)
+            except Exception:
+                data = {"text": text[:200]}
+            self.vars.set("_encoder_status", data)
+            self.out.step("🎛️", f"{label} => {json.dumps(data)[:120]}")
+            self.results.append(StepResult(name=label, status=StepStatus.PASSED, details=data))
+
     def _encoder_call(
         self, method: str, endpoint: str, body: dict | None, line: IqlLine, label: str
     ) -> None:
@@ -25,20 +44,7 @@ class EncoderMixin:
             self.results.append(StepResult(name=label, status=StepStatus.PASSED))
             return
         try:
-            req_body = json.dumps(body).encode("utf-8") if body else None
-            req = urllib.request.Request(
-                url, data=req_body, method=method,
-                headers={"Content-Type": "application/json"} if req_body else {},
-            )
-            with urllib.request.urlopen(req, timeout=5) as resp:
-                text = resp.read().decode("utf-8")
-                try:
-                    data = json.loads(text)
-                except Exception:
-                    data = {"text": text[:200]}
-                self.vars.set("_encoder_status", data)
-                self.out.step("🎛️", f"{label} => {json.dumps(data)[:120]}")
-                self.results.append(StepResult(name=label, status=StepStatus.PASSED, details=data))
+            self._encoder_do_http(method, url, body, label)
         except Exception as e:
             self.out.fail(f"{label} => {e}")
             self.results.append(StepResult(name=label, status=StepStatus.FAILED, message=str(e)))

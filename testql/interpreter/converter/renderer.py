@@ -28,6 +28,15 @@ def build_config_section(commands: list[tuple[str, str]]) -> Section | None:
     return None
 
 
+def _render_section_header(sec) -> str:
+    """Return the SECTION[N]{col,...}: header line for *sec*."""
+    count = len(sec.rows)
+    cols_str = ', '.join(sec.columns)
+    if sec.columns:
+        return f'{sec.type}[{count}]{{{cols_str}}}:' if count > 0 else f'{sec.type}:'
+    return f'{sec.type}:'
+
+
 def render_sections(sections: list[Section]) -> str:
     """Phase 4: render collected sections to TestTOON text."""
     out: list[str] = []
@@ -36,13 +45,7 @@ def render_sections(sections: list[Section]) -> str:
         if sec.comment:
             out.append(f'# ── {sec.comment} {"─" * max(1, 50 - len(sec.comment))}')
 
-        count = len(sec.rows)
-        cols_str = ', '.join(sec.columns)
-
-        if sec.columns:
-            out.append(f'{sec.type}[{count}]{{{cols_str}}}:' if count > 0 else f'{sec.type}:')
-        else:
-            out.append(f'{sec.type}:')
+        out.append(_render_section_header(sec))
 
         for row in sec.rows:
             vals = [

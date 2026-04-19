@@ -86,6 +86,18 @@ class WebSocketMixin:
             self.out.error(f"WS_SEND failed: {e}")
             self.results.append(StepResult(name=f"WS_SEND {alias}", status=StepStatus.ERROR, message=str(e)))
 
+    def _ws_do_receive(self, ws, alias: str, timeout: float, messages: dict) -> None:
+        """Perform the actual async receive and record the result step."""
+        async def recv():
+            return await asyncio.wait_for(ws.recv(), timeout=timeout)
+
+        msg = asyncio.run(recv())
+        messages.setdefault(alias, []).append(msg)
+        self.out.step("📥", f"Received: {msg[:60]}...")
+        self.results.append(StepResult(
+            name=f"WS_RECEIVE {alias}", status=StepStatus.PASSED, value=msg
+        ))
+
     def _cmd_ws_receive(self, args: str, line: IqlLine) -> None:
         """WS_RECEIVE alias [timeout_ms]"""
         parts = args.strip().split()
@@ -103,19 +115,7 @@ class WebSocketMixin:
             return
 
         try:
-            ws = connections[alias]
-            async def recv():
-                return await asyncio.wait_for(ws.recv(), timeout=timeout)
-            
-            msg = asyncio.run(recv())
-            if alias not in messages:
-                messages[alias] = []
-            messages[alias].append(msg)
-            
-            self.out.step("📥", f"Received: {msg[:60]}...")
-            self.results.append(StepResult(
-                name=f"WS_RECEIVE {alias}", status=StepStatus.PASSED, value=msg
-            ))
+            self._ws_do_receive(connections[alias], alias, timeout, messages)
         except asyncio.TimeoutError:
             self.out.error(f"WS_RECEIVE timeout ({timeout}s)")
             self.results.append(StepResult(name=f"WS_RECEIVE {alias}", status=StepStatus.FAILED, message="Timeout"))

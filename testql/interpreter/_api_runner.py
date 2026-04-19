@@ -52,6 +52,31 @@ class ApiRunnerMixin:
 
     # ── Commands ─────────────────────────────────────────────────────────────
 
+    def _record_api_success(self, label: str, status: int, response: dict) -> None:
+        """Store successful API response and append a PASSED step."""
+        self._store_api_response(status, response)
+        icon = "✅" if status < 400 else "❌"
+        self.out.step(icon, f"{label} → {status}")
+        self.results.append(StepResult(
+            name=label, status=StepStatus.PASSED, details={"status": status},
+        ))
+
+    def _record_api_http_error(self, label: str, e: urllib.error.HTTPError) -> None:
+        self.last_status = e.code
+        self.last_response = {}
+        self.out.fail(f"{label} → {e.code}")
+        self.results.append(StepResult(
+            name=label, status=StepStatus.FAILED, message=f"HTTP {e.code}",
+        ))
+
+    def _record_api_error(self, label: str, e: Exception) -> None:
+        self.last_status = 0
+        self.last_response = {}
+        self.out.fail(f"{label} → {e}")
+        self.results.append(StepResult(
+            name=label, status=StepStatus.ERROR, message=str(e),
+        ))
+
     def _cmd_api(self, args: str, line: IqlLine) -> None:
         """API METHOD /path [json-body]"""
         parts = args.strip().split(None, 2)
@@ -85,26 +110,11 @@ class ApiRunnerMixin:
 
         try:
             status, response = self._do_http_request(method, url, body_data)
-            self._store_api_response(status, response)
-            icon = "✅" if status < 400 else "❌"
-            self.out.step(icon, f"{label} → {status}")
-            self.results.append(StepResult(
-                name=label, status=StepStatus.PASSED, details={"status": status},
-            ))
+            self._record_api_success(label, status, response)
         except urllib.error.HTTPError as e:
-            self.last_status = e.code
-            self.last_response = {}
-            self.out.fail(f"{label} → {e.code}")
-            self.results.append(StepResult(
-                name=label, status=StepStatus.FAILED, message=f"HTTP {e.code}",
-            ))
+            self._record_api_http_error(label, e)
         except Exception as e:
-            self.last_status = 0
-            self.last_response = {}
-            self.out.fail(f"{label} → {e}")
-            self.results.append(StepResult(
-                name=label, status=StepStatus.ERROR, message=str(e),
-            ))
+            self._record_api_error(label, e)
 
     def _cmd_capture(self, args: str, line: IqlLine) -> None:
         """CAPTURE var_name FROM "json.path"

@@ -52,21 +52,30 @@ def _detect_separator(line: str) -> str:
     return '|' if '|' in line else ','
 
 
+def _parse_inline_array(v: str) -> list:
+    """Parse a '[a,b,c]' string into a list of parsed values."""
+    return [_parse_value(x) for x in v[1:-1].split(',')]
+
+
+def _parse_inline_dict(v: str) -> dict:
+    """Parse a '{k:v,k:v}' string into a dict of parsed values."""
+    result = {}
+    for pair in v[1:-1].split(','):
+        if ':' in pair:
+            k, val = pair.split(':', 1)
+            result[k.strip()] = _parse_value(val)
+    return result
+
+
 def _parse_value(v: str):
     """Parse values: -, numbers, {json}, arrays [1,2], strings."""
     v = v.strip()
     if v == '-':
         return None
     if v.startswith('[') and v.endswith(']'):
-        inner = v[1:-1]
-        return [_parse_value(x) for x in inner.split(',')]
+        return _parse_inline_array(v)
     if v.startswith('{') and v.endswith('}'):
-        result = {}
-        for pair in v[1:-1].split(','):
-            if ':' in pair:
-                k, val = pair.split(':', 1)
-                result[k.strip()] = _parse_value(val)
-        return result
+        return _parse_inline_dict(v)
     try:
         return int(v)
     except ValueError:
@@ -162,6 +171,26 @@ def _expand_config(section: ToonSection, lines: list[IqlLine], line_num: int) ->
     return line_num
 
 
+def _append_api_asserts(row: dict, lines: list[IqlLine], line_num: int) -> int:
+    """Append optional ASSERT_STATUS and ASSERT_JSON lines for an API row."""
+    status = row.get('status') or row.get('expect_status')
+    if status is not None:
+        raw_a = f'ASSERT_STATUS {status}'
+        lines.append(IqlLine(number=line_num, command='ASSERT_STATUS', args=str(status), raw=raw_a))
+        line_num += 1
+
+    assert_key = row.get('assert_key')
+    assert_value = row.get('assert_value') or row.get('assert_val')
+    if assert_key and assert_key is not None and assert_value and assert_value is not None:
+        raw_j = f'ASSERT_JSON {assert_key} == "{assert_value}"'
+        lines.append(IqlLine(
+            number=line_num, command='ASSERT_JSON',
+            args=f'{assert_key} == "{assert_value}"', raw=raw_j,
+        ))
+        line_num += 1
+    return line_num
+
+
 def _expand_api(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
     """Expand API section → API + ASSERT_STATUS commands."""
     for row in section.rows:
@@ -169,24 +198,7 @@ def _expand_api(section: ToonSection, lines: list[IqlLine], line_num: int) -> in
         endpoint = row.get('endpoint', '/')
         raw = f'API {method} "{endpoint}"'
         lines.append(IqlLine(number=line_num, command='API', args=f'{method} "{endpoint}"', raw=raw))
-        line_num += 1
-
-        status = row.get('status') or row.get('expect_status')
-        if status is not None:
-            raw_a = f'ASSERT_STATUS {status}'
-            lines.append(IqlLine(number=line_num, command='ASSERT_STATUS', args=str(status), raw=raw_a))
-            line_num += 1
-
-        # Optional assert_key / assert_value
-        assert_key = row.get('assert_key')
-        assert_value = row.get('assert_value') or row.get('assert_val')
-        if assert_key and assert_key is not None and assert_value and assert_value is not None:
-            raw_j = f'ASSERT_JSON {assert_key} == "{assert_value}"'
-            lines.append(IqlLine(
-                number=line_num, command='ASSERT_JSON',
-                args=f'{assert_key} == "{assert_value}"', raw=raw_j,
-            ))
-            line_num += 1
+        line_num = _append_api_asserts(row, lines, line_num + 1)
     return line_num
 
 
