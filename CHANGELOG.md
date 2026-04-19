@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.8] - 2026-04-19
+
+### Docs
+- Update README.md
+- Update SUMR.md
+
+### Test
+- Update testql/commands/echo_helpers.py
+- Update testql/commands/misc_cmds.py
+- Update testql/commands/templates/content.py
+
+### Other
+- Update sumd.json
+
 ## [0.6.7] - 2026-04-19
 
 ### Docs

@@ -7,215 +7,14 @@ from pathlib import Path
 
 import click
 
-# ---------------------------------------------------------------------------
-# Templates
-# ---------------------------------------------------------------------------
+from .echo_helpers import collect_toon_data, collect_doql_data, render_echo
+from .templates import (
+    API_TEMPLATE,
+    GUI_TEMPLATE,
+    ENCODER_TEMPLATE,
+    TestContentBuilder,
+)
 
-_API_TEMPLATE = '''\
-meta:
-  name: "API Health Check"
-  type: api
-  tags: [smoke, api, health]
-
-SET api_url = "${api_url:-http://localhost:8101}"
-
-# Health check
-GET "${api_url}/api/health"
-ASSERT_STATUS 200
-ASSERT_JSON path="status" equals="ok"
-
-LOG "API health check passed"
-'''
-
-_GUI_TEMPLATE = '''\
-meta:
-  name: "GUI Navigation Test"
-  type: gui
-  tags: [smoke, gui, navigation]
-
-SET base_url = "${base_url:-http://localhost:8100}"
-
-# Navigate to home
-NAVIGATE "${base_url}/"
-WAIT 500
-
-# Check main elements
-ASSERT_TITLE "contains" "Home"
-ASSERT_SELECTOR "nav" "exists"
-
-LOG "Navigation test passed"
-'''
-
-_ENCODER_TEMPLATE = '''\
-meta:
-  name: "Encoder Basic Test"
-  type: encoder
-  tags: [smoke, encoder]
-
-SET encoder_url = "${encoder_url:-http://localhost:8105}"
-
-# Encoder operations
-ENCODER_ON
-WAIT 200
-ENCODER_STATUS
-ASSERT_ENCODER "active"
-ENCODER_OFF
-
-LOG "Encoder test passed"
-'''
-
-
-def _build_test_content(test_type: str, name: str, meta_module: str, tags: list) -> str:
-    if test_type == "gui":
-        route = f"/{meta_module.replace('-', '/')}" if meta_module != "general" else "/"
-        return f'''\
-meta:
-  name: "GUI Test: {name}"
-  type: gui
-  module: {meta_module}
-  tags: {tags}
-  generated: true
-
-SET base_url = "${{base_url:-http://localhost:8100}}"
-SET encoder_url = "${{encoder_url:-http://localhost:8105}}"
-
-# Setup
-NAVIGATE "${{base_url}}{route}"
-WAIT 500
-
-# Main test steps
-# TODO: Add your test steps here
-
-# Cleanup
-LOG "GUI test {name} completed"
-'''
-
-    if test_type == "api":
-        return f'''\
-meta:
-  name: "API Test: {name}"
-  type: api
-  module: {meta_module}
-  tags: {tags}
-  generated: true
-
-SET api_url = "${{api_url:-http://localhost:8101}}"
-
-# API calls
-# GET "${{api_url}}/api/{meta_module}/list"
-# ASSERT_STATUS 200
-
-# Cleanup
-LOG "API test {name} completed"
-'''
-
-    if test_type == "mixed":
-        return f'''\
-meta:
-  name: "Mixed Test: {name}"
-  type: mixed
-  module: {meta_module}
-  tags: {tags}
-  generated: true
-
-SET base_url = "${{base_url:-http://localhost:8100}}"
-SET api_url = "${{api_url:-http://localhost:8101}}"
-SET encoder_url = "${{encoder_url:-http://localhost:8105}}"
-
-# === GUI Verification ===
-NAVIGATE "${{base_url}}/{meta_module}/detail/${{entity_id}}"
-WAIT 300
-ASSERT_SELECTOR "[data-testid='detail-view']" "exists"
-
-LOG "Mixed test {name} completed"
-'''
-
-    if test_type == "performance":
-        return f'''\
-meta:
-  name: "Performance Test: {name}"
-  type: performance
-  module: {meta_module}
-  tags: {tags + ["performance"]}
-  generated: true
-
-SET base_url = "${{base_url:-http://localhost:8100}}"
-SET api_url = "${{api_url:-http://localhost:8101}}"
-
-# Warmup
-NAVIGATE "${{base_url}}/{meta_module}"
-WAIT 1000
-
-# Measure load time
-TIMESTAMP start_load
-NAVIGATE "${{base_url}}/{meta_module}"
-WAIT_FOR_SELECTOR "[data-loaded='true']" timeout=5000
-TIMESTAMP end_load
-
-CALC load_time = end_load - start_load
-LOG "Load time: ${{load_time}}ms"
-
-ASSERT ${{load_time}} < 2000 "Page load should be under 2s"
-
-LOG "Performance test {name} completed"
-'''
-
-    if test_type == "workflow":
-        return f'''\
-meta:
-  name: "Workflow Test: {name}"
-  type: workflow
-  module: {meta_module}
-  tags: {tags}
-  generated: true
-
-SET base_url = "${{base_url:-http://localhost:8100}}"
-SET api_url = "${{api_url:-http://localhost:8101}}"
-
-workflow:
-  name: "{name}"
-  steps:
-    - name: "Step 1: Setup"
-      action: SETUP
-
-    - name: "Step 2: Action"
-      action: EXECUTE
-
-    - name: "Step 3: Verify"
-      action: ASSERT
-
-    - name: "Step 4: Cleanup"
-      action: TEARDOWN
-
-LOG "Workflow test {name} completed"
-'''
-
-    # encoder (default)
-    return f'''\
-meta:
-  name: "Encoder Test: {name}"
-  type: encoder
-  module: {meta_module}
-  tags: {tags}
-  generated: true
-
-SET encoder_url = "${{encoder_url:-http://localhost:8105}}"
-
-# Setup
-ENCODER_ON
-WAIT 200
-ENCODER_STATUS
-ASSERT_ENCODER "active"
-
-# Cleanup
-ENCODER_OFF
-LOG "Encoder test {name} completed"
-'''
-
-
-# ---------------------------------------------------------------------------
-# Commands
-# ---------------------------------------------------------------------------
 
 @click.command()
 @click.option("--path", "-p", type=click.Path(), default=".", help="Project path to initialize")
@@ -259,19 +58,19 @@ suites:
     if project_type in ("api", "all", "mixed"):
         tpl = templates_dir / "test-api-health.testql.toon.yaml"
         if not tpl.exists():
-            tpl.write_text(_API_TEMPLATE)
+            tpl.write_text(API_TEMPLATE)
             click.echo(f"✅ Created {tpl.name}")
 
     if project_type in ("gui", "all", "mixed"):
         tpl = templates_dir / "test-gui-navigation.testql.toon.yaml"
         if not tpl.exists():
-            tpl.write_text(_GUI_TEMPLATE)
+            tpl.write_text(GUI_TEMPLATE)
             click.echo(f"✅ Created {tpl.name}")
 
     if project_type in ("encoder", "all", "mixed"):
         tpl = templates_dir / "test-encoder-basic.testql.toon.yaml"
         if not tpl.exists():
-            tpl.write_text(_ENCODER_TEMPLATE)
+            tpl.write_text(ENCODER_TEMPLATE)
             click.echo(f"✅ Created {tpl.name}")
 
     click.echo(f"\n🎯 TestQL initialized in {target_path}")
@@ -302,7 +101,7 @@ def create(name: str, test_type: str, module: str | None, output: str | None, fo
 
     meta_module = module or "general"
     tags = [test_type, meta_module, "auto-generated"]
-    content = _build_test_content(test_type, name, meta_module, tags)
+    content = TestContentBuilder.build(test_type, name, meta_module, tags)
 
     filepath.write_text(content)
     click.echo(f"✅ Created {filepath}")
@@ -460,53 +259,6 @@ def report(data_json: str | None, output: str | None, example: bool) -> None:
     click.echo(f"   Open in browser: file://{result.absolute()}")
 
 
-def _collect_toon_data(toon_path: str, project_echo) -> None:
-    import os
-    from testql.toon_parser import parse_toon_file
-
-    toon_file_path = Path(toon_path)
-    if toon_file_path.is_dir():
-        toon_files = [
-            Path(root) / f
-            for root, _dirs, files in os.walk(toon_file_path)
-            for f in files
-            if f.endswith(".testql.toon.yaml") or f.endswith(".testtoon")
-        ]
-        for tf in toon_files:
-            contract = parse_toon_file(tf)
-            project_echo.api_contract.endpoints.extend(contract.endpoints)
-            project_echo.api_contract.asserts.extend(contract.asserts)
-            if contract.base_url and not project_echo.api_contract.base_url:
-                project_echo.api_contract.base_url = contract.base_url
-        click.echo(f"📄 Parsed {len(toon_files)} toon file(s)")
-    elif toon_file_path.exists():
-        project_echo.api_contract = parse_toon_file(toon_file_path)
-        click.echo(f"📄 Parsed toon file: {toon_file_path}")
-    else:
-        click.echo(f"⚠️  Toon path not found: {toon_path}")
-
-
-def _collect_doql_data(doql_path: str, project_echo) -> None:
-    from testql.doql_parser import parse_doql_file
-
-    doql_file_path = Path(doql_path)
-    if doql_file_path.exists():
-        project_echo.system_model = parse_doql_file(doql_file_path)
-        click.echo(f"📄 Parsed doql file: {doql_file_path}")
-    else:
-        click.echo(f"⚠️  Doql path not found: {doql_path}")
-
-
-def _render_echo(project_echo, fmt: str, project_path_obj: Path) -> str:
-    import json
-    if fmt == "json":
-        return json.dumps(project_echo.to_dict(), indent=2)
-    if fmt == "sumd":
-        from testql.sumd_generator import generate_sumd
-        return generate_sumd(project_echo, project_path_obj)
-    return project_echo.to_text()
-
-
 @click.command()
 @click.option("--toon-path", type=click.Path(), help="Path to toon test files")
 @click.option("--doql-path", type=click.Path(), help="Path to doql LESS file (app.doql.less)")
@@ -527,12 +279,12 @@ def echo(
     project_path_obj = Path(project_path)
 
     if toon_path:
-        _collect_toon_data(toon_path, project_echo)
+        collect_toon_data(toon_path, project_echo)
 
     if doql_path:
-        _collect_doql_data(doql_path, project_echo)
+        collect_doql_data(doql_path, project_echo)
 
-    output_str = _render_echo(project_echo, fmt, project_path_obj)
+    output_str = render_echo(project_echo, fmt, project_path_obj)
 
     if output:
         Path(output).write_text(output_str, encoding="utf-8")

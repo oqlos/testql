@@ -3,17 +3,34 @@
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.6.7-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$3.45-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-18.2h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.6.8-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$3.60-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-18.5h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $3.4500 (23 commits)
-- 👤 **Human dev:** ~$1820 (18.2h @ $100/h, 30min dedup)
+- 🤖 **LLM usage:** $3.6000 (24 commits)
+- 👤 **Human dev:** ~$1850 (18.5h @ $100/h, 30min dedup)
 
 Generated on 2026-04-19 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 
 ---
 
+
+
+
+## AI Cost Tracking
+
+![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-0.6.8-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+
 TestQL is a declarative DSL (Domain Specific Language) for testing GUI, REST API, and hardware encoder interfaces. It provides a simple, readable syntax for writing automated tests without programming overhead.
+
+### What's new in 0.6.6
+
+- **Refactored `_converter.py`**: `convert_iql_to_testtoon` CC 66 → ≤12; 12 handler functions extracted
+- **Refactored `echo.py`**: `parse_doql_less` CC 29 → ≤8; `format_text_output` CC 19 → ≤6
+- **Fixed `testql generate`**: workspace detection now correctly handles Python packages
+- **Fixed `testql list`**: renders table/simple output and reads TestTOON `# SCENARIO:` headers
+- **Scenarios generated for all 6 OqlOS projects** — 17/17 parse correctly
+
+
 
 ## Installation
 
