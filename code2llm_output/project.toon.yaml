@@ -1,0 +1,9 @@
+# testql | 0 func | 0f | 8006L | unknown | 2026-04-19
+
+HEALTH:
+  CC̄=0.0  critical=0 (limit:10)  dup=0  cycles=0
+
+MODULES[0] (top by size):
+
+EVOLUTION:
+  2026-04-19 CC̄=0.0 crit=0 8006L // Automated analysis

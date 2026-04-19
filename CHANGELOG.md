@@ -27,6 +27,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Parallel execution** support with `-j` flag
 - **Fail-fast mode** with `--fail-fast` flag
 
+## [0.6.1] - 2026-04-19
+
+### Docs
+- Update README.md
+- Update SUMD.md
+- Update SUMR.md
+- Update code2llm_output/README.md
+- Update code2llm_output/context.md
+- Update project/README.md
+- Update project/context.md
+
+### Test
+- Update testql/__init__.py
+- Update testql/report_generator.py
+
+### Other
+- Update VERSION
+- Update code2llm_output/analysis.toon.yaml
+- Update code2llm_output/calls.mmd
+- Update code2llm_output/calls.png
+- Update code2llm_output/calls.yaml
+- Update code2llm_output/compact_flow.mmd
+- Update code2llm_output/compact_flow.png
+- Update code2llm_output/evolution.toon.yaml
+- Update code2llm_output/flow.mmd
+- Update code2llm_output/flow.png
+- ... and 21 more files
+
 ## [0.5.2] - 2026-04-18
 
 ### Docs

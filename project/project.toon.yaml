@@ -1,9 +1,51 @@
-# testql | 0 func | 0f | 7170L | unknown | 2026-04-18
+# testql | 286 func | 28f | 8006L | python | 2026-04-19
 
 HEALTH:
-  CC̄=0.0  critical=0 (limit:10)  dup=0  cycles=0
+  CC̄=4.9  critical=39 (limit:10)  dup=1  cycles=2
 
-MODULES[0] (top by size):
+ALERTS[20]:
+  !!! cc_exceeded      convert_iql_to_testtoon = 66 (limit:15)
+  !!! cc_exceeded      suite = 47 (limit:15)
+  !!! high_fan_out     suite = 41 (limit:10)
+  !!! high_fan_out     convert_iql_to_testtoon = 40 (limit:10)
+  !!! cc_exceeded      generate_sumd = 29 (limit:15)
+  !!! cc_exceeded      parse_doql_less = 29 (limit:15)
+  !!! high_fan_out     iql_run_file = 28 (limit:10)
+  !!! high_fan_out     list = 24 (limit:10)
+  !!! high_fan_out     echo = 24 (limit:10)
+  !!! high_fan_out     generate = 22 (limit:10)
+
+MODULES[36] (top by size):
+  M[testql/cli.py] 1181L C:0 F:15 CC↑47 D:4 (python)
+  M[testql/endpoint_detector.py] 827L C:13 F:43 CC↑16 D:0 (python)
+  M[testql/generator.py] 709L C:4 F:26 CC↑23 D:0 (python)
+  M[testql/interpreter/_converter.py] 475L C:2 F:8 CC↑66 D:0 (python)
+  M[testql/openapi_generator.py] 449L C:3 F:19 CC↑11 D:0 (python)
+  M[testql/commands/encoder_routes.py] 424L C:0 F:15 CC↑12 D:0 (python)
+  M[testql/interpreter/_testtoon_parser.py] 393L C:2 F:19 CC↑12 D:1 (python)
+  M[testql/runner.py] 371L C:3 F:18 CC↑12 D:0 (python)
+  M[testql/sumd_parser.py] 287L C:5 F:10 CC↑12 D:0 (python)
+  M[testql/commands/echo.py] 262L C:0 F:5 CC↑29 D:0 (python)
+  M[testql/report_generator.py] 248L C:4 F:8 CC↑5 D:1 (python)
+  M[testql/_base_fallback.py] 221L C:7 F:26 CC↑4 D:9 (python)
+  M[testql/sumd_generator.py] 200L C:0 F:2 CC↑29 D:1 (python)
+  M[testql/interpreter/_websockets.py] 172L C:1 F:7 CC↑9 D:0 (python)
+  M[testql/doql_parser.py] 172L C:1 F:9 CC↑6 D:1 (python)
+  LANGS: python:34/shell:2
+
+HOTSPOTS[10]:
+  ★ suite fan=41  // Run test suite(s) — predefined or custom pattern.
+  ★ convert_iql_to_testtoon fan=40  // Convert IQL/TQL source text to TestTOON format.
+  ★ iql_run_file fan=28  // Run an entire IQL file with validation. Returns structured results + saves log.
+  ★ list fan=24  // List all available tests with metadata.
+  ★ echo fan=24  // Generate AI-friendly project metadata echo from toon tests and doql model.
+
+REFACTOR[15]:
+  [1] H/L Split generate_sumd (CC=29)
+  [2] H/L Split suite (CC=47)
+  [3] H/L Split parse_doql_less (CC=29)
+  [4] H/L Split convert_iql_to_testtoon (CC=66)
+  [5] H/H Split god module testql/cli.py (1181L, 0 classes)
 
 EVOLUTION:
-  2026-04-18 CC̄=0.0 crit=0 7170L // Automated analysis
+  2026-04-19 CC̄=4.9 crit=39 8006L // Automated analysis

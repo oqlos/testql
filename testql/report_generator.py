@@ -187,21 +187,39 @@ class HTMLReportGenerator:
         """
 
 
+def _adapt_test_entry(t: dict) -> TestResult:
+    """Adapt a test entry to TestResult, supporting both pytest-json-report and native testql formats."""
+    # pytest-json-report format: nodeid, outcome, call.duration
+    if "nodeid" in t:
+        name = t["nodeid"].split("::")[-1]
+        status = t.get("outcome", "unknown")
+        duration_ms = round((t.get("call", {}) or {}).get("duration", 0) * 1000)
+        failures = []
+        call = t.get("call") or {}
+        if call.get("longrepr"):
+            failures = [str(call["longrepr"])[:200]]
+        return TestResult(name=name, status=status, duration_ms=duration_ms, assertions=0, failures=failures)
+    # Native testql format
+    return TestResult(**t)
+
+
 def generate_report(data_json: Path, output_html: Path) -> Path:
     """Generate HTML report from data.json file."""
-    parser = ReportDataParser()
     # Load and parse data.json
     data = json.loads(data_json.read_text())
 
-    # Convert to TestSuiteReport
+    # Support pytest-json-report top-level format
+    summary = data.get("summary", {})
+    duration_ms = round(data.get("duration", 0) * 1000)
+
     report = TestSuiteReport(
         suite_name=data.get("suite_name", "Test Suite"),
-        total=data.get("total", 0),
-        passed=data.get("passed", 0),
-        failed=data.get("failed", 0),
-        skipped=data.get("skipped", 0),
-        duration_ms=data.get("duration_ms", 0),
-        tests=[TestResult(**t) for t in data.get("tests", [])]
+        total=summary.get("total", data.get("total", 0)),
+        passed=summary.get("passed", data.get("passed", 0)),
+        failed=summary.get("failed", data.get("failed", 0)),
+        skipped=summary.get("skipped", data.get("skipped", 0)),
+        duration_ms=duration_ms or data.get("duration_ms", 0),
+        tests=[_adapt_test_entry(t) for t in data.get("tests", [])]
     )
 
     generator = HTMLReportGenerator()

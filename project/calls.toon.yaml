@@ -1,0 +1,155 @@
+# code2llm call graph | /home/tom/github/oqlos/testql
+# nodes: 51 | edges: 39 | modules: 18
+# CC̄=4.9
+
+HUBS[20]:
+  testql.interpreter._converter.convert_iql_to_testtoon
+    CC=66  in:1  out:116  total:117
+  testql.sumd_generator.generate_sumd
+    CC=29  in:2  out:108  total:110
+  testql.commands.echo.parse_doql_less
+    CC=29  in:1  out:85  total:86
+  testql.commands.echo.format_text_output
+    CC=19  in:1  out:46  total:47
+  testql.commands.encoder_routes.iql_run_file
+    CC=12  in:0  out:43  total:43
+  testql.cli.list
+    CC=21  in:6  out:36  total:42
+  testql.interpreter._testtoon_parser.parse_testtoon
+    CC=12  in:1  out:31  total:32
+  testql.commands.echo.parse_toon_scenarios
+    CC=8  in:1  out:21  total:22
+  testql.runner.parse_line
+    CC=9  in:2  out:20  total:22
+  testql.cli.report
+    CC=4  in:0  out:22  total:22
+  testql.report_generator.generate_report
+    CC=3  in:1  out:20  total:21
+  testql.runner.DslCliExecutor.run_script
+    CC=11  in:0  out:20  total:20
+  testql.generator.MultiProjectTestGenerator.generate_cross_project_tests
+    CC=3  in:0  out:18  total:18
+  testql.interpreter._flow.FlowMixin._cmd_include
+    CC=7  in:0  out:17  total:17
+  testql.commands.echo.echo
+    CC=3  in:0  out:17  total:17
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+    CC=6  in:0  out:17  total:17
+  testql.interpreter.interpreter.IqlInterpreter.execute
+    CC=4  in:0  out:16  total:16
+  testql.commands.encoder_routes.iql_list_tables
+    CC=4  in:0  out:15  total:15
+  testql.interpreter._api_runner._navigate_json_path
+    CC=10  in:2  out:13  total:15
+  testql.commands.encoder_routes._execute_iql_line
+    CC=10  in:2  out:13  total:15
+
+MODULES:
+  TODO.testtoon_parser  [2 funcs]
+    print_parsed  CC=8  out:12
+    validate  CC=2  out:2
+  testql._base_fallback  [2 funcs]
+    all  CC=1  out:1
+    set  CC=1  out:0
+  testql.cli  [4 funcs]
+    cli  CC=1  out:2
+    list  CC=21  out:36
+    main  CC=1  out:1
+    report  CC=4  out:22
+  testql.commands.echo  [5 funcs]
+    echo  CC=3  out:17
+    format_text_output  CC=19  out:46
+    generate_context  CC=7  out:9
+    parse_doql_less  CC=29  out:85
+    parse_toon_scenarios  CC=8  out:21
+  testql.commands.encoder_routes  [12 funcs]
+    _evaluate_assertion  CC=10  out:12
+    _exec_assert_cmd  CC=7  out:11
+    _exec_browser_cmd  CC=9  out:10
+    _exec_encoder_cmd  CC=6  out:4
+    _execute_iql_line  CC=10  out:13
+    _normalize_iql_path  CC=10  out:13
+    _resolve_iql_path  CC=1  out:2
+    iql_list_files  CC=7  out:14
+    iql_list_tables  CC=4  out:15
+    iql_read_file  CC=3  out:11
+  testql.endpoint_detector  [1 funcs]
+    _deduplicate_endpoints  CC=3  out:4
+  testql.generator  [3 funcs]
+    generate_cross_project_tests  CC=3  out:18
+    _detect_project_type  CC=12  out:9
+    _scan_directory_structure  CC=8  out:6
+  testql.interpreter._api_runner  [2 funcs]
+    _cmd_capture  CC=3  out:13
+    _navigate_json_path  CC=10  out:13
+  testql.interpreter._assertions  [1 funcs]
+    _cmd_assert_json  CC=6  out:17
+  testql.interpreter._converter  [5 funcs]
+    _detect_scenario_type  CC=12  out:7
+    _extract_scenario_name  CC=6  out:8
+    convert_directory  CC=4  out:7
+    convert_file  CC=1  out:3
+    convert_iql_to_testtoon  CC=66  out:116
+  testql.interpreter._flow  [1 funcs]
+    _cmd_include  CC=7  out:17
+  testql.interpreter._parser  [1 funcs]
+    parse_iql  CC=5  out:10
+  testql.interpreter._testtoon_parser  [2 funcs]
+    parse_testtoon  CC=12  out:31
+    testtoon_to_iql  CC=2  out:4
+  testql.interpreter.interpreter  [3 funcs]
+    __init__  CC=2  out:3
+    execute  CC=4  out:16
+    parse  CC=2  out:3
+  testql.openapi_generator  [1 funcs]
+    _infer_tags  CC=7  out:9
+  testql.report_generator  [1 funcs]
+    generate_report  CC=3  out:20
+  testql.runner  [3 funcs]
+    run_script  CC=11  out:20
+    parse_line  CC=9  out:20
+    parse_script  CC=3  out:2
+  testql.sumd_generator  [2 funcs]
+    generate_sumd  CC=29  out:108
+    save_sumd  CC=2  out:2
+
+EDGES:
+  TODO.testtoon_parser.print_parsed → TODO.testtoon_parser.validate
+  testql.runner.parse_script → testql.runner.parse_line
+  testql.runner.DslCliExecutor.run_script → testql.runner.parse_script
+  testql.openapi_generator.OpenAPIGenerator._infer_tags → testql.cli.list
+  testql.openapi_generator.OpenAPIGenerator._infer_tags → testql._base_fallback.VariableStore.set
+  testql.sumd_generator.save_sumd → testql.sumd_generator.generate_sumd
+  testql.generator.TestGenerator._detect_project_type → testql.cli.list
+  testql.generator.TestGenerator._scan_directory_structure → testql._base_fallback.VariableStore.set
+  testql.generator.MultiProjectTestGenerator.generate_cross_project_tests → testql.cli.list
+  testql.cli.list → testql._base_fallback.VariableStore.set
+  testql.cli.report → testql.report_generator.generate_report
+  testql.cli.main → testql.cli.cli
+  testql.commands.echo.generate_context → testql.commands.echo.parse_toon_scenarios
+  testql.commands.echo.generate_context → testql.cli.list
+  testql.commands.echo.generate_context → testql.commands.echo.parse_doql_less
+  testql.commands.echo.echo → testql.commands.echo.generate_context
+  testql.commands.echo.echo → testql.commands.echo.format_text_output
+  testql.interpreter._testtoon_parser.testtoon_to_iql → testql.interpreter._testtoon_parser.parse_testtoon
+  testql.interpreter._api_runner.ApiRunnerMixin._cmd_capture → testql.interpreter._api_runner._navigate_json_path
+  testql.interpreter._flow.FlowMixin._cmd_include → testql.interpreter._parser.parse_iql
+  testql.endpoint_detector.UnifiedEndpointDetector._deduplicate_endpoints → testql._base_fallback.VariableStore.set
+  testql.interpreter._converter.convert_iql_to_testtoon → testql.interpreter._converter._extract_scenario_name
+  testql.interpreter._converter.convert_iql_to_testtoon → testql.interpreter._converter._detect_scenario_type
+  testql.interpreter._converter.convert_file → testql.interpreter._converter.convert_iql_to_testtoon
+  testql.interpreter._converter.convert_directory → testql.interpreter._converter.convert_file
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json → testql.interpreter._api_runner._navigate_json_path
+  testql.interpreter.interpreter.IqlInterpreter.__init__ → testql._base_fallback.VariableStore.set
+  testql.interpreter.interpreter.IqlInterpreter.parse → testql.interpreter._parser.parse_iql
+  testql.interpreter.interpreter.IqlInterpreter.parse → testql.interpreter._testtoon_parser.testtoon_to_iql
+  testql.interpreter.interpreter.IqlInterpreter.execute → testql._base_fallback.VariableStore.all
+  testql.commands.encoder_routes._resolve_iql_path → testql.commands.encoder_routes._normalize_iql_path
+  testql.commands.encoder_routes._exec_assert_cmd → testql.commands.encoder_routes._evaluate_assertion
+  testql.commands.encoder_routes._execute_iql_line → testql.commands.encoder_routes._exec_encoder_cmd
+  testql.commands.encoder_routes._execute_iql_line → testql.commands.encoder_routes._exec_browser_cmd
+  testql.commands.encoder_routes.iql_list_files → testql._base_fallback.VariableStore.set
+  testql.commands.encoder_routes.iql_read_file → testql.commands.encoder_routes._resolve_iql_path
+  testql.commands.encoder_routes.iql_list_tables → testql.commands.encoder_routes._resolve_iql_path
+  testql.commands.encoder_routes.iql_run_line → testql.commands.encoder_routes._execute_iql_line
+  testql.commands.encoder_routes.iql_run_file → testql.commands.encoder_routes._resolve_iql_path

@@ -1,6 +1,6 @@
 # TestQL — Interface Query Language for Testing
 
-TestQL with endpoint detection, OpenAPI, SUMD generation and SUMD parser
+TestQL with endpoint detection, OpenAPI, SUMD generation, SUMD parser and HTML report generation
 
 ## Contents
 
@@ -23,13 +23,13 @@ TestQL with endpoint detection, OpenAPI, SUMD generation and SUMD parser
 ## Metadata
 
 - **name**: `testql`
-- **version**: `0.5.2`
+- **version**: `0.6.0`
 - **python_requires**: `>=3.10`
 - **license**: Apache-2.0
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
 - **ecosystem**: SUMD + DOQL + testql + taskfile
 - **openapi_title**: testql API v1.0.0
-- **generated_from**: pyproject.toml, Taskfile.yml, testql(74), openapi(7 ep), app.doql.less, pyqual.yaml, goal.yaml, .env.example, src(13 mod), project/(1 analysis files)
+- **generated_from**: pyproject.toml, Taskfile.yml, testql(74), openapi(7 ep), app.doql.less, pyqual.yaml, goal.yaml, .env.example, src(14 mod), project/(2 analysis files)
 
 ## Architecture
 
@@ -199,6 +199,7 @@ environment[name="local"] {
 - `testql.generator`
 - `testql.interpreter`
 - `testql.openapi_generator`
+- `testql.report_generator`
 - `testql.runner`
 - `testql.sumd_generator`
 - `testql.sumd_parser`
@@ -3322,7 +3323,7 @@ pipeline:
 ```yaml
 project:
   name: testql
-  version: 0.5.2
+  version: 0.6.0
   env: local
 ```
 
@@ -3390,257 +3391,14 @@ pip install -e .[dev]
 ### `project/map.toon.yaml`
 
 ```toon markpact:analysis path=project/map.toon.yaml
-# testql | 40f 7569L | python:34,less:3,shell:2,css:1 | 2026-04-18
-# stats: 86 func | 56 cls | 40 mod | CC̄=7.2 | critical:22 | cycles:0
-# alerts[5]: CC convert_iql_to_testtoon=66; CC suite=47; CC parse_doql_less=29; CC endpoints=21; CC list=21
-# hotspots[5]: suite fan=32; iql_run_file fan=26; list fan=22; convert_iql_to_testtoon fan=21; generate fan=20
-# evolution: baseline
+# testql | 0f 0L | unknown | 2026-04-19
+# stats: 0 func | 0 cls | 0 mod | CC̄=0.0 | critical:0 | cycles:0
+# alerts[0]: none
+# hotspots[0]: none
+# evolution: CC̄ 4.9→0.0 (improved -4.9)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[40]:
-  TODO/testtoon_parser.py,142
-  app.doql.css,145
-  app.doql.less,147
-  project.sh,35
-  testql/__init__.py,4
-  testql/__main__.py,7
-  testql/_base_fallback.py,222
-  testql/base.py,38
-  testql/cli.py,1090
-  testql/commands/__init__.py,6
-  testql/commands/echo.py,263
-  testql/commands/encoder_routes.py,425
-  testql/doql_parser.py,173
-  testql/echo_schemas.py,154
-  testql/endpoint_detector.py,828
-  testql/generator.py,715
-  testql/interpreter/__init__.py,90
-  testql/interpreter/_api_runner.py,169
-  testql/interpreter/_assertions.py,104
-  testql/interpreter/_converter.py,476
-  testql/interpreter/_encoder.py,74
-  testql/interpreter/_flow.py,137
-  testql/interpreter/_parser.py,34
-  testql/interpreter/_testtoon_parser.py,394
-  testql/interpreter/_websockets.py,173
-  testql/interpreter/interpreter.py,126
-  testql/interpreter.py,28
-  testql/openapi_generator.py,436
-  testql/reporters/__init__.py,7
-  testql/reporters/console.py,39
-  testql/reporters/json_reporter.py,34
-  testql/reporters/junit.py,80
-  testql/runner.py,372
-  testql/runners/__init__.py,1
-  testql/scenarios/c2004/c2004.testql.less,29
-  testql/scenarios/config.testql.less,44
-  testql/toon_parser.py,111
-  tests/test_encoder_routes.py,42
-  tests/test_interpreter.py,173
-  tree.sh,2
+M[0]:
 D:
-  TODO/testtoon_parser.py:
-    e: Section,detect_separator,parse_value,parse_testtoon,validate,print_parsed
-    Section: to_dicts(0),validate(0)
-    detect_separator(line)
-    parse_value(v)
-    parse_testtoon(text)
-    validate(parsed)
-    print_parsed(parsed)
-  testql/__init__.py:
-  testql/__main__.py:
-  testql/_base_fallback.py:
-    e: StepStatus,StepResult,ScriptResult,VariableStore,InterpreterOutput,BaseInterpreter,EventBridge
-    StepStatus:
-    StepResult:
-    ScriptResult: passed(0),failed(0),summary(0)
-    VariableStore: __init__(1),set(2),get(2),has(1),all(0),clear(0),interpolate(1)  # Simple key-value store with interpolation support.
-    InterpreterOutput: __init__(1),emit(1),info(1),ok(1),fail(1),warn(1),error(1),step(2)  # Collects interpreter output lines for display or testing.
-    BaseInterpreter: __init__(3),parse(2),execute(1),run(2),run_file(1),strip_comments(1)  # Abstract base for language interpreters.
-    EventBridge: __init__(1),connect(0),disconnect(0),send_event(2),connected(0)  # Optional WebSocket bridge to DSL Event Server (port 8104).
-  testql/base.py:
-  testql/cli.py:
-    e: cli,run,generate,analyze,endpoints,openapi,init,create,suite,list,echo,watch,main
-    cli()
-    run(file;url;dry_run;output;quiet)
-    generate(path;output_dir;analyze_only;fmt)
-    analyze(path)
-    endpoints(path;fmt;framework;endpoint_type;output)
-    openapi(path;output;format;title;version;contract_tests)
-    init(path;name;project_type)
-    create(name;test_type;module;output;force)
-    suite(suite_name;base_path;pattern;tags;test_types;parallel;fail_fast;output;report;url)
-    list(path;test_type;tag;fmt)
-    echo(toon_path;doql_path;fmt;output)
-    watch(path;pattern;command;debounce)
-    main()
-  testql/commands/__init__.py:
-  testql/commands/echo.py:
-    e: parse_doql_less,parse_toon_scenarios,generate_context,format_text_output,echo
-    parse_doql_less(filepath)
-    parse_toon_scenarios(path)
-    generate_context(path;include_toon;include_doql)
-    format_text_output(context)
-    echo(path;fmt;no_toon;no_doql;output)
-  testql/commands/encoder_routes.py:
-    e: _normalize_iql_path,_resolve_iql_path,_evaluate_assertion,_format_log_detail,_exec_encoder_cmd,_exec_browser_cmd,_exec_assert_cmd,_execute_iql_line,iql_list_files,iql_read_file,iql_list_tables,iql_run_line,iql_run_file,iql_list_logs,iql_read_log
-    _normalize_iql_path(path)
-    _resolve_iql_path(path)
-    _evaluate_assertion(result;prop;expected)
-    _format_log_detail(cmd;result)
-    _exec_encoder_cmd(cmd;arg)
-    _exec_browser_cmd(cmd;arg;raw_arg)
-    _exec_assert_cmd(raw_arg)
-    _execute_iql_line(line)
-    iql_list_files()
-    iql_read_file(path)
-    iql_list_tables(path)
-    iql_run_line(req)
-    iql_run_file(req)
-    iql_list_logs()
-    iql_read_log(name)
-  testql/doql_parser.py:
-    e: DoqlParser,parse_doql_file
-    DoqlParser: __init__(0),parse_file(1),parse(1),_parse_app_block(1),_parse_entity_block(2),_parse_workflow_block(2),_parse_interface_block(2),_parse_deploy_block(1)  # Parser for doql LESS files.
-    parse_doql_file(path)
-  testql/echo_schemas.py:
-    e: APIContract,Entity,Workflow,Interface,SystemModel,ProjectEcho
-    APIContract:  # API contract layer from toon tests.
-    Entity:  # Entity from doql model.
-    Workflow:  # Workflow from doql.
-    Interface:  # Interface from doql.
-    SystemModel:  # System model from doql.
-    ProjectEcho: to_dict(0),to_text(0)  # Combined project echo for LLM consumption.
-  testql/endpoint_detector.py:
-    e: EndpointInfo,ServiceInfo,BaseEndpointDetector,FastAPIDetector,FlaskDetector,DjangoDetector,ExpressDetector,OpenAPIDetector,TestEndpointDetector,GraphQLDetector,WebSocketDetector,ConfigEndpointDetector,UnifiedEndpointDetector,detect_endpoints
-    EndpointInfo: to_testql_api_call(1),_infer_expected_status(0)  # Standardized endpoint information.
-    ServiceInfo:  # Information about a service/application.
-    BaseEndpointDetector: __init__(1),detect(0),_find_files(2)  # Base class for endpoint detectors.
-    FastAPIDetector: detect(0),_analyze_file(1),_detect_router_assignment(2),_detect_app_assignment(1),_extract_include_router(1),_analyze_route_handler(4),_extract_route_info(1),_get_router_prefix(2),_extract_parameters(1),_get_annotation_name(1),_extract_docstring(1)  # Detect FastAPI endpoints using AST analysis.
-    FlaskDetector: detect(0),_analyze_flask_file(1),_detect_blueprint(2),_analyze_flask_route(4),_extract_flask_route_info(2)  # Detect Flask endpoints including Blueprints.
-    DjangoDetector: detect(0),_analyze_urls_py(1)  # Detect Django URL patterns.
-    ExpressDetector: detect(0),_analyze_express_file(1)  # Detect Express.js routes from JavaScript/TypeScript files.
-    OpenAPIDetector: detect(0),_parse_spec(1)  # Detect endpoints from OpenAPI/Swagger specifications.
-    TestEndpointDetector: detect(0),_analyze_test_file(1)  # Detect API calls in test files to infer endpoints.
-    GraphQLDetector: detect(0),_analyze_schema(1),_analyze_python_graphql(1)  # Detect GraphQL schemas and resolvers.
-    WebSocketDetector: detect(0)  # Detect WebSocket endpoints.
-    ConfigEndpointDetector: detect(0),_analyze_docker_compose(1),_infer_protocol(1)  # Detect endpoints from configuration files.
-    UnifiedEndpointDetector: __init__(1),detect_all(0),_deduplicate_endpoints(1),get_endpoints_by_type(1),get_endpoints_by_framework(1),generate_testql_scenario(1)  # Unified detector that runs all specialized detectors.
-    detect_endpoints(project_path)
-  testql/generator.py:
-    e: TestPattern,ProjectProfile,TestGenerator,MultiProjectTestGenerator,generate_for_project,generate_for_workspace
-    TestPattern:  # Discovered test pattern from source code.
-    ProjectProfile:  # Analyzed project profile.
-    TestGenerator: __init__(1),_detect_project_type(0),analyze(0),_scan_directory_structure(0),_analyze_python_tests(0),_extract_test_pattern(4),_analyze_config_files(0),_analyze_api_routes(0),_analyze_api_routes_fallback(0),_analyze_scenarios(0),generate_tests(1),_generate_api_tests(1),_generate_from_python_tests(1),_generate_from_scenarios(1),_generate_api_integration_tests(1),_generate_cli_tests(1),_generate_lib_tests(1),_generate_frontend_tests(1),_generate_hardware_tests(1)  # Base class for test generators.
-    MultiProjectTestGenerator: __init__(1),discover_projects(0),analyze_all(0),generate_all(0),generate_cross_project_tests(1)  # Generator that operates across multiple projects.
-    generate_for_project(project_path)
-    generate_for_workspace(workspace_path)
-  testql/interpreter/__init__.py:
-    e: main
-    main()
-  testql/interpreter/_api_runner.py:
-    e: ApiRunnerMixin,_navigate_json_path
-    ApiRunnerMixin: _do_http_request(3),_store_api_response(2),_cmd_api(2),_cmd_capture(2)  # Mixin providing HTTP API execution commands: API, CAPTURE.
-    _navigate_json_path(root;path)
-  testql/interpreter/_assertions.py:
-    e: AssertionsMixin
-    AssertionsMixin: _cmd_assert_status(2),_cmd_assert_ok(2),_cmd_assert_contains(2),_cmd_assert_json(2)  # Mixin providing ASSERT_STATUS, ASSERT_OK, ASSERT_CONTAINS, A
-  testql/interpreter/_converter.py:
-    e: Row,Section,_parse_api_args,_parse_meta_from_args,_parse_target_from_args,_detect_scenario_type,_extract_scenario_name,convert_iql_to_testtoon,convert_file,convert_directory
-    Row:
-    Section:
-    _parse_api_args(args)
-    _parse_meta_from_args(args)
-    _parse_target_from_args(args)
-    _detect_scenario_type(commands)
-    _extract_scenario_name(comments;filename)
-    convert_iql_to_testtoon(source;filename)
-    convert_file(src)
-    convert_directory(dir_path)
-  testql/interpreter/_encoder.py:
-    e: EncoderMixin
-    EncoderMixin: _encoder_url(0),_encoder_call(5),_cmd_encoder_on(2),_cmd_encoder_off(2),_cmd_encoder_scroll(2),_cmd_encoder_click(2),_cmd_encoder_dblclick(2),_cmd_encoder_focus(2),_cmd_encoder_status(2),_cmd_encoder_page_next(2),_cmd_encoder_page_prev(2)  # Mixin providing all ENCODER_* hardware control commands.
-  testql/interpreter/_flow.py:
-    e: FlowMixin
-    FlowMixin: _cmd_wait_for(2),_cmd_wait(2),_cmd_log(2),_cmd_print(2),_cmd_include(2),_emit_event(3)  # Mixin providing: WAIT, LOG, PRINT, INCLUDE and _emit_event.
-  testql/interpreter/_parser.py:
-    e: IqlLine,IqlScript,parse_iql
-    IqlLine:
-    IqlScript:
-    parse_iql(source;filename)
-  testql/interpreter/_testtoon_parser.py:
-    e: ToonSection,ToonScript,_detect_separator,_parse_value,parse_testtoon,validate_testtoon,_expand_config,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_generic,testtoon_to_iql
-    ToonSection: validate(0)
-    ToonScript:
-    _detect_separator(line)
-    _parse_value(v)
-    parse_testtoon(text;filename)
-    validate_testtoon(script)
-    _expand_config(section;lines;line_num)
-    _expand_api(section;lines;line_num)
-    _expand_navigate(section;lines;line_num)
-    _expand_encoder(section;lines;line_num)
-    _expand_select(section;lines;line_num)
-    _expand_assert(section;lines;line_num)
-    _expand_steps(section;lines;line_num)
-    _expand_flow(section;lines;line_num)
-    _expand_oql(section;lines;line_num)
-    _expand_wait(section;lines;line_num)
-    _expand_include(section;lines;line_num)
-    _expand_record(section;lines;line_num)
-    _expand_generic(section;lines;line_num)
-    testtoon_to_iql(text;filename)
-  testql/interpreter/_websockets.py:
-    e: WebSocketMixin
-    WebSocketMixin: __init_subclass__(1),_get_ws_context(0),_cmd_ws_connect(2),_cmd_ws_send(2),_cmd_ws_receive(2),_cmd_ws_assert_msg(2),_cmd_ws_close(2)  # Mixin for WebSocket testing support.
-  testql/interpreter/interpreter.py:
-    e: IqlInterpreter
-    IqlInterpreter: __init__(6),parse(2),_is_testtoon(2),execute(1),_dispatch(3),_cmd_set(2),_cmd_get(2)  # IQL interpreter — runs .testql.toon.yaml / .iql / .tql scrip
-  testql/interpreter.py:
-  testql/openapi_generator.py:
-    e: OpenAPISpec,OpenAPIGenerator,ContractTestGenerator,generate_openapi_spec,generate_contract_tests_from_spec
-    OpenAPISpec: to_dict(0),to_json(1),to_yaml(0)  # OpenAPI specification container.
-    OpenAPIGenerator: __init__(1),generate(2),_normalize_path(1),_build_operation(1),_infer_tags(1),_extract_parameters(1),_build_request_body(1),_build_responses(1),save(2)  # Generate OpenAPI specs from detected endpoints.
-    ContractTestGenerator: __init__(1),_load_spec(1),generate_contract_tests(1),_get_expected_status(2),validate_response(3)  # Generate contract tests from OpenAPI specs.
-    generate_openapi_spec(project_path;output;format)
-    generate_contract_tests_from_spec(spec_path;output)
-  testql/reporters/__init__.py:
-  testql/reporters/console.py:
-    e: report_console
-    report_console(result)
-  testql/reporters/json_reporter.py:
-    e: report_json
-    report_json(result)
-  testql/reporters/junit.py:
-    e: JUnitReporter,report_junit
-    JUnitReporter: generate(2),_add_testcase(3)  # Generate JUnit XML from a TestQL ScriptResult.
-    report_junit(result;suite_name)
-  testql/runner.py:
-    e: DslCommand,ExecutionResult,parse_line,parse_script,DslCliExecutor,main
-    DslCommand:
-    ExecutionResult:
-    DslCliExecutor: __init__(2),execute(1),_dispatch(1),cmd_api(1),cmd_wait(1),cmd_log(1),cmd_print(1),cmd_store(1),cmd_env(1),cmd_assert_status(1),cmd_assert_json(1),cmd_set_header(1),cmd_set_base_url(1),run_script(2),_format_cmd(1)
-    parse_line(line)
-    parse_script(content)
-    main()
-  testql/runners/__init__.py:
-  testql/toon_parser.py:
-    e: ToonParser,parse_toon_file
-    ToonParser: __init__(0),parse_file(1),parse(1),_parse_api_block(1),_parse_assert_block(1),_parse_log_block(1)  # Parser for toon test files.
-    parse_toon_file(path)
-  tests/test_encoder_routes.py:
-    e: test_normalize_legacy_test_path,test_normalize_legacy_view_path,test_normalize_testql_prefixed_path,test_normalize_passthrough_diagnostics_path,test_normalize_testtoon_path,test_resolve_new_format
-    test_normalize_legacy_test_path()
-    test_normalize_legacy_view_path()
-    test_normalize_testql_prefixed_path()
-    test_normalize_passthrough_diagnostics_path()
-    test_normalize_testtoon_path()
-    test_resolve_new_format()
-  tests/test_interpreter.py:
-    e: TestParseIql,TestParseTestTOON,TestTestTOONExpansion,TestIqlInterpreter
-    TestParseIql: test_empty(0),test_comments_ignored(0),test_basic_commands(0)
-    TestParseTestTOON: test_empty(0),test_meta(0),test_api_section(0),test_encoder_section(0),test_validation_pass(0),test_validation_fail(0)
-    TestTestTOONExpansion: test_api_expansion(0),test_encoder_expansion(0),test_config_expansion(0),test_navigate_expansion(0)
-    TestIqlInterpreter: test_dry_run_api(0),test_set_get(0),test_testtoon_dry_run(0)
 ```
 
 ## Source Map
@@ -3657,8 +3415,8 @@ class EndpointInfo:  # Standardized endpoint information.
 class ServiceInfo:  # Information about a service/application.
 class BaseEndpointDetector:  # Base class for endpoint detectors.
     def __init__(project_path)  # CC=1
-    def detect()  # CC=3
-    def _find_files(pattern, exclude_dirs)  # CC=6
+    def detect()  # CC=1
+    def _find_files(pattern, exclude_dirs)  # CC=5
 class FastAPIDetector:  # Detect FastAPI endpoints using AST analysis.
     def detect()  # CC=3
     def _analyze_file(py_file)  # CC=7
@@ -3668,7 +3426,7 @@ class FastAPIDetector:  # Detect FastAPI endpoints using AST analysis.
     def _analyze_route_handler(node, py_file, content, routers)  # CC=4
     def _extract_route_info(decorator)  # CC=6
     def _get_router_prefix(decorator, routers)  # CC=6
-    def _extract_parameters(node)  # CC=4
+    def _extract_parameters(node)  # CC=3
     def _get_annotation_name(annotation)  # CC=4
     def _extract_docstring(node)  # CC=5
 class FlaskDetector:  # Detect Flask endpoints including Blueprints.
@@ -3688,24 +3446,24 @@ class OpenAPIDetector:  # Detect endpoints from OpenAPI/Swagger specifications.
     def _parse_spec(spec_file)  # CC=10 ⚠
 class TestEndpointDetector:  # Detect API calls in test files to infer endpoints.
     def detect()  # CC=3
-    def _analyze_test_file(test_file)  # CC=6
+    def _analyze_test_file(test_file)  # CC=5
 class GraphQLDetector:  # Detect GraphQL schemas and resolvers.
-    def detect()  # CC=3
+    def detect()  # CC=5
     def _analyze_schema(schema_file)  # CC=3
     def _analyze_python_graphql(py_file)  # CC=4
 class WebSocketDetector:  # Detect WebSocket endpoints.
-    def detect()  # CC=3
+    def detect()  # CC=4
 class ConfigEndpointDetector:  # Detect endpoints from configuration files.
     def detect()  # CC=3
-    def _analyze_docker_compose(compose_file)  # CC=9
+    def _analyze_docker_compose(compose_file)  # CC=8
     def _infer_protocol(port)  # CC=1
 class UnifiedEndpointDetector:  # Unified detector that runs all specialized detectors.
     def __init__(project_path)  # CC=1
     def detect_all()  # CC=4
     def _deduplicate_endpoints(endpoints)  # CC=3
-    def get_endpoints_by_type(endpoint_type)  # CC=3
-    def get_endpoints_by_framework(framework)  # CC=3
-    def generate_testql_scenario(output_file)  # CC=16 ⚠
+    def get_endpoints_by_type(endpoint_type)  # CC=1
+    def get_endpoints_by_framework(framework)  # CC=1
+    def generate_testql_scenario(output_file)  # CC=10 ⚠
 ```
 
 ### `testql._base_fallback` (`testql/_base_fallback.py`)
@@ -3714,17 +3472,17 @@ class UnifiedEndpointDetector:  # Unified detector that runs all specialized det
 class StepStatus:
 class StepResult:
 class ScriptResult:
-    def passed()  # CC=3
-    def failed()  # CC=3
-    def summary()  # CC=2
+    def passed()  # CC=1
+    def failed()  # CC=1
+    def summary()  # CC=1
 class VariableStore:  # Simple key-value store with interpolation support.
-    def __init__(initial)  # CC=1
+    def __init__(initial)  # CC=2
     def set(key, value)  # CC=1
     def get(key, default)  # CC=1
     def has(key)  # CC=1
     def all()  # CC=1
     def clear()  # CC=1
-    def interpolate(text)  # CC=1
+    def interpolate(text)  # CC=2
 class InterpreterOutput:  # Collects interpreter output lines for display or testing.
     def __init__(quiet)  # CC=1
     def emit(msg)  # CC=2
@@ -3739,8 +3497,8 @@ class BaseInterpreter:  # Abstract base for language interpreters.
     def parse(source, filename)  # CC=1
     def execute(parsed)  # CC=1
     def run(source, filename)  # CC=1
-    def run_file(path)  # CC=1
-    def strip_comments(lines)  # CC=3
+    def run_file(path)  # CC=2
+    def strip_comments(lines)  # CC=2
 class EventBridge:  # Optional WebSocket bridge to DSL Event Server (port 8104).
     def __init__(url)  # CC=1
     def connect()  # CC=2
@@ -3758,18 +3516,18 @@ class TestPattern:  # Discovered test pattern from source code.
 class ProjectProfile:  # Analyzed project profile.
 class TestGenerator:  # Base class for test generators.
     def __init__(project_path)  # CC=1
-    def _detect_project_type()  # CC=12 ⚠
+    def _detect_project_type()  # CC=9
     def analyze()  # CC=1
     def _scan_directory_structure()  # CC=8
     def _analyze_python_tests()  # CC=12 ⚠
-    def _extract_test_pattern(node, content, class_name, source_file)  # CC=14 ⚠
+    def _extract_test_pattern(node, content, class_name, source_file)  # CC=11 ⚠
     def _analyze_config_files()  # CC=6
     def _analyze_api_routes()  # CC=3
     def _analyze_api_routes_fallback()  # CC=4
-    def _analyze_scenarios()  # CC=5
-    def generate_tests(output_dir)  # CC=12 ⚠
-    def _generate_api_tests(output_dir)  # CC=26 ⚠
-    def _generate_from_python_tests(output_dir)  # CC=12 ⚠
+    def _analyze_scenarios()  # CC=3
+    def generate_tests(output_dir)  # CC=11 ⚠
+    def _generate_api_tests(output_dir)  # CC=16 ⚠
+    def _generate_from_python_tests(output_dir)  # CC=6
     def _generate_from_scenarios(output_dir)  # CC=3
     def _generate_api_integration_tests(output_dir)  # CC=1
     def _generate_cli_tests(output_dir)  # CC=1
@@ -3778,7 +3536,7 @@ class TestGenerator:  # Base class for test generators.
     def _generate_hardware_tests(output_dir)  # CC=1
 class MultiProjectTestGenerator:  # Generator that operates across multiple projects.
     def __init__(workspace_path)  # CC=1
-    def discover_projects()  # CC=6
+    def discover_projects()  # CC=5
     def analyze_all()  # CC=2
     def generate_all()  # CC=2
     def generate_cross_project_tests(output_dir)  # CC=3
@@ -3794,12 +3552,12 @@ class OpenAPISpec:  # OpenAPI specification container.
     def to_json(indent)  # CC=1
     def to_yaml()  # CC=1
 class OpenAPIGenerator:  # Generate OpenAPI specs from detected endpoints.
-    def __init__(project_path)  # CC=3
+    def __init__(project_path)  # CC=1
     def generate(title, version)  # CC=5
     def _normalize_path(path)  # CC=2
     def _build_operation(ep)  # CC=7
-    def _infer_tags(ep)  # CC=7
-    def _extract_parameters(ep)  # CC=11 ⚠
+    def _infer_tags(ep)  # CC=6
+    def _extract_parameters(ep)  # CC=10 ⚠
     def _build_request_body(ep)  # CC=6
     def _build_responses(ep)  # CC=3
     def save(output_path, format)  # CC=3
@@ -3807,34 +3565,34 @@ class ContractTestGenerator:  # Generate contract tests from OpenAPI specs.
     def __init__(spec)  # CC=3
     def _load_spec(path)  # CC=2
     def generate_contract_tests(output_file)  # CC=6
-    def _get_expected_status(method, operation)  # CC=4
-    def validate_response(endpoint, method, response)  # CC=11 ⚠
+    def _get_expected_status(method, operation)  # CC=3
+    def validate_response(endpoint, method, response)  # CC=10 ⚠
 ```
 
 ### `testql.runner` (`testql/runner.py`)
 
 ```python
-def parse_line(line)  # CC=9, fan=8
-def parse_script(content)  # CC=3, fan=2
-def main()  # CC=10, fan=14 ⚠
+def parse_line(line)  # CC=7, fan=8
+def parse_script(content)  # CC=1, fan=2
+def main()  # CC=7, fan=14
 class DslCommand:
 class ExecutionResult:
 class DslCliExecutor:
     def __init__(base_url, verbose)  # CC=1
     def execute(cmd)  # CC=2
     def _dispatch(cmd)  # CC=6
-    def cmd_api(cmd)  # CC=7
+    def cmd_api(cmd)  # CC=3
     def cmd_wait(cmd)  # CC=1
-    def cmd_log(cmd)  # CC=2
-    def cmd_print(cmd)  # CC=2
-    def cmd_store(cmd)  # CC=2
-    def cmd_env(cmd)  # CC=2
+    def cmd_log(cmd)  # CC=1
+    def cmd_print(cmd)  # CC=1
+    def cmd_store(cmd)  # CC=1
+    def cmd_env(cmd)  # CC=1
     def cmd_assert_status(cmd)  # CC=2
-    def cmd_assert_json(cmd)  # CC=12 ⚠
-    def cmd_set_header(cmd)  # CC=2
+    def cmd_assert_json(cmd)  # CC=9
+    def cmd_set_header(cmd)  # CC=1
     def cmd_set_base_url(cmd)  # CC=1
-    def run_script(content, stop_on_error)  # CC=11 ⚠
-    def _format_cmd(cmd)  # CC=2
+    def run_script(content, stop_on_error)  # CC=9
+    def _format_cmd(cmd)  # CC=1
 ```
 
 ## API Stubs
@@ -4085,4 +3843,4 @@ def iql_list_tables() -> Response:  # Extract table names from an IQL file.
 
 ## Intent
 
-TestQL with endpoint detection, OpenAPI, SUMD generation and SUMD parser
+TestQL with endpoint detection, OpenAPI, SUMD generation, SUMD parser and HTML report generation

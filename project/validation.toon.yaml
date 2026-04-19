@@ -1,23 +1,23 @@
-# vallm batch | 66f | 40✓ 5⚠ 3✗ | 2026-04-18
+# vallm batch | 77f | 44✓ 6⚠ 3✗ | 2026-04-19
 
 SUMMARY:
-  scanned: 66  passed: 40 (60.6%)  warnings: 5  errors: 3  unsupported: 23
+  scanned: 77  passed: 44 (57.1%)  warnings: 6  errors: 3  unsupported: 30
 
-WARNINGS[5]{path,score}:
+WARNINGS[6]{path,score}:
   testql/cli.py,0.80
     issues[12]{rule,severity,message,line}:
       complexity.cyclomatic,warning,analyze has cyclomatic complexity 16 (max: 15),125
       complexity.cyclomatic,warning,endpoints has cyclomatic complexity 21 (max: 15),201
       complexity.cyclomatic,warning,suite has cyclomatic complexity 47 (max: 15),671
       complexity.cyclomatic,warning,list has cyclomatic complexity 21 (max: 15),862
-      complexity.cyclomatic,warning,echo has cyclomatic complexity 16 (max: 15),941
-      complexity.maintainability,warning,Low maintainability index: 8.8 (threshold: 20),
+      complexity.cyclomatic,warning,echo has cyclomatic complexity 17 (max: 15),942
+      complexity.maintainability,warning,Low maintainability index: 7.1 (threshold: 20),
       complexity.lizard_cc,warning,analyze: CC=16 exceeds limit 15,125
       complexity.lizard_cc,warning,endpoints: CC=21 exceeds limit 15,201
       complexity.lizard_cc,warning,suite: CC=43 exceeds limit 15,671
       complexity.lizard_length,warning,suite: 120 lines exceeds limit 100,671
       complexity.lizard_cc,warning,list: CC=21 exceeds limit 15,862
-      complexity.lizard_cc,warning,echo: CC=16 exceeds limit 15,941
+      complexity.lizard_cc,warning,echo: CC=17 exceeds limit 15,942
   testql/commands/echo.py,0.93
     issues[4]{rule,severity,message,line}:
       complexity.cyclomatic,warning,parse_doql_less has cyclomatic complexity 29 (max: 15),14
@@ -29,15 +29,20 @@ WARNINGS[5]{path,score}:
       complexity.cyclomatic,warning,convert_iql_to_testtoon has cyclomatic complexity 66 (max: 15),100
       complexity.lizard_cc,warning,convert_iql_to_testtoon: CC=66 exceeds limit 15,100
       complexity.lizard_length,warning,convert_iql_to_testtoon: 280 lines exceeds limit 100,100
+  testql/sumd_generator.py,0.93
+    issues[3]{rule,severity,message,line}:
+      complexity.cyclomatic,warning,generate_sumd has cyclomatic complexity 29 (max: 15),11
+      complexity.lizard_cc,warning,generate_sumd: CC=29 exceeds limit 15,11
+      complexity.lizard_length,warning,generate_sumd: 130 lines exceeds limit 100,11
   testql/endpoint_detector.py,0.96
     issues[2]{rule,severity,message,line}:
       complexity.cyclomatic,warning,generate_testql_scenario has cyclomatic complexity 16 (max: 15),768
       complexity.maintainability,warning,Low maintainability index: 6.6 (threshold: 20),
   testql/generator.py,0.96
     issues[3]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,_generate_api_tests has cyclomatic complexity 26 (max: 15),342
-      complexity.maintainability,warning,Low maintainability index: 14.4 (threshold: 20),
-      complexity.lizard_cc,warning,_generate_api_tests: CC=26 exceeds limit 15,342
+      complexity.cyclomatic,warning,_generate_api_tests has cyclomatic complexity 23 (max: 15),342
+      complexity.maintainability,warning,Low maintainability index: 15.1 (threshold: 20),
+      complexity.lizard_cc,warning,_generate_api_tests: CC=23 exceeds limit 15,342
 
 ERRORS[3]{path,score}:
   testql/commands/encoder_routes.py,0.92
@@ -52,7 +57,7 @@ ERRORS[3]{path,score}:
       python.import.resolvable,error,Module 'websockets' not found,186
 
 UNSUPPORTED[4]{bucket,count}:
-  *.md,8
-  *.txt,1
+  *.md,10
+  *.txt,2
   *.yml,2
-  other,12
+  other,16

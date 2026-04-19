@@ -229,14 +229,14 @@ Returns:
 > Generate API integration tests.
 - **Calls**: sections.append, sections.append, sections.append, sections.append, sections.append, sections.append, sections.append, sections.append
 
+### testql.endpoint_detector.OpenAPIDetector._parse_spec
+> Parse OpenAPI specification.
+- **Calls**: spec_file.read_text, None.items, json.loads, yaml.safe_load, spec.get, None.get, methods.items, isinstance
+
 ### testql.interpreter._flow.FlowMixin._cmd_wait_for
 > WAIT_FOR "selector" VISIBLE 5000
 WAIT_FOR NETWORK_IDLE 10000
 - **Calls**: None.split, None.strip, self.out.step, time.time, self.out.step, self.results.append, len, self.out.step
-
-### testql.endpoint_detector.OpenAPIDetector._parse_spec
-> Parse OpenAPI specification.
-- **Calls**: spec_file.read_text, None.items, json.loads, yaml.safe_load, spec.get, None.get, methods.items, isinstance
 
 ## Process Flows
 
@@ -305,16 +305,16 @@ init [testql.cli]
 - **Methods**: 15
 - **Key Methods**: testql.runner.DslCliExecutor.__init__, testql.runner.DslCliExecutor.execute, testql.runner.DslCliExecutor._dispatch, testql.runner.DslCliExecutor.cmd_api, testql.runner.DslCliExecutor.cmd_wait, testql.runner.DslCliExecutor.cmd_log, testql.runner.DslCliExecutor.cmd_print, testql.runner.DslCliExecutor.cmd_store, testql.runner.DslCliExecutor.cmd_env, testql.runner.DslCliExecutor.cmd_assert_status
 
-### testql.interpreter._encoder.EncoderMixin
-> Mixin providing all ENCODER_* hardware control commands.
-- **Methods**: 11
-- **Key Methods**: testql.interpreter._encoder.EncoderMixin._encoder_url, testql.interpreter._encoder.EncoderMixin._encoder_call, testql.interpreter._encoder.EncoderMixin._cmd_encoder_on, testql.interpreter._encoder.EncoderMixin._cmd_encoder_off, testql.interpreter._encoder.EncoderMixin._cmd_encoder_scroll, testql.interpreter._encoder.EncoderMixin._cmd_encoder_click, testql.interpreter._encoder.EncoderMixin._cmd_encoder_dblclick, testql.interpreter._encoder.EncoderMixin._cmd_encoder_focus, testql.interpreter._encoder.EncoderMixin._cmd_encoder_status, testql.interpreter._encoder.EncoderMixin._cmd_encoder_page_next
-
 ### testql.endpoint_detector.FastAPIDetector
 > Detect FastAPI endpoints using AST analysis.
 - **Methods**: 11
 - **Key Methods**: testql.endpoint_detector.FastAPIDetector.detect, testql.endpoint_detector.FastAPIDetector._analyze_file, testql.endpoint_detector.FastAPIDetector._detect_router_assignment, testql.endpoint_detector.FastAPIDetector._detect_app_assignment, testql.endpoint_detector.FastAPIDetector._extract_include_router, testql.endpoint_detector.FastAPIDetector._analyze_route_handler, testql.endpoint_detector.FastAPIDetector._extract_route_info, testql.endpoint_detector.FastAPIDetector._get_router_prefix, testql.endpoint_detector.FastAPIDetector._extract_parameters, testql.endpoint_detector.FastAPIDetector._get_annotation_name
 - **Inherits**: BaseEndpointDetector
+
+### testql.interpreter._encoder.EncoderMixin
+> Mixin providing all ENCODER_* hardware control commands.
+- **Methods**: 11
+- **Key Methods**: testql.interpreter._encoder.EncoderMixin._encoder_url, testql.interpreter._encoder.EncoderMixin._encoder_call, testql.interpreter._encoder.EncoderMixin._cmd_encoder_on, testql.interpreter._encoder.EncoderMixin._cmd_encoder_off, testql.interpreter._encoder.EncoderMixin._cmd_encoder_scroll, testql.interpreter._encoder.EncoderMixin._cmd_encoder_click, testql.interpreter._encoder.EncoderMixin._cmd_encoder_dblclick, testql.interpreter._encoder.EncoderMixin._cmd_encoder_focus, testql.interpreter._encoder.EncoderMixin._cmd_encoder_status, testql.interpreter._encoder.EncoderMixin._cmd_encoder_page_next
 
 ### testql.openapi_generator.OpenAPIGenerator
 > Generate OpenAPI specs from detected endpoints.
@@ -365,15 +365,15 @@ Supports both legacy IQL format and
 - **Key Methods**: testql._base_fallback.BaseInterpreter.__init__, testql._base_fallback.BaseInterpreter.parse, testql._base_fallback.BaseInterpreter.execute, testql._base_fallback.BaseInterpreter.run, testql._base_fallback.BaseInterpreter.run_file, testql._base_fallback.BaseInterpreter.strip_comments
 - **Inherits**: ABC
 
-### testql.interpreter._flow.FlowMixin
-> Mixin providing: WAIT, LOG, PRINT, INCLUDE and _emit_event.
-- **Methods**: 6
-- **Key Methods**: testql.interpreter._flow.FlowMixin._cmd_wait_for, testql.interpreter._flow.FlowMixin._cmd_wait, testql.interpreter._flow.FlowMixin._cmd_log, testql.interpreter._flow.FlowMixin._cmd_print, testql.interpreter._flow.FlowMixin._cmd_include, testql.interpreter._flow.FlowMixin._emit_event
-
 ### testql.endpoint_detector.UnifiedEndpointDetector
 > Unified detector that runs all specialized detectors.
 - **Methods**: 6
 - **Key Methods**: testql.endpoint_detector.UnifiedEndpointDetector.__init__, testql.endpoint_detector.UnifiedEndpointDetector.detect_all, testql.endpoint_detector.UnifiedEndpointDetector._deduplicate_endpoints, testql.endpoint_detector.UnifiedEndpointDetector.get_endpoints_by_type, testql.endpoint_detector.UnifiedEndpointDetector.get_endpoints_by_framework, testql.endpoint_detector.UnifiedEndpointDetector.generate_testql_scenario
+
+### testql.interpreter._flow.FlowMixin
+> Mixin providing: WAIT, LOG, PRINT, INCLUDE and _emit_event.
+- **Methods**: 6
+- **Key Methods**: testql.interpreter._flow.FlowMixin._cmd_wait_for, testql.interpreter._flow.FlowMixin._cmd_wait, testql.interpreter._flow.FlowMixin._cmd_log, testql.interpreter._flow.FlowMixin._cmd_print, testql.interpreter._flow.FlowMixin._cmd_include, testql.interpreter._flow.FlowMixin._emit_event
 
 ### testql.openapi_generator.ContractTestGenerator
 > Generate contract tests from OpenAPI specs.
