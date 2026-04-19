@@ -27,6 +27,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Parallel execution** support with `-j` flag
 - **Fail-fast mode** with `--fail-fast` flag
 
+## [0.6.6] - 2026-04-19
+
+### Docs
+- Update README.md
+- Update SUMR.md
+
+### Test
+- Update testql/interpreter/_converter.py
+
+### Other
+- Update project/map.toon.yaml
+
 ## [0.6.5] - 2026-04-19
 
 ### Docs

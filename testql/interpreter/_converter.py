@@ -97,13 +97,217 @@ def _extract_scenario_name(comments: list[str], filename: str) -> str:
     return stem
 
 
-def convert_iql_to_testtoon(source: str, filename: str = "<string>") -> str:
-    """Convert IQL/TQL source text to TestTOON format."""
+# ── Command handlers ────────────────────────────────────────────────────────
 
-    # Phase 1: Parse into command tuples
+_FLOW_COMMANDS: frozenset[str] = frozenset({
+    'START_TEST', 'PROTOCOL_CREATED', 'PROTOCOL_FINALIZE',
+    'STEP_COMPLETE', 'SESSION_START', 'SESSION_END',
+    'APP_START', 'APP_INIT', 'APP_READY', 'APP_ERROR',
+    'MODULE_LOAD', 'MODULE_READY', 'MODULE_ERROR',
+    'PAGE_SETUP', 'PAGE_ERROR', 'PAGE_RENDER',
+    'REPORT_AUTOOPEN', 'REPORT_FETCH', 'REPORT_OPEN',
+    'REPORT_ERROR', 'REPORT_PRINT', 'REPORT_LIST',
+    'PROTOCOL_FETCH', 'PROTOCOL_LOAD', 'PROTOCOL_PARSE',
+    'PROTOCOL_NORMALIZE', 'PROTOCOL_FILTER', 'PROTOCOL_ERROR',
+    'TEST_RUN_PARAMS', 'OPEN_INTERVAL_DIALOG', 'EMIT',
+})
+
+_SKIP_COMMANDS: frozenset[str] = frozenset(
+    {'SET', 'COMMENT', 'BLANK', 'LOG', 'PRINT', 'GET'}
+)
+
+
+def _collect_assert(filtered: list, j: int) -> tuple[int, int, str | None, str | None]:
+    """Scan ahead past ASSERT* commands; return (new_j, status, key, value)."""
+    status = 200
+    assert_key = None
+    assert_value = None
+    while j < len(filtered) and filtered[j][0].startswith('ASSERT'):
+        acmd, aargs = filtered[j]
+        if acmd == 'ASSERT_STATUS':
+            try:
+                status = int(aargs.strip())
+            except ValueError:
+                status = 200
+        elif acmd == 'ASSERT_OK':
+            status = 200
+        elif acmd in ('ASSERT_JSON', 'ASSERT_CONTAINS'):
+            parts = aargs.strip().split(None, 2)
+            if len(parts) >= 3:
+                assert_key = parts[0]
+                assert_value = parts[2].strip('"\'')
+            elif len(parts) >= 1:
+                assert_key = parts[0]
+                assert_value = '-'
+        j += 1
+    return j, status, assert_key, assert_value
+
+
+def _handle_api(filtered: list, i: int) -> tuple[int, Section]:
+    """Collect consecutive API + ASSERT* rows into one API Section."""
+    api_rows: list[dict] = []
+    has_assert_key = False
+    while i < len(filtered) and filtered[i][0] == 'API':
+        cmd, args = filtered[i]
+        method, endpoint = _parse_api_args(args)
+        j, status, assert_key, assert_value = _collect_assert(filtered, i + 1)
+        row: dict = {'method': method, 'endpoint': endpoint, 'status': str(status)}
+        if assert_key:
+            row['assert_key'] = assert_key
+            row['assert_value'] = assert_value or '-'
+            has_assert_key = True
+        api_rows.append(row)
+        i = j
+    cols = ['method', 'endpoint', 'status']
+    if has_assert_key:
+        cols.extend(['assert_key', 'assert_value'])
+    return i, Section(type='API', columns=cols, rows=api_rows, comment='Wywołania API')
+
+
+def _handle_navigate(filtered: list, i: int) -> tuple[int, Section]:
+    """Collect consecutive NAVIGATE (+ optional WAIT) rows."""
+    nav_rows: list[dict] = []
+    while i < len(filtered) and filtered[i][0] == 'NAVIGATE':
+        _, args = filtered[i]
+        path = _parse_target_from_args(args)
+        wait_ms = 300
+        if i + 1 < len(filtered) and filtered[i + 1][0] == 'WAIT':
+            try:
+                wait_ms = int(filtered[i + 1][1].strip())
+            except ValueError:
+                pass
+            i += 2
+        else:
+            i += 1
+        nav_rows.append({'path': path, 'wait_ms': str(wait_ms)})
+    return i, Section(type='NAVIGATE', columns=['path', 'wait_ms'], rows=nav_rows, comment='Nawigacja UI')
+
+
+def _handle_encoder(filtered: list, i: int) -> tuple[int, Section]:
+    """Collect consecutive ENCODER_* (+ optional WAIT) rows."""
+    enc_rows: list[dict] = []
+    while i < len(filtered) and filtered[i][0].startswith('ENCODER_'):
+        cmd, args = filtered[i]
+        action = cmd.replace('ENCODER_', '').lower()
+        target, value, wait_ms = '-', '-', '-'
+        if action == 'focus':
+            target = args.strip().strip('"\'') or '-'
+        elif action == 'scroll':
+            try:
+                value = str(int(args.strip()))
+            except ValueError:
+                value = '1'
+        if i + 1 < len(filtered) and filtered[i + 1][0] == 'WAIT':
+            try:
+                wait_ms = filtered[i + 1][1].strip()
+            except (ValueError, IndexError):
+                pass
+            i += 2
+        else:
+            i += 1
+        enc_rows.append({'action': action, 'target': target, 'value': value, 'wait_ms': wait_ms})
+    return i, Section(
+        type='ENCODER', columns=['action', 'target', 'value', 'wait_ms'],
+        rows=enc_rows, comment='Encoder HW',
+    )
+
+
+def _handle_select(filtered: list, i: int) -> tuple[int, Section]:
+    """Collect consecutive SELECT* rows."""
+    sel_rows: list[dict] = []
+    while i < len(filtered) and filtered[i][0].startswith('SELECT'):
+        cmd, args = filtered[i]
+        action = cmd.replace('SELECT_', '').lower()
+        sel_rows.append({'action': action, 'id': _parse_target_from_args(args), 'meta': _parse_meta_from_args(args)})
+        i += 1
+    return i, Section(type='SELECT', columns=['action', 'id', 'meta'], rows=sel_rows, comment='Wybory domenowe')
+
+
+def _handle_flow(filtered: list, i: int) -> tuple[int, Section]:
+    """Collect consecutive FLOW (semantic lifecycle) commands."""
+    flow_rows: list[dict] = []
+    while i < len(filtered) and filtered[i][0] in _FLOW_COMMANDS:
+        cmd, args = filtered[i]
+        flow_rows.append({
+            'command': cmd.lower(),
+            'target': _parse_target_from_args(args),
+            'meta': _parse_meta_from_args(args),
+        })
+        i += 1
+    return i, Section(type='FLOW', columns=['command', 'target', 'meta'], rows=flow_rows, comment='Kroki semantyczne')
+
+
+def _handle_record_start(filtered: list, i: int) -> tuple[int, Section]:
+    _, args = filtered[i]
+    return i + 1, Section(
+        type='RECORD_START', columns=['session_id'],
+        rows=[{'session_id': _parse_target_from_args(args)}], comment='Nagrywanie sesji',
+    )
+
+
+def _handle_record_stop(filtered: list, i: int) -> tuple[int, Section]:
+    return i + 1, Section(type='RECORD_STOP', columns=[], rows=[{}])
+
+
+def _handle_wait(filtered: list, i: int) -> tuple[int, Section]:
+    """Collect consecutive standalone WAIT rows."""
+    wait_rows: list[dict] = []
+    while i < len(filtered) and filtered[i][0] == 'WAIT':
+        try:
+            ms = int(filtered[i][1].strip())
+        except ValueError:
+            ms = 100
+        wait_rows.append({'ms': str(ms)})
+        i += 1
+    return i, Section(type='WAIT', columns=['ms'], rows=wait_rows)
+
+
+def _handle_include(filtered: list, i: int) -> tuple[int, Section]:
+    _, args = filtered[i]
+    return i + 1, Section(
+        type='INCLUDE', columns=['file'],
+        rows=[{'file': _parse_target_from_args(args)}],
+    )
+
+
+def _handle_unknown(filtered: list, i: int) -> tuple[int, Section]:
+    cmd, args = filtered[i]
+    return i + 1, Section(
+        type='FLOW', columns=['command', 'target', 'meta'],
+        rows=[{'command': cmd.lower(),
+               'target': _parse_target_from_args(args) if args else '-',
+               'meta': _parse_meta_from_args(args) if args else '-'}],
+    )
+
+
+def _dispatch(filtered: list, i: int) -> tuple[int, Section]:
+    """Dispatch one command to its handler; return (new_i, section)."""
+    cmd = filtered[i][0]
+    if cmd == 'API':
+        return _handle_api(filtered, i)
+    if cmd == 'NAVIGATE':
+        return _handle_navigate(filtered, i)
+    if cmd.startswith('ENCODER_'):
+        return _handle_encoder(filtered, i)
+    if cmd.startswith('SELECT'):
+        return _handle_select(filtered, i)
+    if cmd in _FLOW_COMMANDS:
+        return _handle_flow(filtered, i)
+    if cmd == 'RECORD_START':
+        return _handle_record_start(filtered, i)
+    if cmd == 'RECORD_STOP':
+        return _handle_record_stop(filtered, i)
+    if cmd == 'WAIT':
+        return _handle_wait(filtered, i)
+    if cmd == 'INCLUDE':
+        return _handle_include(filtered, i)
+    return _handle_unknown(filtered, i)
+
+
+def _parse_commands(source: str) -> tuple[list[tuple[str, str]], list[str]]:
+    """Phase 1: tokenise source into (cmd, args) tuples and collect comments."""
     commands: list[tuple[str, str]] = []
     comments: list[str] = []
-
     for raw in source.splitlines():
         stripped = raw.strip()
         if not stripped:
@@ -117,311 +321,65 @@ def convert_iql_to_testtoon(source: str, filename: str = "<string>") -> str:
         cmd = parts[0].upper()
         args = parts[1] if len(parts) > 1 else ''
         commands.append((cmd, args))
+    return commands, comments
 
-    # Phase 2: Detect metadata
-    scenario_name = _extract_scenario_name(comments, filename)
-    scenario_type = _detect_scenario_type(commands)
 
-    # Phase 3: Group commands into sections
-    sections: list[Section] = []
-
-    # Collect SET commands → CONFIG section
-    config_rows = []
+def _build_config_section(commands: list[tuple[str, str]]) -> Section | None:
+    """Collect SET commands into a CONFIG section (or None if empty)."""
+    rows = []
     for cmd, args in commands:
         if cmd == 'SET':
             parts = args.split(None, 1)
             key = parts[0] if parts else ''
             value = parts[1].strip().strip('"\'') if len(parts) > 1 else ''
-            config_rows.append({'key': key, 'value': value})
+            rows.append({'key': key, 'value': value})
+    if rows:
+        return Section(type='CONFIG', columns=['key', 'value'], rows=rows, comment='Konfiguracja')
+    return None
 
-    if config_rows:
-        sections.append(Section(
-            type='CONFIG',
-            columns=['key', 'value'],
-            rows=config_rows,
-            comment='Konfiguracja',
-        ))
 
-    # Now process non-SET commands sequentially and group them
-    # LOG and PRINT are converted to comments, so filter them out too
-    i = 0
-    filtered = [(c, a) for c, a in commands if c not in ('SET', 'COMMENT', 'BLANK', 'LOG', 'PRINT', 'GET')]
-
-    while i < len(filtered):
-        cmd, args = filtered[i]
-
-        if cmd == 'API':
-            # Collect consecutive API + ASSERT_STATUS pairs
-            api_rows = []
-            has_assert_key = False
-            while i < len(filtered):
-                cmd, args = filtered[i]
-                if cmd != 'API':
-                    break
-                method, endpoint = _parse_api_args(args)
-                status = 200
-                assert_key = None
-                assert_value = None
-                # Look ahead for ASSERT_STATUS, ASSERT_OK, ASSERT_JSON
-                j = i + 1
-                while j < len(filtered) and filtered[j][0].startswith('ASSERT'):
-                    acmd, aargs = filtered[j]
-                    if acmd == 'ASSERT_STATUS':
-                        try:
-                            status = int(aargs.strip())
-                        except ValueError:
-                            status = 200
-                    elif acmd == 'ASSERT_OK':
-                        status = 200
-                    elif acmd in ('ASSERT_JSON', 'ASSERT_CONTAINS'):
-                        # Parse: field == value or field op value
-                        parts = aargs.strip().split(None, 2)
-                        if len(parts) >= 3:
-                            assert_key = parts[0]
-                            assert_value = parts[2].strip('"\'')
-                            has_assert_key = True
-                        elif len(parts) >= 1:
-                            assert_key = parts[0]
-                            assert_value = '-'
-                            has_assert_key = True
-                    j += 1
-
-                row = {'method': method, 'endpoint': endpoint, 'status': str(status)}
-                if has_assert_key and assert_key:
-                    row['assert_key'] = assert_key
-                    row['assert_value'] = assert_value or '-'
-                api_rows.append(row)
-                i = j
-                continue
-
-            cols = ['method', 'endpoint', 'status']
-            if has_assert_key:
-                cols.extend(['assert_key', 'assert_value'])
-            sections.append(Section(
-                type='API',
-                columns=cols,
-                rows=api_rows,
-                comment='Wywołania API',
-            ))
-            continue
-
-        if cmd == 'NAVIGATE':
-            nav_rows = []
-            while i < len(filtered):
-                cmd, args = filtered[i]
-                if cmd != 'NAVIGATE':
-                    break
-                path = _parse_target_from_args(args)
-                wait_ms = 300  # default
-                if i + 1 < len(filtered) and filtered[i + 1][0] == 'WAIT':
-                    try:
-                        wait_ms = int(filtered[i + 1][1].strip())
-                    except ValueError:
-                        pass
-                    i += 2
-                else:
-                    i += 1
-                nav_rows.append({'path': path, 'wait_ms': str(wait_ms)})
-
-            sections.append(Section(
-                type='NAVIGATE',
-                columns=['path', 'wait_ms'],
-                rows=nav_rows,
-                comment='Nawigacja UI',
-            ))
-            continue
-
-        if cmd.startswith('ENCODER_'):
-            enc_rows = []
-            while i < len(filtered):
-                cmd, args = filtered[i]
-                if not cmd.startswith('ENCODER_'):
-                    break
-
-                action = cmd.replace('ENCODER_', '').lower()
-                target = '-'
-                value = '-'
-                wait_ms = '-'
-
-                if action == 'focus':
-                    target = args.strip().strip('"\'') or '-'
-                elif action == 'scroll':
-                    try:
-                        value = str(int(args.strip()))
-                    except ValueError:
-                        value = '1'
-
-                if i + 1 < len(filtered) and filtered[i + 1][0] == 'WAIT':
-                    try:
-                        wait_ms = filtered[i + 1][1].strip()
-                    except (ValueError, IndexError):
-                        pass
-                    i += 2
-                else:
-                    i += 1
-
-                enc_rows.append({
-                    'action': action,
-                    'target': target,
-                    'value': value,
-                    'wait_ms': wait_ms,
-                })
-
-            sections.append(Section(
-                type='ENCODER',
-                columns=['action', 'target', 'value', 'wait_ms'],
-                rows=enc_rows,
-                comment='Encoder HW',
-            ))
-            continue
-
-        if cmd in ('SELECT_DEVICE', 'SELECT_INTERVAL', 'SELECT'):
-            sel_rows = []
-            while i < len(filtered):
-                cmd, args = filtered[i]
-                if not cmd.startswith('SELECT'):
-                    break
-                action = cmd.replace('SELECT_', '').lower()
-                target_id = _parse_target_from_args(args)
-                meta = _parse_meta_from_args(args)
-                sel_rows.append({'action': action, 'id': target_id, 'meta': meta})
-                i += 1
-
-            sections.append(Section(
-                type='SELECT',
-                columns=['action', 'id', 'meta'],
-                rows=sel_rows,
-                comment='Wybory domenowe',
-            ))
-            continue
-
-        if cmd in ('START_TEST', 'PROTOCOL_CREATED', 'PROTOCOL_FINALIZE',
-                    'STEP_COMPLETE', 'SESSION_START', 'SESSION_END',
-                    'APP_START', 'APP_INIT', 'APP_READY', 'APP_ERROR',
-                    'MODULE_LOAD', 'MODULE_READY', 'MODULE_ERROR',
-                    'PAGE_SETUP', 'PAGE_ERROR', 'PAGE_RENDER',
-                    'REPORT_AUTOOPEN', 'REPORT_FETCH', 'REPORT_OPEN',
-                    'REPORT_ERROR', 'REPORT_PRINT', 'REPORT_LIST',
-                    'PROTOCOL_FETCH', 'PROTOCOL_LOAD', 'PROTOCOL_PARSE',
-                    'PROTOCOL_NORMALIZE', 'PROTOCOL_FILTER', 'PROTOCOL_ERROR',
-                    'TEST_RUN_PARAMS', 'OPEN_INTERVAL_DIALOG', 'EMIT'):
-            flow_rows = []
-            semantic_set = {
-                'START_TEST', 'PROTOCOL_CREATED', 'PROTOCOL_FINALIZE',
-                'STEP_COMPLETE', 'SESSION_START', 'SESSION_END',
-                'APP_START', 'APP_INIT', 'APP_READY', 'APP_ERROR',
-                'MODULE_LOAD', 'MODULE_READY', 'MODULE_ERROR',
-                'PAGE_SETUP', 'PAGE_ERROR', 'PAGE_RENDER',
-                'REPORT_AUTOOPEN', 'REPORT_FETCH', 'REPORT_OPEN',
-                'REPORT_ERROR', 'REPORT_PRINT', 'REPORT_LIST',
-                'PROTOCOL_FETCH', 'PROTOCOL_LOAD', 'PROTOCOL_PARSE',
-                'PROTOCOL_NORMALIZE', 'PROTOCOL_FILTER', 'PROTOCOL_ERROR',
-                'TEST_RUN_PARAMS', 'OPEN_INTERVAL_DIALOG', 'EMIT',
-            }
-            while i < len(filtered) and filtered[i][0] in semantic_set:
-                cmd, args = filtered[i]
-                target = _parse_target_from_args(args)
-                meta = _parse_meta_from_args(args)
-                flow_rows.append({'command': cmd.lower(), 'target': target, 'meta': meta})
-                i += 1
-
-            sections.append(Section(
-                type='FLOW',
-                columns=['command', 'target', 'meta'],
-                rows=flow_rows,
-                comment='Kroki semantyczne',
-            ))
-            continue
-
-        if cmd == 'RECORD_START':
-            target = _parse_target_from_args(args)
-            sections.append(Section(
-                type='RECORD_START',
-                columns=['session_id'],
-                rows=[{'session_id': target}],
-                comment='Nagrywanie sesji',
-            ))
-            i += 1
-            continue
-
-        if cmd == 'RECORD_STOP':
-            sections.append(Section(
-                type='RECORD_STOP',
-                columns=[],
-                rows=[{}],
-            ))
-            i += 1
-            continue
-
-        if cmd == 'WAIT':
-            # Standalone WAIT (not absorbed by NAVIGATE/ENCODER)
-            wait_rows = []
-            while i < len(filtered) and filtered[i][0] == 'WAIT':
-                try:
-                    ms = int(filtered[i][1].strip())
-                except ValueError:
-                    ms = 100
-                wait_rows.append({'ms': str(ms)})
-                i += 1
-            sections.append(Section(
-                type='WAIT',
-                columns=['ms'],
-                rows=wait_rows,
-            ))
-            continue
-
-        if cmd == 'INCLUDE':
-            target = _parse_target_from_args(args)
-            sections.append(Section(
-                type='INCLUDE',
-                columns=['file'],
-                rows=[{'file': target}],
-            ))
-            i += 1
-            continue
-
-        # Unknown command — wrap as generic FLOW
-        target = _parse_target_from_args(args) if args else '-'
-        meta = _parse_meta_from_args(args) if args else '-'
-        sections.append(Section(
-            type='FLOW',
-            columns=['command', 'target', 'meta'],
-            rows=[{'command': cmd.lower(), 'target': target, 'meta': meta}],
-        ))
-        i += 1
-
-    # Phase 4: Render TestTOON output
+def _render_sections(sections: list[Section]) -> str:
+    """Phase 4: render collected sections to TestTOON text."""
     out: list[str] = []
-    out.append(f'# SCENARIO: {scenario_name}')
-    out.append(f'# TYPE: {scenario_type}')
-    out.append('# VERSION: 1.0')
-    out.append('')
-
     for sec in sections:
         if sec.comment:
             out.append(f'# ── {sec.comment} {"─" * max(1, 50 - len(sec.comment))}')
         count = len(sec.rows)
         cols_str = ', '.join(sec.columns)
-        if sec.columns:
-            out.append(f'{sec.type}[{count}]{{{cols_str}}}:')
-        else:
-            out.append(f'{sec.type}:')
+        out.append(f'{sec.type}[{count}]{{{cols_str}}}:' if sec.columns else f'{sec.type}:')
         for row in sec.rows:
-            vals = []
-            for col in sec.columns:
-                v = row.get(col)
-                if v is None:
-                    vals.append('-')
-                else:
-                    vals.append(str(v))
-            if vals:
-                # Pad values for alignment
-                out.append('  ' + ',  '.join(vals))
-            else:
-                out.append('  ')
+            vals = [str(row.get(col, '-')) if row.get(col) is not None else '-' for col in sec.columns]
+            out.append('  ' + ',  '.join(vals) if vals else '  ')
         out.append('')
-
     return '\n'.join(out)
+
+
+# ── Public API ───────────────────────────────────────────────────────────────
+
+def convert_iql_to_testtoon(source: str, filename: str = "<string>") -> str:
+    """Convert IQL/TQL source text to TestTOON format."""
+    # Phase 1: tokenise
+    commands, comments = _parse_commands(source)
+
+    # Phase 2: detect metadata
+    scenario_name = _extract_scenario_name(comments, filename)
+    scenario_type = _detect_scenario_type(commands)
+
+    # Phase 3: group into sections
+    sections: list[Section] = []
+    config = _build_config_section(commands)
+    if config:
+        sections.append(config)
+
+    filtered = [(c, a) for c, a in commands if c not in _SKIP_COMMANDS]
+    i = 0
+    while i < len(filtered):
+        i, section = _dispatch(filtered, i)
+        sections.append(section)
+
+    # Phase 4: render
+    header = f'# SCENARIO: {scenario_name}\n# TYPE: {scenario_type}\n# VERSION: 1.0\n\n'
+    return header + _render_sections(sections)
 
 
 def convert_file(src: Path) -> Path:
