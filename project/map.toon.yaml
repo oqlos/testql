@@ -1,10 +1,10 @@
-# testql | 48f 8481L | python:42,less:3,shell:2,css:1 | 2026-04-19
-# stats: 112 func | 65 cls | 48 mod | CC̄=6.1 | critical:22 | cycles:0
-# alerts[5]: CC convert_iql_to_testtoon=66; CC parse_doql_less=29; CC format_text_output=19; CC suite=18; CC echo=16
-# hotspots[5]: iql_run_file fan=26; suite fan=22; convert_iql_to_testtoon fan=21; generate fan=20; watch fan=19
+# testql | 125f 13983L | python:119,less:3,shell:2,css:1 | 2026-04-19
+# stats: 173 func | 183 cls | 125 mod | CC̄=3.6 | critical:9 | cycles:0
+# alerts[5]: CC _print_routes_section=11; CC watch=11; CC parse_value=10; CC _normalize_iql_path=10; CC iql_run_file=10
+# hotspots[5]: iql_run_file fan=26; generate fan=19; watch fan=19; suite fan=19; main fan=18
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[48]:
+M[125]:
   TODO/testtoon_parser.py,142
   app.doql.css,139
   app.doql.less,147
@@ -15,26 +15,81 @@ M[48]:
   testql/base.py,38
   testql/cli.py,42
   testql/commands/__init__.py,28
-  testql/commands/echo.py,263
+  testql/commands/echo/__init__.py,23
+  testql/commands/echo/cli.py,40
+  testql/commands/echo/context.py,55
+  testql/commands/echo/formatters/__init__.py,10
+  testql/commands/echo/formatters/text.py,96
+  testql/commands/echo/parsers/__init__.py,11
+  testql/commands/echo/parsers/doql.py,116
+  testql/commands/echo/parsers/toon.py,77
+  testql/commands/echo.py,25
+  testql/commands/echo_helpers.py,62
   testql/commands/encoder_routes.py,425
-  testql/commands/endpoints_cmd.py,138
-  testql/commands/generate_cmd.py,141
-  testql/commands/misc_cmds.py,530
+  testql/commands/endpoints_cmd.py,137
+  testql/commands/generate_cmd.py,155
+  testql/commands/misc_cmds.py,294
   testql/commands/run_cmd.py,57
-  testql/commands/suite_cmd.py,315
+  testql/commands/suite/__init__.py,9
+  testql/commands/suite/cli.py,101
+  testql/commands/suite/collection.py,121
+  testql/commands/suite/execution.py,74
+  testql/commands/suite/listing.py,113
+  testql/commands/suite/reports.py,90
+  testql/commands/suite_cmd.py,13
+  testql/commands/templates/__init__.py,19
+  testql/commands/templates/content.py,167
+  testql/commands/templates/templates.py,60
+  testql/detectors/__init__.py,54
+  testql/detectors/base.py,35
+  testql/detectors/config_detector.py,87
+  testql/detectors/django_detector.py,52
+  testql/detectors/express_detector.py,60
+  testql/detectors/fastapi_detector.py,154
+  testql/detectors/flask_detector.py,122
+  testql/detectors/graphql_detector.py,88
+  testql/detectors/models.py,61
+  testql/detectors/openapi_detector.py,91
+  testql/detectors/test_detector.py,70
+  testql/detectors/unified.py,138
+  testql/detectors/websocket_detector.py,49
   testql/doql_parser.py,173
   testql/echo_schemas.py,154
-  testql/endpoint_detector.py,836
-  testql/generator.py,710
+  testql/endpoint_detector.py,63
+  testql/generator.py,62
+  testql/generators/__init__.py,53
+  testql/generators/analyzers.py,279
+  testql/generators/base.py,59
+  testql/generators/convenience.py,52
+  testql/generators/generators.py,345
+  testql/generators/multi.py,106
+  testql/generators/test_generator.py,105
   testql/interpreter/__init__.py,90
   testql/interpreter/_api_runner.py,169
   testql/interpreter/_assertions.py,104
-  testql/interpreter/_converter.py,476
+  testql/interpreter/_converter.py,63
   testql/interpreter/_encoder.py,74
   testql/interpreter/_flow.py,137
   testql/interpreter/_parser.py,34
   testql/interpreter/_testtoon_parser.py,394
   testql/interpreter/_websockets.py,173
+  testql/interpreter/converter/__init__.py,20
+  testql/interpreter/converter/core.py,59
+  testql/interpreter/converter/dispatcher.py,50
+  testql/interpreter/converter/handlers/__init__.py,31
+  testql/interpreter/converter/handlers/api.py,32
+  testql/interpreter/converter/handlers/assertions.py,35
+  testql/interpreter/converter/handlers/encoder.py,46
+  testql/interpreter/converter/handlers/flow.py,40
+  testql/interpreter/converter/handlers/include.py,15
+  testql/interpreter/converter/handlers/navigate.py,33
+  testql/interpreter/converter/handlers/record.py,25
+  testql/interpreter/converter/handlers/select.py,27
+  testql/interpreter/converter/handlers/unknown.py,19
+  testql/interpreter/converter/handlers/wait.py,23
+  testql/interpreter/converter/models.py,21
+  testql/interpreter/converter/parsers.py,94
+  testql/interpreter/converter/renderer.py,62
   testql/interpreter/interpreter.py,126
   testql/interpreter.py,28
   testql/openapi_generator.py,450
@@ -50,8 +105,30 @@ M[48]:
   testql/sumd_generator.py,209
   testql/sumd_parser.py,288
   testql/toon_parser.py,111
+  tests/test_api_handler.py,90
+  tests/test_cli.py,98
+  tests/test_converter.py,178
+  tests/test_converter_handlers.py,352
+  tests/test_detectors.py,331
+  tests/test_doql_parser_sumd_gen.py,323
+  tests/test_echo.py,227
+  tests/test_echo_doql_parser.py,220
+  tests/test_echo_schemas_helpers.py,214
   tests/test_encoder_routes.py,42
+  tests/test_generate_cmd.py,101
+  tests/test_generators.py,111
   tests/test_interpreter.py,173
+  tests/test_misc_cmds.py,111
+  tests/test_openapi_generator.py,344
+  tests/test_report_generator.py,169
+  tests/test_reporters.py,317
+  tests/test_runner.py,188
+  tests/test_suite_cmd_helpers.py,141
+  tests/test_suite_execution.py,93
+  tests/test_suite_listing.py,167
+  tests/test_sumd_parser.py,206
+  tests/test_test_generator.py,98
+  tests/test_toon_parser.py,84
   tree.sh,2
 D:
   TODO/testtoon_parser.py:
@@ -79,13 +156,49 @@ D:
     cli()
     main()
   testql/commands/__init__.py:
-  testql/commands/echo.py:
-    e: parse_doql_less,parse_toon_scenarios,generate_context,format_text_output,echo
-    parse_doql_less(filepath)
-    parse_toon_scenarios(path)
-    generate_context(path;include_toon;include_doql)
-    format_text_output(context)
+  testql/commands/echo/__init__.py:
+  testql/commands/echo/cli.py:
+    e: echo
     echo(path;fmt;no_toon;no_doql;output)
+  testql/commands/echo/context.py:
+    e: _find_doql_file,_find_toon_path,generate_context
+    _find_doql_file(path)
+    _find_toon_path(path)
+    generate_context(path;include_toon;include_doql)
+  testql/commands/echo/formatters/__init__.py:
+  testql/commands/echo/formatters/text.py:
+    e: _fmt_interfaces,_fmt_workflows,_fmt_contracts,_fmt_entities,_fmt_suggestions,_build_header,format_text_output
+    _fmt_interfaces(context)
+    _fmt_workflows(context)
+    _fmt_contracts(context)
+    _fmt_entities(context)
+    _fmt_suggestions(context)
+    _build_header(context)
+    format_text_output(context)
+  testql/commands/echo/parsers/__init__.py:
+  testql/commands/echo/parsers/doql.py:
+    e: _parse_kv_block,_parse_app_block,_parse_entities,_parse_interfaces,_parse_workflows,_parse_deploy,_parse_environment,_parse_integrations,parse_doql_less
+    _parse_kv_block(body)
+    _parse_app_block(content)
+    _parse_entities(content)
+    _parse_interfaces(content)
+    _parse_workflows(content)
+    _parse_deploy(content)
+    _parse_environment(content)
+    _parse_integrations(content)
+    parse_doql_less(filepath)
+  testql/commands/echo/parsers/toon.py:
+    e: _extract_endpoint,_extract_assert,_parse_scenario,parse_toon_scenarios
+    _extract_endpoint(method;value)
+    _extract_assert(key;value)
+    _parse_scenario(content;file;base_path)
+    parse_toon_scenarios(path)
+  testql/commands/echo.py:
+  testql/commands/echo_helpers.py:
+    e: collect_toon_data,collect_doql_data,render_echo
+    collect_toon_data(toon_path;project_echo)
+    collect_doql_data(doql_path;project_echo)
+    render_echo(project_echo;fmt;project_path_obj)
   testql/commands/encoder_routes.py:
     e: _normalize_iql_path,_resolve_iql_path,_evaluate_assertion,_format_log_detail,_exec_encoder_cmd,_exec_browser_cmd,_exec_assert_cmd,_execute_iql_line,iql_list_files,iql_read_file,iql_list_tables,iql_run_line,iql_run_file,iql_list_logs,iql_read_log
     _normalize_iql_path(path)
@@ -104,19 +217,22 @@ D:
     iql_list_logs()
     iql_read_log(name)
   testql/commands/endpoints_cmd.py:
-    e: endpoints,_format_endpoints,openapi
+    e: endpoints,_format_endpoints_json,_format_endpoints_csv,_format_endpoints_table,_format_endpoints,openapi
     endpoints(path;fmt;framework;endpoint_type;output)
+    _format_endpoints_json(eps;target_path)
+    _format_endpoints_csv(eps;target_path)
+    _format_endpoints_table(eps;detector)
     _format_endpoints(eps;fmt;target_path;detector)
     openapi(path;output;format;title;version;contract_tests)
   testql/commands/generate_cmd.py:
-    e: generate,analyze,_print_routes_section,_print_scenarios_section
+    e: _is_workspace,generate,analyze,_print_routes_section,_print_scenarios_section
+    _is_workspace(target_path)
     generate(path;output_dir;analyze_only;fmt)
     analyze(path)
     _print_routes_section(profile)
     _print_scenarios_section(profile)
   testql/commands/misc_cmds.py:
-    e: _build_test_content,init,create,watch,from_sumd,report,echo
-    _build_test_content(test_type;name;meta_module;tags)
+    e: init,create,watch,from_sumd,report,echo
     init(path;name;project_type)
     create(name;test_type;module;output;force)
     watch(path;pattern;command;debounce)
@@ -126,16 +242,83 @@ D:
   testql/commands/run_cmd.py:
     e: run
     run(file;url;dry_run;output;quiet)
-  testql/commands/suite_cmd.py:
-    e: _find_files,_collect_test_files,_run_single_file,_build_report_data,_save_report,suite,list_tests,_parse_meta
-    _find_files(base_dir;file_pattern)
-    _collect_test_files(target_path;suite_name;pattern;config)
-    _run_single_file(test_file;interp)
-    _build_report_data(suite_name;results;total_passed;total_failed;total_duration)
-    _save_report(report_data;report_file;output)
+  testql/commands/suite/__init__.py:
+  testql/commands/suite/cli.py:
+    e: suite,list_tests
     suite(suite_name;base_path;pattern;tags;test_types;parallel;fail_fast;output;report;url)
     list_tests(path;test_type;tag;fmt)
-    _parse_meta(tf;yaml)
+  testql/commands/suite/collection.py:
+    e: _find_files,_collect_from_suite,_collect_by_pattern,_collect_recursive,_deduplicate_files,collect_test_files,collect_list_files
+    _find_files(base_dir;file_pattern)
+    _collect_from_suite(target_path;suite_name;config)
+    _collect_by_pattern(target_path;pattern)
+    _collect_recursive(target_path)
+    _deduplicate_files(files)
+    collect_test_files(target_path;suite_name;pattern;config)
+    collect_list_files(target_path)
+  testql/commands/suite/execution.py:
+    e: run_single_file,run_suite_files
+    run_single_file(test_file;interp)
+    run_suite_files(test_files;url;output;fail_fast;config)
+  testql/commands/suite/listing.py:
+    e: _parse_testtoon_header,_parse_yaml_meta_block,parse_meta,filter_tests,render_test_list
+    _parse_testtoon_header(content)
+    _parse_yaml_meta_block(content;yaml_module)
+    parse_meta(tf;yaml_module)
+    filter_tests(raw_files;target_path;test_type;tag;yaml_module)
+    render_test_list(tests;fmt)
+  testql/commands/suite/reports.py:
+    e: build_report_data,_save_json_report,_build_junit_xml,save_report,print_summary
+    build_report_data(suite_name;results;total_passed;total_failed;total_duration)
+    _save_json_report(report_data;report_file)
+    _build_junit_xml(report_data)
+    save_report(report_data;report_file;output)
+    print_summary(results;total_passed;total_failed;total_duration)
+  testql/commands/suite_cmd.py:
+  testql/commands/templates/__init__.py:
+  testql/commands/templates/content.py:
+    e: TestContentBuilder
+    TestContentBuilder: build(5),_build_meta_header(4),_build_standard_vars(0),_build_gui(4),_build_api(4),_build_mixed(4),_build_performance(4),_build_workflow(4),_build_encoder(4)  # Builds test content for different test types.
+  testql/commands/templates/templates.py:
+  testql/detectors/__init__.py:
+  testql/detectors/base.py:
+    e: BaseEndpointDetector
+    BaseEndpointDetector: __init__(1),detect(0),_find_files(2)  # Base class for endpoint detectors.
+  testql/detectors/config_detector.py:
+    e: ConfigEndpointDetector
+    ConfigEndpointDetector: detect(0),_analyze_docker_compose(1),_parse_port_mapping(1),_infer_protocol(1)  # Detect endpoints from configuration files.
+  testql/detectors/django_detector.py:
+    e: DjangoDetector
+    DjangoDetector: detect(0),_analyze_urls_py(1)  # Detect Django URL patterns.
+  testql/detectors/express_detector.py:
+    e: ExpressDetector
+    ExpressDetector: detect(0),_analyze_express_file(1),_extract_method_path(1)  # Detect Express.js routes from JavaScript/TypeScript files.
+  testql/detectors/fastapi_detector.py:
+    e: FastAPIDetector
+    FastAPIDetector: detect(0),_analyze_file(1),_detect_router_assignment(2),_extract_router_prefix(1),_detect_app_assignment(1),_extract_include_router(1),_analyze_route_handler(4),_extract_route_info(1),_get_router_prefix(2),_extract_parameters(1),_get_annotation_name(1),_extract_docstring(1)  # Detect FastAPI endpoints using AST analysis.
+  testql/detectors/flask_detector.py:
+    e: FlaskDetector
+    FlaskDetector: detect(0),_analyze_flask_file(1),_detect_blueprint(2),_extract_blueprint_prefix(1),_analyze_flask_route(4),_extract_flask_route_info(2),_extract_route_path(1),_extract_route_methods(1),_apply_blueprint_prefix(3)  # Detect Flask endpoints including Blueprints.
+  testql/detectors/graphql_detector.py:
+    e: GraphQLDetector
+    GraphQLDetector: detect(0),_analyze_schema(1),_analyze_python_graphql(1)  # Detect GraphQL schemas and resolvers.
+  testql/detectors/models.py:
+    e: EndpointInfo,ServiceInfo
+    EndpointInfo: to_testql_api_call(1),_infer_expected_status(0)  # Standardized endpoint information.
+    ServiceInfo:  # Information about a service/application.
+  testql/detectors/openapi_detector.py:
+    e: OpenAPIDetector
+    OpenAPIDetector: detect(0),_parse_spec(1),_extract_base_path(1)  # Detect endpoints from OpenAPI/Swagger specifications.
+  testql/detectors/test_detector.py:
+    e: TestEndpointDetector
+    TestEndpointDetector: detect(0),_analyze_test_file(1),_extract_method_path(2)  # Detect API calls in test files to infer endpoints.
+  testql/detectors/unified.py:
+    e: detect_endpoints,UnifiedEndpointDetector
+    UnifiedEndpointDetector: __init__(1),detect_all(0),_deduplicate_endpoints(1),get_endpoints_by_type(1),get_endpoints_by_framework(1),generate_testql_scenario(1),_rest_block(1),_graphql_block(1),_ws_block(1)  # Unified detector that runs all specialized detectors.
+    detect_endpoints(project_path)
+  testql/detectors/websocket_detector.py:
+    e: WebSocketDetector
+    WebSocketDetector: detect(0),_analyze_content(2)  # Detect WebSocket endpoints.
   testql/doql_parser.py:
     e: parse_doql_file,DoqlParser
     DoqlParser: __init__(0),parse_file(1),parse(1),_parse_app_block(1),_parse_entity_block(2),_parse_workflow_block(2),_parse_interface_block(2),_parse_deploy_block(1)  # Parser for doql LESS files.
@@ -149,29 +332,32 @@ D:
     SystemModel:  # System model from doql.
     ProjectEcho: to_dict(0),to_text(0)  # Combined project echo for LLM consumption.
   testql/endpoint_detector.py:
-    e: detect_endpoints,EndpointInfo,ServiceInfo,BaseEndpointDetector,FastAPIDetector,FlaskDetector,DjangoDetector,ExpressDetector,OpenAPIDetector,TestEndpointDetector,GraphQLDetector,WebSocketDetector,ConfigEndpointDetector,UnifiedEndpointDetector
-    EndpointInfo: to_testql_api_call(1),_infer_expected_status(0)  # Standardized endpoint information.
-    ServiceInfo:  # Information about a service/application.
-    BaseEndpointDetector: __init__(1),detect(0),_find_files(2)  # Base class for endpoint detectors.
-    FastAPIDetector: detect(0),_analyze_file(1),_detect_router_assignment(2),_detect_app_assignment(1),_extract_include_router(1),_analyze_route_handler(4),_extract_route_info(1),_get_router_prefix(2),_extract_parameters(1),_get_annotation_name(1),_extract_docstring(1)  # Detect FastAPI endpoints using AST analysis.
-    FlaskDetector: detect(0),_analyze_flask_file(1),_detect_blueprint(2),_analyze_flask_route(4),_extract_flask_route_info(2)  # Detect Flask endpoints including Blueprints.
-    DjangoDetector: detect(0),_analyze_urls_py(1)  # Detect Django URL patterns.
-    ExpressDetector: detect(0),_analyze_express_file(1)  # Detect Express.js routes from JavaScript/TypeScript files.
-    OpenAPIDetector: detect(0),_parse_spec(1)  # Detect endpoints from OpenAPI/Swagger specifications.
-    TestEndpointDetector: detect(0),_analyze_test_file(1)  # Detect API calls in test files to infer endpoints.
-    GraphQLDetector: detect(0),_analyze_schema(1),_analyze_python_graphql(1)  # Detect GraphQL schemas and resolvers.
-    WebSocketDetector: detect(0)  # Detect WebSocket endpoints.
-    ConfigEndpointDetector: detect(0),_analyze_docker_compose(1),_infer_protocol(1)  # Detect endpoints from configuration files.
-    UnifiedEndpointDetector: __init__(1),detect_all(0),_deduplicate_endpoints(1),get_endpoints_by_type(1),get_endpoints_by_framework(1),generate_testql_scenario(1),_rest_block(1),_graphql_block(1),_ws_block(1)  # Unified detector that runs all specialized detectors.
-    detect_endpoints(project_path)
   testql/generator.py:
-    e: generate_for_project,generate_for_workspace,TestPattern,ProjectProfile,TestGenerator,MultiProjectTestGenerator
+  testql/generators/__init__.py:
+  testql/generators/analyzers.py:
+    e: ProjectAnalyzer
+    ProjectAnalyzer: _detect_web_frontend(1),_detect_python_type(1),_detect_hardware(0),detect_project_type(0),run_full_analysis(0),_scan_directory_structure(0),_collect_patterns_from_tree(3),_analyze_python_tests(0),_extract_test_pattern(4),_detect_pattern_type(2),_extract_commands_and_assertions(1),_analyze_config_files(0),_analyze_api_routes(0),_analyze_api_routes_fallback(0),_analyze_scenarios(0)  # Analyzes project structure to discover testable patterns.
+  testql/generators/base.py:
+    e: TestPattern,ProjectProfile,BaseAnalyzer
     TestPattern:  # Discovered test pattern from source code.
     ProjectProfile:  # Analyzed project profile.
-    TestGenerator: __init__(1),_detect_project_type(0),analyze(0),_scan_directory_structure(0),_analyze_python_tests(0),_extract_test_pattern(4),_analyze_config_files(0),_analyze_api_routes(0),_analyze_api_routes_fallback(0),_analyze_scenarios(0),generate_tests(1),_generate_api_tests(1),_generate_from_python_tests(1),_generate_from_scenarios(1),_generate_api_integration_tests(1),_generate_cli_tests(1),_generate_lib_tests(1),_generate_frontend_tests(1),_generate_hardware_tests(1)  # Base class for test generators.
-    MultiProjectTestGenerator: __init__(1),discover_projects(0),analyze_all(0),generate_all(0),generate_cross_project_tests(1)  # Generator that operates across multiple projects.
+    BaseAnalyzer: __init__(1),_get_exclude_dirs(0),_should_exclude_path(1)  # Base class for project analyzers.
+  testql/generators/convenience.py:
+    e: generate_for_project,generate_for_workspace
     generate_for_project(project_path)
     generate_for_workspace(workspace_path)
+  testql/generators/generators.py:
+    e: APIGeneratorMixin,PythonTestGeneratorMixin,ScenarioGeneratorMixin,SpecializedGeneratorMixin
+    APIGeneratorMixin: _generate_api_tests(1),_build_api_test_header(1),_build_api_test_config(1),_build_rest_section(1),_build_graphql_section(1),_build_websocket_section(1),_build_api_test_endpoints(1),_deduplicate_rest_routes(1),_build_api_test_assertions(0),_build_api_test_summary(1)  # Mixin for generating API-focused test scenarios.
+    PythonTestGeneratorMixin: _generate_from_python_tests(1)  # Mixin for generating tests from existing Python tests.
+    ScenarioGeneratorMixin: _generate_from_scenarios(1)  # Mixin for generating tests from OQL/CQL scenarios.
+    SpecializedGeneratorMixin: _generate_api_integration_tests(1),_generate_cli_tests(1),_generate_lib_tests(1),_generate_frontend_tests(1),_generate_hardware_tests(1)  # Mixin for generating specialized test types.
+  testql/generators/multi.py:
+    e: MultiProjectTestGenerator
+    MultiProjectTestGenerator: __init__(1),discover_projects(0),analyze_all(0),generate_all(0),generate_cross_project_tests(1)  # Generator that operates across multiple projects in a worksp
+  testql/generators/test_generator.py:
+    e: TestGenerator
+    TestGenerator: analyze(0),generate_tests(1)  # Main test generator combining analysis and generation capabi
   testql/interpreter/__init__.py:
     e: main
     main()
@@ -183,17 +369,6 @@ D:
     e: AssertionsMixin
     AssertionsMixin: _cmd_assert_status(2),_cmd_assert_ok(2),_cmd_assert_contains(2),_cmd_assert_json(2)  # Mixin providing ASSERT_STATUS, ASSERT_OK, ASSERT_CONTAINS, A
   testql/interpreter/_converter.py:
-    e: _parse_api_args,_parse_meta_from_args,_parse_target_from_args,_detect_scenario_type,_extract_scenario_name,convert_iql_to_testtoon,convert_file,convert_directory,Row,Section
-    Row:
-    Section:
-    _parse_api_args(args)
-    _parse_meta_from_args(args)
-    _parse_target_from_args(args)
-    _detect_scenario_type(commands)
-    _extract_scenario_name(comments;filename)
-    convert_iql_to_testtoon(source;filename)
-    convert_file(src)
-    convert_directory(dir_path)
   testql/interpreter/_encoder.py:
     e: EncoderMixin
     EncoderMixin: _encoder_url(0),_encoder_call(5),_cmd_encoder_on(2),_cmd_encoder_off(2),_cmd_encoder_scroll(2),_cmd_encoder_click(2),_cmd_encoder_dblclick(2),_cmd_encoder_focus(2),_cmd_encoder_status(2),_cmd_encoder_page_next(2),_cmd_encoder_page_prev(2)  # Mixin providing all ENCODER_* hardware control commands.
@@ -230,6 +405,64 @@ D:
   testql/interpreter/_websockets.py:
     e: WebSocketMixin
     WebSocketMixin: __init_subclass__(1),_get_ws_context(0),_cmd_ws_connect(2),_cmd_ws_send(2),_cmd_ws_receive(2),_cmd_ws_assert_msg(2),_cmd_ws_close(2)  # Mixin for WebSocket testing support.
+  testql/interpreter/converter/__init__.py:
+  testql/interpreter/converter/core.py:
+    e: convert_iql_to_testtoon,convert_file,convert_directory
+    convert_iql_to_testtoon(source;filename)
+    convert_file(src)
+    convert_directory(dir_path)
+  testql/interpreter/converter/dispatcher.py:
+    e: dispatch
+    dispatch(filtered;i)
+  testql/interpreter/converter/handlers/__init__.py:
+  testql/interpreter/converter/handlers/api.py:
+    e: handle_api
+    handle_api(filtered;i)
+  testql/interpreter/converter/handlers/assertions.py:
+    e: collect_assert
+    collect_assert(filtered;j)
+  testql/interpreter/converter/handlers/encoder.py:
+    e: handle_encoder
+    handle_encoder(filtered;i)
+  testql/interpreter/converter/handlers/flow.py:
+    e: handle_flow
+    handle_flow(filtered;i)
+  testql/interpreter/converter/handlers/include.py:
+    e: handle_include
+    handle_include(filtered;i)
+  testql/interpreter/converter/handlers/navigate.py:
+    e: handle_navigate
+    handle_navigate(filtered;i)
+  testql/interpreter/converter/handlers/record.py:
+    e: handle_record_start,handle_record_stop
+    handle_record_start(filtered;i)
+    handle_record_stop(filtered;i)
+  testql/interpreter/converter/handlers/select.py:
+    e: handle_select
+    handle_select(filtered;i)
+  testql/interpreter/converter/handlers/unknown.py:
+    e: handle_unknown
+    handle_unknown(filtered;i)
+  testql/interpreter/converter/handlers/wait.py:
+    e: handle_wait
+    handle_wait(filtered;i)
+  testql/interpreter/converter/models.py:
+    e: Row,Section
+    Row:  # A row of values in a section.
+    Section:  # A section in the converted output.
+  testql/interpreter/converter/parsers.py:
+    e: parse_api_args,parse_meta_from_args,parse_target_from_args,parse_commands,detect_scenario_type,extract_scenario_name
+    parse_api_args(args)
+    parse_meta_from_args(args)
+    parse_target_from_args(args)
+    parse_commands(source)
+    detect_scenario_type(commands)
+    extract_scenario_name(comments;filename)
+  testql/interpreter/converter/renderer.py:
+    e: build_config_section,render_sections,build_header
+    build_config_section(commands)
+    render_sections(sections)
+    build_header(scenario_name;scenario_type)
   testql/interpreter/interpreter.py:
     e: IqlInterpreter
     IqlInterpreter: __init__(6),parse(2),_is_testtoon(2),execute(1),_dispatch(3),_cmd_set(2),_cmd_get(2)  # IQL interpreter — runs .testql.toon.yaml / .iql / .tql scrip
@@ -294,6 +527,93 @@ D:
     e: parse_toon_file,ToonParser
     ToonParser: __init__(0),parse_file(1),parse(1),_parse_api_block(1),_parse_assert_block(1),_parse_log_block(1)  # Parser for toon test files.
     parse_toon_file(path)
+  tests/test_api_handler.py:
+    e: TestCollectAssert,TestHandleApi
+    TestCollectAssert: test_no_assert(0),test_assert_status(0),test_assert_status_invalid_defaults_200(0),test_assert_ok(0),test_assert_json_three_parts(0),test_assert_contains_one_part(0),test_multiple_asserts(0),test_stops_at_non_assert(0),test_empty(0)
+    TestHandleApi: test_simple_get(0),test_post_with_assert_status(0),test_with_assert_json(0),test_multiple_api_calls(0),test_stops_at_non_api(0),test_columns_without_assert(0)
+  tests/test_cli.py:
+    e: TestCliHelp,TestSuiteCommand
+    TestCliHelp: test_help(0),test_version(0),test_subcommands_listed(0),test_run_help(0),test_suite_help(0),test_list_help(0),test_generate_help(0),test_endpoints_help(0),test_init_help(0),test_echo_help(0)
+    TestSuiteCommand: test_suite_no_files_exits_1(1),test_list_no_files(1),test_list_with_toon_file(1),test_list_format_simple(1),test_list_format_json(1)
+  tests/test_converter.py:
+    e: TestRow,TestSection,TestConvertIqlToTesttoon,TestConvertFile,TestConvertDirectory
+    TestRow: test_row_creation(0),test_row_empty(0),test_row_multiple_fields(0)
+    TestSection: test_section_creation(0),test_section_with_rows(0),test_section_with_comment(0)
+    TestConvertIqlToTesttoon: test_navigate_command(0),test_scenario_name_from_filename(0),test_header_present(0),test_click_converts_to_flow(0),test_assert_text_converts(0),test_empty_source(0),test_get_request(0),test_default_filename(0),test_returns_string(0),test_multiline_script(0)
+    TestConvertFile: test_creates_output_file(1),test_output_filename_pattern(1),test_iql_extension(1),test_output_is_in_same_dir(1),test_output_content_has_scenario(1),test_returns_path(1)
+    TestConvertDirectory: test_empty_directory(1),test_converts_tql_files(1),test_converts_iql_files(1),test_converts_multiple_files(1),test_returns_list_of_paths(1),test_recursive_subdirectory(1),test_ignores_non_tql_files(1)
+  tests/test_converter_handlers.py:
+    e: TestParseApiArgs,TestParseTargetFromArgs,TestParseMetaFromArgs,TestParseCommands,TestDetectScenarioType,TestExtractScenarioName,TestHandleWait,TestHandleNavigate,TestHandleSelect,TestHandleEncoder,TestHandleFlow,TestHandleRecord,TestHandleInclude,TestHandleUnknown,TestDispatch
+    TestParseApiArgs: test_method_and_path(0),test_quoted_path(0),test_no_args_defaults(0),test_strips_json_body(0),test_uppercases_method(0)
+    TestParseTargetFromArgs: test_double_quoted(0),test_single_quoted(0),test_unquoted_first_token(0),test_empty(0)
+    TestParseMetaFromArgs: test_json_dict(0),test_no_meta(0),test_raw_dict_fallback(0)
+    TestParseCommands: test_navigate(0),test_comment_collected(0),test_blank_line(0),test_empty_source(0),test_uppercase_cmd(0)
+    TestDetectScenarioType: test_api_only(0),test_gui_navigate(0),test_encoder(0),test_e2e(0),test_interaction_record(0)
+    TestExtractScenarioName: test_from_comment(0),test_fallback_filename(0),test_skip_usage_comments(0)
+    TestHandleWait: test_single_wait(0),test_multiple_waits(0),test_invalid_ms_defaults_100(0),test_stops_at_non_wait(0)
+    TestHandleNavigate: test_single_navigate(0),test_navigate_with_wait(0),test_multiple_navigates(0),test_stops_at_non_navigate(0)
+    TestHandleSelect: test_select_option(0),test_plain_select(0),test_multiple_selects(0),test_stops_at_non_select(0)
+    TestHandleEncoder: test_encoder_focus(0),test_encoder_scroll(0),test_encoder_scroll_invalid_value(0),test_encoder_with_wait(0),test_multiple_encoder_commands(0)
+    TestHandleFlow: test_app_start(0),test_session_start(0),test_multiple_flow_commands(0),test_stops_at_non_flow(0),test_flow_commands_frozenset(0)
+    TestHandleRecord: test_record_start(0),test_record_stop(0)
+    TestHandleInclude: test_include(0)
+    TestHandleUnknown: test_unknown_command(0)
+    TestDispatch: test_dispatches_navigate(0),test_dispatches_wait(0),test_dispatches_select(0),test_dispatches_encoder(0),test_dispatches_flow(0),test_dispatches_record_start(0),test_dispatches_record_stop(0),test_dispatches_include(0),test_dispatches_unknown(0)
+  tests/test_detectors.py:
+    e: _write,TestEndpointInfoModel,TestFastAPIDetector,TestFlaskDetector,TestUnifiedDetector,TestOpenAPIDetector,TestExpressDetector
+    TestEndpointInfoModel: test_to_testql_api_call(1),test_defaults(1)
+    TestFastAPIDetector: test_detects_route_decorator(1),test_empty_project(1),test_non_route_decorators_ignored(1)
+    TestFlaskDetector: test_detects_route(1),test_empty_project(1)
+    TestUnifiedDetector: test_returns_list(1),test_detects_fastapi(1),test_detectors_used_populated(1)
+    TestOpenAPIDetector: test_empty_project(1),test_detects_yaml_spec(1),test_detects_json_spec(1),test_framework_is_openapi(1),test_base_path_from_servers(1),test_base_path_swagger2(1),test_x_extension_methods_skipped(1),test_invalid_yaml_skipped(1),test_spec_without_paths_skipped(1)
+    TestExpressDetector: test_empty_project(1),test_detects_app_get(1),test_detects_router_post(1),test_framework_is_express(1),test_typescript_file_detected(1)
+    _write(tmp_path;name;content)
+  tests/test_doql_parser_sumd_gen.py:
+    e: TestDoqlParser,TestHeaderSection,TestMetadataSection,TestArchitectureSection,TestGenerateSumd,TestApiContractSection,TestWorkflowsTableSection,TestConfigurationSection,TestLlmSuggestionsSection,TestSaveSumd
+    TestDoqlParser: test_init(0),test_parse_empty(0),test_parse_app_block(0),test_parse_entities(0),test_entity_fields(0),test_entity_fields_contain_domain(0),test_parse_workflow(0),test_parse_interface(0),test_parse_resets_between_calls(0),test_parse_file(1),test_no_app_block(0)
+    TestHeaderSection: test_contains_project_name(0),test_returns_list(0)
+    TestMetadataSection: test_contains_name(0),test_contains_version(0)
+    TestArchitectureSection: test_contains_code_block(0),test_mentions_doql(0)
+    TestGenerateSumd: _make_echo(0),test_returns_string(1),test_contains_project_name(1),test_contains_version(1),test_contains_metadata_section(1),test_contains_architecture_section(1),test_uses_path_name_as_fallback(1),test_interfaces_included(1),test_entities_not_in_base_output(1),test_workflows_included(1)
+    TestApiContractSection: test_no_endpoints_returns_empty(0),test_with_endpoints(0),test_endpoint_with_description(0)
+    TestWorkflowsTableSection: test_no_workflows_returns_empty(0),test_with_workflows(0),test_long_command_truncated(0)
+    TestConfigurationSection: test_basic(0),test_with_base_url(0)
+    TestLlmSuggestionsSection: test_has_testql_commands(0),test_with_test_workflow(0),test_with_install_workflow(0)
+    TestSaveSumd: test_saves_to_default_path(1),test_saves_to_custom_path(1)
+  tests/test_echo.py:
+    e: write_toon,TestFindDoqlFile,TestFindToonPath,TestGenerateContext,TestExtractEndpoint,TestExtractAssert,TestParseToonScenarios,TestFmtInterfaces,TestFmtWorkflows,TestFmtContracts,TestFmtEntities,TestFormatTextOutput
+    TestFindDoqlFile: test_finds_less_file(1),test_prefers_less_over_css(1),test_returns_none_when_missing(1)
+    TestFindToonPath: test_returns_testql_scenarios_if_exists(1),test_falls_back_to_path(1)
+    TestGenerateContext: test_returns_dict_with_project(1),test_no_doql_when_excluded(1),test_no_toon_when_excluded(1),test_empty_contracts_when_no_toon_files(1)
+    TestExtractEndpoint: test_dict_value(0),test_string_value(0)
+    TestExtractAssert: test_basic(0)
+    TestParseToonScenarios: test_empty_dir(1),test_parses_single_file(1),test_multiple_http_methods(1),test_skips_empty_files(1),test_assert_blocks_parsed(1)
+    TestFmtInterfaces: test_empty_when_no_system_model(0),test_shows_interfaces(0),test_empty_interfaces_returns_empty(0)
+    TestFmtWorkflows: test_empty_when_no_workflows(0),test_shows_workflow_name(0)
+    TestFmtContracts: test_empty_when_no_contracts(0),test_shows_contract_name(0),test_truncates_long_endpoint_list(0)
+    TestFmtEntities: test_empty_when_no_entities(0),test_shows_entity_count(0)
+    TestFormatTextOutput: test_returns_string(1),test_contains_project_name(1)
+    write_toon(tmp_path;name;content)
+  tests/test_echo_doql_parser.py:
+    e: TestParseKvBlock,TestParseAppBlock,TestParseEntities,TestParseInterfaces,TestParseWorkflows,TestParseDeploy,TestParseEnvironment,TestParseIntegrations,TestParseDoqlLess
+    TestParseKvBlock: test_simple(0),test_empty(0),test_no_colon_line_ignored(0),test_strips_trailing_semicolon(0)
+    TestParseAppBlock: test_parses_name_and_version(0),test_no_app_block_returns_empty(0)
+    TestParseEntities: test_count(0),test_entity_name(0),test_annotations_extracted(0),test_fields_extracted(0),test_no_entities_returns_empty(0),test_entity_without_annotations(0)
+    TestParseInterfaces: test_count(0),test_type(0),test_framework(0),test_no_interfaces(0)
+    TestParseWorkflows: test_count(0),test_name(0),test_trigger(0),test_steps(0),test_annotations(0),test_no_workflows(0)
+    TestParseDeploy: test_platform(0),test_no_deploy(0)
+    TestParseEnvironment: test_name(0),test_host(0),test_no_environment(0)
+    TestParseIntegrations: test_count(0),test_name(0),test_types_deduped(0),test_no_integrations(0)
+    TestParseDoqlLess: test_returns_all_keys(1),test_app_name_in_result(1),test_entities_count(1)
+  tests/test_echo_schemas_helpers.py:
+    e: TestAPIContract,TestEntity,TestWorkflow,TestInterface,TestSystemModel,TestProjectEcho,TestEchoHelpers
+    TestAPIContract: test_defaults(0)
+    TestEntity: test_create(0),test_with_all_fields(0)
+    TestWorkflow: test_defaults(0),test_with_values(0)
+    TestInterface: test_create(0),test_no_framework(0)
+    TestSystemModel: test_defaults(0)
+    TestProjectEcho: _make_echo(0),test_to_dict_has_keys(0),test_to_dict_api_contract(0),test_to_dict_interfaces(0),test_to_dict_entities(0),test_to_dict_workflows(0),test_to_dict_is_json_serializable(0),test_to_text_contains_project_name(0),test_to_text_contains_interface(0),test_to_text_contains_workflow(0),test_to_text_contains_endpoints(0),test_to_text_docker_deploy(0),test_to_text_no_endpoints(0),test_to_text_empty_interfaces(0),test_to_dict_deploy_info(0)
+    TestEchoHelpers: test_collect_toon_data_missing_path(2),test_collect_toon_data_single_file(2),test_collect_toon_data_directory(2),test_collect_doql_data_missing(2),test_render_echo_json(0),test_render_echo_text(0)
   tests/test_encoder_routes.py:
     e: test_normalize_legacy_test_path,test_normalize_legacy_view_path,test_normalize_testql_prefixed_path,test_normalize_passthrough_diagnostics_path,test_normalize_testtoon_path,test_resolve_new_format
     test_normalize_legacy_test_path()
@@ -302,9 +622,84 @@ D:
     test_normalize_passthrough_diagnostics_path()
     test_normalize_testtoon_path()
     test_resolve_new_format()
+  tests/test_generate_cmd.py:
+    e: TestIsWorkspace,TestGenerateCommand
+    TestIsWorkspace: test_has_pyproject_returns_false(1),test_has_setup_py_returns_false(1),test_workspace_dir_without_init(1),test_workspace_dir_with_init_returns_false(1),test_no_workspace_dirs_returns_false(1),test_multiple_workspace_dirs(1)
+    TestGenerateCommand: test_analyze_only_single_project(1),test_analyze_only_workspace(1),test_generate_single_project(1),test_analyze_command(1)
+  tests/test_generators.py:
+    e: TestBaseAnalyzer,TestProjectAnalyzerDetectType,TestTestPattern
+    TestBaseAnalyzer: test_init(1),test_get_exclude_dirs(1),test_should_exclude_path_venv(1),test_should_exclude_path_src(1)
+    TestProjectAnalyzerDetectType: test_detect_python_api_fastapi(1),test_detect_python_api_flask(1),test_detect_python_cli(1),test_detect_python_lib(1),test_detect_hardware(1),test_detect_mixed_default(1),test_detect_web_frontend(1),test_detect_web_frontend_missing_e2e_markers(1)
+    TestTestPattern: test_defaults(0),test_metadata(0)
   tests/test_interpreter.py:
     e: TestParseIql,TestParseTestTOON,TestTestTOONExpansion,TestIqlInterpreter
     TestParseIql: test_empty(0),test_comments_ignored(0),test_basic_commands(0)
     TestParseTestTOON: test_empty(0),test_meta(0),test_api_section(0),test_encoder_section(0),test_validation_pass(0),test_validation_fail(0)
     TestTestTOONExpansion: test_api_expansion(0),test_encoder_expansion(0),test_config_expansion(0),test_navigate_expansion(0)
     TestIqlInterpreter: test_dry_run_api(0),test_set_get(0),test_testtoon_dry_run(0)
+  tests/test_misc_cmds.py:
+    e: TestInitCommand,TestCreateCommand
+    TestInitCommand: test_creates_dirs_and_config(1),test_config_contains_project_name(1),test_api_type_creates_api_template(1),test_gui_type_creates_gui_template(1),test_encoder_type_creates_encoder_template(1),test_all_type_creates_all_templates(1),test_existing_config_not_overwritten(1),test_default_path_is_current_dir(1)
+    TestCreateCommand: test_creates_test_file(1),test_file_contains_name(1),test_fails_if_exists_without_force(1),test_force_overwrites_existing(1),test_api_type(1),test_with_module(1),test_creates_output_dir_if_missing(1)
+  tests/test_openapi_generator.py:
+    e: _make_ep,TestOpenAPISpec,TestOpenAPIGenerator,TestContractTestGenerator,TestConvenienceFunctions
+    TestOpenAPISpec: test_defaults(0),test_to_dict_has_keys(0),test_to_json(0),test_to_yaml(0)
+    TestOpenAPIGenerator: test_init(1),test_generate_empty_project(1),test_generate_title(1),test_generate_default_title_from_path(1),test_generate_version(1),test_generate_servers_present(1),test_generate_components_schemas(1),test_normalize_path_prepends_slash(1),test_normalize_path_preserves_existing_slash(1),test_build_operation_get(1),test_build_operation_post(1),test_build_operation_delete(1),test_build_operation_with_summary(1),test_build_operation_with_description(1),test_build_operation_with_handler_name(1),test_extract_parameters_path_param(1),test_extract_parameters_id_is_string(1),test_extract_parameters_with_query_param(1),test_infer_tags_from_api_path(1),test_infer_tags_from_direct_resource(1),test_build_request_body_create_handler(1),test_build_request_body_update_handler(1),test_save_yaml(1),test_save_json(1),test_save_default_path(1),test_generate_with_fastapi_project(1)
+    TestContractTestGenerator: _make_spec(0),test_init_with_dict(0),test_init_with_openapi_spec(0),test_init_with_yaml_file(1),test_init_with_json_file(1),test_generate_contract_tests(1),test_contract_tests_content(1),test_get_expected_status_get(1),test_get_expected_status_post(1),test_get_expected_status_fallback(1),test_validate_response_missing_endpoint(0),test_validate_response_missing_method(0),test_validate_response_valid(0),test_validate_response_wrong_status(0),test_validate_response_bad_content_type(0)
+    TestConvenienceFunctions: test_generate_openapi_spec(1),test_generate_openapi_spec_json(1),test_generate_contract_tests_from_spec(1)
+    _make_ep(path;method;framework;handler_name;summary;description;parameters;tags;deprecated;endpoint_type;tmp_path)
+  tests/test_report_generator.py:
+    e: _make_report,TestTestResult,TestTestSuiteReport,TestReportDataParser,TestHTMLReportGenerator
+    TestTestResult: test_create(0),test_create_with_failures(0)
+    TestTestSuiteReport: test_create(0),test_zero_report(0)
+    TestReportDataParser: test_parse_testql_results_returns_report(1),test_to_json_is_valid_json(0),test_to_json_includes_tests(0),test_to_json_empty_suite(0)
+    TestHTMLReportGenerator: test_generate_creates_file(1),test_html_contains_suite_name(1),test_html_contains_stats(1),test_html_contains_test_names(1),test_success_rate_zero_total(1),test_html_is_valid_start(1),test_custom_template_dir(1),test_render_html_returns_string(0),test_render_html_failed_test_name(0),test_render_html_failure_message(0)
+    _make_report()
+  tests/test_reporters.py:
+    e: make_result,make_step,TestConsoleReporter,TestJsonReporter,TestJunitReporter,TestVariableStore,TestInterpreterOutput,TestScriptResultHelpers
+    TestConsoleReporter: test_returns_string(0),test_contains_source(0),test_passed_step_shows_checkmark(0),test_failed_step_shows_cross(0),test_error_step_shows_explosion(0),test_skipped_step_shows_icon(0),test_step_message_shown(0),test_errors_section_shown(0),test_summary_line_counts(0),test_duration_in_output(0)
+    TestJsonReporter: test_returns_valid_json(0),test_has_required_fields(0),test_source_matches(0),test_step_fields(0),test_counts(0),test_errors_included(0),test_warnings_included(0)
+    TestJunitReporter: test_returns_string(0),test_valid_xml(0),test_testsuite_element(0),test_testcase_per_step(0),test_failure_element_for_failed_step(0)
+    TestVariableStore: test_set_get(0),test_default_if_missing(0),test_has(0),test_all(0),test_clear(0),test_interpolate_curly(0),test_interpolate_dollar(0),test_interpolate_missing_left_unchanged(0),test_interpolate_no_vars(0),test_initial_values(0)
+    TestInterpreterOutput: test_emit_stores_line(0),test_ok_prefix(0),test_fail_prefix(0),test_warn_prefix(0),test_info_prefix(0),test_error_prefix(0),test_step_with_icon(0),test_not_quiet_prints(1)
+    TestScriptResultHelpers: test_passed_count(0),test_failed_count(0),test_summary_ok(0),test_summary_fail(0)
+    make_result(source;ok;steps;errors;warnings;duration_ms)
+    make_step(name;status;message;duration_ms)
+  tests/test_runner.py:
+    e: TestDslCommand,TestExecutionResult,TestParseLine,TestParseScript,TestDslCliExecutor
+    TestDslCommand: test_create_minimal(0),test_create_full(0)
+    TestExecutionResult: test_success(0),test_failure(0)
+    TestParseLine: test_empty_returns_none(0),test_comment_returns_none(0),test_blank_line_returns_none(0),test_api_get(0),test_api_post_with_body(0),test_api_with_expected(0),test_api_with_comment(0),test_wait_command(0),test_wait_with_comment(0),test_general_command_with_quotes(0),test_simple_command(0),test_api_patch(0),test_api_delete(0)
+    TestParseScript: test_empty_script(0),test_comments_and_blanks_skipped(0),test_multiline_script(0),test_mixed_content(0)
+    TestDslCliExecutor: test_init_defaults(0),test_init_custom_url(0),test_browser_command_skipped(0),test_semantic_command_logged(0),test_browser_command_verbose(1),test_semantic_command_verbose(1),test_execute_unknown_command_returns_result(0),test_execute_returns_duration(0),test_wait_command_via_execute(0)
+  tests/test_suite_cmd_helpers.py:
+    e: _collect_test_files,TestFindFiles,TestCollectFromSuite,TestCollectByPattern,TestCollectRecursive,TestCollectTestFiles
+    TestFindFiles: test_returns_empty_for_missing_dir(1),test_finds_matching_files(1),test_finds_files_in_subdirs(1),test_path_with_separator(1),test_path_with_missing_subdir(1)
+    TestCollectFromSuite: test_named_suite(1),test_string_pattern_in_suite(1),test_missing_suite_name(1),test_uses_parent_when_file(1)
+    TestCollectByPattern: test_finds_matching(1),test_no_match(1)
+    TestCollectRecursive: test_finds_testql_files(1),test_empty_project(1)
+    TestCollectTestFiles: test_single_file_target(1),test_suite_takes_priority(1),test_pattern_used_when_no_suite(1),test_deduplication(1),test_nonexistent_files_excluded(1)
+    _collect_test_files(target_path;suite_name;pattern;config)
+  tests/test_suite_execution.py:
+    e: FakeResult,TestRunSingleFile,TestRunSuiteFiles
+    FakeResult: __init__(5)
+    TestRunSingleFile: test_ok_result(0),test_fail_result(0),test_exception_returns_error_dict(0)
+    TestRunSuiteFiles: test_empty_files(0),test_all_pass(0),test_one_fail_continues(0),test_fail_fast_stops(0),test_uses_config_default_url(0)
+  tests/test_suite_listing.py:
+    e: TestParseTesttoonHeader,TestParseYamlMetaBlock,TestParseMeta,TestFilterTests,TestRenderTestList
+    TestParseTesttoonHeader: test_returns_none_for_no_header(0),test_parses_scenario_header(0),test_parses_type_without_scenario(0),test_returns_none_for_plain_content(0),test_tags_default_empty(0)
+    TestParseYamlMetaBlock: test_returns_none_without_meta(0),test_parses_meta_block(0),test_meta_with_tags(0),test_empty_meta_block(0)
+    TestParseMeta: test_default_meta_from_stem(1),test_uses_header_when_present(1),test_uses_yaml_meta_when_no_header(1),test_returns_default_on_missing_file(1)
+    TestFilterTests: _make_files(1),test_filter_all(1),test_filter_by_type(1),test_filter_by_tag(1),test_empty_input(1),test_result_has_required_keys(1)
+    TestRenderTestList: test_render_json(1),test_render_simple(1),test_render_table(1),test_render_table_empty_tags(1)
+  tests/test_sumd_parser.py:
+    e: TestSumdMetadata,TestSumdParser
+    TestSumdMetadata: test_defaults(0)
+    TestSumdParser: test_parse_returns_document(0),test_parse_metadata_name(0),test_parse_metadata_version(0),test_parse_metadata_ecosystem(0),test_parse_metadata_ai_model(0),test_parse_metadata_fallback_header(0),test_parse_architecture(0),test_parse_empty_architecture(0),test_parse_interface_rest(0),test_parse_workflow(0),test_extract_section(0),test_extract_section_missing(0),test_generate_testql_scenarios(0),test_parse_file(1),test_parse_toon_testql_block_with_api_entries(0),test_parse_toon_code_block_scenario(0),test_generate_testql_scenarios_with_testql_scenarios(0),test_generate_testql_scenarios_empty_interfaces_and_scenarios(0),test_parse_toon_api_block_with_comment_and_blank_lines(0),test_parse_toon_scenario_with_type_meta_comment(0)
+  tests/test_test_generator.py:
+    e: TestTestGeneratorAnalyze,TestTestGeneratorGenerateTests
+    TestTestGeneratorAnalyze: test_analyze_returns_profile(1),test_analyze_empty_project_mixed_type(1),test_analyze_fastapi_project(1),test_analyze_cli_project(1),test_analyze_sets_project_path(1)
+    TestTestGeneratorGenerateTests: test_generate_empty_project_returns_empty_list(1),test_generate_creates_output_dir(1),test_generate_default_output_dir(1),test_generate_auto_analyzes_if_not_analyzed(1),test_generate_returns_list(1),test_generate_with_python_tests(1),test_generate_accepts_string_output_dir(1),test_generate_with_discovered_routes(1)
+  tests/test_toon_parser.py:
+    e: TestToonParser
+    TestToonParser: test_init(0),test_parse_empty(0),test_parse_api_get(0),test_parse_api_post(0),test_parse_api_no_status_defaults_200(0),test_parse_assert_block(0),test_parse_log_block_sets_base_url(0),test_parse_multiple_api_blocks(0),test_parse_resets_contract_between_calls(0),test_parse_file(1)

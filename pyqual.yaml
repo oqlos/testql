@@ -13,7 +13,7 @@ pipeline:
   metrics:
     cc_max: 10           # cyclomatic complexity per function
     vallm_pass_min: 60   # actual: 64.6%
-    coverage_min: 54     # baseline — increase as tests are added (currently 54%)
+    coverage_min: 66     # baseline — increase as tests are added (currently 64%)
 
   # Pipeline stages — use 'tool:' for built-in presets or 'run:' for custom commands
   # See all presets: pyqual tools

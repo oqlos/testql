@@ -6,16 +6,19 @@ SUMD - Structured Unified Markdown Descriptor for AI-aware project refactorizati
 
 - [Metadata](#metadata)
 - [Architecture](#architecture)
+- [Workflows](#workflows)
 - [Quality Pipeline (`pyqual.yaml`)](#quality-pipeline-pyqualyaml)
 - [Dependencies](#dependencies)
 - [Source Map](#source-map)
+- [Call Graph](#call-graph)
+- [Test Contracts](#test-contracts)
 - [Refactoring Analysis](#refactoring-analysis)
 - [Intent](#intent)
 
 ## Metadata
 
 - **name**: `testql`
-- **version**: `0.6.7`
+- **version**: `0.6.10`
 - **python_requires**: `>=3.10`
 - **license**: Apache-2.0
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -36,7 +39,7 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 0.4.2;
+  version: 0.6.9;
 }
 
 interface[type="cli"] {
@@ -187,10 +190,8 @@ environment[name="local"] {
 - `testql.cli`
 - `testql.doql_parser`
 - `testql.echo_schemas`
-- `testql.endpoint_detector` (re-export, use `testql.detectors`)
-- `testql.generator` (re-export, use `testql.generators`)
-- `testql.detectors` - Endpoint detection package
-- `testql.generators` - Test generation package
+- `testql.endpoint_detector`
+- `testql.generator`
 - `testql.interpreter`
 - `testql.openapi_generator`
 - `testql.report_generator`
@@ -198,6 +199,198 @@ environment[name="local"] {
 - `testql.sumd_generator`
 - `testql.sumd_parser`
 - `testql.toon_parser`
+
+## Workflows
+
+### Taskfile Tasks (`Taskfile.yml`)
+
+```yaml markpact:taskfile path=Taskfile.yml
+# Taskfile.yml — testql (Test Query Language) project runner
+# https://taskfile.dev
+
+version: "3"
+
+vars:
+  APP_NAME: testql
+  DOQL_OUTPUT: app.doql.less
+  DOQL_CMD: "{{if eq OS \"windows\"}}doql.exe{{else}}doql{{end}}"
+
+env:
+  PYTHONPATH: "{{.PWD}}"
+
+tasks:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Development
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  install:
+    desc: Install Python dependencies (editable)
+    cmds:
+      - pip install -e .[dev]
+
+  deps:update:
+    desc: Upgrade all outdated Python packages in the active / project venv
+    cmds:
+      - |
+        PIP="pip"
+        [ -f "{{.PWD}}/.venv/bin/pip" ] && PIP="{{.PWD}}/.venv/bin/pip"
+        $PIP install --upgrade pip
+        OUTDATED=$($PIP list --outdated --format=columns 2>/dev/null | tail -n +3 | awk '{print $1}')
+        if [ -z "$OUTDATED" ]; then
+          echo "✅ All packages are up to date."
+        else
+          echo "📦 Upgrading: $OUTDATED"
+          echo "$OUTDATED" | xargs $PIP install --upgrade
+          echo "✅ Done."
+        fi
+
+  quality:
+    desc: Run pyqual quality pipeline (test + lint + format check)
+    cmds:
+      - pyqual run
+
+  quality:fix:
+    desc: Run pyqual with auto-fix (format + lint fix)
+    cmds:
+      - pyqual run --fix
+
+  quality:report:
+    desc: Generate pyqual quality report
+    cmds:
+      - pyqual report
+
+  test:
+    desc: Run pytest suite
+    cmds:
+      - pytest -q
+
+  lint:
+    desc: Run ruff lint check
+    cmds:
+      - ruff check .
+
+  fmt:
+    desc: Auto-format with ruff
+    cmds:
+      - ruff format .
+
+  build:
+    desc: Build wheel + sdist
+    cmds:
+      - python -m build
+
+  clean:
+    desc: Remove build artefacts
+    cmds:
+      - rm -rf build/ dist/ *.egg-info
+
+  all:
+    desc: Run install, quality check, test
+    cmds:
+      - task: install
+      - task: quality
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # IQL / Test Execution
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  iql:run:
+    desc: Run IQL scenario file
+    cmds:
+      - testql run {{.CLI_ARGS}}
+
+  iql:shell:
+    desc: Start IQL interactive shell
+    cmds:
+      - testql shell
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Doql Integration
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  doql:adopt:
+    desc: Reverse-engineer testql project structure
+    cmds:
+      - |
+        if ! command -v {{.DOQL_CMD}} >/dev/null 2>&1; then
+          echo "⚠️  doql not installed. Install: pip install doql"
+          exit 1
+        fi
+      - "{{.DOQL_CMD}} adopt {{.PWD}} --output app.doql.css --force"
+      - "{{.DOQL_CMD}} export --format less -o {{.DOQL_OUTPUT}}"
+      - echo "✅ Project structure captured in {{.DOQL_OUTPUT}}"
+
+  doql:validate:
+    desc: Validate app.doql.less syntax
+    cmds:
+      - |
+        if [ ! -f "{{.DOQL_OUTPUT}}" ]; then
+          echo "❌ {{.DOQL_OUTPUT}} not found. Run: task doql:adopt"
+          exit 1
+        fi
+      - "{{.DOQL_CMD}} validate"
+
+  doql:doctor:
+    desc: Run doql health checks
+    cmds:
+      - "{{.DOQL_CMD}} doctor"
+
+  doql:build:
+    desc: Generate code from app.doql.less
+    cmds:
+      - |
+        if [ ! -f "{{.DOQL_OUTPUT}}" ]; then
+          echo "❌ {{.DOQL_OUTPUT}} not found. Run: task doql:adopt"
+          exit 1
+        fi
+      - |
+        # Regenerate LESS from CSS if CSS exists
+        if [ -f "app.doql.css" ]; then
+          {{.DOQL_CMD}} export --format less -o {{.DOQL_OUTPUT}}
+        fi
+      - "{{.DOQL_CMD}} build app.doql.css --out build/"
+
+  analyze:
+    desc: Full doql analysis (adopt + validate + doctor)
+    cmds:
+      - task: doql:adopt
+      - task: doql:validate
+      - task: doql:doctor
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Docker & Deployment
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  docker:build:
+    desc: Build Docker image via docker-compose
+    cmds:
+      - docker-compose build
+
+  docker:up:
+    desc: Start Docker containers
+    cmds:
+      - docker-compose up -d
+
+  docker:down:
+    desc: Stop Docker containers
+    cmds:
+      - docker-compose down
+
+  publish:
+    desc: Build and publish package
+    cmds:
+      - task: build
+      - twine upload dist/*
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Utility
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  help:
+    desc: Show available tasks
+    cmds:
+      - task --list
+```
 
 ## Quality Pipeline (`pyqual.yaml`)
 
@@ -217,7 +410,7 @@ pipeline:
   metrics:
     cc_max: 10           # cyclomatic complexity per function
     vallm_pass_min: 60   # actual: 64.6%
-    # coverage_min: 80  # disabled - pytest_cov reports null
+    coverage_min: 66     # baseline — increase as tests are added (currently 64%)
 
   # Pipeline stages — use 'tool:' for built-in presets or 'run:' for custom commands
   # See all presets: pyqual tools
@@ -295,6 +488,7 @@ websockets>=13.0
 ```text markpact:deps python scope=dev
 pytest
 pytest-asyncio
+pytest-cov
 fastapi
 goal>=2.1.0
 costs>=0.1.20
@@ -311,17 +505,17 @@ pfix>=0.1.60
 class StepStatus:
 class StepResult:
 class ScriptResult:
-    def passed()  # CC=3
-    def failed()  # CC=3
-    def summary()  # CC=2
+    def passed()  # CC=1
+    def failed()  # CC=1
+    def summary()  # CC=1
 class VariableStore:  # Simple key-value store with interpolation support.
-    def __init__(initial)  # CC=1
+    def __init__(initial)  # CC=2
     def set(key, value)  # CC=1
     def get(key, default)  # CC=1
     def has(key)  # CC=1
     def all()  # CC=1
     def clear()  # CC=1
-    def interpolate(text)  # CC=1
+    def interpolate(text)  # CC=2
 class InterpreterOutput:  # Collects interpreter output lines for display or testing.
     def __init__(quiet)  # CC=1
     def emit(msg)  # CC=2
@@ -336,8 +530,8 @@ class BaseInterpreter:  # Abstract base for language interpreters.
     def parse(source, filename)  # CC=1
     def execute(parsed)  # CC=1
     def run(source, filename)  # CC=1
-    def run_file(path)  # CC=1
-    def strip_comments(lines)  # CC=3
+    def run_file(path)  # CC=2
+    def strip_comments(lines)  # CC=2
 class EventBridge:  # Optional WebSocket bridge to DSL Event Server (port 8104).
     def __init__(url)  # CC=1
     def connect()  # CC=2
@@ -356,12 +550,12 @@ class OpenAPISpec:  # OpenAPI specification container.
     def to_json(indent)  # CC=1
     def to_yaml()  # CC=1
 class OpenAPIGenerator:  # Generate OpenAPI specs from detected endpoints.
-    def __init__(project_path)  # CC=3
+    def __init__(project_path)  # CC=1
     def generate(title, version)  # CC=5
     def _normalize_path(path)  # CC=2
     def _build_operation(ep)  # CC=7
-    def _infer_tags(ep)  # CC=7
-    def _extract_parameters(ep)  # CC=11 ⚠
+    def _infer_tags(ep)  # CC=6
+    def _extract_parameters(ep)  # CC=10 ⚠
     def _build_request_body(ep)  # CC=6
     def _build_responses(ep)  # CC=3
     def save(output_path, format)  # CC=3
@@ -369,34 +563,34 @@ class ContractTestGenerator:  # Generate contract tests from OpenAPI specs.
     def __init__(spec)  # CC=3
     def _load_spec(path)  # CC=2
     def generate_contract_tests(output_file)  # CC=6
-    def _get_expected_status(method, operation)  # CC=4
-    def validate_response(endpoint, method, response)  # CC=11 ⚠
+    def _get_expected_status(method, operation)  # CC=3
+    def validate_response(endpoint, method, response)  # CC=10 ⚠
 ```
 
 ### `testql.runner` (`testql/runner.py`)
 
 ```python
-def parse_line(line)  # CC=9, fan=8
-def parse_script(content)  # CC=3, fan=2
-def main()  # CC=10, fan=14 ⚠
+def parse_line(line)  # CC=7, fan=8
+def parse_script(content)  # CC=1, fan=2
+def main()  # CC=7, fan=14
 class DslCommand:
 class ExecutionResult:
 class DslCliExecutor:
     def __init__(base_url, verbose)  # CC=1
     def execute(cmd)  # CC=2
     def _dispatch(cmd)  # CC=6
-    def cmd_api(cmd)  # CC=7
+    def cmd_api(cmd)  # CC=3
     def cmd_wait(cmd)  # CC=1
-    def cmd_log(cmd)  # CC=2
-    def cmd_print(cmd)  # CC=2
-    def cmd_store(cmd)  # CC=2
-    def cmd_env(cmd)  # CC=2
+    def cmd_log(cmd)  # CC=1
+    def cmd_print(cmd)  # CC=1
+    def cmd_store(cmd)  # CC=1
+    def cmd_env(cmd)  # CC=1
     def cmd_assert_status(cmd)  # CC=2
-    def cmd_assert_json(cmd)  # CC=12 ⚠
-    def cmd_set_header(cmd)  # CC=2
+    def cmd_assert_json(cmd)  # CC=9
+    def cmd_set_header(cmd)  # CC=1
     def cmd_set_base_url(cmd)  # CC=1
-    def run_script(content, stop_on_error)  # CC=11 ⚠
-    def _format_cmd(cmd)  # CC=2
+    def run_script(content, stop_on_error)  # CC=9
+    def _format_cmd(cmd)  # CC=1
 ```
 
 ### `testql.sumd_generator` (`testql/sumd_generator.py`)
@@ -407,11 +601,11 @@ def _header_section(project_name, version)  # CC=1, fan=1
 def _metadata_section(project_name, version)  # CC=1, fan=0
 def _architecture_section()  # CC=1, fan=0
 def _doql_declaration_section(project_echo, project_name, version)  # CC=7, fan=1
-def _api_contract_section(project_echo)  # CC=6, fan=4
+def _api_contract_section(project_echo)  # CC=5, fan=4
 def _workflows_table_section(project_echo)  # CC=5, fan=2
 def _configuration_section(project_echo, project_name, version)  # CC=2, fan=1
-def _llm_suggestions_section(project_echo)  # CC=4, fan=3
-def _workflow_snippet(workflows, name, comment, cmd)  # CC=4, fan=1
+def _llm_suggestions_section(project_echo)  # CC=2, fan=3
+def _workflow_snippet(workflows, name, comment, cmd)  # CC=2, fan=1
 def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 ```
 
@@ -427,51 +621,30 @@ class SumdParser:  # Parser for SUMD markdown files.
     def parse_file(path)  # CC=1
     def parse(content)  # CC=1
     def _parse_metadata(content)  # CC=8
-    def _parse_interfaces(content)  # CC=12 ⚠
+    def _parse_interfaces(content)  # CC=10 ⚠
     def _parse_workflows(content)  # CC=4
-    def _parse_testql_scenarios(content)  # CC=11 ⚠
+    def _parse_testql_scenarios(content)  # CC=9
     def _parse_architecture(content)  # CC=3
     def _extract_section(content, section_name)  # CC=2
     def generate_testql_scenarios(doc)  # CC=5
 ```
 
-## Refactoring Analysis
+## Call Graph
 
-### ✅ Completed Refactorings (2026-04-19)
+*65 nodes · 49 edges · 21 modules · CC̄=4.6*
 
-The following high-complexity modules have been successfully refactored:
+### Hubs (by degree)
 
-1. **`testql/generator.py`** (710 lines → 6 modules)
-   - Split into `generators/` package with base, analyzers, mixins
-   - CC reduced from 23 to ≤9 per function
-
-2. **`testql/endpoint_detector.py`** (836 lines → 11 modules)
-   - Split into `detectors/` package with specialized detectors
-   - CC reduced from 13 to ≤5 per detector
-
-3. **`testql/commands/misc_cmds.py`** (542 lines → 3 modules)
-   - Templates extracted to `templates/` subpackage
-   - Echo helpers extracted to `echo_helpers.py`
-   - CC reduced from 16 to ≤7
-
-4. **`testql/interpreter/_converter.py`** (434 lines → 13 modules)
-   - Split into `converter/` package with handlers registry
-   - Dispatcher uses registry pattern instead of if-chain
-   - CC reduced from 66 to ≤4
-
-5. **`testql/commands/echo.py`** (288 lines → 5 modules)
-   - Split into `echo/` package with parsers and formatters
-   - CC reduced from 29 to ≤8
-
-6. **`testql/commands/suite_cmd.py`** (387 lines → 5 modules)
-   - Split into `suite/` package with collection, execution, reports
-   - CC reduced from 15 to ≤4
-
-*All original modules remain as backward-compatible re-exports.*
-
-### Pre-refactoring snapshot — use this section to identify targets. Generated from `project/` toon files.
-
-### Call Graph & Complexity (`project/calls.toon.yaml`)
+| Function | CC | in | out | total |
+|----------|----|----|-----|-------|
+| `convert_iql_to_testtoon` *(in testql.interpreter._converter)* | 66 ⚠ | 1 | 116 | **117** |
+| `parse_doql_less` *(in testql.commands.echo)* | 29 ⚠ | 1 | 85 | **86** |
+| `format_text_output` *(in testql.commands.echo)* | 19 ⚠ | 1 | 46 | **47** |
+| `iql_run_file` *(in testql.commands.encoder_routes)* | 12 ⚠ | 0 | 43 | **43** |
+| `parse_testtoon` *(in testql.interpreter._testtoon_parser)* | 12 ⚠ | 1 | 31 | **32** |
+| `list_tests` *(in testql.commands.suite_cmd)* | 9 | 0 | 27 | **27** |
+| `_collect_test_files` *(in testql.commands.suite_cmd)* | 15 ⚠ | 1 | 23 | **24** |
+| `parse_line` *(in testql.runner)* | 9 | 2 | 20 | **22** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
@@ -479,20 +652,20 @@ The following high-complexity modules have been successfully refactored:
 # CC̄=4.6
 
 HUBS[20]:
-  testql.interpreter.converter.core.convert_iql_to_testtoon
-    CC=4  in:1  out:116  total:117
-  testql.commands.echo.parsers.doql.parse_doql_less
-    CC=8  in:1  out:85  total:86
-  testql.commands.echo.formatters.text.format_text_output
-    CC=7  in:1  out:46  total:47
+  testql.interpreter._converter.convert_iql_to_testtoon
+    CC=66  in:1  out:116  total:117
+  testql.commands.echo.parse_doql_less
+    CC=29  in:1  out:85  total:86
+  testql.commands.echo.format_text_output
+    CC=19  in:1  out:46  total:47
   testql.commands.encoder_routes.iql_run_file
     CC=12  in:0  out:43  total:43
   testql.interpreter._testtoon_parser.parse_testtoon
     CC=12  in:1  out:31  total:32
-  testql.commands.suite.cli.list_tests
-    CC=3  in:0  out:27  total:27
-  testql.commands.suite.collection.collect_test_files
-    CC=4  in:1  out:23  total:24
+  testql.commands.suite_cmd.list_tests
+    CC=9  in:0  out:27  total:27
+  testql.commands.suite_cmd._collect_test_files
+    CC=15  in:1  out:23  total:24
   testql.runner.parse_line
     CC=9  in:2  out:20  total:22
   testql.commands.echo.parse_toon_scenarios
@@ -502,7 +675,7 @@ HUBS[20]:
   testql.report_generator.generate_report
     CC=3  in:1  out:20  total:21
   testql.commands.misc_cmds.create
-    CC=3  in:0  out:21  total:21
+    CC=6  in:0  out:21  total:21
   testql.runner.DslCliExecutor.run_script
     CC=11  in:0  out:20  total:20
   testql.commands.endpoints_cmd.endpoints
@@ -530,12 +703,12 @@ MODULES:
   testql.cli  [2 funcs]
     cli  CC=1  out:2
     main  CC=1  out:1
-  testql.commands.echo  [5 exports]
+  testql.commands.echo  [5 funcs]
     echo  CC=3  out:17
-    format_text_output  CC=7  out:46 (delegated to formatters.text)
-    generate_context  CC=3  out:9
-    parse_doql_less  CC=8  out:85 (delegated to parsers.doql)
-    parse_toon_scenarios  CC=5  out:21 (delegated to parsers.toon)
+    format_text_output  CC=19  out:46
+    generate_context  CC=7  out:9
+    parse_doql_less  CC=29  out:85
+    parse_toon_scenarios  CC=8  out:21
   testql.commands.encoder_routes  [12 funcs]
     _evaluate_assertion  CC=10  out:12
     _exec_assert_cmd  CC=7  out:11
@@ -550,67 +723,441 @@ MODULES:
   testql.commands.endpoints_cmd  [2 funcs]
     _format_endpoints  CC=13  out:18
     endpoints  CC=9  out:20
-  testql.commands.misc_cmds  [6 commands]
-    init  CC=3  out:8
-    create  CC=3  out:21
-    watch  CC=4  out:12
-    from_sumd  CC=2  out:8
+  testql.commands.misc_cmds  [3 funcs]
+    _build_test_content  CC=7  out:1
+    create  CC=6  out:21
     report  CC=4  out:22
-    echo  CC=3  out:17
-  testql.commands.suite  [6 exports]
-    suite  CC=4  out:27
-    list_tests  CC=3  out:27
-  testql.commands.suite.collection  [5 funcs]
-    collect_test_files  CC=4  out:23
-    _collect_from_suite  CC=3  out:8
-    _collect_recursive  CC=3  out:6
-  testql.commands.suite.execution  [2 funcs]
-    run_suite_files  CC=4  out:20
-    run_single_file  CC=3  out:17
-  testql.commands.suite.listing  [3 funcs]
-    filter_tests  CC=4  out:10
-    parse_meta  CC=4  out:12
-    render_test_list  CC=4  out:8
-  testql.detectors  [11 exports]
-    UnifiedEndpointDetector  CC=4  out:20
-    detect_endpoints  CC=2  out:20
-    FastAPIDetector  CC=5  out:12
-    FlaskDetector  CC=4  out:10
-    DjangoDetector  CC=3  out:6
-    ExpressDetector  CC=3  out:6
-    OpenAPIDetector  CC=4  out:8
-    GraphQLDetector  CC=4  out:8
-    WebSocketDetector  CC=3  out:4
-    TestEndpointDetector  CC=3  out:6
-    ConfigEndpointDetector  CC=3  out:6
-  testql.generators  [9 exports]
-    TestGenerator  CC=4  out:18
-    MultiProjectTestGenerator  CC=3  out:8
-    generate_for_project  CC=2  out:18
-    generate_for_workspace  CC=2  out:8
-    ProjectAnalyzer  CC=6  out:14
-    APIGeneratorMixin  CC=5  out:12
-    PythonTestGeneratorMixin  CC=4  out:8
+  testql.commands.suite_cmd  [4 funcs]
+    _collect_test_files  CC=15  out:23
+    _find_files  CC=9  out:8
+    _parse_meta  CC=12  out:10
+    list_tests  CC=9  out:27
+  testql.endpoint_detector  [1 funcs]
+    _deduplicate_endpoints  CC=3  out:4
+  testql.generator  [1 funcs]
+    _scan_directory_structure  CC=8  out:6
   testql.interpreter._api_runner  [2 funcs]
     _cmd_capture  CC=3  out:13
     _navigate_json_path  CC=10  out:13
   testql.interpreter._assertions  [1 funcs]
     _cmd_assert_json  CC=6  out:17
-  testql.interpreter.converter  [9 exports]
-    convert_iql_to_testtoon  CC=4  out:116
-    convert_file  CC=1  out:3
+  testql.interpreter._converter  [5 funcs]
+    _detect_scenario_type  CC=12  out:7
+    _extract_scenario_name  CC=6  out:8
     convert_directory  CC=4  out:7
-    dispatch  CC=2  out:10
-  testql.interpreter.converter.handlers  [9 handlers]
-    handle_api  CC=4  out:12
-    handle_navigate  CC=3  out:8
-    handle_encoder  CC=4  out:6
-    handle_select  CC=3  out:6
-    handle_flow  CC=3  out:6
-    handle_wait  CC=3  out:4
-    handle_include  CC=2  out:3
-    handle_record_start/stop  CC=2  out:3
-    handle_unknown  CC=2  out:3
+    convert_file  CC=1  out:3
+    convert_iql_to_testtoon  CC=66  out:116
+  testql.interpreter._flow  [1 funcs]
+    _cmd_include  CC=7  out:17
+  testql.interpreter._parser  [1 funcs]
+    parse_iql  CC=5  out:10
+  testql.interpreter._testtoon_parser  [2 funcs]
+    parse_testtoon  CC=12  out:31
+    testtoon_to_iql  CC=2  out:4
+  testql.interpreter.interpreter  [3 funcs]
+    __init__  CC=2  out:3
+    execute  CC=4  out:16
+    parse  CC=2  out:3
+  testql.openapi_generator  [1 funcs]
+    _infer_tags  CC=7  out:9
+  testql.report_generator  [1 funcs]
+    generate_report  CC=3  out:20
+  testql.runner  [3 funcs]
+    run_script  CC=11  out:20
+    parse_line  CC=9  out:20
+    parse_script  CC=3  out:2
+  testql.sumd_generator  [11 funcs]
+    _api_contract_section  CC=6  out:11
+    _architecture_section  CC=1  out:0
+    _configuration_section  CC=2  out:1
+    _doql_declaration_section  CC=7  out:5
+    _header_section  CC=1  out:1
+    _llm_suggestions_section  CC=4  out:5
+    _metadata_section  CC=1  out:0
+    _workflow_snippet  CC=4  out:1
+    _workflows_table_section  CC=5  out:3
+    generate_sumd  CC=4  out:10
+
+EDGES:
+  testql.cli.main → testql.cli.cli
+  testql.generator.TestGenerator._scan_directory_structure → testql._base_fallback.VariableStore.set
+  TODO.testtoon_parser.print_parsed → TODO.testtoon_parser.validate
+  testql.openapi_generator.OpenAPIGenerator._infer_tags → testql._base_fallback.VariableStore.set
+  testql.sumd_generator.generate_sumd → testql.sumd_generator._header_section
+  testql.sumd_generator.generate_sumd → testql.sumd_generator._metadata_section
+  testql.sumd_generator.generate_sumd → testql.sumd_generator._architecture_section
+  testql.sumd_generator.generate_sumd → testql.sumd_generator._doql_declaration_section
+  testql.sumd_generator.generate_sumd → testql.sumd_generator._api_contract_section
+  testql.sumd_generator.generate_sumd → testql.sumd_generator._workflows_table_section
+  testql.sumd_generator.generate_sumd → testql.sumd_generator._configuration_section
+  testql.sumd_generator.generate_sumd → testql.sumd_generator._llm_suggestions_section
+  testql.sumd_generator._llm_suggestions_section → testql.sumd_generator._workflow_snippet
+  testql.sumd_generator.save_sumd → testql.sumd_generator.generate_sumd
+  testql.runner.parse_script → testql.runner.parse_line
+  testql.runner.DslCliExecutor.run_script → testql.runner.parse_script
+  testql.commands.echo.generate_context → testql.commands.echo.parse_toon_scenarios
+  testql.commands.echo.generate_context → testql.commands.echo.parse_doql_less
+  testql.commands.echo.echo → testql.commands.echo.generate_context
+  testql.commands.echo.echo → testql.commands.echo.format_text_output
+  testql.commands.endpoints_cmd.endpoints → testql.commands.endpoints_cmd._format_endpoints
+  testql.endpoint_detector.UnifiedEndpointDetector._deduplicate_endpoints → testql._base_fallback.VariableStore.set
+  testql.commands.misc_cmds.create → testql.commands.misc_cmds._build_test_content
+  testql.commands.misc_cmds.report → testql.report_generator.generate_report
+  testql.commands.suite_cmd._collect_test_files → testql._base_fallback.VariableStore.set
+  testql.commands.suite_cmd._collect_test_files → testql.commands.suite_cmd._find_files
+  testql.commands.suite_cmd.list_tests → testql._base_fallback.VariableStore.set
+  testql.commands.suite_cmd.list_tests → testql.commands.suite_cmd._parse_meta
+  testql.interpreter._api_runner.ApiRunnerMixin._cmd_capture → testql.interpreter._api_runner._navigate_json_path
+  testql.interpreter._flow.FlowMixin._cmd_include → testql.interpreter._parser.parse_iql
+  testql.interpreter._testtoon_parser.testtoon_to_iql → testql.interpreter._testtoon_parser.parse_testtoon
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json → testql.interpreter._api_runner._navigate_json_path
+  testql.interpreter._converter.convert_iql_to_testtoon → testql.interpreter._converter._extract_scenario_name
+  testql.interpreter._converter.convert_iql_to_testtoon → testql.interpreter._converter._detect_scenario_type
+  testql.interpreter._converter.convert_file → testql.interpreter._converter.convert_iql_to_testtoon
+  testql.interpreter._converter.convert_directory → testql.interpreter._converter.convert_file
+  testql.interpreter.interpreter.IqlInterpreter.__init__ → testql._base_fallback.VariableStore.set
+  testql.interpreter.interpreter.IqlInterpreter.parse → testql.interpreter._parser.parse_iql
+  testql.interpreter.interpreter.IqlInterpreter.parse → testql.interpreter._testtoon_parser.testtoon_to_iql
+  testql.interpreter.interpreter.IqlInterpreter.execute → testql._base_fallback.VariableStore.all
+  testql.commands.encoder_routes._resolve_iql_path → testql.commands.encoder_routes._normalize_iql_path
+  testql.commands.encoder_routes._exec_assert_cmd → testql.commands.encoder_routes._evaluate_assertion
+  testql.commands.encoder_routes._execute_iql_line → testql.commands.encoder_routes._exec_encoder_cmd
+  testql.commands.encoder_routes._execute_iql_line → testql.commands.encoder_routes._exec_browser_cmd
+  testql.commands.encoder_routes.iql_list_files → testql._base_fallback.VariableStore.set
+  testql.commands.encoder_routes.iql_read_file → testql.commands.encoder_routes._resolve_iql_path
+  testql.commands.encoder_routes.iql_list_tables → testql.commands.encoder_routes._resolve_iql_path
+  testql.commands.encoder_routes.iql_run_line → testql.commands.encoder_routes._execute_iql_line
+  testql.commands.encoder_routes.iql_run_file → testql.commands.encoder_routes._resolve_iql_path
+```
+
+## Test Contracts
+
+*Scenarios as contract signatures — what the system guarantees.*
+
+### Api (17)
+
+**`api-crud-template.testql.toon.yaml — generic CRUD test template`**
+
+**`api-health.testql.toon.yaml — basic health check for c2004`**
+- `GET /health` → `200`
+
+**`api-smoke.testql.toon.yaml — smoke test for all main c2004 API endpoints`**
+- `GET /health` → `200`
+- `GET /api/v3/version` → `200`
+- `GET /api/v3/data/devices` → `200`
+
+**`auth-login.testql.toon.yaml — generic authentication login test template`**
+- `POST /api/v3/auth/login"` → `200`
+
+**`Backend Diagnostic Tests`**
+- `GET /api/v3/health` → `200`
+- `GET /api/v3/template-json` → `200`
+- `GET /api/v3/template-json/default` → `200`
+
+**`API Integration Tests`**
+- `GET /health` → `200`
+- `GET /api/v1/status` → `200`
+- `POST /api/v1/test` → `201`
+- assert `status == ok`
+- assert `response_time < 1000`
+
+**`Auto-generated API Smoke Tests`**
+- `GET /iql/files` → `200`
+- `GET /iql/file` → `200`
+- `GET /iql/tables` → `200`
+- assert `status < 500`
+- assert `response_time < 2000`
+- detectors: FastAPIDetector, OpenAPIDetector
+
+**`health-check.testql.toon.yaml — generic health check scenario`**
+- `GET /health` → `200`
+- `GET /api/v3/version` → `200`
+
+**`run-all-views.testql.toon.yaml — Master runner for all per-view IQL tests`**
+
+**`=============================================================================`**
+- `GET /api/v3/scenarios/scn-drager-fps-7000-maska-nadcisnieniowa?include_content=true` → `200`
+- `POST /api/v3/protocols"` → `200`
+
+**`Example DSL Script - API Testing`**
+- `GET /api/v3/data/devices?limit=5` → `200`
+- `GET /api/v3/data/customers?limit=5` → `200`
+- `GET /api/v3/data/intervals?limit=5` → `200`
+
+**`DSL Script - Application Lifecycle Test`**
+- `GET /api/v3/data/protocols?limit=3` → `200`
+- `GET /api/v3/data/test_scenarios?limit=3` → `200`
+
+**`Example DSL Script - Devices CRUD Operations`**
+- `GET /api/v3/data/devices?limit=10` → `200`
+- `GET /api/v3/data/customers?limit=5` → `200`
+- `GET /api/v3/data/intervals?limit=10` → `200`
+
+**`Example DSL Script - DSL Objects Test`**
+- `GET /api/v3/data/dsl_objects?limit=100` → `200`
+- `GET /api/v3/data/dsl_functions?limit=100` → `200`
+- `GET /api/v3/data/dsl_params?limit=100` → `200`
+
+**`test-gui-all.testql.toon.yaml — Master GUI test suite — runs all module GUI tests`**
+
+**`Example DSL Script - Protocol Flow Test (Read-Only)`**
+- `GET /api/v3/data/devices?limit=5` → `200`
+- `GET /api/v3/data/customers?limit=5` → `200`
+- `GET /api/v3/data/test_scenarios?limit=10` → `200`
+
+**`Example DSL Script - API Endpoints Test`**
+- `GET /api/v3/data/devices?limit=5` → `200`
+- `GET /api/v3/data/customers?limit=5` → `200`
+- `GET /api/v3/data/protocols?limit=10` → `200`
+
+### Cli (1)
+
+**`CLI Command Tests`**
+
+### E2E (1)
+
+**`DSL Mixed Workflow Example`**
+- `GET /api/v3/data/devices?limit=3` → `200`
+- `GET /api/v3/data/customers?limit=3` → `200`
+- `GET /api/v3/data/intervals?limit=3` → `200`
+
+### Gui (51)
+
+**`connect-config-feature-flags.testql.toon.yaml — Test: Konfiguracja > Feature Flags`**
+
+**`connect-config-labels.testql.toon.yaml — Test: Konfiguracja > Etykiety`**
+
+**`connect-config-settings.testql.toon.yaml — Test: Konfiguracja > Ustawienia`**
+
+**`connect-config-tables.testql.toon.yaml — Test: Konfiguracja > Tabele`**
+
+**`connect-config-theme.testql.toon.yaml — Test: Konfiguracja > Motyw`**
+
+**`connect-config-users.testql.toon.yaml — Test: Konfiguracja > Użytkownicy`**
+
+**`connect-id-barcode.testql.toon.yaml — Test: Identyfikacja > Barcode`**
+
+**`connect-id-list.testql.toon.yaml — Test: Identyfikacja > Lista użytkowników`**
+
+**`connect-id-manual.testql.toon.yaml — Test: Identyfikacja > Logowanie ręczne`**
+
+**`connect-id-qr.testql.toon.yaml — Test: Identyfikacja > QR Code`**
+
+**`connect-id-rfid.testql.toon.yaml — Test: Identyfikacja > RFID`**
+
+**`connect-manager-activities.testql.toon.yaml — Test: Manager > Czynności`**
+
+**`connect-manager-intervals.testql.toon.yaml — Test: Manager > Interwały`**
+
+**`connect-manager-library.testql.toon.yaml — Test: Manager > Biblioteka`**
+
+**`connect-manager-scenarios.testql.toon.yaml — Test: Manager > Scenariusze`**
+
+**`connect-manager-test-types.testql.toon.yaml — Test: Manager > Rodzaj Testu`**
+
+**`connect-reports-chart.testql.toon.yaml — Test: Raporty > Wykres`**
+
+**`connect-reports-custom.testql.toon.yaml — Test: Raporty > Niestandardowy`**
+
+**`connect-reports-filter.testql.toon.yaml — Test: Raporty > Filtruj`**
+
+**`connect-reports-month.testql.toon.yaml — Test: Raporty > Miesiąc`**
+
+**`connect-reports-quarter.testql.toon.yaml — Test: Raporty > Kwartał`**
+
+**`connect-reports-week.testql.toon.yaml — Test: Raporty > Tydzień`**
+
+**`connect-reports-year.testql.toon.yaml — Test: Raporty > Rok`**
+
+**`connect-test-devices-search.testql.toon.yaml — Test: Testowanie > Wyszukiwanie urządzeń`**
+
+**`connect-test-full-test.testql.toon.yaml — Test: Testowanie > Test automatyczny`**
+
+**`connect-test-protocols.testql.toon.yaml — Test: Testowanie > Raporty (protokoły)`**
+
+**`connect-test-scenario-view.testql.toon.yaml — Test: Testowanie > Scenariusz/Interwały`**
+
+**`connect-test-testing-barcode.testql.toon.yaml — Test: Testowanie > Barcode`**
+
+**`connect-test-testing-qr.testql.toon.yaml — Test: Testowanie > QR`**
+
+**`connect-test-testing-rfid.testql.toon.yaml — Test: Testowanie > RFID`**
+
+**`connect-test-testing-search.testql.toon.yaml — Test: Testowanie > Wyszukiwanie testów`**
+
+**`connect-workshop-dispositions-search.testql.toon.yaml — Test: Warsztat > Dyspozycje`**
+
+**`connect-workshop-requests-search.testql.toon.yaml — Test: Warsztat > Zgłoszenia`**
+
+**`connect-workshop-services-search.testql.toon.yaml — Test: Warsztat > Serwisy`**
+
+**`connect-workshop-transport-search.testql.toon.yaml — Test: Warsztat > Transport`**
+
+**`connect-workshop-transport.testql.toon.yaml — GUI test for workshop transport view`**
+
+**`Create Today's Reports`**
+
+**`Device Identification Example`**
+
+**`encoder-navigation.testql.toon.yaml — encoder hardware navigation test`**
+
+**`encoder-workshop.testql.toon.yaml — encoder navigation in workshop context`**
+
+**`Full System Diagnostic - API + Routes + DSL`**
+- `GET /api/v3/health` → `200`
+- `GET /api/v3/auth/session` → `200`
+- `GET /api/v3/config/system` → `200`
+
+**`Quick Navigation Example`**
+
+**`DSL Session Recording`**
+
+**`Reproduce View - Connect Manager with Scenario Selection`**
+
+**`test-encoder.testql.toon.yaml — Encoder navigation tests via IQL`**
+
+**`test-gui-connect-config.testql.toon.yaml — GUI tests for Connect Config module`**
+- `GET /api/v3/config/settings` → `200`
+- `GET /api/v3/feature-flags` → `200`
+
+**`test-gui-connect-id.testql.toon.yaml — GUI tests for Connect ID module`**
+- `GET /api/v3/auth/users` → `200`
+
+**`test-gui-connect-manager.testql.toon.yaml — GUI tests for Connect Manager module`**
+- `GET /api/v3/data/test_scenarios?limit=5` → `200`
+- `GET /api/v3/data/intervals?limit=5` → `200`
+- `GET /api/v3/activities?limit=5` → `200`
+
+**`test-gui-connect-reports.testql.toon.yaml — GUI tests for Connect Reports module`**
+- `GET /api/v3/data/protocols?limit=5` → `200`
+
+**`test-gui-connect-test.testql.toon.yaml — GUI tests for Connect Test module`**
+- `GET /api/v3/data/devices?limit=5` → `200`
+- `GET /api/v3/data/test_scenarios?limit=5` → `200`
+- `GET /api/v3/data/protocols?limit=5` → `200`
+
+**`test-gui-connect-workshop.testql.toon.yaml — GUI tests for Connect Workshop module`**
+- `GET /api/v3/data/customers?limit=5` → `200`
+
+### Integration (1)
+
+**`Auto-generated from Python Tests`**
+
+### Interaction (3)
+
+**`Generate Test Reports Scenario`**
+
+**`Session Recording Example`**
+
+**`DSL Example: Complete Device Test Flow`**
+
+## Refactoring Analysis
+
+*Pre-refactoring snapshot — use this section to identify targets. Generated from `project/` toon files.*
+
+### Call Graph & Complexity (`project/calls.toon.yaml`)
+
+```toon markpact:analysis path=project/calls.toon.yaml
+# code2llm call graph | /home/tom/github/oqlos/testql
+# nodes: 65 | edges: 49 | modules: 21
+# CC̄=4.6
+
+HUBS[20]:
+  testql.interpreter._converter.convert_iql_to_testtoon
+    CC=66  in:1  out:116  total:117
+  testql.commands.echo.parse_doql_less
+    CC=29  in:1  out:85  total:86
+  testql.commands.echo.format_text_output
+    CC=19  in:1  out:46  total:47
+  testql.commands.encoder_routes.iql_run_file
+    CC=12  in:0  out:43  total:43
+  testql.interpreter._testtoon_parser.parse_testtoon
+    CC=12  in:1  out:31  total:32
+  testql.commands.suite_cmd.list_tests
+    CC=9  in:0  out:27  total:27
+  testql.commands.suite_cmd._collect_test_files
+    CC=15  in:1  out:23  total:24
+  testql.runner.parse_line
+    CC=9  in:2  out:20  total:22
+  testql.commands.echo.parse_toon_scenarios
+    CC=8  in:1  out:21  total:22
+  testql.commands.misc_cmds.report
+    CC=4  in:0  out:22  total:22
+  testql.report_generator.generate_report
+    CC=3  in:1  out:20  total:21
+  testql.commands.misc_cmds.create
+    CC=6  in:0  out:21  total:21
+  testql.runner.DslCliExecutor.run_script
+    CC=11  in:0  out:20  total:20
+  testql.commands.endpoints_cmd.endpoints
+    CC=9  in:0  out:20  total:20
+  testql.commands.endpoints_cmd._format_endpoints
+    CC=13  in:1  out:18  total:19
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+    CC=6  in:0  out:17  total:17
+  testql.interpreter._flow.FlowMixin._cmd_include
+    CC=7  in:0  out:17  total:17
+  testql.commands.echo.echo
+    CC=3  in:0  out:17  total:17
+  testql.interpreter.interpreter.IqlInterpreter.execute
+    CC=4  in:0  out:16  total:16
+  testql.commands.encoder_routes.iql_list_tables
+    CC=4  in:0  out:15  total:15
+
+MODULES:
+  TODO.testtoon_parser  [2 funcs]
+    print_parsed  CC=8  out:12
+    validate  CC=2  out:2
+  testql._base_fallback  [2 funcs]
+    all  CC=1  out:1
+    set  CC=1  out:0
+  testql.cli  [2 funcs]
+    cli  CC=1  out:2
+    main  CC=1  out:1
+  testql.commands.echo  [5 funcs]
+    echo  CC=3  out:17
+    format_text_output  CC=19  out:46
+    generate_context  CC=7  out:9
+    parse_doql_less  CC=29  out:85
+    parse_toon_scenarios  CC=8  out:21
+  testql.commands.encoder_routes  [12 funcs]
+    _evaluate_assertion  CC=10  out:12
+    _exec_assert_cmd  CC=7  out:11
+    _exec_browser_cmd  CC=9  out:10
+    _exec_encoder_cmd  CC=6  out:4
+    _execute_iql_line  CC=10  out:13
+    _normalize_iql_path  CC=10  out:13
+    _resolve_iql_path  CC=1  out:2
+    iql_list_files  CC=7  out:14
+    iql_list_tables  CC=4  out:15
+    iql_read_file  CC=3  out:11
+  testql.commands.endpoints_cmd  [2 funcs]
+    _format_endpoints  CC=13  out:18
+    endpoints  CC=9  out:20
+  testql.commands.misc_cmds  [3 funcs]
+    _build_test_content  CC=7  out:1
+    create  CC=6  out:21
+    report  CC=4  out:22
+  testql.commands.suite_cmd  [4 funcs]
+    _collect_test_files  CC=15  out:23
+    _find_files  CC=9  out:8
+    _parse_meta  CC=12  out:10
+    list_tests  CC=9  out:27
+  testql.endpoint_detector  [1 funcs]
+    _deduplicate_endpoints  CC=3  out:4
+  testql.generator  [1 funcs]
+    _scan_directory_structure  CC=8  out:6
+  testql.interpreter._api_runner  [2 funcs]
+    _cmd_capture  CC=3  out:13
+    _navigate_json_path  CC=10  out:13
+  testql.interpreter._assertions  [1 funcs]
+    _cmd_assert_json  CC=6  out:17
+  testql.interpreter._converter  [5 funcs]
+    _detect_scenario_type  CC=12  out:7
+    _extract_scenario_name  CC=6  out:8
+    convert_directory  CC=4  out:7
+    convert_file  CC=1  out:3
+    convert_iql_to_testtoon  CC=66  out:116
   testql.interpreter._flow  [1 funcs]
     _cmd_include  CC=7  out:17
   testql.interpreter._parser  [1 funcs]

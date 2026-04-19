@@ -205,3 +205,118 @@ class TestGenerateSumd:
         echo = self._make_echo()
         out = generate_sumd(echo, tmp_path)
         assert "test" in out or "pytest" in out
+
+
+class TestApiContractSection:
+    def test_no_endpoints_returns_empty(self):
+        from testql.sumd_generator import _api_contract_section
+        pe = ProjectEcho()
+        assert _api_contract_section(pe) == []
+
+    def test_with_endpoints(self):
+        from testql.sumd_generator import _api_contract_section
+        pe = ProjectEcho()
+        pe.api_contract.endpoints = [
+            {"method": "GET", "path": "/users", "status": "200"},
+            {"method": "POST", "path": "/users", "status": "201", "description": "create"},
+        ]
+        lines = _api_contract_section(pe)
+        joined = "\n".join(lines)
+        assert "GET" in joined
+        assert "/users" in joined
+
+    def test_endpoint_with_description(self):
+        from testql.sumd_generator import _api_contract_section
+        pe = ProjectEcho()
+        pe.api_contract.endpoints = [
+            {"method": "DELETE", "path": "/items/1", "status": "204", "description": "remove item"},
+        ]
+        lines = _api_contract_section(pe)
+        assert any("remove item" in l for l in lines)
+
+
+class TestWorkflowsTableSection:
+    def test_no_workflows_returns_empty(self):
+        from testql.sumd_generator import _workflows_table_section
+        pe = ProjectEcho()
+        assert _workflows_table_section(pe) == []
+
+    def test_with_workflows(self):
+        from testql.sumd_generator import _workflows_table_section
+        pe = ProjectEcho()
+        pe.system_model.workflows = [Workflow("ci", trigger="push", cmd="pytest")]
+        lines = _workflows_table_section(pe)
+        joined = "\n".join(lines)
+        assert "ci" in joined
+        assert "push" in joined
+
+    def test_long_command_truncated(self):
+        from testql.sumd_generator import _workflows_table_section
+        pe = ProjectEcho()
+        pe.system_model.workflows = [Workflow("long", cmd="x" * 50)]
+        lines = _workflows_table_section(pe)
+        # cmd should be truncated to 40 chars + "..."
+        assert any("..." in l for l in lines)
+
+
+class TestConfigurationSection:
+    def test_basic(self):
+        from testql.sumd_generator import _configuration_section
+        pe = ProjectEcho()
+        lines = _configuration_section(pe, "myapp", "1.0")
+        joined = "\n".join(lines)
+        assert "myapp" in joined
+        assert "1.0" in joined
+
+    def test_with_base_url(self):
+        from testql.sumd_generator import _configuration_section
+        pe = ProjectEcho()
+        pe.api_contract.base_url = "http://localhost:8101"
+        lines = _configuration_section(pe, "app", "2.0")
+        assert any("base_url" in l for l in lines)
+
+
+class TestLlmSuggestionsSection:
+    def test_has_testql_commands(self):
+        from testql.sumd_generator import _llm_suggestions_section
+        pe = ProjectEcho()
+        lines = _llm_suggestions_section(pe)
+        joined = "\n".join(lines)
+        assert "testql" in joined.lower()
+
+    def test_with_test_workflow(self):
+        from testql.sumd_generator import _llm_suggestions_section
+        pe = ProjectEcho()
+        pe.system_model.workflows = [Workflow("test", trigger="push", cmd="pytest")]
+        lines = _llm_suggestions_section(pe)
+        joined = "\n".join(lines)
+        assert "test" in joined
+
+    def test_with_install_workflow(self):
+        from testql.sumd_generator import _llm_suggestions_section
+        pe = ProjectEcho()
+        pe.system_model.workflows = [
+            Workflow("install", cmd="pip install -r requirements.txt"),
+        ]
+        lines = _llm_suggestions_section(pe)
+        joined = "\n".join(lines)
+        assert "install" in joined
+
+
+class TestSaveSumd:
+    def test_saves_to_default_path(self, tmp_path):
+        from testql.sumd_generator import save_sumd
+        pe = ProjectEcho()
+        pe.system_model.project_name = "myapp"
+        result = save_sumd(pe, tmp_path)
+        assert result == tmp_path / "SUMD.md"
+        assert result.exists()
+
+    def test_saves_to_custom_path(self, tmp_path):
+        from testql.sumd_generator import save_sumd
+        pe = ProjectEcho()
+        custom = tmp_path / "docs" / "summary.md"
+        custom.parent.mkdir()
+        result = save_sumd(pe, tmp_path, custom)
+        assert result == custom
+        assert custom.exists()

@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.11] - 2026-04-19
+
+### Docs
+- Update README.md
+- Update SUMD.md
+- Update SUMR.md
+
+### Test
+- Update tests/test_api_handler.py
+- Update tests/test_converter.py
+- Update tests/test_converter_handlers.py
+- Update tests/test_doql_parser_sumd_gen.py
+- Update tests/test_echo_schemas_helpers.py
+- Update tests/test_generate_cmd.py
+- Update tests/test_misc_cmds.py
+- Update tests/test_reporters.py
+- Update tests/test_suite_execution.py
+- Update tests/test_suite_listing.py
+- ... and 1 more files
+
+### Other
+- Update coverage.json
+- Update project/map.toon.yaml
+- Update pyqual.yaml
+- Update sumd.json
+
 ## [0.6.10] - 2026-04-19
 
 ### Docs

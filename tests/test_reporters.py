@@ -188,3 +188,129 @@ class TestJunitReporter:
         r = make_result(ok=False, steps=[step])
         out = report_junit(r)
         assert "failure" in out.lower() or "error" in out.lower()
+
+
+# ---------------------------------------------------------------------------
+# Base classes: VariableStore, InterpreterOutput, ScriptResult helpers
+# ---------------------------------------------------------------------------
+
+from testql._base_fallback import VariableStore, InterpreterOutput
+
+
+class TestVariableStore:
+    def test_set_get(self):
+        vs = VariableStore()
+        vs.set("x", 42)
+        assert vs.get("x") == 42
+
+    def test_default_if_missing(self):
+        vs = VariableStore()
+        assert vs.get("missing", "default") == "default"
+
+    def test_has(self):
+        vs = VariableStore({"a": 1})
+        assert vs.has("a")
+        assert not vs.has("b")
+
+    def test_all(self):
+        vs = VariableStore({"x": 1, "y": 2})
+        assert vs.all() == {"x": 1, "y": 2}
+
+    def test_clear(self):
+        vs = VariableStore({"x": 1})
+        vs.clear()
+        assert vs.all() == {}
+
+    def test_interpolate_curly(self):
+        vs = VariableStore({"name": "alice"})
+        assert vs.interpolate("Hello ${name}!") == "Hello alice!"
+
+    def test_interpolate_dollar(self):
+        vs = VariableStore({"host": "localhost"})
+        assert vs.interpolate("http://$host:8000") == "http://localhost:8000"
+
+    def test_interpolate_missing_left_unchanged(self):
+        vs = VariableStore()
+        assert vs.interpolate("${missing}") == "${missing}"
+
+    def test_interpolate_no_vars(self):
+        vs = VariableStore()
+        assert vs.interpolate("plain text") == "plain text"
+
+    def test_initial_values(self):
+        vs = VariableStore({"k": "v"})
+        assert vs.get("k") == "v"
+
+
+class TestInterpreterOutput:
+    def test_emit_stores_line(self):
+        out = InterpreterOutput(quiet=True)
+        out.emit("hello")
+        assert "hello" in out.lines
+
+    def test_ok_prefix(self):
+        out = InterpreterOutput(quiet=True)
+        out.ok("passed")
+        assert any("passed" in l for l in out.lines)
+
+    def test_fail_prefix(self):
+        out = InterpreterOutput(quiet=True)
+        out.fail("oops")
+        assert any("oops" in l for l in out.lines)
+
+    def test_warn_prefix(self):
+        out = InterpreterOutput(quiet=True)
+        out.warn("careful")
+        assert any("careful" in l for l in out.lines)
+
+    def test_info_prefix(self):
+        out = InterpreterOutput(quiet=True)
+        out.info("fyi")
+        assert any("fyi" in l for l in out.lines)
+
+    def test_error_prefix(self):
+        out = InterpreterOutput(quiet=True)
+        out.error("bad")
+        assert any("bad" in l for l in out.lines)
+
+    def test_step_with_icon(self):
+        out = InterpreterOutput(quiet=True)
+        out.step("🔵", "doing thing")
+        assert any("doing thing" in l for l in out.lines)
+
+    def test_not_quiet_prints(self, capsys):
+        out = InterpreterOutput(quiet=False)
+        out.emit("visible")
+        captured = capsys.readouterr()
+        assert "visible" in captured.out
+
+
+class TestScriptResultHelpers:
+    def test_passed_count(self):
+        steps = [
+            StepResult("a", StepStatus.PASSED),
+            StepResult("b", StepStatus.FAILED),
+            StepResult("c", StepStatus.PASSED),
+        ]
+        r = ScriptResult(source="test", ok=False, steps=steps)
+        assert r.passed == 2
+
+    def test_failed_count(self):
+        steps = [
+            StepResult("a", StepStatus.FAILED),
+            StepResult("b", StepStatus.ERROR),
+            StepResult("c", StepStatus.PASSED),
+        ]
+        r = ScriptResult(source="test", ok=False, steps=steps)
+        assert r.failed == 2
+
+    def test_summary_ok(self):
+        r = ScriptResult(source="mysuite", ok=True, steps=[StepResult("a", StepStatus.PASSED)])
+        s = r.summary()
+        assert "mysuite" in s
+        assert "✅" in s
+
+    def test_summary_fail(self):
+        r = ScriptResult(source="mysuite", ok=False, steps=[StepResult("b", StepStatus.FAILED)])
+        s = r.summary()
+        assert "❌" in s
