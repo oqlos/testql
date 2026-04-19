@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.9] - 2026-04-19
+
+### Docs
+- Update README.md
+
+### Test
+- Update testql/interpreter/converter/__init__.py
+- Update testql/interpreter/converter/handlers/__init__.py
+- Update testql/interpreter/converter/handlers/api.py
+- Update testql/interpreter/converter/handlers/assertions.py
+- Update testql/interpreter/converter/handlers/navigate.py
+- Update testql/interpreter/converter/models.py
+- Update testql/interpreter/converter/parsers.py
+
 ## [0.6.8] - 2026-04-19
 
 ### Docs
