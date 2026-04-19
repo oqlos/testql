@@ -460,6 +460,53 @@ def report(data_json: str | None, output: str | None, example: bool) -> None:
     click.echo(f"   Open in browser: file://{result.absolute()}")
 
 
+def _collect_toon_data(toon_path: str, project_echo) -> None:
+    import os
+    from testql.toon_parser import parse_toon_file
+
+    toon_file_path = Path(toon_path)
+    if toon_file_path.is_dir():
+        toon_files = [
+            Path(root) / f
+            for root, _dirs, files in os.walk(toon_file_path)
+            for f in files
+            if f.endswith(".testql.toon.yaml") or f.endswith(".testtoon")
+        ]
+        for tf in toon_files:
+            contract = parse_toon_file(tf)
+            project_echo.api_contract.endpoints.extend(contract.endpoints)
+            project_echo.api_contract.asserts.extend(contract.asserts)
+            if contract.base_url and not project_echo.api_contract.base_url:
+                project_echo.api_contract.base_url = contract.base_url
+        click.echo(f"📄 Parsed {len(toon_files)} toon file(s)")
+    elif toon_file_path.exists():
+        project_echo.api_contract = parse_toon_file(toon_file_path)
+        click.echo(f"📄 Parsed toon file: {toon_file_path}")
+    else:
+        click.echo(f"⚠️  Toon path not found: {toon_path}")
+
+
+def _collect_doql_data(doql_path: str, project_echo) -> None:
+    from testql.doql_parser import parse_doql_file
+
+    doql_file_path = Path(doql_path)
+    if doql_file_path.exists():
+        project_echo.system_model = parse_doql_file(doql_file_path)
+        click.echo(f"📄 Parsed doql file: {doql_file_path}")
+    else:
+        click.echo(f"⚠️  Doql path not found: {doql_path}")
+
+
+def _render_echo(project_echo, fmt: str, project_path_obj: Path) -> str:
+    import json
+    if fmt == "json":
+        return json.dumps(project_echo.to_dict(), indent=2)
+    if fmt == "sumd":
+        from testql.sumd_generator import generate_sumd
+        return generate_sumd(project_echo, project_path_obj)
+    return project_echo.to_text()
+
+
 @click.command()
 @click.option("--toon-path", type=click.Path(), help="Path to toon test files")
 @click.option("--doql-path", type=click.Path(), help="Path to doql LESS file (app.doql.less)")
@@ -474,53 +521,18 @@ def echo(
     project_path: str,
 ) -> None:
     """Generate AI-friendly project metadata echo from toon tests and doql model."""
-    import json
-    import os
-
-    from testql.doql_parser import parse_doql_file
     from testql.echo_schemas import ProjectEcho
-    from testql.toon_parser import parse_toon_file
 
     project_echo = ProjectEcho()
     project_path_obj = Path(project_path)
 
     if toon_path:
-        toon_file_path = Path(toon_path)
-        if toon_file_path.is_dir():
-            toon_files = [
-                Path(root) / f
-                for root, _dirs, files in os.walk(toon_file_path)
-                for f in files
-                if f.endswith(".testql.toon.yaml") or f.endswith(".testtoon")
-            ]
-            for tf in toon_files:
-                contract = parse_toon_file(tf)
-                project_echo.api_contract.endpoints.extend(contract.endpoints)
-                project_echo.api_contract.asserts.extend(contract.asserts)
-                if contract.base_url and not project_echo.api_contract.base_url:
-                    project_echo.api_contract.base_url = contract.base_url
-            click.echo(f"📄 Parsed {len(toon_files)} toon file(s)")
-        elif toon_file_path.exists():
-            project_echo.api_contract = parse_toon_file(toon_file_path)
-            click.echo(f"📄 Parsed toon file: {toon_file_path}")
-        else:
-            click.echo(f"⚠️  Toon path not found: {toon_path}")
+        _collect_toon_data(toon_path, project_echo)
 
     if doql_path:
-        doql_file_path = Path(doql_path)
-        if doql_file_path.exists():
-            project_echo.system_model = parse_doql_file(doql_file_path)
-            click.echo(f"📄 Parsed doql file: {doql_file_path}")
-        else:
-            click.echo(f"⚠️  Doql path not found: {doql_path}")
+        _collect_doql_data(doql_path, project_echo)
 
-    if fmt == "json":
-        output_str = json.dumps(project_echo.to_dict(), indent=2)
-    elif fmt == "sumd":
-        from testql.sumd_generator import generate_sumd
-        output_str = generate_sumd(project_echo, project_path_obj)
-    else:
-        output_str = project_echo.to_text()
+    output_str = _render_echo(project_echo, fmt, project_path_obj)
 
     if output:
         Path(output).write_text(output_str, encoding="utf-8")

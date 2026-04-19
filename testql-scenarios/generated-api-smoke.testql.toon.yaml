@@ -1,23 +1,30 @@
 # SCENARIO: Auto-generated API Smoke Tests
 # TYPE: api
 # GENERATED: true
-# DETECTORS: FastAPIDetector
+# DETECTORS: FastAPIDetector, OpenAPIDetector
 
 CONFIG[4]{key, value}:
   base_url, http://localhost:8101
   timeout_ms, 10000
   retry_count, 3
-  detected_frameworks, FastAPIDetector
+  detected_frameworks, FastAPIDetector, OpenAPIDetector
 
-# REST API Endpoints (7 unique)
-API[7]{method, endpoint, expected_status}:
-  GET, /iql/files, 200  # iql_list_files - List all .testql.toon.yaml files in the project (w
-  GET, /iql/file, 200  # iql_read_file - Read a TestQL file content (.testql.toon.yaml / .i
-  GET, /iql/tables, 200  # iql_list_tables - Extract table names from an IQL file.
-  POST, /iql/run-line, 201  # iql_run_line - Execute a single IQL command line via the encoder 
-  POST, /iql/run-file, 201  # iql_run_file - Run an entire IQL file with validation. Returns st
-  GET, /iql/logs, 200  # iql_list_logs - List available log files.
-  GET, /iql/log, 200  # iql_read_log - Read a specific log file.
+# REST API Endpoints (14 unique)
+API[14]{method, endpoint, expected_status}:
+  GET, /iql/files, 200
+  GET, /iql/file, 200
+  GET, /iql/tables, 200
+  POST, /iql/run-line, 201
+  POST, /iql/run-file, 201
+  GET, /iql/logs, 200
+  GET, /iql/log, 200
+  GET, http://localhost:8101/iql/file, 200
+  GET, http://localhost:8101/iql/files, 200
+  GET, http://localhost:8101/iql/log, 200
+  GET, http://localhost:8101/iql/logs, 200
+  POST, http://localhost:8101/iql/run-file, 201
+  POST, http://localhost:8101/iql/run-line, 201
+  GET, http://localhost:8101/iql/tables, 200
 
 ASSERT[2]{field, operator, expected}:
   status, <, 500
@@ -25,3 +32,4 @@ ASSERT[2]{field, operator, expected}:
 
 # Summary by Framework:
 #   fastapi: 7 endpoints
+#   openapi: 7 endpoints

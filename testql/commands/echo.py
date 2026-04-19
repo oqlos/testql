@@ -11,96 +11,104 @@ import click
 import yaml
 
 
-def parse_doql_less(filepath: Path) -> dict[str, Any]:
-    """Parse .doql.less file into structured system model."""
-    content = filepath.read_text()
-    
-    model = {
-        "app": {},
-        "entities": [],
-        "interfaces": [],
-        "workflows": [],
-        "deploy": {},
-        "environment": {},
-        "integrations": [],
-    }
-    
-    # Parse app block
-    app_match = re.search(r'app\s*\{([^}]+)\}', content)
-    if app_match:
-        for line in app_match.group(1).strip().split('\n'):
-            if ':' in line:
-                key, val = line.split(':', 1)
-                model["app"][key.strip()] = val.strip().rstrip(';')
-    
-    # Parse entities
+def _parse_kv_block(body: str) -> dict[str, str]:
+    """Parse a simple key: value; block body into a dict."""
+    result: dict[str, str] = {}
+    for line in body.strip().split('\n'):
+        if ':' in line:
+            key, val = line.split(':', 1)
+            result[key.strip()] = val.strip().rstrip(';')
+    return result
+
+
+_ANNOTATION_PREFIXES = ('intent:', 'domain:', 'lifetime:')
+
+
+def _parse_app_block(content: str) -> dict[str, str]:
+    m = re.search(r'app\s*\{([^}]+)\}', content)
+    return _parse_kv_block(m.group(1)) if m else {}
+
+
+def _parse_entities(content: str) -> list[dict]:
+    entities = []
     for match in re.finditer(r'entity\[name="([^"]+)"\]\s*\{([^}]+)\}', content, re.DOTALL):
         name, body = match.groups()
-        entity = {"name": name, "fields": [], "annotations": {}}
+        entity: dict = {"name": name, "fields": [], "annotations": {}}
         for line in body.strip().split('\n'):
             line = line.strip()
-            if line.startswith('intent:') or line.startswith('domain:') or line.startswith('lifetime:'):
+            if any(line.startswith(p) for p in _ANNOTATION_PREFIXES):
                 key, val = line.split(':', 1)
                 entity["annotations"][key.strip()] = val.strip().rstrip(';').strip('"')
             elif ':' in line and not line.startswith('#'):
                 entity["fields"].append(line.rstrip(';'))
-        model["entities"].append(entity)
-    
-    # Parse interfaces
+        entities.append(entity)
+    return entities
+
+
+def _parse_interfaces(content: str) -> list[dict]:
+    result = []
     for match in re.finditer(r'interface\[type="([^"]+)"\]\s*\{([^}]+)\}', content, re.DOTALL):
         iface_type, body = match.groups()
-        iface = {"type": iface_type}
-        for line in body.strip().split('\n'):
-            if ':' in line:
-                key, val = line.split(':', 1)
-                iface[key.strip()] = val.strip().rstrip(';')
-        model["interfaces"].append(iface)
-    
-    # Parse workflows
+        iface = {"type": iface_type, **_parse_kv_block(body)}
+        result.append(iface)
+    return result
+
+
+def _parse_workflows(content: str) -> list[dict]:
+    workflows = []
     for match in re.finditer(r'workflow\[name="([^"]+)"\]\s*\{([^}]+)\}', content, re.DOTALL):
         name, body = match.groups()
-        workflow = {"name": name, "steps": [], "annotations": {}}
+        wf: dict = {"name": name, "steps": [], "annotations": {}}
         for line in body.strip().split('\n'):
             line = line.strip()
-            if line.startswith('intent:') or line.startswith('domain:'):
+            if any(line.startswith(p) for p in ('intent:', 'domain:')):
                 key, val = line.split(':', 1)
-                workflow["annotations"][key.strip()] = val.strip().rstrip(';').strip('"')
+                wf["annotations"][key.strip()] = val.strip().rstrip(';').strip('"')
             elif line.startswith('trigger:'):
-                workflow["trigger"] = line.split(':', 1)[1].strip().rstrip(';')
+                wf["trigger"] = line.split(':', 1)[1].strip().rstrip(';')
             elif line.startswith('step-'):
-                workflow["steps"].append(line.split(':', 1)[1].strip().rstrip(';'))
-        model["workflows"].append(workflow)
-    
-    # Parse deploy
-    deploy_match = re.search(r'deploy\s*\{([^}]+)\}', content)
-    if deploy_match:
-        for line in deploy_match.group(1).strip().split('\n'):
-            if ':' in line:
-                key, val = line.split(':', 1)
-                model["deploy"][key.strip()] = val.strip().rstrip(';')
-    
-    # Parse environment
+                wf["steps"].append(line.split(':', 1)[1].strip().rstrip(';'))
+        workflows.append(wf)
+    return workflows
+
+
+def _parse_deploy(content: str) -> dict[str, str]:
+    m = re.search(r'deploy\s*\{([^}]+)\}', content)
+    return _parse_kv_block(m.group(1)) if m else {}
+
+
+def _parse_environment(content: str) -> dict:
     for match in re.finditer(r'environment\[name="([^"]+)"\]\s*\{([^}]+)\}', content, re.DOTALL):
         name, body = match.groups()
-        env = {"name": name}
-        for line in body.strip().split('\n'):
-            if ':' in line:
-                key, val = line.split(':', 1)
-                env[key.strip()] = val.strip().rstrip(';')
-        model["environment"] = env
-    
-    # Parse integrations
+        return {"name": name, **_parse_kv_block(body)}
+    return {}
+
+
+def _parse_integrations(content: str) -> list[dict]:
+    integrations = []
     for match in re.finditer(r'integration\[name="([^"]+)"\]\s*\{([^}]+)\}', content, re.DOTALL):
         name, body = match.groups()
-        integration = {"name": name}
-        types = []
-        for line in body.strip().split('\n'):
-            if line.startswith('type:'):
-                types.append(line.split(':', 1)[1].strip().rstrip(';'))
-        integration["types"] = list(set(types))
-        model["integrations"].append(integration)
-    
-    return model
+        types = [
+            line.split(':', 1)[1].strip().rstrip(';')
+            for line in body.strip().split('\n')
+            if line.strip().startswith('type:')
+        ]
+        integrations.append({"name": name, "types": list(set(types))})
+    return integrations
+
+
+def parse_doql_less(filepath: Path) -> dict[str, Any]:
+    """Parse .doql.less file into structured system model."""
+    content = filepath.read_text()
+    return {
+        "app": _parse_app_block(content),
+        "entities": _parse_entities(content),
+        "interfaces": _parse_interfaces(content),
+        "workflows": _parse_workflows(content),
+        "deploy": _parse_deploy(content),
+        "environment": _parse_environment(content),
+        "integrations": _parse_integrations(content),
+    }
 
 
 def parse_toon_scenarios(path: Path) -> list[dict[str, Any]]:
@@ -172,66 +180,83 @@ def generate_context(path: Path, include_toon: bool = True, include_doql: bool =
     return context
 
 
+def _fmt_interfaces(context: dict) -> list[str]:
+    interfaces = context.get("system_model", {}).get("interfaces", [])
+    if not interfaces:
+        return []
+    lines = ["🧠 Type:"]
+    for iface in interfaces:
+        lines.append(f"  • {iface['type']} ({iface.get('framework', 'unknown')})")
+    lines.append("")
+    return lines
+
+
+def _fmt_workflows(context: dict) -> list[str]:
+    workflows = context.get("system_model", {}).get("workflows", [])
+    if not workflows:
+        return []
+    lines = ["🛠️ Workflows:"]
+    for wf in workflows:
+        steps = len(wf.get("steps", []))
+        lines.append(f"  • {wf['name']}: {steps} step(s)")
+    lines.append("")
+    return lines
+
+
+def _fmt_contracts(context: dict) -> list[str]:
+    contracts = context.get("api_contracts", [])
+    if not contracts:
+        return []
+    lines = ["🌐 API scenarios (from toon tests):"]
+    for contract in contracts:
+        lines.append(f"  • {contract['name']} ({contract['type']}) - {len(contract['endpoints'])} endpoint(s)")
+        for ep in contract["endpoints"][:3]:
+            lines.append(f"    - {ep['method']} {ep['path'][:50]}")
+        if len(contract["endpoints"]) > 3:
+            lines.append(f"    ... and {len(contract['endpoints']) - 3} more")
+    lines.append("")
+    return lines
+
+
+def _fmt_entities(context: dict) -> list[str]:
+    entities = context.get("system_model", {}).get("entities", [])
+    if not entities:
+        return []
+    lines = [f"📊 Entities: {len(entities)}"]
+    for e in entities[:5]:
+        lines.append(f"  • {e['name']} ({len(e.get('fields', []))} fields)")
+    if len(entities) > 5:
+        lines.append(f"  ... and {len(entities) - 5} more")
+    lines.append("")
+    return lines
+
+
+def _fmt_suggestions(context: dict) -> list[str]:
+    workflows = context.get("system_model", {}).get("workflows", [])
+    contracts = context.get("api_contracts", [])
+    lines = ["💡 LLM suggestions:"]
+    if any(w['name'] == 'install' for w in workflows):
+        lines.append("  • Setup: task install")
+    if contracts:
+        lines.append("  • Run tests: testql suite")
+    if any(w['name'] == 'run' for w in workflows):
+        lines.append("  • Start server: task run")
+    return lines
+
+
 def format_text_output(context: dict[str, Any]) -> str:
     """Format context as human-readable text."""
-    lines = []
-    
     app = context.get("system_model", {}).get("app", {})
-    lines.append(f"📦 Project: {app.get('name', context['project']['name'])} ({app.get('version', '?.?.?')})")
-    lines.append("")
-    
-    # Interfaces
-    interfaces = context.get("system_model", {}).get("interfaces", [])
-    if interfaces:
-        lines.append("🧠 Type:")
-        for iface in interfaces:
-            lines.append(f"  • {iface['type']} ({iface.get('framework', 'unknown')})")
-        lines.append("")
-    
-    # Workflows
-    workflows = context.get("system_model", {}).get("workflows", [])
-    if workflows:
-        lines.append("🛠️ Workflows:")
-        for wf in workflows:
-            steps = len(wf.get("steps", []))
-            lines.append(f"  • {wf['name']}: {steps} step(s)")
-        lines.append("")
-    
-    # API endpoints from toon
-    contracts = context.get("api_contracts", [])
-    if contracts:
-        lines.append("🌐 API scenarios (from toon tests):")
-        for contract in contracts:
-            lines.append(f"  • {contract['name']} ({contract['type']}) - {len(contract['endpoints'])} endpoint(s)")
-            for ep in contract["endpoints"][:3]:
-                lines.append(f"    - {ep['method']} {ep['path'][:50]}")
-            if len(contract["endpoints"]) > 3:
-                lines.append(f"    ... and {len(contract['endpoints']) - 3} more")
-        lines.append("")
-    
-    # Entities
-    entities = context.get("system_model", {}).get("entities", [])
-    if entities:
-        lines.append(f"📊 Entities: {len(entities)}")
-        for e in entities[:5]:
-            field_count = len(e.get("fields", []))
-            lines.append(f"  • {e['name']} ({field_count} fields)")
-        if len(entities) > 5:
-            lines.append(f"  ... and {len(entities) - 5} more")
-        lines.append("")
-    
-    # LLM suggestions
-    lines.append("💡 LLM suggestions:")
-    if workflows:
-        install_wf = next((w for w in workflows if w['name'] == 'install'), None)
-        if install_wf:
-            lines.append(f"  • Setup: task install")
-    if contracts:
-        lines.append(f"  • Run tests: testql suite")
-    if any(w['name'] == 'run' for w in workflows):
-        lines.append(f"  • Start server: task run")
-    
-    return "\n".join(lines)
+    header = [f"📦 Project: {app.get('name', context['project']['name'])} ({app.get('version', '?.?.?')})", ""]
+    sections = (
+        header
+        + _fmt_interfaces(context)
+        + _fmt_workflows(context)
+        + _fmt_contracts(context)
+        + _fmt_entities(context)
+        + _fmt_suggestions(context)
+    )
+    return "\n".join(sections)
 
 
 @click.command()

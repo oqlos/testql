@@ -155,6 +155,41 @@ def _save_report(report_data: dict, report_file: str, output: str) -> None:
     click.echo(f"📄 Report saved: {report_file}")
 
 
+def _print_summary(results: list[dict], total_passed: int, total_failed: int, total_duration: float) -> None:
+    click.echo(f"\n{'='*50}")
+    click.echo(f"Results: {len([r for r in results if r.get('ok')])}/{len(results)} files passed")
+    click.echo(f"Tests: {total_passed} passed, {total_failed} failed")
+    click.echo(f"Duration: {total_duration:.0f}ms")
+
+
+def _run_suite_files(
+    test_files: list[Path],
+    url: str,
+    output: str,
+    fail_fast: bool,
+    config: dict,
+) -> tuple[list[dict], bool]:
+    from testql.interpreter import IqlInterpreter
+
+    results: list[dict] = []
+    all_passed = True
+    for i, test_file in enumerate(test_files, 1):
+        click.echo(f"[{i}/{len(test_files)}] {test_file.name}")
+        interp = IqlInterpreter(
+            api_url=url or config.get("defaults", {}).get("api_url", "http://localhost:8101"),
+            quiet=(output != "console"),
+            include_paths=[str(test_file.parent), "."],
+        )
+        result = _run_single_file(test_file, interp)
+        results.append(result)
+        if not result.get("ok"):
+            all_passed = False
+            if fail_fast:
+                click.echo("\n⚡ Fail-fast enabled, stopping suite")
+                break
+    return results, all_passed
+
+
 # ---------------------------------------------------------------------------
 # Commands
 # ---------------------------------------------------------------------------
@@ -184,7 +219,6 @@ def suite(
 ) -> None:
     """Run test suite(s) — predefined or custom pattern."""
     import yaml
-    from testql.interpreter import IqlInterpreter
 
     target_path = Path(base_path)
     config_file = (
@@ -192,48 +226,26 @@ def suite(
         if target_path.is_dir()
         else target_path.parent / "testql.yaml"
     )
-
     config: dict = {}
     if config_file.exists():
         config = yaml.safe_load(config_file.read_text()) or {}
 
     test_files = _collect_test_files(target_path, suite_name, pattern, config)
-
     if not test_files:
         click.echo("❌ No test files found")
         sys.exit(1)
 
     click.echo(f"🧪 Running {len(test_files)} test(s)\n")
 
-    results: list[dict] = []
-    all_passed = True
-
-    for i, test_file in enumerate(test_files, 1):
-        click.echo(f"[{i}/{len(test_files)}] {test_file.name}")
-
-        interp = IqlInterpreter(
-            api_url=url or config.get("defaults", {}).get("api_url", "http://localhost:8101"),
-            quiet=(output != "console"),
-            include_paths=[str(test_file.parent), "."],
-        )
-
-        result = _run_single_file(test_file, interp)
-        results.append(result)
-
-        if not result.get("ok"):
-            all_passed = False
-            if fail_fast:
-                click.echo("\n⚡ Fail-fast enabled, stopping suite")
-                break
+    results, all_passed = _run_suite_files(
+        test_files, url or "", output, fail_fast, config
+    )
 
     total_passed = sum(r.get("passed", 0) for r in results)
     total_failed = sum(r.get("failed", 0) for r in results)
     total_duration = sum(r.get("duration_ms", 0) for r in results)
 
-    click.echo(f"\n{'='*50}")
-    click.echo(f"Results: {len([r for r in results if r.get('ok')])}/{len(results)} files passed")
-    click.echo(f"Tests: {total_passed} passed, {total_failed} failed")
-    click.echo(f"Duration: {total_duration:.0f}ms")
+    _print_summary(results, total_passed, total_failed, total_duration)
 
     if report or output in ("json", "junit", "html"):
         report_data = _build_report_data(suite_name, results, total_passed, total_failed, total_duration)
@@ -282,14 +294,38 @@ def list_tests(path: str, test_type: str, tag: str | None, fmt: str) -> None:
             "tags": meta.get("tags", []),
         })
 
+    if not tests:
+        click.echo("No test files found.")
+        return
+
     if fmt == "json":
         print(json.dumps(tests, indent=2))
+    elif fmt == "simple":
+        for t in tests:
+            click.echo(t["file"])
+    else:  # table
+        click.echo(f"{'File':<55} {'Type':<14} {'Tags'}")
+        click.echo("-" * 80)
+        for t in tests:
+            tags_str = ", ".join(t["tags"]) if t["tags"] else "-"
+            click.echo(f"{t['file']:<55} {t['type']:<14} {tags_str}")
+        click.echo(f"\n{len(tests)} test file(s) found.")
 
 
 def _parse_meta(tf: Path, yaml) -> dict:
     meta: dict = {"name": tf.stem, "type": "unknown", "tags": []}
     try:
         content = tf.read_text()
+
+        # Handle TestTOON header format: # SCENARIO: ..., # TYPE: ...
+        if content.startswith("# SCENARIO:") or "# TYPE:" in content[:200]:
+            for line in content.splitlines()[:10]:
+                if line.startswith("# SCENARIO:"):
+                    meta["name"] = line[len("# SCENARIO:"):].strip()
+                elif line.startswith("# TYPE:"):
+                    meta["type"] = line[len("# TYPE:"):].strip()
+            return meta
+
         if "meta:" not in content:
             return meta
 

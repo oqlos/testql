@@ -7,27 +7,61 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- **New CLI commands for test management:**
-  - `testql init` — Initialize project with directory structure, config file, and starter templates
-  - `testql create <name>` — Generate test files from templates (gui, api, mixed, encoder, performance, workflow)
-  - `testql suite [name]` — Run predefined or custom test suites with filtering
-  - `testql list` — List all tests with metadata (type, tags, module)
-  - `testql watch` — Watch mode for automatic test re-runs on file changes
-- **Test templates:**
-  - `gui` — GUI navigation and interaction tests
-  - `api` — REST API endpoint tests
-  - `mixed` — Combined API + GUI workflow tests
-  - `encoder` — Hardware encoder interaction tests
-  - `performance` — Load time and performance benchmarks
-  - `workflow` — Multi-step business process tests
-- **Suite configuration** via `testql.yaml` with predefined test suites (smoke, regression, api)
-- **Filtering support:** by type, tags, and custom patterns
-- **Report formats:** console, JSON, JUnit XML
-- **Parallel execution** support with `-j` flag
-- **Fail-fast mode** with `--fail-fast` flag
+## [0.6.7] - 2026-04-19
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+- Update SUMR.md
+- Update TODO.md
+
+### Test
+- Update testql-scenarios/generated-api-smoke.testql.toon.yaml
+- Update testql/commands/echo.py
+- Update testql/commands/generate_cmd.py
+- Update testql/commands/misc_cmds.py
+- Update testql/commands/suite_cmd.py
+- Update testql/commands/templates/__init__.py
+- Update testql/commands/templates/templates.py
+- Update testql/detectors/__init__.py
+- Update testql/detectors/base.py
+- Update testql/detectors/config_detector.py
+- ... and 19 more files
+
+### Other
+- Update sumd.json
 
 ## [0.6.6] - 2026-04-19
+
+### Refactored
+- `convert_iql_to_testtoon` (CC 66 → ≤12): extracted `_handle_api`, `_handle_navigate`,
+  `_handle_encoder`, `_handle_select`, `_handle_flow`, `_handle_record_*`, `_handle_wait`,
+  `_handle_include`, `_dispatch`, `_parse_commands`, `_build_config_section`, `_render_sections`
+- `parse_doql_less` (CC 29 → ≤8): split into `_parse_app_block`, `_parse_entities`,
+  `_parse_interfaces`, `_parse_workflows`, `_parse_deploy`, `_parse_environment`,
+  `_parse_integrations`, `_parse_kv_block`
+- `format_text_output` (CC 19 → ≤6): split into `_fmt_interfaces`, `_fmt_workflows`,
+  `_fmt_contracts`, `_fmt_entities`, `_fmt_suggestions`
+- `suite` command (CC 18 → 13): extracted `_run_suite_files`, `_print_summary`
+- `echo` command in misc_cmds (CC 16 → ≤10): extracted `_collect_toon_data`,
+  `_collect_doql_data`, `_render_echo`
+
+### Fixed
+- `generate --analyze-only` crash: `TestGenerator.analyze()` now returns `self.profile`
+- Workspace detection incorrectly classified Python projects with same-name subpackage
+  (e.g. `testql/testql/`) as monorepo workspaces — guard added on `pyproject.toml` + `__init__.py`
+- `testql list` produced empty output in `table`/`simple` format modes
+- `testql list` did not recognise TestTOON header format (`# SCENARIO:` / `# TYPE:`)
+
+### Added
+- `testql generate` now correctly detects all 6 OqlOS projects as standalone Python projects
+- `testql list` table format with file / type / tags columns
+- `_is_workspace()` helper for reliable monorepo vs. single-project detection
+
+### Docs
+- Updated CHANGELOG and TODO
+
+
 
 ### Docs
 - Update README.md

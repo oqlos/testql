@@ -8,6 +8,18 @@ from pathlib import Path
 import click
 
 
+def _is_workspace(target_path: Path) -> bool:
+    """True only when target_path is a monorepo workspace, not a single Python project."""
+    # If it has its own pyproject.toml, it's a standalone project
+    if (target_path / "pyproject.toml").exists() or (target_path / "setup.py").exists():
+        return False
+    workspace_dirs = ["doql", "oql", "oqlos", "testql", "weboql", "www"]
+    return any(
+        (target_path / d).exists() and not (target_path / d / "__init__.py").exists()
+        for d in workspace_dirs
+    )
+
+
 @click.command()
 @click.argument("path", type=click.Path(exists=True), default=".")
 @click.option("--output-dir", "-o", help="Output directory for generated tests")
@@ -19,7 +31,7 @@ def generate(path: str, output_dir: str | None, analyze_only: bool, fmt: str) ->
 
     target_path = Path(path)
 
-    if any((target_path / d).exists() for d in ["doql", "oql", "oqlos", "testql", "weboql", "www"]):
+    if _is_workspace(target_path):
         click.echo(f"🔄 Analyzing workspace: {target_path}")
         gen = MultiProjectTestGenerator(target_path)
         profiles = gen.analyze_all()
@@ -44,6 +56,8 @@ def generate(path: str, output_dir: str | None, analyze_only: bool, fmt: str) ->
         click.echo(f"🔄 Analyzing project: {target_path}")
         gen = TestGenerator(target_path)
         profile = gen.analyze()
+        if profile is None:
+            profile = gen.profile
 
         click.echo(f"📊 Project type: {profile.project_type}")
         click.echo(f"📊 Test patterns: {len(profile.test_patterns)}")
