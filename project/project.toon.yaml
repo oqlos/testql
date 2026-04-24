@@ -1,4 +1,4 @@
-# testql | 1116 func | 80f | 38395L | python | 2026-04-24
+# testql | 1116 func | 80f | 39237L | python | 2026-04-24
 
 HEALTH:
   CC̄=1.5  critical=18 (limit:10)  dup=19  cycles=0
@@ -17,20 +17,20 @@ ALERTS[20]:
 
 MODULES[210] (top by size):
   M[SUMD.md] 4710L C:18 F:227 CC↑0 D:19 (md)
-  M[project/calls.yaml] 2883L C:0 F:0 CC↑0 D:0 (yaml)
+  M[project/calls.yaml] 3007L C:0 F:0 CC↑0 D:0 (yaml)
+  M[project/map.toon.yaml] 2065L C:0 F:266 CC↑0 D:2 (yaml)
   M[SUMR.md] 1515L C:18 F:79 CC↑0 D:11 (md)
-  M[project/map.toon.yaml] 1411L C:0 F:266 CC↑0 D:2 (yaml)
-  M[docs/README.md] 1114L C:0 F:1 CC↑0 D:0 (md)
+  M[docs/README.md] 1126L C:0 F:1 CC↑0 D:0 (md)
   M[code2llm_output/calls.yaml] 799L C:0 F:0 CC↑0 D:0 (yaml)
   M[code2llm_output/context.md] 652L C:0 F:0 CC↑0 D:0 (md)
-  M[project/context.md] 562L C:0 F:0 CC↑0 D:0 (md)
+  M[project/context.md] 590L C:0 F:0 CC↑0 D:0 (md)
   M[goal.yaml] 511L C:0 F:0 CC↑0 D:0 (yaml)
   M[testql/commands/encoder_routes.py] 477L C:0 F:27 CC↑10 D:0 (python)
   M[testql/openapi_generator.py] 444L C:3 F:21 CC↑11 D:0 (python)
   M[testql/interpreter/_gui.py] 425L C:1 F:10 CC↑9 D:0 (python)
   M[CHANGELOG.md] 424L C:0 F:0 CC↑0 D:0 (md)
+  M[project/validation.toon.yaml] 421L C:0 F:0 CC↑0 D:0 (yaml)
   M[testql/interpreter/_testtoon_parser.py] 413L C:2 F:24 CC↑8 D:0 (python)
-  M[README.md] 407L C:0 F:0 CC↑0 D:0 (md)
   LANGS: python:95/yaml:94/md:12/yml:2/txt:2/json:2/shell:2/toml:1
 
 HOTSPOTS[10]:
@@ -45,7 +45,7 @@ REFACTOR[13]:
   [2] H/H Split god module SUMR.md (1515L, 18 classes)
   [3] H/H Split god module code2llm_output/calls.yaml (799L, 0 classes)
   [4] H/H Split god module code2llm_output/context.md (652L, 0 classes)
-  [5] H/H Split god module docs/README.md (1114L, 0 classes)
+  [5] H/H Split god module docs/README.md (1126L, 0 classes)
 
 EVOLUTION:
-  2026-04-24 CC̄=1.5 crit=18 38395L // Automated analysis
+  2026-04-24 CC̄=1.5 crit=18 39237L // Automated analysis
