@@ -1,7 +1,7 @@
 <!-- code2docs:start --># testql
 
-![version](https://img.shields.io/badge/version-0.1.0-blue) ![python](https://img.shields.io/badge/python-%3E%3D3.10-blue) ![coverage](https://img.shields.io/badge/coverage-unknown-lightgrey) ![functions](https://img.shields.io/badge/functions-1090-green)
-> **1090** functions | **103** classes | **208** files | CC̄ = 3.6
+![version](https://img.shields.io/badge/version-0.1.0-blue) ![python](https://img.shields.io/badge/python-%3E%3D3.10-blue) ![coverage](https://img.shields.io/badge/coverage-unknown-lightgrey) ![functions](https://img.shields.io/badge/functions-1116-green)
+> **1116** functions | **107** classes | **212** files | CC̄ = 3.7
 
 > Auto-generated project documentation from source code analysis.
 
@@ -150,12 +150,16 @@ testql/
         ├── _testtoon_parser
         ├── _parser
         ├── _api_runner
+        ├── _gui
+        ├── _shell
         ├── _converter
+        ├── _unit
         ├── _flow
         ├── _encoder
         ├── _assertions
         ├── interpreter
         ├── _websockets
+        ├── dispatcher
             ├── parsers
         ├── converter/
             ├── models
@@ -270,11 +274,11 @@ testql/
                     ├── toon
                     ├── toon
                     ├── toon
+        ├── toon
+        ├── toon
     ├── prompt
-        ├── toon
-        ├── toon
-        ├── toon
     ├── context
+        ├── toon
     ├── README
         ├── toon
     ├── calls
@@ -359,11 +363,15 @@ testql/
 - **`IqlLine`** — —
 - **`IqlScript`** — —
 - **`ApiRunnerMixin`** — Mixin providing HTTP API execution commands: API, CAPTURE.
+- **`GuiMixin`** — Mixin providing desktop GUI test commands using Playwright.
+- **`ShellMixin`** — Mixin providing shell command execution: SHELL, EXEC, RUN, ASSERT_EXIT_CODE, etc.
+- **`UnitMixin`** — Mixin providing unit test execution: UNIT_PYTEST, UNIT_IMPORT, UNIT_ASSERT.
 - **`FlowMixin`** — Mixin providing: WAIT, LOG, PRINT, INCLUDE and _emit_event.
 - **`EncoderMixin`** — Mixin providing all ENCODER_* hardware control commands.
 - **`AssertionsMixin`** — Mixin providing ASSERT_STATUS, ASSERT_OK, ASSERT_CONTAINS, ASSERT_JSON.
 - **`IqlInterpreter`** — IQL interpreter — runs .testql.toon.yaml / .iql / .tql scripts.
 - **`WebSocketMixin`** — Mixin for WebSocket testing support.
+- **`CommandDispatcher`** — Central command dispatcher with auto-discovery and better error messages.
 - **`Row`** — A row of values in a section.
 - **`Section`** — A section in the converted output.
 - **`JUnitReporter`** — Generate JUnit XML from a TestQL ScriptResult.
@@ -741,6 +749,8 @@ testql/
 - `parse_line()` — —
 - `parse_script()` — —
 - `main()` — —
+- `generate_openapi_spec()` — —
+- `generate_contract_tests_from_spec()` — —
 - `parse_sumd_file()` — —
 - `parse_api_args()` — —
 - `parse_meta_from_args()` — —
@@ -748,8 +758,6 @@ testql/
 - `parse_commands()` — —
 - `detect_scenario_type()` — —
 - `extract_scenario_name()` — —
-- `generate_openapi_spec()` — —
-- `generate_contract_tests_from_spec()` — —
 - `generate()` — —
 - `analyze()` — —
 - `iql_list_files()` — —
@@ -766,43 +774,43 @@ testql/
 - `collect_toon_data()` — —
 - `collect_doql_data()` — —
 - `render_echo()` — —
-- `report_junit()` — —
 - `validate_testtoon()` — —
 - `testtoon_to_iql()` — —
+- `report_junit()` — —
+- `generate_sumd()` — —
+- `save_sumd()` — —
 - `parse_meta()` — —
 - `filter_tests()` — —
 - `render_test_list()` — —
 - `parse_doql_less()` — —
-- `generate_sumd()` — —
-- `save_sumd()` — —
 - `build_config_section()` — —
 - `render_sections()` — —
 - `build_header()` — —
+- `parse_doql_file()` — —
 - `init()` — —
 - `create()` — —
 - `watch()` — —
 - `from_sumd()` — —
 - `report()` — —
 - `echo()` — —
+- `collect_test_files()` — —
+- `collect_list_files()` — —
 - `build_report_data()` — —
 - `save_report()` — —
 - `print_summary()` — —
-- `collect_test_files()` — —
-- `collect_list_files()` — —
 - `format_text_output()` — —
 - `handle_api()` — —
 - `handle_navigate()` — —
-- `parse_doql_file()` — —
 - `report_console()` — —
+- `generate_report()` — —
 - `run_single_file()` — —
 - `run_suite_files()` — —
 - `parse_toon_scenarios()` — —
-- `generate_report()` — —
+- `parse_iql()` — —
 - `convert_iql_to_testtoon()` — —
 - `convert_file()` — —
 - `convert_directory()` — —
 - `handle_encoder()` — —
-- `parse_iql()` — —
 - `parse_toon_file()` — —
 - `generate_context()` — —
 - `handle_wait()` — —
@@ -861,9 +869,6 @@ testql/
 - `run_script()` — —
 - `parse_file()` — —
 - `generate_testql_scenarios()` — —
-- `generate_readme()` — —
-- `print()` — —
-- `list()` — —
 - `write_toon()` — —
 - `test_normalize_legacy_test_path()` — —
 - `test_normalize_legacy_view_path()` — —
@@ -873,6 +878,9 @@ testql/
 - `test_resolve_new_format()` — —
 - `make_result()` — —
 - `make_step()` — —
+- `list()` — —
+- `print()` — —
+- `generate_readme()` — —
 
 
 ## Project Structure
@@ -907,7 +915,7 @@ testql/
 📄 `project.context`
 📄 `project.duplication.toon`
 📄 `project.evolution.toon`
-📄 `project.map.toon` (808 functions)
+📄 `project.map.toon` (1444 functions)
 📄 `project.project.toon`
 📄 `project.prompt`
 📄 `project.validation.toon`
@@ -976,8 +984,11 @@ testql/
 📄 `testql.interpreter._converter`
 📄 `testql.interpreter._encoder` (12 functions, 1 classes)
 📄 `testql.interpreter._flow` (6 functions, 1 classes)
+📄 `testql.interpreter._gui` (10 functions, 1 classes)
 📄 `testql.interpreter._parser` (1 functions, 2 classes)
+📄 `testql.interpreter._shell` (6 functions, 1 classes)
 📄 `testql.interpreter._testtoon_parser` (24 functions, 2 classes)
+📄 `testql.interpreter._unit` (4 functions, 1 classes)
 📄 `testql.interpreter._websockets` (8 functions, 1 classes)
 📦 `testql.interpreter.converter`
 📄 `testql.interpreter.converter.core` (3 functions)
@@ -996,6 +1007,7 @@ testql/
 📄 `testql.interpreter.converter.models` (2 classes)
 📄 `testql.interpreter.converter.parsers` (6 functions)
 📄 `testql.interpreter.converter.renderer` (4 functions)
+📄 `testql.interpreter.dispatcher` (6 functions, 1 classes)
 📄 `testql.interpreter.interpreter` (7 functions, 1 classes)
 📄 `testql.openapi_generator` (21 functions, 3 classes)
 📄 `testql.report_generator` (8 functions, 4 classes)

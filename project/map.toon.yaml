@@ -1,15 +1,15 @@
-# testql | 206f 26094L | yaml:94,md:12,toml:1,json:2,yml:2,shell:2,txt:2,python:91 | 2026-04-24
-# stats: 993 func | 0 cls | 206 mod | CC̄=1.6 | critical:0 | cycles:0
+# testql | 210f 32096L | md:12,yaml:94,json:2,toml:1,shell:2,yml:2,txt:2,python:95 | 2026-04-24
+# stats: 1116 func | 0 cls | 210 mod | CC̄=1.5 | critical:1 | cycles:0
 # alerts[5]: fan-out generate=21; fan-out parse_testtoon=21; fan-out suite=20; fan-out watch=20; fan-out main=19
-# hotspots[5]: generate fan=21; parse_testtoon fan=21; watch fan=20; suite fan=20; main fan=19
-# evolution: CC̄ 4.6→1.6 (improved -3.0)
+# hotspots[5]: parse_testtoon fan=21; generate fan=21; watch fan=20; suite fan=20; main fan=19
+# evolution: CC̄ 1.5→1.5 (flat 0.0)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[206]:
-  CHANGELOG.md,378
+M[210]:
+  CHANGELOG.md,424
   README.md,407
   SUMD.md,4710
   SUMR.md,1515
-  TODO.md,67
+  TODO.md,198
   TODO/testql-table-format-spec.md,362
   TODO/testtoon_parser.py,141
   Taskfile.yml,185
@@ -23,22 +23,22 @@ M[206]:
   code2llm_output/project.toon.yaml,9
   code2llm_output/prompt.txt,47
   coverage.json,1
-  docs/README.md,203
+  docs/README.md,1126
   docs/testql-spec.md,125
   goal.yaml,511
   openapi.yaml,175
-  project.sh,37
+  project.sh,39
   project/README.md,339
-  project/analysis.toon.yaml,271
-  project/calls.yaml,948
-  project/calls.toon.yaml,181
-  project/context.md,651
+  project/analysis.toon.yaml,277
+  project/calls.yaml,3007
+  project/calls.toon.yaml,299
+  project/context.md,590
   project/duplication.toon.yaml,9
-  project/evolution.toon.yaml,82
-  project/map.toon.yaml,705
+  project/evolution.toon.yaml,43
+  project/map.toon.yaml,2065
   project/project.toon.yaml,51
   project/prompt.txt,47
-  project/validation.toon.yaml,63
+  project/validation.toon.yaml,421
   pyproject.toml,70
   pyqual.yaml,71
   sumd.json,204
@@ -96,16 +96,19 @@ M[206]:
   testql/generators/analyzers.py,299
   testql/generators/base.py,58
   testql/generators/convenience.py,51
-  testql/generators/generators.py,344
+  testql/generators/generators.py,372
   testql/generators/multi.py,105
-  testql/interpreter.py,27
+  testql/interpreter/__init__.py,89
   testql/interpreter/_api_runner.py,186
   testql/interpreter/_assertions.py,103
   testql/interpreter/_converter.py,62
   testql/interpreter/_encoder.py,79
   testql/interpreter/_flow.py,136
+  testql/interpreter/_gui.py,425
   testql/interpreter/_parser.py,33
+  testql/interpreter/_shell.py,243
   testql/interpreter/_testtoon_parser.py,413
+  testql/interpreter/_unit.py,249
   testql/interpreter/_websockets.py,172
   testql/interpreter/converter/__init__.py,19
   testql/interpreter/converter/core.py,58
@@ -124,7 +127,8 @@ M[206]:
   testql/interpreter/converter/models.py,20
   testql/interpreter/converter/parsers.py,93
   testql/interpreter/converter/renderer.py,64
-  testql/interpreter/interpreter.py,125
+  testql/interpreter/dispatcher.py,86
+  testql/interpreter/interpreter.py,131
   testql/openapi_generator.py,444
   testql/report_generator.py,248
   testql/reporters/__init__.py,6
@@ -212,6 +216,9 @@ M[206]:
   testql/toon_parser.py,110
   tree.sh,1
 D:
+  testql/interpreter/_unit.py:
+    e: UnitMixin
+    UnitMixin: _cmd_unit_pytest(2),_cmd_unit_pytest_discover(2),_cmd_unit_import(2),_cmd_unit_assert(2)  # Mixin providing unit test execution: UNIT_PYTEST, UNIT_IMPOR...
   TODO/testtoon_parser.py:
     e: Section,detect_separator,parse_value,parse_testtoon,validate,print_parsed
     Section: to_dicts(0),validate(0)
@@ -220,16 +227,13 @@ D:
     parse_testtoon(text)
     validate(parsed)
     print_parsed(parsed)
+  testql/interpreter/_shell.py:
+    e: ShellMixin
+    ShellMixin: _cmd_shell(2),_cmd_exec(2),_cmd_run(2),_cmd_assert_exit_code(2),_cmd_assert_stdout_contains(2),_cmd_assert_stderr_contains(2)  # Mixin providing shell command execution: SHELL, EXEC, RUN, A...
   testql/commands/suite/cli.py:
     e: suite,list_tests
     suite(suite_name;base_path;pattern;tags;test_types;parallel;fail_fast;output;report;url)
     list_tests(path;test_type;tag;fmt)
-  testql/generators/generators.py:
-    e: APIGeneratorMixin,PythonTestGeneratorMixin,ScenarioGeneratorMixin,SpecializedGeneratorMixin
-    APIGeneratorMixin: _generate_api_tests(1),_build_api_test_header(1),_build_api_test_config(1),_build_rest_section(1),_build_graphql_section(1),_build_websocket_section(1),_build_api_test_endpoints(1),_deduplicate_rest_routes(1),_build_api_test_assertions(0),_build_api_test_summary(1)  # Mixin for generating API-focused test scenarios...
-    PythonTestGeneratorMixin: _generate_from_python_tests(1)  # Mixin for generating tests from existing Python tests...
-    ScenarioGeneratorMixin: _generate_from_scenarios(1)  # Mixin for generating tests from OQL/CQL scenarios...
-    SpecializedGeneratorMixin: _generate_api_integration_tests(1),_generate_cli_tests(1),_generate_lib_tests(1),_generate_frontend_tests(1),_generate_hardware_tests(1)  # Mixin for generating specialized test types...
   testql/runner.py:
     e: DslCommand,ExecutionResult,DslCliExecutor,parse_line,parse_script,main
     DslCommand:
@@ -238,6 +242,21 @@ D:
     parse_line(line)
     parse_script(content)
     main()
+  testql/generators/generators.py:
+    e: APIGeneratorMixin,PythonTestGeneratorMixin,ScenarioGeneratorMixin,SpecializedGeneratorMixin
+    APIGeneratorMixin: _generate_api_tests(1),_build_api_test_header(1),_build_api_test_config(1),_build_rest_section(1),_build_graphql_section(1),_build_websocket_section(1),_build_api_test_endpoints(1),_deduplicate_rest_routes(1),_build_api_test_assertions(0),_build_api_test_summary(1)  # Mixin for generating API-focused test scenarios...
+    PythonTestGeneratorMixin: _generate_from_python_tests(1)  # Mixin for generating tests from existing Python tests...
+    ScenarioGeneratorMixin: _generate_from_scenarios(1)  # Mixin for generating tests from OQL/CQL scenarios...
+    SpecializedGeneratorMixin: _generate_api_integration_tests(1),_generate_cli_tests(1),_generate_lib_tests(1),_generate_frontend_tests(1),_generate_hardware_tests(1)  # Mixin for generating specialized test types...
+  testql/openapi_generator.py:
+    e: OpenAPISpec,OpenAPIGenerator,ContractTestGenerator,_extract_path_params,_extract_ep_params,generate_openapi_spec,generate_contract_tests_from_spec
+    OpenAPISpec: to_dict(0),to_json(1),to_yaml(0)  # OpenAPI specification container...
+    OpenAPIGenerator: __init__(1),generate(2),_normalize_path(1),_build_operation(1),_infer_tags(1),_extract_parameters(1),_build_request_body(1),_build_responses(1),save(2)  # Generate OpenAPI specs from detected endpoints...
+    ContractTestGenerator: __init__(1),_load_spec(1),generate_contract_tests(1),_get_expected_status(2),validate_response(3)  # Generate contract tests from OpenAPI specs...
+    _extract_path_params(path)
+    _extract_ep_params(ep_params;existing)
+    generate_openapi_spec(project_path;output;format)
+    generate_contract_tests_from_spec(spec_path;output)
   testql/sumd_parser.py:
     e: SumdMetadata,SumdInterface,SumdWorkflow,SumdDocument,SumdParser,_parse_block_interfaces,_parse_api_interfaces,parse_sumd_file
     SumdMetadata:  # Metadata from SUMD...
@@ -256,15 +275,6 @@ D:
     parse_commands(source)
     detect_scenario_type(commands)
     extract_scenario_name(comments;filename)
-  testql/openapi_generator.py:
-    e: OpenAPISpec,OpenAPIGenerator,ContractTestGenerator,_extract_path_params,_extract_ep_params,generate_openapi_spec,generate_contract_tests_from_spec
-    OpenAPISpec: to_dict(0),to_json(1),to_yaml(0)  # OpenAPI specification container...
-    OpenAPIGenerator: __init__(1),generate(2),_normalize_path(1),_build_operation(1),_infer_tags(1),_extract_parameters(1),_build_request_body(1),_build_responses(1),save(2)  # Generate OpenAPI specs from detected endpoints...
-    ContractTestGenerator: __init__(1),_load_spec(1),generate_contract_tests(1),_get_expected_status(2),validate_response(3)  # Generate contract tests from OpenAPI specs...
-    _extract_path_params(path)
-    _extract_ep_params(ep_params;existing)
-    generate_openapi_spec(project_path;output;format)
-    generate_contract_tests_from_spec(spec_path;output)
   testql/commands/generate_cmd.py:
     e: _is_workspace,generate,analyze,_count_routes_by,_print_routes_section,_print_scenarios_section
     _is_workspace(target_path)
@@ -273,9 +283,6 @@ D:
     _count_routes_by(routes;key)
     _print_routes_section(profile)
     _print_scenarios_section(profile)
-  testql/generators/analyzers.py:
-    e: ProjectAnalyzer
-    ProjectAnalyzer(BaseAnalyzer): _detect_web_frontend(1),_detect_python_type(1),_has_argparse_usage(0),_detect_hardware(0),detect_project_type(0),run_full_analysis(0),_scan_directory_structure(0),_collect_patterns_from_tree(3),_analyze_python_tests(0),_extract_test_pattern(4),_detect_pattern_type(2),_extract_commands_and_assertions(1),_analyze_config_files(0),_analyze_api_routes(0),_analyze_api_routes_fallback(0),_analyze_scenarios(0)  # Analyzes project structure to discover testable patterns...
   testql/commands/encoder_routes.py:
     e: _strip_path_segments,_migrate_legacy_extension,_remap_tests_prefix,_normalize_iql_path,_resolve_iql_path,_assert_bool_prop,_assert_count_prop,_assert_text_prop,_assert_classes_prop,_evaluate_assertion,_format_log_detail,_exec_encoder_cmd,_exec_browser_cmd,_exec_assert_cmd,_execute_iql_line,iql_list_files,iql_read_file,iql_list_tables,_extract_table_names,iql_run_line,iql_run_file,_run_iql_lines,_update_counters,_build_run_summary,_write_run_log,iql_list_logs,iql_read_log
     _strip_path_segments(candidate)
@@ -305,6 +312,9 @@ D:
     _write_run_log(normalized_path;lines;log_lines;summary)
     iql_list_logs()
     iql_read_log(name)
+  testql/generators/analyzers.py:
+    e: ProjectAnalyzer
+    ProjectAnalyzer(BaseAnalyzer): _detect_web_frontend(1),_detect_python_type(1),_has_argparse_usage(0),_detect_hardware(0),detect_project_type(0),run_full_analysis(0),_scan_directory_structure(0),_collect_patterns_from_tree(3),_analyze_python_tests(0),_extract_test_pattern(4),_detect_pattern_type(2),_extract_commands_and_assertions(1),_analyze_config_files(0),_analyze_api_routes(0),_analyze_api_routes_fallback(0),_analyze_scenarios(0)  # Analyzes project structure to discover testable patterns...
   testql/commands/endpoints_cmd.py:
     e: endpoints,_format_endpoints_json,_format_endpoints_csv,_format_endpoints_table,_format_endpoints,openapi
     endpoints(path;fmt;framework;endpoint_type;output)
@@ -313,38 +323,29 @@ D:
     _format_endpoints_table(eps;detector)
     _format_endpoints(eps;fmt;target_path;detector)
     openapi(path;output;format;title;version;contract_tests)
-  testql/interpreter/_flow.py:
-    e: FlowMixin
-    FlowMixin: _cmd_wait_for(2),_cmd_wait(2),_cmd_log(2),_cmd_print(2),_cmd_include(2),_emit_event(3)  # Mixin providing: WAIT, LOG, PRINT, INCLUDE and _emit_event...
-  testql/interpreter/converter/handlers/assertions.py:
-    e: collect_assert
-    collect_assert(filtered;j)
   testql/interpreter/_api_runner.py:
     e: ApiRunnerMixin,_resolve_length,_navigate_step,_navigate_json_path
     ApiRunnerMixin: _do_http_request(3),_store_api_response(2),_record_api_success(3),_record_api_http_error(2),_record_api_error(2),_cmd_api(2),_cmd_capture(2)  # Mixin providing HTTP API execution commands: API, CAPTURE...
     _resolve_length(root;path)
     _navigate_step(obj;key)
     _navigate_json_path(root;path)
-  testql/detectors/openapi_detector.py:
-    e: OpenAPIDetector
-    OpenAPIDetector(BaseEndpointDetector): detect(0),_parse_spec(1),_extract_base_path(1)  # Detect endpoints from OpenAPI/Swagger specifications...
+  testql/interpreter/_gui.py:
+    e: GuiMixin
+    GuiMixin: _init_gui_driver(0),_cmd_gui_start(2),_start_playwright(2),_start_selenium(2),_cmd_gui_click(2),_cmd_gui_input(2),_cmd_gui_assert_visible(2),_cmd_gui_assert_text(2),_cmd_gui_capture(2),_cmd_gui_stop(2)  # Mixin providing desktop GUI test commands using Playwright.
+...
+  testql/interpreter/_flow.py:
+    e: FlowMixin
+    FlowMixin: _cmd_wait_for(2),_cmd_wait(2),_cmd_log(2),_cmd_print(2),_cmd_include(2),_emit_event(3)  # Mixin providing: WAIT, LOG, PRINT, INCLUDE and _emit_event...
+  testql/interpreter/converter/handlers/assertions.py:
+    e: collect_assert
+    collect_assert(filtered;j)
   testql/detectors/unified.py:
     e: UnifiedEndpointDetector,detect_endpoints
     UnifiedEndpointDetector: __init__(1),detect_all(0),_deduplicate_endpoints(1),get_endpoints_by_type(1),get_endpoints_by_framework(1),generate_testql_scenario(1),_rest_block(1),_graphql_block(1),_ws_block(1)  # Unified detector that runs all specialized detectors...
     detect_endpoints(project_path)
-  testql/commands/echo_helpers.py:
-    e: _collect_toon_directory,collect_toon_data,collect_doql_data,render_echo
-    _collect_toon_directory(toon_file_path;project_echo)
-    collect_toon_data(toon_path;project_echo)
-    collect_doql_data(doql_path;project_echo)
-    render_echo(project_echo;fmt;project_path_obj)
-  testql/interpreter/_websockets.py:
-    e: WebSocketMixin
-    WebSocketMixin: __init_subclass__(0),_get_ws_context(0),_cmd_ws_connect(2),_cmd_ws_send(2),_ws_do_receive(4),_cmd_ws_receive(2),_cmd_ws_assert_msg(2),_cmd_ws_close(2)  # Mixin for WebSocket testing support...
-  testql/reporters/junit.py:
-    e: JUnitReporter,report_junit
-    JUnitReporter: generate(2),_add_testcase(2)  # Generate JUnit XML from a TestQL ScriptResult...
-    report_junit(result;suite_name)
+  testql/detectors/openapi_detector.py:
+    e: OpenAPIDetector
+    OpenAPIDetector(BaseEndpointDetector): detect(0),_parse_spec(1),_extract_base_path(1)  # Detect endpoints from OpenAPI/Swagger specifications...
   testql/echo_schemas.py:
     e: APIContract,Entity,Workflow,Interface,SystemModel,ProjectEcho
     APIContract:  # API contract layer from toon tests...
@@ -353,6 +354,15 @@ D:
     Interface:  # Interface from doql...
     SystemModel:  # System model from doql...
     ProjectEcho: to_dict(0),to_text(0)  # Combined project echo for LLM consumption...
+  testql/interpreter/__init__.py:
+    e: main
+    main()
+  testql/commands/echo_helpers.py:
+    e: _collect_toon_directory,collect_toon_data,collect_doql_data,render_echo
+    _collect_toon_directory(toon_file_path;project_echo)
+    collect_toon_data(toon_path;project_echo)
+    collect_doql_data(doql_path;project_echo)
+    render_echo(project_echo;fmt;project_path_obj)
   testql/interpreter/_testtoon_parser.py:
     e: ToonSection,ToonScript,_detect_separator,_parse_inline_array,_parse_inline_dict,_parse_value,_make_section,_make_data_row,parse_testtoon,validate_testtoon,_expand_config,_append_api_asserts,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_generic,testtoon_to_iql
     ToonSection: validate(0)
@@ -380,6 +390,26 @@ D:
     _expand_record(section;lines;line_num)
     _expand_generic(section;lines;line_num)
     testtoon_to_iql(text;filename)
+  testql/interpreter/_websockets.py:
+    e: WebSocketMixin
+    WebSocketMixin: __init_subclass__(0),_get_ws_context(0),_cmd_ws_connect(2),_cmd_ws_send(2),_ws_do_receive(4),_cmd_ws_receive(2),_cmd_ws_assert_msg(2),_cmd_ws_close(2)  # Mixin for WebSocket testing support...
+  testql/reporters/junit.py:
+    e: JUnitReporter,report_junit
+    JUnitReporter: generate(2),_add_testcase(2)  # Generate JUnit XML from a TestQL ScriptResult...
+    report_junit(result;suite_name)
+  testql/sumd_generator.py:
+    e: generate_sumd,_header_section,_metadata_section,_architecture_section,_doql_declaration_section,_api_contract_section,_workflows_table_section,_configuration_section,_llm_suggestions_section,_workflow_snippet,save_sumd
+    generate_sumd(project_echo;project_path)
+    _header_section(project_name;version)
+    _metadata_section(project_name;version)
+    _architecture_section()
+    _doql_declaration_section(project_echo;project_name;version)
+    _api_contract_section(project_echo)
+    _workflows_table_section(project_echo)
+    _configuration_section(project_echo;project_name;version)
+    _llm_suggestions_section(project_echo)
+    _workflow_snippet(workflows;name;comment;cmd)
+    save_sumd(project_echo;project_path;output_path)
   testql/commands/suite/listing.py:
     e: _parse_testtoon_header,_collect_meta_lines,_parse_yaml_meta_block,parse_meta,filter_tests,render_test_list
     _parse_testtoon_header(content)
@@ -399,19 +429,6 @@ D:
     _parse_environment(content)
     _parse_integrations(content)
     parse_doql_less(filepath)
-  testql/sumd_generator.py:
-    e: generate_sumd,_header_section,_metadata_section,_architecture_section,_doql_declaration_section,_api_contract_section,_workflows_table_section,_configuration_section,_llm_suggestions_section,_workflow_snippet,save_sumd
-    generate_sumd(project_echo;project_path)
-    _header_section(project_name;version)
-    _metadata_section(project_name;version)
-    _architecture_section()
-    _doql_declaration_section(project_echo;project_name;version)
-    _api_contract_section(project_echo)
-    _workflows_table_section(project_echo)
-    _configuration_section(project_echo;project_name;version)
-    _llm_suggestions_section(project_echo)
-    _workflow_snippet(workflows;name;comment;cmd)
-    save_sumd(project_echo;project_path;output_path)
   testql/interpreter/converter/renderer.py:
     e: build_config_section,_render_section_header,render_sections,build_header
     build_config_section(commands)
@@ -421,6 +438,10 @@ D:
   testql/detectors/config_detector.py:
     e: ConfigEndpointDetector
     ConfigEndpointDetector(BaseEndpointDetector): detect(0),_analyze_docker_compose(1),_parse_port_mapping(1),_infer_protocol(1)  # Detect endpoints from configuration files...
+  testql/doql_parser.py:
+    e: DoqlParser,parse_doql_file
+    DoqlParser: __init__(0),parse_file(1),parse(1),_parse_app_block(1),_parse_entity_block(2),_parse_workflow_block(2),_parse_interface_block(2),_parse_deploy_block(1)  # Parser for doql LESS files...
+    parse_doql_file(path)
   testql/commands/misc_cmds.py:
     e: _create_templates,init,create,watch,from_sumd,report,echo
     _create_templates(templates_dir;project_type)
@@ -430,13 +451,6 @@ D:
     from_sumd(sumd_file;output;dry_run)
     report(data_json;output;example)
     echo(toon_path;doql_path;fmt;output;project_path)
-  testql/commands/suite/reports.py:
-    e: build_report_data,_save_json_report,_build_junit_xml,save_report,print_summary
-    build_report_data(suite_name;results;total_passed;total_failed;total_duration)
-    _save_json_report(report_data;report_file)
-    _build_junit_xml(report_data)
-    save_report(report_data;report_file;output)
-    print_summary(results;total_passed;total_failed;total_duration)
   testql/commands/suite/collection.py:
     e: _resolve_search_dir_and_pattern,_find_files,_collect_from_suite,_collect_by_pattern,_collect_recursive,_deduplicate_files,collect_test_files,collect_list_files
     _resolve_search_dir_and_pattern(base_dir;file_pattern)
@@ -447,6 +461,13 @@ D:
     _deduplicate_files(files)
     collect_test_files(target_path;suite_name;pattern;config)
     collect_list_files(target_path)
+  testql/commands/suite/reports.py:
+    e: build_report_data,_save_json_report,_build_junit_xml,save_report,print_summary
+    build_report_data(suite_name;results;total_passed;total_failed;total_duration)
+    _save_json_report(report_data;report_file)
+    _build_junit_xml(report_data)
+    save_report(report_data;report_file;output)
+    print_summary(results;total_passed;total_failed;total_duration)
   testql/commands/echo/formatters/text.py:
     e: _fmt_interfaces,_fmt_workflows,_fmt_contracts,_fmt_entities,_fmt_suggestions,_build_header,format_text_output
     _fmt_interfaces(context)
@@ -465,25 +486,29 @@ D:
   testql/interpreter/converter/handlers/navigate.py:
     e: handle_navigate
     handle_navigate(filtered;i)
-  testql/doql_parser.py:
-    e: DoqlParser,parse_doql_file
-    DoqlParser: __init__(0),parse_file(1),parse(1),_parse_app_block(1),_parse_entity_block(2),_parse_workflow_block(2),_parse_interface_block(2),_parse_deploy_block(1)  # Parser for doql LESS files...
-    parse_doql_file(path)
   testql/reporters/console.py:
     e: report_console
     report_console(result)
-  testql/detectors/base.py:
-    e: BaseEndpointDetector
-    BaseEndpointDetector: __init__(1),detect(0),_find_files(2)  # Base class for endpoint detectors...
-  testql/detectors/fastapi_detector.py:
-    e: FastAPIDetector
-    FastAPIDetector(BaseEndpointDetector): detect(0),_analyze_file(1),_detect_router_assignment(2),_extract_router_prefix(1),_detect_app_assignment(1),_extract_include_router(1),_analyze_route_handler(4),_extract_route_info(1),_get_router_prefix(2),_extract_parameters(1),_get_annotation_name(1),_extract_docstring(1)  # Detect FastAPI endpoints using AST analysis...
   testql/generators/multi.py:
     e: MultiProjectTestGenerator
     MultiProjectTestGenerator: __init__(1),discover_projects(0),analyze_all(0),generate_all(0),generate_cross_project_tests(1)  # Generator that operates across multiple projects in a worksp...
+  testql/detectors/fastapi_detector.py:
+    e: FastAPIDetector
+    FastAPIDetector(BaseEndpointDetector): detect(0),_analyze_file(1),_detect_router_assignment(2),_extract_router_prefix(1),_detect_app_assignment(1),_extract_include_router(1),_analyze_route_handler(4),_extract_route_info(1),_get_router_prefix(2),_extract_parameters(1),_get_annotation_name(1),_extract_docstring(1)  # Detect FastAPI endpoints using AST analysis...
+  testql/detectors/base.py:
+    e: BaseEndpointDetector
+    BaseEndpointDetector: __init__(1),detect(0),_find_files(2)  # Base class for endpoint detectors...
   testql/detectors/flask_detector.py:
     e: FlaskDetector
     FlaskDetector(BaseEndpointDetector): detect(0),_analyze_flask_file(1),_detect_blueprint(2),_extract_blueprint_prefix(1),_analyze_flask_route(4),_extract_flask_route_info(2),_extract_route_path(1),_extract_route_methods(1),_apply_blueprint_prefix(3)  # Detect Flask endpoints including Blueprints...
+  testql/report_generator.py:
+    e: TestResult,TestSuiteReport,ReportDataParser,HTMLReportGenerator,_adapt_test_entry,generate_report
+    TestResult:  # Single test result...
+    TestSuiteReport:  # Test suite report data...
+    ReportDataParser: parse_testql_results(1),to_json(1)  # Parse test results into structured data.json format...
+    HTMLReportGenerator: __init__(1),generate(2),_render_html(1),_render_test_row(1)  # Generate HTML reports from test data...
+    _adapt_test_entry(t)
+    generate_report(data_json;output_html)
   testql/commands/suite/execution.py:
     e: run_single_file,run_suite_files
     run_single_file(test_file;interp)
@@ -494,14 +519,14 @@ D:
     _extract_assert(key;value)
     _parse_scenario(content;file;base_path)
     parse_toon_scenarios(path)
-  testql/report_generator.py:
-    e: TestResult,TestSuiteReport,ReportDataParser,HTMLReportGenerator,_adapt_test_entry,generate_report
-    TestResult:  # Single test result...
-    TestSuiteReport:  # Test suite report data...
-    ReportDataParser: parse_testql_results(1),to_json(1)  # Parse test results into structured data.json format...
-    HTMLReportGenerator: __init__(1),generate(2),_render_html(1),_render_test_row(1)  # Generate HTML reports from test data...
-    _adapt_test_entry(t)
-    generate_report(data_json;output_html)
+  testql/interpreter/_parser.py:
+    e: IqlLine,IqlScript,parse_iql
+    IqlLine:
+    IqlScript:
+    parse_iql(source;filename)
+  testql/interpreter/dispatcher.py:
+    e: CommandDispatcher
+    CommandDispatcher: __init__(1),_discover_handlers(0),register(2),dispatch(3),list_commands(0),has_command(1)  # Central command dispatcher with auto-discovery and better er...
   testql/interpreter/converter/core.py:
     e: convert_iql_to_testtoon,convert_file,convert_directory
     convert_iql_to_testtoon(source;filename)
@@ -512,11 +537,6 @@ D:
     _encoder_action_fields(action;args)
     _advance_past_wait(filtered;i)
     handle_encoder(filtered;i)
-  testql/interpreter/_parser.py:
-    e: IqlLine,IqlScript,parse_iql
-    IqlLine:
-    IqlScript:
-    parse_iql(source;filename)
   testql/detectors/graphql_detector.py:
     e: GraphQLDetector
     GraphQLDetector(BaseEndpointDetector): detect(0),_analyze_schema(1),_analyze_python_graphql(1)  # Detect GraphQL schemas and resolvers...
@@ -527,23 +547,6 @@ D:
     e: ToonParser,parse_toon_file
     ToonParser: __init__(0),parse_file(1),parse(1),_parse_api_block(1),_parse_assert_block(1),_parse_log_block(1)  # Parser for toon test files...
     parse_toon_file(path)
-  testql/commands/echo/context.py:
-    e: _find_doql_file,_find_toon_path,generate_context
-    _find_doql_file(path)
-    _find_toon_path(path)
-    generate_context(path;include_toon;include_doql)
-  testql/interpreter/_encoder.py:
-    e: EncoderMixin
-    EncoderMixin: _encoder_url(0),_encoder_do_http(4),_encoder_call(5),_cmd_encoder_on(2),_cmd_encoder_off(2),_cmd_encoder_scroll(2),_cmd_encoder_click(2),_cmd_encoder_dblclick(2),_cmd_encoder_focus(2),_cmd_encoder_status(2),_cmd_encoder_page_next(2),_cmd_encoder_page_prev(2)  # Mixin providing all ENCODER_* hardware control commands...
-  testql/interpreter/interpreter.py:
-    e: IqlInterpreter
-    IqlInterpreter(ApiRunnerMixin,AssertionsMixin,EncoderMixin,FlowMixin,WebSocketMixin,BaseInterpreter): __init__(6),parse(2),_is_testtoon(1),execute(1),_dispatch(3),_cmd_set(2),_cmd_get(2)  # IQL interpreter — runs .testql.toon.yaml / .iql / .tql scrip...
-  testql/interpreter/converter/handlers/wait.py:
-    e: handle_wait
-    handle_wait(filtered;i)
-  testql/detectors/django_detector.py:
-    e: DjangoDetector
-    DjangoDetector(BaseEndpointDetector): detect(0),_analyze_urls_py(1)  # Detect Django URL patterns...
   testql/_base_fallback.py:
     e: StepStatus,StepResult,ScriptResult,VariableStore,InterpreterOutput,BaseInterpreter,EventBridge
     StepStatus(Enum):
@@ -555,6 +558,23 @@ D:
     EventBridge: __init__(1),connect(0),disconnect(0),send_event(2)  # Optional WebSocket bridge to DSL Event Server (port 8104).
 
 ...
+  testql/commands/echo/context.py:
+    e: _find_doql_file,_find_toon_path,generate_context
+    _find_doql_file(path)
+    _find_toon_path(path)
+    generate_context(path;include_toon;include_doql)
+  testql/interpreter/_encoder.py:
+    e: EncoderMixin
+    EncoderMixin: _encoder_url(0),_encoder_do_http(4),_encoder_call(5),_cmd_encoder_on(2),_cmd_encoder_off(2),_cmd_encoder_scroll(2),_cmd_encoder_click(2),_cmd_encoder_dblclick(2),_cmd_encoder_focus(2),_cmd_encoder_status(2),_cmd_encoder_page_next(2),_cmd_encoder_page_prev(2)  # Mixin providing all ENCODER_* hardware control commands...
+  testql/interpreter/interpreter.py:
+    e: IqlInterpreter
+    IqlInterpreter(ApiRunnerMixin,AssertionsMixin,EncoderMixin,FlowMixin,GuiMixin,ShellMixin,UnitMixin,WebSocketMixin,BaseInterpreter): __init__(6),parse(2),_is_testtoon(1),execute(1),_dispatch(3),_cmd_set(2),_cmd_get(2)  # IQL interpreter — runs .testql.toon.yaml / .iql / .tql scrip...
+  testql/interpreter/converter/handlers/wait.py:
+    e: handle_wait
+    handle_wait(filtered;i)
+  testql/detectors/django_detector.py:
+    e: DjangoDetector
+    DjangoDetector(BaseEndpointDetector): detect(0),_analyze_urls_py(1)  # Detect Django URL patterns...
   testql/commands/run_cmd.py:
     e: run
     run(file;url;dry_run;output;quiet)
@@ -608,7 +628,6 @@ D:
     BaseAnalyzer: __init__(1),_get_exclude_dirs(0),_should_exclude_path(1)  # Base class for project analyzers.
 
 Provides common initializ...
-  goal.yaml:
   SUMR.md:
     e: StepStatus,StepResult,ScriptResult,VariableStore,InterpreterOutput,BaseInterpreter,EventBridge,OpenAPISpec,OpenAPIGenerator,ContractTestGenerator,DslCommand,ExecutionResult,DslCliExecutor,SumdMetadata,SumdInterface,SumdWorkflow,SumdDocument,SumdParser,passed,failed,summary,__init__,set,get,has,all,clear,interpolate,__init__,emit,info,ok,fail,warn,error,step,__init__,parse,execute,run,run_file,strip_comments,__init__,connect,disconnect,send_event,connected,generate_openapi_spec,generate_contract_tests_from_spec,to_dict,to_json,to_yaml,__init__,generate,_normalize_path,_build_operation,_infer_tags,_extract_parameters,_build_request_body,_build_responses,save,__init__,_load_spec,generate_contract_tests,_get_expected_status,validate_response,parse_line,parse_script,main,__init__,execute,_dispatch,cmd_api,cmd_wait,cmd_log,cmd_print,cmd_store,cmd_env,cmd_assert_status,cmd_assert_json,cmd_set_header,cmd_set_base_url,run_script,_format_cmd,generate_sumd,_header_section,_metadata_section,_architecture_section,_doql_declaration_section,_api_contract_section,_workflows_table_section,_configuration_section,_llm_suggestions_section,_workflow_snippet,save_sumd,parse_sumd_file,parse_file,parse,_parse_metadata,_parse_interfaces,_parse_workflows,_parse_testql_scenarios,_parse_architecture,_extract_section,generate_testql_scenarios
     StepStatus:
@@ -716,313 +735,8 @@ Provides common initializ...
     _parse_architecture()
     _extract_section()
     generate_testql_scenarios()
-  pyqual.yaml:
-  pyproject.toml:
+  goal.yaml:
   coverage.json:
-  Taskfile.testql.yml:
-  TODO.md:
-  sumd.json:
-  tree.sh:
-  project.sh:
-  docs/testql-spec.md:
-  Taskfile.yml:
-  code2llm_output/prompt.txt:
-  docs/README.md:
-    e: generate_readme
-    generate_readme()
-  code2llm_output/project.toon.yaml:
-  README.md:
-  CHANGELOG.md:
-  code2llm_output/analysis.toon.yaml:
-  project/duplication.toon.yaml:
-  code2llm_output/README.md:
-  code2llm_output/context.md:
-  openapi.yaml:
-  project/calls.toon.yaml:
-  project/validation.toon.yaml:
-  project/context.md:
-  project/project.toon.yaml:
-  project/evolution.toon.yaml:
-  project/prompt.txt:
-  testql-scenarios/generated-cli-tests.testql.toon.yaml:
-  testql-scenarios/generated-api-integration.testql.toon.yaml:
-  testql-scenarios/generated-from-pytests.testql.toon.yaml:
-  testql-scenarios/generated-api-smoke.testql.toon.yaml:
-  project/calls.yaml:
-  TODO/testql-table-format-spec.md:
-    e: Section,parse_testtoon,print,validate
-    Section:
-    parse_testtoon()
-    print()
-    validate()
-  code2llm_output/map.toon.yaml:
-    e: _parse_api_args,_parse_meta_from_args,_parse_target_from_args,_detect_scenario_type,_extract_scenario_name,convert_iql_to_testtoon,convert_file,convert_directory,cli,run,generate,analyze,endpoints,openapi,init,create,suite,list,echo,watch,from_sumd,report,main,generate_sumd,save_sumd,parse_doql_less,parse_toon_scenarios,generate_context,format_text_output,echo,generate_for_project,generate_for_workspace,detect_endpoints,detect_separator,parse_value,parse_testtoon,validate,print_parsed,parse_line,parse_script,main,parse_sumd_file,_detect_separator,_parse_value,parse_testtoon,validate_testtoon,_expand_config,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_generic,testtoon_to_iql,_normalize_iql_path,_resolve_iql_path,_evaluate_assertion,_format_log_detail,_exec_encoder_cmd,_exec_browser_cmd,_exec_assert_cmd,_execute_iql_line,iql_list_files,iql_read_file,iql_list_tables,iql_run_line,iql_run_file,iql_list_logs,iql_read_log,generate_openapi_spec,generate_contract_tests_from_spec,_navigate_json_path,main,report_junit,parse_doql_file,report_console,_adapt_test_entry,generate_report,parse_iql,parse_toon_file,report_json
-    _parse_api_args()
-    _parse_meta_from_args()
-    _parse_target_from_args()
-    _detect_scenario_type()
-    _extract_scenario_name()
-    convert_iql_to_testtoon()
-    convert_file()
-    convert_directory()
-    cli()
-    run()
-    generate()
-    analyze()
-    endpoints()
-    openapi()
-    init()
-    create()
-    suite()
-    list()
-    echo()
-    watch()
-    from_sumd()
-    report()
-    main()
-    generate_sumd()
-    save_sumd()
-    parse_doql_less()
-    parse_toon_scenarios()
-    generate_context()
-    format_text_output()
-    echo()
-    generate_for_project()
-    generate_for_workspace()
-    detect_endpoints()
-    detect_separator()
-    parse_value()
-    parse_testtoon()
-    validate()
-    print_parsed()
-    parse_line()
-    parse_script()
-    main()
-    parse_sumd_file()
-    _detect_separator()
-    _parse_value()
-    parse_testtoon()
-    validate_testtoon()
-    _expand_config()
-    _expand_api()
-    _expand_navigate()
-    _expand_encoder()
-    _expand_select()
-    _expand_assert()
-    _expand_steps()
-    _expand_flow()
-    _expand_oql()
-    _expand_wait()
-    _expand_include()
-    _expand_record()
-    _expand_generic()
-    testtoon_to_iql()
-    _normalize_iql_path()
-    _resolve_iql_path()
-    _evaluate_assertion()
-    _format_log_detail()
-    _exec_encoder_cmd()
-    _exec_browser_cmd()
-    _exec_assert_cmd()
-    _execute_iql_line()
-    iql_list_files()
-    iql_read_file()
-    iql_list_tables()
-    iql_run_line()
-    iql_run_file()
-    iql_list_logs()
-    iql_read_log()
-    generate_openapi_spec()
-    generate_contract_tests_from_spec()
-    _navigate_json_path()
-    main()
-    report_junit()
-    parse_doql_file()
-    report_console()
-    _adapt_test_entry()
-    generate_report()
-    parse_iql()
-    parse_toon_file()
-    report_json()
-  project/README.md:
-  code2llm_output/evolution.toon.yaml:
-  project/analysis.toon.yaml:
-  code2llm_output/calls.yaml:
-  project/map.toon.yaml:
-    e: detect_separator,parse_value,parse_testtoon,validate,print_parsed,cli,main,echo,_find_doql_file,_find_toon_path,generate_context,_fmt_interfaces,_fmt_workflows,_fmt_contracts,_fmt_entities,_fmt_suggestions,_build_header,format_text_output,_parse_kv_block,_parse_app_block,_parse_entities,_parse_interfaces,_parse_workflows,_parse_deploy,_parse_environment,_parse_integrations,parse_doql_less,_extract_endpoint,_extract_assert,_parse_scenario,parse_toon_scenarios,collect_toon_data,collect_doql_data,render_echo,_normalize_iql_path,_resolve_iql_path,_evaluate_assertion,_format_log_detail,_exec_encoder_cmd,_exec_browser_cmd,_exec_assert_cmd,_execute_iql_line,iql_list_files,iql_read_file,iql_list_tables,iql_run_line,iql_run_file,iql_list_logs,iql_read_log,endpoints,_format_endpoints_json,_format_endpoints_csv,_format_endpoints_table,_format_endpoints,openapi,_is_workspace,generate,analyze,_print_routes_section,_print_scenarios_section,init,create,watch,from_sumd,report,echo,run,suite,list_tests,_find_files,_collect_from_suite,_collect_by_pattern,_collect_recursive,_deduplicate_files,collect_test_files,collect_list_files,run_single_file,run_suite_files,_parse_testtoon_header,_parse_yaml_meta_block,parse_meta,filter_tests,render_test_list,build_report_data,_save_json_report,_build_junit_xml,save_report,print_summary,detect_endpoints,parse_doql_file,generate_for_project,generate_for_workspace,main,_navigate_json_path,parse_iql,_detect_separator,_parse_value,parse_testtoon,validate_testtoon,_expand_config,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_generic,testtoon_to_iql,convert_iql_to_testtoon,convert_file,convert_directory,dispatch,handle_api,collect_assert,handle_encoder,handle_flow,handle_include,handle_navigate,handle_record_start,handle_record_stop,handle_select,handle_unknown,handle_wait,parse_api_args,parse_meta_from_args,parse_target_from_args,parse_commands,detect_scenario_type,extract_scenario_name,build_config_section,render_sections,build_header,generate_openapi_spec,generate_contract_tests_from_spec,_adapt_test_entry,generate_report,report_console,report_json,report_junit,parse_line,parse_script,main,generate_sumd,_header_section,_metadata_section,_architecture_section,_doql_declaration_section,_api_contract_section,_workflows_table_section,_configuration_section,_llm_suggestions_section,_workflow_snippet,save_sumd,parse_sumd_file,parse_toon_file,_write,write_toon,test_normalize_legacy_test_path,test_normalize_legacy_view_path,test_normalize_testql_prefixed_path,test_normalize_passthrough_diagnostics_path,test_normalize_testtoon_path,test_resolve_new_format,_make_ep,_make_report,make_result,make_step,_collect_test_files
-    detect_separator()
-    parse_value()
-    parse_testtoon()
-    validate()
-    print_parsed()
-    cli()
-    main()
-    echo()
-    _find_doql_file()
-    _find_toon_path()
-    generate_context()
-    _fmt_interfaces()
-    _fmt_workflows()
-    _fmt_contracts()
-    _fmt_entities()
-    _fmt_suggestions()
-    _build_header()
-    format_text_output()
-    _parse_kv_block()
-    _parse_app_block()
-    _parse_entities()
-    _parse_interfaces()
-    _parse_workflows()
-    _parse_deploy()
-    _parse_environment()
-    _parse_integrations()
-    parse_doql_less()
-    _extract_endpoint()
-    _extract_assert()
-    _parse_scenario()
-    parse_toon_scenarios()
-    collect_toon_data()
-    collect_doql_data()
-    render_echo()
-    _normalize_iql_path()
-    _resolve_iql_path()
-    _evaluate_assertion()
-    _format_log_detail()
-    _exec_encoder_cmd()
-    _exec_browser_cmd()
-    _exec_assert_cmd()
-    _execute_iql_line()
-    iql_list_files()
-    iql_read_file()
-    iql_list_tables()
-    iql_run_line()
-    iql_run_file()
-    iql_list_logs()
-    iql_read_log()
-    endpoints()
-    _format_endpoints_json()
-    _format_endpoints_csv()
-    _format_endpoints_table()
-    _format_endpoints()
-    openapi()
-    _is_workspace()
-    generate()
-    analyze()
-    _print_routes_section()
-    _print_scenarios_section()
-    init()
-    create()
-    watch()
-    from_sumd()
-    report()
-    echo()
-    run()
-    suite()
-    list_tests()
-    _find_files()
-    _collect_from_suite()
-    _collect_by_pattern()
-    _collect_recursive()
-    _deduplicate_files()
-    collect_test_files()
-    collect_list_files()
-    run_single_file()
-    run_suite_files()
-    _parse_testtoon_header()
-    _parse_yaml_meta_block()
-    parse_meta()
-    filter_tests()
-    render_test_list()
-    build_report_data()
-    _save_json_report()
-    _build_junit_xml()
-    save_report()
-    print_summary()
-    detect_endpoints()
-    parse_doql_file()
-    generate_for_project()
-    generate_for_workspace()
-    main()
-    _navigate_json_path()
-    parse_iql()
-    _detect_separator()
-    _parse_value()
-    parse_testtoon()
-    validate_testtoon()
-    _expand_config()
-    _expand_api()
-    _expand_navigate()
-    _expand_encoder()
-    _expand_select()
-    _expand_assert()
-    _expand_steps()
-    _expand_flow()
-    _expand_oql()
-    _expand_wait()
-    _expand_include()
-    _expand_record()
-    _expand_generic()
-    testtoon_to_iql()
-    convert_iql_to_testtoon()
-    convert_file()
-    convert_directory()
-    dispatch()
-    handle_api()
-    collect_assert()
-    handle_encoder()
-    handle_flow()
-    handle_include()
-    handle_navigate()
-    handle_record_start()
-    handle_record_stop()
-    handle_select()
-    handle_unknown()
-    handle_wait()
-    parse_api_args()
-    parse_meta_from_args()
-    parse_target_from_args()
-    parse_commands()
-    detect_scenario_type()
-    extract_scenario_name()
-    build_config_section()
-    render_sections()
-    build_header()
-    generate_openapi_spec()
-    generate_contract_tests_from_spec()
-    _adapt_test_entry()
-    generate_report()
-    report_console()
-    report_json()
-    report_junit()
-    parse_line()
-    parse_script()
-    main()
-    generate_sumd()
-    _header_section()
-    _metadata_section()
-    _architecture_section()
-    _doql_declaration_section()
-    _api_contract_section()
-    _workflows_table_section()
-    _configuration_section()
-    _llm_suggestions_section()
-    _workflow_snippet()
-    save_sumd()
-    parse_sumd_file()
-    parse_toon_file()
-    _write()
-    write_toon()
-    test_normalize_legacy_test_path()
-    test_normalize_legacy_view_path()
-    test_normalize_testql_prefixed_path()
-    test_normalize_passthrough_diagnostics_path()
-    test_normalize_testtoon_path()
-    test_resolve_new_format()
-    _make_ep()
-    _make_report()
-    make_result()
-    make_step()
-    _collect_test_files()
   SUMD.md:
     e: StepStatus,StepResult,ScriptResult,VariableStore,InterpreterOutput,BaseInterpreter,EventBridge,OpenAPISpec,OpenAPIGenerator,ContractTestGenerator,DslCommand,ExecutionResult,DslCliExecutor,SumdMetadata,SumdInterface,SumdWorkflow,SumdDocument,SumdParser,detect_separator,parse_value,parse_testtoon,validate,print_parsed,cli,main,echo,_find_doql_file,_find_toon_path,generate_context,_fmt_interfaces,_fmt_workflows,_fmt_contracts,_fmt_entities,_fmt_suggestions,_build_header,format_text_output,_parse_kv_block,_parse_app_block,_parse_entities,_parse_interfaces,_parse_workflows,_parse_deploy,_parse_environment,_parse_integrations,parse_doql_less,_extract_endpoint,_extract_assert,_parse_scenario,parse_toon_scenarios,collect_toon_data,collect_doql_data,render_echo,_normalize_iql_path,_resolve_iql_path,_evaluate_assertion,_format_log_detail,_exec_encoder_cmd,_exec_browser_cmd,_exec_assert_cmd,_execute_iql_line,iql_list_files,iql_read_file,iql_list_tables,iql_run_line,iql_run_file,iql_list_logs,iql_read_log,endpoints,_format_endpoints_json,_format_endpoints_csv,_format_endpoints_table,_format_endpoints,openapi,_is_workspace,generate,analyze,_print_routes_section,_print_scenarios_section,init,create,watch,from_sumd,report,echo,run,suite,list_tests,_find_files,_collect_from_suite,_collect_by_pattern,_collect_recursive,_deduplicate_files,collect_test_files,collect_list_files,run_single_file,run_suite_files,_parse_testtoon_header,_parse_yaml_meta_block,parse_meta,filter_tests,render_test_list,build_report_data,_save_json_report,_build_junit_xml,save_report,print_summary,detect_endpoints,parse_doql_file,generate_for_project,generate_for_workspace,main,_navigate_json_path,parse_iql,_detect_separator,_parse_value,parse_testtoon,validate_testtoon,_expand_config,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_generic,testtoon_to_iql,convert_iql_to_testtoon,convert_file,convert_directory,dispatch,handle_api,collect_assert,handle_encoder,handle_flow,handle_include,handle_navigate,handle_record_start,handle_record_stop,handle_select,handle_unknown,handle_wait,parse_api_args,parse_meta_from_args,parse_target_from_args,parse_commands,detect_scenario_type,extract_scenario_name,build_config_section,render_sections,build_header,generate_openapi_spec,generate_contract_tests_from_spec,_adapt_test_entry,generate_report,report_console,report_json,report_junit,parse_line,parse_script,main,generate_sumd,_header_section,_metadata_section,_architecture_section,_doql_declaration_section,_api_contract_section,_workflows_table_section,_configuration_section,_llm_suggestions_section,_workflow_snippet,save_sumd,parse_sumd_file,parse_toon_file,_write,write_toon,test_normalize_legacy_test_path,test_normalize_legacy_view_path,test_normalize_testql_prefixed_path,test_normalize_passthrough_diagnostics_path,test_normalize_testtoon_path,test_resolve_new_format,_make_ep,_make_report,make_result,make_step,_collect_test_files,passed,failed,summary,__init__,set,get,has,all,clear,interpolate,__init__,emit,info,ok,fail,warn,error,step,__init__,parse,execute,run,run_file,strip_comments,__init__,connect,disconnect,send_event,connected,generate_openapi_spec,generate_contract_tests_from_spec,to_dict,to_json,to_yaml,__init__,generate,_normalize_path,_build_operation,_infer_tags,_extract_parameters,_build_request_body,_build_responses,save,__init__,_load_spec,generate_contract_tests,_get_expected_status,validate_response,parse_line,parse_script,main,__init__,execute,_dispatch,cmd_api,cmd_wait,cmd_log,cmd_print,cmd_store,cmd_env,cmd_assert_status,cmd_assert_json,cmd_set_header,cmd_set_base_url,run_script,_format_cmd,generate_sumd,_header_section,_metadata_section,_architecture_section,_doql_declaration_section,_api_contract_section,_workflows_table_section,_configuration_section,_llm_suggestions_section,_workflow_snippet,save_sumd,parse_sumd_file,parse_file,parse,_parse_metadata,_parse_interfaces,_parse_workflows,_parse_testql_scenarios,_parse_architecture,_extract_section,generate_testql_scenarios,iql_read_file,iql_list_files,iql_read_log,iql_list_logs,iql_run_file,iql_run_line,iql_list_tables
     StepStatus:
@@ -1310,30 +1024,1601 @@ Provides common initializ...
     iql_run_file()
     iql_run_line()
     iql_list_tables()
-  testql/__main__.py:
+  pyqual.yaml:
+  sumd.json:
+  pyproject.toml:
+  tree.sh:
+  Taskfile.testql.yml:
+  TODO.md:
+  CHANGELOG.md:
+  Taskfile.yml:
+  openapi.yaml:
+  project.sh:
+  README.md:
+  docs/testql-spec.md:
+  code2llm_output/context.md:
+  code2llm_output/prompt.txt:
+  code2llm_output/calls.yaml:
+  code2llm_output/map.toon.yaml:
+    e: _parse_api_args,_parse_meta_from_args,_parse_target_from_args,_detect_scenario_type,_extract_scenario_name,convert_iql_to_testtoon,convert_file,convert_directory,cli,run,generate,analyze,endpoints,openapi,init,create,suite,list,echo,watch,from_sumd,report,main,generate_sumd,save_sumd,parse_doql_less,parse_toon_scenarios,generate_context,format_text_output,echo,generate_for_project,generate_for_workspace,detect_endpoints,detect_separator,parse_value,parse_testtoon,validate,print_parsed,parse_line,parse_script,main,parse_sumd_file,_detect_separator,_parse_value,parse_testtoon,validate_testtoon,_expand_config,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_generic,testtoon_to_iql,_normalize_iql_path,_resolve_iql_path,_evaluate_assertion,_format_log_detail,_exec_encoder_cmd,_exec_browser_cmd,_exec_assert_cmd,_execute_iql_line,iql_list_files,iql_read_file,iql_list_tables,iql_run_line,iql_run_file,iql_list_logs,iql_read_log,generate_openapi_spec,generate_contract_tests_from_spec,_navigate_json_path,main,report_junit,parse_doql_file,report_console,_adapt_test_entry,generate_report,parse_iql,parse_toon_file,report_json
+    _parse_api_args()
+    _parse_meta_from_args()
+    _parse_target_from_args()
+    _detect_scenario_type()
+    _extract_scenario_name()
+    convert_iql_to_testtoon()
+    convert_file()
+    convert_directory()
+    cli()
+    run()
+    generate()
+    analyze()
+    endpoints()
+    openapi()
+    init()
+    create()
+    suite()
+    list()
+    echo()
+    watch()
+    from_sumd()
+    report()
+    main()
+    generate_sumd()
+    save_sumd()
+    parse_doql_less()
+    parse_toon_scenarios()
+    generate_context()
+    format_text_output()
+    echo()
+    generate_for_project()
+    generate_for_workspace()
+    detect_endpoints()
+    detect_separator()
+    parse_value()
+    parse_testtoon()
+    validate()
+    print_parsed()
+    parse_line()
+    parse_script()
+    main()
+    parse_sumd_file()
+    _detect_separator()
+    _parse_value()
+    parse_testtoon()
+    validate_testtoon()
+    _expand_config()
+    _expand_api()
+    _expand_navigate()
+    _expand_encoder()
+    _expand_select()
+    _expand_assert()
+    _expand_steps()
+    _expand_flow()
+    _expand_oql()
+    _expand_wait()
+    _expand_include()
+    _expand_record()
+    _expand_generic()
+    testtoon_to_iql()
+    _normalize_iql_path()
+    _resolve_iql_path()
+    _evaluate_assertion()
+    _format_log_detail()
+    _exec_encoder_cmd()
+    _exec_browser_cmd()
+    _exec_assert_cmd()
+    _execute_iql_line()
+    iql_list_files()
+    iql_read_file()
+    iql_list_tables()
+    iql_run_line()
+    iql_run_file()
+    iql_list_logs()
+    iql_read_log()
+    generate_openapi_spec()
+    generate_contract_tests_from_spec()
+    _navigate_json_path()
+    main()
+    report_junit()
+    parse_doql_file()
+    report_console()
+    _adapt_test_entry()
+    generate_report()
+    parse_iql()
+    parse_toon_file()
+    report_json()
+  code2llm_output/evolution.toon.yaml:
+  code2llm_output/README.md:
+  code2llm_output/project.toon.yaml:
+  code2llm_output/analysis.toon.yaml:
+  TODO/testql-table-format-spec.md:
+    e: Section,parse_testtoon,print,validate
+    Section:
+    parse_testtoon()
+    print()
+    validate()
+  project/context.md:
+  project/prompt.txt:
+  project/calls.toon.yaml:
+  project/calls.yaml:
+  project/map.toon.yaml:
+    e: detect_separator,parse_value,parse_testtoon,validate,print_parsed,suite,list_tests,parse_line,parse_script,main,_extract_path_params,_extract_ep_params,generate_openapi_spec,generate_contract_tests_from_spec,_parse_block_interfaces,_parse_api_interfaces,parse_sumd_file,parse_api_args,parse_meta_from_args,parse_target_from_args,parse_commands,detect_scenario_type,extract_scenario_name,_is_workspace,generate,analyze,_count_routes_by,_print_routes_section,_print_scenarios_section,_strip_path_segments,_migrate_legacy_extension,_remap_tests_prefix,_normalize_iql_path,_resolve_iql_path,_assert_bool_prop,_assert_count_prop,_assert_text_prop,_assert_classes_prop,_evaluate_assertion,_format_log_detail,_exec_encoder_cmd,_exec_browser_cmd,_exec_assert_cmd,_execute_iql_line,iql_list_files,iql_read_file,iql_list_tables,_extract_table_names,iql_run_line,iql_run_file,_run_iql_lines,_update_counters,_build_run_summary,_write_run_log,iql_list_logs,iql_read_log,endpoints,_format_endpoints_json,_format_endpoints_csv,_format_endpoints_table,_format_endpoints,openapi,_resolve_length,_navigate_step,_navigate_json_path,collect_assert,detect_endpoints,main,_collect_toon_directory,collect_toon_data,collect_doql_data,render_echo,_detect_separator,_parse_inline_array,_parse_inline_dict,_parse_value,_make_section,_make_data_row,parse_testtoon,validate_testtoon,_expand_config,_append_api_asserts,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_generic,testtoon_to_iql,report_junit,generate_sumd,_header_section,_metadata_section,_architecture_section,_doql_declaration_section,_api_contract_section,_workflows_table_section,_configuration_section,_llm_suggestions_section,_workflow_snippet,save_sumd,_parse_testtoon_header,_collect_meta_lines,_parse_yaml_meta_block,parse_meta,filter_tests,render_test_list,_parse_kv_block,_parse_app_block,_parse_entities,_parse_interfaces,_parse_workflows,_parse_deploy,_parse_environment,_parse_integrations,parse_doql_less,build_config_section,_render_section_header,render_sections,build_header,parse_doql_file,_create_templates,init,create,watch,from_sumd,report,echo,_resolve_search_dir_and_pattern,_find_files,_collect_from_suite,_collect_by_pattern,_collect_recursive,_deduplicate_files,collect_test_files,collect_list_files,build_report_data,_save_json_report,_build_junit_xml,save_report,print_summary,_fmt_interfaces,_fmt_workflows,_fmt_contracts,_fmt_entities,_fmt_suggestions,_build_header,format_text_output,handle_api,handle_navigate,report_console,_adapt_test_entry,generate_report,run_single_file,run_suite_files,_extract_endpoint,_extract_assert,_parse_scenario,parse_toon_scenarios,parse_iql,convert_iql_to_testtoon,convert_file,convert_directory,_encoder_action_fields,_advance_past_wait,handle_encoder,parse_toon_file,_find_doql_file,_find_toon_path,generate_context,handle_wait,run,echo,dispatch,handle_unknown,handle_select,handle_flow,report_json,cli,main,handle_include,handle_record_start,handle_record_stop,generate_for_project,generate_for_workspace,passed,failed,summary,__init__,set,get,has,all,clear,interpolate,__init__,emit,info,ok,fail,warn,error,step,__init__,parse,execute,run,run_file,strip_comments,__init__,connect,disconnect,send_event,connected,generate_openapi_spec,generate_contract_tests_from_spec,to_dict,to_json,to_yaml,__init__,generate,_normalize_path,_build_operation,_infer_tags,_extract_parameters,_build_request_body,_build_responses,save,__init__,_load_spec,generate_contract_tests,_get_expected_status,validate_response,parse_line,parse_script,main,__init__,execute,_dispatch,cmd_api,cmd_wait,cmd_log,cmd_print,cmd_store,cmd_env,cmd_assert_status,cmd_assert_json,cmd_set_header,cmd_set_base_url,run_script,_format_cmd,generate_sumd,_header_section,_metadata_section,_architecture_section,_doql_declaration_section,_api_contract_section,_workflows_table_section,_configuration_section,_llm_suggestions_section,_workflow_snippet,save_sumd,parse_sumd_file,parse_file,parse,_parse_metadata,_parse_interfaces,_parse_workflows,_parse_testql_scenarios,_parse_architecture,_extract_section,generate_testql_scenarios,detect_separator,parse_value,parse_testtoon,validate,print_parsed,cli,main,echo,_find_doql_file,_find_toon_path,generate_context,_fmt_interfaces,_fmt_workflows,_fmt_contracts,_fmt_entities,_fmt_suggestions,_build_header,format_text_output,_parse_kv_block,_parse_app_block,_parse_entities,_parse_interfaces,_parse_workflows,_parse_deploy,_parse_environment,_parse_integrations,parse_doql_less,_extract_endpoint,_extract_assert,_parse_scenario,parse_toon_scenarios,collect_toon_data,collect_doql_data,render_echo,_normalize_iql_path,_resolve_iql_path,_evaluate_assertion,_format_log_detail,_exec_encoder_cmd,_exec_browser_cmd,_exec_assert_cmd,_execute_iql_line,iql_list_files,iql_read_file,iql_list_tables,iql_run_line,iql_run_file,iql_list_logs,iql_read_log,endpoints,_format_endpoints_json,_format_endpoints_csv,_format_endpoints_table,_format_endpoints,openapi,_is_workspace,generate,analyze,_print_routes_section,_print_scenarios_section,init,create,watch,from_sumd,report,echo,run,suite,list_tests,_find_files,_collect_from_suite,_collect_by_pattern,_collect_recursive,_deduplicate_files,collect_test_files,collect_list_files,run_single_file,run_suite_files,_parse_testtoon_header,_parse_yaml_meta_block,parse_meta,filter_tests,render_test_list,build_report_data,_save_json_report,_build_junit_xml,save_report,print_summary,detect_endpoints,parse_doql_file,generate_for_project,generate_for_workspace,main,_navigate_json_path,parse_iql,_detect_separator,_parse_value,parse_testtoon,validate_testtoon,_expand_config,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_generic,testtoon_to_iql,convert_iql_to_testtoon,convert_file,convert_directory,dispatch,handle_api,collect_assert,handle_encoder,handle_flow,handle_include,handle_navigate,handle_record_start,handle_record_stop,handle_select,handle_unknown,handle_wait,parse_api_args,parse_meta_from_args,parse_target_from_args,parse_commands,detect_scenario_type,extract_scenario_name,build_config_section,render_sections,build_header,generate_openapi_spec,generate_contract_tests_from_spec,_adapt_test_entry,generate_report,report_console,report_json,report_junit,parse_line,parse_script,main,generate_sumd,_header_section,_metadata_section,_architecture_section,_doql_declaration_section,_api_contract_section,_workflows_table_section,_configuration_section,_llm_suggestions_section,_workflow_snippet,save_sumd,parse_sumd_file,parse_toon_file,_write,write_toon,test_normalize_legacy_test_path,test_normalize_legacy_view_path,test_normalize_testql_prefixed_path,test_normalize_passthrough_diagnostics_path,test_normalize_testtoon_path,test_resolve_new_format,_make_ep,_make_report,make_result,make_step,_collect_test_files,passed,failed,summary,__init__,set,get,has,all,clear,interpolate,__init__,emit,info,ok,fail,warn,error,step,__init__,parse,execute,run,run_file,strip_comments,__init__,connect,disconnect,send_event,connected,generate_openapi_spec,generate_contract_tests_from_spec,to_dict,to_json,to_yaml,__init__,generate,_normalize_path,_build_operation,_infer_tags,_extract_parameters,_build_request_body,_build_responses,save,__init__,_load_spec,generate_contract_tests,_get_expected_status,validate_response,parse_line,parse_script,main,__init__,execute,_dispatch,cmd_api,cmd_wait,cmd_log,cmd_print,cmd_store,cmd_env,cmd_assert_status,cmd_assert_json,cmd_set_header,cmd_set_base_url,run_script,_format_cmd,generate_sumd,_header_section,_metadata_section,_architecture_section,_doql_declaration_section,_api_contract_section,_workflows_table_section,_configuration_section,_llm_suggestions_section,_workflow_snippet,save_sumd,parse_sumd_file,parse_file,parse,_parse_metadata,_parse_interfaces,_parse_workflows,_parse_testql_scenarios,_parse_architecture,_extract_section,generate_testql_scenarios,iql_read_file,iql_list_files,iql_read_log,iql_list_logs,iql_run_file,iql_run_line,iql_list_tables,_parse_api_args,_parse_meta_from_args,_parse_target_from_args,_detect_scenario_type,_extract_scenario_name,convert_iql_to_testtoon,convert_file,convert_directory,cli,run,generate,analyze,endpoints,openapi,init,create,suite,list,echo,watch,from_sumd,report,main,generate_sumd,save_sumd,parse_doql_less,parse_toon_scenarios,generate_context,format_text_output,echo,generate_for_project,generate_for_workspace,detect_endpoints,detect_separator,parse_value,parse_testtoon,validate,print_parsed,parse_line,parse_script,main,parse_sumd_file,_detect_separator,_parse_value,parse_testtoon,validate_testtoon,_expand_config,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_generic,testtoon_to_iql,_normalize_iql_path,_resolve_iql_path,_evaluate_assertion,_format_log_detail,_exec_encoder_cmd,_exec_browser_cmd,_exec_assert_cmd,_execute_iql_line,iql_list_files,iql_read_file,iql_list_tables,iql_run_line,iql_run_file,iql_list_logs,iql_read_log,generate_openapi_spec,generate_contract_tests_from_spec,_navigate_json_path,main,report_junit,parse_doql_file,report_console,_adapt_test_entry,generate_report,parse_iql,parse_toon_file,report_json,parse_testtoon,print,validate,detect_separator,parse_value,parse_testtoon,validate,print_parsed,suite,list_tests,parse_line,parse_script,main,_parse_block_interfaces,_parse_api_interfaces,parse_sumd_file,parse_api_args,parse_meta_from_args,parse_target_from_args,parse_commands,detect_scenario_type,extract_scenario_name,_extract_path_params,_extract_ep_params,generate_openapi_spec,generate_contract_tests_from_spec,_is_workspace,generate,analyze,_count_routes_by,_print_routes_section,_print_scenarios_section,_strip_path_segments,_migrate_legacy_extension,_remap_tests_prefix,_normalize_iql_path,_resolve_iql_path,_assert_bool_prop,_assert_count_prop,_assert_text_prop,_assert_classes_prop,_evaluate_assertion,_format_log_detail,_exec_encoder_cmd,_exec_browser_cmd,_exec_assert_cmd,_execute_iql_line,iql_list_files,iql_read_file,iql_list_tables,_extract_table_names,iql_run_line,iql_run_file,_run_iql_lines,_update_counters,_build_run_summary,_write_run_log,iql_list_logs,iql_read_log,endpoints,_format_endpoints_json,_format_endpoints_csv,_format_endpoints_table,_format_endpoints,openapi,collect_assert,_resolve_length,_navigate_step,_navigate_json_path,detect_endpoints,_collect_toon_directory,collect_toon_data,collect_doql_data,render_echo,report_junit,_detect_separator,_parse_inline_array,_parse_inline_dict,_parse_value,_make_section,_make_data_row,parse_testtoon,validate_testtoon,_expand_config,_append_api_asserts,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_generic,testtoon_to_iql,_parse_testtoon_header,_collect_meta_lines,_parse_yaml_meta_block,parse_meta,filter_tests,render_test_list,_parse_kv_block,_parse_app_block,_parse_entities,_parse_interfaces,_parse_workflows,_parse_deploy,_parse_environment,_parse_integrations,parse_doql_less,generate_sumd,_header_section,_metadata_section,_architecture_section,_doql_declaration_section,_api_contract_section,_workflows_table_section,_configuration_section,_llm_suggestions_section,_workflow_snippet,save_sumd,build_config_section,_render_section_header,render_sections,build_header,_create_templates,init,create,watch,from_sumd,report,echo,build_report_data,_save_json_report,_build_junit_xml,save_report,print_summary,_resolve_search_dir_and_pattern,_find_files,_collect_from_suite,_collect_by_pattern,_collect_recursive,_deduplicate_files,collect_test_files,collect_list_files,_fmt_interfaces,_fmt_workflows,_fmt_contracts,_fmt_entities,_fmt_suggestions,_build_header,format_text_output,handle_api,handle_navigate,parse_doql_file,report_console,run_single_file,run_suite_files,_extract_endpoint,_extract_assert,_parse_scenario,parse_toon_scenarios,_adapt_test_entry,generate_report,convert_iql_to_testtoon,convert_file,convert_directory,_encoder_action_fields,_advance_past_wait,handle_encoder,parse_iql,parse_toon_file,_find_doql_file,_find_toon_path,generate_context,handle_wait,run,echo,dispatch,handle_unknown,handle_select,handle_flow,report_json,cli,main,handle_include,handle_record_start,handle_record_stop,generate_for_project,generate_for_workspace,passed,failed,summary,__init__,set,get,has,all,clear,interpolate,__init__,emit,info,ok,fail,warn,error,step,__init__,parse,execute,run,run_file,strip_comments,__init__,connect,disconnect,send_event,connected,generate_openapi_spec,generate_contract_tests_from_spec,to_dict,to_json,to_yaml,__init__,generate,_normalize_path,_build_operation,_infer_tags,_extract_parameters,_build_request_body,_build_responses,save,__init__,_load_spec,generate_contract_tests,_get_expected_status,validate_response,parse_line,parse_script,main,__init__,execute,_dispatch,cmd_api,cmd_wait,cmd_log,cmd_print,cmd_store,cmd_env,cmd_assert_status,cmd_assert_json,cmd_set_header,cmd_set_base_url,run_script,_format_cmd,generate_sumd,_header_section,_metadata_section,_architecture_section,_doql_declaration_section,_api_contract_section,_workflows_table_section,_configuration_section,_llm_suggestions_section,_workflow_snippet,save_sumd,parse_sumd_file,parse_file,parse,_parse_metadata,_parse_interfaces,_parse_workflows,_parse_testql_scenarios,_parse_architecture,_extract_section,generate_testql_scenarios,generate_readme,parse_testtoon,print,validate,_parse_api_args,_parse_meta_from_args,_parse_target_from_args,_detect_scenario_type,_extract_scenario_name,convert_iql_to_testtoon,convert_file,convert_directory,cli,run,generate,analyze,endpoints,openapi,init,create,suite,list,echo,watch,from_sumd,report,main,generate_sumd,save_sumd,parse_doql_less,parse_toon_scenarios,generate_context,format_text_output,echo,generate_for_project,generate_for_workspace,detect_endpoints,detect_separator,parse_value,parse_testtoon,validate,print_parsed,parse_line,parse_script,main,parse_sumd_file,_detect_separator,_parse_value,parse_testtoon,validate_testtoon,_expand_config,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_generic,testtoon_to_iql,_normalize_iql_path,_resolve_iql_path,_evaluate_assertion,_format_log_detail,_exec_encoder_cmd,_exec_browser_cmd,_exec_assert_cmd,_execute_iql_line,iql_list_files,iql_read_file,iql_list_tables,iql_run_line,iql_run_file,iql_list_logs,iql_read_log,generate_openapi_spec,generate_contract_tests_from_spec,_navigate_json_path,main,report_junit,parse_doql_file,report_console,_adapt_test_entry,generate_report,parse_iql,parse_toon_file,report_json,detect_separator,parse_value,parse_testtoon,validate,print_parsed,cli,main,echo,_find_doql_file,_find_toon_path,generate_context,_fmt_interfaces,_fmt_workflows,_fmt_contracts,_fmt_entities,_fmt_suggestions,_build_header,format_text_output,_parse_kv_block,_parse_app_block,_parse_entities,_parse_interfaces,_parse_workflows,_parse_deploy,_parse_environment,_parse_integrations,parse_doql_less,_extract_endpoint,_extract_assert,_parse_scenario,parse_toon_scenarios,collect_toon_data,collect_doql_data,render_echo,_normalize_iql_path,_resolve_iql_path,_evaluate_assertion,_format_log_detail,_exec_encoder_cmd,_exec_browser_cmd,_exec_assert_cmd,_execute_iql_line,iql_list_files,iql_read_file,iql_list_tables,iql_run_line,iql_run_file,iql_list_logs,iql_read_log,endpoints,_format_endpoints_json,_format_endpoints_csv,_format_endpoints_table,_format_endpoints,openapi,_is_workspace,generate,analyze,_print_routes_section,_print_scenarios_section,init,create,watch,from_sumd,report,echo,run,suite,list_tests,_find_files,_collect_from_suite,_collect_by_pattern,_collect_recursive,_deduplicate_files,collect_test_files,collect_list_files,run_single_file,run_suite_files,_parse_testtoon_header,_parse_yaml_meta_block,parse_meta,filter_tests,render_test_list,build_report_data,_save_json_report,_build_junit_xml,save_report,print_summary,detect_endpoints,parse_doql_file,generate_for_project,generate_for_workspace,main,_navigate_json_path,parse_iql,_detect_separator,_parse_value,parse_testtoon,validate_testtoon,_expand_config,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_generic,testtoon_to_iql,convert_iql_to_testtoon,convert_file,convert_directory,dispatch,handle_api,collect_assert,handle_encoder,handle_flow,handle_include,handle_navigate,handle_record_start,handle_record_stop,handle_select,handle_unknown,handle_wait,parse_api_args,parse_meta_from_args,parse_target_from_args,parse_commands,detect_scenario_type,extract_scenario_name,build_config_section,render_sections,build_header,generate_openapi_spec,generate_contract_tests_from_spec,_adapt_test_entry,generate_report,report_console,report_json,report_junit,parse_line,parse_script,main,generate_sumd,_header_section,_metadata_section,_architecture_section,_doql_declaration_section,_api_contract_section,_workflows_table_section,_configuration_section,_llm_suggestions_section,_workflow_snippet,save_sumd,parse_sumd_file,parse_toon_file,_write,write_toon,test_normalize_legacy_test_path,test_normalize_legacy_view_path,test_normalize_testql_prefixed_path,test_normalize_passthrough_diagnostics_path,test_normalize_testtoon_path,test_resolve_new_format,_make_ep,_make_report,make_result,make_step,_collect_test_files,detect_separator,parse_value,parse_testtoon,validate,print_parsed,cli,main,echo,_find_doql_file,_find_toon_path,generate_context,_fmt_interfaces,_fmt_workflows,_fmt_contracts,_fmt_entities,_fmt_suggestions,_build_header,format_text_output,_parse_kv_block,_parse_app_block,_parse_entities,_parse_interfaces,_parse_workflows,_parse_deploy,_parse_environment,_parse_integrations,parse_doql_less,_extract_endpoint,_extract_assert,_parse_scenario,parse_toon_scenarios,collect_toon_data,collect_doql_data,render_echo,_normalize_iql_path,_resolve_iql_path,_evaluate_assertion,_format_log_detail,_exec_encoder_cmd,_exec_browser_cmd,_exec_assert_cmd,_execute_iql_line,iql_list_files,iql_read_file,iql_list_tables,iql_run_line,iql_run_file,iql_list_logs,iql_read_log,endpoints,_format_endpoints_json,_format_endpoints_csv,_format_endpoints_table,_format_endpoints,openapi,_is_workspace,generate,analyze,_print_routes_section,_print_scenarios_section,init,create,watch,from_sumd,report,echo,run,suite,list_tests,_find_files,_collect_from_suite,_collect_by_pattern,_collect_recursive,_deduplicate_files,collect_test_files,collect_list_files,run_single_file,run_suite_files,_parse_testtoon_header,_parse_yaml_meta_block,parse_meta,filter_tests,render_test_list,build_report_data,_save_json_report,_build_junit_xml,save_report,print_summary,detect_endpoints,parse_doql_file,generate_for_project,generate_for_workspace,main,_navigate_json_path,parse_iql,_detect_separator,_parse_value,parse_testtoon,validate_testtoon,_expand_config,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_generic,testtoon_to_iql,convert_iql_to_testtoon,convert_file,convert_directory,dispatch,handle_api,collect_assert,handle_encoder,handle_flow,handle_include,handle_navigate,handle_record_start,handle_record_stop,handle_select,handle_unknown,handle_wait,parse_api_args,parse_meta_from_args,parse_target_from_args,parse_commands,detect_scenario_type,extract_scenario_name,build_config_section,render_sections,build_header,generate_openapi_spec,generate_contract_tests_from_spec,_adapt_test_entry,generate_report,report_console,report_json,report_junit,parse_line,parse_script,main,generate_sumd,_header_section,_metadata_section,_architecture_section,_doql_declaration_section,_api_contract_section,_workflows_table_section,_configuration_section,_llm_suggestions_section,_workflow_snippet,save_sumd,parse_sumd_file,parse_toon_file,_write,write_toon,test_normalize_legacy_test_path,test_normalize_legacy_view_path,test_normalize_testql_prefixed_path,test_normalize_passthrough_diagnostics_path,test_normalize_testtoon_path,test_resolve_new_format,_make_ep,_make_report,make_result,make_step,_collect_test_files,passed,failed,summary,__init__,set,get,has,all,clear,interpolate,__init__,emit,info,ok,fail,warn,error,step,__init__,parse,execute,run,run_file,strip_comments,__init__,connect,disconnect,send_event,connected,generate_openapi_spec,generate_contract_tests_from_spec,to_dict,to_json,to_yaml,__init__,generate,_normalize_path,_build_operation,_infer_tags,_extract_parameters,_build_request_body,_build_responses,save,__init__,_load_spec,generate_contract_tests,_get_expected_status,validate_response,parse_line,parse_script,main,__init__,execute,_dispatch,cmd_api,cmd_wait,cmd_log,cmd_print,cmd_store,cmd_env,cmd_assert_status,cmd_assert_json,cmd_set_header,cmd_set_base_url,run_script,_format_cmd,generate_sumd,_header_section,_metadata_section,_architecture_section,_doql_declaration_section,_api_contract_section,_workflows_table_section,_configuration_section,_llm_suggestions_section,_workflow_snippet,save_sumd,parse_sumd_file,parse_file,parse,_parse_metadata,_parse_interfaces,_parse_workflows,_parse_testql_scenarios,_parse_architecture,_extract_section,generate_testql_scenarios,iql_read_file,iql_list_files,iql_read_log,iql_list_logs,iql_run_file,iql_run_line,iql_list_tables,generate_readme
+    detect_separator()
+    parse_value()
+    parse_testtoon()
+    validate()
+    print_parsed()
+    suite()
+    list_tests()
+    parse_line()
+    parse_script()
+    main()
+    _extract_path_params()
+    _extract_ep_params()
+    generate_openapi_spec()
+    generate_contract_tests_from_spec()
+    _parse_block_interfaces()
+    _parse_api_interfaces()
+    parse_sumd_file()
+    parse_api_args()
+    parse_meta_from_args()
+    parse_target_from_args()
+    parse_commands()
+    detect_scenario_type()
+    extract_scenario_name()
+    _is_workspace()
+    generate()
+    analyze()
+    _count_routes_by()
+    _print_routes_section()
+    _print_scenarios_section()
+    _strip_path_segments()
+    _migrate_legacy_extension()
+    _remap_tests_prefix()
+    _normalize_iql_path()
+    _resolve_iql_path()
+    _assert_bool_prop()
+    _assert_count_prop()
+    _assert_text_prop()
+    _assert_classes_prop()
+    _evaluate_assertion()
+    _format_log_detail()
+    _exec_encoder_cmd()
+    _exec_browser_cmd()
+    _exec_assert_cmd()
+    _execute_iql_line()
+    iql_list_files()
+    iql_read_file()
+    iql_list_tables()
+    _extract_table_names()
+    iql_run_line()
+    iql_run_file()
+    _run_iql_lines()
+    _update_counters()
+    _build_run_summary()
+    _write_run_log()
+    iql_list_logs()
+    iql_read_log()
+    endpoints()
+    _format_endpoints_json()
+    _format_endpoints_csv()
+    _format_endpoints_table()
+    _format_endpoints()
+    openapi()
+    _resolve_length()
+    _navigate_step()
+    _navigate_json_path()
+    collect_assert()
+    detect_endpoints()
+    main()
+    _collect_toon_directory()
+    collect_toon_data()
+    collect_doql_data()
+    render_echo()
+    _detect_separator()
+    _parse_inline_array()
+    _parse_inline_dict()
+    _parse_value()
+    _make_section()
+    _make_data_row()
+    parse_testtoon()
+    validate_testtoon()
+    _expand_config()
+    _append_api_asserts()
+    _expand_api()
+    _expand_navigate()
+    _expand_encoder()
+    _expand_select()
+    _expand_assert()
+    _expand_steps()
+    _expand_flow()
+    _expand_oql()
+    _expand_wait()
+    _expand_include()
+    _expand_record()
+    _expand_generic()
+    testtoon_to_iql()
+    report_junit()
+    generate_sumd()
+    _header_section()
+    _metadata_section()
+    _architecture_section()
+    _doql_declaration_section()
+    _api_contract_section()
+    _workflows_table_section()
+    _configuration_section()
+    _llm_suggestions_section()
+    _workflow_snippet()
+    save_sumd()
+    _parse_testtoon_header()
+    _collect_meta_lines()
+    _parse_yaml_meta_block()
+    parse_meta()
+    filter_tests()
+    render_test_list()
+    _parse_kv_block()
+    _parse_app_block()
+    _parse_entities()
+    _parse_interfaces()
+    _parse_workflows()
+    _parse_deploy()
+    _parse_environment()
+    _parse_integrations()
+    parse_doql_less()
+    build_config_section()
+    _render_section_header()
+    render_sections()
+    build_header()
+    parse_doql_file()
+    _create_templates()
+    init()
+    create()
+    watch()
+    from_sumd()
+    report()
+    echo()
+    _resolve_search_dir_and_pattern()
+    _find_files()
+    _collect_from_suite()
+    _collect_by_pattern()
+    _collect_recursive()
+    _deduplicate_files()
+    collect_test_files()
+    collect_list_files()
+    build_report_data()
+    _save_json_report()
+    _build_junit_xml()
+    save_report()
+    print_summary()
+    _fmt_interfaces()
+    _fmt_workflows()
+    _fmt_contracts()
+    _fmt_entities()
+    _fmt_suggestions()
+    _build_header()
+    format_text_output()
+    handle_api()
+    handle_navigate()
+    report_console()
+    _adapt_test_entry()
+    generate_report()
+    run_single_file()
+    run_suite_files()
+    _extract_endpoint()
+    _extract_assert()
+    _parse_scenario()
+    parse_toon_scenarios()
+    parse_iql()
+    convert_iql_to_testtoon()
+    convert_file()
+    convert_directory()
+    _encoder_action_fields()
+    _advance_past_wait()
+    handle_encoder()
+    parse_toon_file()
+    _find_doql_file()
+    _find_toon_path()
+    generate_context()
+    handle_wait()
+    run()
+    echo()
+    dispatch()
+    handle_unknown()
+    handle_select()
+    handle_flow()
+    report_json()
+    cli()
+    main()
+    handle_include()
+    handle_record_start()
+    handle_record_stop()
+    generate_for_project()
+    generate_for_workspace()
+    passed()
+    failed()
+    summary()
+    __init__()
+    set()
+    get()
+    has()
+    all()
+    clear()
+    interpolate()
+    __init__()
+    emit()
+    info()
+    ok()
+    fail()
+    warn()
+    error()
+    step()
+    __init__()
+    parse()
+    execute()
+    run()
+    run_file()
+    strip_comments()
+    __init__()
+    connect()
+    disconnect()
+    send_event()
+    connected()
+    generate_openapi_spec()
+    generate_contract_tests_from_spec()
+    to_dict()
+    to_json()
+    to_yaml()
+    __init__()
+    generate()
+    _normalize_path()
+    _build_operation()
+    _infer_tags()
+    _extract_parameters()
+    _build_request_body()
+    _build_responses()
+    save()
+    __init__()
+    _load_spec()
+    generate_contract_tests()
+    _get_expected_status()
+    validate_response()
+    parse_line()
+    parse_script()
+    main()
+    __init__()
+    execute()
+    _dispatch()
+    cmd_api()
+    cmd_wait()
+    cmd_log()
+    cmd_print()
+    cmd_store()
+    cmd_env()
+    cmd_assert_status()
+    cmd_assert_json()
+    cmd_set_header()
+    cmd_set_base_url()
+    run_script()
+    _format_cmd()
+    generate_sumd()
+    _header_section()
+    _metadata_section()
+    _architecture_section()
+    _doql_declaration_section()
+    _api_contract_section()
+    _workflows_table_section()
+    _configuration_section()
+    _llm_suggestions_section()
+    _workflow_snippet()
+    save_sumd()
+    parse_sumd_file()
+    parse_file()
+    parse()
+    _parse_metadata()
+    _parse_interfaces()
+    _parse_workflows()
+    _parse_testql_scenarios()
+    _parse_architecture()
+    _extract_section()
+    generate_testql_scenarios()
+    detect_separator()
+    parse_value()
+    parse_testtoon()
+    validate()
+    print_parsed()
+    cli()
+    main()
+    echo()
+    _find_doql_file()
+    _find_toon_path()
+    generate_context()
+    _fmt_interfaces()
+    _fmt_workflows()
+    _fmt_contracts()
+    _fmt_entities()
+    _fmt_suggestions()
+    _build_header()
+    format_text_output()
+    _parse_kv_block()
+    _parse_app_block()
+    _parse_entities()
+    _parse_interfaces()
+    _parse_workflows()
+    _parse_deploy()
+    _parse_environment()
+    _parse_integrations()
+    parse_doql_less()
+    _extract_endpoint()
+    _extract_assert()
+    _parse_scenario()
+    parse_toon_scenarios()
+    collect_toon_data()
+    collect_doql_data()
+    render_echo()
+    _normalize_iql_path()
+    _resolve_iql_path()
+    _evaluate_assertion()
+    _format_log_detail()
+    _exec_encoder_cmd()
+    _exec_browser_cmd()
+    _exec_assert_cmd()
+    _execute_iql_line()
+    iql_list_files()
+    iql_read_file()
+    iql_list_tables()
+    iql_run_line()
+    iql_run_file()
+    iql_list_logs()
+    iql_read_log()
+    endpoints()
+    _format_endpoints_json()
+    _format_endpoints_csv()
+    _format_endpoints_table()
+    _format_endpoints()
+    openapi()
+    _is_workspace()
+    generate()
+    analyze()
+    _print_routes_section()
+    _print_scenarios_section()
+    init()
+    create()
+    watch()
+    from_sumd()
+    report()
+    echo()
+    run()
+    suite()
+    list_tests()
+    _find_files()
+    _collect_from_suite()
+    _collect_by_pattern()
+    _collect_recursive()
+    _deduplicate_files()
+    collect_test_files()
+    collect_list_files()
+    run_single_file()
+    run_suite_files()
+    _parse_testtoon_header()
+    _parse_yaml_meta_block()
+    parse_meta()
+    filter_tests()
+    render_test_list()
+    build_report_data()
+    _save_json_report()
+    _build_junit_xml()
+    save_report()
+    print_summary()
+    detect_endpoints()
+    parse_doql_file()
+    generate_for_project()
+    generate_for_workspace()
+    main()
+    _navigate_json_path()
+    parse_iql()
+    _detect_separator()
+    _parse_value()
+    parse_testtoon()
+    validate_testtoon()
+    _expand_config()
+    _expand_api()
+    _expand_navigate()
+    _expand_encoder()
+    _expand_select()
+    _expand_assert()
+    _expand_steps()
+    _expand_flow()
+    _expand_oql()
+    _expand_wait()
+    _expand_include()
+    _expand_record()
+    _expand_generic()
+    testtoon_to_iql()
+    convert_iql_to_testtoon()
+    convert_file()
+    convert_directory()
+    dispatch()
+    handle_api()
+    collect_assert()
+    handle_encoder()
+    handle_flow()
+    handle_include()
+    handle_navigate()
+    handle_record_start()
+    handle_record_stop()
+    handle_select()
+    handle_unknown()
+    handle_wait()
+    parse_api_args()
+    parse_meta_from_args()
+    parse_target_from_args()
+    parse_commands()
+    detect_scenario_type()
+    extract_scenario_name()
+    build_config_section()
+    render_sections()
+    build_header()
+    generate_openapi_spec()
+    generate_contract_tests_from_spec()
+    _adapt_test_entry()
+    generate_report()
+    report_console()
+    report_json()
+    report_junit()
+    parse_line()
+    parse_script()
+    main()
+    generate_sumd()
+    _header_section()
+    _metadata_section()
+    _architecture_section()
+    _doql_declaration_section()
+    _api_contract_section()
+    _workflows_table_section()
+    _configuration_section()
+    _llm_suggestions_section()
+    _workflow_snippet()
+    save_sumd()
+    parse_sumd_file()
+    parse_toon_file()
+    _write()
+    write_toon()
+    test_normalize_legacy_test_path()
+    test_normalize_legacy_view_path()
+    test_normalize_testql_prefixed_path()
+    test_normalize_passthrough_diagnostics_path()
+    test_normalize_testtoon_path()
+    test_resolve_new_format()
+    _make_ep()
+    _make_report()
+    make_result()
+    make_step()
+    _collect_test_files()
+    passed()
+    failed()
+    summary()
+    __init__()
+    set()
+    get()
+    has()
+    all()
+    clear()
+    interpolate()
+    __init__()
+    emit()
+    info()
+    ok()
+    fail()
+    warn()
+    error()
+    step()
+    __init__()
+    parse()
+    execute()
+    run()
+    run_file()
+    strip_comments()
+    __init__()
+    connect()
+    disconnect()
+    send_event()
+    connected()
+    generate_openapi_spec()
+    generate_contract_tests_from_spec()
+    to_dict()
+    to_json()
+    to_yaml()
+    __init__()
+    generate()
+    _normalize_path()
+    _build_operation()
+    _infer_tags()
+    _extract_parameters()
+    _build_request_body()
+    _build_responses()
+    save()
+    __init__()
+    _load_spec()
+    generate_contract_tests()
+    _get_expected_status()
+    validate_response()
+    parse_line()
+    parse_script()
+    main()
+    __init__()
+    execute()
+    _dispatch()
+    cmd_api()
+    cmd_wait()
+    cmd_log()
+    cmd_print()
+    cmd_store()
+    cmd_env()
+    cmd_assert_status()
+    cmd_assert_json()
+    cmd_set_header()
+    cmd_set_base_url()
+    run_script()
+    _format_cmd()
+    generate_sumd()
+    _header_section()
+    _metadata_section()
+    _architecture_section()
+    _doql_declaration_section()
+    _api_contract_section()
+    _workflows_table_section()
+    _configuration_section()
+    _llm_suggestions_section()
+    _workflow_snippet()
+    save_sumd()
+    parse_sumd_file()
+    parse_file()
+    parse()
+    _parse_metadata()
+    _parse_interfaces()
+    _parse_workflows()
+    _parse_testql_scenarios()
+    _parse_architecture()
+    _extract_section()
+    generate_testql_scenarios()
+    iql_read_file()
+    iql_list_files()
+    iql_read_log()
+    iql_list_logs()
+    iql_run_file()
+    iql_run_line()
+    iql_list_tables()
+    _parse_api_args()
+    _parse_meta_from_args()
+    _parse_target_from_args()
+    _detect_scenario_type()
+    _extract_scenario_name()
+    convert_iql_to_testtoon()
+    convert_file()
+    convert_directory()
+    cli()
+    run()
+    generate()
+    analyze()
+    endpoints()
+    openapi()
+    init()
+    create()
+    suite()
+    list()
+    echo()
+    watch()
+    from_sumd()
+    report()
+    main()
+    generate_sumd()
+    save_sumd()
+    parse_doql_less()
+    parse_toon_scenarios()
+    generate_context()
+    format_text_output()
+    echo()
+    generate_for_project()
+    generate_for_workspace()
+    detect_endpoints()
+    detect_separator()
+    parse_value()
+    parse_testtoon()
+    validate()
+    print_parsed()
+    parse_line()
+    parse_script()
+    main()
+    parse_sumd_file()
+    _detect_separator()
+    _parse_value()
+    parse_testtoon()
+    validate_testtoon()
+    _expand_config()
+    _expand_api()
+    _expand_navigate()
+    _expand_encoder()
+    _expand_select()
+    _expand_assert()
+    _expand_steps()
+    _expand_flow()
+    _expand_oql()
+    _expand_wait()
+    _expand_include()
+    _expand_record()
+    _expand_generic()
+    testtoon_to_iql()
+    _normalize_iql_path()
+    _resolve_iql_path()
+    _evaluate_assertion()
+    _format_log_detail()
+    _exec_encoder_cmd()
+    _exec_browser_cmd()
+    _exec_assert_cmd()
+    _execute_iql_line()
+    iql_list_files()
+    iql_read_file()
+    iql_list_tables()
+    iql_run_line()
+    iql_run_file()
+    iql_list_logs()
+    iql_read_log()
+    generate_openapi_spec()
+    generate_contract_tests_from_spec()
+    _navigate_json_path()
+    main()
+    report_junit()
+    parse_doql_file()
+    report_console()
+    _adapt_test_entry()
+    generate_report()
+    parse_iql()
+    parse_toon_file()
+    report_json()
+    parse_testtoon()
+    print()
+    validate()
+    detect_separator()
+    parse_value()
+    parse_testtoon()
+    validate()
+    print_parsed()
+    suite()
+    list_tests()
+    parse_line()
+    parse_script()
+    main()
+    _parse_block_interfaces()
+    _parse_api_interfaces()
+    parse_sumd_file()
+    parse_api_args()
+    parse_meta_from_args()
+    parse_target_from_args()
+    parse_commands()
+    detect_scenario_type()
+    extract_scenario_name()
+    _extract_path_params()
+    _extract_ep_params()
+    generate_openapi_spec()
+    generate_contract_tests_from_spec()
+    _is_workspace()
+    generate()
+    analyze()
+    _count_routes_by()
+    _print_routes_section()
+    _print_scenarios_section()
+    _strip_path_segments()
+    _migrate_legacy_extension()
+    _remap_tests_prefix()
+    _normalize_iql_path()
+    _resolve_iql_path()
+    _assert_bool_prop()
+    _assert_count_prop()
+    _assert_text_prop()
+    _assert_classes_prop()
+    _evaluate_assertion()
+    _format_log_detail()
+    _exec_encoder_cmd()
+    _exec_browser_cmd()
+    _exec_assert_cmd()
+    _execute_iql_line()
+    iql_list_files()
+    iql_read_file()
+    iql_list_tables()
+    _extract_table_names()
+    iql_run_line()
+    iql_run_file()
+    _run_iql_lines()
+    _update_counters()
+    _build_run_summary()
+    _write_run_log()
+    iql_list_logs()
+    iql_read_log()
+    endpoints()
+    _format_endpoints_json()
+    _format_endpoints_csv()
+    _format_endpoints_table()
+    _format_endpoints()
+    openapi()
+    collect_assert()
+    _resolve_length()
+    _navigate_step()
+    _navigate_json_path()
+    detect_endpoints()
+    _collect_toon_directory()
+    collect_toon_data()
+    collect_doql_data()
+    render_echo()
+    report_junit()
+    _detect_separator()
+    _parse_inline_array()
+    _parse_inline_dict()
+    _parse_value()
+    _make_section()
+    _make_data_row()
+    parse_testtoon()
+    validate_testtoon()
+    _expand_config()
+    _append_api_asserts()
+    _expand_api()
+    _expand_navigate()
+    _expand_encoder()
+    _expand_select()
+    _expand_assert()
+    _expand_steps()
+    _expand_flow()
+    _expand_oql()
+    _expand_wait()
+    _expand_include()
+    _expand_record()
+    _expand_generic()
+    testtoon_to_iql()
+    _parse_testtoon_header()
+    _collect_meta_lines()
+    _parse_yaml_meta_block()
+    parse_meta()
+    filter_tests()
+    render_test_list()
+    _parse_kv_block()
+    _parse_app_block()
+    _parse_entities()
+    _parse_interfaces()
+    _parse_workflows()
+    _parse_deploy()
+    _parse_environment()
+    _parse_integrations()
+    parse_doql_less()
+    generate_sumd()
+    _header_section()
+    _metadata_section()
+    _architecture_section()
+    _doql_declaration_section()
+    _api_contract_section()
+    _workflows_table_section()
+    _configuration_section()
+    _llm_suggestions_section()
+    _workflow_snippet()
+    save_sumd()
+    build_config_section()
+    _render_section_header()
+    render_sections()
+    build_header()
+    _create_templates()
+    init()
+    create()
+    watch()
+    from_sumd()
+    report()
+    echo()
+    build_report_data()
+    _save_json_report()
+    _build_junit_xml()
+    save_report()
+    print_summary()
+    _resolve_search_dir_and_pattern()
+    _find_files()
+    _collect_from_suite()
+    _collect_by_pattern()
+    _collect_recursive()
+    _deduplicate_files()
+    collect_test_files()
+    collect_list_files()
+    _fmt_interfaces()
+    _fmt_workflows()
+    _fmt_contracts()
+    _fmt_entities()
+    _fmt_suggestions()
+    _build_header()
+    format_text_output()
+    handle_api()
+    handle_navigate()
+    parse_doql_file()
+    report_console()
+    run_single_file()
+    run_suite_files()
+    _extract_endpoint()
+    _extract_assert()
+    _parse_scenario()
+    parse_toon_scenarios()
+    _adapt_test_entry()
+    generate_report()
+    convert_iql_to_testtoon()
+    convert_file()
+    convert_directory()
+    _encoder_action_fields()
+    _advance_past_wait()
+    handle_encoder()
+    parse_iql()
+    parse_toon_file()
+    _find_doql_file()
+    _find_toon_path()
+    generate_context()
+    handle_wait()
+    run()
+    echo()
+    dispatch()
+    handle_unknown()
+    handle_select()
+    handle_flow()
+    report_json()
+    cli()
+    main()
+    handle_include()
+    handle_record_start()
+    handle_record_stop()
+    generate_for_project()
+    generate_for_workspace()
+    passed()
+    failed()
+    summary()
+    __init__()
+    set()
+    get()
+    has()
+    all()
+    clear()
+    interpolate()
+    __init__()
+    emit()
+    info()
+    ok()
+    fail()
+    warn()
+    error()
+    step()
+    __init__()
+    parse()
+    execute()
+    run()
+    run_file()
+    strip_comments()
+    __init__()
+    connect()
+    disconnect()
+    send_event()
+    connected()
+    generate_openapi_spec()
+    generate_contract_tests_from_spec()
+    to_dict()
+    to_json()
+    to_yaml()
+    __init__()
+    generate()
+    _normalize_path()
+    _build_operation()
+    _infer_tags()
+    _extract_parameters()
+    _build_request_body()
+    _build_responses()
+    save()
+    __init__()
+    _load_spec()
+    generate_contract_tests()
+    _get_expected_status()
+    validate_response()
+    parse_line()
+    parse_script()
+    main()
+    __init__()
+    execute()
+    _dispatch()
+    cmd_api()
+    cmd_wait()
+    cmd_log()
+    cmd_print()
+    cmd_store()
+    cmd_env()
+    cmd_assert_status()
+    cmd_assert_json()
+    cmd_set_header()
+    cmd_set_base_url()
+    run_script()
+    _format_cmd()
+    generate_sumd()
+    _header_section()
+    _metadata_section()
+    _architecture_section()
+    _doql_declaration_section()
+    _api_contract_section()
+    _workflows_table_section()
+    _configuration_section()
+    _llm_suggestions_section()
+    _workflow_snippet()
+    save_sumd()
+    parse_sumd_file()
+    parse_file()
+    parse()
+    _parse_metadata()
+    _parse_interfaces()
+    _parse_workflows()
+    _parse_testql_scenarios()
+    _parse_architecture()
+    _extract_section()
+    generate_testql_scenarios()
+    generate_readme()
+    parse_testtoon()
+    print()
+    validate()
+    _parse_api_args()
+    _parse_meta_from_args()
+    _parse_target_from_args()
+    _detect_scenario_type()
+    _extract_scenario_name()
+    convert_iql_to_testtoon()
+    convert_file()
+    convert_directory()
+    cli()
+    run()
+    generate()
+    analyze()
+    endpoints()
+    openapi()
+    init()
+    create()
+    suite()
+    list()
+    echo()
+    watch()
+    from_sumd()
+    report()
+    main()
+    generate_sumd()
+    save_sumd()
+    parse_doql_less()
+    parse_toon_scenarios()
+    generate_context()
+    format_text_output()
+    echo()
+    generate_for_project()
+    generate_for_workspace()
+    detect_endpoints()
+    detect_separator()
+    parse_value()
+    parse_testtoon()
+    validate()
+    print_parsed()
+    parse_line()
+    parse_script()
+    main()
+    parse_sumd_file()
+    _detect_separator()
+    _parse_value()
+    parse_testtoon()
+    validate_testtoon()
+    _expand_config()
+    _expand_api()
+    _expand_navigate()
+    _expand_encoder()
+    _expand_select()
+    _expand_assert()
+    _expand_steps()
+    _expand_flow()
+    _expand_oql()
+    _expand_wait()
+    _expand_include()
+    _expand_record()
+    _expand_generic()
+    testtoon_to_iql()
+    _normalize_iql_path()
+    _resolve_iql_path()
+    _evaluate_assertion()
+    _format_log_detail()
+    _exec_encoder_cmd()
+    _exec_browser_cmd()
+    _exec_assert_cmd()
+    _execute_iql_line()
+    iql_list_files()
+    iql_read_file()
+    iql_list_tables()
+    iql_run_line()
+    iql_run_file()
+    iql_list_logs()
+    iql_read_log()
+    generate_openapi_spec()
+    generate_contract_tests_from_spec()
+    _navigate_json_path()
+    main()
+    report_junit()
+    parse_doql_file()
+    report_console()
+    _adapt_test_entry()
+    generate_report()
+    parse_iql()
+    parse_toon_file()
+    report_json()
+    detect_separator()
+    parse_value()
+    parse_testtoon()
+    validate()
+    print_parsed()
+    cli()
+    main()
+    echo()
+    _find_doql_file()
+    _find_toon_path()
+    generate_context()
+    _fmt_interfaces()
+    _fmt_workflows()
+    _fmt_contracts()
+    _fmt_entities()
+    _fmt_suggestions()
+    _build_header()
+    format_text_output()
+    _parse_kv_block()
+    _parse_app_block()
+    _parse_entities()
+    _parse_interfaces()
+    _parse_workflows()
+    _parse_deploy()
+    _parse_environment()
+    _parse_integrations()
+    parse_doql_less()
+    _extract_endpoint()
+    _extract_assert()
+    _parse_scenario()
+    parse_toon_scenarios()
+    collect_toon_data()
+    collect_doql_data()
+    render_echo()
+    _normalize_iql_path()
+    _resolve_iql_path()
+    _evaluate_assertion()
+    _format_log_detail()
+    _exec_encoder_cmd()
+    _exec_browser_cmd()
+    _exec_assert_cmd()
+    _execute_iql_line()
+    iql_list_files()
+    iql_read_file()
+    iql_list_tables()
+    iql_run_line()
+    iql_run_file()
+    iql_list_logs()
+    iql_read_log()
+    endpoints()
+    _format_endpoints_json()
+    _format_endpoints_csv()
+    _format_endpoints_table()
+    _format_endpoints()
+    openapi()
+    _is_workspace()
+    generate()
+    analyze()
+    _print_routes_section()
+    _print_scenarios_section()
+    init()
+    create()
+    watch()
+    from_sumd()
+    report()
+    echo()
+    run()
+    suite()
+    list_tests()
+    _find_files()
+    _collect_from_suite()
+    _collect_by_pattern()
+    _collect_recursive()
+    _deduplicate_files()
+    collect_test_files()
+    collect_list_files()
+    run_single_file()
+    run_suite_files()
+    _parse_testtoon_header()
+    _parse_yaml_meta_block()
+    parse_meta()
+    filter_tests()
+    render_test_list()
+    build_report_data()
+    _save_json_report()
+    _build_junit_xml()
+    save_report()
+    print_summary()
+    detect_endpoints()
+    parse_doql_file()
+    generate_for_project()
+    generate_for_workspace()
+    main()
+    _navigate_json_path()
+    parse_iql()
+    _detect_separator()
+    _parse_value()
+    parse_testtoon()
+    validate_testtoon()
+    _expand_config()
+    _expand_api()
+    _expand_navigate()
+    _expand_encoder()
+    _expand_select()
+    _expand_assert()
+    _expand_steps()
+    _expand_flow()
+    _expand_oql()
+    _expand_wait()
+    _expand_include()
+    _expand_record()
+    _expand_generic()
+    testtoon_to_iql()
+    convert_iql_to_testtoon()
+    convert_file()
+    convert_directory()
+    dispatch()
+    handle_api()
+    collect_assert()
+    handle_encoder()
+    handle_flow()
+    handle_include()
+    handle_navigate()
+    handle_record_start()
+    handle_record_stop()
+    handle_select()
+    handle_unknown()
+    handle_wait()
+    parse_api_args()
+    parse_meta_from_args()
+    parse_target_from_args()
+    parse_commands()
+    detect_scenario_type()
+    extract_scenario_name()
+    build_config_section()
+    render_sections()
+    build_header()
+    generate_openapi_spec()
+    generate_contract_tests_from_spec()
+    _adapt_test_entry()
+    generate_report()
+    report_console()
+    report_json()
+    report_junit()
+    parse_line()
+    parse_script()
+    main()
+    generate_sumd()
+    _header_section()
+    _metadata_section()
+    _architecture_section()
+    _doql_declaration_section()
+    _api_contract_section()
+    _workflows_table_section()
+    _configuration_section()
+    _llm_suggestions_section()
+    _workflow_snippet()
+    save_sumd()
+    parse_sumd_file()
+    parse_toon_file()
+    _write()
+    write_toon()
+    test_normalize_legacy_test_path()
+    test_normalize_legacy_view_path()
+    test_normalize_testql_prefixed_path()
+    test_normalize_passthrough_diagnostics_path()
+    test_normalize_testtoon_path()
+    test_resolve_new_format()
+    _make_ep()
+    _make_report()
+    make_result()
+    make_step()
+    _collect_test_files()
+    detect_separator()
+    parse_value()
+    parse_testtoon()
+    validate()
+    print_parsed()
+    cli()
+    main()
+    echo()
+    _find_doql_file()
+    _find_toon_path()
+    generate_context()
+    _fmt_interfaces()
+    _fmt_workflows()
+    _fmt_contracts()
+    _fmt_entities()
+    _fmt_suggestions()
+    _build_header()
+    format_text_output()
+    _parse_kv_block()
+    _parse_app_block()
+    _parse_entities()
+    _parse_interfaces()
+    _parse_workflows()
+    _parse_deploy()
+    _parse_environment()
+    _parse_integrations()
+    parse_doql_less()
+    _extract_endpoint()
+    _extract_assert()
+    _parse_scenario()
+    parse_toon_scenarios()
+    collect_toon_data()
+    collect_doql_data()
+    render_echo()
+    _normalize_iql_path()
+    _resolve_iql_path()
+    _evaluate_assertion()
+    _format_log_detail()
+    _exec_encoder_cmd()
+    _exec_browser_cmd()
+    _exec_assert_cmd()
+    _execute_iql_line()
+    iql_list_files()
+    iql_read_file()
+    iql_list_tables()
+    iql_run_line()
+    iql_run_file()
+    iql_list_logs()
+    iql_read_log()
+    endpoints()
+    _format_endpoints_json()
+    _format_endpoints_csv()
+    _format_endpoints_table()
+    _format_endpoints()
+    openapi()
+    _is_workspace()
+    generate()
+    analyze()
+    _print_routes_section()
+    _print_scenarios_section()
+    init()
+    create()
+    watch()
+    from_sumd()
+    report()
+    echo()
+    run()
+    suite()
+    list_tests()
+    _find_files()
+    _collect_from_suite()
+    _collect_by_pattern()
+    _collect_recursive()
+    _deduplicate_files()
+    collect_test_files()
+    collect_list_files()
+    run_single_file()
+    run_suite_files()
+    _parse_testtoon_header()
+    _parse_yaml_meta_block()
+    parse_meta()
+    filter_tests()
+    render_test_list()
+    build_report_data()
+    _save_json_report()
+    _build_junit_xml()
+    save_report()
+    print_summary()
+    detect_endpoints()
+    parse_doql_file()
+    generate_for_project()
+    generate_for_workspace()
+    main()
+    _navigate_json_path()
+    parse_iql()
+    _detect_separator()
+    _parse_value()
+    parse_testtoon()
+    validate_testtoon()
+    _expand_config()
+    _expand_api()
+    _expand_navigate()
+    _expand_encoder()
+    _expand_select()
+    _expand_assert()
+    _expand_steps()
+    _expand_flow()
+    _expand_oql()
+    _expand_wait()
+    _expand_include()
+    _expand_record()
+    _expand_generic()
+    testtoon_to_iql()
+    convert_iql_to_testtoon()
+    convert_file()
+    convert_directory()
+    dispatch()
+    handle_api()
+    collect_assert()
+    handle_encoder()
+    handle_flow()
+    handle_include()
+    handle_navigate()
+    handle_record_start()
+    handle_record_stop()
+    handle_select()
+    handle_unknown()
+    handle_wait()
+    parse_api_args()
+    parse_meta_from_args()
+    parse_target_from_args()
+    parse_commands()
+    detect_scenario_type()
+    extract_scenario_name()
+    build_config_section()
+    render_sections()
+    build_header()
+    generate_openapi_spec()
+    generate_contract_tests_from_spec()
+    _adapt_test_entry()
+    generate_report()
+    report_console()
+    report_json()
+    report_junit()
+    parse_line()
+    parse_script()
+    main()
+    generate_sumd()
+    _header_section()
+    _metadata_section()
+    _architecture_section()
+    _doql_declaration_section()
+    _api_contract_section()
+    _workflows_table_section()
+    _configuration_section()
+    _llm_suggestions_section()
+    _workflow_snippet()
+    save_sumd()
+    parse_sumd_file()
+    parse_toon_file()
+    _write()
+    write_toon()
+    test_normalize_legacy_test_path()
+    test_normalize_legacy_view_path()
+    test_normalize_testql_prefixed_path()
+    test_normalize_passthrough_diagnostics_path()
+    test_normalize_testtoon_path()
+    test_resolve_new_format()
+    _make_ep()
+    _make_report()
+    make_result()
+    make_step()
+    _collect_test_files()
+    passed()
+    failed()
+    summary()
+    __init__()
+    set()
+    get()
+    has()
+    all()
+    clear()
+    interpolate()
+    __init__()
+    emit()
+    info()
+    ok()
+    fail()
+    warn()
+    error()
+    step()
+    __init__()
+    parse()
+    execute()
+    run()
+    run_file()
+    strip_comments()
+    __init__()
+    connect()
+    disconnect()
+    send_event()
+    connected()
+    generate_openapi_spec()
+    generate_contract_tests_from_spec()
+    to_dict()
+    to_json()
+    to_yaml()
+    __init__()
+    generate()
+    _normalize_path()
+    _build_operation()
+    _infer_tags()
+    _extract_parameters()
+    _build_request_body()
+    _build_responses()
+    save()
+    __init__()
+    _load_spec()
+    generate_contract_tests()
+    _get_expected_status()
+    validate_response()
+    parse_line()
+    parse_script()
+    main()
+    __init__()
+    execute()
+    _dispatch()
+    cmd_api()
+    cmd_wait()
+    cmd_log()
+    cmd_print()
+    cmd_store()
+    cmd_env()
+    cmd_assert_status()
+    cmd_assert_json()
+    cmd_set_header()
+    cmd_set_base_url()
+    run_script()
+    _format_cmd()
+    generate_sumd()
+    _header_section()
+    _metadata_section()
+    _architecture_section()
+    _doql_declaration_section()
+    _api_contract_section()
+    _workflows_table_section()
+    _configuration_section()
+    _llm_suggestions_section()
+    _workflow_snippet()
+    save_sumd()
+    parse_sumd_file()
+    parse_file()
+    parse()
+    _parse_metadata()
+    _parse_interfaces()
+    _parse_workflows()
+    _parse_testql_scenarios()
+    _parse_architecture()
+    _extract_section()
+    generate_testql_scenarios()
+    iql_read_file()
+    iql_list_files()
+    iql_read_log()
+    iql_list_logs()
+    iql_run_file()
+    iql_run_line()
+    iql_list_tables()
+    generate_readme()
+  project/evolution.toon.yaml:
+  project/README.md:
+  project/project.toon.yaml:
+  project/analysis.toon.yaml:
+  testql-scenarios/generated-api-integration.testql.toon.yaml:
+  testql-scenarios/generated-from-pytests.testql.toon.yaml:
+  testql-scenarios/generated-cli-tests.testql.toon.yaml:
+  testql-scenarios/generated-api-smoke.testql.toon.yaml:
   testql/base.py:
+  testql/generator.py:
+  testql/__init__.py:
+  testql/__main__.py:
+  testql/endpoint_detector.py:
   testql/commands/echo/__init__.py:
   testql/commands/__init__.py:
-  testql/__init__.py:
   testql/commands/suite_cmd.py:
-  testql/commands/templates/templates.py:
   testql/commands/templates/__init__.py:
+  testql/commands/templates/templates.py:
   testql/commands/suite/__init__.py:
   testql/commands/echo/formatters/__init__.py:
   testql/commands/echo/parsers/__init__.py:
-  testql/endpoint_detector.py:
-  testql/generator.py:
   testql/interpreter/_converter.py:
-  testql/interpreter.py:
   testql/interpreter/converter/__init__.py:
-  testql/interpreter/converter/handlers/__init__.py:
-  testql/reporters/__init__.py:
-  testql/generators/__init__.py:
-  testql/detectors/__init__.py:
   testql/interpreter/converter/models.py:
     e: Row,Section
     Row:  # A row of values in a section...
     Section:  # A section in the converted output...
+  testql/interpreter/converter/handlers/__init__.py:
+  testql/reporters/__init__.py:
+  testql/generators/__init__.py:
+  testql/detectors/__init__.py:
   testql/runners/__init__.py:
   testql/scenarios/recordings/session-recording.testql.toon.yaml:
   testql/scenarios/recordings/recorded-test-session.testql.toon.yaml:
@@ -1344,61 +2629,63 @@ Provides common initializ...
   testql/scenarios/diagnostics/generate-test-reports.testql.toon.yaml:
   testql/scenarios/diagnostics/backend-diagnostic.testql.toon.yaml:
   testql/scenarios/diagnostics/full-diagnostic.testql.toon.yaml:
+  testql/scenarios/c2004/smoke/api-health.testql.toon.yaml:
   testql/scenarios/c2004/smoke/api-smoke.testql.toon.yaml:
   testql/scenarios/c2004/encoder/encoder-navigation.testql.toon.yaml:
   testql/scenarios/c2004/encoder/encoder-workshop.testql.toon.yaml:
-  testql/scenarios/c2004/smoke/api-health.testql.toon.yaml:
   testql/scenarios/c2004/gui/connect-id-barcode.testql.toon.yaml:
   testql/scenarios/c2004/gui/connect-config-users.testql.toon.yaml:
+  testql/scenarios/c2004/gui/connect-workshop-transport.testql.toon.yaml:
   testql/scenarios/c2004/views/test-gui-connect-id.testql.toon.yaml:
   testql/scenarios/c2004/views/test-app-lifecycle.testql.toon.yaml:
   testql/scenarios/c2004/views/test-gui-connect-manager.testql.toon.yaml:
   testql/scenarios/c2004/views/test-gui-connect-config.testql.toon.yaml:
-  testql/scenarios/c2004/gui/connect-workshop-transport.testql.toon.yaml:
   testql/scenarios/c2004/views/test-gui-connect-reports.testql.toon.yaml:
   testql/scenarios/c2004/views/test-mixed-workflow.testql.toon.yaml:
-  testql/scenarios/c2004/views/reproduce-view.testql.toon.yaml:
   testql/scenarios/c2004/views/test-gui-connect-test.testql.toon.yaml:
+  testql/scenarios/c2004/views/reproduce-view.testql.toon.yaml:
   testql/scenarios/c2004/views/test-api.testql.toon.yaml:
   testql/scenarios/c2004/views/test-gui-all.testql.toon.yaml:
   testql/scenarios/c2004/views/test-dsl-objects.testql.toon.yaml:
   testql/scenarios/c2004/views/test-gui-connect-workshop.testql.toon.yaml:
   testql/scenarios/c2004/views/test-protocol-flow.testql.toon.yaml:
   testql/scenarios/c2004/views/test-encoder.testql.toon.yaml:
+  testql/scenarios/c2004/views/test-ui-navigation.testql.toon.yaml:
   testql/scenarios/c2004/views/run-mask-test-protocol.testql.toon.yaml:
   testql/scenarios/c2004/views/test-devices-crud.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-test-testing-barcode.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-reports-week.testql.toon.yaml:
-  testql/scenarios/c2004/views/views/connect-reports-custom.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-manager-scenarios.testql.toon.yaml:
+  testql/scenarios/c2004/views/views/connect-reports-custom.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-config-settings.testql.toon.yaml:
-  testql/scenarios/c2004/views/test-ui-navigation.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-test-testing-rfid.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-manager-library.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-reports-quarter.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-test-testing-search.testql.toon.yaml:
+  testql/scenarios/c2004/views/views/connect-workshop-requests-search.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-config-tables.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-reports-chart.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-reports-filter.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-id-barcode.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-config-users.testql.toon.yaml:
-  testql/scenarios/c2004/views/views/connect-workshop-requests-search.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-test-protocols.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-manager-activities.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-reports-month.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-test-scenario-view.testql.toon.yaml:
-  testql/scenarios/c2004/views/views/connect-id-manual.testql.toon.yaml:
+  testql/scenarios/c2004/views/views/connect-config-feature-flags.testql.toon.yaml:
   testql/scenarios/c2004/views/views/run-all-views.testql.toon.yaml:
+  testql/scenarios/c2004/views/views/connect-id-manual.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-id-rfid.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-id-list.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-config-labels.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-test-full-test.testql.toon.yaml:
-  testql/scenarios/c2004/views/views/connect-manager-intervals.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-reports-year.testql.toon.yaml:
+  testql/scenarios/c2004/views/views/connect-manager-intervals.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-test-testing-qr.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-workshop-transport-search.testql.toon.yaml:
-  testql/scenarios/c2004/views/views/connect-manager-test-types.testql.toon.yaml:
+  testql/scenarios/c2004/views/views/connect-id-qr.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-config-theme.testql.toon.yaml:
+  testql/scenarios/c2004/views/views/connect-manager-test-types.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-test-devices-search.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-workshop-services-search.testql.toon.yaml:
   testql/scenarios/c2004/views/views/connect-workshop-dispositions-search.testql.toon.yaml:
@@ -1407,5 +2694,8 @@ Provides common initializ...
   testql/scenarios/generic/api-crud-template.testql.toon.yaml:
   testql/scenarios/generic/auth-login.testql.toon.yaml:
   testql/scenarios/generic/health-check.testql.toon.yaml:
-  testql/scenarios/c2004/views/views/connect-config-feature-flags.testql.toon.yaml:
-  testql/scenarios/c2004/views/views/connect-id-qr.testql.toon.yaml:
+  project/duplication.toon.yaml:
+  project/validation.toon.yaml:
+  docs/README.md:
+    e: generate_readme
+    generate_readme()

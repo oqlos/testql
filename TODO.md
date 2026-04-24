@@ -123,20 +123,25 @@
 
 ## God moduły (pliki > 500L)
 
-| Plik | Rozmiar | Klasy | Max CC | Akcja |
-|------|---------|-------|--------|-------|
-| `endpoint_detector.py` | 835L | 13 | 13 | Split wg frameworka: `detectors/fastapi.py`, `detectors/flask.py`, `detectors/openapi.py` etc. |
-| `generator.py` | 709L | 4 | 23 | Przenieść do `generators/` (już częściowo) — usunąć duplikacje |
+**Status (2026-04-24):** ✅ Rozwiązane — żaden plik nie przekracza 500 linii
+
+| Plik | Rozmiar | Status |
+|------|---------|--------|
+| `endpoint_detector.py` | 835L | ✅ Usunięty (przeniesiony do `detectors/`) |
+| `generator.py` | 709L | ✅ Usunięty (przeniesiony do `generators/`) |
+| `commands/encoder_routes.py` | 477L | ✅ < 500L |
+| `openapi_generator.py` | 444L | ✅ < 500L |
+| `interpreter/_gui.py` | 425L | ✅ < 500L |
+| `interpreter/_testtoon_parser.py` | 413L | ✅ < 500L |
 
 ---
 
 ## Testy i pokrycie
 
-- [ ] Włączyć `pytest-cov` — coverage zgłaszane jako `null`
-- [ ] `tests/test_generate_cmd.py` — pokryć `generate`, `analyze`, `_is_workspace()`
-- [ ] `tests/test_suite_cmd.py` — pokryć `suite`, `list`, `_collect_test_files`
-- [ ] `tests/test_echo.py` — pokryć `parse_doql_less`, `format_text_output`
-- [ ] Cel pokrycia: ≥ 60%
+- ✅ `pytest-cov` włączony — coverage 65%
+- ✅ Nowe testy: `test_shell_execution.py` (9), `test_unit_execution.py` (9), `test_gui_execution.py` (11), `test_dispatcher.py` (10)
+- ✅ Cel pokrycia: ≥ 60% osiągnięty (65%)
+- [ ] `pyqual.yaml` `coverage_min` zaktualizować do 65
 
 ---
 
@@ -160,3 +165,34 @@
 - ✅ Naprawiony `testql list` — tabela + TestTOON header
 - ✅ Wygenerowane i zwalidowane scenariusze dla 6 projektów (17/17 OK)
 - ✅ 22 testy zielone
+
+---
+
+## ✅ Wykonane (2026-04-24) — Refaktoryzacja Executor'a
+
+### Nowe funkcje testql (generowanie + realizacja):
+
+| Typ | Generacja | Realizacja | Pliki |
+|-----|-----------|------------|-------|
+| **CLI/Shell** | ✅ | ✅ | `_shell.py`, `test_shell_execution.py` (9 testów) |
+| **Unit** | ✅ | ✅ | `_unit.py`, `test_unit_execution.py` (9 testów) |
+| **GUI** | ✅ | ✅ | `_gui.py`, `test_gui_execution.py` (11 testów) |
+| **API** | ✅ | ✅ | Istniejące |
+| **Hardware** | ✅ | ✅ | Istniejące |
+| **WebSocket** | ✅ | ✅ | Istniejące |
+
+### Architektura:
+
+- ✅ `CommandDispatcher` — centralny dispatcher z auto-discovery (10 testów)
+- ✅ Wszystkie mixin'y zintegrowane z `IqlInterpreter`
+- ✅ Lepsze error messages z sugestiami ("Did you mean...")
+- ✅ 39 nowych testów (wszystkie green)
+- ✅ Coverage: 16% → 65% (cel ≥ 50% osiągnięty)
+
+### Nowe komendy interpretera:
+
+**Shell:** `SHELL "cmd"`, `EXEC "script"`, `RUN "python -m mod"`, `ASSERT_EXIT_CODE`, `ASSERT_STDOUT/STDERR_CONTAINS`
+
+**Unit:** `UNIT_PYTEST`, `UNIT_PYTEST_DISCOVER`, `UNIT_ASSERT`, `UNIT_IMPORT`
+
+**GUI:** `GUI_START`, `GUI_CLICK`, `GUI_INPUT`, `GUI_ASSERT_VISIBLE`, `GUI_ASSERT_TEXT`, `GUI_CAPTURE`, `GUI_STOP`
