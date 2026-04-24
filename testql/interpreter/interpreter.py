@@ -18,11 +18,14 @@ from ._api_runner import ApiRunnerMixin
 from ._assertions import AssertionsMixin
 from ._encoder import EncoderMixin
 from ._flow import FlowMixin
-
+from ._gui import GuiMixin
+from ._shell import ShellMixin
+from ._unit import UnitMixin
 from ._websockets import WebSocketMixin
+from .dispatcher import CommandDispatcher
 
 
-class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, WebSocketMixin, BaseInterpreter):
+class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, GuiMixin, ShellMixin, UnitMixin, WebSocketMixin, BaseInterpreter):
     """
     IQL interpreter — runs .testql.toon.yaml / .iql / .tql scripts.
 
@@ -57,6 +60,7 @@ class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, W
         self.last_status: int = 0
         self.events: list[dict[str, Any]] = []
         self._included: set[str] = set()  # prevent circular includes
+        self.dispatcher = CommandDispatcher(self)  # Central command dispatcher
 
     def parse(self, source: str, filename: str = "<string>") -> IqlScript:
         """Auto-detect format: TestTOON (.testql.toon.yaml) vs legacy IQL."""
@@ -102,11 +106,13 @@ class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, W
     # ── Command dispatch ──────────────────────────────────────────────────────
 
     def _dispatch(self, cmd: str, args: str, line: IqlLine) -> None:
-        handler = getattr(self, f"_cmd_{cmd.lower()}", None)
-        if handler:
-            handler(args, line)
-        else:
-            self._emit_event(cmd.lower(), args, line)
+        """Dispatch command using central dispatcher with auto-discovery."""
+        # Try dispatcher first (for registered _cmd_* handlers)
+        if self.dispatcher.dispatch(cmd, args, line):
+            return
+
+        # Fallback to event emission for semantic commands
+        self._emit_event(cmd.lower(), args, line)
 
     # ── Variables ─────────────────────────────────────────────────────────────
 

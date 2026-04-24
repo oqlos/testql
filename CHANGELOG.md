@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.17] - 2026-04-24
+
+### Docs
+- Update README.md
+- Update TODO.md
+
+### Test
+- Update testql/generators/generators.py
+- Update testql/interpreter/_gui.py
+- Update testql/interpreter/_shell.py
+- Update testql/interpreter/_unit.py
+- Update testql/interpreter/dispatcher.py
+- Update testql/interpreter/interpreter.py
+- Update tests/test_dispatcher.py
+- Update tests/test_gui_execution.py
+- Update tests/test_shell_execution.py
+- Update tests/test_unit_execution.py
+
+### Other
+- Update coverage.json
+
 ## [0.6.16] - 2026-04-24
 
 ### Docs

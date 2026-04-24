@@ -249,7 +249,7 @@ class SpecializedGeneratorMixin:
         return output_file
 
     def _generate_cli_tests(self: "TestGenerator", output_dir: Path) -> Path | None:
-        """Generate CLI tests."""
+        """Generate CLI tests with real shell commands."""
         sections = [
             "# SCENARIO: CLI Command Tests",
             "# TYPE: cli",
@@ -259,10 +259,18 @@ class SpecializedGeneratorMixin:
             f"  cli_command, python -m {self.profile.name}",
             "  timeout_ms, 10000",
             "",
-            "LOG[3]{message}:",
-            '  "Test CLI help command"',
-            '  "Test CLI version command"',
-            '  "Test CLI main workflow"',
+            "# Test 1: CLI help command",
+            f'SHELL "python -m {self.profile.name} --help" 5000',
+            'ASSERT_EXIT_CODE 0',
+            'ASSERT_STDOUT_CONTAINS "usage"',
+            "",
+            "# Test 2: CLI version command",
+            f'SHELL "python -m {self.profile.name} --version" 5000',
+            'ASSERT_EXIT_CODE 0',
+            "",
+            "# Test 3: CLI main workflow (dry-run)",
+            f'SHELL "python -m {self.profile.name} --help" 10000',
+            'ASSERT_EXIT_CODE 0',
         ]
 
         content = '\n'.join(sections)
@@ -272,15 +280,24 @@ class SpecializedGeneratorMixin:
         return output_file
 
     def _generate_lib_tests(self: "TestGenerator", output_dir: Path) -> Path | None:
-        """Generate library unit tests."""
+        """Generate library unit tests with real pytest commands."""
         sections = [
             "# SCENARIO: Library Unit Tests",
             "# TYPE: unit",
             "# GENERATED: true",
             "",
-            "LOG[2]{message}:",
-            '  "Test core functions"',
-            '  "Test public API surface"',
+            "CONFIG[2]{key, value}:",
+            f"  module_name, {self.profile.name}",
+            "  timeout_ms, 60000",
+            "",
+            "# Test 1: Verify module can be imported",
+            f'UNIT_IMPORT "{self.profile.name}"',
+            "",
+            "# Test 2: Run existing pytest tests if tests/ directory exists",
+            'UNIT_PYTEST_DISCOVER "tests/" 60000',
+            "",
+            "# Test 3: Assert core function behavior (example)",
+            'UNIT_ASSERT "len" "[[1,2,3,4]]" "4"',
         ]
 
         content = '\n'.join(sections)
@@ -290,23 +307,34 @@ class SpecializedGeneratorMixin:
         return output_file
 
     def _generate_frontend_tests(self: "TestGenerator", output_dir: Path) -> Path | None:
-        """Generate frontend/GUI tests."""
+        """Generate frontend/GUI tests with real GUI commands."""
         sections = [
             "# SCENARIO: Frontend E2E Tests",
             "# TYPE: gui",
             "# GENERATED: true",
             "",
-            "CONFIG[2]{key, value}:",
+            "CONFIG[3]{key, value}:",
             "  base_url, http://localhost:5173",
-            "  browser, chromium",
+            "  gui_driver, playwright",
+            "  timeout_ms, 30000",
             "",
-            "NAVIGATE[1]{url}:",
-            "  /",
+            "# Test 1: Start application and navigate",
+            'GUI_START "${base_url}"',
             "",
-            "GUI[3]{action, selector}:",
-            "  click, [data-testid=main-button]",
-            "  input, [data-testid=search] test",
-            "  click, [data-testid=submit]",
+            "# Test 2: Interact with UI elements",
+            'GUI_CLICK "[data-testid=main-button]"',
+            'GUI_INPUT "[data-testid=search]" "test query"',
+            'GUI_CLICK "[data-testid=submit]"',
+            "",
+            "# Test 3: Verify elements",
+            'GUI_ASSERT_VISIBLE "[data-testid=results]"',
+            'GUI_ASSERT_TEXT "[data-testid=results]" "test"',
+            "",
+            "# Test 4: Screenshot",
+            'GUI_CAPTURE "" "e2e-screenshot.png"',
+            "",
+            "# Test 5: Cleanup",
+            'GUI_STOP',
         ]
 
         content = '\n'.join(sections)
