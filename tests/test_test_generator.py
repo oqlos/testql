@@ -31,6 +31,26 @@ class TestTestGeneratorAnalyze:
         g.analyze()
         assert g.profile.project_type == "python-cli"
 
+    def test_analyze_argparse_cli_project(self, tmp_path):
+        """Projects using argparse should be detected as python-cli."""
+        (tmp_path / "pyproject.toml").write_text('[project]\nname = "myapp"')
+        cli_dir = tmp_path / "myapp"
+        cli_dir.mkdir()
+        (cli_dir / "cli.py").write_text(
+            'import argparse\nparser = argparse.ArgumentParser()\n'
+            'parser.add_argument("--version")\n'
+        )
+        g = TestGenerator(str(tmp_path))
+        g.analyze()
+        assert g.profile.project_type == "python-cli"
+
+    def test_analyze_typer_cli_project(self, tmp_path):
+        """Projects using typer should be detected as python-cli."""
+        (tmp_path / "pyproject.toml").write_text('[dependencies]\ntyper = "^0.9"')
+        g = TestGenerator(str(tmp_path))
+        g.analyze()
+        assert g.profile.project_type == "python-cli"
+
     def test_analyze_sets_project_path(self, tmp_path):
         g = TestGenerator(str(tmp_path))
         g.analyze()

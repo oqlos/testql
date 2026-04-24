@@ -1,51 +1,51 @@
-# testql | 308 func | 33f | 8080L | python | 2026-04-19
+# testql | 993 func | 76f | 32587L | yaml | 2026-04-24
 
 HEALTH:
-  CC̄=4.6  critical=37 (limit:10)  dup=1  cycles=2
+  CC̄=1.6  critical=15 (limit:10)  dup=19  cycles=0
 
 ALERTS[20]:
-  !!! cc_exceeded      convert_iql_to_testtoon = 66 (limit:15)
-  !!! high_fan_out     convert_iql_to_testtoon = 40 (limit:10)
-  !!! cc_exceeded      parse_doql_less = 29 (limit:15)
-  !!! high_fan_out     iql_run_file = 28 (limit:10)
-  !!! high_fan_out     suite = 26 (limit:10)
-  !!! high_fan_out     generate = 22 (limit:10)
-  !!! high_fan_out     echo = 22 (limit:10)
+  !!! high_fan_out     generate = 21 (limit:10)
   !!! high_fan_out     parse_testtoon = 21 (limit:10)
-  !!! high_fan_out     parse_testtoon = 21 (limit:10)
-  !!! high_fan_out     parse_doql_less = 20 (limit:10)
+  !!! high_fan_out     watch = 20 (limit:10)
+  !!! high_fan_out     suite = 20 (limit:10)
+  !!  high_fan_out     main = 19 (limit:10)
+  !!  high_fan_out     ApiRunnerMixin._cmd_api = 16 (limit:10)
+  !!  high_fan_out     _run_iql_lines = 16 (limit:10)
+  !!  high_fan_out     run = 15 (limit:10)
+  !!  high_fan_out     _parse_entities = 15 (limit:10)
+  !!  high_fan_out     FlowMixin._cmd_include = 15 (limit:10)
 
-MODULES[41] (top by size):
-  M[testql/endpoint_detector.py] 835L C:13 F:46 CC↑13 D:0 (python)
-  M[testql/generator.py] 709L C:4 F:26 CC↑23 D:0 (python)
-  M[testql/commands/misc_cmds.py] 529L C:0 F:7 CC↑16 D:0 (python)
-  M[testql/interpreter/_converter.py] 475L C:2 F:8 CC↑66 D:0 (python)
-  M[testql/openapi_generator.py] 449L C:3 F:19 CC↑11 D:0 (python)
-  M[testql/commands/encoder_routes.py] 424L C:0 F:15 CC↑12 D:0 (python)
-  M[testql/interpreter/_testtoon_parser.py] 393L C:2 F:19 CC↑12 D:1 (python)
+MODULES[207] (top by size):
+  M[SUMD.md] 4710L C:18 F:227 CC↑0 D:0 (md)
+  M[SUMR.md] 1515L C:18 F:79 CC↑0 D:11 (md)
+  M[project/calls.yaml] 948L C:0 F:0 CC↑0 D:0 (yaml)
+  M[code2llm_output/calls.yaml] 799L C:0 F:0 CC↑0 D:0 (yaml)
+  M[project/map.toon.yaml] 705L C:0 F:169 CC↑0 D:12 (yaml)
+  M[code2llm_output/context.md] 652L C:0 F:0 CC↑0 D:0 (md)
+  M[project/context.md] 651L C:0 F:0 CC↑0 D:0 (md)
+  M[goal.yaml] 511L C:0 F:0 CC↑0 D:0 (yaml)
+  M[testql/commands/encoder_routes.py] 477L C:0 F:27 CC↑10 D:0 (python)
+  M[testql/openapi_generator.py] 444L C:3 F:21 CC↑11 D:0 (python)
+  M[testql/interpreter/_testtoon_parser.py] 413L C:2 F:24 CC↑8 D:0 (python)
+  M[README.md] 407L C:0 F:0 CC↑0 D:0 (md)
+  M[CHANGELOG.md] 378L C:0 F:0 CC↑0 D:0 (md)
   M[testql/runner.py] 371L C:3 F:18 CC↑12 D:0 (python)
-  M[testql/commands/suite_cmd.py] 314L C:0 F:8 CC↑18 D:0 (python)
-  M[testql/sumd_parser.py] 287L C:5 F:10 CC↑12 D:0 (python)
-  M[testql/commands/echo.py] 262L C:0 F:5 CC↑29 D:0 (python)
-  M[testql/report_generator.py] 248L C:4 F:8 CC↑5 D:1 (python)
-  M[testql/_base_fallback.py] 221L C:7 F:26 CC↑4 D:9 (python)
-  M[testql/sumd_generator.py] 208L C:0 F:11 CC↑7 D:1 (python)
-  M[testql/interpreter/_websockets.py] 172L C:1 F:7 CC↑9 D:0 (python)
-  LANGS: python:39/shell:2
+  M[TODO/testql-table-format-spec.md] 362L C:1 F:3 CC↑0 D:8 (md)
+  LANGS: yaml:94/python:92/md:12/yml:2/txt:2/json:2/shell:2/toml:1
 
 HOTSPOTS[10]:
-  ★ convert_iql_to_testtoon fan=40  // Convert IQL/TQL source text to TestTOON format.
-  ★ iql_run_file fan=28  // Run an entire IQL file with validation. Returns structured results + saves log.
-  ★ suite fan=26  // Run test suite(s) — predefined or custom pattern.
-  ★ generate fan=22  // Generate TestQL scenarios from project structure.
-  ★ echo fan=22  // Generate AI-friendly project metadata echo from toon tests and doql model.
+  ★ generate fan=21  // Generate TestQL scenarios from project structure.
+  ★ parse_testtoon fan=21  // Orchestrates 21 calls
+  ★ watch fan=20  // Watch for file changes and re-run tests automatically.
+  ★ suite fan=20  // Run test suite(s) — predefined or custom pattern.
+  ★ main fan=19  // CLI entry point — unchanged from original.
 
-REFACTOR[15]:
-  [1] H/L Split parse_doql_less (CC=29)
-  [2] H/L Split convert_iql_to_testtoon (CC=66)
-  [3] H/H Split god module testql/generator.py (709L, 4 classes)
-  [4] H/H Split god module testql/commands/misc_cmds.py (529L, 0 classes)
-  [5] H/H Split god module testql/endpoint_detector.py (835L, 13 classes)
+REFACTOR[11]:
+  [1] H/H Split god module SUMD.md (4710L, 18 classes)
+  [2] H/H Split god module SUMR.md (1515L, 18 classes)
+  [3] H/H Split god module code2llm_output/calls.yaml (799L, 0 classes)
+  [4] H/H Split god module code2llm_output/context.md (652L, 0 classes)
+  [5] H/H Split god module goal.yaml (511L, 0 classes)
 
 EVOLUTION:
-  2026-04-19 CC̄=4.6 crit=37 8080L // Automated analysis
+  2026-04-24 CC̄=1.6 crit=15 32587L // Automated analysis

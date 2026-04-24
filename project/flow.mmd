@@ -9,22 +9,22 @@ flowchart TD
     end
 
     subgraph Core
-        testql__report_generator__ReportDataParser__parse_testql_results["parse_testql_results"]
-        testql__report_generator__ReportDataParser__to_json["to_json"]
-        testql__report_generator__HTMLReportGenerator__generate["generate"]
-        testql__report_generator__HTMLReportGenerator___render_html["_render_html"]
-        testql__report_generator__HTMLReportGenerator___render_test_row["_render_test_row"]
-        testql__generator__TestGenerator___detect_project_type["_detect_project_type"]
-        testql__generator__TestGenerator__analyze["analyze"]
-        testql__generator__TestGenerator___scan_directory_structure["_scan_directory_structure"]
-        testql__generator__TestGenerator___analyze_python_tests["_analyze_python_tests"]
-        testql__generator__TestGenerator___extract_test_pattern["_extract_test_pattern"]
-        testql__generator__TestGenerator___analyze_config_files["_analyze_config_files"]
-        testql__generator__TestGenerator___analyze_api_routes["_analyze_api_routes"]
-        testql__generator__TestGenerator___analyze_api_routes_fallback["_analyze_api_routes_fallback"]
-        testql__generator__TestGenerator___analyze_scenarios["_analyze_scenarios"]
-        testql__generator__TestGenerator__generate_tests["generate_tests"]
-        ...["+226 more"]
+        SUMR__passed["passed"]
+        SUMR__failed["failed"]
+        SUMR__summary["summary"]
+        SUMR__get["get"]
+        SUMR__has["has"]
+        SUMR__clear["clear"]
+        SUMR__interpolate["interpolate"]
+        SUMR__emit["emit"]
+        SUMR__info["info"]
+        SUMR__ok["ok"]
+        SUMR__fail["fail"]
+        SUMR__warn["warn"]
+        SUMR__error["error"]
+        SUMR__step["step"]
+        SUMR__parse["parse"]
+        ...["+828 more"]
     end
 
-    class testql__cli__cli,testql__cli__main,testql__report_generator__ReportDataParser__parse_testql_results,testql__report_generator__ReportDataParser__to_json,testql__report_generator__HTMLReportGenerator__generate,testql__report_generator__HTMLReportGenerator___render_html,testql__report_generator__HTMLReportGenerator___render_test_row,testql__generator__TestGenerator___detect_project_type,testql__generator__TestGenerator__analyze,testql__generator__TestGenerator___scan_directory_structure entry
+    class SUMR__passed,SUMR__failed,SUMR__summary,SUMR__get,SUMR__has,SUMR__clear,SUMR__interpolate,SUMR__emit,SUMR__info,SUMR__ok entry

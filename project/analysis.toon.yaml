@@ -1,94 +1,270 @@
-# code2llm | 41f 7839L | python:39,shell:2 | 2026-04-19
-# CC̄=4.6 | critical:7/308 | dups:0 | cycles:2
+# code2llm | 207f 26007L | yaml:94,python:91,md:12,json:2,yml:2,shell:2,txt:2,toml:1 | 2026-04-24
+# CC̄=1.6 | critical:0/993 | dups:0 | cycles:0
 
-HEALTH[9]:
-  🔴 GOD   testql/generator.py = 709L, 4 classes, 26m, max CC=23
-  🔴 GOD   testql/endpoint_detector.py = 835L, 13 classes, 46m, max CC=13
-  🟡 CC    _generate_api_tests CC=23 (limit:15)
-  🟡 CC    parse_doql_less CC=29 (limit:15)
-  🟡 CC    format_text_output CC=19 (limit:15)
-  🟡 CC    echo CC=16 (limit:15)
-  🟡 CC    _collect_test_files CC=15 (limit:15)
-  🟡 CC    suite CC=18 (limit:15)
-  🟡 CC    convert_iql_to_testtoon CC=66 (limit:15)
+HEALTH[2]:
+  🔴 GOD   SUMR.md = 1515L, 18 classes, 79m, max CC=0.0
+  🔴 GOD   SUMD.md = 4710L, 18 classes, 227m, max CC=0.0
 
-REFACTOR[4]:
-  1. split testql/generator.py  (god module)
-  2. split testql/endpoint_detector.py  (god module)
-  3. split 7 high-CC methods  (CC>15)
-  4. break 2 circular dependencies
+REFACTOR[2]:
+  1. split SUMR.md  (god module)
+  2. split SUMD.md  (god module)
 
-PIPELINES[236]:
+PIPELINES[313]:
   [1] Src [main]: main → cli
       PURITY: 100% pure
-  [2] Src [parse_testql_results]: parse_testql_results
+  [2] Src [__init__]: __init__
       PURITY: 100% pure
-  [3] Src [to_json]: to_json
+  [3] Src [parse_file]: parse_file
       PURITY: 100% pure
-  [4] Src [__init__]: __init__
+  [4] Src [parse]: parse
       PURITY: 100% pure
-  [5] Src [generate]: generate
+  [5] Src [_parse_api_block]: _parse_api_block
       PURITY: 100% pure
 
 LAYERS:
-  TODO/                           CC̄=5.9    ←in:0  →out:0
+  TODO/                           CC̄=4.1    ←in:25  →out:0
+  │ testql-table-format-spec.md   362L  1C    3m  CC=0.0    ←8
   │ testtoon_parser            141L  1C    7m  CC=14     ←0
   │
-  testql/                         CC̄=4.6    ←in:14  →out:0
-  │ !! endpoint_detector          835L  13C   46m  CC=13     ←0
-  │ !! generator                  709L  4C   26m  CC=23     ←0
-  │ !! misc_cmds                  529L  0C    7m  CC=16     ←0
-  │ !! _converter                 475L  2C    8m  CC=66     ←0
-  │ openapi_generator          449L  3C   19m  CC=11     ←0
-  │ encoder_routes             424L  0C   15m  CC=12     ←0
-  │ _testtoon_parser           393L  2C   19m  CC=12     ←1
+  testql/                         CC̄=3.6    ←in:0  →out:25  !! split
+  │ encoder_routes             477L  0C   27m  CC=10     ←0
+  │ openapi_generator          444L  3C   21m  CC=11     ←0
+  │ _testtoon_parser           413L  2C   24m  CC=8      ←0
   │ runner                     371L  3C   18m  CC=12     ←0
-  │ !! suite_cmd                  314L  0C    8m  CC=18     ←0
-  │ sumd_parser                287L  5C   10m  CC=12     ←0
-  │ !! echo                       262L  0C    5m  CC=29     ←0
-  │ report_generator           248L  4C    8m  CC=5      ←1
-  │ _base_fallback             221L  7C   26m  CC=4      ←9
-  │ sumd_generator             208L  0C   11m  CC=7      ←1
-  │ doql_parser                172L  1C    9m  CC=6      ←1
-  │ _websockets                172L  1C    7m  CC=9      ←0
-  │ _api_runner                168L  1C    5m  CC=10     ←1
+  │ generators                 344L  4C   17m  CC=12     ←0
+  │ analyzers                  299L  1C   16m  CC=10     ←0
+  │ misc_cmds                  292L  0C    7m  CC=6      ←0
+  │ sumd_parser                277L  5C   12m  CC=11     ←0
+  │ report_generator           248L  4C    8m  CC=5      ←0
+  │ _base_fallback             221L  7C   26m  CC=4      ←0
+  │ sumd_generator             208L  0C   11m  CC=7      ←0
+  │ _api_runner                186L  1C   10m  CC=9      ←0
+  │ _websockets                172L  1C    8m  CC=8      ←0
+  │ doql_parser                172L  1C    9m  CC=6      ←0
+  │ content                    166L  1C    9m  CC=2      ←1
+  │ generate_cmd               157L  0C    6m  CC=10     ←0
+  │ fastapi_detector           153L  1C   12m  CC=6      ←0
   │ echo_schemas               153L  6C    2m  CC=8      ←0
-  │ generate_cmd               140L  0C    4m  CC=11     ←0
-  │ endpoints_cmd              137L  0C    3m  CC=13     ←0
+  │ generate-test-reports.testql.toon.yaml   150L  0C    0m  CC=0.0    ←0
+  │ unified                    137L  1C   10m  CC=9      ←0
+  │ endpoints_cmd              136L  0C    6m  CC=9      ←0
   │ _flow                      136L  1C    6m  CC=9      ←0
   │ interpreter                125L  1C    7m  CC=4      ←0
-  │ toon_parser                110L  1C    7m  CC=4      ←1
+  │ collection                 122L  0C    8m  CC=6      ←0
+  │ flask_detector             121L  1C    9m  CC=6      ←0
+  │ doql                       115L  0C    9m  CC=7      ←0
+  │ listing                    114L  0C    6m  CC=7      ←0
+  │ run-all-views.testql.toon.yaml   112L  0C    0m  CC=0.0    ←0
+  │ toon_parser                110L  1C    7m  CC=4      ←0
+  │ multi                      105L  1C    5m  CC=6      ←0
   │ _assertions                103L  1C    4m  CC=6      ←0
+  │ cli                        100L  0C    2m  CC=13     ←0
+  │ text                        95L  0C    7m  CC=6      ←0
+  │ parsers                     93L  0C    6m  CC=11     ←0
+  │ openapi_detector            90L  1C    3m  CC=9      ←0
+  │ reports                     89L  0C    5m  CC=6      ←0
   │ __init__                    89L  0C    1m  CC=8      ←0
+  │ graphql_detector            87L  1C    3m  CC=5      ←0
+  │ config_detector             86L  1C    4m  CC=7      ←0
+  │ _encoder                    79L  1C   12m  CC=4      ←0
   │ junit                       79L  1C    3m  CC=8      ←0
-  │ _encoder                    73L  1C   11m  CC=6      ←0
+  │ toon                        76L  0C    4m  CC=5      ←0
+  │ test-device-flow.testql.toon.yaml    76L  0C    0m  CC=0.0    ←0
+  │ execution                   73L  0C    2m  CC=5      ←0
+  │ test-gui-connect-id.testql.toon.yaml    70L  0C    0m  CC=0.0    ←0
+  │ echo_helpers                68L  0C    4m  CC=8      ←0
+  │ full-diagnostic.testql.toon.yaml    66L  0C    0m  CC=0.0    ←0
+  │ test-gui-connect-workshop.testql.toon.yaml    65L  0C    0m  CC=0.0    ←0
+  │ renderer                    64L  0C    4m  CC=7      ←0
+  │ endpoint_detector           62L  0C    0m  CC=0.0    ←0
+  │ _converter                  62L  0C    0m  CC=0.0    ←0
+  │ generator                   61L  0C    0m  CC=0.0    ←0
+  │ test-gui-connect-test.testql.toon.yaml    61L  0C    0m  CC=0.0    ←0
+  │ models                      60L  2C    2m  CC=2      ←0
+  │ express_detector            59L  1C    3m  CC=5      ←0
+  │ templates                   59L  0C    0m  CC=0.0    ←0
+  │ core                        58L  0C    3m  CC=5      ←0
+  │ base                        58L  3C    3m  CC=1      ←0
+  │ create-todays-reports.testql.toon.yaml    58L  0C    0m  CC=0.0    ←0
   │ run_cmd                     56L  0C    1m  CC=3      ←0
+  │ context                     54L  0C    3m  CC=4      ←0
+  │ __init__                    53L  0C    0m  CC=0.0    ←0
+  │ __init__                    52L  0C    0m  CC=0.0    ←0
+  │ recorded-test-session.testql.toon.yaml    52L  0C    0m  CC=0.0    ←0
+  │ convenience                 51L  0C    2m  CC=1      ←0
+  │ django_detector             51L  1C    2m  CC=4      ←0
+  │ test-gui-connect-config.testql.toon.yaml    50L  0C    0m  CC=0.0    ←0
+  │ dispatcher                  49L  0C    1m  CC=3      ←0
+  │ connect-reports-year.testql.toon.yaml    49L  0C    0m  CC=0.0    ←0
+  │ websocket_detector          48L  1C    2m  CC=3      ←0
+  │ test-gui-connect-reports.testql.toon.yaml    48L  0C    0m  CC=0.0    ←0
+  │ encoder                     47L  0C    3m  CC=5      ←0
+  │ test-gui-connect-manager.testql.toon.yaml    47L  0C    0m  CC=0.0    ←0
+  │ session-recording.testql.toon.yaml    45L  0C    0m  CC=0.0    ←0
+  │ connect-reports-month.testql.toon.yaml    45L  0C    0m  CC=0.0    ←0
+  │ connect-id-rfid.testql.toon.yaml    44L  0C    0m  CC=0.0    ←0
+  │ connect-reports-week.testql.toon.yaml    43L  0C    0m  CC=0.0    ←0
+  │ connect-reports-quarter.testql.toon.yaml    42L  0C    0m  CC=0.0    ←0
+  │ connect-reports-chart.testql.toon.yaml    42L  0C    0m  CC=0.0    ←0
   │ cli                         41L  0C    2m  CC=1      ←0
+  │ test-encoder.testql.toon.yaml    41L  0C    0m  CC=0.0    ←0
+  │ test-mixed-workflow.testql.toon.yaml    40L  0C    0m  CC=0.0    ←0
+  │ cli                         39L  0C    1m  CC=3      ←0
+  │ flow                        39L  0C    1m  CC=3      ←0
+  │ connect-reports-custom.testql.toon.yaml    39L  0C    0m  CC=0.0    ←0
   │ console                     38L  0C    1m  CC=6      ←0
   │ base                        37L  0C    0m  CC=0.0    ←0
-  │ _parser                     33L  2C    1m  CC=5      ←2
+  │ connect-manager-scenarios.testql.toon.yaml    37L  0C    0m  CC=0.0    ←0
+  │ assertions                  34L  0C    1m  CC=9      ←0
+  │ base                        34L  1C    3m  CC=6      ←0
+  │ connect-id-qr.testql.toon.yaml    34L  0C    0m  CC=0.0    ←0
+  │ _parser                     33L  2C    1m  CC=5      ←0
   │ json_reporter               33L  0C    1m  CC=2      ←0
+  │ navigate                    32L  0C    1m  CC=6      ←0
+  │ api                         31L  0C    1m  CC=6      ←0
+  │ __init__                    30L  0C    0m  CC=0.0    ←0
+  │ test-app-lifecycle.testql.toon.yaml    29L  0C    0m  CC=0.0    ←0
   │ __init__                    27L  0C    0m  CC=0.0    ←0
+  │ interpreter                 27L  0C    0m  CC=0.0    ←0
+  │ select                      26L  0C    1m  CC=3      ←0
+  │ reproduce-view.testql.toon.yaml    26L  0C    0m  CC=0.0    ←0
+  │ test-gui-all.testql.toon.yaml    26L  0C    0m  CC=0.0    ←0
+  │ connect-config-users.testql.toon.yaml    25L  0C    0m  CC=0.0    ←0
+  │ record                      24L  0C    2m  CC=1      ←0
+  │ test-protocol-flow.testql.toon.yaml    24L  0C    0m  CC=0.0    ←0
+  │ connect-test-testing-search.testql.toon.yaml    23L  0C    0m  CC=0.0    ←0
+  │ connect-test-protocols.testql.toon.yaml    23L  0C    0m  CC=0.0    ←0
+  │ connect-test-devices-search.testql.toon.yaml    23L  0C    0m  CC=0.0    ←0
+  │ wait                        22L  0C    1m  CC=4      ←0
+  │ __init__                    22L  0C    0m  CC=0.0    ←0
+  │ backend-diagnostic.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
+  │ connect-id-barcode.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
+  │ connect-workshop-requests-search.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
+  │ connect-manager-activities.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
+  │ connect-id-list.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
+  │ connect-config-labels.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
+  │ connect-manager-intervals.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
+  │ connect-workshop-services-search.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
+  │ connect-config-settings.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-test-testing-rfid.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-config-tables.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-reports-filter.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-id-barcode.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-config-users.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-id-manual.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-test-full-test.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-workshop-transport-search.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-config-theme.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-workshop-dispositions-search.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-config-feature-flags.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ models                      20L  2C    0m  CC=0.0    ←0
+  │ connect-test-testing-barcode.testql.toon.yaml    20L  0C    0m  CC=0.0    ←0
+  │ connect-manager-library.testql.toon.yaml    20L  0C    0m  CC=0.0    ←0
+  │ connect-test-scenario-view.testql.toon.yaml    20L  0C    0m  CC=0.0    ←0
+  │ connect-test-testing-qr.testql.toon.yaml    20L  0C    0m  CC=0.0    ←0
+  │ connect-manager-test-types.testql.toon.yaml    20L  0C    0m  CC=0.0    ←0
+  │ __init__                    19L  0C    0m  CC=0.0    ←0
+  │ device-identification.testql.toon.yaml    19L  0C    0m  CC=0.0    ←0
+  │ encoder-workshop.testql.toon.yaml    19L  0C    0m  CC=0.0    ←0
+  │ unknown                     18L  0C    1m  CC=3      ←0
+  │ __init__                    18L  0C    0m  CC=0.0    ←0
+  │ test-api.testql.toon.yaml    17L  0C    0m  CC=0.0    ←0
+  │ connect-workshop-transport.testql.toon.yaml    16L  0C    0m  CC=0.0    ←0
+  │ encoder-navigation.testql.toon.yaml    15L  0C    0m  CC=0.0    ←0
+  │ include                     14L  0C    1m  CC=1      ←0
+  │ api-crud-template.testql.toon.yaml    14L  0C    0m  CC=0.0    ←0
+  │ test-ui-navigation.testql.toon.yaml    13L  0C    0m  CC=0.0    ←0
+  │ suite_cmd                   12L  0C    0m  CC=0.0    ←0
+  │ test-dsl-objects.testql.toon.yaml    12L  0C    0m  CC=0.0    ←0
+  │ health-check.testql.toon.yaml    12L  0C    0m  CC=0.0    ←0
+  │ quick-navigation.testql.toon.yaml    11L  0C    0m  CC=0.0    ←0
+  │ api-smoke.testql.toon.yaml    11L  0C    0m  CC=0.0    ←0
+  │ run-mask-test-protocol.testql.toon.yaml    11L  0C    0m  CC=0.0    ←0
+  │ auth-login.testql.toon.yaml    11L  0C    0m  CC=0.0    ←0
+  │ __init__                    10L  0C    0m  CC=0.0    ←0
+  │ test-devices-crud.testql.toon.yaml    10L  0C    0m  CC=0.0    ←0
+  │ test-devices-crud.testql.toon.yaml    10L  0C    0m  CC=0.0    ←0
+  │ __init__                     9L  0C    0m  CC=0.0    ←0
+  │ test-protocol-flow.testql.toon.yaml     9L  0C    0m  CC=0.0    ←0
+  │ __init__                     8L  0C    0m  CC=0.0    ←0
+  │ api-health.testql.toon.yaml     7L  0C    0m  CC=0.0    ←0
   │ __main__                     6L  0C    0m  CC=0.0    ←0
   │ __init__                     6L  0C    0m  CC=0.0    ←0
   │ __init__                     3L  0C    0m  CC=0.0    ←0
   │ __init__                     0L  0C    0m  CC=0.0    ←0
   │
   ./                              CC̄=0.0    ←in:0  →out:0
-  │ project.sh                  35L  0C    0m  CC=0.0    ←0
+  │ !! SUMD.md                   4710L  18C  227m  CC=0.0    ←0
+  │ !! SUMR.md                   1515L  18C   79m  CC=0.0    ←11
+  │ !! goal.yaml                  511L  0C    0m  CC=0.0    ←0
+  │ README.md                  407L  0C    0m  CC=0.0    ←0
+  │ CHANGELOG.md               378L  0C    0m  CC=0.0    ←0
+  │ sumd.json                  204L  0C    0m  CC=0.0    ←0
+  │ Taskfile.yml               185L  0C    0m  CC=0.0    ←0
+  │ openapi.yaml               175L  0C    0m  CC=0.0    ←0
+  │ Taskfile.testql.yml        117L  0C    0m  CC=0.0    ←0
+  │ pyqual.yaml                 71L  0C    0m  CC=0.0    ←0
+  │ pyproject.toml              70L  0C    0m  CC=0.0    ←0
+  │ TODO.md                     67L  0C    0m  CC=0.0    ←0
+  │ project.sh                  37L  0C    0m  CC=0.0    ←0
+  │ coverage.json                1L  0C    0m  CC=0.0    ←0
   │ tree.sh                      1L  0C    0m  CC=0.0    ←0
+  │
+  docs/                           CC̄=0.0    ←in:0  →out:0
+  │ README.md                  203L  0C    1m  CC=0.0    ←0
+  │ testql-spec.md             125L  0C    0m  CC=0.0    ←0
+  │
+  code2llm_output/                CC̄=0.0    ←in:0  →out:0
+  │ !! calls.yaml                 799L  0C    0m  CC=0.0    ←0
+  │ !! context.md                 652L  0C    0m  CC=0.0    ←0
+  │ README.md                  339L  0C    0m  CC=0.0    ←0
+  │ map.toon.yaml              258L  0C   83m  CC=0.0    ←11
+  │ analysis.toon.yaml          93L  0C    0m  CC=0.0    ←0
+  │ evolution.toon.yaml         82L  0C    0m  CC=0.0    ←0
+  │ prompt.txt                  47L  0C    0m  CC=0.0    ←0
+  │ project.toon.yaml            9L  0C    0m  CC=0.0    ←0
+  │
+  project/                        CC̄=0.0    ←in:0  →out:0
+  │ !! calls.yaml                 948L  0C    0m  CC=0.0    ←0
+  │ !! map.toon.yaml              705L  0C  169m  CC=0.0    ←12
+  │ !! context.md                 651L  0C    0m  CC=0.0    ←0
+  │ README.md                  339L  0C    0m  CC=0.0    ←0
+  │ calls.toon.yaml            181L  0C    0m  CC=0.0    ←0
+  │ analysis.toon.yaml          95L  0C    0m  CC=0.0    ←0
+  │ evolution.toon.yaml         82L  0C    0m  CC=0.0    ←0
+  │ validation.toon.yaml        63L  0C    0m  CC=0.0    ←0
+  │ project.toon.yaml           51L  0C    0m  CC=0.0    ←0
+  │ prompt.txt                  47L  0C    0m  CC=0.0    ←0
+  │ duplication.toon.yaml        9L  0C    0m  CC=0.0    ←0
+  │
+  testql-scenarios/               CC̄=0.0    ←in:0  →out:0
+  │ generated-api-smoke.testql.toon.yaml    35L  0C    0m  CC=0.0    ←0
+  │ generated-api-integration.testql.toon.yaml    18L  0C    0m  CC=0.0    ←0
+  │ generated-from-pytests.testql.toon.yaml    15L  0C    0m  CC=0.0    ←0
+  │ generated-cli-tests.testql.toon.yaml    12L  0C    0m  CC=0.0    ←0
   │
   ── zero ──
      testql/runners/__init__.py                0L
 
 COUPLING:
-                                  testql     testql.commands  testql.interpreter
-              testql                  ──                 ←11                  ←3  hub
-     testql.commands                  11                  ──                      !! fan-out
-  testql.interpreter                   3                                      ──
-  CYCLES: 2
-  HUB: testql/ (fan-in=14)
-  SMELL: testql.commands/ fan-out=11 → split needed
+                               project.map      testql.commands   testql.interpreter                 TODO               testql  code2llm_output.map                 SUMR    testql.generators     testql.detectors
+          project.map                   ──                  ←11                  ←20                                                                                                                                hub
+      testql.commands                   11                   ──                                         2                                        12                    6                                            !! fan-out
+   testql.interpreter                   20                                        ──                    1                                         5                    3                                            !! fan-out
+                 TODO                                        ←2                   ←1                   ──                  ←21                                                                                  ←1  hub
+               testql                                                                                  21                   ──                    1                    3                                            !! fan-out
+  code2llm_output.map                                       ←12                   ←5                                        ←1                   ──                                        ←1                       hub
+                 SUMR                                        ←6                   ←3                                        ←3                                        ──                   ←2                   ←1  hub
+    testql.generators                                                                                                                             1                    2                   ──                     
+     testql.detectors                                                                                   1                                                              1                                        ──
+  CYCLES: none
+  HUB: SUMR/ (fan-in=15)
+  HUB: code2llm_output.map/ (fan-in=19)
+  HUB: TODO/ (fan-in=25)
+  HUB: project.map/ (fan-in=31)
+  SMELL: testql/ fan-out=25 → split needed
+  SMELL: testql.interpreter/ fan-out=29 → split needed
+  SMELL: testql.commands/ fan-out=31 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon

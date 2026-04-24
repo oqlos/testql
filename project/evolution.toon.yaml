@@ -1,57 +1,14 @@
-# code2llm/evolution | 308 func | 33f | 2026-04-19
+# code2llm/evolution | 993 func | 76f | 2026-04-24
 
-NEXT[10] (ranked by impact):
-  [1] !! SPLIT           testql/generator.py
-      WHY: 709L, 4 classes, max CC=23
-      EFFORT: ~4h  IMPACT: 16307
+NEXT[0]: no refactoring needed
 
-  [2] !! SPLIT           testql/endpoint_detector.py
-      WHY: 835L, 13 classes, max CC=13
-      EFFORT: ~4h  IMPACT: 10855
-
-  [3] !! SPLIT           testql/commands/misc_cmds.py
-      WHY: 529L, 0 classes, max CC=16
-      EFFORT: ~4h  IMPACT: 8464
-
-  [4] !! SPLIT-FUNC      convert_iql_to_testtoon  CC=66  fan=40
-      WHY: CC=66 exceeds 15
-      EFFORT: ~1h  IMPACT: 2640
-
-  [5] !! SPLIT-FUNC      parse_doql_less  CC=29  fan=20
-      WHY: CC=29 exceeds 15
-      EFFORT: ~1h  IMPACT: 580
-
-  [6] !  SPLIT-FUNC      suite  CC=18  fan=26
-      WHY: CC=18 exceeds 15
-      EFFORT: ~1h  IMPACT: 468
-
-  [7] !  SPLIT-FUNC      echo  CC=16  fan=22
-      WHY: CC=16 exceeds 15
-      EFFORT: ~1h  IMPACT: 352
-
-  [8] !  SPLIT-FUNC      TestGenerator._generate_api_tests  CC=23  fan=12
-      WHY: CC=23 exceeds 15
-      EFFORT: ~1h  IMPACT: 276
-
-  [9] !  SPLIT-FUNC      format_text_output  CC=19  fan=11
-      WHY: CC=19 exceeds 15
-      EFFORT: ~1h  IMPACT: 209
-
-  [10] !  SPLIT-FUNC      _collect_test_files  CC=15  fan=13
-      WHY: CC=15 exceeds 15
-      EFFORT: ~1h  IMPACT: 195
-
-
-RISKS[3]:
-  ⚠ Splitting testql/endpoint_detector.py may break 46 import paths
-  ⚠ Splitting testql/generator.py may break 26 import paths
-  ⚠ Splitting testql/commands/misc_cmds.py may break 7 import paths
+RISKS[0]: none
 
 METRICS-TARGET:
-  CC̄:          4.6 → ≤3.2
-  max-CC:      66 → ≤20
-  god-modules: 3 → 0
-  high-CC(≥15): 7 → ≤3
+  CC̄:          1.6 → ≤1.1
+  max-CC:      14 → ≤7
+  god-modules: 0 → 0
+  high-CC(≥15): 0 → ≤0
   hub-types:   0 → ≤0
 
 PATTERNS (language parser shared logic):
@@ -79,4 +36,4 @@ PATTERNS (language parser shared logic):
     - Standardized FunctionInfo/ClassInfo models
 
 HISTORY:
-  prev CC̄=4.9 → now CC̄=4.6
+  prev CC̄=4.6 → now CC̄=1.6

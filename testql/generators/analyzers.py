@@ -33,9 +33,30 @@ class ProjectAnalyzer(BaseAnalyzer):
         content = (self.project_path / 'pyproject.toml').read_text(errors='ignore').lower()
         if 'fastapi' in content or 'flask' in content:
             return 'python-api'
-        if 'click' in content:
+        # Check for CLI frameworks in pyproject.toml
+        cli_frameworks = ['click', 'typer', 'fire', 'cmd2']
+        if any(fw in content for fw in cli_frameworks):
+            return 'python-cli'
+        # Check for argparse usage in source code
+        if self._has_argparse_usage():
             return 'python-cli'
         return 'python-lib'
+
+    def _has_argparse_usage(self) -> bool:
+        """Check if project uses argparse in CLI entry points."""
+        # Scan Python files directly since discovered_files is not populated yet
+        count = 0
+        for py_file in self.project_path.rglob('*.py'):
+            if count >= 50:
+                break
+            try:
+                content = py_file.read_text()
+                if 'argparse' in content and ('ArgumentParser' in content or 'add_argument' in content):
+                    return True
+            except Exception:
+                continue
+            count += 1
+        return False
 
     def _detect_hardware(self) -> str | None:
         if any((self.project_path / d).exists() for d in self._HARDWARE_DIRS):

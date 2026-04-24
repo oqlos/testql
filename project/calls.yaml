@@ -1,65 +1,72 @@
 project: /home/tom/github/oqlos/testql
 generated_from: code2llm call graph analysis
 stats:
-  total_nodes: 65
-  total_edges: 49
-  modules_count: 21
+  total_nodes: 186
+  total_edges: 161
+  modules_count: 46
 nodes:
-  testql.interpreter._api_runner.ApiRunnerMixin._cmd_capture:
-    name: _cmd_capture
-    module: testql.interpreter._api_runner
-    line: 109
-    cyclomatic_complexity: 3
-    calls_out: 13
-    calls_in: 0
-  testql.interpreter._parser.parse_iql:
-    name: parse_iql
-    module: testql.interpreter._parser
-    line: 22
-    cyclomatic_complexity: 5
-    calls_out: 10
-    calls_in: 2
-  testql.commands.encoder_routes._normalize_iql_path:
-    name: _normalize_iql_path
-    module: testql.commands.encoder_routes
-    line: 52
-    cyclomatic_complexity: 10
-    calls_out: 13
+  testql.interpreter._testtoon_parser._parse_inline_array:
+    name: _parse_inline_array
+    module: testql.interpreter._testtoon_parser
+    line: 55
+    cyclomatic_complexity: 2
+    calls_out: 2
     calls_in: 1
-  testql.commands.encoder_routes.iql_read_file:
-    name: iql_read_file
-    module: testql.commands.encoder_routes
-    line: 251
-    cyclomatic_complexity: 3
-    calls_out: 11
-    calls_in: 0
-  testql.report_generator.generate_report:
-    name: generate_report
-    module: testql.report_generator
-    line: 206
-    cyclomatic_complexity: 3
-    calls_out: 20
-    calls_in: 1
-  TODO.testtoon_parser.print_parsed:
-    name: print_parsed
-    module: TODO.testtoon_parser
-    line: 118
-    cyclomatic_complexity: 8
-    calls_out: 12
-    calls_in: 0
-  testql.sumd_generator._header_section:
-    name: _header_section
-    module: testql.sumd_generator
-    line: 41
+  testql.sumd_parser.SumdParser._parse_interfaces:
+    name: _parse_interfaces
+    module: testql.sumd_parser
+    line: 144
     cyclomatic_complexity: 1
-    calls_out: 1
+    calls_out: 2
+    calls_in: 0
+  testql.interpreter.converter.handlers.api.handle_api:
+    name: handle_api
+    module: testql.interpreter.converter.handlers.api
+    line: 8
+    cyclomatic_complexity: 6
+    calls_out: 7
+    calls_in: 0
+  project.map.toon.handle_unknown:
+    name: handle_unknown
+    module: project.map.toon
+    line: 445
+    cyclomatic_complexity: 0
+    calls_out: 0
     calls_in: 1
-  testql.sumd_generator._workflows_table_section:
-    name: _workflows_table_section
-    module: testql.sumd_generator
-    line: 127
-    cyclomatic_complexity: 5
+  testql.openapi_generator.OpenAPIGenerator._extract_parameters:
+    name: _extract_parameters
+    module: testql.openapi_generator
+    line: 214
+    cyclomatic_complexity: 1
     calls_out: 3
+    calls_in: 0
+  testql.generators.base.BaseAnalyzer._should_exclude_path:
+    name: _should_exclude_path
+    module: testql.generators.base
+    line: 54
+    cyclomatic_complexity: 1
+    calls_out: 3
+    calls_in: 0
+  testql.commands.echo.formatters.text._fmt_suggestions:
+    name: _fmt_suggestions
+    module: testql.commands.echo.formatters.text
+    line: 63
+    cyclomatic_complexity: 6
+    calls_out: 8
+    calls_in: 1
+  project.map.toon.filter_tests:
+    name: filter_tests
+    module: project.map.toon
+    line: 268
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.commands.encoder_routes._assert_bool_prop:
+    name: _assert_bool_prop
+    module: testql.commands.encoder_routes
+    line: 112
+    cyclomatic_complexity: 2
+    calls_out: 5
     calls_in: 1
   testql.sumd_generator._workflow_snippet:
     name: _workflow_snippet
@@ -67,97 +74,55 @@ nodes:
     line: 184
     cyclomatic_complexity: 4
     calls_out: 1
-    calls_in: 1
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json:
-    name: _cmd_assert_json
-    module: testql.interpreter._assertions
-    line: 76
-    cyclomatic_complexity: 6
-    calls_out: 17
-    calls_in: 0
-  testql.commands.misc_cmds.create:
-    name: create
-    module: testql.commands.misc_cmds
-    line: 292
-    cyclomatic_complexity: 6
-    calls_out: 21
-    calls_in: 0
-  testql.interpreter.interpreter.IqlInterpreter.parse:
-    name: parse
-    module: testql.interpreter.interpreter
-    line: 61
-    cyclomatic_complexity: 2
-    calls_out: 3
-    calls_in: 0
-  testql._base_fallback.VariableStore.all:
-    name: all
-    module: testql._base_fallback
-    line: 74
-    cyclomatic_complexity: 1
-    calls_out: 1
     calls_in: 2
-  testql.runner.parse_script:
-    name: parse_script
-    module: testql.runner
-    line: 95
-    cyclomatic_complexity: 3
-    calls_out: 2
-    calls_in: 1
-  testql.commands.encoder_routes.iql_list_tables:
-    name: iql_list_tables
+  testql.commands.encoder_routes._build_run_summary:
+    name: _build_run_summary
     module: testql.commands.encoder_routes
-    line: 268
-    cyclomatic_complexity: 4
-    calls_out: 15
+    line: 406
+    cyclomatic_complexity: 2
+    calls_out: 1
+    calls_in: 1
+  testql.interpreter._testtoon_parser._parse_value:
+    name: _parse_value
+    module: testql.interpreter._testtoon_parser
+    line: 70
+    cyclomatic_complexity: 8
+    calls_out: 10
+    calls_in: 3
+  testql._base_fallback.InterpreterOutput.emit:
+    name: emit
+    module: testql._base_fallback
+    line: 100
+    cyclomatic_complexity: 2
+    calls_out: 2
     calls_in: 0
-  testql.interpreter._converter._extract_scenario_name:
-    name: _extract_scenario_name
-    module: testql.interpreter._converter
-    line: 87
-    cyclomatic_complexity: 6
+  testql.commands.echo.formatters.text._fmt_contracts:
+    name: _fmt_contracts
+    module: testql.commands.echo.formatters.text
+    line: 33
+    cyclomatic_complexity: 5
     calls_out: 8
     calls_in: 1
-  testql.interpreter.interpreter.IqlInterpreter.__init__:
-    name: __init__
-    module: testql.interpreter.interpreter
-    line: 43
+  testql.commands.echo.parsers.doql._parse_interfaces:
+    name: _parse_interfaces
+    module: testql.commands.echo.parsers.doql
+    line: 47
     cyclomatic_complexity: 2
-    calls_out: 3
-    calls_in: 0
-  testql.interpreter._converter.convert_file:
-    name: convert_file
-    module: testql.interpreter._converter
-    line: 427
-    cyclomatic_complexity: 1
-    calls_out: 3
+    calls_out: 4
     calls_in: 1
-  testql.commands.echo.generate_context:
-    name: generate_context
-    module: testql.commands.echo
-    line: 149
-    cyclomatic_complexity: 7
-    calls_out: 9
-    calls_in: 1
-  testql.commands.echo.parse_doql_less:
-    name: parse_doql_less
-    module: testql.commands.echo
-    line: 14
-    cyclomatic_complexity: 29
-    calls_out: 85
-    calls_in: 1
-  testql._base_fallback.VariableStore.set:
-    name: set
-    module: testql._base_fallback
-    line: 65
-    cyclomatic_complexity: 1
-    calls_out: 0
-    calls_in: 10
-  TODO.testtoon_parser.validate:
-    name: validate
-    module: TODO.testtoon_parser
-    line: 111
+  testql.commands.encoder_routes._assert_classes_prop:
+    name: _assert_classes_prop
+    module: testql.commands.encoder_routes
+    line: 130
     cyclomatic_complexity: 2
-    calls_out: 2
+    calls_out: 1
+    calls_in: 1
+  testql.sumd_generator.generate_sumd:
+    name: generate_sumd
+    module: testql.sumd_generator
+    line: 11
+    cyclomatic_complexity: 4
+    calls_out: 10
     calls_in: 1
   testql.interpreter._flow.FlowMixin._cmd_include:
     name: _cmd_include
@@ -166,12 +131,61 @@ nodes:
     cyclomatic_complexity: 7
     calls_out: 17
     calls_in: 0
-  testql.interpreter.interpreter.IqlInterpreter.execute:
-    name: execute
-    module: testql.interpreter.interpreter
-    line: 76
+  testql.commands.encoder_routes.iql_run_file:
+    name: iql_run_file
+    module: testql.commands.encoder_routes
+    line: 332
+    cyclomatic_complexity: 3
+    calls_out: 15
+    calls_in: 0
+  testql.interpreter._testtoon_parser.testtoon_to_iql:
+    name: testtoon_to_iql
+    module: testql.interpreter._testtoon_parser
+    line: 403
+    cyclomatic_complexity: 2
+    calls_out: 4
+    calls_in: 0
+  testql.commands.generate_cmd.generate:
+    name: generate
+    module: testql.commands.generate_cmd
+    line: 28
+    cyclomatic_complexity: 10
+    calls_out: 44
+    calls_in: 0
+  SUMR.parse_script:
+    name: parse_script
+    module: SUMR
+    line: 574
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  project.map.toon.build_header:
+    name: build_header
+    module: project.map.toon
+    line: 465
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.interpreter.converter.handlers.navigate.handle_navigate:
+    name: handle_navigate
+    module: testql.interpreter.converter.handlers.navigate
+    line: 7
+    cyclomatic_complexity: 6
+    calls_out: 8
+    calls_in: 0
+  testql.runner.parse_script:
+    name: parse_script
+    module: testql.runner
+    line: 95
+    cyclomatic_complexity: 3
+    calls_out: 2
+    calls_in: 0
+  testql.interpreter.converter.core.convert_directory:
+    name: convert_directory
+    module: testql.interpreter.converter.core
+    line: 49
     cyclomatic_complexity: 4
-    calls_out: 16
+    calls_out: 7
     calls_in: 0
   testql.runner.parse_line:
     name: parse_line
@@ -180,167 +194,69 @@ nodes:
     cyclomatic_complexity: 9
     calls_out: 20
     calls_in: 2
-  testql.commands.encoder_routes._resolve_iql_path:
-    name: _resolve_iql_path
-    module: testql.commands.encoder_routes
-    line: 85
+  testql.interpreter.converter.core.convert_file:
+    name: convert_file
+    module: testql.interpreter.converter.core
+    line: 39
     cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 3
-  testql.cli.main:
-    name: main
-    module: testql.cli
-    line: 35
-    cyclomatic_complexity: 1
-    calls_out: 1
-    calls_in: 0
-  testql.commands.encoder_routes._evaluate_assertion:
-    name: _evaluate_assertion
-    module: testql.commands.encoder_routes
-    line: 103
-    cyclomatic_complexity: 10
-    calls_out: 12
+    calls_out: 3
     calls_in: 1
-  testql.commands.encoder_routes._exec_browser_cmd:
-    name: _exec_browser_cmd
-    module: testql.commands.encoder_routes
-    line: 153
-    cyclomatic_complexity: 9
-    calls_out: 10
-    calls_in: 1
-  testql.commands.encoder_routes.iql_run_file:
-    name: iql_run_file
-    module: testql.commands.encoder_routes
-    line: 305
-    cyclomatic_complexity: 12
-    calls_out: 43
-    calls_in: 0
-  testql.sumd_generator._api_contract_section:
-    name: _api_contract_section
-    module: testql.sumd_generator
-    line: 104
-    cyclomatic_complexity: 6
-    calls_out: 11
-    calls_in: 1
-  testql.commands.echo.parse_toon_scenarios:
+  code2llm_output.map.toon.parse_toon_scenarios:
     name: parse_toon_scenarios
-    module: testql.commands.echo
-    line: 106
-    cyclomatic_complexity: 8
-    calls_out: 21
+    module: code2llm_output.map.toon
+    line: 81
+    cyclomatic_complexity: 0
+    calls_out: 0
     calls_in: 1
-  testql.commands.echo.format_text_output:
-    name: format_text_output
-    module: testql.commands.echo
-    line: 175
-    cyclomatic_complexity: 19
-    calls_out: 46
-    calls_in: 1
-  testql.commands.suite_cmd.list_tests:
-    name: list_tests
-    module: testql.commands.suite_cmd
-    line: 251
-    cyclomatic_complexity: 9
-    calls_out: 27
-    calls_in: 0
-  testql.runner.DslCliExecutor.run_script:
-    name: run_script
-    module: testql.runner
-    line: 273
-    cyclomatic_complexity: 11
-    calls_out: 20
-    calls_in: 0
-  testql.generator.TestGenerator._scan_directory_structure:
-    name: _scan_directory_structure
-    module: testql.generator
-    line: 92
-    cyclomatic_complexity: 8
+  testql.commands.echo.parsers.doql._parse_kv_block:
+    name: _parse_kv_block
+    module: testql.commands.echo.parsers.doql
+    line: 14
+    cyclomatic_complexity: 3
     calls_out: 6
-    calls_in: 0
-  testql.commands.encoder_routes.iql_list_files:
-    name: iql_list_files
-    module: testql.commands.encoder_routes
-    line: 227
-    cyclomatic_complexity: 7
-    calls_out: 14
-    calls_in: 0
-  testql.interpreter._api_runner._navigate_json_path:
-    name: _navigate_json_path
+    calls_in: 4
+  testql.interpreter._api_runner.ApiRunnerMixin._cmd_capture:
+    name: _cmd_capture
     module: testql.interpreter._api_runner
-    line: 147
+    line: 119
+    cyclomatic_complexity: 3
+    calls_out: 13
+    calls_in: 0
+  SUMR.generate_sumd:
+    name: generate_sumd
+    module: SUMR
+    line: 599
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.commands.encoder_routes._assert_text_prop:
+    name: _assert_text_prop
+    module: testql.commands.encoder_routes
+    line: 124
+    cyclomatic_complexity: 2
+    calls_out: 2
+    calls_in: 1
+  code2llm_output.map.toon.parse_toon_file:
+    name: parse_toon_file
+    module: code2llm_output.map.toon
+    line: 233
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 2
+  testql.commands.encoder_routes._execute_iql_line:
+    name: _execute_iql_line
+    module: testql.commands.encoder_routes
+    line: 223
     cyclomatic_complexity: 10
     calls_out: 13
     calls_in: 2
-  testql.commands.suite_cmd._find_files:
-    name: _find_files
-    module: testql.commands.suite_cmd
-    line: 17
-    cyclomatic_complexity: 9
-    calls_out: 8
-    calls_in: 1
-  testql.interpreter._converter.convert_iql_to_testtoon:
-    name: convert_iql_to_testtoon
-    module: testql.interpreter._converter
-    line: 100
-    cyclomatic_complexity: 66
-    calls_out: 116
-    calls_in: 1
-  testql.sumd_generator._doql_declaration_section:
-    name: _doql_declaration_section
-    module: testql.sumd_generator
-    line: 72
-    cyclomatic_complexity: 7
-    calls_out: 5
-    calls_in: 1
-  testql.commands.misc_cmds.report:
-    name: report
-    module: testql.commands.misc_cmds
-    line: 423
+  testql.detectors.unified.UnifiedEndpointDetector.detect_all:
+    name: detect_all
+    module: testql.detectors.unified
+    line: 39
     cyclomatic_complexity: 4
-    calls_out: 22
+    calls_out: 6
     calls_in: 0
-  testql.commands.echo.echo:
-    name: echo
-    module: testql.commands.echo
-    line: 243
-    cyclomatic_complexity: 3
-    calls_out: 17
-    calls_in: 0
-  testql.commands.encoder_routes.iql_run_line:
-    name: iql_run_line
-    module: testql.commands.encoder_routes
-    line: 299
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 0
-  testql.sumd_generator._metadata_section:
-    name: _metadata_section
-    module: testql.sumd_generator
-    line: 50
-    cyclomatic_complexity: 1
-    calls_out: 0
-    calls_in: 1
-  testql.interpreter._converter._detect_scenario_type:
-    name: _detect_scenario_type
-    module: testql.interpreter._converter
-    line: 70
-    cyclomatic_complexity: 12
-    calls_out: 7
-    calls_in: 1
-  testql.cli.cli:
-    name: cli
-    module: testql.cli
-    line: 16
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 1
-  testql.sumd_generator._architecture_section:
-    name: _architecture_section
-    module: testql.sumd_generator
-    line: 61
-    cyclomatic_complexity: 1
-    calls_out: 0
-    calls_in: 1
   testql.openapi_generator.OpenAPIGenerator._infer_tags:
     name: _infer_tags
     module: testql.openapi_generator
@@ -348,40 +264,89 @@ nodes:
     cyclomatic_complexity: 7
     calls_out: 9
     calls_in: 0
-  testql.interpreter._testtoon_parser.testtoon_to_iql:
-    name: testtoon_to_iql
-    module: testql.interpreter._testtoon_parser
-    line: 383
-    cyclomatic_complexity: 2
+  testql.commands.suite.collection._find_files:
+    name: _find_files
+    module: testql.commands.suite.collection
+    line: 28
+    cyclomatic_complexity: 6
+    calls_out: 7
+    calls_in: 3
+  project.map.toon.render_sections:
+    name: render_sections
+    module: project.map.toon
+    line: 464
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.commands.suite.execution.run_single_file:
+    name: run_single_file
+    module: testql.commands.suite.execution
+    line: 14
+    cyclomatic_complexity: 3
+    calls_out: 7
+    calls_in: 1
+  testql.sumd_generator._workflows_table_section:
+    name: _workflows_table_section
+    module: testql.sumd_generator
+    line: 127
+    cyclomatic_complexity: 5
+    calls_out: 3
+    calls_in: 1
+  project.map.toon.collect_list_files:
+    name: collect_list_files
+    module: project.map.toon
+    line: 258
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.openapi_generator._extract_path_params:
+    name: _extract_path_params
+    module: testql.openapi_generator
+    line: 394
+    cyclomatic_complexity: 4
     calls_out: 4
     calls_in: 1
-  testql.interpreter._testtoon_parser.parse_testtoon:
-    name: parse_testtoon
-    module: testql.interpreter._testtoon_parser
-    line: 81
-    cyclomatic_complexity: 12
-    calls_out: 31
+  testql.interpreter.converter.renderer._render_section_header:
+    name: _render_section_header
+    module: testql.interpreter.converter.renderer
+    line: 31
+    cyclomatic_complexity: 3
+    calls_out: 2
     calls_in: 1
-  testql.commands.endpoints_cmd.endpoints:
-    name: endpoints
-    module: testql.commands.endpoints_cmd
-    line: 17
-    cyclomatic_complexity: 9
-    calls_out: 20
+  project.map.toon.collect_assert:
+    name: collect_assert
+    module: project.map.toon
+    line: 423
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.commands.suite.listing.render_test_list:
+    name: render_test_list
+    module: testql.commands.suite.listing
+    line: 101
+    cyclomatic_complexity: 6
+    calls_out: 9
     calls_in: 0
-  testql.sumd_generator.generate_sumd:
-    name: generate_sumd
-    module: testql.sumd_generator
-    line: 11
-    cyclomatic_complexity: 4
-    calls_out: 10
-    calls_in: 2
-  testql.sumd_generator.save_sumd:
-    name: save_sumd
-    module: testql.sumd_generator
-    line: 191
+  TODO.testtoon_parser.validate:
+    name: validate
+    module: TODO.testtoon_parser
+    line: 111
     cyclomatic_complexity: 2
     calls_out: 2
+    calls_in: 1
+  testql.commands.encoder_routes.iql_list_files:
+    name: iql_list_files
+    module: testql.commands.encoder_routes
+    line: 257
+    cyclomatic_complexity: 7
+    calls_out: 14
+    calls_in: 0
+  testql.interpreter.converter.handlers.flow.handle_flow:
+    name: handle_flow
+    module: testql.interpreter.converter.handlers.flow
+    line: 21
+    cyclomatic_complexity: 3
+    calls_out: 6
     calls_in: 0
   testql.sumd_generator._configuration_section:
     name: _configuration_section
@@ -390,13 +355,349 @@ nodes:
     cyclomatic_complexity: 2
     calls_out: 1
     calls_in: 1
-  testql.commands.misc_cmds._build_test_content:
-    name: _build_test_content
-    module: testql.commands.misc_cmds
-    line: 68
+  testql.commands.suite.listing._parse_testtoon_header:
+    name: _parse_testtoon_header
+    module: testql.commands.suite.listing
+    line: 16
+    cyclomatic_complexity: 6
+    calls_out: 8
+    calls_in: 1
+  testql.commands.suite.collection._collect_by_pattern:
+    name: _collect_by_pattern
+    module: testql.commands.suite.collection
+    line: 60
+    cyclomatic_complexity: 2
+    calls_out: 3
+    calls_in: 1
+  testql.commands.suite.reports.save_report:
+    name: save_report
+    module: testql.commands.suite.reports
+    line: 72
+    cyclomatic_complexity: 3
+    calls_out: 5
+    calls_in: 0
+  SUMR.all:
+    name: all
+    module: SUMR
+    line: 516
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 2
+  testql.generators.generators.APIGeneratorMixin._deduplicate_rest_routes:
+    name: _deduplicate_rest_routes
+    module: testql.generators.generators
+    line: 110
+    cyclomatic_complexity: 4
+    calls_out: 3
+    calls_in: 0
+  code2llm_output.map.toon.parse_iql:
+    name: parse_iql
+    module: code2llm_output.map.toon
+    line: 229
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 2
+  testql.interpreter.converter.handlers.include.handle_include:
+    name: handle_include
+    module: testql.interpreter.converter.handlers.include
+    line: 7
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 0
+  testql.commands.encoder_routes.iql_read_file:
+    name: iql_read_file
+    module: testql.commands.encoder_routes
+    line: 281
+    cyclomatic_complexity: 3
+    calls_out: 11
+    calls_in: 0
+  project.map.toon.dispatch:
+    name: dispatch
+    module: project.map.toon
+    line: 416
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.interpreter.interpreter.IqlInterpreter.__init__:
+    name: __init__
+    module: testql.interpreter.interpreter
+    line: 43
+    cyclomatic_complexity: 2
+    calls_out: 3
+    calls_in: 0
+  testql.interpreter.converter.renderer.render_sections:
+    name: render_sections
+    module: testql.interpreter.converter.renderer
+    line: 40
     cyclomatic_complexity: 7
+    calls_out: 12
+    calls_in: 0
+  testql.interpreter._testtoon_parser._expand_api:
+    name: _expand_api
+    module: testql.interpreter._testtoon_parser
+    line: 194
+    cyclomatic_complexity: 2
+    calls_out: 5
+    calls_in: 0
+  testql.commands.echo.formatters.text.format_text_output:
+    name: format_text_output
+    module: testql.commands.echo.formatters.text
+    line: 85
+    cyclomatic_complexity: 1
+    calls_out: 7
+    calls_in: 0
+  SUMR.set:
+    name: set
+    module: SUMR
+    line: 513
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 10
+  testql.commands.suite.collection.collect_list_files:
+    name: collect_list_files
+    module: testql.commands.suite.collection
+    line: 114
+    cyclomatic_complexity: 4
+    calls_out: 5
+    calls_in: 0
+  testql.commands.echo.parsers.doql.parse_doql_less:
+    name: parse_doql_less
+    module: testql.commands.echo.parsers.doql
+    line: 104
+    cyclomatic_complexity: 1
+    calls_out: 8
+    calls_in: 0
+  testql.commands.misc_cmds.init:
+    name: init
+    module: testql.commands.misc_cmds
+    line: 40
+    cyclomatic_complexity: 4
+    calls_out: 20
+    calls_in: 0
+  project.map.toon.parse_target_from_args:
+    name: parse_target_from_args
+    module: project.map.toon
+    line: 457
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 7
+  testql.commands.endpoints_cmd._format_endpoints_json:
+    name: _format_endpoints_json
+    module: testql.commands.endpoints_cmd
+    line: 53
+    cyclomatic_complexity: 3
+    calls_out: 3
+    calls_in: 1
+  testql.interpreter.interpreter.IqlInterpreter.execute:
+    name: execute
+    module: testql.interpreter.interpreter
+    line: 76
+    cyclomatic_complexity: 4
+    calls_out: 16
+    calls_in: 0
+  testql.commands.echo.parsers.doql._parse_entities:
+    name: _parse_entities
+    module: testql.commands.echo.parsers.doql
+    line: 30
+    cyclomatic_complexity: 7
+    calls_out: 16
+    calls_in: 1
+  testql.cli.cli:
+    name: cli
+    module: testql.cli
+    line: 16
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 1
+  code2llm_output.map.toon.list:
+    name: list
+    module: code2llm_output.map.toon
+    line: 68
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 5
+  testql.commands.encoder_routes._normalize_iql_path:
+    name: _normalize_iql_path
+    module: testql.commands.encoder_routes
+    line: 81
+    cyclomatic_complexity: 3
+    calls_out: 5
+    calls_in: 1
+  testql.commands.encoder_routes._extract_table_names:
+    name: _extract_table_names
+    module: testql.commands.encoder_routes
+    line: 311
+    cyclomatic_complexity: 2
+    calls_out: 4
+    calls_in: 1
+  testql.commands.echo.context._find_toon_path:
+    name: _find_toon_path
+    module: testql.commands.echo.context
+    line: 21
+    cyclomatic_complexity: 2
     calls_out: 1
     calls_in: 1
+  testql.interpreter.converter.handlers.encoder.handle_encoder:
+    name: handle_encoder
+    module: testql.interpreter.converter.handlers.encoder
+    line: 31
+    cyclomatic_complexity: 3
+    calls_out: 8
+    calls_in: 0
+  testql.commands.generate_cmd._count_routes_by:
+    name: _count_routes_by
+    module: testql.commands.generate_cmd
+    line: 107
+    cyclomatic_complexity: 2
+    calls_out: 3
+    calls_in: 2
+  testql.runner.DslCliExecutor.cmd_log:
+    name: cmd_log
+    module: testql.runner
+    line: 203
+    cyclomatic_complexity: 2
+    calls_out: 3
+    calls_in: 0
+  testql.commands.suite.collection._collect_recursive:
+    name: _collect_recursive
+    module: testql.commands.suite.collection
+    line: 66
+    cyclomatic_complexity: 4
+    calls_out: 3
+    calls_in: 1
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json:
+    name: _cmd_assert_json
+    module: testql.interpreter._assertions
+    line: 76
+    cyclomatic_complexity: 6
+    calls_out: 17
+    calls_in: 0
+  testql.commands.misc_cmds.echo:
+    name: echo
+    module: testql.commands.misc_cmds
+    line: 267
+    cyclomatic_complexity: 4
+    calls_out: 20
+    calls_in: 0
+  code2llm_output.map.toon.parse_doql_file:
+    name: parse_doql_file
+    module: code2llm_output.map.toon
+    line: 207
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.commands.echo.context._find_doql_file:
+    name: _find_doql_file
+    module: testql.commands.echo.context
+    line: 12
+    cyclomatic_complexity: 4
+    calls_out: 5
+    calls_in: 1
+  testql.commands.encoder_routes._strip_path_segments:
+    name: _strip_path_segments
+    module: testql.commands.encoder_routes
+    line: 52
+    cyclomatic_complexity: 3
+    calls_out: 4
+    calls_in: 1
+  testql.commands.endpoints_cmd._format_endpoints_csv:
+    name: _format_endpoints_csv
+    module: testql.commands.endpoints_cmd
+    line: 67
+    cyclomatic_complexity: 5
+    calls_out: 7
+    calls_in: 1
+  testql.commands.echo.parsers.toon.parse_toon_scenarios:
+    name: parse_toon_scenarios
+    module: testql.commands.echo.parsers.toon
+    line: 64
+    cyclomatic_complexity: 3
+    calls_out: 5
+    calls_in: 0
+  testql.commands.encoder_routes._migrate_legacy_extension:
+    name: _migrate_legacy_extension
+    module: testql.commands.encoder_routes
+    line: 62
+    cyclomatic_complexity: 4
+    calls_out: 3
+    calls_in: 1
+  testql.commands.echo.parsers.doql._parse_integrations:
+    name: _parse_integrations
+    module: testql.commands.echo.parsers.doql
+    line: 90
+    cyclomatic_complexity: 4
+    calls_out: 12
+    calls_in: 1
+  testql.commands.suite.reports._save_json_report:
+    name: _save_json_report
+    module: testql.commands.suite.reports
+    line: 38
+    cyclomatic_complexity: 1
+    calls_out: 3
+    calls_in: 1
+  project.map.toon.detect_scenario_type:
+    name: detect_scenario_type
+    module: project.map.toon
+    line: 459
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.commands.echo.formatters.text._fmt_entities:
+    name: _fmt_entities
+    module: testql.commands.echo.formatters.text
+    line: 49
+    cyclomatic_complexity: 4
+    calls_out: 10
+    calls_in: 1
+  testql.commands.encoder_routes._resolve_iql_path:
+    name: _resolve_iql_path
+    module: testql.commands.encoder_routes
+    line: 94
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 3
+  testql.sumd_parser._parse_block_interfaces:
+    name: _parse_block_interfaces
+    module: testql.sumd_parser
+    line: 47
+    cyclomatic_complexity: 3
+    calls_out: 7
+    calls_in: 1
+  testql.cli.main:
+    name: main
+    module: testql.cli
+    line: 35
+    cyclomatic_complexity: 1
+    calls_out: 1
+    calls_in: 0
+  testql.commands.echo.formatters.text._fmt_workflows:
+    name: _fmt_workflows
+    module: testql.commands.echo.formatters.text
+    line: 20
+    cyclomatic_complexity: 3
+    calls_out: 6
+    calls_in: 1
+  TODO.testtoon_parser.print_parsed:
+    name: print_parsed
+    module: TODO.testtoon_parser
+    line: 118
+    cyclomatic_complexity: 8
+    calls_out: 12
+    calls_in: 0
+  testql.commands.suite.listing._parse_yaml_meta_block:
+    name: _parse_yaml_meta_block
+    module: testql.commands.suite.listing
+    line: 45
+    cyclomatic_complexity: 5
+    calls_out: 4
+    calls_in: 1
+  testql.commands.endpoints_cmd.endpoints:
+    name: endpoints
+    module: testql.commands.endpoints_cmd
+    line: 17
+    cyclomatic_complexity: 9
+    calls_out: 20
+    calls_in: 0
   testql.sumd_generator._llm_suggestions_section:
     name: _llm_suggestions_section
     module: testql.sumd_generator
@@ -404,74 +705,887 @@ nodes:
     cyclomatic_complexity: 4
     calls_out: 5
     calls_in: 1
-  testql.interpreter._converter.convert_directory:
-    name: convert_directory
-    module: testql.interpreter._converter
-    line: 437
-    cyclomatic_complexity: 4
-    calls_out: 7
+  testql.interpreter.converter.handlers.record.handle_record_start:
+    name: handle_record_start
+    module: testql.interpreter.converter.handlers.record
+    line: 7
+    cyclomatic_complexity: 1
+    calls_out: 2
     calls_in: 0
-  testql.endpoint_detector.UnifiedEndpointDetector._deduplicate_endpoints:
-    name: _deduplicate_endpoints
-    module: testql.endpoint_detector
-    line: 749
+  testql.interpreter.converter.dispatcher.dispatch:
+    name: dispatch
+    module: testql.interpreter.converter.dispatcher
+    line: 41
+    cyclomatic_complexity: 3
+    calls_out: 3
+    calls_in: 0
+  project.map.toon.parse_api_args:
+    name: parse_api_args
+    module: project.map.toon
+    line: 455
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.commands.echo.parsers.toon._parse_scenario:
+    name: _parse_scenario
+    module: testql.commands.echo.parsers.toon
+    line: 38
+    cyclomatic_complexity: 5
+    calls_out: 15
+    calls_in: 1
+  testql.sumd_generator._architecture_section:
+    name: _architecture_section
+    module: testql.sumd_generator
+    line: 61
+    cyclomatic_complexity: 1
+    calls_out: 0
+    calls_in: 1
+  testql.interpreter._testtoon_parser.parse_testtoon:
+    name: parse_testtoon
+    module: testql.interpreter._testtoon_parser
+    line: 109
+    cyclomatic_complexity: 8
+    calls_out: 15
+    calls_in: 1
+  testql.commands.suite.listing._collect_meta_lines:
+    name: _collect_meta_lines
+    module: testql.commands.suite.listing
+    line: 30
+    cyclomatic_complexity: 7
+    calls_out: 6
+    calls_in: 1
+  project.map.toon.render_echo:
+    name: render_echo
+    module: project.map.toon
+    line: 201
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.commands.echo_helpers._collect_toon_directory:
+    name: _collect_toon_directory
+    module: testql.commands.echo_helpers
+    line: 16
+    cyclomatic_complexity: 8
+    calls_out: 9
+    calls_in: 1
+  TODO.testql-table-format-spec.print:
+    name: print
+    module: TODO.testql-table-format-spec
+    line: 259
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 33
+  project.map.toon.parse_commands:
+    name: parse_commands
+    module: project.map.toon
+    line: 458
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.interpreter.converter.handlers.unknown.handle_unknown:
+    name: handle_unknown
+    module: testql.interpreter.converter.handlers.unknown
+    line: 7
     cyclomatic_complexity: 3
     calls_out: 4
     calls_in: 0
-  testql.commands.encoder_routes._execute_iql_line:
-    name: _execute_iql_line
+  testql.sumd_generator._api_contract_section:
+    name: _api_contract_section
+    module: testql.sumd_generator
+    line: 104
+    cyclomatic_complexity: 6
+    calls_out: 11
+    calls_in: 1
+  testql.commands.suite.collection._deduplicate_files:
+    name: _deduplicate_files
+    module: testql.commands.suite.collection
+    line: 77
+    cyclomatic_complexity: 5
+    calls_out: 5
+    calls_in: 1
+  testql.runner.DslCliExecutor.run_script:
+    name: run_script
+    module: testql.runner
+    line: 273
+    cyclomatic_complexity: 11
+    calls_out: 20
+    calls_in: 0
+  testql.commands.encoder_routes.iql_run_line:
+    name: iql_run_line
     module: testql.commands.encoder_routes
-    line: 195
-    cyclomatic_complexity: 10
+    line: 326
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 0
+  testql.commands.suite.listing.filter_tests:
+    name: filter_tests
+    module: testql.commands.suite.listing
+    line: 76
+    cyclomatic_complexity: 6
+    calls_out: 9
+    calls_in: 0
+  testql.commands.suite.cli.list_tests:
+    name: list_tests
+    module: testql.commands.suite.cli
+    line: 88
+    cyclomatic_complexity: 2
     calls_out: 13
-    calls_in: 2
-  testql.commands.suite_cmd._collect_test_files:
-    name: _collect_test_files
-    module: testql.commands.suite_cmd
+    calls_in: 0
+  testql.commands.echo.parsers.doql._parse_deploy:
+    name: _parse_deploy
+    module: testql.commands.echo.parsers.doql
+    line: 76
+    cyclomatic_complexity: 2
+    calls_out: 3
+    calls_in: 1
+  testql.interpreter._testtoon_parser._make_section:
+    name: _make_section
+    module: testql.interpreter._testtoon_parser
+    line: 90
+    cyclomatic_complexity: 4
+    calls_out: 9
+    calls_in: 1
+  testql.interpreter._testtoon_parser._make_data_row:
+    name: _make_data_row
+    module: testql.interpreter._testtoon_parser
+    line: 101
+    cyclomatic_complexity: 2
+    calls_out: 6
+    calls_in: 1
+  testql.commands.echo_helpers.collect_toon_data:
+    name: collect_toon_data
+    module: testql.commands.echo_helpers
+    line: 35
+    cyclomatic_complexity: 3
+    calls_out: 7
+    calls_in: 0
+  testql.sumd_generator._header_section:
+    name: _header_section
+    module: testql.sumd_generator
+    line: 41
+    cyclomatic_complexity: 1
+    calls_out: 1
+    calls_in: 1
+  testql.commands.echo.formatters.text._fmt_interfaces:
+    name: _fmt_interfaces
+    module: testql.commands.echo.formatters.text
+    line: 8
+    cyclomatic_complexity: 3
+    calls_out: 5
+    calls_in: 1
+  testql.commands.encoder_routes._assert_count_prop:
+    name: _assert_count_prop
+    module: testql.commands.encoder_routes
+    line: 118
+    cyclomatic_complexity: 2
+    calls_out: 2
+    calls_in: 1
+  testql.commands.misc_cmds._create_templates:
+    name: _create_templates
+    module: testql.commands.misc_cmds
+    line: 26
+    cyclomatic_complexity: 4
+    calls_out: 4
+    calls_in: 1
+  testql.openapi_generator._extract_ep_params:
+    name: _extract_ep_params
+    module: testql.openapi_generator
+    line: 408
+    cyclomatic_complexity: 7
+    calls_out: 8
+    calls_in: 1
+  testql.interpreter._testtoon_parser._parse_inline_dict:
+    name: _parse_inline_dict
+    module: testql.interpreter._testtoon_parser
+    line: 60
+    cyclomatic_complexity: 3
+    calls_out: 4
+    calls_in: 1
+  project.map.toon.collect_toon_data:
+    name: collect_toon_data
+    module: project.map.toon
+    line: 199
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.commands.suite.collection.collect_test_files:
+    name: collect_test_files
+    module: testql.commands.suite.collection
+    line: 89
+    cyclomatic_complexity: 5
+    calls_out: 7
+    calls_in: 0
+  testql.commands.encoder_routes._exec_assert_cmd:
+    name: _exec_assert_cmd
+    module: testql.commands.encoder_routes
+    line: 200
+    cyclomatic_complexity: 7
+    calls_out: 11
+    calls_in: 1
+  testql.commands.encoder_routes._remap_tests_prefix:
+    name: _remap_tests_prefix
+    module: testql.commands.encoder_routes
+    line: 72
+    cyclomatic_complexity: 3
+    calls_out: 4
+    calls_in: 1
+  testql.interpreter._api_runner._navigate_step:
+    name: _navigate_step
+    module: testql.interpreter._api_runner
+    line: 165
+    cyclomatic_complexity: 4
+    calls_out: 4
+    calls_in: 1
+  testql.commands.echo.parsers.doql._parse_app_block:
+    name: _parse_app_block
+    module: testql.commands.echo.parsers.doql
+    line: 24
+    cyclomatic_complexity: 2
+    calls_out: 3
+    calls_in: 1
+  testql.interpreter.converter.core.convert_iql_to_testtoon:
+    name: convert_iql_to_testtoon
+    module: testql.interpreter.converter.core
+    line: 13
+    cyclomatic_complexity: 5
+    calls_out: 10
+    calls_in: 1
+  testql.commands.encoder_routes.iql_list_tables:
+    name: iql_list_tables
+    module: testql.commands.encoder_routes
+    line: 298
+    cyclomatic_complexity: 3
+    calls_out: 11
+    calls_in: 0
+  code2llm_output.map.toon.generate_context:
+    name: generate_context
+    module: code2llm_output.map.toon
+    line: 82
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.commands.encoder_routes._write_run_log:
+    name: _write_run_log
+    module: testql.commands.encoder_routes
+    line: 430
+    cyclomatic_complexity: 1
+    calls_out: 8
+    calls_in: 1
+  testql.commands.encoder_routes._format_log_detail:
+    name: _format_log_detail
+    module: testql.commands.encoder_routes
+    line: 151
+    cyclomatic_complexity: 7
+    calls_out: 11
+    calls_in: 1
+  testql.commands.suite.reports._build_junit_xml:
+    name: _build_junit_xml
+    module: testql.commands.suite.reports
     line: 43
-    cyclomatic_complexity: 15
-    calls_out: 23
+    cyclomatic_complexity: 5
+    calls_out: 8
+    calls_in: 1
+  testql.sumd_generator.save_sumd:
+    name: save_sumd
+    module: testql.sumd_generator
+    line: 191
+    cyclomatic_complexity: 2
+    calls_out: 2
+    calls_in: 0
+  testql.interpreter._api_runner._navigate_json_path:
+    name: _navigate_json_path
+    module: testql.interpreter._api_runner
+    line: 177
+    cyclomatic_complexity: 5
+    calls_out: 5
+    calls_in: 0
+  testql.detectors.unified.UnifiedEndpointDetector._deduplicate_endpoints:
+    name: _deduplicate_endpoints
+    module: testql.detectors.unified
+    line: 58
+    cyclomatic_complexity: 3
+    calls_out: 4
+    calls_in: 0
+  testql.interpreter._api_runner._resolve_length:
+    name: _resolve_length
+    module: testql.interpreter._api_runner
+    line: 157
+    cyclomatic_complexity: 4
+    calls_out: 6
+    calls_in: 1
+  testql.commands.generate_cmd._is_workspace:
+    name: _is_workspace
+    module: testql.commands.generate_cmd
+    line: 11
+    cyclomatic_complexity: 5
+    calls_out: 5
+    calls_in: 1
+  testql.commands.suite.execution.run_suite_files:
+    name: run_suite_files
+    module: testql.commands.suite.execution
+    line: 42
+    cyclomatic_complexity: 5
+    calls_out: 11
+    calls_in: 0
+  project.map.toon.build_config_section:
+    name: build_config_section
+    module: project.map.toon
+    line: 463
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.commands.suite.collection._collect_from_suite:
+    name: _collect_from_suite
+    module: testql.commands.suite.collection
+    line: 46
+    cyclomatic_complexity: 4
+    calls_out: 7
     calls_in: 1
   testql.commands.encoder_routes._exec_encoder_cmd:
     name: _exec_encoder_cmd
     module: testql.commands.encoder_routes
-    line: 139
+    line: 167
     cyclomatic_complexity: 6
     calls_out: 4
     calls_in: 1
-  testql.commands.encoder_routes._exec_assert_cmd:
-    name: _exec_assert_cmd
+  testql.commands.encoder_routes._evaluate_assertion:
+    name: _evaluate_assertion
     module: testql.commands.encoder_routes
-    line: 172
-    cyclomatic_complexity: 7
-    calls_out: 11
+    line: 136
+    cyclomatic_complexity: 6
+    calls_out: 6
     calls_in: 1
+  project.map.toon.parse_meta_from_args:
+    name: parse_meta_from_args
+    module: project.map.toon
+    line: 456
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 3
+  testql.interpreter.converter.handlers.encoder._encoder_action_fields:
+    name: _encoder_action_fields
+    module: testql.interpreter.converter.handlers.encoder
+    line: 7
+    cyclomatic_complexity: 5
+    calls_out: 4
+    calls_in: 1
+  testql.commands.endpoints_cmd._format_endpoints_table:
+    name: _format_endpoints_table
+    module: testql.commands.endpoints_cmd
+    line: 81
+    cyclomatic_complexity: 5
+    calls_out: 8
+    calls_in: 1
+  testql.commands.echo.context.generate_context:
+    name: generate_context
+    module: testql.commands.echo.context
+    line: 29
+    cyclomatic_complexity: 4
+    calls_out: 5
+    calls_in: 0
+  testql.commands.echo_helpers.collect_doql_data:
+    name: collect_doql_data
+    module: testql.commands.echo_helpers
+    line: 49
+    cyclomatic_complexity: 2
+    calls_out: 5
+    calls_in: 0
+  testql.commands.misc_cmds.report:
+    name: report
+    module: testql.commands.misc_cmds
+    line: 221
+    cyclomatic_complexity: 4
+    calls_out: 22
+    calls_in: 0
+  code2llm_output.map.toon.testtoon_to_iql:
+    name: testtoon_to_iql
+    module: code2llm_output.map.toon
+    line: 154
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.interpreter._testtoon_parser._append_api_asserts:
+    name: _append_api_asserts
+    module: testql.interpreter._testtoon_parser
+    line: 174
+    cyclomatic_complexity: 8
+    calls_out: 10
+    calls_in: 1
+  testql.commands.generate_cmd._print_routes_section:
+    name: _print_routes_section
+    module: testql.commands.generate_cmd
+    line: 115
+    cyclomatic_complexity: 10
+    calls_out: 23
+    calls_in: 1
+  testql.sumd_generator._doql_declaration_section:
+    name: _doql_declaration_section
+    module: testql.sumd_generator
+    line: 72
+    cyclomatic_complexity: 7
+    calls_out: 5
+    calls_in: 1
+  testql.interpreter.interpreter.IqlInterpreter.parse:
+    name: parse
+    module: testql.interpreter.interpreter
+    line: 61
+    cyclomatic_complexity: 2
+    calls_out: 3
+    calls_in: 0
+  testql.interpreter._testtoon_parser._detect_separator:
+    name: _detect_separator
+    module: testql.interpreter._testtoon_parser
+    line: 51
+    cyclomatic_complexity: 2
+    calls_out: 0
+    calls_in: 1
+  testql.commands.encoder_routes._update_counters:
+    name: _update_counters
+    module: testql.commands.encoder_routes
+    line: 393
+    cyclomatic_complexity: 4
+    calls_out: 3
+    calls_in: 1
+  code2llm_output.map.toon.format_text_output:
+    name: format_text_output
+    module: code2llm_output.map.toon
+    line: 83
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.runner.DslCliExecutor._dispatch:
+    name: _dispatch
+    module: testql.runner
+    line: 146
+    cyclomatic_complexity: 6
+    calls_out: 6
+    calls_in: 0
+  code2llm_output.map.toon.parse_doql_less:
+    name: parse_doql_less
+    module: code2llm_output.map.toon
+    line: 80
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  code2llm_output.map.toon.generate_report:
+    name: generate_report
+    module: code2llm_output.map.toon
+    line: 224
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 2
+  code2llm_output.map.toon._navigate_json_path:
+    name: _navigate_json_path
+    module: code2llm_output.map.toon
+    line: 182
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 2
+  testql.sumd_parser._parse_api_interfaces:
+    name: _parse_api_interfaces
+    module: testql.sumd_parser
+    line: 59
+    cyclomatic_complexity: 8
+    calls_out: 13
+    calls_in: 1
+  testql.commands.echo.parsers.doql._parse_environment:
+    name: _parse_environment
+    module: testql.commands.echo.parsers.doql
+    line: 82
+    cyclomatic_complexity: 2
+    calls_out: 3
+    calls_in: 1
+  testql.commands.encoder_routes._run_iql_lines:
+    name: _run_iql_lines
+    module: testql.commands.encoder_routes
+    line: 350
+    cyclomatic_complexity: 6
+    calls_out: 22
+    calls_in: 1
+  testql.commands.echo.formatters.text._build_header:
+    name: _build_header
+    module: testql.commands.echo.formatters.text
+    line: 77
+    cyclomatic_complexity: 1
+    calls_out: 4
+    calls_in: 1
+  testql.runner.DslCliExecutor.cmd_print:
+    name: cmd_print
+    module: testql.runner
+    line: 208
+    cyclomatic_complexity: 2
+    calls_out: 4
+    calls_in: 0
+  testql.generators.multi.MultiProjectTestGenerator.generate_cross_project_tests:
+    name: generate_cross_project_tests
+    module: testql.generators.multi
+    line: 69
+    cyclomatic_complexity: 3
+    calls_out: 11
+    calls_in: 0
+  testql.interpreter.converter.handlers.encoder._advance_past_wait:
+    name: _advance_past_wait
+    module: testql.interpreter.converter.handlers.encoder
+    line: 20
+    cyclomatic_complexity: 4
+    calls_out: 2
+    calls_in: 1
+  testql.commands.encoder_routes._exec_browser_cmd:
+    name: _exec_browser_cmd
+    module: testql.commands.encoder_routes
+    line: 181
+    cyclomatic_complexity: 9
+    calls_out: 10
+    calls_in: 1
+  testql.commands.echo.parsers.doql._parse_workflows:
+    name: _parse_workflows
+    module: testql.commands.echo.parsers.doql
+    line: 57
+    cyclomatic_complexity: 7
+    calls_out: 22
+    calls_in: 1
+  testql.commands.echo_helpers.render_echo:
+    name: render_echo
+    module: testql.commands.echo_helpers
+    line: 61
+    cyclomatic_complexity: 3
+    calls_out: 4
+    calls_in: 0
+  testql.interpreter.converter.handlers.select.handle_select:
+    name: handle_select
+    module: testql.interpreter.converter.handlers.select
+    line: 7
+    cyclomatic_complexity: 3
+    calls_out: 8
+    calls_in: 0
+  project.map.toon.extract_scenario_name:
+    name: extract_scenario_name
+    module: project.map.toon
+    line: 460
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.commands.suite.collection._resolve_search_dir_and_pattern:
+    name: _resolve_search_dir_and_pattern
+    module: testql.commands.suite.collection
+    line: 17
+    cyclomatic_complexity: 4
+    calls_out: 2
+    calls_in: 1
+  testql.sumd_generator._metadata_section:
+    name: _metadata_section
+    module: testql.sumd_generator
+    line: 50
+    cyclomatic_complexity: 1
+    calls_out: 0
+    calls_in: 1
+  testql.commands.echo.cli.echo:
+    name: echo
+    module: testql.commands.echo.cli
+    line: 20
+    cyclomatic_complexity: 3
+    calls_out: 17
+    calls_in: 0
   testql.commands.endpoints_cmd._format_endpoints:
     name: _format_endpoints
     module: testql.commands.endpoints_cmd
-    line: 53
-    cyclomatic_complexity: 13
-    calls_out: 18
+    line: 94
+    cyclomatic_complexity: 3
+    calls_out: 3
     calls_in: 1
-  testql.commands.suite_cmd._parse_meta:
-    name: _parse_meta
-    module: testql.commands.suite_cmd
-    line: 289
-    cyclomatic_complexity: 12
-    calls_out: 10
+  project.map.toon.render_test_list:
+    name: render_test_list
+    module: project.map.toon
+    line: 269
+    cyclomatic_complexity: 0
+    calls_out: 0
+    calls_in: 1
+  testql.commands.suite.listing.parse_meta:
+    name: parse_meta
+    module: testql.commands.suite.listing
+    line: 56
+    cyclomatic_complexity: 6
+    calls_out: 6
     calls_in: 1
 edges:
 - caller: testql.cli.main
   callee: testql.cli.cli
   call_type: resolved
-- caller: testql.generator.TestGenerator._scan_directory_structure
-  callee: testql._base_fallback.VariableStore.set
+- caller: testql.commands.generate_cmd.generate
+  callee: testql.commands.generate_cmd._is_workspace
   call_type: resolved
-- caller: TODO.testtoon_parser.print_parsed
-  callee: TODO.testtoon_parser.validate
+- caller: testql.commands.generate_cmd._print_routes_section
+  callee: testql.commands.generate_cmd._count_routes_by
   call_type: resolved
-- caller: testql.openapi_generator.OpenAPIGenerator._infer_tags
-  callee: testql._base_fallback.VariableStore.set
+- caller: testql.commands.misc_cmds.init
+  callee: testql.commands.misc_cmds._create_templates
+  call_type: resolved
+- caller: testql.commands.misc_cmds.report
+  callee: code2llm_output.map.toon.generate_report
+  call_type: resolved
+- caller: testql.commands.misc_cmds.echo
+  callee: project.map.toon.render_echo
+  call_type: resolved
+- caller: testql.commands.misc_cmds.echo
+  callee: project.map.toon.collect_toon_data
+  call_type: resolved
+- caller: testql.commands.echo_helpers._collect_toon_directory
+  callee: code2llm_output.map.toon.parse_toon_file
+  call_type: resolved
+- caller: testql.commands.echo_helpers.collect_toon_data
+  callee: testql.commands.echo_helpers._collect_toon_directory
+  call_type: resolved
+- caller: testql.commands.echo_helpers.collect_toon_data
+  callee: code2llm_output.map.toon.parse_toon_file
+  call_type: resolved
+- caller: testql.commands.echo_helpers.collect_doql_data
+  callee: code2llm_output.map.toon.parse_doql_file
+  call_type: resolved
+- caller: testql.commands.echo_helpers.render_echo
+  callee: SUMR.generate_sumd
+  call_type: resolved
+- caller: testql.commands.endpoints_cmd.endpoints
+  callee: testql.commands.endpoints_cmd._format_endpoints
+  call_type: resolved
+- caller: testql.commands.endpoints_cmd._format_endpoints
+  callee: testql.commands.endpoints_cmd._format_endpoints_table
+  call_type: resolved
+- caller: testql.commands.endpoints_cmd._format_endpoints
+  callee: testql.commands.endpoints_cmd._format_endpoints_json
+  call_type: resolved
+- caller: testql.commands.endpoints_cmd._format_endpoints
+  callee: testql.commands.endpoints_cmd._format_endpoints_csv
+  call_type: resolved
+- caller: testql.sumd_parser.SumdParser._parse_interfaces
+  callee: testql.sumd_parser._parse_block_interfaces
+  call_type: resolved
+- caller: testql.sumd_parser.SumdParser._parse_interfaces
+  callee: testql.sumd_parser._parse_api_interfaces
+  call_type: resolved
+- caller: testql.commands.suite.cli.list_tests
+  callee: project.map.toon.collect_list_files
+  call_type: resolved
+- caller: testql.commands.suite.cli.list_tests
+  callee: project.map.toon.filter_tests
+  call_type: resolved
+- caller: testql.commands.suite.cli.list_tests
+  callee: project.map.toon.render_test_list
+  call_type: resolved
+- caller: testql.commands.suite.listing._parse_yaml_meta_block
+  callee: testql.commands.suite.listing._collect_meta_lines
+  call_type: resolved
+- caller: testql.commands.suite.listing.parse_meta
+  callee: testql.commands.suite.listing._parse_testtoon_header
+  call_type: resolved
+- caller: testql.commands.suite.listing.parse_meta
+  callee: testql.commands.suite.listing._parse_yaml_meta_block
+  call_type: resolved
+- caller: testql.commands.suite.listing.filter_tests
+  callee: testql.commands.suite.listing.parse_meta
+  call_type: resolved
+- caller: testql.commands.suite.listing.render_test_list
+  callee: TODO.testql-table-format-spec.print
+  call_type: resolved
+- caller: testql.commands.suite.reports.save_report
+  callee: testql.commands.suite.reports._save_json_report
+  call_type: resolved
+- caller: testql.commands.suite.reports.save_report
+  callee: testql.commands.suite.reports._build_junit_xml
+  call_type: resolved
+- caller: testql.commands.echo.cli.echo
+  callee: code2llm_output.map.toon.generate_context
+  call_type: resolved
+- caller: testql.commands.echo.cli.echo
+  callee: code2llm_output.map.toon.format_text_output
+  call_type: resolved
+- caller: testql.commands.suite.execution.run_suite_files
+  callee: testql.commands.suite.execution.run_single_file
+  call_type: resolved
+- caller: testql.commands.echo.context._find_doql_file
+  callee: code2llm_output.map.toon.list
+  call_type: resolved
+- caller: testql.commands.echo.context.generate_context
+  callee: testql.commands.echo.context._find_doql_file
+  call_type: resolved
+- caller: testql.commands.echo.context.generate_context
+  callee: testql.commands.echo.context._find_toon_path
+  call_type: resolved
+- caller: testql.commands.echo.context.generate_context
+  callee: code2llm_output.map.toon.parse_toon_scenarios
+  call_type: resolved
+- caller: testql.commands.echo.context.generate_context
+  callee: code2llm_output.map.toon.parse_doql_less
+  call_type: resolved
+- caller: testql.commands.suite.collection._find_files
+  callee: testql.commands.suite.collection._resolve_search_dir_and_pattern
+  call_type: resolved
+- caller: testql.commands.suite.collection._collect_from_suite
+  callee: testql.commands.suite.collection._find_files
+  call_type: resolved
+- caller: testql.commands.suite.collection._collect_by_pattern
+  callee: testql.commands.suite.collection._find_files
+  call_type: resolved
+- caller: testql.commands.suite.collection._collect_recursive
+  callee: testql.commands.suite.collection._find_files
+  call_type: resolved
+- caller: testql.commands.suite.collection._deduplicate_files
+  callee: SUMR.set
+  call_type: resolved
+- caller: testql.commands.suite.collection.collect_test_files
+  callee: testql.commands.suite.collection._deduplicate_files
+  call_type: resolved
+- caller: testql.commands.suite.collection.collect_test_files
+  callee: testql.commands.suite.collection._collect_from_suite
+  call_type: resolved
+- caller: testql.commands.suite.collection.collect_test_files
+  callee: testql.commands.suite.collection._collect_by_pattern
+  call_type: resolved
+- caller: testql.commands.suite.collection.collect_test_files
+  callee: testql.commands.suite.collection._collect_recursive
+  call_type: resolved
+- caller: testql.commands.suite.collection.collect_list_files
+  callee: SUMR.set
+  call_type: resolved
+- caller: testql.commands.echo.formatters.text.format_text_output
+  callee: testql.commands.echo.formatters.text._fmt_suggestions
+  call_type: resolved
+- caller: testql.commands.echo.formatters.text.format_text_output
+  callee: testql.commands.echo.formatters.text._fmt_entities
+  call_type: resolved
+- caller: testql.commands.echo.formatters.text.format_text_output
+  callee: testql.commands.echo.formatters.text._fmt_contracts
+  call_type: resolved
+- caller: testql.commands.echo.formatters.text.format_text_output
+  callee: testql.commands.echo.formatters.text._fmt_workflows
+  call_type: resolved
+- caller: testql.commands.echo.formatters.text.format_text_output
+  callee: testql.commands.echo.formatters.text._build_header
+  call_type: resolved
+- caller: testql.commands.echo.formatters.text.format_text_output
+  callee: testql.commands.echo.formatters.text._fmt_interfaces
+  call_type: resolved
+- caller: testql.commands.echo.parsers.toon.parse_toon_scenarios
+  callee: testql.commands.echo.parsers.toon._parse_scenario
+  call_type: resolved
+- caller: testql.commands.echo.parsers.doql._parse_app_block
+  callee: testql.commands.echo.parsers.doql._parse_kv_block
+  call_type: resolved
+- caller: testql.commands.echo.parsers.doql._parse_interfaces
+  callee: testql.commands.echo.parsers.doql._parse_kv_block
+  call_type: resolved
+- caller: testql.commands.echo.parsers.doql._parse_deploy
+  callee: testql.commands.echo.parsers.doql._parse_kv_block
+  call_type: resolved
+- caller: testql.commands.echo.parsers.doql._parse_environment
+  callee: testql.commands.echo.parsers.doql._parse_kv_block
+  call_type: resolved
+- caller: testql.commands.echo.parsers.doql._parse_integrations
+  callee: code2llm_output.map.toon.list
+  call_type: resolved
+- caller: testql.commands.echo.parsers.doql._parse_integrations
+  callee: SUMR.set
+  call_type: resolved
+- caller: testql.commands.echo.parsers.doql.parse_doql_less
+  callee: testql.commands.echo.parsers.doql._parse_app_block
+  call_type: resolved
+- caller: testql.commands.echo.parsers.doql.parse_doql_less
+  callee: testql.commands.echo.parsers.doql._parse_entities
+  call_type: resolved
+- caller: testql.commands.echo.parsers.doql.parse_doql_less
+  callee: testql.commands.echo.parsers.doql._parse_interfaces
+  call_type: resolved
+- caller: testql.commands.echo.parsers.doql.parse_doql_less
+  callee: testql.commands.echo.parsers.doql._parse_workflows
+  call_type: resolved
+- caller: testql.commands.echo.parsers.doql.parse_doql_less
+  callee: testql.commands.echo.parsers.doql._parse_deploy
+  call_type: resolved
+- caller: testql.commands.echo.parsers.doql.parse_doql_less
+  callee: testql.commands.echo.parsers.doql._parse_environment
+  call_type: resolved
+- caller: testql.commands.echo.parsers.doql.parse_doql_less
+  callee: testql.commands.echo.parsers.doql._parse_integrations
+  call_type: resolved
+- caller: testql.interpreter._flow.FlowMixin._cmd_include
+  callee: code2llm_output.map.toon.parse_iql
+  call_type: resolved
+- caller: testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+  callee: code2llm_output.map.toon._navigate_json_path
+  call_type: resolved
+- caller: testql.interpreter.converter.core.convert_iql_to_testtoon
+  callee: project.map.toon.parse_commands
+  call_type: resolved
+- caller: testql.interpreter.converter.core.convert_iql_to_testtoon
+  callee: project.map.toon.extract_scenario_name
+  call_type: resolved
+- caller: testql.interpreter.converter.core.convert_iql_to_testtoon
+  callee: project.map.toon.detect_scenario_type
+  call_type: resolved
+- caller: testql.interpreter.converter.core.convert_iql_to_testtoon
+  callee: project.map.toon.build_config_section
+  call_type: resolved
+- caller: testql.interpreter.converter.core.convert_iql_to_testtoon
+  callee: project.map.toon.build_header
+  call_type: resolved
+- caller: testql.interpreter.converter.core.convert_iql_to_testtoon
+  callee: project.map.toon.dispatch
+  call_type: resolved
+- caller: testql.interpreter.converter.core.convert_iql_to_testtoon
+  callee: project.map.toon.render_sections
+  call_type: resolved
+- caller: testql.interpreter.converter.core.convert_file
+  callee: testql.interpreter.converter.core.convert_iql_to_testtoon
+  call_type: resolved
+- caller: testql.interpreter.converter.core.convert_directory
+  callee: testql.interpreter.converter.core.convert_file
+  call_type: resolved
+- caller: testql.interpreter.converter.core.convert_directory
+  callee: TODO.testql-table-format-spec.print
+  call_type: resolved
+- caller: testql.interpreter.converter.dispatcher.dispatch
+  callee: project.map.toon.handle_unknown
+  call_type: resolved
+- caller: testql.interpreter.converter.handlers.encoder._encoder_action_fields
+  callee: project.map.toon.parse_target_from_args
+  call_type: resolved
+- caller: testql.interpreter.converter.handlers.encoder.handle_encoder
+  callee: testql.interpreter.converter.handlers.encoder._encoder_action_fields
+  call_type: resolved
+- caller: testql.interpreter.converter.handlers.encoder.handle_encoder
+  callee: testql.interpreter.converter.handlers.encoder._advance_past_wait
+  call_type: resolved
+- caller: testql.interpreter.interpreter.IqlInterpreter.__init__
+  callee: SUMR.set
+  call_type: resolved
+- caller: testql.interpreter.interpreter.IqlInterpreter.parse
+  callee: code2llm_output.map.toon.parse_iql
+  call_type: resolved
+- caller: testql.interpreter.interpreter.IqlInterpreter.parse
+  callee: code2llm_output.map.toon.testtoon_to_iql
+  call_type: resolved
+- caller: testql.interpreter.interpreter.IqlInterpreter.execute
+  callee: SUMR.all
+  call_type: resolved
+- caller: testql.interpreter.converter.handlers.unknown.handle_unknown
+  callee: project.map.toon.parse_target_from_args
+  call_type: resolved
+- caller: testql.interpreter.converter.handlers.unknown.handle_unknown
+  callee: project.map.toon.parse_meta_from_args
+  call_type: resolved
+- caller: testql.interpreter.converter.handlers.include.handle_include
+  callee: project.map.toon.parse_target_from_args
+  call_type: resolved
+- caller: testql.interpreter.converter.handlers.api.handle_api
+  callee: project.map.toon.parse_api_args
+  call_type: resolved
+- caller: testql.interpreter.converter.handlers.api.handle_api
+  callee: project.map.toon.collect_assert
+  call_type: resolved
+- caller: testql.interpreter.converter.handlers.select.handle_select
+  callee: project.map.toon.parse_target_from_args
+  call_type: resolved
+- caller: testql.interpreter.converter.handlers.select.handle_select
+  callee: project.map.toon.parse_meta_from_args
   call_type: resolved
 - caller: testql.sumd_generator.generate_sumd
   callee: testql.sumd_generator._header_section
@@ -503,86 +1617,137 @@ edges:
 - caller: testql.sumd_generator.save_sumd
   callee: testql.sumd_generator.generate_sumd
   call_type: resolved
+- caller: testql.interpreter._api_runner.ApiRunnerMixin._cmd_capture
+  callee: code2llm_output.map.toon._navigate_json_path
+  call_type: resolved
+- caller: testql.interpreter._api_runner._navigate_json_path
+  callee: testql.interpreter._api_runner._navigate_step
+  call_type: resolved
+- caller: testql.interpreter._api_runner._navigate_json_path
+  callee: testql.interpreter._api_runner._resolve_length
+  call_type: resolved
+- caller: testql.interpreter.converter.handlers.flow.handle_flow
+  callee: project.map.toon.parse_target_from_args
+  call_type: resolved
+- caller: testql.interpreter.converter.handlers.flow.handle_flow
+  callee: project.map.toon.parse_meta_from_args
+  call_type: resolved
+- caller: testql.interpreter.converter.handlers.record.handle_record_start
+  callee: project.map.toon.parse_target_from_args
+  call_type: resolved
+- caller: testql.interpreter.converter.handlers.navigate.handle_navigate
+  callee: project.map.toon.parse_target_from_args
+  call_type: resolved
+- caller: testql.openapi_generator.OpenAPIGenerator._infer_tags
+  callee: code2llm_output.map.toon.list
+  call_type: resolved
+- caller: testql.openapi_generator.OpenAPIGenerator._infer_tags
+  callee: SUMR.set
+  call_type: resolved
+- caller: testql.openapi_generator.OpenAPIGenerator._extract_parameters
+  callee: testql.openapi_generator._extract_path_params
+  call_type: resolved
+- caller: testql.openapi_generator.OpenAPIGenerator._extract_parameters
+  callee: testql.openapi_generator._extract_ep_params
+  call_type: resolved
+- caller: testql.interpreter.converter.renderer.render_sections
+  callee: testql.interpreter.converter.renderer._render_section_header
+  call_type: resolved
+- caller: testql.generators.multi.MultiProjectTestGenerator.generate_cross_project_tests
+  callee: code2llm_output.map.toon.list
+  call_type: resolved
+- caller: testql.generators.generators.APIGeneratorMixin._deduplicate_rest_routes
+  callee: SUMR.set
+  call_type: resolved
+- caller: testql.detectors.unified.UnifiedEndpointDetector.detect_all
+  callee: TODO.testql-table-format-spec.print
+  call_type: resolved
+- caller: testql.detectors.unified.UnifiedEndpointDetector._deduplicate_endpoints
+  callee: SUMR.set
+  call_type: resolved
+- caller: testql.runner.parse_line
+  callee: TODO.testql-table-format-spec.print
+  call_type: resolved
 - caller: testql.runner.parse_script
   callee: testql.runner.parse_line
   call_type: resolved
+- caller: testql.runner.DslCliExecutor._dispatch
+  callee: TODO.testql-table-format-spec.print
+  call_type: resolved
+- caller: testql.runner.DslCliExecutor.cmd_log
+  callee: TODO.testql-table-format-spec.print
+  call_type: resolved
+- caller: testql.runner.DslCliExecutor.cmd_print
+  callee: TODO.testql-table-format-spec.print
+  call_type: resolved
 - caller: testql.runner.DslCliExecutor.run_script
-  callee: testql.runner.parse_script
+  callee: SUMR.parse_script
   call_type: resolved
-- caller: testql.commands.echo.generate_context
-  callee: testql.commands.echo.parse_toon_scenarios
+- caller: testql.runner.DslCliExecutor.run_script
+  callee: TODO.testql-table-format-spec.print
   call_type: resolved
-- caller: testql.commands.echo.generate_context
-  callee: testql.commands.echo.parse_doql_less
+- caller: testql.generators.base.BaseAnalyzer._should_exclude_path
+  callee: SUMR.set
   call_type: resolved
-- caller: testql.commands.echo.echo
-  callee: testql.commands.echo.generate_context
+- caller: testql._base_fallback.InterpreterOutput.emit
+  callee: TODO.testql-table-format-spec.print
   call_type: resolved
-- caller: testql.commands.echo.echo
-  callee: testql.commands.echo.format_text_output
+- caller: TODO.testtoon_parser.print_parsed
+  callee: TODO.testql-table-format-spec.print
   call_type: resolved
-- caller: testql.commands.endpoints_cmd.endpoints
-  callee: testql.commands.endpoints_cmd._format_endpoints
+- caller: TODO.testtoon_parser.print_parsed
+  callee: TODO.testtoon_parser.validate
   call_type: resolved
-- caller: testql.endpoint_detector.UnifiedEndpointDetector._deduplicate_endpoints
-  callee: testql._base_fallback.VariableStore.set
+- caller: testql.interpreter._testtoon_parser._parse_inline_array
+  callee: testql.interpreter._testtoon_parser._parse_value
   call_type: resolved
-- caller: testql.commands.misc_cmds.create
-  callee: testql.commands.misc_cmds._build_test_content
+- caller: testql.interpreter._testtoon_parser._parse_inline_dict
+  callee: testql.interpreter._testtoon_parser._parse_value
   call_type: resolved
-- caller: testql.commands.misc_cmds.report
-  callee: testql.report_generator.generate_report
+- caller: testql.interpreter._testtoon_parser._parse_value
+  callee: testql.interpreter._testtoon_parser._parse_inline_array
   call_type: resolved
-- caller: testql.commands.suite_cmd._collect_test_files
-  callee: testql._base_fallback.VariableStore.set
+- caller: testql.interpreter._testtoon_parser._parse_value
+  callee: testql.interpreter._testtoon_parser._parse_inline_dict
   call_type: resolved
-- caller: testql.commands.suite_cmd._collect_test_files
-  callee: testql.commands.suite_cmd._find_files
+- caller: testql.interpreter._testtoon_parser._make_data_row
+  callee: testql.interpreter._testtoon_parser._detect_separator
   call_type: resolved
-- caller: testql.commands.suite_cmd.list_tests
-  callee: testql._base_fallback.VariableStore.set
+- caller: testql.interpreter._testtoon_parser._make_data_row
+  callee: testql.interpreter._testtoon_parser._parse_value
   call_type: resolved
-- caller: testql.commands.suite_cmd.list_tests
-  callee: testql.commands.suite_cmd._parse_meta
+- caller: testql.interpreter._testtoon_parser.parse_testtoon
+  callee: testql.interpreter._testtoon_parser._make_section
   call_type: resolved
-- caller: testql.interpreter._api_runner.ApiRunnerMixin._cmd_capture
-  callee: testql.interpreter._api_runner._navigate_json_path
-  call_type: resolved
-- caller: testql.interpreter._flow.FlowMixin._cmd_include
-  callee: testql.interpreter._parser.parse_iql
+- caller: testql.interpreter._testtoon_parser._expand_api
+  callee: testql.interpreter._testtoon_parser._append_api_asserts
   call_type: resolved
 - caller: testql.interpreter._testtoon_parser.testtoon_to_iql
   callee: testql.interpreter._testtoon_parser.parse_testtoon
   call_type: resolved
-- caller: testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
-  callee: testql.interpreter._api_runner._navigate_json_path
+- caller: testql.commands.encoder_routes._normalize_iql_path
+  callee: testql.commands.encoder_routes._strip_path_segments
   call_type: resolved
-- caller: testql.interpreter._converter.convert_iql_to_testtoon
-  callee: testql.interpreter._converter._extract_scenario_name
+- caller: testql.commands.encoder_routes._normalize_iql_path
+  callee: testql.commands.encoder_routes._migrate_legacy_extension
   call_type: resolved
-- caller: testql.interpreter._converter.convert_iql_to_testtoon
-  callee: testql.interpreter._converter._detect_scenario_type
-  call_type: resolved
-- caller: testql.interpreter._converter.convert_file
-  callee: testql.interpreter._converter.convert_iql_to_testtoon
-  call_type: resolved
-- caller: testql.interpreter._converter.convert_directory
-  callee: testql.interpreter._converter.convert_file
-  call_type: resolved
-- caller: testql.interpreter.interpreter.IqlInterpreter.__init__
-  callee: testql._base_fallback.VariableStore.set
-  call_type: resolved
-- caller: testql.interpreter.interpreter.IqlInterpreter.parse
-  callee: testql.interpreter._parser.parse_iql
-  call_type: resolved
-- caller: testql.interpreter.interpreter.IqlInterpreter.parse
-  callee: testql.interpreter._testtoon_parser.testtoon_to_iql
-  call_type: resolved
-- caller: testql.interpreter.interpreter.IqlInterpreter.execute
-  callee: testql._base_fallback.VariableStore.all
+- caller: testql.commands.encoder_routes._normalize_iql_path
+  callee: testql.commands.encoder_routes._remap_tests_prefix
   call_type: resolved
 - caller: testql.commands.encoder_routes._resolve_iql_path
   callee: testql.commands.encoder_routes._normalize_iql_path
+  call_type: resolved
+- caller: testql.commands.encoder_routes._evaluate_assertion
+  callee: testql.commands.encoder_routes._assert_bool_prop
+  call_type: resolved
+- caller: testql.commands.encoder_routes._evaluate_assertion
+  callee: testql.commands.encoder_routes._assert_count_prop
+  call_type: resolved
+- caller: testql.commands.encoder_routes._evaluate_assertion
+  callee: testql.commands.encoder_routes._assert_text_prop
+  call_type: resolved
+- caller: testql.commands.encoder_routes._evaluate_assertion
+  callee: testql.commands.encoder_routes._assert_classes_prop
   call_type: resolved
 - caller: testql.commands.encoder_routes._exec_assert_cmd
   callee: testql.commands.encoder_routes._evaluate_assertion
@@ -594,7 +1759,7 @@ edges:
   callee: testql.commands.encoder_routes._exec_browser_cmd
   call_type: resolved
 - caller: testql.commands.encoder_routes.iql_list_files
-  callee: testql._base_fallback.VariableStore.set
+  callee: SUMR.set
   call_type: resolved
 - caller: testql.commands.encoder_routes.iql_read_file
   callee: testql.commands.encoder_routes._resolve_iql_path
@@ -602,36 +1767,129 @@ edges:
 - caller: testql.commands.encoder_routes.iql_list_tables
   callee: testql.commands.encoder_routes._resolve_iql_path
   call_type: resolved
+- caller: testql.commands.encoder_routes.iql_list_tables
+  callee: testql.commands.encoder_routes._extract_table_names
+  call_type: resolved
+- caller: testql.commands.encoder_routes._extract_table_names
+  callee: SUMR.set
+  call_type: resolved
 - caller: testql.commands.encoder_routes.iql_run_line
   callee: testql.commands.encoder_routes._execute_iql_line
   call_type: resolved
 - caller: testql.commands.encoder_routes.iql_run_file
   callee: testql.commands.encoder_routes._resolve_iql_path
   call_type: resolved
+- caller: testql.commands.encoder_routes.iql_run_file
+  callee: testql.commands.encoder_routes._build_run_summary
+  call_type: resolved
+- caller: testql.commands.encoder_routes.iql_run_file
+  callee: testql.commands.encoder_routes._write_run_log
+  call_type: resolved
+- caller: testql.commands.encoder_routes._run_iql_lines
+  callee: testql.commands.encoder_routes._update_counters
+  call_type: resolved
+- caller: testql.commands.encoder_routes._run_iql_lines
+  callee: testql.commands.encoder_routes._format_log_detail
+  call_type: resolved
 modules:
+  SUMR:
+  - SUMR.all
+  - SUMR.generate_sumd
+  - SUMR.parse_script
+  - SUMR.set
+  TODO.testql-table-format-spec:
+  - TODO.testql-table-format-spec.print
   TODO.testtoon_parser:
   - TODO.testtoon_parser.print_parsed
   - TODO.testtoon_parser.validate
+  code2llm_output.map.toon:
+  - code2llm_output.map.toon._navigate_json_path
+  - code2llm_output.map.toon.format_text_output
+  - code2llm_output.map.toon.generate_context
+  - code2llm_output.map.toon.generate_report
+  - code2llm_output.map.toon.list
+  - code2llm_output.map.toon.parse_doql_file
+  - code2llm_output.map.toon.parse_doql_less
+  - code2llm_output.map.toon.parse_iql
+  - code2llm_output.map.toon.parse_toon_file
+  - code2llm_output.map.toon.parse_toon_scenarios
+  - code2llm_output.map.toon.testtoon_to_iql
+  project.map.toon:
+  - project.map.toon.build_config_section
+  - project.map.toon.build_header
+  - project.map.toon.collect_assert
+  - project.map.toon.collect_list_files
+  - project.map.toon.collect_toon_data
+  - project.map.toon.detect_scenario_type
+  - project.map.toon.dispatch
+  - project.map.toon.extract_scenario_name
+  - project.map.toon.filter_tests
+  - project.map.toon.handle_unknown
+  - project.map.toon.parse_api_args
+  - project.map.toon.parse_commands
+  - project.map.toon.parse_meta_from_args
+  - project.map.toon.parse_target_from_args
+  - project.map.toon.render_echo
+  - project.map.toon.render_sections
+  - project.map.toon.render_test_list
   testql._base_fallback:
-  - testql._base_fallback.VariableStore.all
-  - testql._base_fallback.VariableStore.set
+  - testql._base_fallback.InterpreterOutput.emit
   testql.cli:
   - testql.cli.cli
   - testql.cli.main
-  testql.commands.echo:
-  - testql.commands.echo.echo
-  - testql.commands.echo.format_text_output
-  - testql.commands.echo.generate_context
-  - testql.commands.echo.parse_doql_less
-  - testql.commands.echo.parse_toon_scenarios
+  testql.commands.echo.cli:
+  - testql.commands.echo.cli.echo
+  testql.commands.echo.context:
+  - testql.commands.echo.context._find_doql_file
+  - testql.commands.echo.context._find_toon_path
+  - testql.commands.echo.context.generate_context
+  testql.commands.echo.formatters.text:
+  - testql.commands.echo.formatters.text._build_header
+  - testql.commands.echo.formatters.text._fmt_contracts
+  - testql.commands.echo.formatters.text._fmt_entities
+  - testql.commands.echo.formatters.text._fmt_interfaces
+  - testql.commands.echo.formatters.text._fmt_suggestions
+  - testql.commands.echo.formatters.text._fmt_workflows
+  - testql.commands.echo.formatters.text.format_text_output
+  testql.commands.echo.parsers.doql:
+  - testql.commands.echo.parsers.doql._parse_app_block
+  - testql.commands.echo.parsers.doql._parse_deploy
+  - testql.commands.echo.parsers.doql._parse_entities
+  - testql.commands.echo.parsers.doql._parse_environment
+  - testql.commands.echo.parsers.doql._parse_integrations
+  - testql.commands.echo.parsers.doql._parse_interfaces
+  - testql.commands.echo.parsers.doql._parse_kv_block
+  - testql.commands.echo.parsers.doql._parse_workflows
+  - testql.commands.echo.parsers.doql.parse_doql_less
+  testql.commands.echo.parsers.toon:
+  - testql.commands.echo.parsers.toon._parse_scenario
+  - testql.commands.echo.parsers.toon.parse_toon_scenarios
+  testql.commands.echo_helpers:
+  - testql.commands.echo_helpers._collect_toon_directory
+  - testql.commands.echo_helpers.collect_doql_data
+  - testql.commands.echo_helpers.collect_toon_data
+  - testql.commands.echo_helpers.render_echo
   testql.commands.encoder_routes:
+  - testql.commands.encoder_routes._assert_bool_prop
+  - testql.commands.encoder_routes._assert_classes_prop
+  - testql.commands.encoder_routes._assert_count_prop
+  - testql.commands.encoder_routes._assert_text_prop
+  - testql.commands.encoder_routes._build_run_summary
   - testql.commands.encoder_routes._evaluate_assertion
   - testql.commands.encoder_routes._exec_assert_cmd
   - testql.commands.encoder_routes._exec_browser_cmd
   - testql.commands.encoder_routes._exec_encoder_cmd
   - testql.commands.encoder_routes._execute_iql_line
+  - testql.commands.encoder_routes._extract_table_names
+  - testql.commands.encoder_routes._format_log_detail
+  - testql.commands.encoder_routes._migrate_legacy_extension
   - testql.commands.encoder_routes._normalize_iql_path
+  - testql.commands.encoder_routes._remap_tests_prefix
   - testql.commands.encoder_routes._resolve_iql_path
+  - testql.commands.encoder_routes._run_iql_lines
+  - testql.commands.encoder_routes._strip_path_segments
+  - testql.commands.encoder_routes._update_counters
+  - testql.commands.encoder_routes._write_run_log
   - testql.commands.encoder_routes.iql_list_files
   - testql.commands.encoder_routes.iql_list_tables
   - testql.commands.encoder_routes.iql_read_file
@@ -639,47 +1897,114 @@ modules:
   - testql.commands.encoder_routes.iql_run_line
   testql.commands.endpoints_cmd:
   - testql.commands.endpoints_cmd._format_endpoints
+  - testql.commands.endpoints_cmd._format_endpoints_csv
+  - testql.commands.endpoints_cmd._format_endpoints_json
+  - testql.commands.endpoints_cmd._format_endpoints_table
   - testql.commands.endpoints_cmd.endpoints
+  testql.commands.generate_cmd:
+  - testql.commands.generate_cmd._count_routes_by
+  - testql.commands.generate_cmd._is_workspace
+  - testql.commands.generate_cmd._print_routes_section
+  - testql.commands.generate_cmd.generate
   testql.commands.misc_cmds:
-  - testql.commands.misc_cmds._build_test_content
-  - testql.commands.misc_cmds.create
+  - testql.commands.misc_cmds._create_templates
+  - testql.commands.misc_cmds.echo
+  - testql.commands.misc_cmds.init
   - testql.commands.misc_cmds.report
-  testql.commands.suite_cmd:
-  - testql.commands.suite_cmd._collect_test_files
-  - testql.commands.suite_cmd._find_files
-  - testql.commands.suite_cmd._parse_meta
-  - testql.commands.suite_cmd.list_tests
-  testql.endpoint_detector:
-  - testql.endpoint_detector.UnifiedEndpointDetector._deduplicate_endpoints
-  testql.generator:
-  - testql.generator.TestGenerator._scan_directory_structure
+  testql.commands.suite.cli:
+  - testql.commands.suite.cli.list_tests
+  testql.commands.suite.collection:
+  - testql.commands.suite.collection._collect_by_pattern
+  - testql.commands.suite.collection._collect_from_suite
+  - testql.commands.suite.collection._collect_recursive
+  - testql.commands.suite.collection._deduplicate_files
+  - testql.commands.suite.collection._find_files
+  - testql.commands.suite.collection._resolve_search_dir_and_pattern
+  - testql.commands.suite.collection.collect_list_files
+  - testql.commands.suite.collection.collect_test_files
+  testql.commands.suite.execution:
+  - testql.commands.suite.execution.run_single_file
+  - testql.commands.suite.execution.run_suite_files
+  testql.commands.suite.listing:
+  - testql.commands.suite.listing._collect_meta_lines
+  - testql.commands.suite.listing._parse_testtoon_header
+  - testql.commands.suite.listing._parse_yaml_meta_block
+  - testql.commands.suite.listing.filter_tests
+  - testql.commands.suite.listing.parse_meta
+  - testql.commands.suite.listing.render_test_list
+  testql.commands.suite.reports:
+  - testql.commands.suite.reports._build_junit_xml
+  - testql.commands.suite.reports._save_json_report
+  - testql.commands.suite.reports.save_report
+  testql.detectors.unified:
+  - testql.detectors.unified.UnifiedEndpointDetector._deduplicate_endpoints
+  - testql.detectors.unified.UnifiedEndpointDetector.detect_all
+  testql.generators.base:
+  - testql.generators.base.BaseAnalyzer._should_exclude_path
+  testql.generators.generators:
+  - testql.generators.generators.APIGeneratorMixin._deduplicate_rest_routes
+  testql.generators.multi:
+  - testql.generators.multi.MultiProjectTestGenerator.generate_cross_project_tests
   testql.interpreter._api_runner:
   - testql.interpreter._api_runner.ApiRunnerMixin._cmd_capture
   - testql.interpreter._api_runner._navigate_json_path
+  - testql.interpreter._api_runner._navigate_step
+  - testql.interpreter._api_runner._resolve_length
   testql.interpreter._assertions:
   - testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
-  testql.interpreter._converter:
-  - testql.interpreter._converter._detect_scenario_type
-  - testql.interpreter._converter._extract_scenario_name
-  - testql.interpreter._converter.convert_directory
-  - testql.interpreter._converter.convert_file
-  - testql.interpreter._converter.convert_iql_to_testtoon
   testql.interpreter._flow:
   - testql.interpreter._flow.FlowMixin._cmd_include
-  testql.interpreter._parser:
-  - testql.interpreter._parser.parse_iql
   testql.interpreter._testtoon_parser:
+  - testql.interpreter._testtoon_parser._append_api_asserts
+  - testql.interpreter._testtoon_parser._detect_separator
+  - testql.interpreter._testtoon_parser._expand_api
+  - testql.interpreter._testtoon_parser._make_data_row
+  - testql.interpreter._testtoon_parser._make_section
+  - testql.interpreter._testtoon_parser._parse_inline_array
+  - testql.interpreter._testtoon_parser._parse_inline_dict
+  - testql.interpreter._testtoon_parser._parse_value
   - testql.interpreter._testtoon_parser.parse_testtoon
   - testql.interpreter._testtoon_parser.testtoon_to_iql
+  testql.interpreter.converter.core:
+  - testql.interpreter.converter.core.convert_directory
+  - testql.interpreter.converter.core.convert_file
+  - testql.interpreter.converter.core.convert_iql_to_testtoon
+  testql.interpreter.converter.dispatcher:
+  - testql.interpreter.converter.dispatcher.dispatch
+  testql.interpreter.converter.handlers.api:
+  - testql.interpreter.converter.handlers.api.handle_api
+  testql.interpreter.converter.handlers.encoder:
+  - testql.interpreter.converter.handlers.encoder._advance_past_wait
+  - testql.interpreter.converter.handlers.encoder._encoder_action_fields
+  - testql.interpreter.converter.handlers.encoder.handle_encoder
+  testql.interpreter.converter.handlers.flow:
+  - testql.interpreter.converter.handlers.flow.handle_flow
+  testql.interpreter.converter.handlers.include:
+  - testql.interpreter.converter.handlers.include.handle_include
+  testql.interpreter.converter.handlers.navigate:
+  - testql.interpreter.converter.handlers.navigate.handle_navigate
+  testql.interpreter.converter.handlers.record:
+  - testql.interpreter.converter.handlers.record.handle_record_start
+  testql.interpreter.converter.handlers.select:
+  - testql.interpreter.converter.handlers.select.handle_select
+  testql.interpreter.converter.handlers.unknown:
+  - testql.interpreter.converter.handlers.unknown.handle_unknown
+  testql.interpreter.converter.renderer:
+  - testql.interpreter.converter.renderer._render_section_header
+  - testql.interpreter.converter.renderer.render_sections
   testql.interpreter.interpreter:
   - testql.interpreter.interpreter.IqlInterpreter.__init__
   - testql.interpreter.interpreter.IqlInterpreter.execute
   - testql.interpreter.interpreter.IqlInterpreter.parse
   testql.openapi_generator:
+  - testql.openapi_generator.OpenAPIGenerator._extract_parameters
   - testql.openapi_generator.OpenAPIGenerator._infer_tags
-  testql.report_generator:
-  - testql.report_generator.generate_report
+  - testql.openapi_generator._extract_ep_params
+  - testql.openapi_generator._extract_path_params
   testql.runner:
+  - testql.runner.DslCliExecutor._dispatch
+  - testql.runner.DslCliExecutor.cmd_log
+  - testql.runner.DslCliExecutor.cmd_print
   - testql.runner.DslCliExecutor.run_script
   - testql.runner.parse_line
   - testql.runner.parse_script
@@ -695,11 +2020,537 @@ modules:
   - testql.sumd_generator._workflows_table_section
   - testql.sumd_generator.generate_sumd
   - testql.sumd_generator.save_sumd
+  testql.sumd_parser:
+  - testql.sumd_parser.SumdParser._parse_interfaces
+  - testql.sumd_parser._parse_api_interfaces
+  - testql.sumd_parser._parse_block_interfaces
 entry_points:
+- SUMD.__init__
+- SUMD._adapt_test_entry
+- SUMD._api_contract_section
+- SUMD._architecture_section
+- SUMD._build_header
+- SUMD._build_junit_xml
+- SUMD._build_operation
+- SUMD._build_request_body
+- SUMD._build_responses
+- SUMD._collect_by_pattern
+- SUMD._collect_from_suite
+- SUMD._collect_recursive
+- SUMD._collect_test_files
+- SUMD._configuration_section
+- SUMD._deduplicate_files
+- SUMD._detect_separator
+- SUMD._dispatch
+- SUMD._doql_declaration_section
+- SUMD._evaluate_assertion
+- SUMD._exec_assert_cmd
+- SUMD._exec_browser_cmd
+- SUMD._exec_encoder_cmd
+- SUMD._execute_iql_line
+- SUMD._expand_api
+- SUMD._expand_assert
+- SUMD._expand_config
+- SUMD._expand_encoder
+- SUMD._expand_flow
+- SUMD._expand_generic
+- SUMD._expand_include
+- SUMD._expand_navigate
+- SUMD._expand_oql
+- SUMD._expand_record
+- SUMD._expand_select
+- SUMD._expand_steps
+- SUMD._expand_wait
+- SUMD._extract_assert
+- SUMD._extract_endpoint
+- SUMD._extract_parameters
+- SUMD._extract_section
+- SUMD._find_doql_file
+- SUMD._find_files
+- SUMD._find_toon_path
+- SUMD._fmt_contracts
+- SUMD._fmt_entities
+- SUMD._fmt_interfaces
+- SUMD._fmt_suggestions
+- SUMD._fmt_workflows
+- SUMD._format_cmd
+- SUMD._format_endpoints
+- SUMD._format_endpoints_csv
+- SUMD._format_endpoints_json
+- SUMD._format_endpoints_table
+- SUMD._format_log_detail
+- SUMD._get_expected_status
+- SUMD._header_section
+- SUMD._infer_tags
+- SUMD._is_workspace
+- SUMD._llm_suggestions_section
+- SUMD._load_spec
+- SUMD._make_ep
+- SUMD._make_report
+- SUMD._metadata_section
+- SUMD._navigate_json_path
+- SUMD._normalize_iql_path
+- SUMD._normalize_path
+- SUMD._parse_app_block
+- SUMD._parse_architecture
+- SUMD._parse_deploy
+- SUMD._parse_entities
+- SUMD._parse_environment
+- SUMD._parse_integrations
+- SUMD._parse_interfaces
+- SUMD._parse_kv_block
+- SUMD._parse_metadata
+- SUMD._parse_scenario
+- SUMD._parse_testql_scenarios
+- SUMD._parse_testtoon_header
+- SUMD._parse_value
+- SUMD._parse_workflows
+- SUMD._parse_yaml_meta_block
+- SUMD._print_routes_section
+- SUMD._print_scenarios_section
+- SUMD._resolve_iql_path
+- SUMD._save_json_report
+- SUMD._workflow_snippet
+- SUMD._workflows_table_section
+- SUMD._write
+- SUMD.all
+- SUMD.analyze
+- SUMD.build_config_section
+- SUMD.build_header
+- SUMD.build_report_data
+- SUMD.clear
+- SUMD.cli
+- SUMD.cmd_api
+- SUMD.cmd_assert_json
+- SUMD.cmd_assert_status
+- SUMD.cmd_env
+- SUMD.cmd_log
+- SUMD.cmd_print
+- SUMD.cmd_set_base_url
+- SUMD.cmd_set_header
+- SUMD.cmd_store
+- SUMD.cmd_wait
+- SUMD.collect_assert
+- SUMD.collect_doql_data
+- SUMD.collect_list_files
+- SUMD.collect_test_files
+- SUMD.collect_toon_data
+- SUMD.connect
+- SUMD.connected
+- SUMD.convert_directory
+- SUMD.convert_file
+- SUMD.convert_iql_to_testtoon
+- SUMD.create
+- SUMD.detect_endpoints
+- SUMD.detect_scenario_type
+- SUMD.detect_separator
+- SUMD.disconnect
+- SUMD.dispatch
+- SUMD.echo
+- SUMD.emit
+- SUMD.endpoints
+- SUMD.error
+- SUMD.execute
+- SUMD.extract_scenario_name
+- SUMD.fail
+- SUMD.failed
+- SUMD.filter_tests
+- SUMD.format_text_output
+- SUMD.from_sumd
+- SUMD.generate
+- SUMD.generate_context
+- SUMD.generate_contract_tests
+- SUMD.generate_contract_tests_from_spec
+- SUMD.generate_for_project
+- SUMD.generate_for_workspace
+- SUMD.generate_openapi_spec
+- SUMD.generate_report
+- SUMD.generate_sumd
+- SUMD.generate_testql_scenarios
+- SUMD.get
+- SUMD.handle_api
+- SUMD.handle_encoder
+- SUMD.handle_flow
+- SUMD.handle_include
+- SUMD.handle_navigate
+- SUMD.handle_record_start
+- SUMD.handle_record_stop
+- SUMD.handle_select
+- SUMD.handle_unknown
+- SUMD.handle_wait
+- SUMD.has
+- SUMD.info
+- SUMD.init
+- SUMD.interpolate
+- SUMD.iql_list_files
+- SUMD.iql_list_logs
+- SUMD.iql_list_tables
+- SUMD.iql_read_file
+- SUMD.iql_read_log
+- SUMD.iql_run_file
+- SUMD.iql_run_line
+- SUMD.list_tests
+- SUMD.main
+- SUMD.make_result
+- SUMD.make_step
+- SUMD.ok
+- SUMD.openapi
+- SUMD.parse
+- SUMD.parse_api_args
+- SUMD.parse_commands
+- SUMD.parse_doql_file
+- SUMD.parse_doql_less
+- SUMD.parse_file
+- SUMD.parse_iql
+- SUMD.parse_line
+- SUMD.parse_meta
+- SUMD.parse_meta_from_args
+- SUMD.parse_script
+- SUMD.parse_sumd_file
+- SUMD.parse_target_from_args
+- SUMD.parse_testtoon
+- SUMD.parse_toon_file
+- SUMD.parse_toon_scenarios
+- SUMD.parse_value
+- SUMD.passed
+- SUMD.print_parsed
+- SUMD.print_summary
+- SUMD.render_echo
+- SUMD.render_sections
+- SUMD.render_test_list
+- SUMD.report
+- SUMD.report_console
+- SUMD.report_json
+- SUMD.report_junit
+- SUMD.run
+- SUMD.run_file
+- SUMD.run_script
+- SUMD.run_single_file
+- SUMD.run_suite_files
+- SUMD.save
+- SUMD.save_report
+- SUMD.save_sumd
+- SUMD.send_event
+- SUMD.set
+- SUMD.step
+- SUMD.strip_comments
+- SUMD.suite
+- SUMD.summary
+- SUMD.test_normalize_legacy_test_path
+- SUMD.test_normalize_legacy_view_path
+- SUMD.test_normalize_passthrough_diagnostics_path
+- SUMD.test_normalize_testql_prefixed_path
+- SUMD.test_normalize_testtoon_path
+- SUMD.test_resolve_new_format
+- SUMD.testtoon_to_iql
+- SUMD.to_dict
+- SUMD.to_json
+- SUMD.to_yaml
+- SUMD.validate
+- SUMD.validate_response
+- SUMD.validate_testtoon
+- SUMD.warn
+- SUMD.watch
+- SUMD.write_toon
+- SUMR.__init__
+- SUMR._api_contract_section
+- SUMR._architecture_section
+- SUMR._build_operation
+- SUMR._build_request_body
+- SUMR._build_responses
+- SUMR._configuration_section
+- SUMR._dispatch
+- SUMR._doql_declaration_section
+- SUMR._extract_parameters
+- SUMR._extract_section
+- SUMR._format_cmd
+- SUMR._get_expected_status
+- SUMR._header_section
+- SUMR._infer_tags
+- SUMR._llm_suggestions_section
+- SUMR._load_spec
+- SUMR._metadata_section
+- SUMR._normalize_path
+- SUMR._parse_architecture
+- SUMR._parse_interfaces
+- SUMR._parse_metadata
+- SUMR._parse_testql_scenarios
+- SUMR._parse_workflows
+- SUMR._workflow_snippet
+- SUMR._workflows_table_section
+- SUMR.clear
+- SUMR.cmd_api
+- SUMR.cmd_assert_json
+- SUMR.cmd_assert_status
+- SUMR.cmd_env
+- SUMR.cmd_log
+- SUMR.cmd_print
+- SUMR.cmd_set_base_url
+- SUMR.cmd_set_header
+- SUMR.cmd_store
+- SUMR.cmd_wait
+- SUMR.connected
+- SUMR.disconnect
+- SUMR.emit
+- SUMR.error
+- SUMR.execute
+- SUMR.fail
+- SUMR.failed
+- SUMR.generate
+- SUMR.generate_contract_tests
+- SUMR.generate_contract_tests_from_spec
+- SUMR.generate_openapi_spec
+- SUMR.generate_testql_scenarios
+- SUMR.get
+- SUMR.has
+- SUMR.info
+- SUMR.interpolate
+- SUMR.main
+- SUMR.ok
+- SUMR.parse
+- SUMR.parse_file
+- SUMR.parse_line
+- SUMR.parse_sumd_file
+- SUMR.passed
+- SUMR.run
+- SUMR.run_file
+- SUMR.run_script
+- SUMR.save
+- SUMR.save_sumd
+- SUMR.send_event
+- SUMR.step
+- SUMR.strip_comments
+- SUMR.summary
+- SUMR.to_dict
+- SUMR.to_json
+- SUMR.to_yaml
+- SUMR.validate_response
+- SUMR.warn
+- TODO.testql-table-format-spec.parse_testtoon
+- TODO.testql-table-format-spec.validate
 - TODO.testtoon_parser.Section.to_dicts
 - TODO.testtoon_parser.Section.validate
 - TODO.testtoon_parser.parse_testtoon
 - TODO.testtoon_parser.print_parsed
+- code2llm_output.map.toon._adapt_test_entry
+- code2llm_output.map.toon._detect_scenario_type
+- code2llm_output.map.toon._detect_separator
+- code2llm_output.map.toon._evaluate_assertion
+- code2llm_output.map.toon._exec_assert_cmd
+- code2llm_output.map.toon._exec_browser_cmd
+- code2llm_output.map.toon._exec_encoder_cmd
+- code2llm_output.map.toon._execute_iql_line
+- code2llm_output.map.toon._expand_api
+- code2llm_output.map.toon._expand_assert
+- code2llm_output.map.toon._expand_config
+- code2llm_output.map.toon._expand_encoder
+- code2llm_output.map.toon._expand_flow
+- code2llm_output.map.toon._expand_generic
+- code2llm_output.map.toon._expand_include
+- code2llm_output.map.toon._expand_navigate
+- code2llm_output.map.toon._expand_oql
+- code2llm_output.map.toon._expand_record
+- code2llm_output.map.toon._expand_select
+- code2llm_output.map.toon._expand_steps
+- code2llm_output.map.toon._expand_wait
+- code2llm_output.map.toon._extract_scenario_name
+- code2llm_output.map.toon._format_log_detail
+- code2llm_output.map.toon._normalize_iql_path
+- code2llm_output.map.toon._parse_api_args
+- code2llm_output.map.toon._parse_meta_from_args
+- code2llm_output.map.toon._parse_target_from_args
+- code2llm_output.map.toon._parse_value
+- code2llm_output.map.toon._resolve_iql_path
+- code2llm_output.map.toon.analyze
+- code2llm_output.map.toon.cli
+- code2llm_output.map.toon.convert_directory
+- code2llm_output.map.toon.convert_file
+- code2llm_output.map.toon.convert_iql_to_testtoon
+- code2llm_output.map.toon.create
+- code2llm_output.map.toon.detect_endpoints
+- code2llm_output.map.toon.detect_separator
+- code2llm_output.map.toon.echo
+- code2llm_output.map.toon.endpoints
+- code2llm_output.map.toon.from_sumd
+- code2llm_output.map.toon.generate
+- code2llm_output.map.toon.generate_contract_tests_from_spec
+- code2llm_output.map.toon.generate_for_project
+- code2llm_output.map.toon.generate_for_workspace
+- code2llm_output.map.toon.generate_openapi_spec
+- code2llm_output.map.toon.generate_sumd
+- code2llm_output.map.toon.init
+- code2llm_output.map.toon.iql_list_files
+- code2llm_output.map.toon.iql_list_logs
+- code2llm_output.map.toon.iql_list_tables
+- code2llm_output.map.toon.iql_read_file
+- code2llm_output.map.toon.iql_read_log
+- code2llm_output.map.toon.iql_run_file
+- code2llm_output.map.toon.iql_run_line
+- code2llm_output.map.toon.main
+- code2llm_output.map.toon.openapi
+- code2llm_output.map.toon.parse_line
+- code2llm_output.map.toon.parse_script
+- code2llm_output.map.toon.parse_sumd_file
+- code2llm_output.map.toon.parse_testtoon
+- code2llm_output.map.toon.parse_value
+- code2llm_output.map.toon.print_parsed
+- code2llm_output.map.toon.report
+- code2llm_output.map.toon.report_console
+- code2llm_output.map.toon.report_json
+- code2llm_output.map.toon.report_junit
+- code2llm_output.map.toon.run
+- code2llm_output.map.toon.save_sumd
+- code2llm_output.map.toon.suite
+- code2llm_output.map.toon.validate
+- code2llm_output.map.toon.validate_testtoon
+- code2llm_output.map.toon.watch
+- docs.README.generate_readme
+- project.map.toon._adapt_test_entry
+- project.map.toon._api_contract_section
+- project.map.toon._architecture_section
+- project.map.toon._build_header
+- project.map.toon._build_junit_xml
+- project.map.toon._collect_by_pattern
+- project.map.toon._collect_from_suite
+- project.map.toon._collect_recursive
+- project.map.toon._collect_test_files
+- project.map.toon._configuration_section
+- project.map.toon._deduplicate_files
+- project.map.toon._detect_separator
+- project.map.toon._doql_declaration_section
+- project.map.toon._evaluate_assertion
+- project.map.toon._exec_assert_cmd
+- project.map.toon._exec_browser_cmd
+- project.map.toon._exec_encoder_cmd
+- project.map.toon._execute_iql_line
+- project.map.toon._expand_api
+- project.map.toon._expand_assert
+- project.map.toon._expand_config
+- project.map.toon._expand_encoder
+- project.map.toon._expand_flow
+- project.map.toon._expand_generic
+- project.map.toon._expand_include
+- project.map.toon._expand_navigate
+- project.map.toon._expand_oql
+- project.map.toon._expand_record
+- project.map.toon._expand_select
+- project.map.toon._expand_steps
+- project.map.toon._expand_wait
+- project.map.toon._extract_assert
+- project.map.toon._extract_endpoint
+- project.map.toon._find_doql_file
+- project.map.toon._find_files
+- project.map.toon._find_toon_path
+- project.map.toon._fmt_contracts
+- project.map.toon._fmt_entities
+- project.map.toon._fmt_interfaces
+- project.map.toon._fmt_suggestions
+- project.map.toon._fmt_workflows
+- project.map.toon._format_endpoints
+- project.map.toon._format_endpoints_csv
+- project.map.toon._format_endpoints_json
+- project.map.toon._format_endpoints_table
+- project.map.toon._format_log_detail
+- project.map.toon._header_section
+- project.map.toon._is_workspace
+- project.map.toon._llm_suggestions_section
+- project.map.toon._make_ep
+- project.map.toon._make_report
+- project.map.toon._metadata_section
+- project.map.toon._navigate_json_path
+- project.map.toon._normalize_iql_path
+- project.map.toon._parse_app_block
+- project.map.toon._parse_deploy
+- project.map.toon._parse_entities
+- project.map.toon._parse_environment
+- project.map.toon._parse_integrations
+- project.map.toon._parse_interfaces
+- project.map.toon._parse_kv_block
+- project.map.toon._parse_scenario
+- project.map.toon._parse_testtoon_header
+- project.map.toon._parse_value
+- project.map.toon._parse_workflows
+- project.map.toon._parse_yaml_meta_block
+- project.map.toon._print_routes_section
+- project.map.toon._print_scenarios_section
+- project.map.toon._resolve_iql_path
+- project.map.toon._save_json_report
+- project.map.toon._workflow_snippet
+- project.map.toon._workflows_table_section
+- project.map.toon._write
+- project.map.toon.analyze
+- project.map.toon.cli
+- project.map.toon.convert_directory
+- project.map.toon.convert_file
+- project.map.toon.convert_iql_to_testtoon
+- project.map.toon.create
+- project.map.toon.detect_endpoints
+- project.map.toon.detect_separator
+- project.map.toon.echo
+- project.map.toon.endpoints
+- project.map.toon.format_text_output
+- project.map.toon.from_sumd
+- project.map.toon.generate
+- project.map.toon.generate_context
+- project.map.toon.generate_contract_tests_from_spec
+- project.map.toon.generate_for_project
+- project.map.toon.generate_for_workspace
+- project.map.toon.generate_openapi_spec
+- project.map.toon.generate_report
+- project.map.toon.generate_sumd
+- project.map.toon.handle_api
+- project.map.toon.handle_encoder
+- project.map.toon.handle_flow
+- project.map.toon.handle_include
+- project.map.toon.handle_navigate
+- project.map.toon.handle_record_start
+- project.map.toon.handle_record_stop
+- project.map.toon.handle_select
+- project.map.toon.handle_wait
+- project.map.toon.init
+- project.map.toon.iql_list_files
+- project.map.toon.iql_list_logs
+- project.map.toon.iql_list_tables
+- project.map.toon.iql_read_file
+- project.map.toon.iql_read_log
+- project.map.toon.iql_run_file
+- project.map.toon.iql_run_line
+- project.map.toon.list_tests
+- project.map.toon.main
+- project.map.toon.make_result
+- project.map.toon.make_step
+- project.map.toon.openapi
+- project.map.toon.parse_doql_file
+- project.map.toon.parse_doql_less
+- project.map.toon.parse_iql
+- project.map.toon.parse_line
+- project.map.toon.parse_meta
+- project.map.toon.parse_script
+- project.map.toon.parse_sumd_file
+- project.map.toon.parse_testtoon
+- project.map.toon.parse_toon_file
+- project.map.toon.parse_toon_scenarios
+- project.map.toon.parse_value
+- project.map.toon.print_parsed
+- project.map.toon.report
+- project.map.toon.report_console
+- project.map.toon.report_json
+- project.map.toon.report_junit
+- project.map.toon.run
+- project.map.toon.run_single_file
+- project.map.toon.save_sumd
+- project.map.toon.suite
+- project.map.toon.test_normalize_legacy_test_path
+- project.map.toon.test_normalize_legacy_view_path
+- project.map.toon.test_normalize_passthrough_diagnostics_path
+- project.map.toon.test_normalize_testql_prefixed_path
+- project.map.toon.test_normalize_testtoon_path
+- project.map.toon.test_resolve_new_format
+- project.map.toon.testtoon_to_iql
+- project.map.toon.validate
+- project.map.toon.validate_testtoon
+- project.map.toon.watch
+- project.map.toon.write_toon
 - testql._base_fallback.BaseInterpreter.__init__
 - testql._base_fallback.BaseInterpreter.execute
 - testql._base_fallback.BaseInterpreter.parse
@@ -707,6 +2558,7 @@ entry_points:
 - testql._base_fallback.BaseInterpreter.run_file
 - testql._base_fallback.BaseInterpreter.strip_comments
 - testql._base_fallback.EventBridge.__init__
+- testql._base_fallback.EventBridge.connect
 - testql._base_fallback.EventBridge.disconnect
 - testql._base_fallback.EventBridge.send_event
 - testql._base_fallback.InterpreterOutput.__init__
@@ -719,12 +2571,21 @@ entry_points:
 - testql._base_fallback.InterpreterOutput.warn
 - testql._base_fallback.ScriptResult.summary
 - testql._base_fallback.VariableStore.__init__
+- testql._base_fallback.VariableStore.all
 - testql._base_fallback.VariableStore.clear
 - testql._base_fallback.VariableStore.get
 - testql._base_fallback.VariableStore.has
 - testql._base_fallback.VariableStore.interpolate
+- testql._base_fallback.VariableStore.set
 - testql.cli.main
-- testql.commands.echo.echo
+- testql.commands.echo.cli.echo
+- testql.commands.echo.context.generate_context
+- testql.commands.echo.formatters.text.format_text_output
+- testql.commands.echo.parsers.doql.parse_doql_less
+- testql.commands.echo.parsers.toon.parse_toon_scenarios
+- testql.commands.echo_helpers.collect_doql_data
+- testql.commands.echo_helpers.collect_toon_data
+- testql.commands.echo_helpers.render_echo
 - testql.commands.encoder_routes.iql_list_files
 - testql.commands.encoder_routes.iql_list_logs
 - testql.commands.encoder_routes.iql_list_tables
@@ -743,8 +2604,78 @@ entry_points:
 - testql.commands.misc_cmds.report
 - testql.commands.misc_cmds.watch
 - testql.commands.run_cmd.run
-- testql.commands.suite_cmd.list_tests
-- testql.commands.suite_cmd.suite
+- testql.commands.suite.cli.list_tests
+- testql.commands.suite.cli.suite
+- testql.commands.suite.collection.collect_list_files
+- testql.commands.suite.collection.collect_test_files
+- testql.commands.suite.execution.run_suite_files
+- testql.commands.suite.listing.filter_tests
+- testql.commands.suite.listing.render_test_list
+- testql.commands.suite.reports.build_report_data
+- testql.commands.suite.reports.print_summary
+- testql.commands.suite.reports.save_report
+- testql.commands.templates.content.TestContentBuilder._build_api
+- testql.commands.templates.content.TestContentBuilder._build_encoder
+- testql.commands.templates.content.TestContentBuilder._build_gui
+- testql.commands.templates.content.TestContentBuilder._build_meta_header
+- testql.commands.templates.content.TestContentBuilder._build_mixed
+- testql.commands.templates.content.TestContentBuilder._build_performance
+- testql.commands.templates.content.TestContentBuilder._build_standard_vars
+- testql.commands.templates.content.TestContentBuilder._build_workflow
+- testql.commands.templates.content.TestContentBuilder.build
+- testql.detectors.base.BaseEndpointDetector.__init__
+- testql.detectors.base.BaseEndpointDetector._find_files
+- testql.detectors.base.BaseEndpointDetector.detect
+- testql.detectors.config_detector.ConfigEndpointDetector._analyze_docker_compose
+- testql.detectors.config_detector.ConfigEndpointDetector._infer_protocol
+- testql.detectors.config_detector.ConfigEndpointDetector._parse_port_mapping
+- testql.detectors.config_detector.ConfigEndpointDetector.detect
+- testql.detectors.django_detector.DjangoDetector._analyze_urls_py
+- testql.detectors.django_detector.DjangoDetector.detect
+- testql.detectors.express_detector.ExpressDetector._analyze_express_file
+- testql.detectors.express_detector.ExpressDetector._extract_method_path
+- testql.detectors.express_detector.ExpressDetector.detect
+- testql.detectors.fastapi_detector.FastAPIDetector._analyze_file
+- testql.detectors.fastapi_detector.FastAPIDetector._analyze_route_handler
+- testql.detectors.fastapi_detector.FastAPIDetector._detect_app_assignment
+- testql.detectors.fastapi_detector.FastAPIDetector._detect_router_assignment
+- testql.detectors.fastapi_detector.FastAPIDetector._extract_docstring
+- testql.detectors.fastapi_detector.FastAPIDetector._extract_include_router
+- testql.detectors.fastapi_detector.FastAPIDetector._extract_parameters
+- testql.detectors.fastapi_detector.FastAPIDetector._extract_route_info
+- testql.detectors.fastapi_detector.FastAPIDetector._extract_router_prefix
+- testql.detectors.fastapi_detector.FastAPIDetector._get_annotation_name
+- testql.detectors.fastapi_detector.FastAPIDetector._get_router_prefix
+- testql.detectors.fastapi_detector.FastAPIDetector.detect
+- testql.detectors.flask_detector.FlaskDetector._analyze_flask_file
+- testql.detectors.flask_detector.FlaskDetector._analyze_flask_route
+- testql.detectors.flask_detector.FlaskDetector._apply_blueprint_prefix
+- testql.detectors.flask_detector.FlaskDetector._detect_blueprint
+- testql.detectors.flask_detector.FlaskDetector._extract_blueprint_prefix
+- testql.detectors.flask_detector.FlaskDetector._extract_flask_route_info
+- testql.detectors.flask_detector.FlaskDetector._extract_route_methods
+- testql.detectors.flask_detector.FlaskDetector._extract_route_path
+- testql.detectors.flask_detector.FlaskDetector.detect
+- testql.detectors.graphql_detector.GraphQLDetector._analyze_python_graphql
+- testql.detectors.graphql_detector.GraphQLDetector._analyze_schema
+- testql.detectors.graphql_detector.GraphQLDetector.detect
+- testql.detectors.models.EndpointInfo._infer_expected_status
+- testql.detectors.models.EndpointInfo.to_testql_api_call
+- testql.detectors.openapi_detector.OpenAPIDetector._extract_base_path
+- testql.detectors.openapi_detector.OpenAPIDetector._parse_spec
+- testql.detectors.openapi_detector.OpenAPIDetector.detect
+- testql.detectors.unified.UnifiedEndpointDetector.__init__
+- testql.detectors.unified.UnifiedEndpointDetector._deduplicate_endpoints
+- testql.detectors.unified.UnifiedEndpointDetector._graphql_block
+- testql.detectors.unified.UnifiedEndpointDetector._rest_block
+- testql.detectors.unified.UnifiedEndpointDetector._ws_block
+- testql.detectors.unified.UnifiedEndpointDetector.detect_all
+- testql.detectors.unified.UnifiedEndpointDetector.generate_testql_scenario
+- testql.detectors.unified.UnifiedEndpointDetector.get_endpoints_by_framework
+- testql.detectors.unified.UnifiedEndpointDetector.get_endpoints_by_type
+- testql.detectors.unified.detect_endpoints
+- testql.detectors.websocket_detector.WebSocketDetector._analyze_content
+- testql.detectors.websocket_detector.WebSocketDetector.detect
 - testql.doql_parser.DoqlParser.__init__
 - testql.doql_parser.DoqlParser._parse_app_block
 - testql.doql_parser.DoqlParser._parse_deploy_block
@@ -753,89 +2684,64 @@ entry_points:
 - testql.doql_parser.DoqlParser._parse_workflow_block
 - testql.doql_parser.DoqlParser.parse
 - testql.doql_parser.DoqlParser.parse_file
+- testql.doql_parser.parse_doql_file
 - testql.echo_schemas.ProjectEcho.to_dict
 - testql.echo_schemas.ProjectEcho.to_text
-- testql.endpoint_detector.BaseEndpointDetector.__init__
-- testql.endpoint_detector.BaseEndpointDetector._find_files
-- testql.endpoint_detector.BaseEndpointDetector.detect
-- testql.endpoint_detector.ConfigEndpointDetector._analyze_docker_compose
-- testql.endpoint_detector.ConfigEndpointDetector._infer_protocol
-- testql.endpoint_detector.ConfigEndpointDetector.detect
-- testql.endpoint_detector.DjangoDetector._analyze_urls_py
-- testql.endpoint_detector.DjangoDetector.detect
-- testql.endpoint_detector.EndpointInfo._infer_expected_status
-- testql.endpoint_detector.EndpointInfo.to_testql_api_call
-- testql.endpoint_detector.ExpressDetector._analyze_express_file
-- testql.endpoint_detector.ExpressDetector.detect
-- testql.endpoint_detector.FastAPIDetector._analyze_file
-- testql.endpoint_detector.FastAPIDetector._analyze_route_handler
-- testql.endpoint_detector.FastAPIDetector._detect_app_assignment
-- testql.endpoint_detector.FastAPIDetector._detect_router_assignment
-- testql.endpoint_detector.FastAPIDetector._extract_docstring
-- testql.endpoint_detector.FastAPIDetector._extract_include_router
-- testql.endpoint_detector.FastAPIDetector._extract_parameters
-- testql.endpoint_detector.FastAPIDetector._extract_route_info
-- testql.endpoint_detector.FastAPIDetector._get_annotation_name
-- testql.endpoint_detector.FastAPIDetector._get_router_prefix
-- testql.endpoint_detector.FastAPIDetector.detect
-- testql.endpoint_detector.FlaskDetector._analyze_flask_file
-- testql.endpoint_detector.FlaskDetector._analyze_flask_route
-- testql.endpoint_detector.FlaskDetector._detect_blueprint
-- testql.endpoint_detector.FlaskDetector._extract_flask_route_info
-- testql.endpoint_detector.FlaskDetector.detect
-- testql.endpoint_detector.GraphQLDetector._analyze_python_graphql
-- testql.endpoint_detector.GraphQLDetector._analyze_schema
-- testql.endpoint_detector.GraphQLDetector.detect
-- testql.endpoint_detector.OpenAPIDetector._parse_spec
-- testql.endpoint_detector.OpenAPIDetector.detect
-- testql.endpoint_detector.TestEndpointDetector._analyze_test_file
-- testql.endpoint_detector.TestEndpointDetector.detect
-- testql.endpoint_detector.UnifiedEndpointDetector.__init__
-- testql.endpoint_detector.UnifiedEndpointDetector._deduplicate_endpoints
-- testql.endpoint_detector.UnifiedEndpointDetector._graphql_block
-- testql.endpoint_detector.UnifiedEndpointDetector._rest_block
-- testql.endpoint_detector.UnifiedEndpointDetector._ws_block
-- testql.endpoint_detector.UnifiedEndpointDetector.detect_all
-- testql.endpoint_detector.UnifiedEndpointDetector.generate_testql_scenario
-- testql.endpoint_detector.UnifiedEndpointDetector.get_endpoints_by_framework
-- testql.endpoint_detector.UnifiedEndpointDetector.get_endpoints_by_type
-- testql.endpoint_detector.WebSocketDetector.detect
-- testql.endpoint_detector.detect_endpoints
-- testql.generator.MultiProjectTestGenerator.__init__
-- testql.generator.MultiProjectTestGenerator.analyze_all
-- testql.generator.MultiProjectTestGenerator.discover_projects
-- testql.generator.MultiProjectTestGenerator.generate_all
-- testql.generator.MultiProjectTestGenerator.generate_cross_project_tests
-- testql.generator.TestGenerator.__init__
-- testql.generator.TestGenerator._analyze_api_routes
-- testql.generator.TestGenerator._analyze_api_routes_fallback
-- testql.generator.TestGenerator._analyze_config_files
-- testql.generator.TestGenerator._analyze_python_tests
-- testql.generator.TestGenerator._analyze_scenarios
-- testql.generator.TestGenerator._detect_project_type
-- testql.generator.TestGenerator._extract_test_pattern
-- testql.generator.TestGenerator._generate_api_integration_tests
-- testql.generator.TestGenerator._generate_api_tests
-- testql.generator.TestGenerator._generate_cli_tests
-- testql.generator.TestGenerator._generate_from_python_tests
-- testql.generator.TestGenerator._generate_from_scenarios
-- testql.generator.TestGenerator._generate_frontend_tests
-- testql.generator.TestGenerator._generate_hardware_tests
-- testql.generator.TestGenerator._generate_lib_tests
-- testql.generator.TestGenerator._scan_directory_structure
-- testql.generator.TestGenerator.analyze
-- testql.generator.TestGenerator.generate_tests
-- testql.generator.generate_for_project
-- testql.generator.generate_for_workspace
+- testql.generators.analyzers.ProjectAnalyzer._analyze_api_routes
+- testql.generators.analyzers.ProjectAnalyzer._analyze_api_routes_fallback
+- testql.generators.analyzers.ProjectAnalyzer._analyze_config_files
+- testql.generators.analyzers.ProjectAnalyzer._analyze_python_tests
+- testql.generators.analyzers.ProjectAnalyzer._analyze_scenarios
+- testql.generators.analyzers.ProjectAnalyzer._collect_patterns_from_tree
+- testql.generators.analyzers.ProjectAnalyzer._detect_hardware
+- testql.generators.analyzers.ProjectAnalyzer._detect_pattern_type
+- testql.generators.analyzers.ProjectAnalyzer._detect_python_type
+- testql.generators.analyzers.ProjectAnalyzer._detect_web_frontend
+- testql.generators.analyzers.ProjectAnalyzer._extract_commands_and_assertions
+- testql.generators.analyzers.ProjectAnalyzer._extract_test_pattern
+- testql.generators.analyzers.ProjectAnalyzer._has_argparse_usage
+- testql.generators.analyzers.ProjectAnalyzer._scan_directory_structure
+- testql.generators.analyzers.ProjectAnalyzer.detect_project_type
+- testql.generators.analyzers.ProjectAnalyzer.run_full_analysis
+- testql.generators.base.BaseAnalyzer.__init__
+- testql.generators.base.BaseAnalyzer._get_exclude_dirs
+- testql.generators.base.BaseAnalyzer._should_exclude_path
+- testql.generators.convenience.generate_for_project
+- testql.generators.convenience.generate_for_workspace
+- testql.generators.generators.APIGeneratorMixin._build_api_test_assertions
+- testql.generators.generators.APIGeneratorMixin._build_api_test_config
+- testql.generators.generators.APIGeneratorMixin._build_api_test_endpoints
+- testql.generators.generators.APIGeneratorMixin._build_api_test_header
+- testql.generators.generators.APIGeneratorMixin._build_api_test_summary
+- testql.generators.generators.APIGeneratorMixin._build_graphql_section
+- testql.generators.generators.APIGeneratorMixin._build_rest_section
+- testql.generators.generators.APIGeneratorMixin._build_websocket_section
+- testql.generators.generators.APIGeneratorMixin._deduplicate_rest_routes
+- testql.generators.generators.APIGeneratorMixin._generate_api_tests
+- testql.generators.generators.PythonTestGeneratorMixin._generate_from_python_tests
+- testql.generators.generators.ScenarioGeneratorMixin._generate_from_scenarios
+- testql.generators.generators.SpecializedGeneratorMixin._generate_api_integration_tests
+- testql.generators.generators.SpecializedGeneratorMixin._generate_cli_tests
+- testql.generators.generators.SpecializedGeneratorMixin._generate_frontend_tests
+- testql.generators.generators.SpecializedGeneratorMixin._generate_hardware_tests
+- testql.generators.generators.SpecializedGeneratorMixin._generate_lib_tests
+- testql.generators.multi.MultiProjectTestGenerator.__init__
+- testql.generators.multi.MultiProjectTestGenerator.analyze_all
+- testql.generators.multi.MultiProjectTestGenerator.discover_projects
+- testql.generators.multi.MultiProjectTestGenerator.generate_all
+- testql.generators.multi.MultiProjectTestGenerator.generate_cross_project_tests
 - testql.interpreter._api_runner.ApiRunnerMixin._cmd_api
 - testql.interpreter._api_runner.ApiRunnerMixin._cmd_capture
 - testql.interpreter._api_runner.ApiRunnerMixin._do_http_request
+- testql.interpreter._api_runner.ApiRunnerMixin._record_api_error
+- testql.interpreter._api_runner.ApiRunnerMixin._record_api_http_error
+- testql.interpreter._api_runner.ApiRunnerMixin._record_api_success
 - testql.interpreter._api_runner.ApiRunnerMixin._store_api_response
+- testql.interpreter._api_runner._navigate_json_path
 - testql.interpreter._assertions.AssertionsMixin._cmd_assert_contains
 - testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
 - testql.interpreter._assertions.AssertionsMixin._cmd_assert_ok
 - testql.interpreter._assertions.AssertionsMixin._cmd_assert_status
-- testql.interpreter._converter.convert_directory
 - testql.interpreter._encoder.EncoderMixin._cmd_encoder_click
 - testql.interpreter._encoder.EncoderMixin._cmd_encoder_dblclick
 - testql.interpreter._encoder.EncoderMixin._cmd_encoder_focus
@@ -846,6 +2752,7 @@ entry_points:
 - testql.interpreter._encoder.EncoderMixin._cmd_encoder_scroll
 - testql.interpreter._encoder.EncoderMixin._cmd_encoder_status
 - testql.interpreter._encoder.EncoderMixin._encoder_call
+- testql.interpreter._encoder.EncoderMixin._encoder_do_http
 - testql.interpreter._encoder.EncoderMixin._encoder_url
 - testql.interpreter._flow.FlowMixin._cmd_include
 - testql.interpreter._flow.FlowMixin._cmd_log
@@ -853,6 +2760,7 @@ entry_points:
 - testql.interpreter._flow.FlowMixin._cmd_wait
 - testql.interpreter._flow.FlowMixin._cmd_wait_for
 - testql.interpreter._flow.FlowMixin._emit_event
+- testql.interpreter._parser.parse_iql
 - testql.interpreter._testtoon_parser.ToonSection.validate
 - testql.interpreter._testtoon_parser._expand_api
 - testql.interpreter._testtoon_parser._expand_assert
@@ -867,6 +2775,7 @@ entry_points:
 - testql.interpreter._testtoon_parser._expand_select
 - testql.interpreter._testtoon_parser._expand_steps
 - testql.interpreter._testtoon_parser._expand_wait
+- testql.interpreter._testtoon_parser.testtoon_to_iql
 - testql.interpreter._testtoon_parser.validate_testtoon
 - testql.interpreter._websockets.WebSocketMixin.__init_subclass__
 - testql.interpreter._websockets.WebSocketMixin._cmd_ws_assert_msg
@@ -875,6 +2784,29 @@ entry_points:
 - testql.interpreter._websockets.WebSocketMixin._cmd_ws_receive
 - testql.interpreter._websockets.WebSocketMixin._cmd_ws_send
 - testql.interpreter._websockets.WebSocketMixin._get_ws_context
+- testql.interpreter._websockets.WebSocketMixin._ws_do_receive
+- testql.interpreter.converter.core.convert_directory
+- testql.interpreter.converter.dispatcher.dispatch
+- testql.interpreter.converter.handlers.api.handle_api
+- testql.interpreter.converter.handlers.assertions.collect_assert
+- testql.interpreter.converter.handlers.encoder.handle_encoder
+- testql.interpreter.converter.handlers.flow.handle_flow
+- testql.interpreter.converter.handlers.include.handle_include
+- testql.interpreter.converter.handlers.navigate.handle_navigate
+- testql.interpreter.converter.handlers.record.handle_record_start
+- testql.interpreter.converter.handlers.record.handle_record_stop
+- testql.interpreter.converter.handlers.select.handle_select
+- testql.interpreter.converter.handlers.unknown.handle_unknown
+- testql.interpreter.converter.handlers.wait.handle_wait
+- testql.interpreter.converter.parsers.detect_scenario_type
+- testql.interpreter.converter.parsers.extract_scenario_name
+- testql.interpreter.converter.parsers.parse_api_args
+- testql.interpreter.converter.parsers.parse_commands
+- testql.interpreter.converter.parsers.parse_meta_from_args
+- testql.interpreter.converter.parsers.parse_target_from_args
+- testql.interpreter.converter.renderer.build_config_section
+- testql.interpreter.converter.renderer.build_header
+- testql.interpreter.converter.renderer.render_sections
 - testql.interpreter.interpreter.IqlInterpreter.__init__
 - testql.interpreter.interpreter.IqlInterpreter._cmd_get
 - testql.interpreter.interpreter.IqlInterpreter._cmd_set
@@ -908,6 +2840,7 @@ entry_points:
 - testql.report_generator.HTMLReportGenerator.generate
 - testql.report_generator.ReportDataParser.parse_testql_results
 - testql.report_generator.ReportDataParser.to_json
+- testql.report_generator.generate_report
 - testql.reporters.console.report_console
 - testql.reporters.json_reporter.report_json
 - testql.reporters.junit.JUnitReporter._add_testcase
@@ -929,6 +2862,7 @@ entry_points:
 - testql.runner.DslCliExecutor.execute
 - testql.runner.DslCliExecutor.run_script
 - testql.runner.main
+- testql.runner.parse_script
 - testql.sumd_generator.save_sumd
 - testql.sumd_parser.SumdParser._extract_section
 - testql.sumd_parser.SumdParser._parse_architecture
@@ -946,3 +2880,4 @@ entry_points:
 - testql.toon_parser.ToonParser._parse_log_block
 - testql.toon_parser.ToonParser.parse
 - testql.toon_parser.ToonParser.parse_file
+- testql.toon_parser.parse_toon_file
