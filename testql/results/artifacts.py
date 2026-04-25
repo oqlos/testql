@@ -40,7 +40,7 @@ def write_inspection_artifacts(
         "toon": render_inspection(topology, envelope, plan, "toon"),
     }))
     summary = target / "summary.md"
-    summary.write_text(render_inspection(topology, envelope, plan, "nlp"))
+    summary.write_text(_render_summary_md(topology, envelope, plan, written))
     written.append(summary)
     metadata = target / "metadata.json"
     all_written = [*written, metadata]
@@ -56,6 +56,71 @@ def _write_group(target: Path, prefix: str, contents: dict[str, str]) -> list[Pa
         path.write_text(content)
         written.append(path)
     return written
+
+
+def _render_summary_md(
+    topology: TopologyManifest,
+    envelope: TestResultEnvelope,
+    plan: RefactorPlan,
+    written: list[Path],
+) -> str:
+    """Generate markdown summary with links to all artifacts."""
+    from testql.results.serializers import _render_nlp
+
+    nlp_summary = _render_nlp(envelope, plan).strip()
+
+    # Artifact descriptions mapping
+    artifact_descs: dict[str, str] = {
+        "inspection.yaml": "Full inspection report (YAML)",
+        "inspection.json": "Full inspection report (JSON)",
+        "inspection.toon.yaml": "Inspection report (TOON format)",
+        "result.yaml": "Test execution results (YAML)",
+        "result.json": "Test results (JSON)",
+        "result.toon.yaml": "Test results (TOON format)",
+        "topology.yaml": "Web topology graph (YAML)",
+        "topology.json": "Topology (JSON)",
+        "topology.toon.yaml": "Topology (TOON format)",
+        "refactor-plan.yaml": "Refactoring recommendations (YAML)",
+        "refactor-plan.json": "Refactor plan (JSON)",
+        "refactor-plan.toon.yaml": "Refactor plan (TOON format)",
+        "metadata.json": "Inspection metadata",
+    }
+
+    # Group artifacts by category
+    groups: dict[str, list[tuple[str, str]]] = {
+        "Inspection Reports": [],
+        "Test Results": [],
+        "Topology": [],
+        "Refactor Plan": [],
+        "Metadata": [],
+    }
+
+    for path in written:
+        name = path.name
+        desc = artifact_descs.get(name, name)
+        link = f"[{name}]({name})"
+
+        if name.startswith("inspection."):
+            groups["Inspection Reports"].append((link, desc))
+        elif name.startswith("result."):
+            groups["Test Results"].append((link, desc))
+        elif name.startswith("topology."):
+            groups["Topology"].append((link, desc))
+        elif name.startswith("refactor-plan."):
+            groups["Refactor Plan"].append((link, desc))
+        elif name == "metadata.json":
+            groups["Metadata"].append((link, desc))
+
+    lines = [nlp_summary, "", "## Generated Artifacts", ""]
+
+    for group_name, items in groups.items():
+        if items:
+            lines.append(f"### {group_name}")
+            for link, desc in items:
+                lines.append(f"- {link} - {desc}")
+            lines.append("")
+
+    return "\n".join(lines)
 
 
 def _metadata(topology: TopologyManifest, envelope: TestResultEnvelope, plan: RefactorPlan, written: list[Path]) -> dict:

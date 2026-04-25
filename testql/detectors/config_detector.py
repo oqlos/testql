@@ -52,8 +52,10 @@ class ConfigEndpointDetector(BaseEndpointDetector):
                 port = self._parse_port_mapping(port_mapping)
                 if port:
                     protocol = self._infer_protocol(port)
+                    # Include port in path to make endpoints unique and actionable
+                    path = f'/' if protocol in ('http', 'rest') else f'/docker/{service_name}:{port}'
                     self.endpoints.append(EndpointInfo(
-                        path='/',
+                        path=path,
                         method='GET',
                         source_file=compose_file,
                         line_number=0,

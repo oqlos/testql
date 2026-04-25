@@ -56,11 +56,16 @@ class UnifiedEndpointDetector:
         return self.all_endpoints
 
     def _deduplicate_endpoints(self, endpoints: list[EndpointInfo]) -> list[EndpointInfo]:
-        """Remove duplicate endpoints based on method+path."""
-        seen: set[tuple[str, str]] = set()
+        """Remove duplicate endpoints based on method+path+summary.
+
+        For docker-compose and other config-based sources, summary contains
+        service name and port info, which must be included in the key to
+        preserve all distinct services.
+        """
+        seen: set[tuple[str, str, str | None]] = set()
         unique: list[EndpointInfo] = []
         for ep in endpoints:
-            key = (ep.method.upper(), ep.path)
+            key = (ep.method.upper(), ep.path, ep.summary)
             if key not in seen:
                 seen.add(key)
                 unique.append(ep)

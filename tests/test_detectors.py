@@ -282,6 +282,64 @@ class TestOpenAPIDetector:
 
 
 # ---------------------------------------------------------------------------
+# ConfigEndpointDetector (docker-compose)
+# ---------------------------------------------------------------------------
+
+from testql.detectors.config_detector import ConfigEndpointDetector
+
+
+class TestConfigDetector:
+    def test_empty_project(self, tmp_path):
+        det = ConfigEndpointDetector(tmp_path)
+        assert det.detect() == []
+
+    def test_detects_docker_compose_services(self, tmp_path):
+        """Test that all docker-compose services are detected, not deduplicated."""
+        _write(tmp_path, "docker-compose.yml", """\
+            services:
+              api:
+                build: .
+                ports:
+                  - "8000:8000"
+              redis:
+                image: redis:7
+                ports:
+                  - "6379:6379"
+              postgres:
+                image: postgres:15
+                ports:
+                  - "5432:5432"
+        """)
+        det = ConfigEndpointDetector(tmp_path)
+        eps = det.detect()
+        # Should detect all 3 services with different summaries/ports
+        assert len(eps) == 3, f"Expected 3 endpoints, got {len(eps)}: {eps}"
+        summaries = {ep.summary for ep in eps}
+        assert "Service api on port 8000" in summaries
+        assert "Service redis on port 6379" in summaries
+        assert "Service postgres on port 5432" in summaries
+
+    def test_unified_does_not_dedup_docker_services(self, tmp_path):
+        """Test that UnifiedEndpointDetector preserves all docker-compose services."""
+        _write(tmp_path, "docker-compose.yml", """\
+            services:
+              backend:
+                ports:
+                  - "8000:8000"
+              frontend:
+                ports:
+                  - "3000:3000"
+        """)
+        det = UnifiedEndpointDetector(tmp_path)
+        eps = det.detect_all()
+        # Both services should be present (not deduplicated)
+        assert len(eps) == 2, f"Expected 2 endpoints, got {len(eps)}"
+        summaries = {ep.summary for ep in eps}
+        assert "Service backend on port 8000" in summaries
+        assert "Service frontend on port 3000" in summaries
+
+
+# ---------------------------------------------------------------------------
 # ExpressDetector
 # ---------------------------------------------------------------------------
 
