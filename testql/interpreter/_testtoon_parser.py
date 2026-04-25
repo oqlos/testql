@@ -472,6 +472,25 @@ def _expand_record(section: ToonSection, lines: list[IqlLine], line_num: int) ->
     return line_num
 
 
+def _expand_commands(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
+    """Expand COMMANDS section (bare imperative commands) → emit as-is."""
+    for row in section.rows:
+        cmd = row.get('command', '').strip()
+        if not cmd:
+            continue
+        
+        # Parse command and args
+        parts = cmd.split(None, 1)
+        command_name = parts[0] if parts else ''
+        args = parts[1] if len(parts) > 1 else ''
+        
+        if command_name:
+            lines.append(IqlLine(number=line_num, command=command_name, args=args, raw=cmd))
+            line_num += 1
+    
+    return line_num
+
+
 def _expand_dom_audit_buttons(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
     """Expand DOM_AUDIT_BUTTONS section (mapping format) → DOM_AUDIT_BUTTONS command."""
     if not section.rows:
@@ -500,25 +519,6 @@ def _expand_dom_audit_buttons(section: ToonSection, lines: list[IqlLine], line_n
 
     lines.append(IqlLine(number=line_num, command='DOM_AUDIT_BUTTONS', args=args, raw=raw))
     return line_num + 1
-
-
-def _expand_commands(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
-    """Expand COMMANDS section (bare imperative commands) → emit as-is."""
-    for row in section.rows:
-        cmd = row.get('command', '').strip()
-        if not cmd:
-            continue
-        
-        # Parse command and args
-        parts = cmd.split(None, 1)
-        command_name = parts[0] if parts else ''
-        args = parts[1] if len(parts) > 1 else ''
-        
-        if command_name:
-            lines.append(IqlLine(number=line_num, command=command_name, args=args, raw=cmd))
-            line_num += 1
-    
-    return line_num
 
 
 def _expand_generic(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
