@@ -132,18 +132,23 @@ def parse_testtoon(text: str, filename: str = "<string>") -> ToonScript:
     """Parse TestTOON source into structured ToonScript."""
     script = ToonScript()
     current: ToonSection | None = None
+    bare_commands: list[str] = []  # Store bare imperative commands
 
     for raw in text.splitlines():
         stripped = raw.strip()
         if not stripped:
+            # Blank line ends current section
+            current = None
             continue
 
         m = META_RE.match(stripped)
         if m:
+            current = None  # Meta line ends current section
             script.meta[m.group(1).lower()] = m.group(2).strip()
             continue
 
         if stripped.startswith('#'):
+            current = None  # Comment ends current section
             continue
 
         # Try tabular format first: SECTION[count]{columns}:
@@ -160,6 +165,16 @@ def parse_testtoon(text: str, filename: str = "<string>") -> ToonScript:
             script.sections.append(current)
             continue
 
+        # If we have a non-indented line and we're in a section, the section ended
+        if current and not raw.startswith('  '):
+            current = None
+
+        # Handle bare imperative commands (not indented, not a section)
+        if not raw.startswith('  ') and not current:
+            # This is a bare imperative command like GUI_START, WAIT, NAVIGATE
+            bare_commands.append(raw)
+            continue
+
         if current and raw.startswith('  '):
             if current.is_mapping:
                 # Merge mapping rows into a single dict
@@ -170,6 +185,22 @@ def parse_testtoon(text: str, filename: str = "<string>") -> ToonScript:
                     current.rows.append(mapping_row)
             else:
                 current.rows.append(_make_data_row(raw, current))
+
+    # Add bare commands as a special COMMANDS section after CONFIG (if exists)
+    if bare_commands:
+        cmd_section = ToonSection(
+            type='COMMANDS',
+            columns=['command'],
+            rows=[{'command': cmd} for cmd in bare_commands],
+            expected_count=len(bare_commands),
+        )
+        # Insert after CONFIG section if it exists, otherwise at beginning
+        insert_pos = 0
+        for i, section in enumerate(script.sections):
+            if section.type == 'CONFIG':
+                insert_pos = i + 1
+                break
+        script.sections.insert(insert_pos, cmd_section)
 
     return script
 
@@ -471,6 +502,25 @@ def _expand_dom_audit_buttons(section: ToonSection, lines: list[IqlLine], line_n
     return line_num + 1
 
 
+def _expand_commands(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
+    """Expand COMMANDS section (bare imperative commands) → emit as-is."""
+    for row in section.rows:
+        cmd = row.get('command', '').strip()
+        if not cmd:
+            continue
+        
+        # Parse command and args
+        parts = cmd.split(None, 1)
+        command_name = parts[0] if parts else ''
+        args = parts[1] if len(parts) > 1 else ''
+        
+        if command_name:
+            lines.append(IqlLine(number=line_num, command=command_name, args=args, raw=cmd))
+            line_num += 1
+    
+    return line_num
+
+
 def _expand_generic(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
     """Expand unknown section types as generic commands."""
     for row in section.rows:
@@ -498,6 +548,7 @@ _SECTION_EXPANDERS = {
     'RECORD_START': _expand_record,
     'RECORD_STOP': _expand_record,
     'DOM_AUDIT_BUTTONS': _expand_dom_audit_buttons,
+    'COMMANDS': _expand_commands,
 }
 
 
