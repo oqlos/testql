@@ -4,6 +4,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+from testql import __version__ as TESTQL_VERSION
 from testql.results.models import RefactorPlan, TestResultEnvelope
 from testql.results.serializers import render_inspection, render_refactor_plan, render_result_envelope
 from testql.topology import TopologyManifest, render_topology
@@ -60,6 +61,7 @@ def _write_group(target: Path, prefix: str, contents: dict[str, str]) -> list[Pa
 def _metadata(topology: TopologyManifest, envelope: TestResultEnvelope, plan: RefactorPlan, written: list[Path]) -> dict:
     return {
         "created_at": datetime.now(timezone.utc).isoformat(),
+        "testql_version": TESTQL_VERSION,
         "generator": "testql.inspect",
         "root": topology.root.to_dict(),
         "topology_id": envelope.topology_id,

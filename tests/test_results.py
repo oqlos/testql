@@ -108,6 +108,10 @@ class TestDotTestqlArtifacts:
         assert "inspection.toon.yaml" in names
         assert "summary.md" in names
         assert (out_dir / "metadata.json").exists()
+        metadata = json.loads((out_dir / "metadata.json").read_text())
+        assert metadata["created_at"]
+        assert "T" in metadata["created_at"]
+        assert metadata["testql_version"]
 
     def test_inspect_cli_out_dir_writes_bundle(self, tmp_path):
         runner = CliRunner()
