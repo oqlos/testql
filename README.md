@@ -3,11 +3,11 @@
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-1.2.1-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$6.45-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-27.1h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-1.2.2-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$6.60-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-27.9h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $6.4500 (43 commits)
-- 👤 **Human dev:** ~$2712 (27.1h @ $100/h, 30min dedup)
+- 🤖 **LLM usage:** $6.6000 (44 commits)
+- 👤 **Human dev:** ~$2786 (27.9h @ $100/h, 30min dedup)
 
 Generated on 2026-04-25 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 
@@ -15,7 +15,7 @@ Generated on 2026-04-25 using [openrouter/qwen/qwen3-coder-next](https://openrou
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-1.2.1-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-1.2.2-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
 
 TestQL is a declarative DSL (Domain Specific Language) for testing GUI, REST API, and hardware encoder interfaces. It provides a simple, readable syntax for writing automated tests without programming overhead.
 
@@ -69,6 +69,56 @@ testql scenarios/tests/test-api.testql.toon.yaml --output json
 # Run with verbose logging
 testql scenarios/tests/test-api.testql.toon.yaml --verbose
 ```
+
+
+## Artifact Discovery, Topology, and Web Inspection
+
+TestQL can now inspect codebases, manifests, and opt-in live URLs, then write structured topology and result artifacts for humans, CI, and LLM workflows.
+
+```bash
+# Discover local artifact types
+python3 -m testql.cli discover ./testql --format json
+
+# Build a topology graph from discovered artifacts
+python3 -m testql.cli topology ./testql --format toon
+
+# Inspect a live web page and write all data/metadata to .testql
+python3 -m testql.cli inspect https://tom.sapletta.com/ \
+  --scan-network \
+  --out-dir .testql
+```
+
+The `.testql/` artifact bundle contains:
+
+```text
+metadata.json
+topology.{json,yaml,toon.yaml}
+result.{json,yaml,toon.yaml}
+refactor-plan.{json,yaml,toon.yaml}
+inspection.{json,yaml,toon.yaml}
+summary.md
+```
+
+Live URL inspection currently extracts:
+
+- **HTTP metadata**: status code, final URL, content type.
+- **Page schema**: title, links, assets, forms.
+- **Topology graph**: page, link, asset, form, interface, evidence nodes.
+- **Structured results**: web checks for status, title, links, assets, forms.
+- **Reports**: TOON/YAML/JSON plus NLP summary.
+
+Example:
+
+```bash
+examples/web-inspection-dot-testql/run.sh https://tom.sapletta.com/
+```
+
+Current limitations:
+
+- Browser execution is not yet Playwright-backed.
+- JavaScript-rendered DOM is not evaluated yet.
+- Links/assets are extracted but not individually fetched and validated yet.
+- Console errors, screenshots, performance, accessibility, REST/GraphQL/WebSocket network logs, and auth flows are planned next.
 
 ## API Endpoint Detection
 

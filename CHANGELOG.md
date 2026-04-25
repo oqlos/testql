@@ -111,6 +111,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Add artifact discovery core with manifests, probes, and `testql discover`.
+- Add topology graph generation with `testql topology` and JSON/YAML/TOON output.
+- Add structured inspection results, refactor-plan envelope, NLP summaries, and `.testql` artifact bundle writer.
+- Add opt-in URL inspection via `--scan-network`, extracting HTTP status, title, links, assets, forms, page topology, and web-specific checks.
+- Add `examples/web-inspection-dot-testql/` showing live web inspection with all generated data and metadata stored under `.testql/`.
+
+### Changed
+- Improve OpenAPI discovery to avoid treating test fixtures as production topology when scanning project roots.
+- Include HTTP status and content type in page schema metadata for reliable web findings.
+
+### Remaining
+- Add Playwright-backed browser execution, JavaScript-rendered DOM capture, screenshots, console errors, network logs, link-by-link validation, accessibility/performance checks, MCP service integration, and runtime-vs-code delta reports.
+
+## [1.2.2] - 2026-04-25
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+- Update TODO.md
+
+### Other
+- Update coverage.json
+
 ## [1.2.1] - 2026-04-25
 
 ### Docs
