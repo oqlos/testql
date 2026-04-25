@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import click
 
+from testql.commands.auto_cmd import auto
 from testql.commands.discover_cmd import discover
 from testql.commands.endpoints_cmd import endpoints, openapi
 from testql.commands.generate_cmd import analyze, generate
@@ -25,6 +26,7 @@ def cli():
     pass
 
 
+cli.add_command(auto)
 cli.add_command(run)
 cli.add_command(run_ir)
 cli.add_command(generate)
