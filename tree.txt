@@ -1,0 +1,589 @@
+.
+├── app.doql.less
+├── articles
+│   ├── testql-multi-dsl-refactor-plan.md
+│   └── testql-phase-6-artifact-discovery.md
+├── bin
+├── CHANGELOG.md
+├── code2llm_output
+│   ├── analysis.toon.yaml
+│   ├── calls.mmd
+│   ├── calls.png
+│   ├── calls.yaml
+│   ├── compact_flow.mmd
+│   ├── compact_flow.png
+│   ├── context.md
+│   ├── evolution.toon.yaml
+│   ├── flow.mmd
+│   ├── flow.png
+│   ├── index.html
+│   ├── map.toon.yaml
+│   ├── project.toon.yaml
+│   ├── prompt.txt
+│   └── README.md
+├── coverage.json
+├── goal.yaml
+├── LICENSE
+├── openapi.yaml
+├── planfile.yaml
+├── prefact.yaml
+├── project
+│   ├── analysis.toon.yaml
+│   ├── calls.mmd
+│   ├── calls.png
+│   ├── calls.toon.yaml
+│   ├── calls.yaml
+│   ├── compact_flow.mmd
+│   ├── compact_flow.png
+│   ├── context.md
+│   ├── duplication.toon.yaml
+│   ├── evolution.toon.yaml
+│   ├── flow.mmd
+│   ├── flow.png
+│   ├── index.html
+│   ├── map.toon.yaml
+│   ├── mermaid.export
+│   ├── project.toon.yaml
+│   ├── prompt.txt
+│   ├── README.md
+│   └── validation.toon.yaml
+├── project.sh
+├── pyproject.toml
+├── pyqual.yaml
+├── README.md
+├── sumd.json
+├── SUMD.md
+├── SUMR.md
+├── Taskfile.testql.yml
+├── Taskfile.yml
+├── testql
+│   ├── adapters
+│   │   ├── base.py
+│   │   ├── graphql
+│   │   │   ├── graphql_adapter.py
+│   │   │   ├── __init__.py
+│   │   │   ├── query_executor.py
+│   │   │   ├── schema_introspection.py
+│   │   │   └── subscription_runner.py
+│   │   ├── __init__.py
+│   │   ├── nl
+│   │   │   ├── entity_extractor.py
+│   │   │   ├── grammar.py
+│   │   │   ├── __init__.py
+│   │   │   ├── intent_recognizer.py
+│   │   │   ├── lexicon
+│   │   │   │   ├── en.yaml
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── pl.yaml
+│   │   │   ├── llm_fallback.py
+│   │   │   └── nl_adapter.py
+│   │   ├── proto
+│   │   │   ├── compatibility.py
+│   │   │   ├── descriptor_loader.py
+│   │   │   ├── __init__.py
+│   │   │   ├── message_validator.py
+│   │   │   └── proto_adapter.py
+│   │   ├── registry.py
+│   │   ├── sql
+│   │   │   ├── ddl_parser.py
+│   │   │   ├── dialect_resolver.py
+│   │   │   ├── fixtures.py
+│   │   │   ├── __init__.py
+│   │   │   ├── query_parser.py
+│   │   │   └── sql_adapter.py
+│   │   └── testtoon_adapter.py
+│   ├── _base_fallback.py
+│   ├── base.py
+│   ├── cli.py
+│   ├── commands
+│   │   ├── discover_cmd.py
+│   │   ├── echo
+│   │   │   ├── cli.py
+│   │   │   ├── context.py
+│   │   │   ├── formatters
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── text.py
+│   │   │   ├── __init__.py
+│   │   │   └── parsers
+│   │   │       ├── doql.py
+│   │   │       ├── __init__.py
+│   │   │       └── toon.py
+│   │   ├── echo_helpers.py
+│   │   ├── echo.py
+│   │   ├── encoder_routes.py
+│   │   ├── endpoints_cmd.py
+│   │   ├── generate_cmd.py
+│   │   ├── generate_ir_cmd.py
+│   │   ├── __init__.py
+│   │   ├── misc_cmds.py
+│   │   ├── run_cmd.py
+│   │   ├── self_test_cmd.py
+│   │   ├── suite
+│   │   │   ├── cli.py
+│   │   │   ├── collection.py
+│   │   │   ├── execution.py
+│   │   │   ├── __init__.py
+│   │   │   ├── listing.py
+│   │   │   └── reports.py
+│   │   ├── suite_cmd.py
+│   │   └── templates
+│   │       ├── content.py
+│   │       ├── __init__.py
+│   │       └── templates.py
+│   ├── detectors
+│   │   ├── base.py
+│   │   ├── config_detector.py
+│   │   ├── django_detector.py
+│   │   ├── express_detector.py
+│   │   ├── fastapi_detector.py
+│   │   ├── flask_detector.py
+│   │   ├── graphql_detector.py
+│   │   ├── __init__.py
+│   │   ├── models.py
+│   │   ├── openapi_detector.py
+│   │   ├── test_detector.py
+│   │   ├── unified.py
+│   │   └── websocket_detector.py
+│   ├── discovery
+│   │   ├── __init__.py
+│   │   ├── manifest.py
+│   │   ├── probes
+│   │   │   ├── base.py
+│   │   │   ├── filesystem
+│   │   │   │   ├── api_openapi.py
+│   │   │   │   ├── container_compose.py
+│   │   │   │   ├── container_dockerfile.py
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── package_node.py
+│   │   │   │   └── package_python.py
+│   │   │   └── __init__.py
+│   │   ├── registry.py
+│   │   └── source.py
+│   ├── doql_parser.py
+│   ├── echo_schemas.py
+│   ├── endpoint_detector.py
+│   ├── generator.py
+│   ├── generators
+│   │   ├── analyzers.py
+│   │   ├── base.py
+│   │   ├── convenience.py
+│   │   ├── generators.py
+│   │   ├── __init__.py
+│   │   ├── llm
+│   │   │   ├── coverage_optimizer.py
+│   │   │   ├── edge_case_generator.py
+│   │   │   └── __init__.py
+│   │   ├── multi.py
+│   │   ├── pipeline.py
+│   │   ├── sources
+│   │   │   ├── base.py
+│   │   │   ├── graphql_source.py
+│   │   │   ├── __init__.py
+│   │   │   ├── nl_source.py
+│   │   │   ├── openapi_source.py
+│   │   │   ├── proto_source.py
+│   │   │   ├── sql_source.py
+│   │   │   └── ui_source.py
+│   │   ├── targets
+│   │   │   ├── base.py
+│   │   │   ├── __init__.py
+│   │   │   ├── nl_target.py
+│   │   │   ├── pytest_target.py
+│   │   │   └── testtoon_target.py
+│   │   └── test_generator.py
+│   ├── __init__.py
+│   ├── interpreter
+│   │   ├── _api_runner.py
+│   │   ├── _assertions.py
+│   │   ├── converter
+│   │   │   ├── core.py
+│   │   │   ├── dispatcher.py
+│   │   │   ├── handlers
+│   │   │   │   ├── api.py
+│   │   │   │   ├── assertions.py
+│   │   │   │   ├── encoder.py
+│   │   │   │   ├── flow.py
+│   │   │   │   ├── include.py
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── navigate.py
+│   │   │   │   ├── record.py
+│   │   │   │   ├── select.py
+│   │   │   │   ├── unknown.py
+│   │   │   │   └── wait.py
+│   │   │   ├── __init__.py
+│   │   │   ├── models.py
+│   │   │   ├── parsers.py
+│   │   │   └── renderer.py
+│   │   ├── _converter.py
+│   │   ├── dispatcher.py
+│   │   ├── _encoder.py
+│   │   ├── _flow.py
+│   │   ├── _gui.py
+│   │   ├── __init__.py
+│   │   ├── interpreter.py
+│   │   ├── _parser.py
+│   │   ├── _shell.py
+│   │   ├── _testtoon_parser.py
+│   │   ├── _unit.py
+│   │   └── _websockets.py
+│   ├── interpreter.py
+│   ├── ir
+│   │   ├── assertions.py
+│   │   ├── fixtures.py
+│   │   ├── __init__.py
+│   │   ├── metadata.py
+│   │   ├── plan.py
+│   │   └── steps.py
+│   ├── __main__.py
+│   ├── meta
+│   │   ├── confidence_scorer.py
+│   │   ├── coverage_analyzer.py
+│   │   ├── __init__.py
+│   │   ├── mutator.py
+│   │   └── self_test.py
+│   ├── openapi_generator.py
+│   ├── reporters
+│   │   ├── console.py
+│   │   ├── __init__.py
+│   │   ├── json_reporter.py
+│   │   └── junit.py
+│   ├── report_generator.py
+│   ├── runner.py
+│   ├── runners
+│   │   └── __init__.py
+│   ├── scenarios
+│   │   ├── c2004
+│   │   │   ├── api
+│   │   │   │   ├── test-devices-crud.testql.toon.yaml
+│   │   │   │   └── test-protocol-flow.testql.toon.yaml
+│   │   │   ├── c2004.testql.less
+│   │   │   ├── encoder
+│   │   │   │   ├── encoder-navigation.testql.toon.yaml
+│   │   │   │   └── encoder-workshop.testql.toon.yaml
+│   │   │   ├── gui
+│   │   │   │   ├── connect-config-users.testql.toon.yaml
+│   │   │   │   ├── connect-id-barcode.testql.toon.yaml
+│   │   │   │   └── connect-workshop-transport.testql.toon.yaml
+│   │   │   ├── smoke
+│   │   │   │   ├── api-health.testql.toon.yaml
+│   │   │   │   └── api-smoke.testql.toon.yaml
+│   │   │   └── views
+│   │   │       ├── reproduce-view.testql.toon.yaml
+│   │   │       ├── run-mask-test-protocol.testql.toon.yaml
+│   │   │       ├── test-api.testql.toon.yaml
+│   │   │       ├── test-app-lifecycle.testql.toon.yaml
+│   │   │       ├── test-devices-crud.testql.toon.yaml
+│   │   │       ├── test-dsl-objects.testql.toon.yaml
+│   │   │       ├── test-encoder.testql.toon.yaml
+│   │   │       ├── test-gui-all.testql.toon.yaml
+│   │   │       ├── test-gui-connect-config.testql.toon.yaml
+│   │   │       ├── test-gui-connect-id.testql.toon.yaml
+│   │   │       ├── test-gui-connect-manager.testql.toon.yaml
+│   │   │       ├── test-gui-connect-reports.testql.toon.yaml
+│   │   │       ├── test-gui-connect-test.testql.toon.yaml
+│   │   │       ├── test-gui-connect-workshop.testql.toon.yaml
+│   │   │       ├── test-mixed-workflow.testql.toon.yaml
+│   │   │       ├── test-protocol-flow.testql.toon.yaml
+│   │   │       ├── test-ui-navigation.testql.toon.yaml
+│   │   │       └── views
+│   │   │           ├── connect-config-feature-flags.testql.toon.yaml
+│   │   │           ├── connect-config-labels.testql.toon.yaml
+│   │   │           ├── connect-config-settings.testql.toon.yaml
+│   │   │           ├── connect-config-tables.testql.toon.yaml
+│   │   │           ├── connect-config-theme.testql.toon.yaml
+│   │   │           ├── connect-config-users.testql.toon.yaml
+│   │   │           ├── connect-id-barcode.testql.toon.yaml
+│   │   │           ├── connect-id-list.testql.toon.yaml
+│   │   │           ├── connect-id-manual.testql.toon.yaml
+│   │   │           ├── connect-id-qr.testql.toon.yaml
+│   │   │           ├── connect-id-rfid.testql.toon.yaml
+│   │   │           ├── connect-manager-activities.testql.toon.yaml
+│   │   │           ├── connect-manager-intervals.testql.toon.yaml
+│   │   │           ├── connect-manager-library.testql.toon.yaml
+│   │   │           ├── connect-manager-scenarios.testql.toon.yaml
+│   │   │           ├── connect-manager-test-types.testql.toon.yaml
+│   │   │           ├── connect-reports-chart.testql.toon.yaml
+│   │   │           ├── connect-reports-custom.testql.toon.yaml
+│   │   │           ├── connect-reports-filter.testql.toon.yaml
+│   │   │           ├── connect-reports-month.testql.toon.yaml
+│   │   │           ├── connect-reports-quarter.testql.toon.yaml
+│   │   │           ├── connect-reports-week.testql.toon.yaml
+│   │   │           ├── connect-reports-year.testql.toon.yaml
+│   │   │           ├── connect-test-devices-search.testql.toon.yaml
+│   │   │           ├── connect-test-full-test.testql.toon.yaml
+│   │   │           ├── connect-test-protocols.testql.toon.yaml
+│   │   │           ├── connect-test-scenario-view.testql.toon.yaml
+│   │   │           ├── connect-test-testing-barcode.testql.toon.yaml
+│   │   │           ├── connect-test-testing-qr.testql.toon.yaml
+│   │   │           ├── connect-test-testing-rfid.testql.toon.yaml
+│   │   │           ├── connect-test-testing-search.testql.toon.yaml
+│   │   │           ├── connect-workshop-dispositions-search.testql.toon.yaml
+│   │   │           ├── connect-workshop-requests-search.testql.toon.yaml
+│   │   │           ├── connect-workshop-services-search.testql.toon.yaml
+│   │   │           ├── connect-workshop-transport-search.testql.toon.yaml
+│   │   │           └── run-all-views.testql.toon.yaml
+│   │   ├── config.testql.less
+│   │   ├── diagnostics
+│   │   │   ├── backend-diagnostic.testql.toon.yaml
+│   │   │   ├── create-todays-reports.testql.toon.yaml
+│   │   │   ├── full-diagnostic.testql.toon.yaml
+│   │   │   └── generate-test-reports.testql.toon.yaml
+│   │   ├── examples
+│   │   │   ├── device-identification.testql.toon.yaml
+│   │   │   ├── quick-navigation.testql.toon.yaml
+│   │   │   └── test-device-flow.testql.toon.yaml
+│   │   ├── generic
+│   │   │   ├── api-crud-template.testql.toon.yaml
+│   │   │   ├── auth-login.testql.toon.yaml
+│   │   │   └── health-check.testql.toon.yaml
+│   │   ├── logs
+│   │   │   └── logs
+│   │   │       ├── connect-config-feature-flags_20260226_231301.log
+│   │   │       ├── connect-config-labels_20260226_231304.log
+│   │   │       ├── connect-config-settings_20260226_231307.log
+│   │   │       ├── connect-config-tables_20260226_231310.log
+│   │   │       ├── connect-config-theme_20260226_231313.log
+│   │   │       ├── connect-config-users_20260226_231316.log
+│   │   │       ├── connect-id-barcode_20260226_231319.log
+│   │   │       ├── connect-id-list_20260226_231322.log
+│   │   │       ├── connect-id-manual_20260226_231325.log
+│   │   │       ├── connect-id-qr_20260226_231328.log
+│   │   │       ├── connect-id-rfid_20260226_230416.log
+│   │   │       ├── connect-id-rfid_20260226_230640.log
+│   │   │       ├── connect-id-rfid_20260226_230840.log
+│   │   │       ├── connect-id-rfid_20260226_231057.log
+│   │   │       ├── connect-id-rfid_20260226_231202.log
+│   │   │       ├── connect-id-rfid_20260226_231332.log
+│   │   │       ├── connect-manager-activities_20260226_231337.log
+│   │   │       ├── connect-manager-intervals_20260226_231340.log
+│   │   │       ├── connect-manager-library_20260226_231343.log
+│   │   │       ├── connect-manager-scenarios_20260226_230437.log
+│   │   │       ├── connect-manager-scenarios_20260226_230645.log
+│   │   │       ├── connect-manager-scenarios_20260226_230845.log
+│   │   │       ├── connect-manager-scenarios_20260226_231102.log
+│   │   │       ├── connect-manager-scenarios_20260226_231207.log
+│   │   │       ├── connect-manager-scenarios_20260226_231346.log
+│   │   │       ├── connect-manager-test-types_20260226_231351.log
+│   │   │       ├── connect-reports-chart_20260226_225241.log
+│   │   │       ├── connect-reports-chart_20260226_225645.log
+│   │   │       ├── connect-reports-chart_20260226_230133.log
+│   │   │       ├── connect-reports-chart_20260226_230246.log
+│   │   │       ├── connect-reports-chart_20260226_230631.log
+│   │   │       ├── connect-reports-chart_20260226_230817.log
+│   │   │       ├── connect-reports-chart_20260226_231034.log
+│   │   │       ├── connect-reports-chart_20260226_231139.log
+│   │   │       ├── connect-reports-chart_20260226_231354.log
+│   │   │       ├── connect-reports-custom_20260226_230354.log
+│   │   │       ├── connect-reports-custom_20260226_230837.log
+│   │   │       ├── connect-reports-custom_20260226_231054.log
+│   │   │       ├── connect-reports-custom_20260226_231159.log
+│   │   │       ├── connect-reports-custom_20260226_231357.log
+│   │   │       ├── connect-reports-filter_20260226_231400.log
+│   │   │       ├── connect-reports-month_20260226_230321.log
+│   │   │       ├── connect-reports-month_20260226_230831.log
+│   │   │       ├── connect-reports-month_20260226_231048.log
+│   │   │       ├── connect-reports-month_20260226_231153.log
+│   │   │       ├── connect-reports-month_20260226_231403.log
+│   │   │       ├── connect-reports-quarter_20260226_230338.log
+│   │   │       ├── connect-reports-quarter_20260226_230834.log
+│   │   │       ├── connect-reports-quarter_20260226_231051.log
+│   │   │       ├── connect-reports-quarter_20260226_231156.log
+│   │   │       ├── connect-reports-quarter_20260226_231406.log
+│   │   │       ├── connect-reports-week_20260226_230302.log
+│   │   │       ├── connect-reports-week_20260226_230826.log
+│   │   │       ├── connect-reports-week_20260226_231043.log
+│   │   │       ├── connect-reports-week_20260226_231148.log
+│   │   │       ├── connect-reports-week_20260226_231409.log
+│   │   │       ├── connect-reports-year_20260226_230220.log
+│   │   │       ├── connect-reports-year_20260226_230634.log
+│   │   │       ├── connect-reports-year_20260226_230820.log
+│   │   │       ├── connect-reports-year_20260226_231037.log
+│   │   │       ├── connect-reports-year_20260226_231142.log
+│   │   │       ├── connect-reports-year_20260226_231414.log
+│   │   │       ├── connect-test-devices-search_20260226_231420.log
+│   │   │       ├── connect-test-full-test_20260226_231423.log
+│   │   │       ├── connect-test-protocols_20260226_231426.log
+│   │   │       ├── connect-test-scenario-view_20260226_231429.log
+│   │   │       ├── connect-test-testing-barcode_20260226_231432.log
+│   │   │       ├── connect-test-testing-qr_20260226_231435.log
+│   │   │       ├── connect-test-testing-rfid_20260226_231438.log
+│   │   │       ├── connect-test-testing-search_20260226_231441.log
+│   │   │       ├── connect-workshop-dispositions-search_20260226_231446.log
+│   │   │       ├── connect-workshop-requests-search_20260226_231449.log
+│   │   │       ├── connect-workshop-services-search_20260226_231452.log
+│   │   │       ├── connect-workshop-transport-search_20260226_231455.log
+│   │   │       └── run-all-views_20260226_231458.log
+│   │   ├── recordings
+│   │   │   ├── recorded-test-session.testql.toon.yaml
+│   │   │   └── session-recording.testql.toon.yaml
+│   │   ├── tests
+│   │   │   ├── reproduce-view.testql.toon.yaml
+│   │   │   ├── run-mask-test-protocol.testql.toon.yaml
+│   │   │   ├── test-api.testql.toon.yaml
+│   │   │   ├── test-app-lifecycle.testql.toon.yaml
+│   │   │   ├── test-devices-crud.testql.toon.yaml
+│   │   │   ├── test-dsl-objects.testql.toon.yaml
+│   │   │   ├── test-encoder.testql.toon.yaml
+│   │   │   ├── test-gui-all.testql.toon.yaml
+│   │   │   ├── test-gui-connect-config.testql.toon.yaml
+│   │   │   ├── test-gui-connect-id.testql.toon.yaml
+│   │   │   ├── test-gui-connect-manager.testql.toon.yaml
+│   │   │   ├── test-gui-connect-reports.testql.toon.yaml
+│   │   │   ├── test-gui-connect-test.testql.toon.yaml
+│   │   │   ├── test-gui-connect-workshop.testql.toon.yaml
+│   │   │   ├── test-mixed-workflow.testql.toon.yaml
+│   │   │   ├── test-protocol-flow.testql.toon.yaml
+│   │   │   ├── test-ui-navigation.testql.toon.yaml
+│   │   │   └── views
+│   │   │       ├── connect-config-feature-flags.testql.toon.yaml
+│   │   │       ├── connect-config-labels.testql.toon.yaml
+│   │   │       ├── connect-config-settings.testql.toon.yaml
+│   │   │       ├── connect-config-tables.testql.toon.yaml
+│   │   │       ├── connect-config-theme.testql.toon.yaml
+│   │   │       ├── connect-config-users.testql.toon.yaml
+│   │   │       ├── connect-id-barcode.testql.toon.yaml
+│   │   │       ├── connect-id-list.testql.toon.yaml
+│   │   │       ├── connect-id-manual.testql.toon.yaml
+│   │   │       ├── connect-id-qr.testql.toon.yaml
+│   │   │       ├── connect-id-rfid.testql.toon.yaml
+│   │   │       ├── connect-manager-activities.testql.toon.yaml
+│   │   │       ├── connect-manager-intervals.testql.toon.yaml
+│   │   │       ├── connect-manager-library.testql.toon.yaml
+│   │   │       ├── connect-manager-scenarios.testql.toon.yaml
+│   │   │       ├── connect-manager-test-types.testql.toon.yaml
+│   │   │       ├── connect-reports-chart.testql.toon.yaml
+│   │   │       ├── connect-reports-custom.testql.toon.yaml
+│   │   │       ├── connect-reports-filter.testql.toon.yaml
+│   │   │       ├── connect-reports-month.testql.toon.yaml
+│   │   │       ├── connect-reports-quarter.testql.toon.yaml
+│   │   │       ├── connect-reports-week.testql.toon.yaml
+│   │   │       ├── connect-reports-year.testql.toon.yaml
+│   │   │       ├── connect-test-devices-search.testql.toon.yaml
+│   │   │       ├── connect-test-full-test.testql.toon.yaml
+│   │   │       ├── connect-test-protocols.testql.toon.yaml
+│   │   │       ├── connect-test-scenario-view.testql.toon.yaml
+│   │   │       ├── connect-test-testing-barcode.testql.toon.yaml
+│   │   │       ├── connect-test-testing-qr.testql.toon.yaml
+│   │   │       ├── connect-test-testing-rfid.testql.toon.yaml
+│   │   │       ├── connect-test-testing-search.testql.toon.yaml
+│   │   │       ├── connect-workshop-dispositions-search.testql.toon.yaml
+│   │   │       ├── connect-workshop-requests-search.testql.toon.yaml
+│   │   │       ├── connect-workshop-services-search.testql.toon.yaml
+│   │   │       ├── connect-workshop-transport-search.testql.toon.yaml
+│   │   │       └── run-all-views.testql.toon.yaml
+│   │   └── views
+│   ├── sumd_generator.py
+│   ├── sumd_parser.py
+│   └── toon_parser.py
+├── testql.egg-info
+│   ├── dependency_links.txt
+│   ├── entry_points.txt
+│   ├── PKG-INFO
+│   ├── requires.txt
+│   ├── SOURCES.txt
+│   └── top_level.txt
+├── testql-scenarios
+│   ├── generated-api-integration.testql.toon.yaml
+│   ├── generated-api-smoke.testql.toon.yaml
+│   ├── generated-cli-tests.testql.toon.yaml
+│   ├── generated-from-pytests.testql.toon.yaml
+│   ├── graphql
+│   │   ├── orders-mutations.graphql.testql.yaml
+│   │   └── user-contract.graphql.testql.yaml
+│   ├── nl
+│   │   ├── api-smoke-en.nl.md
+│   │   ├── api-smoke.nl.md
+│   │   ├── encoder-flow.nl.md
+│   │   ├── login-en.nl.md
+│   │   └── login.nl.md
+│   ├── proto
+│   │   ├── orders-events.proto.testql.yaml
+│   │   └── user-contract.proto.testql.yaml
+│   └── sql
+│       ├── orders-sqlite.sql.testql.yaml
+│       └── users-contract.sql.testql.yaml
+├── tests
+│   ├── fixtures
+│   │   └── discovery
+│   │       ├── compose
+│   │       │   └── docker-compose.yml
+│   │       ├── dockerfile
+│   │       │   └── Dockerfile
+│   │       ├── node_pkg
+│   │       │   ├── package.json
+│   │       │   └── package-lock.json
+│   │       ├── openapi3
+│   │       │   └── openapi.yaml
+│   │       └── python_pkg
+│   │           ├── pyproject.toml
+│   │           └── sample_api
+│   │               ├── __init__.py
+│   │               └── main.py
+│   ├── test_adapters_base.py
+│   ├── test_api_handler.py
+│   ├── test_cli.py
+│   ├── test_converter_handlers.py
+│   ├── test_converter.py
+│   ├── test_detectors.py
+│   ├── test_discovery.py
+│   ├── test_dispatcher.py
+│   ├── test_doql_parser_sumd_gen.py
+│   ├── test_echo_doql_parser.py
+│   ├── test_echo.py
+│   ├── test_echo_schemas_helpers.py
+│   ├── test_encoder_routes.py
+│   ├── test_generate_cmd.py
+│   ├── test_generate_ir_cli.py
+│   ├── test_generators.py
+│   ├── test_graphql_adapter.py
+│   ├── test_gui_execution.py
+│   ├── test_interpreter.py
+│   ├── test_ir.py
+│   ├── test_meta_confidence.py
+│   ├── test_meta_coverage.py
+│   ├── test_meta_mutator.py
+│   ├── test_meta_self_test.py
+│   ├── test_misc_cmds.py
+│   ├── test_nl_adapter.py
+│   ├── test_nl_entity_extractor.py
+│   ├── test_nl_grammar.py
+│   ├── test_nl_intent_recognizer.py
+│   ├── test_nl_scenarios_e2e.py
+│   ├── test_openapi_generator.py
+│   ├── test_pipeline.py
+│   ├── test_proto_adapter.py
+│   ├── test_proto_compatibility.py
+│   ├── test_proto_descriptor_loader.py
+│   ├── test_proto_graphql_scenarios_e2e.py
+│   ├── test_proto_message_validator.py
+│   ├── test_reporters.py
+│   ├── test_report_generator.py
+│   ├── test_runner.py
+│   ├── test_shell_execution.py
+│   ├── test_sources.py
+│   ├── test_sql_adapter.py
+│   ├── test_sql_ddl_parser.py
+│   ├── test_sql_dialect_resolver.py
+│   ├── test_sql_fixtures.py
+│   ├── test_sql_query_parser.py
+│   ├── test_sql_scenarios_e2e.py
+│   ├── test_suite_cmd_helpers.py
+│   ├── test_suite_execution.py
+│   ├── test_suite_listing.py
+│   ├── test_sumd_parser.py
+│   ├── test_targets.py
+│   ├── test_test_generator.py
+│   ├── test_testtoon_adapter.py
+│   ├── test_toon_parser.py
+│   └── test_unit_execution.py
+├── TODO
+│   ├── backend-diagnostic.testtoon
+│   ├── pss7000-full-flow.testtoon
+│   ├── testql-table-format-spec.md
+│   └── testtoon_parser.py
+├── TODO.md
+├── tree.sh
+├── tree.txt
+└── VERSION
+
+66 directories, 521 files

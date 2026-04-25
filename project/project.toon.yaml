@@ -1,7 +1,7 @@
-# testql | 746 func | 76f | 38372L | yaml | 2026-04-25
+# testql | 1397 func | 135f | 57405L | python | 2026-04-25
 
 HEALTH:
-  CC̄=2.3  critical=17 (limit:10)  dup=1  cycles=0
+  CC̄=2.1  critical=20 (limit:10)  dup=4  cycles=0
 
 ALERTS[20]:
   !!! high_fan_out     parse_testtoon = 21 (limit:10)
@@ -11,27 +11,27 @@ ALERTS[20]:
   !!  high_fan_out     main = 19 (limit:10)
   !!  high_fan_out     _run_iql_lines = 16 (limit:10)
   !!  high_fan_out     ApiRunnerMixin._cmd_api = 16 (limit:10)
+  !!  high_fan_out     PythonPackageProbe.probe = 16 (limit:10)
   !!  high_fan_out     main = 15 (limit:10)
   !!  high_fan_out     run = 15 (limit:10)
-  !!  high_fan_out     _parse_entities = 15 (limit:10)
 
-MODULES[200] (top by size):
-  M[project/calls.yaml] 2503L C:0 F:0 CC↑0 D:0 (yaml)
+MODULES[277] (top by size):
+  M[project/calls.yaml] 5018L C:0 F:0 CC↑0 D:0 (yaml)
+  M[project/map.toon.yaml] 1576L C:0 F:447 CC↑0 D:6 (yaml)
+  M[planfile.yaml] 1319L C:0 F:0 CC↑0 D:0 (yaml)
   M[code2llm_output/calls.yaml] 799L C:0 F:0 CC↑0 D:0 (yaml)
-  M[project/map.toon.yaml] 771L C:0 F:200 CC↑0 D:14 (yaml)
   M[goal.yaml] 511L C:0 F:0 CC↑0 D:0 (yaml)
+  M[project/calls.toon.yaml] 497L C:0 F:0 CC↑0 D:0 (yaml)
   M[testql/commands/encoder_routes.py] 477L C:0 F:27 CC↑10 D:0 (python)
-  M[testql/openapi_generator.py] 444L C:3 F:21 CC↑11 D:0 (python)
+  M[testql/openapi_generator.py] 444L C:3 F:21 CC↑11 D:1 (python)
   M[testql/interpreter/_gui.py] 425L C:1 F:10 CC↑9 D:0 (python)
   M[project/validation.toon.yaml] 421L C:0 F:0 CC↑0 D:0 (yaml)
   M[testql/interpreter/_testtoon_parser.py] 413L C:2 F:24 CC↑8 D:0 (python)
   M[testql/generators/generators.py] 372L C:4 F:17 CC↑12 D:0 (python)
   M[testql/runner.py] 371L C:3 F:18 CC↑12 D:0 (python)
-  M[testql/generators/analyzers.py] 299L C:1 F:16 CC↑10 D:0 (python)
-  M[project/calls.toon.yaml] 299L C:0 F:0 CC↑0 D:0 (yaml)
-  M[testql/commands/misc_cmds.py] 292L C:0 F:7 CC↑6 D:0 (python)
-  M[testql/sumd_parser.py] 277L C:5 F:12 CC↑11 D:0 (python)
-  LANGS: yaml:96/python:95/yml:2/txt:2/json:2/shell:2/toml:1
+  M[testql/adapters/nl/nl_adapter.py] 353L C:1 F:30 CC↑7 D:0 (python)
+  M[project/analysis.toon.yaml] 316L C:0 F:0 CC↑0 D:0 (yaml)
+  LANGS: python:164/yaml:104/yml:2/txt:2/json:2/shell:2/toml:1
 
 HOTSPOTS[10]:
   ★ parse_testtoon fan=21  // Orchestrates 21 calls
@@ -40,12 +40,12 @@ HOTSPOTS[10]:
   ★ suite fan=20  // Run test suite(s) — predefined or custom pattern.
   ★ main fan=19  // CLI entry point — unchanged from original.
 
-REFACTOR[7]:
+REFACTOR[8]:
   [1] H/H Split god module code2llm_output/calls.yaml (799L, 0 classes)
   [2] H/H Split god module goal.yaml (511L, 0 classes)
-  [3] H/H Split god module project/calls.yaml (2503L, 0 classes)
-  [4] H/H Split god module project/map.toon.yaml (771L, 0 classes)
-  [5] M/M Reduce parse_testtoon fan-out (currently 21)
+  [3] H/H Split god module planfile.yaml (1319L, 0 classes)
+  [4] H/H Split god module project/calls.yaml (5018L, 0 classes)
+  [5] H/H Split god module project/map.toon.yaml (1576L, 0 classes)
 
 EVOLUTION:
-  2026-04-25 CC̄=2.3 crit=17 38372L // Automated analysis
+  2026-04-25 CC̄=2.1 crit=20 57405L // Automated analysis

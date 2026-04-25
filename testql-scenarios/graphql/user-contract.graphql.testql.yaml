@@ -1,0 +1,13 @@
+# SCENARIO: User GraphQL contract
+# TYPE: graphql
+# VERSION: 1.0
+
+CONFIG[1]{key, value}:
+  endpoint, http://localhost:8000/graphql
+
+QUERY[1]{name, body, variables}:
+  getUser, "query($id: ID!) { user(id: $id) { id email } }", "{id: '42'}"
+
+ASSERT[2]{path, op, expected}:
+  data.user.id, ==, 42
+  data.user.email, contains, @

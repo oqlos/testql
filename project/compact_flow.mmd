@@ -1,26 +1,39 @@
 flowchart TD
     code2llm_output__map["code2llm_output.map<br/>83 funcs"]
-    project__map["project.map<br/>200 funcs"]
+    project__map["project.map<br/>447 funcs"]
     testql___base_fallback["testql._base_fallback<br/>26 funcs"]
-    testql__commands["testql.commands<br/>107 funcs"]
+    testql__adapters["testql.adapters<br/>235 funcs"]
+    testql__commands["testql.commands<br/>113 funcs"]
     testql__detectors["testql.detectors<br/>53 funcs"]
-    testql__generators["testql.generators<br/>43 funcs"]
+    testql__discovery["testql.discovery<br/>60 funcs"]
+    testql__generators["testql.generators<br/>89 funcs"]
     testql__interpreter["testql.interpreter<br/>132 funcs"]
+    testql__ir["testql.ir<br/>23 funcs"]
+    testql__meta["testql.meta<br/>34 funcs"]
     testql__openapi_generator["testql.openapi_generator<br/>21 funcs"]
     testql__runner["testql.runner<br/>18 funcs"]
-    testql__sumd_parser["testql.sumd_parser<br/>12 funcs"]
-    testql__interpreter ==>|20| project__map
     testql__commands ==>|13| code2llm_output__map
-    testql__commands ==>|11| project__map
+    testql__discovery ==>|13| project__map
+    testql__adapters ==>|7| code2llm_output__map
     testql__commands ==>|5| testql___base_fallback
     testql__interpreter ==>|5| code2llm_output__map
+    testql__adapters ==>|5| testql___base_fallback
+    testql__meta ==>|4| testql___base_fallback
+    testql__discovery ==>|4| testql___base_fallback
     testql__interpreter -->|3| testql___base_fallback
-    testql__openapi_generator -->|2| project__map
-    testql__sumd_parser -->|2| project__map
+    testql__generators -->|3| code2llm_output__map
+    testql__generators -->|3| testql__adapters
+    testql__commands -->|2| testql__generators
+    testql__ir -->|2| code2llm_output__map
     testql__generators -->|2| testql___base_fallback
+    testql__commands -->|2| project__map
+    testql__meta -->|2| code2llm_output__map
+    testql__meta -->|2| testql__adapters
+    testql__discovery -->|2| code2llm_output__map
     testql__runner -->|1| code2llm_output__map
     testql__runner -->|1| testql___base_fallback
     testql__openapi_generator -->|1| code2llm_output__map
     testql__openapi_generator -->|1| testql___base_fallback
-    testql__generators -->|1| code2llm_output__map
+    testql__generators -->|1| testql__openapi_generator
+    testql__generators -->|1| testql__interpreter
     testql__detectors -->|1| testql___base_fallback

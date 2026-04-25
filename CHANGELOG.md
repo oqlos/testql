@@ -111,6 +111,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-04-25
+
+### Docs
+- Update README.md
+- Update SUMD.md
+- Update SUMR.md
+- Update TODO.md
+- Update articles/testql-multi-dsl-refactor-plan.md
+- Update articles/testql-phase-6-artifact-discovery.md
+- Update project/README.md
+- Update project/context.md
+
+### Test
+- Update testql-scenarios/graphql/orders-mutations.graphql.testql.yaml
+- Update testql-scenarios/graphql/user-contract.graphql.testql.yaml
+- Update testql-scenarios/nl/api-smoke-en.nl.md
+- Update testql-scenarios/nl/api-smoke.nl.md
+- Update testql-scenarios/nl/encoder-flow.nl.md
+- Update testql-scenarios/nl/login-en.nl.md
+- Update testql-scenarios/nl/login.nl.md
+- Update testql-scenarios/proto/orders-events.proto.testql.yaml
+- Update testql-scenarios/proto/user-contract.proto.testql.yaml
+- Update testql-scenarios/sql/orders-sqlite.sql.testql.yaml
+- ... and 114 more files
+
+### Other
+- Update VERSION
+- Update app.doql.less
+- Update coverage.json
+- Update project.sh
+- Update project/analysis.toon.yaml
+- Update project/calls.mmd
+- Update project/calls.png
+- Update project/calls.toon.yaml
+- Update project/calls.yaml
+- Update project/compact_flow.mmd
+- ... and 11 more files
+
 ## [0.6.23] - 2026-04-25
 
 ### Docs

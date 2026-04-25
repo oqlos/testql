@@ -3,23 +3,28 @@
 ## Overview
 
 - **Project**: /home/tom/github/oqlos/testql
-- **Primary Language**: yaml
-- **Languages**: yaml: 96, python: 95, json: 2, yml: 2, txt: 2
+- **Primary Language**: python
+- **Languages**: python: 164, yaml: 104, json: 2, shell: 2, yml: 2
 - **Analysis Mode**: static
-- **Total Functions**: 746
-- **Total Classes**: 70
-- **Modules**: 200
-- **Entry Points**: 610
+- **Total Functions**: 1397
+- **Total Classes**: 153
+- **Modules**: 277
+- **Entry Points**: 1071
 
 ## Architecture by Module
 
 ### project.map.toon
-- **Functions**: 204
+- **Functions**: 490
 - **File**: `map.toon.yaml`
 
 ### code2llm_output.map.toon
 - **Functions**: 87
 - **File**: `map.toon.yaml`
+
+### testql.adapters.nl.nl_adapter
+- **Functions**: 30
+- **Classes**: 1
+- **File**: `nl_adapter.py`
 
 ### testql.commands.encoder_routes
 - **Functions**: 27
@@ -35,78 +40,75 @@
 - **Classes**: 2
 - **File**: `_testtoon_parser.py`
 
+### testql.adapters.sql.sql_adapter
+- **Functions**: 24
+- **Classes**: 1
+- **File**: `sql_adapter.py`
+
+### testql.adapters.graphql.graphql_adapter
+- **Functions**: 23
+- **Classes**: 1
+- **File**: `graphql_adapter.py`
+
 ### testql.openapi_generator
 - **Functions**: 21
 - **Classes**: 3
 - **File**: `openapi_generator.py`
+
+### testql.adapters.testtoon_adapter
+- **Functions**: 20
+- **Classes**: 1
+- **File**: `testtoon_adapter.py`
+
+### testql.ir.steps
+- **Functions**: 19
+- **Classes**: 10
+- **File**: `steps.py`
+
+### testql.discovery.probes.filesystem.package_python
+- **Functions**: 19
+- **Classes**: 1
+- **File**: `package_python.py`
 
 ### testql.runner
 - **Functions**: 18
 - **Classes**: 3
 - **File**: `runner.py`
 
+### testql.adapters.proto.proto_adapter
+- **Functions**: 18
+- **Classes**: 1
+- **File**: `proto_adapter.py`
+
 ### testql.generators.generators
 - **Functions**: 17
 - **Classes**: 4
 - **File**: `generators.py`
+
+### testql.adapters.sql.ddl_parser
+- **Functions**: 17
+- **Classes**: 3
+- **File**: `ddl_parser.py`
 
 ### testql.generators.analyzers
 - **Functions**: 16
 - **Classes**: 1
 - **File**: `analyzers.py`
 
+### testql.meta.coverage_analyzer
+- **Functions**: 15
+- **Classes**: 1
+- **File**: `coverage_analyzer.py`
+
+### testql.adapters.proto.descriptor_loader
+- **Functions**: 13
+- **Classes**: 3
+- **File**: `descriptor_loader.py`
+
 ### testql.sumd_parser
 - **Functions**: 12
 - **Classes**: 5
 - **File**: `sumd_parser.py`
-
-### testql.interpreter._encoder
-- **Functions**: 12
-- **Classes**: 1
-- **File**: `_encoder.py`
-
-### testql.detectors.fastapi_detector
-- **Functions**: 12
-- **Classes**: 1
-- **File**: `fastapi_detector.py`
-
-### testql.sumd_generator
-- **Functions**: 11
-- **File**: `sumd_generator.py`
-
-### testql.interpreter._api_runner
-- **Functions**: 10
-- **Classes**: 1
-- **File**: `_api_runner.py`
-
-### testql.interpreter._gui
-- **Functions**: 10
-- **Classes**: 1
-- **File**: `_gui.py`
-
-### testql.interpreter._unit
-- **Functions**: 10
-- **Classes**: 1
-- **File**: `_unit.py`
-
-### testql.detectors.unified
-- **Functions**: 10
-- **Classes**: 1
-- **File**: `unified.py`
-
-### testql.doql_parser
-- **Functions**: 9
-- **Classes**: 1
-- **File**: `doql_parser.py`
-
-### testql.commands.templates.content
-- **Functions**: 9
-- **Classes**: 1
-- **File**: `content.py`
-
-### testql.commands.echo.parsers.doql
-- **Functions**: 9
-- **File**: `doql.py`
 
 ## Key Entry Points
 
@@ -203,6 +205,9 @@ Examples:
 > Create new test file from template.
 - **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, out_dir.mkdir, TestContentBuilder.build
 
+### testql.adapters.testtoon_adapter._api_section_to_steps
+- **Calls**: steps.append, row.get, row.get, asserts.append, row.get, asserts.append, ApiStep, Assertion
+
 ### testql.report_generator.generate_report
 > Generate HTML report from data.json file.
 - **Calls**: json.loads, data.get, round, TestSuiteReport, HTMLReportGenerator, generator.generate, data_json.read_text, data.get
@@ -253,10 +258,6 @@ Examples:
 > WAIT_FOR "selector" VISIBLE 5000
 WAIT_FOR NETWORK_IDLE 10000
 - **Calls**: None.split, None.strip, self.out.step, time.time, self.out.step, self.results.append, len, self.out.step
-
-### testql.sumd_parser.SumdParser._parse_testql_scenarios
-> Parse testql scenarios from SUMD.
-- **Calls**: re.finditer, match.group, match.group, re.finditer, re.search, None.split, type_match.group, scenarios.append
 
 ## Process Flows
 
@@ -394,6 +395,13 @@ Commands:
 - **Methods**: 8
 - **Key Methods**: testql.interpreter._websockets.WebSocketMixin.__init_subclass__, testql.interpreter._websockets.WebSocketMixin._get_ws_context, testql.interpreter._websockets.WebSocketMixin._cmd_ws_connect, testql.interpreter._websockets.WebSocketMixin._cmd_ws_send, testql.interpreter._websockets.WebSocketMixin._ws_do_receive, testql.interpreter._websockets.WebSocketMixin._cmd_ws_receive, testql.interpreter._websockets.WebSocketMixin._cmd_ws_assert_msg, testql.interpreter._websockets.WebSocketMixin._cmd_ws_close
 
+### testql.adapters.registry.AdapterRegistry
+> In-process registry of `BaseDSLAdapter` instances.
+
+Adapters register themselves on import (or are r
+- **Methods**: 8
+- **Key Methods**: testql.adapters.registry.AdapterRegistry.__init__, testql.adapters.registry.AdapterRegistry.register, testql.adapters.registry.AdapterRegistry.unregister, testql.adapters.registry.AdapterRegistry.clear, testql.adapters.registry.AdapterRegistry.get, testql.adapters.registry.AdapterRegistry.all, testql.adapters.registry.AdapterRegistry.by_extension, testql.adapters.registry.AdapterRegistry.detect
+
 ### testql._base_fallback.VariableStore
 > Simple key-value store with interpolation support.
 - **Methods**: 7
@@ -412,16 +420,10 @@ Supports both legacy IQL format and
 - **Key Methods**: testql.interpreter.interpreter.IqlInterpreter.__init__, testql.interpreter.interpreter.IqlInterpreter.parse, testql.interpreter.interpreter.IqlInterpreter._is_testtoon, testql.interpreter.interpreter.IqlInterpreter.execute, testql.interpreter.interpreter.IqlInterpreter._dispatch, testql.interpreter.interpreter.IqlInterpreter._cmd_set, testql.interpreter.interpreter.IqlInterpreter._cmd_get
 - **Inherits**: ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, GuiMixin, ShellMixin, UnitMixin, WebSocketMixin, BaseInterpreter
 
-### testql.toon_parser.ToonParser
-> Parser for toon test files.
-- **Methods**: 6
-- **Key Methods**: testql.toon_parser.ToonParser.__init__, testql.toon_parser.ToonParser.parse_file, testql.toon_parser.ToonParser.parse, testql.toon_parser.ToonParser._parse_api_block, testql.toon_parser.ToonParser._parse_assert_block, testql.toon_parser.ToonParser._parse_log_block
-
-### testql._base_fallback.BaseInterpreter
-> Abstract base for language interpreters.
-- **Methods**: 6
-- **Key Methods**: testql._base_fallback.BaseInterpreter.__init__, testql._base_fallback.BaseInterpreter.parse, testql._base_fallback.BaseInterpreter.execute, testql._base_fallback.BaseInterpreter.run, testql._base_fallback.BaseInterpreter.run_file, testql._base_fallback.BaseInterpreter.strip_comments
-- **Inherits**: ABC
+### testql.discovery.probes.filesystem.package_python.PythonPackageProbe
+- **Methods**: 7
+- **Key Methods**: testql.discovery.probes.filesystem.package_python.PythonPackageProbe.probe, testql.discovery.probes.filesystem.package_python.PythonPackageProbe._find_manifests, testql.discovery.probes.filesystem.package_python.PythonPackageProbe._find_requirements, testql.discovery.probes.filesystem.package_python.PythonPackageProbe._find_python_files, testql.discovery.probes.filesystem.package_python.PythonPackageProbe._read_metadata, testql.discovery.probes.filesystem.package_python.PythonPackageProbe._looks_like_fastapi, testql.discovery.probes.filesystem.package_python.PythonPackageProbe._confidence
+- **Inherits**: BaseProbe
 
 ## Data Transformation Functions
 
@@ -515,25 +517,25 @@ Functions exposed as public API (no underscore prefix):
 - `testql.commands.misc_cmds.echo` - 20 calls
 - `testql.commands.run_cmd.run` - 20 calls
 - `testql.commands.endpoints_cmd.endpoints` - 20 calls
+- `testql.adapters.sql.fixtures.schema_fixture_from_rows` - 20 calls
 - `testql.doql_parser.DoqlParser.parse` - 19 calls
+- `testql.discovery.probes.filesystem.package_python.PythonPackageProbe.probe` - 18 calls
 - `testql.openapi_generator.ContractTestGenerator.validate_response` - 17 calls
 - `testql.commands.echo.cli.echo` - 17 calls
 - `testql.runner.DslCliExecutor.cmd_assert_json` - 16 calls
 - `testql.interpreter.interpreter.IqlInterpreter.execute` - 16 calls
+- `testql.commands.discover_cmd.discover` - 16 calls
 - `testql.commands.encoder_routes.iql_run_file` - 15 calls
 - `testql.interpreter._testtoon_parser.parse_testtoon` - 15 calls
 - `testql.reporters.junit.JUnitReporter.generate` - 15 calls
+- `testql.discovery.probes.filesystem.package_node.NodePackageProbe.probe` - 15 calls
 - `TODO.testtoon_parser.parse_value` - 14 calls
 - `testql.commands.encoder_routes.iql_list_files` - 14 calls
+- `testql.discovery.probes.filesystem.api_openapi.OpenAPIProbe.probe` - 14 calls
 - `testql.toon_parser.ToonParser.parse` - 13 calls
 - `testql.commands.suite.cli.list_tests` - 13 calls
 - `testql.interpreter.dispatcher.CommandDispatcher.dispatch` - 13 calls
 - `testql.reporters.console.report_console` - 13 calls
-- `TODO.testtoon_parser.print_parsed` - 12 calls
-- `testql.interpreter.converter.renderer.render_sections` - 12 calls
-- `testql.commands.encoder_routes.iql_read_file` - 11 calls
-- `testql.commands.encoder_routes.iql_list_tables` - 11 calls
-- `testql.commands.encoder_routes.iql_read_log` - 11 calls
 
 ## System Interactions
 

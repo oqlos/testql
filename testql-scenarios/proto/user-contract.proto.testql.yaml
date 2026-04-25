@@ -1,0 +1,15 @@
+# SCENARIO: User proto contract
+# TYPE: proto
+# VERSION: 1.0
+
+PROTO[1]{file}:
+  schemas/user.proto
+
+MESSAGE[2]{name, fields}:
+  User, "id:int64=1, email:string=user@example.com, active:bool=true"
+  Order, "id:int64=42, user_id:int64=1, total:double=99.99"
+
+ASSERT[3]{name, check}:
+  User, round_trip_equal
+  User, all_required_present
+  Order, round_trip_equal

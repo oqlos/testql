@@ -1,0 +1,21 @@
+# SCENARIO: User table contract
+# TYPE: sql
+# DIALECT: postgres
+# VERSION: 1.0
+
+CONFIG[1]{key, value}:
+  connection_url, postgresql://localhost/test_db
+
+SCHEMA[3]{table, column, type}:
+  users, id, INT
+  users, email, VARCHAR(255)
+  users, created_at, TIMESTAMP
+
+QUERY[2]{name, sql}:
+  count_users, SELECT COUNT(*) FROM users
+  active_users, SELECT id FROM users WHERE active = true
+
+ASSERT[3]{query, op, expected}:
+  count_users, ==, 100
+  active_users.length, >, 0
+  active_users[0].id, !=, null

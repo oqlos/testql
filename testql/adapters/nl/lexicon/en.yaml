@@ -1,0 +1,93 @@
+# English lexicon for natural-language test parsing.
+# Multi-word verb phrases come first so longest match wins.
+
+lang: en
+
+intents:
+  navigate:
+    verbs:
+      - "go to"
+      - "navigate to"
+      - "open page"
+      - "visit"
+      - "open"
+      - "navigate"
+      - "go"
+
+  click:
+    verbs:
+      - "click button"
+      - "click on"
+      - "press button"
+      - "tap on"
+      - "click"
+      - "press"
+      - "tap"
+
+  input:
+    verbs:
+      - "type into"
+      - "enter into"
+      - "fill in"
+      - "fill into"
+      - "input into"
+      - "type"
+      - "enter"
+      - "fill"
+      - "input"
+    prepositions: ["into", "in", "to"]
+    field_nouns: ["field", "input", "textbox", "the"]
+
+  assert:
+    verbs:
+      - "ensure that"
+      - "verify that"
+      - "assert that"
+      - "check that"
+      - "ensure"
+      - "verify"
+      - "assert"
+      - "check"
+
+  wait:
+    verbs:
+      - "wait for"
+      - "wait"
+
+  api:
+    verbs:
+      - "send request"
+      - "execute request"
+      - "call endpoint"
+      - "execute"
+      - "send"
+      - "call"
+
+  sql:
+    verbs:
+      - "run sql query"
+      - "execute sql"
+      - "sql query"
+      - "query"
+
+  encoder:
+    verbs:
+      - "turn on encoder"
+      - "turn off encoder"
+      - "rotate encoder"
+      - "click encoder"
+      - "encoder"
+
+operators:
+  equal: ["is", "equals", "equal to", "==", "="]
+  not_equal: ["is not", "differs from", "!="]
+  contains: ["contains", "has"]
+  greater: ["greater than", ">"]
+  less: ["less than", "<"]
+  matches: ["matches"]
+
+field_nouns:
+  status: ["status", "status code", "http status", "response code"]
+  url: ["url", "address", "path"]
+  visible: ["visible", "shown", "displayed"]
+  element: ["element", "selector"]

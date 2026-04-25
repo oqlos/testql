@@ -1,5 +1,6 @@
 """TestQL commands package."""
 
+from testql.commands.discover_cmd import discover
 from testql.commands.echo import echo
 from testql.commands.endpoints_cmd import endpoints, openapi
 from testql.commands.generate_cmd import analyze, generate
@@ -10,6 +11,7 @@ from testql.commands.run_cmd import run
 from testql.commands.suite_cmd import list_tests, suite
 
 __all__ = [
+    "discover",
     "echo",
     "cli_echo",
     "endpoints",

@@ -1,0 +1,5 @@
+[project]
+name = "sample-python-api"
+version = "0.1.0"
+description = "Sample Python API"
+dependencies = ["fastapi>=0.100", "httpx>=0.27"]

@@ -1,0 +1,22 @@
+# SCENARIO: Orders table — SQLite
+# TYPE: sql
+# DIALECT: sqlite
+# VERSION: 1.0
+
+CONFIG[1]{key, value}:
+  connection_url, sqlite:///orders.db
+
+SCHEMA[4]{table, column, type}:
+  orders, id, INTEGER
+  orders, user_id, INTEGER
+  orders, total, REAL
+  orders, created_at, TEXT
+
+QUERY[3]{name, sql}:
+  total_orders, SELECT COUNT(*) FROM orders
+  by_user, SELECT user_id COUNT(*) AS n FROM orders GROUP BY user_id
+  recent, SELECT id FROM orders ORDER BY created_at DESC LIMIT 10
+
+ASSERT[2]{query, op, expected}:
+  total_orders, >=, 0
+  recent.length, <=, 10

@@ -1,0 +1,103 @@
+# Polish lexicon for natural-language test parsing.
+# Each intent groups synonym verbs (lower-cased, base + inflected forms).
+# Multi-word verb phrases must come *before* shorter prefixes so longest match wins.
+
+lang: pl
+
+intents:
+  navigate:
+    verbs:
+      - "otwórz stronę"
+      - "przejdź do"
+      - "przejdź na"
+      - "idź do"
+      - "idź na"
+      - "wejdź na"
+      - "otwórz"
+      - "otwórzyć"
+      - "przejdź"
+      - "przejść"
+      - "idź"
+      - "wejdź"
+      - "wejść"
+
+  click:
+    verbs:
+      - "kliknij w"
+      - "kliknij na"
+      - "kliknij przycisk"
+      - "naciśnij przycisk"
+      - "kliknij"
+      - "kliknięcie"
+      - "naciśnij"
+      - "naciśnięcie"
+      - "tap"
+
+  input:
+    verbs:
+      - "wprowadź wartość"
+      - "wprowadź"
+      - "wpisz"
+      - "wpisać"
+      - "wypełnij"
+      - "wypełnić"
+      - "wprowadzić"
+    prepositions: ["do", "w", "na"]
+    field_nouns: ["pole", "pola", "polu", "input", "inputu"]
+
+  assert:
+    verbs:
+      - "upewnij się że"
+      - "upewnij się"
+      - "sprawdź że"
+      - "zweryfikuj że"
+      - "sprawdź"
+      - "zweryfikuj"
+      - "sprawdzić"
+      - "sprawdzenie"
+
+  wait:
+    verbs:
+      - "poczekaj"
+      - "czekaj"
+      - "odczekaj"
+      - "zaczekaj"
+
+  api:
+    verbs:
+      - "wyślij żądanie"
+      - "wykonaj żądanie"
+      - "wyślij zapytanie http"
+      - "wywołaj endpoint"
+      - "wywołaj"
+      - "wyślij"
+      - "wykonaj"
+
+  sql:
+    verbs:
+      - "wykonaj zapytanie sql"
+      - "uruchom zapytanie"
+      - "zapytanie sql"
+      - "zapytaj"
+
+  encoder:
+    verbs:
+      - "włącz enkoder"
+      - "wyłącz enkoder"
+      - "obróć enkoder"
+      - "kliknij enkoder"
+      - "enkoder"
+
+operators:
+  equal: ["to", "jest", "wynosi", "równa się", "równe", "==", "="]
+  not_equal: ["nie jest", "nie wynosi", "różne", "!="]
+  contains: ["zawiera", "ma w sobie"]
+  greater: ["większy niż", "większa niż", "większe niż", "więcej niż", ">"]
+  less: ["mniejszy niż", "mniejsza niż", "mniejsze niż", "mniej niż", "<"]
+  matches: ["pasuje do", "pasuje", "matches"]
+
+field_nouns:
+  status: ["status", "kod statusu", "kod odpowiedzi", "kod http"]
+  url: ["url", "adres url", "adres", "ścieżka", "path"]
+  visible: ["widoczny", "widoczna", "widoczne", "widoczny element"]
+  element: ["element", "selektor"]
