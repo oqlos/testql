@@ -15,13 +15,14 @@ class GuiMixin:
     """Mixin providing desktop GUI test commands using Playwright.
 
     Commands:
-      - GUI_START "app_path" [args] — Launch desktop application
-      - GUI_CLICK "selector" — Click element
-      - GUI_INPUT "selector" "text" — Type text into element
-      - GUI_ASSERT_VISIBLE "selector" — Assert element is visible
-      - GUI_ASSERT_TEXT "selector" "expected" — Assert element text
-      - GUI_CAPTURE "selector" "screenshot.png" — Take screenshot
-      - GUI_STOP — Close application
+      - GUI_START (START) "path" — Launch session
+      - GUI_NAVIGATE (NAVIGATE, GOTO) "path" — Navigate
+      - GUI_CLICK (CLICK) "selector" — Click
+      - GUI_INPUT (INPUT, TYPE) "selector" "text" — Type
+      - GUI_ASSERT_VISIBLE (ASSERT_VISIBLE, VISIBLE) "selector" — Visible?
+      - GUI_ASSERT_TEXT (ASSERT_TEXT, TEXT) "selector" "expected" — Text?
+      - GUI_CAPTURE (CAPTURE, SCREENSHOT) "selector" "file" — Screenshot
+      - GUI_STOP (STOP, CLOSE) — Close session
     """
 
     _gui_driver: str | None = None  # "playwright" or "selenium"
@@ -124,7 +125,11 @@ class GuiMixin:
 
         if app_path.startswith("http://") or app_path.startswith("https://"):
             # Web app
-            self._gui_app = webdriver.Chrome()
+            headless = str(self.vars.get("headless", "true")).lower() == "true"
+            options = webdriver.ChromeOptions()
+            if headless:
+                options.add_argument("--headless=new")
+            self._gui_app = webdriver.Chrome(options=options)
             self._gui_app.get(app_path)
             self._gui_page = self._gui_app
             self.out.step("🖥️", f"Selenium: Opened {app_path}")
@@ -135,6 +140,71 @@ class GuiMixin:
         self.results.append(StepResult(
             name=f'GUI_START "{app_path[:40]}"', status=StepStatus.PASSED
         ))
+
+    def _cmd_gui_navigate(self, args: str, line: IqlLine) -> None:
+        """GUI_NAVIGATE "path_or_url" — Navigate to another page.
+
+        Examples:
+            GUI_NAVIGATE "/connect-id"
+            GUI_NAVIGATE "http://google.com"
+        """
+        path = args.strip().strip('"\'')
+        if not path:
+            self.out.fail(f"L{line.number}: GUI_NAVIGATE requires path or URL")
+            return
+
+        if self.dry_run:
+            self.out.step("🌐", f'GUI_NAVIGATE "{path}" (dry-run)')
+            self.results.append(StepResult(
+                name=f'GUI_NAVIGATE "{path}"', status=StepStatus.PASSED
+            ))
+            return
+
+        if not self._gui_page:
+            self.out.step("🖥️", "Auto-starting GUI session for navigation...")
+            base_url = self.vars.get("base_url", "http://127.0.0.1:8100")
+            self._cmd_gui_start(base_url, line)
+            if not self._gui_page:
+                self.out.fail("GUI_NAVIGATE: Failed to auto-start GUI session")
+                self.results.append(StepResult(
+                    name=f'GUI_NAVIGATE "{path}"',
+                    status=StepStatus.ERROR,
+                    message="Failed to auto-start GUI session",
+                ))
+                return
+
+        try:
+            if self._gui_driver == "playwright":
+                # Handle relative paths if base_url is set
+                target = path
+                if not (path.startswith("http://") or path.startswith("https://")):
+                    base_url = self.vars.get("base_url", "http://localhost:8100")
+                    target = f"{base_url.rstrip('/')}/{path.lstrip('/')}"
+                
+                self._gui_page.goto(target)
+            elif self._gui_driver == "selenium":
+                target = path
+                if not (path.startswith("http://") or path.startswith("https://")):
+                    base_url = self.vars.get("base_url", "http://localhost:8100")
+                    target = f"{base_url.rstrip('/')}/{path.lstrip('/')}"
+                
+                self._gui_page.get(target)
+
+            self.out.step("🌐", f'GUI_NAVIGATE "{path}"')
+            self.results.append(StepResult(
+                name=f'GUI_NAVIGATE "{path}"', status=StepStatus.PASSED
+            ))
+        except Exception as e:
+            self.out.fail(f'GUI_NAVIGATE "{path}" error: {e}')
+            self.results.append(StepResult(
+                name=f'GUI_NAVIGATE "{path}"',
+                status=StepStatus.ERROR,
+                message=str(e),
+            ))
+
+    def _cmd_navigate(self, args: str, line: IqlLine) -> None:
+        """Alias for GUI_NAVIGATE."""
+        self._cmd_gui_navigate(args, line)
 
     def _cmd_gui_click(self, args: str, line: IqlLine) -> None:
         """GUI_CLICK "selector" — Click element.
@@ -424,3 +494,57 @@ class GuiMixin:
                 status=StepStatus.ERROR,
                 message=str(e),
             ))
+
+    # --- Unified Command Aliases ---
+
+    def _cmd_start(self, args: str, line: IqlLine) -> None:
+        """Alias for GUI_START."""
+        self._cmd_gui_start(args, line)
+
+    def _cmd_stop(self, args: str, line: IqlLine) -> None:
+        """Alias for GUI_STOP."""
+        self._cmd_gui_stop(args, line)
+
+    def _cmd_close(self, args: str, line: IqlLine) -> None:
+        """Alias for GUI_STOP."""
+        self._cmd_gui_stop(args, line)
+
+    def _cmd_goto(self, args: str, line: IqlLine) -> None:
+        """Alias for GUI_NAVIGATE."""
+        self._cmd_gui_navigate(args, line)
+
+    def _cmd_click(self, args: str, line: IqlLine) -> None:
+        """Alias for GUI_CLICK."""
+        self._cmd_gui_click(args, line)
+
+    def _cmd_input(self, args: str, line: IqlLine) -> None:
+        """Alias for GUI_INPUT."""
+        self._cmd_gui_input(args, line)
+
+    def _cmd_type(self, args: str, line: IqlLine) -> None:
+        """Alias for GUI_INPUT."""
+        self._cmd_gui_input(args, line)
+
+    def _cmd_assert_visible(self, args: str, line: IqlLine) -> None:
+        """Alias for GUI_ASSERT_VISIBLE."""
+        self._cmd_gui_assert_visible(args, line)
+
+    def _cmd_visible(self, args: str, line: IqlLine) -> None:
+        """Alias for GUI_ASSERT_VISIBLE."""
+        self._cmd_gui_assert_visible(args, line)
+
+    def _cmd_assert_text(self, args: str, line: IqlLine) -> None:
+        """Alias for GUI_ASSERT_TEXT."""
+        self._cmd_gui_assert_text(args, line)
+
+    def _cmd_text(self, args: str, line: IqlLine) -> None:
+        """Alias for GUI_ASSERT_TEXT."""
+        self._cmd_gui_assert_text(args, line)
+
+    def _cmd_capture(self, args: str, line: IqlLine) -> None:
+        """Alias for GUI_CAPTURE."""
+        self._cmd_gui_capture(args, line)
+
+    def _cmd_screenshot(self, args: str, line: IqlLine) -> None:
+        """Alias for GUI_CAPTURE."""
+        self._cmd_gui_capture(args, line)

@@ -19,7 +19,8 @@ import click
     help="Output format",
 )
 @click.option("--quiet", is_flag=True, help="Suppress step-by-step output")
-def run(file: str, url: str, dry_run: bool, output: str, quiet: bool) -> None:
+@click.option("--planfile", is_flag=True, help="Auto-create tickets for failures via planfile")
+def run(file: str, url: str, dry_run: bool, output: str, quiet: bool, planfile: bool) -> None:
     """Run a TestQL (.testql.toon.yaml) scenario."""
     from testql.interpreter import IqlInterpreter
 
@@ -52,5 +53,17 @@ def run(file: str, url: str, dry_run: bool, output: str, quiet: bool) -> None:
                 indent=2,
             )
         )
+
+    if not result.ok and planfile:
+        from testql.integrations.planfile_hook import create_test_failure_ticket
+        # Format errors for ticket
+        error_msgs = []
+        for err in result.errors:
+            if isinstance(err, dict):
+                error_msgs.append(f"`{err.get('step', 'N/A')}`: {err.get('message', '')}")
+            else:
+                error_msgs.append(str(err))
+            
+        create_test_failure_ticket(error_msgs, filename)
 
     sys.exit(0 if result.ok else 1)

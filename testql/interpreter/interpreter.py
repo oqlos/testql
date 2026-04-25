@@ -54,7 +54,12 @@ class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, G
         include_paths: list[str] | None = None,
         bridge_url: str | None = None,
     ):
-        super().__init__(variables=variables, quiet=quiet, bridge_url=bridge_url)
+        # Handle bridge_url safely (BaseInterpreter in oqlos might not support it yet)
+        try:
+            super().__init__(variables=variables, quiet=quiet, bridge_url=bridge_url)
+        except TypeError:
+            super().__init__(variables=variables, quiet=quiet)
+            self.bridge_url = bridge_url
         self.api_url = api_url
         self.dry_run = dry_run
         self.include_paths = include_paths or ["."]

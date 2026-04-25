@@ -553,9 +553,10 @@ class DomScanMixin:
                 i += 1
 
         if not getattr(self, "_gui_page", None):
-            self.out.fail(f"L{line.number}: DOM_SCAN requires active GUI session. Use GUI_START first.")
+            self.out.fail(f"L{line.number}: DOM_SCAN requires active GUI session.")
+            self.out.info("Hint: Add 'GUI_START http://your-app-url' before this command")
             self.results.append(StepResult(
-                name=f"DOM_SCAN {scan_type}", status=StepStatus.ERROR, message="No active GUI session"
+                name=f"DOM_SCAN {scan_type}", status=StepStatus.ERROR, message="No active GUI session. Use GUI_START first."
             ))
             return
 
@@ -631,7 +632,12 @@ class DomScanMixin:
 
         if not getattr(self, "_gui_page", None):
             self.out.fail(f"L{line.number}: DOM_AUDIT_BUTTONS requires active GUI session.")
-            self.results.append(StepResult(name="DOM_AUDIT_BUTTONS", status=StepStatus.ERROR, message="No active GUI session"))
+            self.out.info("Hint: Add 'GUI_START http://your-app-url' before this command")
+            self.results.append(StepResult(
+                name="DOM_AUDIT_BUTTONS",
+                status=StepStatus.ERROR,
+                message="No active GUI session. Use GUI_START first."
+            ))
             return
 
         if self.dry_run:

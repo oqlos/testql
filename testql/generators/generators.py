@@ -28,17 +28,23 @@ class APIGeneratorMixin:
         if not routes:
             return None
 
-        validate_url = self.profile.config.get('validate_url')
-        if validate_url:
-            routes = self._validate_endpoints(routes, validate_url)
+        # Validate endpoints by default - use validate_url or auto-detect from config
+        base_url = self.profile.config.get('validate_url') or self.profile.config.get('base_url')
+        if base_url:
+            routes = self._validate_endpoints(routes, base_url)
             if not routes:
                 return None
 
+        # Filter to only GET endpoints for smoke tests (POST/PATCH need request bodies)
+        get_routes = [r for r in routes if r.get('method', 'GET').upper() == 'GET']
+        if not get_routes:
+            return None
+
         sections = self._build_api_test_header(frameworks)
         sections.extend(self._build_api_test_config(frameworks))
-        sections.extend(self._build_api_test_endpoints(routes))
+        sections.extend(self._build_api_test_endpoints(get_routes))
         sections.extend(self._build_api_test_assertions())
-        sections.extend(self._build_api_test_summary(routes))
+        sections.extend(self._build_api_test_summary(get_routes))
 
         content = '\n'.join(sections)
         output_file = output_dir / 'generated-api-smoke.testql.toon.yaml'
@@ -92,9 +98,13 @@ class APIGeneratorMixin:
 
     def _build_api_test_config(self, frameworks: list[str]) -> list[str]:
         """Build CONFIG section for API test scenario."""
+        # Use explicit base_url from config, fallback to localhost
+        base_url = 'http://localhost:8101'
+        if hasattr(self, 'profile') and self.profile and hasattr(self.profile, 'config'):
+            base_url = self.profile.config.get('base_url', base_url)
         return [
             "CONFIG[5]{key, value}:",
-            "  base_url, ${api_url:-http://localhost:8100}",
+            f"  base_url, {base_url}",
             "  timeout_ms, 10000",
             "  retry_count, 3",
             "  retry_backoff_ms, 1000",
@@ -477,6 +487,8 @@ class SpecializedGeneratorMixin:
             "# SCENARIO: Hardware Smoke Tests",
             "# TYPE: hardware",
             "# GENERATED: true",
+            "# NOTE: Requires hardware service running at hardware_url",
+            "#       Hardware endpoints should respond at /api/v1/hardware/{peripheral}",
             "",
             "CONFIG[4]{key, value}:",
             "  hardware_url, http://localhost:8202",
@@ -484,14 +496,17 @@ class SpecializedGeneratorMixin:
             "  auto_start_firmware, true",
             "  retry_count, 3",
             "",
+            "# Health check - verifies hardware service is running",
             "API[2]{method, endpoint, expected_status}:",
+            "  GET, /health, 200",
             "  GET, /api/v1/hardware/health, 200",
-            "  GET, /api/v1/hardware/identify, 200",
             "",
-            "HARDWARE[3]{command, peripheral}:",
-            "  check, piadc",
-            "  check, motor-dri0050",
-            "  check, modbus-io",
+            "# Hardware peripheral checks - requires hardware service",
+            "# Available commands: check, status, reset, configure",
+            "# HARDWARE[3]{command, peripheral}:",
+            "#   check, piadc",
+            "#   check, motor-dri0050",
+            "#   check, modbus-io",
         ]
 
         content = '\n'.join(sections)

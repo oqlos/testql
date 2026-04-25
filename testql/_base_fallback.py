@@ -78,13 +78,24 @@ class VariableStore:
         self._vars.clear()
 
     def interpolate(self, text: str) -> str:
-        """Replace ${var} and $var references in text."""
+        """Replace ${var}, ${var:-default}, and $var references in text."""
         def _repl(m: re.Match) -> str:
             key = m.group(1) or m.group(2)
             val = self._vars.get(key)
             return str(val) if val is not None else m.group(0)
-        # ${var} first, then $var (word chars only)
+
+        def _repl_with_default(m: re.Match) -> str:
+            """Handle ${var:-default} syntax with fallback value."""
+            key = m.group(1)
+            default = m.group(2)
+            val = self._vars.get(key)
+            return str(val) if val is not None else default
+
+        # ${var:-default} syntax first (with fallback value)
+        text = re.sub(r'\$\{([^}:-]+):-([^}]*)\}', _repl_with_default, text)
+        # ${var} syntax
         text = re.sub(r'\$\{([^}]+)\}', _repl, text)
+        # $var syntax (word chars only)
         text = re.sub(r'\$([A-Za-z_]\w*)', _repl, text)
         return text
 
