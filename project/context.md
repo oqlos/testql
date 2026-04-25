@@ -4,17 +4,17 @@
 
 - **Project**: /home/tom/github/oqlos/testql
 - **Primary Language**: python
-- **Languages**: python: 164, yaml: 104, json: 2, shell: 2, yml: 2
+- **Languages**: python: 193, yaml: 109, json: 6, txt: 3, yml: 2
 - **Analysis Mode**: static
-- **Total Functions**: 1397
-- **Total Classes**: 153
-- **Modules**: 277
-- **Entry Points**: 1071
+- **Total Functions**: 1509
+- **Total Classes**: 169
+- **Modules**: 316
+- **Entry Points**: 1109
 
 ## Architecture by Module
 
 ### project.map.toon
-- **Functions**: 490
+- **Functions**: 491
 - **File**: `map.toon.yaml`
 
 ### code2llm_output.map.toon
@@ -95,20 +95,19 @@
 - **Classes**: 1
 - **File**: `analyzers.py`
 
+### testql.results.analyzer
+- **Functions**: 16
+- **File**: `analyzer.py`
+
 ### testql.meta.coverage_analyzer
 - **Functions**: 15
 - **Classes**: 1
 - **File**: `coverage_analyzer.py`
 
-### testql.adapters.proto.descriptor_loader
-- **Functions**: 13
-- **Classes**: 3
-- **File**: `descriptor_loader.py`
-
-### testql.sumd_parser
-- **Functions**: 12
-- **Classes**: 5
-- **File**: `sumd_parser.py`
+### testql.discovery.probes.network.http_endpoint
+- **Functions**: 14
+- **Classes**: 2
+- **File**: `http_endpoint.py`
 
 ## Key Entry Points
 
@@ -172,6 +171,9 @@ Examples:
     GUI_INPUT "[data-testid=search]" "hello world"
     GUI_INPUT "input#username" "te
 - **Calls**: None.split, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append, self.out.fail
+
+### testql.commands.inspect_cmd.inspect
+- **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, Path, testql.results.analyzer.inspect_source
 
 ### testql.openapi_generator.ContractTestGenerator.generate_contract_tests
 > Generate TestQL contract tests from OpenAPI spec.
@@ -253,11 +255,6 @@ Examples:
     GUI_CLICK "[data-testid=submit-button]"
     GUI_CLICK "button#submit"
 - **Calls**: None.strip, self.out.fail, self.out.step, self.results.append, self.out.fail, self.results.append, self.out.step, self.results.append
-
-### testql.interpreter._flow.FlowMixin._cmd_wait_for
-> WAIT_FOR "selector" VISIBLE 5000
-WAIT_FOR NETWORK_IDLE 10000
-- **Calls**: None.split, None.strip, self.out.step, time.time, self.out.step, self.results.append, len, self.out.step
 
 ## Process Flows
 
@@ -487,6 +484,11 @@ Key functions that process and transform data:
 - **Confidence**: 0.90
 - **Functions**: TODO.testtoon_parser.parse_value
 
+### recursion_interp_value
+- **Type**: recursion
+- **Confidence**: 0.90
+- **Functions**: testql.ir_runner.interpolation.interp_value
+
 ### state_machine_EventBridge
 - **Type**: state_machine
 - **Confidence**: 0.70
@@ -500,10 +502,12 @@ Functions exposed as public API (no underscore prefix):
 - `testql.commands.suite.cli.suite` - 36 calls
 - `testql.commands.misc_cmds.watch` - 35 calls
 - `TODO.testtoon_parser.parse_testtoon` - 31 calls
+- `testql.results.artifacts.write_inspection_artifacts` - 28 calls
 - `testql.interpreter.main` - 26 calls
 - `testql.runner.main` - 24 calls
 - `testql.commands.misc_cmds.from_sumd` - 23 calls
 - `testql.commands.endpoints_cmd.openapi` - 23 calls
+- `testql.commands.inspect_cmd.inspect` - 23 calls
 - `testql.openapi_generator.ContractTestGenerator.generate_contract_tests` - 22 calls
 - `testql.sumd_parser.SumdParser.generate_testql_scenarios` - 22 calls
 - `testql.commands.generate_cmd.analyze` - 22 calls
@@ -522,20 +526,18 @@ Functions exposed as public API (no underscore prefix):
 - `testql.discovery.probes.filesystem.package_python.PythonPackageProbe.probe` - 18 calls
 - `testql.openapi_generator.ContractTestGenerator.validate_response` - 17 calls
 - `testql.commands.echo.cli.echo` - 17 calls
+- `testql.commands.discover_cmd.discover` - 17 calls
 - `testql.runner.DslCliExecutor.cmd_assert_json` - 16 calls
 - `testql.interpreter.interpreter.IqlInterpreter.execute` - 16 calls
-- `testql.commands.discover_cmd.discover` - 16 calls
 - `testql.commands.encoder_routes.iql_run_file` - 15 calls
 - `testql.interpreter._testtoon_parser.parse_testtoon` - 15 calls
-- `testql.reporters.junit.JUnitReporter.generate` - 15 calls
 - `testql.discovery.probes.filesystem.package_node.NodePackageProbe.probe` - 15 calls
+- `testql.reporters.junit.JUnitReporter.generate` - 15 calls
 - `TODO.testtoon_parser.parse_value` - 14 calls
 - `testql.commands.encoder_routes.iql_list_files` - 14 calls
+- `testql.results.analyzer.analyze_topology` - 14 calls
 - `testql.discovery.probes.filesystem.api_openapi.OpenAPIProbe.probe` - 14 calls
-- `testql.toon_parser.ToonParser.parse` - 13 calls
-- `testql.commands.suite.cli.list_tests` - 13 calls
-- `testql.interpreter.dispatcher.CommandDispatcher.dispatch` - 13 calls
-- `testql.reporters.console.report_console` - 13 calls
+- `testql.discovery.probes.network.http_endpoint.HTTPPageProbe.probe` - 14 calls
 
 ## System Interactions
 

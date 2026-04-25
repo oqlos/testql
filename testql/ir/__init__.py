@@ -10,6 +10,7 @@ See `articles/testql-multi-dsl-refactor-plan.md` (Phase 0) for design rationale.
 from __future__ import annotations
 
 from .assertions import Assertion
+from .captures import Capture
 from .fixtures import Fixture
 from .metadata import ScenarioMetadata
 from .plan import TestPlan
@@ -28,6 +29,7 @@ from .steps import (
 
 __all__ = [
     "Assertion",
+    "Capture",
     "Fixture",
     "ScenarioMetadata",
     "TestPlan",

@@ -12,11 +12,12 @@ from testql.discovery import discover_path
 @click.command(name="discover")
 @click.argument("source", default=".", required=False)
 @click.option("--format", "fmt", type=click.Choice(["summary", "manifest", "json"]), default="summary")
-def discover(source: str, fmt: str) -> None:
+@click.option("--scan-network", is_flag=True, help="Enable network probes for URL sources")
+def discover(source: str, fmt: str, scan_network: bool) -> None:
     source_path = Path(source)
     if not source.startswith(("http://", "https://")) and not source_path.exists():
         raise click.ClickException(f"source does not exist: {source}")
-    manifest = discover_path(source)
+    manifest = discover_path(source, scan_network=scan_network)
     if fmt == "json":
         click.echo(json.dumps(manifest.to_dict(include_raw=True), indent=2, sort_keys=True))
     elif fmt == "manifest":

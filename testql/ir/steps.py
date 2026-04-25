@@ -19,6 +19,7 @@ from dataclasses import dataclass, field
 from typing import Any, Optional
 
 from .assertions import Assertion
+from .captures import Capture
 
 
 @dataclass
@@ -30,6 +31,7 @@ class Step:
     kind: str = "generic"
     name: Optional[str] = None
     asserts: list[Assertion] = field(default_factory=list)
+    captures: list[Capture] = field(default_factory=list)
     wait_ms: Optional[int] = None
     extra: dict[str, Any] = field(default_factory=dict)
 
@@ -39,6 +41,8 @@ class Step:
             out["name"] = self.name
         if self.asserts:
             out["asserts"] = [a.to_dict() for a in self.asserts]
+        if self.captures:
+            out["captures"] = [c.to_dict() for c in self.captures]
         if self.wait_ms is not None:
             out["wait_ms"] = self.wait_ms
         if self.extra:

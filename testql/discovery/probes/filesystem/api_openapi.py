@@ -41,7 +41,7 @@ class OpenAPIProbe(BaseProbe):
                     specs.append(root)
             elif root.is_dir():
                 for pattern in self.patterns:
-                    specs.extend(path for path in root.rglob(pattern) if not _excluded(path))
+                    specs.extend(path for path in root.rglob(pattern) if not _excluded(path, root))
         return sorted(set(specs))
 
     def _load(self, path: Path) -> Any:
@@ -63,5 +63,10 @@ class OpenAPIProbe(BaseProbe):
         }
 
 
-def _excluded(path: Path) -> bool:
-    return any(part in {".git", ".venv", "venv", "node_modules", "__pycache__", "dist", "build"} for part in path.parts)
+def _excluded(path: Path, root: Path) -> bool:
+    ignored = {".git", ".venv", "venv", "node_modules", "__pycache__", "dist", "build"}
+    if any(part in ignored for part in path.parts):
+        return True
+    root_parts = set(root.parts)
+    path_parts = set(path.parts)
+    return "fixtures" in path_parts and "fixtures" not in root_parts

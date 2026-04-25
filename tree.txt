@@ -22,6 +22,10 @@
 │   ├── prompt.txt
 │   └── README.md
 ├── coverage.json
+├── examples
+│   └── web-inspection-dot-testql
+│       ├── README.md
+│       └── run.sh
 ├── goal.yaml
 ├── LICENSE
 ├── openapi.yaml
@@ -115,8 +119,10 @@
 │   │   ├── generate_cmd.py
 │   │   ├── generate_ir_cmd.py
 │   │   ├── __init__.py
+│   │   ├── inspect_cmd.py
 │   │   ├── misc_cmds.py
 │   │   ├── run_cmd.py
+│   │   ├── run_ir_cmd.py
 │   │   ├── self_test_cmd.py
 │   │   ├── suite
 │   │   │   ├── cli.py
@@ -126,10 +132,11 @@
 │   │   │   ├── listing.py
 │   │   │   └── reports.py
 │   │   ├── suite_cmd.py
-│   │   └── templates
-│   │       ├── content.py
-│   │       ├── __init__.py
-│   │       └── templates.py
+│   │   ├── templates
+│   │   │   ├── content.py
+│   │   │   ├── __init__.py
+│   │   │   └── templates.py
+│   │   └── topology_cmd.py
 │   ├── detectors
 │   │   ├── base.py
 │   │   ├── config_detector.py
@@ -156,7 +163,10 @@
 │   │   │   │   ├── __init__.py
 │   │   │   │   ├── package_node.py
 │   │   │   │   └── package_python.py
-│   │   │   └── __init__.py
+│   │   │   ├── __init__.py
+│   │   │   └── network
+│   │   │       ├── http_endpoint.py
+│   │   │       └── __init__.py
 │   │   ├── registry.py
 │   │   └── source.py
 │   ├── doql_parser.py
@@ -229,11 +239,30 @@
 │   ├── interpreter.py
 │   ├── ir
 │   │   ├── assertions.py
+│   │   ├── captures.py
 │   │   ├── fixtures.py
 │   │   ├── __init__.py
 │   │   ├── metadata.py
 │   │   ├── plan.py
 │   │   └── steps.py
+│   ├── ir_runner
+│   │   ├── assertion_eval.py
+│   │   ├── context.py
+│   │   ├── engine.py
+│   │   ├── executors
+│   │   │   ├── api.py
+│   │   │   ├── base.py
+│   │   │   ├── encoder.py
+│   │   │   ├── graphql.py
+│   │   │   ├── gui.py
+│   │   │   ├── __init__.py
+│   │   │   ├── nl.py
+│   │   │   ├── proto.py
+│   │   │   ├── shell.py
+│   │   │   ├── sql.py
+│   │   │   └── unit.py
+│   │   ├── __init__.py
+│   │   └── interpolation.py
 │   ├── __main__.py
 │   ├── meta
 │   │   ├── confidence_scorer.py
@@ -248,6 +277,12 @@
 │   │   ├── json_reporter.py
 │   │   └── junit.py
 │   ├── report_generator.py
+│   ├── results
+│   │   ├── analyzer.py
+│   │   ├── artifacts.py
+│   │   ├── __init__.py
+│   │   ├── models.py
+│   │   └── serializers.py
 │   ├── runner.py
 │   ├── runners
 │   │   └── __init__.py
@@ -474,7 +509,12 @@
 │   │   └── views
 │   ├── sumd_generator.py
 │   ├── sumd_parser.py
-│   └── toon_parser.py
+│   ├── toon_parser.py
+│   └── topology
+│       ├── builder.py
+│       ├── __init__.py
+│       ├── models.py
+│       └── serializers.py
 ├── testql.egg-info
 │   ├── dependency_links.txt
 │   ├── entry_points.txt
@@ -538,12 +578,19 @@
 │   ├── test_graphql_adapter.py
 │   ├── test_gui_execution.py
 │   ├── test_interpreter.py
+│   ├── test_ir_captures.py
 │   ├── test_ir.py
+│   ├── test_ir_runner_assertion_eval.py
+│   ├── test_ir_runner_captures.py
+│   ├── test_ir_runner_engine.py
+│   ├── test_ir_runner_executors.py
+│   ├── test_ir_runner_interpolation.py
 │   ├── test_meta_confidence.py
 │   ├── test_meta_coverage.py
 │   ├── test_meta_mutator.py
 │   ├── test_meta_self_test.py
 │   ├── test_misc_cmds.py
+│   ├── test_network_discovery.py
 │   ├── test_nl_adapter.py
 │   ├── test_nl_entity_extractor.py
 │   ├── test_nl_grammar.py
@@ -558,6 +605,8 @@
 │   ├── test_proto_message_validator.py
 │   ├── test_reporters.py
 │   ├── test_report_generator.py
+│   ├── test_results.py
+│   ├── test_run_ir_cli.py
 │   ├── test_runner.py
 │   ├── test_shell_execution.py
 │   ├── test_sources.py
@@ -575,6 +624,7 @@
 │   ├── test_test_generator.py
 │   ├── test_testtoon_adapter.py
 │   ├── test_toon_parser.py
+│   ├── test_topology.py
 │   └── test_unit_execution.py
 ├── TODO
 │   ├── backend-diagnostic.testtoon
@@ -586,4 +636,4 @@
 ├── tree.txt
 └── VERSION
 
-66 directories, 521 files
+73 directories, 564 files

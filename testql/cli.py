@@ -8,10 +8,13 @@ from testql.commands.discover_cmd import discover
 from testql.commands.endpoints_cmd import endpoints, openapi
 from testql.commands.generate_cmd import analyze, generate
 from testql.commands.generate_ir_cmd import generate_ir
+from testql.commands.inspect_cmd import inspect
 from testql.commands.misc_cmds import create, echo, from_sumd, init, report, watch
 from testql.commands.run_cmd import run
+from testql.commands.run_ir_cmd import run_ir
 from testql.commands.self_test_cmd import self_test
 from testql.commands.suite_cmd import list_tests, suite
+from testql.commands.topology_cmd import topology
 
 
 @click.group()
@@ -22,9 +25,12 @@ def cli():
 
 
 cli.add_command(run)
+cli.add_command(run_ir)
 cli.add_command(generate)
 cli.add_command(generate_ir)
 cli.add_command(discover)
+cli.add_command(topology)
+cli.add_command(inspect)
 cli.add_command(analyze)
 cli.add_command(endpoints)
 cli.add_command(openapi)

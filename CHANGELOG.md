@@ -111,6 +111,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-04-25
+
+### Docs
+- Update README.md
+- Update SUMD.md
+- Update SUMR.md
+- Update TODO.md
+- Update articles/testql-phase-6-artifact-discovery.md
+- Update examples/web-inspection-dot-testql/README.md
+- Update project/README.md
+- Update project/context.md
+
+### Test
+- Update testql/__init__.py
+- Update testql/cli.py
+- Update testql/commands/__init__.py
+- Update testql/commands/discover_cmd.py
+- Update testql/commands/inspect_cmd.py
+- Update testql/commands/run_ir_cmd.py
+- Update testql/commands/topology_cmd.py
+- Update testql/discovery/probes/filesystem/api_openapi.py
+- Update testql/discovery/probes/network/__init__.py
+- Update testql/discovery/probes/network/http_endpoint.py
+- ... and 39 more files
+
+### Other
+- Update VERSION
+- Update app.doql.less
+- Update coverage.json
+- Update examples/web-inspection-dot-testql/.gitignore
+- Update examples/web-inspection-dot-testql/run.sh
+- Update project/analysis.toon.yaml
+- Update project/calls.mmd
+- Update project/calls.png
+- Update project/calls.toon.yaml
+- Update project/calls.yaml
+- ... and 12 more files
+
 ## [1.0.1] - 2026-04-25
 
 ### Docs

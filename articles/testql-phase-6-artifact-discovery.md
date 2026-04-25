@@ -823,4 +823,331 @@ Faza 6.5: community-driven P2/P3 expansion.
 - Federated discovery: discovery na wielu repo (organization-wide) → unified manifest dla całej organizacji. Świetnie tnie się z semcod.
 - AI-driven recipe inference: dla artefaktu którego nie znamy, LLM proponuje co warto testować. Human-in-the-loop approves → recipe staje się trwały.
 
+
+## 15. Rozszerzenie: Topology-aware orchestration
+
+Discovery nie powinno kończyć się na liście wykrytych artefaktów. Docelowo TestQL ma budować wielowarstwową topologię systemu, po której może poruszać się executor, LLM-agent albo usługa MCP.
+
+Cel: z dowolnego obszaru wejściowego (`repo`, katalog, URL, działająca usługa, dokumentacja, książka, zbiór endpointów, strona WWW) zbudować graf zależności, wygenerować DSL testowy, uruchomić testy i zapisać rezultaty w ustrukturyzowanym formacie umożliwiającym dalsze wnioskowanie.
+
+### 15.1 TopologyManifest
+
+`ArtifactManifest` opisuje pojedynczy artefakt. `TopologyManifest` opisuje sieć artefaktów i relacji między nimi.
+
+```python
+@dataclass
+class TopologyNode:
+    id: str
+    kind: str                       # service | endpoint | page | package | database | document | infra | test_result
+    source: ArtifactSource
+    manifest: ArtifactManifest | None
+    metadata: dict[str, Any]
+    evidence: list[Evidence]
+
+@dataclass
+class TopologyEdge:
+    source_id: str
+    target_id: str
+    relation: str                   # calls | imports | serves | depends_on | links_to | documents | deploys_to
+    protocol: str | None            # http | graphql | ws | grpc | file | sql | browser | mcp
+    conditions: list[Condition]
+    evidence: list[Evidence]
+
+@dataclass
+class TopologyManifest:
+    root: ArtifactSource
+    nodes: list[TopologyNode]
+    edges: list[TopologyEdge]
+    confidence: ManifestConfidence
+    traces: list[TraversalTrace]
+```
+
+### 15.2 TopologyGraph jako plan nawigacji
+
+Topologia ma być nie tylko raportem, ale też planem nawigacji:
+
+- LLM może wybrać następny węzeł do zbadania na podstawie luk w evidence.
+- Executor może odtworzyć ścieżkę: `page → form submit → REST API → database → event bus → websocket update`.
+- Raport może pokazać deltę między oczekiwaną topologią z kodu a zachowaniem działającej usługi.
+- User może dostać w NLP wyjaśnienie: „ten fragment UI nie działa, bo endpoint `/api/orders` zwraca 500, a kod handlera odwołuje się do brakującej zmiennej środowiskowej”.
+
+Przykład TOON/YAML:
+
+```yaml
+topology:
+  nodes:
+    - id: page.home
+      kind: page
+      source: https://example.com/
+    - id: api.orders
+      kind: endpoint
+      source: https://example.com/api/orders
+    - id: service.orders
+      kind: service
+      source: ./services/orders
+  edges:
+    - source_id: page.home
+      target_id: api.orders
+      relation: calls
+      protocol: http
+      conditions:
+        - when: click
+          selector: "[data-testid=create-order]"
+    - source_id: api.orders
+      target_id: service.orders
+      relation: implemented_by
+      protocol: file
+```
+
+## 16. Schematy i formaty wymiany danych
+
+TestQL powinien wspierać jawne schematy dla wejścia, topologii, DSL i rezultatów.
+
+### 16.1 Formaty P0/P1
+
+- `json` — pełna wymiana maszynowa, integracje CI/MCP/API.
+- `yaml` — czytelny manifest i konfiguracja orchestracji.
+- `toon` — kompaktowy format dla LLM i raportów wieloetapowych.
+- `testtoon` — wykonywalny DSL testowy generowany z topologii.
+
+### 16.2 Schematy walidujące
+
+Nowe schematy:
+
+- `ArtifactManifest.schema.json`
+- `TopologyManifest.schema.json`
+- `TraversalTrace.schema.json`
+- `TestResultEnvelope.schema.json`
+- `RefactorPlan.schema.json`
+- `MCPDiscoveryRequest.schema.json`
+- `MCPDiscoveryResponse.schema.json`
+
+Każdy format powinien mieć round-trip test:
+
+```text
+json → model → yaml → model → toon → model → json
+```
+
+### 16.3 Result envelope
+
+Wyniki testów powinny być zapisywane jako ustrukturyzowany envelope, a dopiero potem tłumaczone do NLP.
+
+```python
+@dataclass
+class TestResultEnvelope:
+    topology_id: str
+    run_id: str
+    status: Literal["passed", "failed", "partial", "blocked"]
+    checks: list[CheckResult]
+    failures: list[FailureFinding]
+    traces: list[TraversalTrace]
+    suggested_actions: list[SuggestedAction]
+```
+
+To umożliwia:
+
+- generowanie raportów TOON/YAML/JSON,
+- porównanie wyników między uruchomieniami,
+- budowanie delty kod ↔ runtime,
+- przekazanie wniosków userowi jako NLP.
+
+## 17. MCP service layer
+
+TestQL Discovery powinien być możliwy do użycia jako lokalna lub zdalna usługa MCP, tak aby IDE, LLM-agent, GitHub App lub system CI mógł pytać o topologię, testy i wyniki.
+
+### 17.1 MCP resources
+
+- `testql://manifest/{id}` — `ArtifactManifest`
+- `testql://topology/{id}` — `TopologyManifest`
+- `testql://trace/{run_id}` — przebieg nawigacji/testów
+- `testql://result/{run_id}` — `TestResultEnvelope`
+- `testql://refactor-plan/{run_id}` — plan refaktoryzacji wygenerowany z delty
+
+### 17.2 MCP tools
+
+- `discover_artifact(source, options)` → `ArtifactManifest`
+- `build_topology(source, depth, options)` → `TopologyManifest`
+- `generate_tests(topology, dsl)` → `TestPlan[]`
+- `run_tests(test_plan, target)` → `TestResultEnvelope`
+- `explain_results(result, language)` → NLP summary
+- `propose_refactor(result, topology)` → `RefactorPlan`
+- `generate_service(spec, topology_context)` → kod nowej usługi + testy kontraktowe
+
+### 17.3 MCP bezpieczeństwo
+
+- Network scanning opt-in.
+- GUI/browser execution opt-in.
+- Code generation wymaga oddzielnego approval.
+- Side effects domyślnie zablokowane.
+- Secrets redaction przed przekazaniem danych do LLM.
+
+## 18. LLM navigator i generowanie DSL
+
+LLM nie powinien działać na surowym repo bez struktury. Powinien dostawać skompresowany, walidowany kontekst:
+
+1. `ArtifactManifest` dla znalezionych artefaktów.
+2. `TopologyManifest` dla relacji.
+3. `TraversalTrace` dla dotychczasowej nawigacji.
+4. `TestResultEnvelope` dla wyników.
+5. Budżet kosztów i ryzyka.
+
+### 18.1 LLM tasks
+
+- Wybierz kolejne węzły topologii do zbadania.
+- Wygeneruj `testtoon` / `pytest` / `playwright` / `nl` dla danego fragmentu grafu.
+- Wyjaśnij wyniki testów userowi w NLP.
+- Zaproponuj minimalny plan naprawczy.
+- Wygeneruj kod nowej usługi na bazie specyfikacji, topologii i brakujących kontraktów.
+
+### 18.2 Deterministyczna granica
+
+LLM może proponować, ale core musi być deterministyczny:
+
+- Manifest i topology extraction są deterministic-first.
+- LLM fallback tylko przez `--use-llm` lub MCP tool z jawnie podanym `allow_llm=true`.
+- Każda sugestia LLM dostaje `evidence_refs` do węzłów, krawędzi, testów i plików.
+- Wygenerowany kod nie jest stosowany automatycznie bez approval.
+
+## 19. Runtime delta: kod ↔ uruchomiona usługa
+
+Kluczowy workflow: analiza aktualnego kodu oraz działającej usługi z tego kodu.
+
+```text
+source code discovery
+  → static topology
+  → runtime discovery
+  → GUI/API/WS/infra tests
+  → result envelope
+  → delta(static, runtime)
+  → refactor plan
+  → TOON report + NLP summary
+```
+
+### 19.1 Deltowanie
+
+TestQL powinien umieć porównać:
+
+- endpointy zadeklarowane w kodzie vs endpointy dostępne runtime,
+- OpenAPI/GraphQL/proto schema vs realne odpowiedzi,
+- routing UI vs realne przejścia w przeglądarce,
+- deklarowane dependency/infrastructure vs działające zależności,
+- health/readiness vs realna funkcjonalność,
+- testy istniejące w repo vs pokrycie topologii.
+
+### 19.2 RefactorPlan jako TOON
+
+Wynik delty powinien dawać plan refaktoryzacji:
+
+```yaml
+refactor_plan:
+  findings:
+    - id: finding.api.orders.500
+      severity: high
+      node: api.orders
+      evidence:
+        - trace.run_123.step_5
+        - file:services/orders/routes.py:42
+      summary: Endpoint zwraca 500 po utworzeniu zamówienia.
+      likely_cause: Brak obsługi pustej listy pozycji zamówienia.
+      proposed_fix:
+        type: code_change
+        files:
+          - services/orders/routes.py
+        tests_to_add:
+          - orders.empty-cart.testql.toon.yaml
+```
+
+## 20. Browser/GUI and online service orchestration
+
+Dla stron WWW i usług online TestQL powinien uruchamiać wielopoziomową nawigację:
+
+- browser automation: Playwright jako P0/P1 backend,
+- DOM/page schema extraction,
+- link crawling z limitem głębokości,
+- formularze i akcje użytkownika,
+- REST/GraphQL/WebSocket calls wykrywane z network logów,
+- zależności CDN/assets,
+- cookies/session/auth flows,
+- accessibility/performance/basic UX checks,
+- mapowanie strony do `TopologyManifest`.
+
+### 20.1 Page schema
+
+```python
+@dataclass
+class PageSchema:
+    url: str
+    title: str
+    forms: list[FormSchema]
+    actions: list[UserAction]
+    links: list[LinkRef]
+    network_calls: list[NetworkCall]
+    console_errors: list[ConsoleError]
+    screenshots: list[ArtifactRef]
+```
+
+### 20.2 Multi-layer test path
+
+Przykładowa trasa:
+
+```text
+browser.page.checkout
+  --click submit-->
+api.orders.create
+  --writes-->
+db.orders
+  --publishes-->
+event.order_created
+  --updates-->
+ws.notifications
+  --renders-->
+browser.page.confirmation
+```
+
+Każdy krok ma warunki, asercje, timeouty, evidence i wynik. Dzięki temu TestQL może nie tylko powiedzieć „strona nie działa”, ale też wskazać, która warstwa grafu zawiodła.
+
+### 20.3 Raport z orchestracji
+
+Raport powinien istnieć w trzech postaciach:
+
+- `result.toon.yaml` — struktura dla LLM i dalszego przetwarzania,
+- `result.json` — integracje maszynowe,
+- `summary.md` / NLP — opis dla usera.
+
+## 21. Proponowane fazy po 6.5
+
+### 21.1 Faza 7.0 — Topology core
+
+- `TopologyManifest`, `TopologyNode`, `TopologyEdge`, `TraversalTrace`.
+- Eksport/import `json`, `yaml`, `toon`.
+- JSON Schema dla manifestów i rezultatów.
+- CLI: `testql topology <source> --format=toon`.
+
+### 21.2 Faza 7.1 — Runtime delta
+
+- Static topology vs runtime topology.
+- `TestResultEnvelope`.
+- CLI: `testql inspect <source> --runtime <url> --out result.toon.yaml`.
+- Refactor plan generation z wyników.
+
+### 21.3 Faza 7.2 — Browser/GUI topology
+
+- Playwright backend.
+- Page schema extraction.
+- Network log → API/asset dependency graph.
+- GUI trace → `TraversalTrace`.
+
+### 21.4 Faza 7.3 — MCP server
+
+- MCP resources dla manifestów, topologii i wyników.
+- MCP tools dla discovery, topology, run, explain, refactor, generate-service.
+- IDE/LLM integration.
+
+### 21.5 Faza 7.4 — LLM navigator and code generation
+
+- LLM-guided traversal po topologii.
+- LLM DSL generation z walidacją schema.
+- NLP summaries z result envelope.
+- Controlled service/code generation na bazie spec + topology context.
+
 Plan rozszerza `testql-multi-dsl-refactor-plan.md` o szóstą fazę. Wykonalny niezależnie po zakończeniu Fazy 5 (release 1.0.0). Zgodny z konwencjami ekosystemu Semcod.

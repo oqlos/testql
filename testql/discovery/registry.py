@@ -11,12 +11,13 @@ from testql.discovery.probes.filesystem import (
     OpenAPIProbe,
     PythonPackageProbe,
 )
+from testql.discovery.probes.network import HTTPPageProbe
 from testql.discovery.source import ArtifactSource
 
 
 class ProbeRegistry:
-    def __init__(self, probes: list[Probe] | None = None):
-        self.probes = probes or default_probes()
+    def __init__(self, probes: list[Probe] | None = None, scan_network: bool = False):
+        self.probes = probes or default_probes(scan_network=scan_network)
 
     def run(self, source: ArtifactSource | str | Path) -> list[ProbeResult]:
         artifact_source = source if isinstance(source, ArtifactSource) else ArtifactSource.from_value(source)
@@ -34,18 +35,21 @@ class ProbeRegistry:
         return ArtifactManifest.from_probe_results(artifact_source, self.run(artifact_source))
 
 
-def default_probes() -> list[Probe]:
-    return [
+def default_probes(scan_network: bool = False) -> list[Probe]:
+    probes: list[Probe] = [
         DockerfileProbe(),
         PythonPackageProbe(),
         NodePackageProbe(),
         OpenAPIProbe(),
         DockerComposeProbe(),
     ]
+    if scan_network:
+        probes.append(HTTPPageProbe())
+    return probes
 
 
-def discover_path(path: str | Path) -> ArtifactManifest:
-    return ProbeRegistry().discover(path)
+def discover_path(path: str | Path, scan_network: bool = False) -> ArtifactManifest:
+    return ProbeRegistry(scan_network=scan_network).discover(path)
 
 
 def _cost_key(probe: Probe) -> int:
