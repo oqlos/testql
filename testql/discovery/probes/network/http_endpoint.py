@@ -101,7 +101,8 @@ class _PageParser(HTMLParser):
         elif tag in {"script", "img", "link"}:
             ref = attrs_dict.get("src") or attrs_dict.get("href")
             if ref:
-                self.assets.append({"url": urljoin(self.base_url, ref), "tag": tag})
+                kind = _asset_kind(tag, attrs_dict)
+                self.assets.append({"url": urljoin(self.base_url, ref), "tag": tag, "kind": kind})
         elif tag == "form":
             self.forms.append({"action": urljoin(self.base_url, attrs_dict.get("action", self.base_url)), "method": attrs_dict.get("method", "get").lower()})
 
@@ -129,6 +130,23 @@ def _parse_html(text: str, base_url: str) -> dict[str, Any]:
 
 def _limit(items: list[dict[str, Any]], limit: int = 100) -> list[dict[str, Any]]:
     return items[:limit]
+
+
+def _asset_kind(tag: str, attrs: dict[str, str]) -> str:
+    if tag == "script":
+        return "script"
+    if tag == "img":
+        return "image"
+    if tag == "link":
+        rel = attrs.get("rel", "").lower()
+        if "stylesheet" in rel:
+            return "stylesheet"
+        if "icon" in rel or "shortcut" in rel:
+            return "icon"
+        if "preload" in rel:
+            return "preload"
+        return "link"
+    return "unknown"
 
 
 def _link_kind(base_url: str, href: str) -> str:

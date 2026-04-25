@@ -12,12 +12,13 @@ from testql.discovery.probes.filesystem import (
     PythonPackageProbe,
 )
 from testql.discovery.probes.network import HTTPPageProbe
+from testql.discovery.probes.browser import PlaywrightPageProbe
 from testql.discovery.source import ArtifactSource
 
 
 class ProbeRegistry:
-    def __init__(self, probes: list[Probe] | None = None, scan_network: bool = False):
-        self.probes = probes or default_probes(scan_network=scan_network)
+    def __init__(self, probes: list[Probe] | None = None, scan_network: bool = False, use_browser: bool = False):
+        self.probes = probes or default_probes(scan_network=scan_network, use_browser=use_browser)
 
     def run(self, source: ArtifactSource | str | Path) -> list[ProbeResult]:
         artifact_source = source if isinstance(source, ArtifactSource) else ArtifactSource.from_value(source)
@@ -35,7 +36,7 @@ class ProbeRegistry:
         return ArtifactManifest.from_probe_results(artifact_source, self.run(artifact_source))
 
 
-def default_probes(scan_network: bool = False) -> list[Probe]:
+def default_probes(scan_network: bool = False, use_browser: bool = False) -> list[Probe]:
     probes: list[Probe] = [
         DockerfileProbe(),
         PythonPackageProbe(),
@@ -45,11 +46,13 @@ def default_probes(scan_network: bool = False) -> list[Probe]:
     ]
     if scan_network:
         probes.append(HTTPPageProbe())
+    if use_browser:
+        probes.append(PlaywrightPageProbe())
     return probes
 
 
-def discover_path(path: str | Path, scan_network: bool = False) -> ArtifactManifest:
-    return ProbeRegistry(scan_network=scan_network).discover(path)
+def discover_path(path: str | Path, scan_network: bool = False, use_browser: bool = False) -> ArtifactManifest:
+    return ProbeRegistry(scan_network=scan_network, use_browser=use_browser).discover(path)
 
 
 def _cost_key(probe: Probe) -> int:

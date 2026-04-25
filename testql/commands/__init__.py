@@ -4,6 +4,7 @@ from testql.commands.discover_cmd import discover
 from testql.commands.echo import echo
 from testql.commands.endpoints_cmd import endpoints, openapi
 from testql.commands.generate_cmd import analyze, generate
+from testql.commands.generate_topology_cmd import generate_topology
 from testql.commands.inspect_cmd import inspect
 from testql.commands.misc_cmds import create
 from testql.commands.misc_cmds import echo as cli_echo
@@ -22,6 +23,7 @@ __all__ = [
     "openapi",
     "analyze",
     "generate",
+    "generate_topology",
     "create",
     "from_sumd",
     "init",

@@ -4,22 +4,26 @@
 
 - **Project**: /home/tom/github/oqlos/testql
 - **Primary Language**: python
-- **Languages**: python: 193, yaml: 109, json: 6, txt: 3, yml: 2
+- **Languages**: python: 200, yaml: 104, txt: 3, json: 2, yml: 2
 - **Analysis Mode**: static
-- **Total Functions**: 1509
-- **Total Classes**: 169
-- **Modules**: 316
-- **Entry Points**: 1109
+- **Total Functions**: 1700
+- **Total Classes**: 176
+- **Modules**: 314
+- **Entry Points**: 1266
 
 ## Architecture by Module
 
 ### project.map.toon
-- **Functions**: 491
+- **Functions**: 1268
 - **File**: `map.toon.yaml`
 
 ### code2llm_output.map.toon
 - **Functions**: 87
 - **File**: `map.toon.yaml`
+
+### testql.results.analyzer
+- **Functions**: 37
+- **File**: `analyzer.py`
 
 ### testql.adapters.nl.nl_adapter
 - **Functions**: 30
@@ -35,15 +39,20 @@
 - **Classes**: 7
 - **File**: `_base_fallback.py`
 
+### testql.adapters.sql.sql_adapter
+- **Functions**: 26
+- **Classes**: 1
+- **File**: `sql_adapter.py`
+
 ### testql.interpreter._testtoon_parser
 - **Functions**: 24
 - **Classes**: 2
 - **File**: `_testtoon_parser.py`
 
-### testql.adapters.sql.sql_adapter
-- **Functions**: 24
+### testql.adapters.testtoon_adapter
+- **Functions**: 23
 - **Classes**: 1
-- **File**: `sql_adapter.py`
+- **File**: `testtoon_adapter.py`
 
 ### testql.adapters.graphql.graphql_adapter
 - **Functions**: 23
@@ -54,11 +63,6 @@
 - **Functions**: 21
 - **Classes**: 3
 - **File**: `openapi_generator.py`
-
-### testql.adapters.testtoon_adapter
-- **Functions**: 20
-- **Classes**: 1
-- **File**: `testtoon_adapter.py`
 
 ### testql.ir.steps
 - **Functions**: 19
@@ -90,32 +94,24 @@
 - **Classes**: 3
 - **File**: `ddl_parser.py`
 
+### testql.topology.generator
+- **Functions**: 17
+- **Classes**: 2
+- **File**: `generator.py`
+
 ### testql.generators.analyzers
 - **Functions**: 16
 - **Classes**: 1
 - **File**: `analyzers.py`
 
-### testql.results.analyzer
-- **Functions**: 16
-- **File**: `analyzer.py`
-
-### testql.meta.coverage_analyzer
-- **Functions**: 15
-- **Classes**: 1
-- **File**: `coverage_analyzer.py`
-
 ### testql.discovery.probes.network.http_endpoint
-- **Functions**: 14
+- **Functions**: 15
 - **Classes**: 2
 - **File**: `http_endpoint.py`
 
 ## Key Entry Points
 
 Main execution flows into the system:
-
-### testql.commands.generate_cmd.generate
-> Generate TestQL scenarios from project structure.
-- **Calls**: click.command, click.argument, click.option, click.option, click.option, Path, testql.commands.generate_cmd._is_workspace, sys.exit
 
 ### testql.commands.suite.cli.suite
 > Run test suite(s) — predefined or custom pattern.
@@ -124,6 +120,10 @@ Main execution flows into the system:
 ### testql.commands.misc_cmds.watch
 > Watch for file changes and re-run tests automatically.
 - **Calls**: click.command, click.option, click.option, click.option, click.option, None.resolve, click.echo, click.echo
+
+### testql.topology.sitemap.build_sitemap
+> Extend *topology* with bounded sub-page crawl starting from the root page node.
+- **Calls**: next, str, schema.get, topology.nodes.append, topology.edges.append, enumerate, urljoin, crawled.append
 
 ### TODO.testtoon_parser.parse_testtoon
 - **Calls**: text.splitlines, META_RE.match, None.startswith, HEADER_RE.match, raw.strip, raw.strip, None.strip, raw.strip
@@ -149,12 +149,25 @@ Examples:
     
 - **Calls**: None.split, None.strip, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append
 
+### testql.discovery.probes.browser.playwright_page.PlaywrightPageProbe.probe
+- **Calls**: self.result, sync_playwright, p.chromium.launch, browser.new_page, page.on, page.on, page.title, page.evaluate
+
 ### testql.runner.main
 - **Calls**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.parse_args, DslCliExecutor
 
 ### testql.interpreter._gui.GuiMixin._cmd_gui_assert_text
 > GUI_ASSERT_TEXT "selector" "expected" — Assert element contains text.
 - **Calls**: None.split, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append, self.out.fail
+
+### testql.adapters.testtoon_adapter._api_section_to_steps
+- **Calls**: steps.append, row.get, row.get, asserts.append, row.get, asserts.append, None.strip, ApiStep
+
+### testql.commands.generate_topology_cmd.generate_topology
+> Generate an executable scenario from a topology trace.
+- **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, project.map.toon.build_topology, testql.commands.generate_topology_cmd._pick_trace
+
+### testql.commands.inspect_cmd.inspect
+- **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, click.option, Path
 
 ### testql.commands.misc_cmds.from_sumd
 > Generate TestQL scenarios from SUMD.md documentation.
@@ -171,9 +184,6 @@ Examples:
     GUI_INPUT "[data-testid=search]" "hello world"
     GUI_INPUT "input#username" "te
 - **Calls**: None.split, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append, self.out.fail
-
-### testql.commands.inspect_cmd.inspect
-- **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, Path, testql.results.analyzer.inspect_source
 
 ### testql.openapi_generator.ContractTestGenerator.generate_contract_tests
 > Generate TestQL contract tests from OpenAPI spec.
@@ -207,9 +217,6 @@ Examples:
 > Create new test file from template.
 - **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, out_dir.mkdir, TestContentBuilder.build
 
-### testql.adapters.testtoon_adapter._api_section_to_steps
-- **Calls**: steps.append, row.get, row.get, asserts.append, row.get, asserts.append, ApiStep, Assertion
-
 ### testql.report_generator.generate_report
 > Generate HTML report from data.json file.
 - **Calls**: json.loads, data.get, round, TestSuiteReport, HTMLReportGenerator, generator.generate, data_json.read_text, data.get
@@ -238,41 +245,23 @@ Examples:
 > List all detected API endpoints in a project.
 - **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, Path, UnifiedEndpointDetector
 
-### testql.doql_parser.DoqlParser.parse
-> Parse doql LESS content.
-
-Args:
-    content: Doql LESS content
-    
-Returns:
-    SystemModel: Extracted system model
-- **Calls**: SystemModel, re.search, re.finditer, re.finditer, re.finditer, re.search, app_match.group, self._parse_app_block
-
-### testql.interpreter._gui.GuiMixin._cmd_gui_click
-> GUI_CLICK "selector" — Click element.
-
-Examples:
-    GUI_CLICK "[data-testid=submit-button]"
-    GUI_CLICK "button#submit"
-- **Calls**: None.strip, self.out.fail, self.out.step, self.results.append, self.out.fail, self.results.append, self.out.step, self.results.append
-
 ## Process Flows
 
 Key execution flows identified:
 
-### Flow 1: generate
-```
-generate [testql.commands.generate_cmd]
-```
-
-### Flow 2: suite
+### Flow 1: suite
 ```
 suite [testql.commands.suite.cli]
 ```
 
-### Flow 3: watch
+### Flow 2: watch
 ```
 watch [testql.commands.misc_cmds]
+```
+
+### Flow 3: build_sitemap
+```
+build_sitemap [testql.topology.sitemap]
 ```
 
 ### Flow 4: parse_testtoon
@@ -295,22 +284,27 @@ main [testql.interpreter]
 _cmd_unit_assert [testql.interpreter._unit.UnitMixin]
 ```
 
-### Flow 8: _cmd_gui_assert_text
+### Flow 8: probe
+```
+probe [testql.discovery.probes.browser.playwright_page.PlaywrightPageProbe]
+```
+
+### Flow 9: _cmd_gui_assert_text
 ```
 _cmd_gui_assert_text [testql.interpreter._gui.GuiMixin]
 ```
 
-### Flow 9: from_sumd
+### Flow 10: _api_section_to_steps
 ```
-from_sumd [testql.commands.misc_cmds]
-```
-
-### Flow 10: openapi
-```
-openapi [testql.commands.endpoints_cmd]
+_api_section_to_steps [testql.adapters.testtoon_adapter]
 ```
 
 ## Key Classes
+
+### testql.topology.generator.TopologyScenarioGenerator
+> Generate executable TestPlans from topology traversal traces.
+- **Methods**: 17
+- **Key Methods**: testql.topology.generator.TopologyScenarioGenerator.__init__, testql.topology.generator.TopologyScenarioGenerator.from_trace, testql.topology.generator.TopologyScenarioGenerator.from_path, testql.topology.generator.TopologyScenarioGenerator.to_testtoon, testql.topology.generator.TopologyScenarioGenerator._node_to_step, testql.topology.generator.TopologyScenarioGenerator._interface_to_step, testql.topology.generator.TopologyScenarioGenerator._page_to_step, testql.topology.generator.TopologyScenarioGenerator._link_to_step, testql.topology.generator.TopologyScenarioGenerator._form_to_step, testql.topology.generator.TopologyScenarioGenerator._asset_to_step
 
 ### testql.generators.analyzers.ProjectAnalyzer
 > Analyzes project structure to discover testable patterns.
@@ -404,23 +398,18 @@ Adapters register themselves on import (or are r
 - **Methods**: 7
 - **Key Methods**: testql._base_fallback.VariableStore.__init__, testql._base_fallback.VariableStore.set, testql._base_fallback.VariableStore.get, testql._base_fallback.VariableStore.has, testql._base_fallback.VariableStore.all, testql._base_fallback.VariableStore.clear, testql._base_fallback.VariableStore.interpolate
 
+### testql.pipeline.GenerationPipeline
+> Orchestrate project analysis and scenario generation.
+
+Usage:
+    pipeline = GenerationPipeline("/pa
+- **Methods**: 7
+- **Key Methods**: testql.pipeline.GenerationPipeline.__init__, testql.pipeline.GenerationPipeline._collect, testql.pipeline.GenerationPipeline._emit, testql.pipeline.GenerationPipeline._emit_workspace, testql.pipeline.GenerationPipeline._emit_single, testql.pipeline.GenerationPipeline.run, testql.pipeline.GenerationPipeline._is_workspace
+
 ### testql.interpreter._api_runner.ApiRunnerMixin
 > Mixin providing HTTP API execution commands: API, CAPTURE.
 - **Methods**: 7
 - **Key Methods**: testql.interpreter._api_runner.ApiRunnerMixin._do_http_request, testql.interpreter._api_runner.ApiRunnerMixin._store_api_response, testql.interpreter._api_runner.ApiRunnerMixin._record_api_success, testql.interpreter._api_runner.ApiRunnerMixin._record_api_http_error, testql.interpreter._api_runner.ApiRunnerMixin._record_api_error, testql.interpreter._api_runner.ApiRunnerMixin._cmd_api, testql.interpreter._api_runner.ApiRunnerMixin._cmd_capture
-
-### testql.interpreter.interpreter.IqlInterpreter
-> IQL interpreter — runs .testql.toon.yaml / .iql / .tql scripts.
-
-Supports both legacy IQL format and
-- **Methods**: 7
-- **Key Methods**: testql.interpreter.interpreter.IqlInterpreter.__init__, testql.interpreter.interpreter.IqlInterpreter.parse, testql.interpreter.interpreter.IqlInterpreter._is_testtoon, testql.interpreter.interpreter.IqlInterpreter.execute, testql.interpreter.interpreter.IqlInterpreter._dispatch, testql.interpreter.interpreter.IqlInterpreter._cmd_set, testql.interpreter.interpreter.IqlInterpreter._cmd_get
-- **Inherits**: ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, GuiMixin, ShellMixin, UnitMixin, WebSocketMixin, BaseInterpreter
-
-### testql.discovery.probes.filesystem.package_python.PythonPackageProbe
-- **Methods**: 7
-- **Key Methods**: testql.discovery.probes.filesystem.package_python.PythonPackageProbe.probe, testql.discovery.probes.filesystem.package_python.PythonPackageProbe._find_manifests, testql.discovery.probes.filesystem.package_python.PythonPackageProbe._find_requirements, testql.discovery.probes.filesystem.package_python.PythonPackageProbe._find_python_files, testql.discovery.probes.filesystem.package_python.PythonPackageProbe._read_metadata, testql.discovery.probes.filesystem.package_python.PythonPackageProbe._looks_like_fastapi, testql.discovery.probes.filesystem.package_python.PythonPackageProbe._confidence
-- **Inherits**: BaseProbe
 
 ## Data Transformation Functions
 
@@ -498,16 +487,18 @@ Key functions that process and transform data:
 
 Functions exposed as public API (no underscore prefix):
 
-- `testql.commands.generate_cmd.generate` - 44 calls
 - `testql.commands.suite.cli.suite` - 36 calls
 - `testql.commands.misc_cmds.watch` - 35 calls
+- `testql.topology.sitemap.build_sitemap` - 32 calls
 - `TODO.testtoon_parser.parse_testtoon` - 31 calls
 - `testql.results.artifacts.write_inspection_artifacts` - 28 calls
 - `testql.interpreter.main` - 26 calls
+- `testql.discovery.probes.browser.playwright_page.PlaywrightPageProbe.probe` - 26 calls
 - `testql.runner.main` - 24 calls
+- `testql.commands.generate_topology_cmd.generate_topology` - 24 calls
+- `testql.commands.inspect_cmd.inspect` - 24 calls
 - `testql.commands.misc_cmds.from_sumd` - 23 calls
 - `testql.commands.endpoints_cmd.openapi` - 23 calls
-- `testql.commands.inspect_cmd.inspect` - 23 calls
 - `testql.openapi_generator.ContractTestGenerator.generate_contract_tests` - 22 calls
 - `testql.sumd_parser.SumdParser.generate_testql_scenarios` - 22 calls
 - `testql.commands.generate_cmd.analyze` - 22 calls
@@ -524,9 +515,11 @@ Functions exposed as public API (no underscore prefix):
 - `testql.adapters.sql.fixtures.schema_fixture_from_rows` - 20 calls
 - `testql.doql_parser.DoqlParser.parse` - 19 calls
 - `testql.discovery.probes.filesystem.package_python.PythonPackageProbe.probe` - 18 calls
+- `testql.results.analyzer.analyze_topology` - 18 calls
 - `testql.openapi_generator.ContractTestGenerator.validate_response` - 17 calls
-- `testql.commands.echo.cli.echo` - 17 calls
 - `testql.commands.discover_cmd.discover` - 17 calls
+- `testql.commands.generate_cmd.generate` - 17 calls
+- `testql.commands.echo.cli.echo` - 17 calls
 - `testql.runner.DslCliExecutor.cmd_assert_json` - 16 calls
 - `testql.interpreter.interpreter.IqlInterpreter.execute` - 16 calls
 - `testql.commands.encoder_routes.iql_run_file` - 15 calls
@@ -534,10 +527,6 @@ Functions exposed as public API (no underscore prefix):
 - `testql.discovery.probes.filesystem.package_node.NodePackageProbe.probe` - 15 calls
 - `testql.reporters.junit.JUnitReporter.generate` - 15 calls
 - `TODO.testtoon_parser.parse_value` - 14 calls
-- `testql.commands.encoder_routes.iql_list_files` - 14 calls
-- `testql.results.analyzer.analyze_topology` - 14 calls
-- `testql.discovery.probes.filesystem.api_openapi.OpenAPIProbe.probe` - 14 calls
-- `testql.discovery.probes.network.http_endpoint.HTTPPageProbe.probe` - 14 calls
 
 ## System Interactions
 
@@ -545,14 +534,15 @@ How components interact:
 
 ```mermaid
 graph TD
-    generate --> command
-    generate --> argument
-    generate --> option
     suite --> command
     suite --> argument
     suite --> option
     watch --> command
     watch --> option
+    build_sitemap --> next
+    build_sitemap --> str
+    build_sitemap --> get
+    build_sitemap --> append
     parse_testtoon --> splitlines
     parse_testtoon --> match
     parse_testtoon --> startswith
@@ -566,15 +556,14 @@ graph TD
     _cmd_unit_assert --> split
     _cmd_unit_assert --> strip
     _cmd_unit_assert --> len
+    probe --> result
+    probe --> sync_playwright
+    probe --> launch
+    probe --> new_page
+    probe --> on
     _cmd_gui_assert_text --> split
     _cmd_gui_assert_text --> strip
     _cmd_gui_assert_text --> len
-    _cmd_gui_assert_text --> fail
-    from_sumd --> command
-    from_sumd --> argument
-    from_sumd --> option
-    from_sumd --> Path
-    openapi --> command
 ```
 
 ## Reverse Engineering Guidelines

@@ -48,6 +48,14 @@ class FakeClient:
             request=httpx.Request("GET", url),
         )
 
+    def head(self, url: str):
+        return httpx.Response(
+            200,
+            headers={"content-type": "text/html; charset=utf-8"},
+            text="",
+            request=httpx.Request("HEAD", url),
+        )
+
 
 class FakeErrorClient(FakeClient):
     status_code = 500
@@ -88,6 +96,8 @@ def test_inspect_url_nlp_passes_with_mocked_network(monkeypatch):
     assert "check.web.links" in check_ids
     assert "check.web.assets" in check_ids
     assert "check.web.forms" in check_ids
+    assert "check.web.link_status" in check_ids
+    assert "check.web.asset_status" in check_ids
     assert "Inspection status: passed." in output
 
 
@@ -108,3 +118,15 @@ def test_inspect_url_reports_http_failure(monkeypatch):
     assert any(check.id == "check.web.status" and check.status == "failed" for check in envelope.checks)
     assert any(finding.id == "finding.web.status" for finding in envelope.failures)
     assert any(action.type == "investigate_http_status" for action in plan.actions)
+
+
+def test_inspect_url_builds_sitemap_with_mocked_network(monkeypatch):
+    monkeypatch.setattr(httpx, "Client", FakeClient)
+    topology, envelope, plan = inspect_source("https://example.test/", scan_network=True)
+    sitemap = next((node for node in topology.nodes if node.kind == "sitemap"), None)
+    assert sitemap is not None
+    assert any(node.kind == "subpage" for node in topology.nodes)
+    check_ids = {check.id for check in envelope.checks}
+    assert "check.sitemap.crawl" in check_ids
+    assert "check.sitemap.broken" in check_ids
+    assert "check.sitemap.duplicates" in check_ids

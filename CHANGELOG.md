@@ -116,6 +116,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add topology graph generation with `testql topology` and JSON/YAML/TOON output.
 - Add structured inspection results, refactor-plan envelope, NLP summaries, and `.testql` artifact bundle writer.
 - Add opt-in URL inspection via `--scan-network`, extracting HTTP status, title, links, assets, forms, page topology, and web-specific checks.
+- Add asset classification (script, stylesheet, image, icon, preload, link) in `HTTPPageProbe`.
+- Add bounded link and asset crawling with HEAD validation, broken-resource findings, and `investigate_broken_resources` refactor action.
+- Add `build_sitemap()` in `topology.sitemap` for bounded sub-page crawl (refactored to reduce CC below 15). (max 10 pages, 5s timeout) with title/link extraction and duplicate-title detection.
+- Add `PlaywrightPageProbe` with `--browser` CLI flag for JS-rendered page inspection, console error capture, and network call logging.
+- Add browser-specific checks: `check.browser.render`, `check.browser.console`, `check.browser.network`.
 - Add `examples/web-inspection-dot-testql/` showing live web inspection with all generated data and metadata stored under `.testql/`.
 
 ### Changed
@@ -124,6 +129,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Remaining
 - Add Playwright-backed browser execution, JavaScript-rendered DOM capture, screenshots, console errors, network logs, link-by-link validation, accessibility/performance checks, MCP service integration, and runtime-vs-code delta reports.
+
+## [1.2.4] - 2026-04-25
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+- Update SUMD.md
+- Update SUMR.md
+- Update TODO.md
+- Update project/README.md
+- Update project/context.md
+
+### Test
+- Update testql/__init__.py
+- Update testql/adapters/sql/sql_adapter.py
+- Update testql/adapters/testtoon_adapter.py
+- Update testql/cli.py
+- Update testql/commands/__init__.py
+- Update testql/commands/generate_cmd.py
+- Update testql/commands/generate_topology_cmd.py
+- Update testql/commands/inspect_cmd.py
+- Update testql/discovery/probes/browser/__init__.py
+- Update testql/discovery/probes/browser/playwright_page.py
+- ... and 14 more files
+
+### Other
+- Update .gitignore
+- Update VERSION
+- Update app.doql.less
+- Update coverage.json
+- Update project.sh
+- Update project/analysis.toon.yaml
+- Update project/calls.mmd
+- Update project/calls.png
+- Update project/calls.toon.yaml
+- Update project/calls.yaml
+- ... and 12 more files
 
 ## [1.2.2] - 2026-04-25
 

@@ -1,3 +1,11 @@
+.testql
+.pyqual
+.taskill
+.testql-browser
+.env
+.env.example
+.idea/
+__pycache__/
 # Byte-compiled / optimized / DLL files
 .env.example
 __pycache__/

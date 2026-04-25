@@ -3,11 +3,11 @@
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-1.2.2-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$6.60-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-27.9h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-1.2.4-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$6.75-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-27.9h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $6.6000 (44 commits)
-- 👤 **Human dev:** ~$2786 (27.9h @ $100/h, 30min dedup)
+- 🤖 **LLM usage:** $6.7500 (45 commits)
+- 👤 **Human dev:** ~$2791 (27.9h @ $100/h, 30min dedup)
 
 Generated on 2026-04-25 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 
@@ -15,7 +15,7 @@ Generated on 2026-04-25 using [openrouter/qwen/qwen3-coder-next](https://openrou
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-1.2.2-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-1.2.4-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
 
 TestQL is a declarative DSL (Domain Specific Language) for testing GUI, REST API, and hardware encoder interfaces. It provides a simple, readable syntax for writing automated tests without programming overhead.
 
@@ -113,11 +113,22 @@ Example:
 examples/web-inspection-dot-testql/run.sh https://tom.sapletta.com/
 ```
 
+Current capabilities:
+
+- **Asset classification**: script, stylesheet, image, icon, preload, link.
+- **Bounded link validation**: HEAD checks for all internal links (up to 100).
+- **Bounded asset validation**: HEAD checks for all extracted assets.
+- **Broken resource detection**: assets or links returning error status are flagged as findings.
+- **Bounded sitemap crawl**: fetches up to 10 internal subpages, extracts titles and link counts, adds `subpage` nodes to the topology.
+- **Sitemap checks**: crawl coverage, broken subpage detection, duplicate title warnings.
+- **Playwright browser inspection** (`--browser`): renders the page in a headless browser, captures console errors, network calls (REST/GraphQL/WebSocket), and JS-rendered DOM.
+- **Browser checks**: render detection, console error count, network call capture.
+
 Current limitations:
 
 - Browser execution is not yet Playwright-backed.
 - JavaScript-rendered DOM is not evaluated yet.
-- Links/assets are extracted but not individually fetched and validated yet.
+- Per-resource validation uses HEAD requests only; full page content is not fetched for linked pages.
 - Console errors, screenshots, performance, accessibility, REST/GraphQL/WebSocket network logs, and auth flows are planned next.
 
 ## API Endpoint Detection

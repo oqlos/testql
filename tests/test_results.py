@@ -17,14 +17,14 @@ FIXTURES = Path(__file__).parent / "fixtures" / "discovery"
 class TestResultEnvelope:
     def test_analyze_topology_passes_for_openapi_fixture(self):
         topology = build_topology(FIXTURES / "openapi3")
-        envelope = analyze_topology(topology)
+        envelope = analyze_topology(topology, scan_network=False)
         assert envelope.status == "passed"
         assert envelope.checks
         assert envelope.failures == []
 
     def test_analyze_topology_warns_for_empty_directory(self, tmp_path):
         topology = build_topology(tmp_path)
-        envelope = analyze_topology(topology)
+        envelope = analyze_topology(topology, scan_network=False)
         assert envelope.status == "partial"
         assert envelope.failures
         assert envelope.suggested_actions

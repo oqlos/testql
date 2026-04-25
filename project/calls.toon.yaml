@@ -1,28 +1,28 @@
 # code2llm call graph | /home/tom/github/oqlos/testql
-# nodes: 519 | edges: 500 | modules: 115
-# CC̄=2.2
+# nodes: 520 | edges: 500 | modules: 114
+# CC̄=2.1
 
 HUBS[20]:
   testql.results.serializers._render_toon
     CC=6  in:1  out:46  total:47
-  testql.commands.generate_cmd.generate
-    CC=10  in:0  out:44  total:44
   code2llm_output.map.toon.list
-    CC=0  in:29  out:0  total:29
+    CC=0  in:30  out:0  total:30
   testql.results.artifacts.write_inspection_artifacts
     CC=1  in:1  out:28  total:29
   testql.topology.serializers._render_toon
     CC=5  in:1  out:25  total:26
+  testql.commands.generate_topology_cmd.generate_topology
+    CC=5  in:0  out:24  total:24
   testql.commands.generate_cmd._print_routes_section
     CC=10  in:1  out:23  total:24
-  testql.commands.encoder_routes._run_iql_lines
-    CC=6  in:1  out:22  total:23
-  testql.ir_runner.interpolation.interp_value
-    CC=6  in:16  out:7  total:23
-  testql.commands.inspect_cmd.inspect
-    CC=6  in:0  out:23  total:23
   testql.commands.echo.parsers.doql._parse_workflows
     CC=7  in:1  out:22  total:23
+  testql.commands.encoder_routes._run_iql_lines
+    CC=6  in:1  out:22  total:23
+  testql.adapters.testtoon_adapter._render_plan
+    CC=9  in:4  out:19  total:23
+  testql.ir_runner.interpolation.interp_value
+    CC=6  in:16  out:7  total:23
   testql.commands.misc_cmds.report
     CC=4  in:0  out:22  total:22
   testql.runner.parse_line
@@ -31,18 +31,18 @@ HUBS[20]:
     CC=1  in:22  out:0  total:22
   testql.adapters.sql.fixtures.schema_fixture_from_rows
     CC=4  in:1  out:20  total:21
-  testql.adapters.testtoon_adapter._render_plan
-    CC=9  in:4  out:17  total:21
-  testql.runner.DslCliExecutor.run_script
-    CC=11  in:0  out:20  total:20
-  testql.commands.misc_cmds.init
-    CC=4  in:0  out:20  total:20
   testql.commands.misc_cmds.echo
     CC=4  in:0  out:20  total:20
-  testql.adapters.base.read_source
-    CC=5  in:11  out:9  total:20
+  testql.commands.misc_cmds.init
+    CC=4  in:0  out:20  total:20
+  testql.runner.DslCliExecutor.run_script
+    CC=11  in:0  out:20  total:20
   testql.commands.endpoints_cmd.endpoints
     CC=9  in:0  out:20  total:20
+  testql.adapters.base.read_source
+    CC=5  in:11  out:9  total:20
+  testql.results.analyzer.analyze_topology
+    CC=2  in:1  out:18  total:19
 
 MODULES:
   TODO.testtoon_parser  [2 funcs]
@@ -59,7 +59,8 @@ MODULES:
     parse_doql_less  CC=0  out:0
     parse_iql  CC=0  out:0
     parse_script  CC=0  out:0
-  project.map.toon  [3 funcs]
+  project.map.toon  [4 funcs]
+    build_topology  CC=0  out:0
     default_probes  CC=0  out:0
     discover_path  CC=0  out:0
     run_self_test  CC=0  out:0
@@ -190,7 +191,7 @@ MODULES:
     _projection_columns  CC=5  out:5
     analyze_query  CC=3  out:4
     classify  CC=2  out:4
-  testql.adapters.sql.sql_adapter  [22 funcs]
+  testql.adapters.sql.sql_adapter  [21 funcs]
     detect  CC=5  out:6
     parse  CC=1  out:3
     render  CC=1  out:1
@@ -201,17 +202,17 @@ MODULES:
     _h_assert  CC=3  out:2
     _h_config  CC=1  out:3
     _h_query  CC=1  out:3
-  testql.adapters.testtoon_adapter  [10 funcs]
+  testql.adapters.testtoon_adapter  [11 funcs]
     detect  CC=9  out:12
     parse  CC=1  out:3
     render  CC=1  out:1
+    _capture_section_apply  CC=8  out:12
     _config_to_dict  CC=3  out:3
-    _render_api_steps  CC=4  out:2
     _render_config  CC=3  out:3
     _render_meta  CC=5  out:4
-    _render_plan  CC=9  out:17
-    _toon_to_plan  CC=4  out:10
-    _translate_section  CC=2  out:3
+    _render_plan  CC=9  out:19
+    _resolve_capture_target  CC=4  out:3
+    _toon_to_plan  CC=6  out:12
   testql.cli  [2 funcs]
     cli  CC=1  out:2
     main  CC=1  out:1
@@ -268,14 +269,15 @@ MODULES:
     endpoints  CC=9  out:20
   testql.commands.generate_cmd  [4 funcs]
     _count_routes_by  CC=2  out:3
-    _is_workspace  CC=5  out:5
+    _echo_analysis  CC=4  out:17
     _print_routes_section  CC=10  out:23
-    generate  CC=10  out:44
+    generate  CC=5  out:17
   testql.commands.generate_ir_cmd  [2 funcs]
     _split_from_arg  CC=2  out:6
     generate_ir  CC=2  out:12
-  testql.commands.inspect_cmd  [1 funcs]
-    inspect  CC=6  out:23
+  testql.commands.generate_topology_cmd  [2 funcs]
+    _pick_trace  CC=5  out:1
+    generate_topology  CC=5  out:24
   testql.commands.misc_cmds  [4 funcs]
     _create_templates  CC=4  out:4
     echo  CC=4  out:20
@@ -330,22 +332,27 @@ MODULES:
   testql.discovery.probes.filesystem.api_openapi  [2 funcs]
     _find_specs  CC=9  out:11
     _excluded  CC=4  out:3
-  testql.discovery.probes.filesystem.container_compose  [1 funcs]
-    _metadata  CC=9  out:11
-  testql.discovery.probes.filesystem.package_python  [14 funcs]
+  testql.discovery.probes.filesystem.package_python  [13 funcs]
     _find_python_files  CC=7  out:6
     _read_metadata  CC=8  out:13
     _call_kw  CC=2  out:3
     _dedupe_deps  CC=4  out:5
     _dep  CC=3  out:4
-    _excluded  CC=2  out:1
     _parse_pyproject  CC=7  out:12
     _parse_pyproject_dependencies  CC=6  out:15
     _parse_requirements  CC=4  out:5
     _parse_setup_cfg  CC=3  out:6
-  testql.discovery.probes.network.http_endpoint  [2 funcs]
+    _parse_setup_py  CC=3  out:4
+  testql.discovery.probes.network.http_endpoint  [9 funcs]
     probe  CC=6  out:14
+    handle_starttag  CC=10  out:14
+    _asset_kind  CC=8  out:2
     _fetch  CC=1  out:2
+    _limit  CC=1  out:0
+    _link_kind  CC=4  out:4
+    _looks_textual  CC=2  out:2
+    _metadata  CC=1  out:10
+    _parse_html  CC=2  out:5
   testql.discovery.registry  [1 funcs]
     __init__  CC=2  out:1
   testql.generators.base  [1 funcs]
@@ -471,9 +478,10 @@ MODULES:
     evaluate  CC=3  out:6
     evaluate_all  CC=2  out:1
     navigate  CC=3  out:2
-  testql.ir_runner.engine  [4 funcs]
+  testql.ir_runner.engine  [5 funcs]
     run  CC=5  out:9
-    _run_step  CC=3  out:11
+    _apply_captures  CC=6  out:5
+    _run_step  CC=4  out:12
     load_plan  CC=4  out:8
     run_plan  CC=1  out:2
   testql.ir_runner.executors  [1 funcs]
@@ -556,17 +564,16 @@ MODULES:
     _infer_tags  CC=7  out:9
     _extract_ep_params  CC=7  out:8
     _extract_path_params  CC=4  out:4
-  testql.results.analyzer  [16 funcs]
-    _action_summary  CC=1  out:0
-    _action_type  CC=4  out:0
+  testql.results.analyzer  [9 funcs]
     _actions_from_findings  CC=4  out:6
     _check_confidence  CC=2  out:2
     _check_edges  CC=2  out:3
-    _check_evidence  CC=4  out:4
     _check_interfaces  CC=4  out:4
     _check_nodes  CC=2  out:3
     _findings_from_checks  CC=4  out:5
-    _likely_cause  CC=1  out:1
+    _status_from_checks  CC=5  out:2
+    analyze_topology  CC=2  out:18
+    inspect_source  CC=1  out:3
   testql.results.artifacts  [2 funcs]
     _write_group  CC=2  out:3
     write_inspection_artifacts  CC=1  out:28
@@ -631,12 +638,17 @@ EDGES:
   testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_api_interfaces
   testql.commands.self_test_cmd.self_test → project.map.toon.run_self_test
   testql.commands.self_test_cmd.self_test → testql.commands.self_test_cmd._print_human
-  testql.commands.generate_cmd.generate → testql.commands.generate_cmd._is_workspace
+  testql.commands.discover_cmd.discover → project.map.toon.discover_path
+  testql.commands.generate_cmd.generate → testql.commands.generate_cmd._echo_analysis
   testql.commands.generate_cmd._print_routes_section → testql.commands.generate_cmd._count_routes_by
+  testql.commands.topology_cmd.topology → project.map.toon.build_topology
+  testql.commands.topology_cmd.topology → testql.topology.serializers.render_topology
   testql.commands.misc_cmds.init → testql.commands.misc_cmds._create_templates
   testql.commands.misc_cmds.report → code2llm_output.map.toon.generate_report
   testql.commands.misc_cmds.echo → testql.commands.echo_helpers.render_echo
   testql.commands.misc_cmds.echo → testql.commands.echo_helpers.collect_toon_data
+  testql.commands.run_ir_cmd.run_ir → testql.ir_runner.engine.run_plan
+  testql.commands.run_ir_cmd.run_ir → testql.commands.run_ir_cmd._emit_json
   testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._strip_path_segments
   testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._migrate_legacy_extension
   testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._remap_tests_prefix
@@ -655,8 +667,3 @@ EDGES:
   testql.commands.encoder_routes._extract_table_names → testql._base_fallback.VariableStore.set
   testql.commands.encoder_routes.iql_run_line → testql.commands.encoder_routes._execute_iql_line
   testql.commands.encoder_routes.iql_run_file → testql.commands.encoder_routes._resolve_iql_path
-  testql.commands.encoder_routes.iql_run_file → testql.commands.encoder_routes._build_run_summary
-  testql.commands.encoder_routes.iql_run_file → testql.commands.encoder_routes._write_run_log
-  testql.commands.encoder_routes._run_iql_lines → testql.commands.encoder_routes._update_counters
-  testql.commands.encoder_routes._run_iql_lines → testql.commands.encoder_routes._format_log_detail
-  testql.commands.echo_helpers._collect_toon_directory → code2llm_output.map.toon.parse_toon_file

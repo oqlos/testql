@@ -24,13 +24,13 @@ TestQL — Multi-DSL Test Platform: TestTOON / NL / SQL / Proto / GraphQL adapte
 ## Metadata
 
 - **name**: `testql`
-- **version**: `1.1.0`
+- **version**: `1.2.3`
 - **python_requires**: `>=3.10`
 - **license**: Apache-2.0
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
 - **ecosystem**: SUMD + DOQL + testql + taskfile
 - **openapi_title**: testql API v1.0.0
-- **generated_from**: pyproject.toml, Taskfile.yml, testql(74), openapi(7 ep), app.doql.less, pyqual.yaml, goal.yaml, .env.example, src(14 mod), project/(2 analysis files)
+- **generated_from**: pyproject.toml, Taskfile.yml, testql(74), openapi(7 ep), app.doql.less, pyqual.yaml, goal.yaml, .env.example, src(15 mod), project/(2 analysis files)
 
 ## Architecture
 
@@ -45,7 +45,7 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 1.1.0;
+  version: 1.2.3;
 }
 
 dependencies {
@@ -220,6 +220,7 @@ environment[name="local"] {
 - `testql.generator`
 - `testql.interpreter`
 - `testql.openapi_generator`
+- `testql.pipeline`
 - `testql.report_generator`
 - `testql.runner`
 - `testql.sumd_generator`
@@ -3368,7 +3369,7 @@ pipeline:
 ```yaml
 project:
   name: testql
-  version: 1.1.0
+  version: 1.2.3
   env: local
 ```
 
@@ -3440,17 +3441,17 @@ pip install -e .[dev]
 ### `project/map.toon.yaml`
 
 ```toon markpact:analysis path=project/map.toon.yaml
-# testql | 275f 29284L | python:269,less:3,shell:3 | 2026-04-25
-# stats: 602 func | 474 cls | 275 mod | CC̄=3.4 | critical:9 | cycles:0
-# alerts[5]: CC parse_testtoon=14; CC suite=13; CC parse_value=11; CC detect_scenario_type=11; CC _execute_iql_line=10
-# hotspots[5]: generate fan=19; watch fan=19; suite fan=19; main fan=18; _run_iql_lines fan=15
+# testql | 284f 30795L | python:278,less:3,shell:3 | 2026-04-25
+# stats: 639 func | 494 cls | 284 mod | CC̄=3.5 | critical:14 | cycles:0
+# alerts[5]: CC parse_testtoon=14; CC _check_link_statuses=14; CC _action_type=14; CC suite=13; CC _check_asset_statuses=12
+# hotspots[5]: watch fan=19; suite fan=19; main fan=18; analyze_topology fan=17; generate_topology fan=16
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[275]:
+M[284]:
   TODO/testtoon_parser.py,142
   app.doql.less,167
   examples/web-inspection-dot-testql/run.sh,14
-  project.sh,49
+  project.sh,50
   testql/__init__.py,10
   testql/__main__.py,7
   testql/_base_fallback.py,222
@@ -3479,11 +3480,11 @@ M[275]:
   testql/adapters/sql/dialect_resolver.py,89
   testql/adapters/sql/fixtures.py,106
   testql/adapters/sql/query_parser.py,96
-  testql/adapters/sql/sql_adapter.py,303
-  testql/adapters/testtoon_adapter.py,286
+  testql/adapters/sql/sql_adapter.py,334
+  testql/adapters/testtoon_adapter.py,344
   testql/base.py,38
-  testql/cli.py,54
-  testql/commands/__init__.py,34
+  testql/cli.py,56
+  testql/commands/__init__.py,36
   testql/commands/discover_cmd.py,47
   testql/commands/echo/__init__.py,23
   testql/commands/echo/cli.py,40
@@ -3497,9 +3498,10 @@ M[275]:
   testql/commands/echo_helpers.py,69
   testql/commands/encoder_routes.py,478
   testql/commands/endpoints_cmd.py,137
-  testql/commands/generate_cmd.py,158
+  testql/commands/generate_cmd.py,171
   testql/commands/generate_ir_cmd.py,50
-  testql/commands/inspect_cmd.py,34
+  testql/commands/generate_topology_cmd.py,59
+  testql/commands/inspect_cmd.py,35
   testql/commands/misc_cmds.py,293
   testql/commands/run_cmd.py,57
   testql/commands/run_ir_cmd.py,66
@@ -3532,6 +3534,8 @@ M[275]:
   testql/discovery/manifest.py,174
   testql/discovery/probes/__init__.py,6
   testql/discovery/probes/base.py,71
+  testql/discovery/probes/browser/__init__.py,8
+  testql/discovery/probes/browser/playwright_page.py,142
   testql/discovery/probes/filesystem/__init__.py,16
   testql/discovery/probes/filesystem/api_openapi.py,73
   testql/discovery/probes/filesystem/container_compose.py,45
@@ -3539,8 +3543,8 @@ M[275]:
   testql/discovery/probes/filesystem/package_node.py,55
   testql/discovery/probes/filesystem/package_python.py,201
   testql/discovery/probes/network/__init__.py,6
-  testql/discovery/probes/network/http_endpoint.py,143
-  testql/discovery/registry.py,57
+  testql/discovery/probes/network/http_endpoint.py,161
+  testql/discovery/registry.py,60
   testql/discovery/source.py,34
   testql/doql_parser.py,173
   testql/echo_schemas.py,154
@@ -3631,13 +3635,14 @@ M[275]:
   testql/meta/mutator.py,220
   testql/meta/self_test.py,59
   testql/openapi_generator.py,445
+  testql/pipeline.py,136
   testql/report_generator.py,249
   testql/reporters/__init__.py,7
   testql/reporters/console.py,39
   testql/reporters/json_reporter.py,34
   testql/reporters/junit.py,80
   testql/results/__init__.py,21
-  testql/results/analyzer.py,273
+  testql/results/analyzer.py,491
   testql/results/artifacts.py,78
   testql/results/models.py,141
   testql/results/serializers.py,113
@@ -3648,14 +3653,18 @@ M[275]:
   testql/sumd_generator.py,209
   testql/sumd_parser.py,278
   testql/toon_parser.py,111
-  testql/topology/__init__.py,17
-  testql/topology/builder.py,139
+  testql/topology/__init__.py,22
+  testql/topology/builder.py,143
+  testql/topology/generator.py,242
   testql/topology/models.py,106
   testql/topology/serializers.py,52
+  testql/topology/sitemap.py,120
   tests/fixtures/discovery/python_pkg/sample_api/__init__.py,2
   tests/fixtures/discovery/python_pkg/sample_api/main.py,8
+  tests/test_adapter_capture_syntax.py,167
   tests/test_adapters_base.py,159
   tests/test_api_handler.py,90
+  tests/test_browser_discovery.py,103
   tests/test_cli.py,98
   tests/test_converter.py,178
   tests/test_converter_handlers.py,352
@@ -3667,7 +3676,7 @@ M[275]:
   tests/test_echo_doql_parser.py,220
   tests/test_echo_schemas_helpers.py,214
   tests/test_encoder_routes.py,42
-  tests/test_generate_cmd.py,101
+  tests/test_generate_cmd.py,95
   tests/test_generate_ir_cli.py,70
   tests/test_generators.py,111
   tests/test_graphql_adapter.py,197
@@ -3685,7 +3694,7 @@ M[275]:
   tests/test_meta_mutator.py,190
   tests/test_meta_self_test.py,99
   tests/test_misc_cmds.py,111
-  tests/test_network_discovery.py,111
+  tests/test_network_discovery.py,133
   tests/test_nl_adapter.py,278
   tests/test_nl_entity_extractor.py,155
   tests/test_nl_grammar.py,101
@@ -3720,6 +3729,7 @@ M[275]:
   tests/test_testtoon_adapter.py,191
   tests/test_toon_parser.py,84
   tests/test_topology.py,88
+  tests/test_topology_generator.py,162
   tests/test_unit_execution.py,113
   tree.sh,2
 D:
@@ -3963,7 +3973,7 @@ D:
     _projection_columns(tree)
     analyze_query(sql;dialect)
   testql/adapters/sql/sql_adapter.py:
-    e: _config_section,_schema_section,_query_section,_row_query,_assert_section,_resolve_owner,_toon_to_plan,_apply_section,_h_config,_h_schema,_h_query,_h_assert,_render_meta,_render_config,_collect_schema_rows,_render_schema,_render_queries,_render_asserts,_render_plan,parse,render,SqlDSLAdapter
+    e: _config_section,_schema_section,_query_section,_row_query,_assert_section,_resolve_owner,_toon_to_plan,_apply_section,_h_config,_h_schema,_h_query,_h_assert,_h_capture,_render_meta,_render_config,_collect_schema_rows,_render_schema,_render_queries,_render_asserts,_render_captures,_render_plan,parse,render,SqlDSLAdapter
     SqlDSLAdapter: detect(1),parse(1),render(1)  # Adapter for `*.sql.testql.yaml` SQL contract scenarios.
     _config_section(section;dialect)
     _schema_section(section)
@@ -3977,23 +3987,27 @@ D:
     _h_schema(section;plan;sql_steps;dialect)
     _h_query(section;plan;sql_steps;dialect)
     _h_assert(section;plan;sql_steps;dialect)
+    _h_capture(section;plan;sql_steps;dialect)
     _render_meta(metadata)
     _render_config(plan)
     _collect_schema_rows(plan)
     _render_schema(plan)
     _render_queries(plan)
     _render_asserts(plan)
+    _render_captures(plan)
     _render_plan(plan)
     parse(source)
     render(plan)
   testql/adapters/testtoon_adapter.py:
-    e: _config_to_dict,_api_section_to_steps,_navigate_section_to_steps,_encoder_section_to_steps,_assert_section_to_steps,_generic_section_to_steps,_translate_section,_toon_to_plan,_render_meta,_render_config,_render_api_steps,_render_navigate_steps,_render_encoder_steps,_render_assertions,_render_plan,parse,render,TestToonAdapter
+    e: _config_to_dict,_api_section_to_steps,_navigate_section_to_steps,_encoder_section_to_steps,_assert_section_to_steps,_capture_section_apply,_resolve_capture_target,_generic_section_to_steps,_translate_section,_toon_to_plan,_render_meta,_render_config,_render_api_steps,_render_navigate_steps,_render_encoder_steps,_render_assertions,_render_captures,_render_plan,parse,render,TestToonAdapter
     TestToonAdapter: detect(1),parse(1),render(1)  # Adapter for the legacy `*.testql.toon.yaml` format (TestTOON
     _config_to_dict(section)
     _api_section_to_steps(section)
     _navigate_section_to_steps(section)
     _encoder_section_to_steps(section)
     _assert_section_to_steps(section)
+    _capture_section_apply(section;plan)
+    _resolve_capture_target(target;by_name;steps)
     _generic_section_to_steps(section)
     _translate_section(section)
     _toon_to_plan(toon)
@@ -4003,6 +4017,7 @@ D:
     _render_navigate_steps(steps)
     _render_encoder_steps(steps)
     _render_assertions(steps)
+    _render_captures(steps)
     _render_plan(plan)
     parse(source)
     render(plan)
@@ -4098,9 +4113,12 @@ D:
     _format_endpoints(eps;fmt;target_path;detector)
     openapi(path;output;format;title;version;contract_tests)
   testql/commands/generate_cmd.py:
-    e: _is_workspace,generate,analyze,_count_routes_by,_print_routes_section,_print_scenarios_section
+    e: _is_workspace,_echo_analysis,_echo_generation,generate,_emit_ir_json,analyze,_count_routes_by,_print_routes_section,_print_scenarios_section
     _is_workspace(target_path)
-    generate(path;output_dir;analyze_only;fmt)
+    _echo_analysis(ctx;target_path)
+    _echo_generation(ctx;generated)
+    generate(path;output_dir;analyze_only;fmt;to_ir)
+    _emit_ir_json(paths;fmt)
     analyze(path)
     _count_routes_by(routes;key)
     _print_routes_section(profile)
@@ -4109,9 +4127,13 @@ D:
     e: _split_from_arg,generate_ir
     _split_from_arg(value)
     generate_ir(from_;to_;out;no_llm)
+  testql/commands/generate_topology_cmd.py:
+    e: generate_topology,_pick_trace
+    generate_topology(source;trace_id;output;fmt;scan_network)
+    _pick_trace(topology;trace_id)
   testql/commands/inspect_cmd.py:
     e: inspect
-    inspect(source;fmt;artifact;scan_network;out_dir)
+    inspect(source;fmt;artifact;scan_network;browser;out_dir)
   testql/commands/misc_cmds.py:
     e: _create_templates,init,create,watch,from_sumd,report,echo
     _create_templates(templates_dir;project_type)
@@ -4236,6 +4258,12 @@ D:
     ProbeResult: to_dict(0)
     Probe: applicable(1),probe(1)
     BaseProbe: applicable(1),no_match(0),result(5),evidence(3),source_roots(1)
+  testql/discovery/probes/browser/__init__.py:
+  testql/discovery/probes/browser/playwright_page.py:
+    e: _link_kind,_asset_kind,PlaywrightPageProbe
+    PlaywrightPageProbe: __init__(2),applicable(1),probe(1),evidence(3)
+    _link_kind(base_url;href)
+    _asset_kind(asset)
   testql/discovery/probes/filesystem/__init__.py:
   testql/discovery/probes/filesystem/api_openapi.py:
     e: _excluded,OpenAPIProbe
@@ -4267,7 +4295,7 @@ D:
     _excluded(path)
   testql/discovery/probes/network/__init__.py:
   testql/discovery/probes/network/http_endpoint.py:
-    e: _fetch,_looks_textual,_metadata,_parse_html,_limit,_link_kind,HTTPPageProbe,_PageParser
+    e: _fetch,_looks_textual,_metadata,_parse_html,_limit,_asset_kind,_link_kind,HTTPPageProbe,_PageParser
     HTTPPageProbe: __init__(1),applicable(1),probe(1),evidence(3)
     _PageParser: __init__(1),handle_starttag(2),handle_data(1),handle_endtag(1)
     _fetch(url;timeout)
@@ -4275,12 +4303,13 @@ D:
     _metadata(original_url;response;content_type;parsed)
     _parse_html(text;base_url)
     _limit(items;limit)
+    _asset_kind(tag;attrs)
     _link_kind(base_url;href)
   testql/discovery/registry.py:
     e: default_probes,discover_path,_cost_key,ProbeRegistry
-    ProbeRegistry: __init__(2),run(1),discover(1)
-    default_probes(scan_network)
-    discover_path(path;scan_network)
+    ProbeRegistry: __init__(3),run(1),discover(1)
+    default_probes(scan_network;use_browser)
+    discover_path(path;scan_network;use_browser)
     _cost_key(probe)
   testql/discovery/source.py:
     e: SourceKind,ArtifactSource
@@ -4701,6 +4730,10 @@ D:
     _extract_ep_params(ep_params;existing)
     generate_openapi_spec(project_path;output;format)
     generate_contract_tests_from_spec(spec_path;output)
+  testql/pipeline.py:
+    e: GenerationContext,GenerationPipeline
+    GenerationContext:  # Data collected during the _collect phase.
+    GenerationPipeline: __init__(1),_collect(0),_emit(2),_emit_workspace(2),_emit_single(2),run(0),_is_workspace(1)  # Orchestrate project analysis and scenario generation.
   testql/report_generator.py:
     e: _adapt_test_entry,generate_report,TestResult,TestSuiteReport,ReportDataParser,HTMLReportGenerator
     TestResult:  # Single test result.
@@ -4722,14 +4755,27 @@ D:
     report_junit(result;suite_name)
   testql/results/__init__.py:
   testql/results/analyzer.py:
-    e: inspect_source,analyze_topology,_check_confidence,_check_nodes,_check_edges,_check_interfaces,_check_evidence,_web_checks,_page_node,_check_web_status,_check_web_title,_check_web_links,_check_web_assets,_check_web_forms,_status_code,_findings_from_checks,_actions_from_findings,_status_from_checks,_likely_cause,_action_type,_action_summary,_topology_id,_run_id,_safe
-    inspect_source(source;scan_network)
-    analyze_topology(topology)
+    e: inspect_source,analyze_topology,_check_confidence,_check_nodes,_check_edges,_check_interfaces,_check_evidence,_crawl_checks,_check_link_statuses,_check_asset_statuses,_head_check_urls,_sitemap_checks,_browser_checks,_check_browser_render,_check_browser_console,_check_browser_network,_sitemap_node,_check_sitemap_crawl,_check_sitemap_broken,_check_sitemap_duplicates,_web_checks,_page_node,_check_web_status,_check_web_title,_check_web_links,_check_web_assets,_check_web_forms,_status_code,_findings_from_checks,_actions_from_findings,_status_from_checks,_likely_cause,_action_type,_action_summary,_topology_id,_run_id,_safe
+    inspect_source(source;scan_network;use_browser)
+    analyze_topology(topology;scan_network;use_browser)
     _check_confidence(topology)
     _check_nodes(topology)
     _check_edges(topology)
     _check_interfaces(topology)
     _check_evidence(topology)
+    _crawl_checks(topology;scan_network)
+    _check_link_statuses(metadata;node_id)
+    _check_asset_statuses(metadata;node_id)
+    _head_check_urls(urls)
+    _sitemap_checks(topology)
+    _browser_checks(topology;use_browser)
+    _check_browser_render(node_id;metadata)
+    _check_browser_console(node_id;metadata)
+    _check_browser_network(node_id;metadata)
+    _sitemap_node(topology)
+    _check_sitemap_crawl(sitemap;subpages)
+    _check_sitemap_broken(sitemap;subpages)
+    _check_sitemap_duplicates(sitemap;subpages)
     _web_checks(topology)
     _page_node(topology)
     _check_web_status(node_id;metadata)
@@ -4808,14 +4854,18 @@ D:
   testql/topology/__init__.py:
   testql/topology/builder.py:
     e: build_topology,_source_location,_root_metadata,_default_trace,_safe_id,_protocol_for_interface,_protocol_for_evidence,TopologyBuilder
-    TopologyBuilder: __init__(1),build(1),_add_type_nodes(3),_add_interface_nodes(3),_add_dependency_nodes(3),_add_evidence_nodes(3),_add_page_schema_nodes(3)
-    build_topology(source;scan_network)
+    TopologyBuilder: __init__(2),build(1),_add_type_nodes(3),_add_interface_nodes(3),_add_dependency_nodes(3),_add_evidence_nodes(3),_add_page_schema_nodes(3)
+    build_topology(source;scan_network;use_browser)
     _source_location(source)
     _root_metadata(manifest)
     _default_trace(topology)
     _safe_id(value)
     _protocol_for_interface(interface_type)
     _protocol_for_evidence(evidence)
+  testql/topology/generator.py:
+    e: NodeMappingConfig,TopologyScenarioGenerator
+    NodeMappingConfig:  # Controls how topology nodes are mapped to IR steps.
+    TopologyScenarioGenerator: __init__(2),from_trace(1),from_path(1),to_testtoon(1),_node_to_step(1),_interface_to_step(2),_page_to_step(1),_link_to_step(1),_form_to_step(1),_asset_to_step(1),_dependency_to_step(1),_evidence_to_step(1),_attach_assertions(2),_outgoing_edges(1),_condition_to_assertion(1),_location(1),_protocol_for_node(1)  # Generate executable TestPlans from topology traversal traces
   testql/topology/models.py:
     e: Condition,TopologyNode,TopologyEdge,TraversalTrace,TopologyManifest
     Condition: to_dict(0)
@@ -4828,10 +4878,28 @@ D:
     render_topology(topology;fmt;include_manifest)
     _render_toon(data)
     _source_location(source)
+  testql/topology/sitemap.py:
+    e: build_sitemap,_extract_internal_links,_resolve_urls,_crawl_subpage,_is_html,_add_sitemap_nodes,_looks_textual,_parse_subpage,_SubpageParser
+    _SubpageParser: __init__(0),handle_starttag(2),handle_data(1),handle_endtag(1)
+    build_sitemap(topology;max_pages;timeout)
+    _extract_internal_links(page_node;max_pages)
+    _resolve_urls(base_url;links)
+    _crawl_subpage(url;base_url;timeout)
+    _is_html(content_type;text)
+    _add_sitemap_nodes(topology;base_url;crawled;max_pages)
+    _looks_textual(content_type)
+    _parse_subpage(text)
   tests/fixtures/discovery/python_pkg/sample_api/__init__.py:
   tests/fixtures/discovery/python_pkg/sample_api/main.py:
     e: health
     health()
+  tests/test_adapter_capture_syntax.py:
+    e: TestTestToonCaptureByIndex,TestTestToonCaptureByName,TestUnresolvedCaptureSilentlyDropped,TestSqlAdapterCapture,TestSqlCaptureExecutesEndToEnd
+    TestTestToonCaptureByIndex: test_parse_attaches_capture_to_first_step(0),test_round_trip(0)
+    TestTestToonCaptureByName: test_parse_attaches_via_step_name(0)
+    TestUnresolvedCaptureSilentlyDropped: test_unknown_target_is_ignored(0)
+    TestSqlAdapterCapture: test_parse_attaches_to_named_step(0),test_round_trip_emits_capture_section(0),test_unknown_query_is_ignored(0)
+    TestSqlCaptureExecutesEndToEnd: test_parsed_capture_chains_through_runner(0)
   tests/test_adapters_base.py:
     e: _DummyAdapter,TestDSLDetectionResult,TestValidationIssue,TestReadSource,TestAdapterRegistry,TestDefaultRegistry,TestBaseAdapterDefaultValidate
     _DummyAdapter: detect(1),parse(1),render(1)
@@ -4845,6 +4913,14 @@ D:
     e: TestCollectAssert,TestHandleApi
     TestCollectAssert: test_no_assert(0),test_assert_status(0),test_assert_status_invalid_defaults_200(0),test_assert_ok(0),test_assert_json_three_parts(0),test_assert_contains_one_part(0),test_multiple_asserts(0),test_stops_at_non_assert(0),test_empty(0)
     TestHandleApi: test_simple_get(0),test_post_with_assert_status(0),test_with_assert_json(0),test_multiple_api_calls(0),test_stops_at_non_api(0),test_columns_without_assert(0)
+  tests/test_browser_discovery.py:
+    e: test_playwright_probe_collects_console_and_network,FakePlaywright,FakeBrowserLauncher,FakeBrowser,FakePage,FakePlaywrightImport
+    FakePlaywright: __enter__(0),__exit__(0),chromium(0)
+    FakeBrowserLauncher: launch(0)
+    FakeBrowser: new_page(0),close(0)
+    FakePage: __init__(0),on(2),goto(3),title(0),evaluate(1)
+    FakePlaywrightImport: sync_playwright(0)
+    test_playwright_probe_collects_console_and_network(monkeypatch)
   tests/test_cli.py:
     e: TestCliHelp,TestSuiteCommand
     TestCliHelp: test_help(0),test_version(0),test_subcommands_listed(0),test_run_help(0),test_suite_help(0),test_list_help(0),test_generate_help(0),test_endpoints_help(0),test_init_help(0),test_echo_help(0)
@@ -4947,7 +5023,7 @@ D:
   tests/test_generate_cmd.py:
     e: TestIsWorkspace,TestGenerateCommand
     TestIsWorkspace: test_has_pyproject_returns_false(1),test_has_setup_py_returns_false(1),test_workspace_dir_without_init(1),test_workspace_dir_with_init_returns_false(1),test_no_workspace_dirs_returns_false(1),test_multiple_workspace_dirs(1)
-    TestGenerateCommand: test_analyze_only_single_project(1),test_analyze_only_workspace(1),test_generate_single_project(1),test_analyze_command(1)
+    TestGenerateCommand: _make_pipeline_ctx(1),test_analyze_only_single_project(1),test_analyze_only_workspace(1),test_generate_single_project(1),test_analyze_command(1)
   tests/test_generate_ir_cli.py:
     e: TestGenerateIRCLI
     TestGenerateIRCLI: test_command_exists(0),test_round_trip_to_stdout(1),test_writes_to_file(1),test_bad_from_arg_errors(0),test_legacy_generate_still_works(0)
@@ -5055,14 +5131,15 @@ D:
     TestInitCommand: test_creates_dirs_and_config(1),test_config_contains_project_name(1),test_api_type_creates_api_template(1),test_gui_type_creates_gui_template(1),test_encoder_type_creates_encoder_template(1),test_all_type_creates_all_templates(1),test_existing_config_not_overwritten(1),test_default_path_is_current_dir(1)
     TestCreateCommand: test_creates_test_file(1),test_file_contains_name(1),test_fails_if_exists_without_force(1),test_force_overwrites_existing(1),test_api_type(1),test_with_module(1),test_creates_output_dir_if_missing(1)
   tests/test_network_discovery.py:
-    e: test_discover_url_requires_scan_network_for_match,test_topology_url_builds_page_schema_nodes,test_inspect_url_nlp_passes_with_mocked_network,test_inspect_cli_url_json_with_scan_network,test_inspect_url_reports_http_failure,FakeClient,FakeErrorClient
-    FakeClient: __init__(0),__enter__(0),__exit__(3),get(1)
+    e: test_discover_url_requires_scan_network_for_match,test_topology_url_builds_page_schema_nodes,test_inspect_url_nlp_passes_with_mocked_network,test_inspect_cli_url_json_with_scan_network,test_inspect_url_reports_http_failure,test_inspect_url_builds_sitemap_with_mocked_network,FakeClient,FakeErrorClient
+    FakeClient: __init__(0),__enter__(0),__exit__(3),get(1),head(1)
     FakeErrorClient:
     test_discover_url_requires_scan_network_for_match(monkeypatch)
     test_topology_url_builds_page_schema_nodes(monkeypatch)
     test_inspect_url_nlp_passes_with_mocked_network(monkeypatch)
     test_inspect_cli_url_json_with_scan_network(monkeypatch)
     test_inspect_url_reports_http_failure(monkeypatch)
+    test_inspect_url_builds_sitemap_with_mocked_network(monkeypatch)
   tests/test_nl_adapter.py:
     e: TestDetect,TestParseHeader,TestParsePolishLoginScenario,TestParseEnglishApiScenario,TestParseUnresolved,TestSqlAndEncoder,TestRender,TestAdapterRegistration,TestDeterministicCoverage
     TestDetect: test_detect_by_extension(1),test_detect_by_header(0),test_negative(0)
@@ -5296,6 +5373,13 @@ D:
     TestTopologyBuilder: test_builds_root_type_dependency_and_evidence_nodes(0),test_builds_interface_node_for_openapi(0),test_to_dict_can_embed_manifest(0)
     TestTopologySerializers: test_render_json(0),test_render_yaml(0),test_render_toon(0)
     TestTopologyCli: test_topology_help_is_available(0),test_topology_default_toon_output(0),test_topology_json_output(0),test_topology_missing_path_exits_nonzero(0)
+  tests/test_topology_generator.py:
+    e: _manifest,TestNodeToStepMapping,TestFromTrace,TestToTesttoon,TestConfigOverride
+    TestNodeToStepMapping: test_interface_http_becomes_api_step(0),test_page_becomes_gui_navigate(0),test_link_becomes_api_get(0),test_form_post_becomes_api_post(0),test_dependency_becomes_shell_step(0),test_evidence_becomes_shell_file_check(0),test_unsupported_node_returns_none(0)
+    TestFromTrace: test_trace_produces_plan_with_steps(0),test_plan_skips_missing_nodes(0),test_assertions_from_edge_conditions(0)
+    TestToTesttoon: test_round_trip_contains_expected_sections(0)
+    TestConfigOverride: test_custom_http_method(0)
+    _manifest()
   tests/test_unit_execution.py:
     e: TestUnitExecution,TestUnitDryRun
     TestUnitExecution: interpreter(0),test_unit_import_success(1),test_unit_import_failure(1),test_unit_assert_success(1),test_unit_assert_failure(1),test_unit_assert_builtin_function(1),test_unit_pytest_no_args(1),test_unit_pytest_dry_run(1)  # Test UNIT_PYTEST, UNIT_IMPORT, UNIT_ASSERT commands.
@@ -5442,47 +5526,47 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 
 ## Call Graph
 
-*519 nodes · 500 edges · 115 modules · CC̄=2.2*
+*520 nodes · 500 edges · 114 modules · CC̄=2.1*
 
 ### Hubs (by degree)
 
 | Function | CC | in | out | total |
 |----------|----|----|-----|-------|
 | `_render_toon` *(in testql.results.serializers)* | 6 | 1 | 46 | **47** |
-| `generate` *(in testql.commands.generate_cmd)* | 10 ⚠ | 0 | 44 | **44** |
-| `list` *(in code2llm_output.map.toon)* | 0 | 29 | 0 | **29** |
+| `list` *(in code2llm_output.map.toon)* | 0 | 30 | 0 | **30** |
 | `write_inspection_artifacts` *(in testql.results.artifacts)* | 1 | 1 | 28 | **29** |
 | `_render_toon` *(in testql.topology.serializers)* | 5 | 1 | 25 | **26** |
+| `generate_topology` *(in testql.commands.generate_topology_cmd)* | 5 | 0 | 24 | **24** |
 | `_print_routes_section` *(in testql.commands.generate_cmd)* | 10 ⚠ | 1 | 23 | **24** |
+| `_parse_workflows` *(in testql.commands.echo.parsers.doql)* | 7 | 1 | 22 | **23** |
 | `_run_iql_lines` *(in testql.commands.encoder_routes)* | 6 | 1 | 22 | **23** |
-| `interp_value` *(in testql.ir_runner.interpolation)* | 6 | 16 | 7 | **23** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# nodes: 519 | edges: 500 | modules: 115
-# CC̄=2.2
+# nodes: 520 | edges: 500 | modules: 114
+# CC̄=2.1
 
 HUBS[20]:
   testql.results.serializers._render_toon
     CC=6  in:1  out:46  total:47
-  testql.commands.generate_cmd.generate
-    CC=10  in:0  out:44  total:44
   code2llm_output.map.toon.list
-    CC=0  in:29  out:0  total:29
+    CC=0  in:30  out:0  total:30
   testql.results.artifacts.write_inspection_artifacts
     CC=1  in:1  out:28  total:29
   testql.topology.serializers._render_toon
     CC=5  in:1  out:25  total:26
+  testql.commands.generate_topology_cmd.generate_topology
+    CC=5  in:0  out:24  total:24
   testql.commands.generate_cmd._print_routes_section
     CC=10  in:1  out:23  total:24
-  testql.commands.encoder_routes._run_iql_lines
-    CC=6  in:1  out:22  total:23
-  testql.ir_runner.interpolation.interp_value
-    CC=6  in:16  out:7  total:23
-  testql.commands.inspect_cmd.inspect
-    CC=6  in:0  out:23  total:23
   testql.commands.echo.parsers.doql._parse_workflows
     CC=7  in:1  out:22  total:23
+  testql.commands.encoder_routes._run_iql_lines
+    CC=6  in:1  out:22  total:23
+  testql.adapters.testtoon_adapter._render_plan
+    CC=9  in:4  out:19  total:23
+  testql.ir_runner.interpolation.interp_value
+    CC=6  in:16  out:7  total:23
   testql.commands.misc_cmds.report
     CC=4  in:0  out:22  total:22
   testql.runner.parse_line
@@ -5491,18 +5575,18 @@ HUBS[20]:
     CC=1  in:22  out:0  total:22
   testql.adapters.sql.fixtures.schema_fixture_from_rows
     CC=4  in:1  out:20  total:21
-  testql.adapters.testtoon_adapter._render_plan
-    CC=9  in:4  out:17  total:21
-  testql.runner.DslCliExecutor.run_script
-    CC=11  in:0  out:20  total:20
-  testql.commands.misc_cmds.init
-    CC=4  in:0  out:20  total:20
   testql.commands.misc_cmds.echo
     CC=4  in:0  out:20  total:20
-  testql.adapters.base.read_source
-    CC=5  in:11  out:9  total:20
+  testql.commands.misc_cmds.init
+    CC=4  in:0  out:20  total:20
+  testql.runner.DslCliExecutor.run_script
+    CC=11  in:0  out:20  total:20
   testql.commands.endpoints_cmd.endpoints
     CC=9  in:0  out:20  total:20
+  testql.adapters.base.read_source
+    CC=5  in:11  out:9  total:20
+  testql.results.analyzer.analyze_topology
+    CC=2  in:1  out:18  total:19
 
 MODULES:
   TODO.testtoon_parser  [2 funcs]
@@ -5519,7 +5603,8 @@ MODULES:
     parse_doql_less  CC=0  out:0
     parse_iql  CC=0  out:0
     parse_script  CC=0  out:0
-  project.map.toon  [3 funcs]
+  project.map.toon  [4 funcs]
+    build_topology  CC=0  out:0
     default_probes  CC=0  out:0
     discover_path  CC=0  out:0
     run_self_test  CC=0  out:0
@@ -5650,7 +5735,7 @@ MODULES:
     _projection_columns  CC=5  out:5
     analyze_query  CC=3  out:4
     classify  CC=2  out:4
-  testql.adapters.sql.sql_adapter  [22 funcs]
+  testql.adapters.sql.sql_adapter  [21 funcs]
     detect  CC=5  out:6
     parse  CC=1  out:3
     render  CC=1  out:1
@@ -5661,17 +5746,17 @@ MODULES:
     _h_assert  CC=3  out:2
     _h_config  CC=1  out:3
     _h_query  CC=1  out:3
-  testql.adapters.testtoon_adapter  [10 funcs]
+  testql.adapters.testtoon_adapter  [11 funcs]
     detect  CC=9  out:12
     parse  CC=1  out:3
     render  CC=1  out:1
+    _capture_section_apply  CC=8  out:12
     _config_to_dict  CC=3  out:3
-    _render_api_steps  CC=4  out:2
     _render_config  CC=3  out:3
     _render_meta  CC=5  out:4
-    _render_plan  CC=9  out:17
-    _toon_to_plan  CC=4  out:10
-    _translate_section  CC=2  out:3
+    _render_plan  CC=9  out:19
+    _resolve_capture_target  CC=4  out:3
+    _toon_to_plan  CC=6  out:12
   testql.cli  [2 funcs]
     cli  CC=1  out:2
     main  CC=1  out:1
@@ -5728,14 +5813,15 @@ MODULES:
     endpoints  CC=9  out:20
   testql.commands.generate_cmd  [4 funcs]
     _count_routes_by  CC=2  out:3
-    _is_workspace  CC=5  out:5
+    _echo_analysis  CC=4  out:17
     _print_routes_section  CC=10  out:23
-    generate  CC=10  out:44
+    generate  CC=5  out:17
   testql.commands.generate_ir_cmd  [2 funcs]
     _split_from_arg  CC=2  out:6
     generate_ir  CC=2  out:12
-  testql.commands.inspect_cmd  [1 funcs]
-    inspect  CC=6  out:23
+  testql.commands.generate_topology_cmd  [2 funcs]
+    _pick_trace  CC=5  out:1
+    generate_topology  CC=5  out:24
   testql.commands.misc_cmds  [4 funcs]
     _create_templates  CC=4  out:4
     echo  CC=4  out:20
@@ -5790,22 +5876,27 @@ MODULES:
   testql.discovery.probes.filesystem.api_openapi  [2 funcs]
     _find_specs  CC=9  out:11
     _excluded  CC=4  out:3
-  testql.discovery.probes.filesystem.container_compose  [1 funcs]
-    _metadata  CC=9  out:11
-  testql.discovery.probes.filesystem.package_python  [14 funcs]
+  testql.discovery.probes.filesystem.package_python  [13 funcs]
     _find_python_files  CC=7  out:6
     _read_metadata  CC=8  out:13
     _call_kw  CC=2  out:3
     _dedupe_deps  CC=4  out:5
     _dep  CC=3  out:4
-    _excluded  CC=2  out:1
     _parse_pyproject  CC=7  out:12
     _parse_pyproject_dependencies  CC=6  out:15
     _parse_requirements  CC=4  out:5
     _parse_setup_cfg  CC=3  out:6
-  testql.discovery.probes.network.http_endpoint  [2 funcs]
+    _parse_setup_py  CC=3  out:4
+  testql.discovery.probes.network.http_endpoint  [9 funcs]
     probe  CC=6  out:14
+    handle_starttag  CC=10  out:14
+    _asset_kind  CC=8  out:2
     _fetch  CC=1  out:2
+    _limit  CC=1  out:0
+    _link_kind  CC=4  out:4
+    _looks_textual  CC=2  out:2
+    _metadata  CC=1  out:10
+    _parse_html  CC=2  out:5
   testql.discovery.registry  [1 funcs]
     __init__  CC=2  out:1
   testql.generators.base  [1 funcs]
@@ -5931,9 +6022,10 @@ MODULES:
     evaluate  CC=3  out:6
     evaluate_all  CC=2  out:1
     navigate  CC=3  out:2
-  testql.ir_runner.engine  [4 funcs]
+  testql.ir_runner.engine  [5 funcs]
     run  CC=5  out:9
-    _run_step  CC=3  out:11
+    _apply_captures  CC=6  out:5
+    _run_step  CC=4  out:12
     load_plan  CC=4  out:8
     run_plan  CC=1  out:2
   testql.ir_runner.executors  [1 funcs]
@@ -6016,17 +6108,16 @@ MODULES:
     _infer_tags  CC=7  out:9
     _extract_ep_params  CC=7  out:8
     _extract_path_params  CC=4  out:4
-  testql.results.analyzer  [16 funcs]
-    _action_summary  CC=1  out:0
-    _action_type  CC=4  out:0
+  testql.results.analyzer  [9 funcs]
     _actions_from_findings  CC=4  out:6
     _check_confidence  CC=2  out:2
     _check_edges  CC=2  out:3
-    _check_evidence  CC=4  out:4
     _check_interfaces  CC=4  out:4
     _check_nodes  CC=2  out:3
     _findings_from_checks  CC=4  out:5
-    _likely_cause  CC=1  out:1
+    _status_from_checks  CC=5  out:2
+    analyze_topology  CC=2  out:18
+    inspect_source  CC=1  out:3
   testql.results.artifacts  [2 funcs]
     _write_group  CC=2  out:3
     write_inspection_artifacts  CC=1  out:28
@@ -6091,12 +6182,17 @@ EDGES:
   testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_api_interfaces
   testql.commands.self_test_cmd.self_test → project.map.toon.run_self_test
   testql.commands.self_test_cmd.self_test → testql.commands.self_test_cmd._print_human
-  testql.commands.generate_cmd.generate → testql.commands.generate_cmd._is_workspace
+  testql.commands.discover_cmd.discover → project.map.toon.discover_path
+  testql.commands.generate_cmd.generate → testql.commands.generate_cmd._echo_analysis
   testql.commands.generate_cmd._print_routes_section → testql.commands.generate_cmd._count_routes_by
+  testql.commands.topology_cmd.topology → project.map.toon.build_topology
+  testql.commands.topology_cmd.topology → testql.topology.serializers.render_topology
   testql.commands.misc_cmds.init → testql.commands.misc_cmds._create_templates
   testql.commands.misc_cmds.report → code2llm_output.map.toon.generate_report
   testql.commands.misc_cmds.echo → testql.commands.echo_helpers.render_echo
   testql.commands.misc_cmds.echo → testql.commands.echo_helpers.collect_toon_data
+  testql.commands.run_ir_cmd.run_ir → testql.ir_runner.engine.run_plan
+  testql.commands.run_ir_cmd.run_ir → testql.commands.run_ir_cmd._emit_json
   testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._strip_path_segments
   testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._migrate_legacy_extension
   testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._remap_tests_prefix
@@ -6115,11 +6211,6 @@ EDGES:
   testql.commands.encoder_routes._extract_table_names → testql._base_fallback.VariableStore.set
   testql.commands.encoder_routes.iql_run_line → testql.commands.encoder_routes._execute_iql_line
   testql.commands.encoder_routes.iql_run_file → testql.commands.encoder_routes._resolve_iql_path
-  testql.commands.encoder_routes.iql_run_file → testql.commands.encoder_routes._build_run_summary
-  testql.commands.encoder_routes.iql_run_file → testql.commands.encoder_routes._write_run_log
-  testql.commands.encoder_routes._run_iql_lines → testql.commands.encoder_routes._update_counters
-  testql.commands.encoder_routes._run_iql_lines → testql.commands.encoder_routes._format_log_detail
-  testql.commands.echo_helpers._collect_toon_directory → code2llm_output.map.toon.parse_toon_file
 ```
 
 ## API Stubs

@@ -20,6 +20,7 @@ from testql.interpreter._testtoon_parser import (
 from testql.ir import (
     ApiStep,
     Assertion,
+    Capture,
     EncoderStep,
     GuiStep,
     ScenarioMetadata,
@@ -46,7 +47,9 @@ def _api_section_to_steps(section: ToonSection) -> list[Step]:
         ak, av = row.get("assert_key"), row.get("assert_value") or row.get("assert_val")
         if ak and av:
             asserts.append(Assertion(field=str(ak), op="==", expected=av))
+        name = str(row.get("name", "")).strip() or None
         steps.append(ApiStep(
+            name=name,
             method=str(row.get("method", "GET")).upper(),
             path=str(row.get("endpoint", "/")),
             expect_status=int(status) if isinstance(status, (int, str)) and str(status).isdigit() else None,
@@ -95,6 +98,36 @@ def _assert_section_to_steps(section: ToonSection) -> list[Step]:
     return [Step(kind="assert", name="ASSERT", asserts=asserts)]
 
 
+def _capture_section_apply(section: ToonSection, plan: TestPlan) -> None:
+    """`CAPTURE[N]{step, var, from}` rows attach `Capture`s to existing plan steps.
+
+    `step` matches `Step.name` if non-numeric; otherwise it is treated as a
+    1-based index into `plan.steps`. Unresolved references are silently dropped
+    (mirrors the orphan-assert behaviour of `_assert_section_to_steps`).
+    """
+    by_name = {s.name: s for s in plan.steps if s.name}
+    for row in section.rows:
+        target = str(row.get("step", "")).strip()
+        var_name = str(row.get("var", "")).strip()
+        from_path = str(row.get("from", "")).strip()
+        if not (target and var_name and from_path):
+            continue
+        owner = _resolve_capture_target(target, by_name, plan.steps)
+        if owner is not None:
+            owner.captures.append(Capture(var_name=var_name, from_path=from_path))
+
+
+def _resolve_capture_target(target: str, by_name: dict[str, Step],
+                            steps: list[Step]) -> Step | None:
+    if target in by_name:
+        return by_name[target]
+    if target.isdigit():
+        idx = int(target) - 1
+        if 0 <= idx < len(steps):
+            return steps[idx]
+    return None
+
+
 def _generic_section_to_steps(section: ToonSection) -> list[Step]:
     """Fallback for section types we don't yet model in the IR (FLOW, OQL, ...)."""
     steps: list[Step] = []
@@ -129,10 +162,16 @@ def _toon_to_plan(toon: ToonScript) -> TestPlan:
         extra={k: v for k, v in toon.meta.items() if k not in {"scenario", "type", "version", "lang"}},
     )
     plan = TestPlan(metadata=md)
+    capture_sections: list[ToonSection] = []
     for section in toon.sections:
+        if section.type == "CAPTURE":
+            capture_sections.append(section)  # apply after all steps are loaded
+            continue
         steps, cfg = _translate_section(section)
         plan.steps.extend(steps)
         plan.config.update(cfg)
+    for section in capture_sections:
+        _capture_section_apply(section, plan)
     return plan
 
 
@@ -204,6 +243,24 @@ def _render_assertions(steps: list[Step]) -> list[str]:
     return lines
 
 
+def _render_captures(steps: list[Step]) -> list[str]:
+    """Emit a `CAPTURE[N]{step, var, from}` section for any step with captures.
+
+    Uses the 1-based step index so round-trip is lossless even when the API
+    renderer (which has fixed columns) doesn't emit step names.
+    """
+    rows: list[tuple[str, str, str]] = []
+    for idx, step in enumerate(steps, start=1):
+        for c in step.captures:
+            rows.append((str(idx), c.var_name, c.from_path))
+    if not rows:
+        return []
+    lines = [f"CAPTURE[{len(rows)}]" + "{step, var, from}:"]
+    for step_ref, var, frm in rows:
+        lines.append(f"  {step_ref}, {var}, {frm}")
+    return lines
+
+
 def _render_plan(plan: TestPlan) -> str:
     """Lossy renderer covering CONFIG / API / NAVIGATE / ENCODER / ASSERT.
 
@@ -223,6 +280,7 @@ def _render_plan(plan: TestPlan) -> str:
     encoder_steps = [s for s in plan.steps if isinstance(s, EncoderStep)]
     parts.extend(_render_encoder_steps(encoder_steps))
     parts.extend(_render_assertions(plan.steps))
+    parts.extend(_render_captures(plan.steps))
     return "\n".join(parts) + ("\n" if parts else "")
 
 

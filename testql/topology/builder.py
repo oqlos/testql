@@ -6,14 +6,16 @@ from testql.discovery import ArtifactManifest, discover_path
 from testql.discovery.manifest import Evidence, ManifestConfidence
 from testql.discovery.source import ArtifactSource
 from testql.topology.models import Condition, TopologyEdge, TopologyManifest, TopologyNode, TraversalTrace
+from testql.topology.sitemap import build_sitemap
 
 
 class TopologyBuilder:
-    def __init__(self, scan_network: bool = False):
+    def __init__(self, scan_network: bool = False, use_browser: bool = False):
         self.scan_network = scan_network
+        self.use_browser = use_browser
 
     def build(self, source: str | Path | ArtifactSource | ArtifactManifest) -> TopologyManifest:
-        manifest = source if isinstance(source, ArtifactManifest) else discover_path(_source_location(source), scan_network=self.scan_network)
+        manifest = source if isinstance(source, ArtifactManifest) else discover_path(_source_location(source), scan_network=self.scan_network, use_browser=self.use_browser)
         root_source = manifest.source if isinstance(manifest.source, ArtifactSource) else ArtifactSource.from_value(str(manifest.source))
         topology = TopologyManifest(
             root=root_source,
@@ -27,6 +29,8 @@ class TopologyBuilder:
         self._add_dependency_nodes(topology, root_id, manifest)
         self._add_evidence_nodes(topology, root_id, manifest)
         self._add_page_schema_nodes(topology, root_id, manifest)
+        if self.scan_network:
+            build_sitemap(topology)
         topology.traces.append(_default_trace(topology))
         return topology
 
@@ -85,8 +89,8 @@ class TopologyBuilder:
             topology.edges.append(TopologyEdge(page_id, node_id, "submits_to", "http", conditions=[Condition("method", form.get("method", "get"))], evidence=manifest.evidence[:1]))
 
 
-def build_topology(source: str | Path | ArtifactSource | ArtifactManifest, scan_network: bool = False) -> TopologyManifest:
-    return TopologyBuilder(scan_network=scan_network).build(source)
+def build_topology(source: str | Path | ArtifactSource | ArtifactManifest, scan_network: bool = False, use_browser: bool = False) -> TopologyManifest:
+    return TopologyBuilder(scan_network=scan_network, use_browser=use_browser).build(source)
 
 
 def _source_location(source: str | Path | ArtifactSource) -> str | Path:

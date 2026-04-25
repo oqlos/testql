@@ -118,6 +118,7 @@
 │   │   ├── endpoints_cmd.py
 │   │   ├── generate_cmd.py
 │   │   ├── generate_ir_cmd.py
+│   │   ├── generate_topology_cmd.py
 │   │   ├── __init__.py
 │   │   ├── inspect_cmd.py
 │   │   ├── misc_cmds.py
@@ -156,6 +157,9 @@
 │   │   ├── manifest.py
 │   │   ├── probes
 │   │   │   ├── base.py
+│   │   │   ├── browser
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── playwright_page.py
 │   │   │   ├── filesystem
 │   │   │   │   ├── api_openapi.py
 │   │   │   │   ├── container_compose.py
@@ -271,6 +275,7 @@
 │   │   ├── mutator.py
 │   │   └── self_test.py
 │   ├── openapi_generator.py
+│   ├── pipeline.py
 │   ├── reporters
 │   │   ├── console.py
 │   │   ├── __init__.py
@@ -512,9 +517,11 @@
 │   ├── toon_parser.py
 │   └── topology
 │       ├── builder.py
+│       ├── generator.py
 │       ├── __init__.py
 │       ├── models.py
-│       └── serializers.py
+│       ├── serializers.py
+│       └── sitemap.py
 ├── testql.egg-info
 │   ├── dependency_links.txt
 │   ├── entry_points.txt
@@ -559,8 +566,10 @@
 │   │           └── sample_api
 │   │               ├── __init__.py
 │   │               └── main.py
+│   ├── test_adapter_capture_syntax.py
 │   ├── test_adapters_base.py
 │   ├── test_api_handler.py
+│   ├── test_browser_discovery.py
 │   ├── test_cli.py
 │   ├── test_converter_handlers.py
 │   ├── test_converter.py
@@ -624,6 +633,7 @@
 │   ├── test_test_generator.py
 │   ├── test_testtoon_adapter.py
 │   ├── test_toon_parser.py
+│   ├── test_topology_generator.py
 │   ├── test_topology.py
 │   └── test_unit_execution.py
 ├── TODO
@@ -636,4 +646,4 @@
 ├── tree.txt
 └── VERSION
 
-73 directories, 564 files
+74 directories, 573 files

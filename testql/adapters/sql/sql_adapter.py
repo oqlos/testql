@@ -37,7 +37,7 @@ from testql.interpreter._testtoon_parser import (
     ToonSection,
     parse_testtoon as _parse_testtoon,
 )
-from testql.ir import Assertion, Fixture, ScenarioMetadata, SqlStep, Step, TestPlan
+from testql.ir import Assertion, Capture, Fixture, ScenarioMetadata, SqlStep, Step, TestPlan
 
 from ..base import BaseDSLAdapter, DSLDetectionResult, SourceLike, read_source
 from .dialect_resolver import DEFAULT_DIALECT, normalize_dialect
@@ -170,11 +170,25 @@ def _h_assert(section: ToonSection, plan: TestPlan,
     plan.steps.extend(_assert_section(section, {s.name: s for s in sql_steps if s.name}))
 
 
+def _h_capture(section: ToonSection, plan: TestPlan,
+               sql_steps: list[SqlStep], dialect: str) -> None:
+    """Attach `Capture`s to SqlSteps by `query` name (matches assert lookup style)."""
+    by_name = {s.name: s for s in sql_steps if s.name}
+    for row in section.rows:
+        target = str(row.get("query", "") or row.get("step", "")).strip()
+        var = str(row.get("var", "")).strip()
+        from_path = str(row.get("from", "")).strip()
+        owner = by_name.get(target)
+        if owner is not None and var and from_path:
+            owner.captures.append(Capture(var_name=var, from_path=from_path))
+
+
 _SECTION_HANDLERS = {
     "CONFIG": _h_config,
     "SCHEMA": _h_schema,
     "QUERY": _h_query,
     "ASSERT": _h_assert,
+    "CAPTURE": _h_capture,
 }
 
 
@@ -246,6 +260,22 @@ def _render_asserts(plan: TestPlan) -> list[str]:
     return lines
 
 
+def _render_captures(plan: TestPlan) -> list[str]:
+    """Emit `CAPTURE[N]{query, var, from}` rows referencing the SqlStep name."""
+    rows: list[tuple[str, str, str]] = []
+    for s in plan.steps:
+        if not isinstance(s, SqlStep) or not s.name:
+            continue
+        for c in s.captures:
+            rows.append((s.name, c.var_name, c.from_path))
+    if not rows:
+        return []
+    lines = [f"CAPTURE[{len(rows)}]" + "{query, var, from}:"]
+    for q, var, frm in rows:
+        lines.append(f"  {q}, {var}, {frm}")
+    return lines
+
+
 def _render_plan(plan: TestPlan) -> str:
     parts = _render_meta(plan.metadata)
     if parts:
@@ -254,6 +284,7 @@ def _render_plan(plan: TestPlan) -> str:
     parts.extend(_render_schema(plan))
     parts.extend(_render_queries(plan))
     parts.extend(_render_asserts(plan))
+    parts.extend(_render_captures(plan))
     return "\n".join(parts) + ("\n" if parts else "")
 
 

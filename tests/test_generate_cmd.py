@@ -39,47 +39,41 @@ class TestIsWorkspace:
 
 
 class TestGenerateCommand:
+    def _make_pipeline_ctx(self, is_workspace=False):
+        ctx = MagicMock()
+        ctx.is_workspace = is_workspace
+        if is_workspace:
+            ctx.workspace_profiles = {}
+        else:
+            profile = MagicMock()
+            profile.project_type = "api"
+            profile.test_patterns = []
+            profile.discovered_files = {}
+            ctx.profile = profile
+        return ctx
+
     def test_analyze_only_single_project(self, tmp_path):
         runner = CliRunner()
-        mock_gen = MagicMock()
-        mock_profile = MagicMock()
-        mock_profile.project_type = "api"
-        mock_profile.test_patterns = ["a", "b"]
-        mock_profile.discovered_files = {"routes": ["f1.py"]}
-        mock_gen.analyze.return_value = mock_profile
-        mock_gen.profile = mock_profile
-
-        with patch("testql.generator.TestGenerator", return_value=mock_gen):
+        ctx = self._make_pipeline_ctx()
+        with patch("testql.pipeline.GenerationPipeline._collect", return_value=ctx):
             result = runner.invoke(generate, [str(tmp_path), "--analyze-only"])
-
-        assert result.exit_code == 0 or "api" in result.output.lower() or "Analyzing" in result.output
+        assert result.exit_code == 0
 
     def test_analyze_only_workspace(self, tmp_path):
         runner = CliRunner()
         (tmp_path / "doql").mkdir()
-
-        mock_gen = MagicMock()
-        mock_gen.analyze_all.return_value = {"doql": MagicMock(project_type="api", test_patterns=[], config={})}
-
-        with patch("testql.generator.MultiProjectTestGenerator", return_value=mock_gen):
+        ctx = self._make_pipeline_ctx(is_workspace=True)
+        ctx.workspace_profiles = {"doql": MagicMock(project_type="api", test_patterns=[], config={})}
+        with patch("testql.pipeline.GenerationPipeline._collect", return_value=ctx):
             result = runner.invoke(generate, [str(tmp_path), "--analyze-only"])
-
         assert result.exit_code == 0
 
     def test_generate_single_project(self, tmp_path):
         runner = CliRunner()
-        mock_gen = MagicMock()
-        mock_profile = MagicMock()
-        mock_profile.project_type = "api"
-        mock_profile.test_patterns = []
-        mock_profile.discovered_files = {}
-        mock_gen.analyze.return_value = mock_profile
-        mock_gen.profile = mock_profile
-        mock_gen.generate_tests.return_value = [tmp_path / "test_foo.tql"]
-
-        with patch("testql.generator.TestGenerator", return_value=mock_gen):
+        ctx = self._make_pipeline_ctx()
+        with patch("testql.pipeline.GenerationPipeline._collect", return_value=ctx), \
+             patch("testql.pipeline.GenerationPipeline._emit", return_value=[tmp_path / "test_foo.tql"]):
             result = runner.invoke(generate, [str(tmp_path)])
-
         assert result.exit_code == 0
 
     def test_analyze_command(self, tmp_path):
