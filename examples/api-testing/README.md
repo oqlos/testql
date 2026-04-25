@@ -16,6 +16,10 @@ This example demonstrates REST API testing using TestQL's TestTOON tabular forma
 
 # Run against a specific API
 ./run.sh http://localhost:3000
+
+# Start mock server for self-contained testing
+python3 mock_server.py &
+./run.sh
 ```
 
 ## Concepts demonstrated

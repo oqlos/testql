@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+TESTQL="$ROOT_DIR/venv/bin/testql"
+if [ ! -x "$TESTQL" ]; then TESTQL="testql"; fi
+
 # Browser inspection demo — run Playwright-backed inspection on a target URL
 
 set -euo pipefail
@@ -6,11 +10,18 @@ set -euo pipefail
 URL="${1:-https://tom.sapletta.com/}"
 OUTDIR="${2:-.testql-browser}"
 
+# Guard: skip if Playwright is not installed
+if ! python3 -c "import playwright" 2>/dev/null; then
+  echo "==> Browser-inspection SKIPPED: Playwright not installed"
+  echo "    Install: pip install playwright && playwright install chromium"
+  exit 0
+fi
+
 echo "==> Browser-inspecting $URL"
 echo "==> Output directory: $OUTDIR"
 
 # Requires: pip install playwright && playwright install chromium
-testql inspect "$URL" --scan-network --browser --out-dir "$OUTDIR"
+"$TESTQL" inspect "$URL" --scan-network --browser --out-dir "$OUTDIR"
 
 echo "==> Generated files in $OUTDIR:"
 ls -la "$OUTDIR"

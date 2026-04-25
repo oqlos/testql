@@ -26,23 +26,43 @@
 │   ├── api-testing
 │   │   ├── crud-workflow.testql.toon.yaml
 │   │   ├── health-check.testql.toon.yaml
+│   │   ├── Makefile
+│   │   ├── mock_server.py
 │   │   ├── README.md
 │   │   └── run.sh
 │   ├── artifact-bundle
 │   │   ├── generate_bundle.py
-│   │   └── README.md
+│   │   ├── Makefile
+│   │   ├── README.md
+│   │   └── run.sh
 │   ├── browser-inspection
-│   │   └── README.md
+│   │   ├── Makefile
+│   │   ├── README.md
+│   │   └── run.sh
 │   ├── discovery
 │   │   ├── discover-local.sh
 │   │   ├── inspect-web.sh
+│   │   ├── Makefile
 │   │   ├── README.md
 │   │   └── topology.sh
+│   ├── encoder-testing
+│   │   ├── basic-encoder.iql
+│   │   ├── complex-sequence.iql
+│   │   ├── Makefile
+│   │   ├── README.md
+│   │   └── run.sh
+│   ├── flow-control
+│   │   ├── Makefile
+│   │   ├── README.md
+│   │   ├── run.sh
+│   │   └── variables.iql
 │   ├── gui-testing
 │   │   ├── login-form.iql
+│   │   ├── Makefile
 │   │   ├── README.md
 │   │   ├── run.sh
 │   │   └── search-workflow.iql
+│   ├── Makefile
 │   ├── project-echo
 │   │   ├── api-contract.testql.toon.yaml
 │   │   ├── app.doql
@@ -70,26 +90,40 @@
 │   │   │       ├── docker-compose.yml
 │   │   │       └── Dockerfile
 │   │   ├── doql.lock
+│   │   ├── Makefile
 │   │   ├── README.md
 │   │   └── run.sh
 │   ├── README.md
+│   ├── run-all.sh
 │   ├── shell-testing
 │   │   ├── basic-commands.iql
 │   │   ├── file-operations.iql
+│   │   ├── Makefile
 │   │   ├── README.md
 │   │   └── run.sh
 │   ├── testtoon-basics
 │   │   ├── assertions.testql.toon.yaml
+│   │   ├── Makefile
 │   │   ├── minimal.testql.toon.yaml
 │   │   ├── README.md
 │   │   ├── run.sh
 │   │   └── variables.testql.toon.yaml
 │   ├── topology
-│   │   └── README.md
+│   │   ├── Makefile
+│   │   ├── README.md
+│   │   └── run.sh
+│   ├── unit-testing
+│   │   ├── Makefile
+│   │   ├── README.md
+│   │   ├── run.sh
+│   │   ├── test-math.iql
+│   │   └── test-pytest.iql
 │   ├── web-inspection
-│   │   ├── demo.sh
-│   │   └── README.md
+│   │   ├── Makefile
+│   │   ├── README.md
+│   │   └── run.sh
 │   └── web-inspection-dot-testql
+│       ├── Makefile
 │       ├── README.md
 │       └── run.sh
 ├── goal.yaml
@@ -708,8 +742,10 @@
 │   ├── testql-table-format-spec.md
 │   └── testtoon_parser.py
 ├── TODO.md
+├── topology.toon
+├── topology.toon.yaml
 ├── tree.sh
 ├── tree.txt
 └── VERSION
 
-90 directories, 623 files
+93 directories, 656 files

@@ -2,6 +2,13 @@
 
 Inspect a live URL, extract page topology (links, assets, forms), and validate link/asset reachability.
 
+## Quick start
+
+```bash
+cd web-inspection
+./run.sh https://tom.sapletta.com/
+```
+
 ## Basic HTTP inspection
 
 ```bash
@@ -38,4 +45,4 @@ With `--scan-network` the inspection also fetches up to 10 internal sub-pages, e
 
 ## Files
 
-- `demo.sh` — script that runs the full inspection pipeline.
+- `run.sh` — script that runs the full inspection pipeline.

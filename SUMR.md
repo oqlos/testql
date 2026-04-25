@@ -18,7 +18,7 @@ SUMD - Structured Unified Markdown Descriptor for AI-aware project refactorizati
 ## Metadata
 
 - **name**: `testql`
-- **version**: `1.2.4`
+- **version**: `1.2.5`
 - **python_requires**: `>=3.10`
 - **license**: Apache-2.0
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -39,7 +39,7 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 1.2.4;
+  version: 1.2.5;
 }
 
 dependencies {
@@ -659,67 +659,67 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 
 ## Call Graph
 
-*527 nodes · 500 edges · 109 modules · CC̄=2.1*
+*534 nodes · 500 edges · 111 modules · CC̄=2.1*
 
 ### Hubs (by degree)
 
 | Function | CC | in | out | total |
 |----------|----|----|-----|-------|
 | `_render_toon` *(in testql.results.serializers)* | 6 | 1 | 46 | **47** |
-| `print` *(in examples.web-inspection.demo)* | 0 | 37 | 0 | **37** |
+| `print` *(in examples.browser-inspection.run)* | 0 | 37 | 0 | **37** |
+| `list` *(in code2llm_output.map.toon)* | 0 | 31 | 0 | **31** |
 | `write_inspection_artifacts` *(in testql.results.artifacts)* | 1 | 2 | 28 | **30** |
-| `list` *(in code2llm_output.map.toon)* | 0 | 30 | 0 | **30** |
-| `_print_routes_section` *(in testql.commands.generate_cmd)* | 10 ⚠ | 1 | 23 | **24** |
 | `inspect` *(in testql.commands.inspect_cmd)* | 6 | 0 | 24 | **24** |
 | `generate_topology` *(in testql.commands.generate_topology_cmd)* | 5 | 0 | 24 | **24** |
+| `_print_routes_section` *(in testql.commands.generate_cmd)* | 10 ⚠ | 1 | 23 | **24** |
 | `interp_value` *(in testql.ir_runner.interpolation)* | 6 | 16 | 7 | **23** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# nodes: 527 | edges: 500 | modules: 109
+# nodes: 534 | edges: 500 | modules: 111
 # CC̄=2.1
 
 HUBS[20]:
   testql.results.serializers._render_toon
     CC=6  in:1  out:46  total:47
-  examples.web-inspection.demo.print
+  examples.browser-inspection.run.print
     CC=0  in:37  out:0  total:37
+  code2llm_output.map.toon.list
+    CC=0  in:31  out:0  total:31
   testql.results.artifacts.write_inspection_artifacts
     CC=1  in:2  out:28  total:30
-  code2llm_output.map.toon.list
-    CC=0  in:30  out:0  total:30
-  testql.commands.generate_cmd._print_routes_section
-    CC=10  in:1  out:23  total:24
   testql.commands.inspect_cmd.inspect
     CC=6  in:0  out:24  total:24
   testql.commands.generate_topology_cmd.generate_topology
     CC=5  in:0  out:24  total:24
+  testql.commands.generate_cmd._print_routes_section
+    CC=10  in:1  out:23  total:24
   testql.ir_runner.interpolation.interp_value
     CC=6  in:16  out:7  total:23
   testql.commands.echo.parsers.doql._parse_workflows
     CC=7  in:1  out:22  total:23
+  testql.adapters.testtoon_adapter._render_plan
+    CC=9  in:4  out:19  total:23
   testql.commands.encoder_routes._run_iql_lines
     CC=6  in:1  out:22  total:23
-  testql.runner.parse_line
-    CC=9  in:2  out:20  total:22
   testql._base_fallback.VariableStore.set
     CC=1  in:22  out:0  total:22
   testql.commands.misc_cmds.report
     CC=4  in:0  out:22  total:22
+  testql.runner.parse_line
+    CC=9  in:2  out:20  total:22
   testql.adapters.sql.fixtures.schema_fixture_from_rows
     CC=4  in:1  out:20  total:21
-  testql.commands.misc_cmds.init
-    CC=4  in:0  out:20  total:20
   testql.commands.endpoints_cmd.endpoints
     CC=9  in:0  out:20  total:20
-  testql.runner.DslCliExecutor.run_script
-    CC=11  in:0  out:20  total:20
   testql.adapters.base.read_source
     CC=5  in:11  out:9  total:20
   testql.commands.misc_cmds.echo
     CC=4  in:0  out:20  total:20
-  testql.results.analyzer.analyze_topology
-    CC=2  in:1  out:18  total:19
+  testql.runner.DslCliExecutor.run_script
+    CC=11  in:0  out:20  total:20
+  testql.commands.misc_cmds.init
+    CC=4  in:0  out:20  total:20
 
 MODULES:
   TODO.testtoon_parser  [2 funcs]
@@ -736,7 +736,9 @@ MODULES:
     parse_doql_less  CC=0  out:0
     parse_iql  CC=0  out:0
     parse_script  CC=0  out:0
-  examples.web-inspection.demo  [1 funcs]
+  examples.artifact-bundle.generate_bundle  [1 funcs]
+    main  CC=2  out:10
+  examples.browser-inspection.run  [1 funcs]
     print  CC=0  out:0
   project.map.toon  [2 funcs]
     build_topology  CC=0  out:0
@@ -819,14 +821,13 @@ MODULES:
     _strip_comments  CC=1  out:2
     load_proto_file  CC=1  out:3
     parse_proto  CC=4  out:9
-  testql.adapters.proto.message_validator  [10 funcs]
+  testql.adapters.proto.message_validator  [9 funcs]
     _missing_required  CC=4  out:1
     _row_issues  CC=3  out:4
     _validate_field_known  CC=2  out:2
     _validate_field_type  CC=3  out:2
     _validate_field_value  CC=3  out:2
     coerce_scalar  CC=5  out:6
-    lookup_message  CC=1  out:1
     parse_instance_fields  CC=7  out:10
     round_trip_equal  CC=6  out:4
     validate_message_instance  CC=5  out:7
@@ -880,6 +881,17 @@ MODULES:
     _h_assert  CC=3  out:2
     _h_config  CC=1  out:3
     _h_query  CC=1  out:3
+  testql.adapters.testtoon_adapter  [11 funcs]
+    detect  CC=9  out:12
+    parse  CC=1  out:3
+    render  CC=1  out:1
+    _capture_section_apply  CC=8  out:12
+    _config_to_dict  CC=3  out:3
+    _render_config  CC=3  out:3
+    _render_meta  CC=5  out:4
+    _render_plan  CC=9  out:19
+    _resolve_capture_target  CC=4  out:3
+    _toon_to_plan  CC=6  out:12
   testql.cli  [2 funcs]
     cli  CC=1  out:2
     main  CC=1  out:1
@@ -1027,6 +1039,8 @@ MODULES:
     __init__  CC=2  out:1
     default_probes  CC=3  out:9
     discover_path  CC=1  out:2
+  testql.generators.base  [1 funcs]
+    _should_exclude_path  CC=1  out:3
   testql.generators.generators  [1 funcs]
     _deduplicate_rest_routes  CC=4  out:3
   testql.generators.multi  [1 funcs]
@@ -1156,11 +1170,6 @@ MODULES:
     run_plan  CC=1  out:2
   testql.ir_runner.executors  [1 funcs]
     get_executor  CC=1  out:1
-  testql.ir_runner.executors.api  [4 funcs]
-    _do_request  CC=4  out:10
-    _parse_response  CC=3  out:1
-    _resolve_url  CC=2  out:1
-    execute  CC=4  out:10
   testql.ir_runner.executors.base  [6 funcs]
     _aggregate_assertion_status  CC=3  out:0
     _compose_message  CC=3  out:1
@@ -1176,11 +1185,10 @@ MODULES:
     execute  CC=2  out:3
   testql.ir_runner.executors.nl  [1 funcs]
     execute  CC=1  out:2
-  testql.ir_runner.executors.proto  [4 funcs]
+  testql.ir_runner.executors.proto  [3 funcs]
     _instance_tuples  CC=2  out:3
     _resolve_source  CC=3  out:6
     _run_check  CC=6  out:3
-    execute  CC=5  out:13
   testql.ir_runner.interpolation  [1 funcs]
     interp_value  CC=6  out:7
   testql.meta.confidence_scorer  [6 funcs]
@@ -1270,21 +1278,24 @@ MODULES:
     render_topology  CC=4  out:5
 
 EDGES:
-  TODO.testtoon_parser.print_parsed → examples.web-inspection.demo.print
+  examples.artifact-bundle.generate_bundle.main → examples.browser-inspection.run.print
+  examples.artifact-bundle.generate_bundle.main → testql.results.analyzer.inspect_source
+  examples.artifact-bundle.generate_bundle.main → testql.results.artifacts.write_inspection_artifacts
+  TODO.testtoon_parser.print_parsed → examples.browser-inspection.run.print
   TODO.testtoon_parser.print_parsed → TODO.testtoon_parser.validate
   testql.cli.main → testql.cli.cli
-  testql.runner.parse_line → examples.web-inspection.demo.print
+  testql.runner.parse_line → examples.browser-inspection.run.print
   testql.runner.parse_script → testql.runner.parse_line
-  testql.runner.DslCliExecutor._dispatch → examples.web-inspection.demo.print
-  testql.runner.DslCliExecutor.cmd_log → examples.web-inspection.demo.print
-  testql.runner.DslCliExecutor.cmd_print → examples.web-inspection.demo.print
+  testql.runner.DslCliExecutor._dispatch → examples.browser-inspection.run.print
+  testql.runner.DslCliExecutor.cmd_log → examples.browser-inspection.run.print
+  testql.runner.DslCliExecutor.cmd_print → examples.browser-inspection.run.print
   testql.runner.DslCliExecutor.run_script → code2llm_output.map.toon.parse_script
-  testql.runner.DslCliExecutor.run_script → examples.web-inspection.demo.print
+  testql.runner.DslCliExecutor.run_script → examples.browser-inspection.run.print
   testql.openapi_generator.OpenAPIGenerator._infer_tags → code2llm_output.map.toon.list
   testql.openapi_generator.OpenAPIGenerator._infer_tags → testql._base_fallback.VariableStore.set
   testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_path_params
   testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_ep_params
-  testql._base_fallback.InterpreterOutput.emit → examples.web-inspection.demo.print
+  testql._base_fallback.InterpreterOutput.emit → examples.browser-inspection.run.print
   testql.sumd_generator.generate_sumd → testql.sumd_generator._header_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._metadata_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._architecture_section
@@ -1317,9 +1328,6 @@ EDGES:
   testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_bool_prop
   testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_count_prop
   testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_text_prop
-  testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_classes_prop
-  testql.commands.encoder_routes._exec_assert_cmd → testql.commands.encoder_routes._evaluate_assertion
-  testql.commands.encoder_routes._execute_iql_line → testql.commands.encoder_routes._exec_encoder_cmd
 ```
 
 ## Test Contracts
@@ -1551,50 +1559,50 @@ EDGES:
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# nodes: 527 | edges: 500 | modules: 109
+# nodes: 534 | edges: 500 | modules: 111
 # CC̄=2.1
 
 HUBS[20]:
   testql.results.serializers._render_toon
     CC=6  in:1  out:46  total:47
-  examples.web-inspection.demo.print
+  examples.browser-inspection.run.print
     CC=0  in:37  out:0  total:37
+  code2llm_output.map.toon.list
+    CC=0  in:31  out:0  total:31
   testql.results.artifacts.write_inspection_artifacts
     CC=1  in:2  out:28  total:30
-  code2llm_output.map.toon.list
-    CC=0  in:30  out:0  total:30
-  testql.commands.generate_cmd._print_routes_section
-    CC=10  in:1  out:23  total:24
   testql.commands.inspect_cmd.inspect
     CC=6  in:0  out:24  total:24
   testql.commands.generate_topology_cmd.generate_topology
     CC=5  in:0  out:24  total:24
+  testql.commands.generate_cmd._print_routes_section
+    CC=10  in:1  out:23  total:24
   testql.ir_runner.interpolation.interp_value
     CC=6  in:16  out:7  total:23
   testql.commands.echo.parsers.doql._parse_workflows
     CC=7  in:1  out:22  total:23
+  testql.adapters.testtoon_adapter._render_plan
+    CC=9  in:4  out:19  total:23
   testql.commands.encoder_routes._run_iql_lines
     CC=6  in:1  out:22  total:23
-  testql.runner.parse_line
-    CC=9  in:2  out:20  total:22
   testql._base_fallback.VariableStore.set
     CC=1  in:22  out:0  total:22
   testql.commands.misc_cmds.report
     CC=4  in:0  out:22  total:22
+  testql.runner.parse_line
+    CC=9  in:2  out:20  total:22
   testql.adapters.sql.fixtures.schema_fixture_from_rows
     CC=4  in:1  out:20  total:21
-  testql.commands.misc_cmds.init
-    CC=4  in:0  out:20  total:20
   testql.commands.endpoints_cmd.endpoints
     CC=9  in:0  out:20  total:20
-  testql.runner.DslCliExecutor.run_script
-    CC=11  in:0  out:20  total:20
   testql.adapters.base.read_source
     CC=5  in:11  out:9  total:20
   testql.commands.misc_cmds.echo
     CC=4  in:0  out:20  total:20
-  testql.results.analyzer.analyze_topology
-    CC=2  in:1  out:18  total:19
+  testql.runner.DslCliExecutor.run_script
+    CC=11  in:0  out:20  total:20
+  testql.commands.misc_cmds.init
+    CC=4  in:0  out:20  total:20
 
 MODULES:
   TODO.testtoon_parser  [2 funcs]
@@ -1611,7 +1619,9 @@ MODULES:
     parse_doql_less  CC=0  out:0
     parse_iql  CC=0  out:0
     parse_script  CC=0  out:0
-  examples.web-inspection.demo  [1 funcs]
+  examples.artifact-bundle.generate_bundle  [1 funcs]
+    main  CC=2  out:10
+  examples.browser-inspection.run  [1 funcs]
     print  CC=0  out:0
   project.map.toon  [2 funcs]
     build_topology  CC=0  out:0
@@ -1694,14 +1704,13 @@ MODULES:
     _strip_comments  CC=1  out:2
     load_proto_file  CC=1  out:3
     parse_proto  CC=4  out:9
-  testql.adapters.proto.message_validator  [10 funcs]
+  testql.adapters.proto.message_validator  [9 funcs]
     _missing_required  CC=4  out:1
     _row_issues  CC=3  out:4
     _validate_field_known  CC=2  out:2
     _validate_field_type  CC=3  out:2
     _validate_field_value  CC=3  out:2
     coerce_scalar  CC=5  out:6
-    lookup_message  CC=1  out:1
     parse_instance_fields  CC=7  out:10
     round_trip_equal  CC=6  out:4
     validate_message_instance  CC=5  out:7
@@ -1755,6 +1764,17 @@ MODULES:
     _h_assert  CC=3  out:2
     _h_config  CC=1  out:3
     _h_query  CC=1  out:3
+  testql.adapters.testtoon_adapter  [11 funcs]
+    detect  CC=9  out:12
+    parse  CC=1  out:3
+    render  CC=1  out:1
+    _capture_section_apply  CC=8  out:12
+    _config_to_dict  CC=3  out:3
+    _render_config  CC=3  out:3
+    _render_meta  CC=5  out:4
+    _render_plan  CC=9  out:19
+    _resolve_capture_target  CC=4  out:3
+    _toon_to_plan  CC=6  out:12
   testql.cli  [2 funcs]
     cli  CC=1  out:2
     main  CC=1  out:1
@@ -1902,6 +1922,8 @@ MODULES:
     __init__  CC=2  out:1
     default_probes  CC=3  out:9
     discover_path  CC=1  out:2
+  testql.generators.base  [1 funcs]
+    _should_exclude_path  CC=1  out:3
   testql.generators.generators  [1 funcs]
     _deduplicate_rest_routes  CC=4  out:3
   testql.generators.multi  [1 funcs]
@@ -2031,11 +2053,6 @@ MODULES:
     run_plan  CC=1  out:2
   testql.ir_runner.executors  [1 funcs]
     get_executor  CC=1  out:1
-  testql.ir_runner.executors.api  [4 funcs]
-    _do_request  CC=4  out:10
-    _parse_response  CC=3  out:1
-    _resolve_url  CC=2  out:1
-    execute  CC=4  out:10
   testql.ir_runner.executors.base  [6 funcs]
     _aggregate_assertion_status  CC=3  out:0
     _compose_message  CC=3  out:1
@@ -2051,11 +2068,10 @@ MODULES:
     execute  CC=2  out:3
   testql.ir_runner.executors.nl  [1 funcs]
     execute  CC=1  out:2
-  testql.ir_runner.executors.proto  [4 funcs]
+  testql.ir_runner.executors.proto  [3 funcs]
     _instance_tuples  CC=2  out:3
     _resolve_source  CC=3  out:6
     _run_check  CC=6  out:3
-    execute  CC=5  out:13
   testql.ir_runner.interpolation  [1 funcs]
     interp_value  CC=6  out:7
   testql.meta.confidence_scorer  [6 funcs]
@@ -2145,21 +2161,24 @@ MODULES:
     render_topology  CC=4  out:5
 
 EDGES:
-  TODO.testtoon_parser.print_parsed → examples.web-inspection.demo.print
+  examples.artifact-bundle.generate_bundle.main → examples.browser-inspection.run.print
+  examples.artifact-bundle.generate_bundle.main → testql.results.analyzer.inspect_source
+  examples.artifact-bundle.generate_bundle.main → testql.results.artifacts.write_inspection_artifacts
+  TODO.testtoon_parser.print_parsed → examples.browser-inspection.run.print
   TODO.testtoon_parser.print_parsed → TODO.testtoon_parser.validate
   testql.cli.main → testql.cli.cli
-  testql.runner.parse_line → examples.web-inspection.demo.print
+  testql.runner.parse_line → examples.browser-inspection.run.print
   testql.runner.parse_script → testql.runner.parse_line
-  testql.runner.DslCliExecutor._dispatch → examples.web-inspection.demo.print
-  testql.runner.DslCliExecutor.cmd_log → examples.web-inspection.demo.print
-  testql.runner.DslCliExecutor.cmd_print → examples.web-inspection.demo.print
+  testql.runner.DslCliExecutor._dispatch → examples.browser-inspection.run.print
+  testql.runner.DslCliExecutor.cmd_log → examples.browser-inspection.run.print
+  testql.runner.DslCliExecutor.cmd_print → examples.browser-inspection.run.print
   testql.runner.DslCliExecutor.run_script → code2llm_output.map.toon.parse_script
-  testql.runner.DslCliExecutor.run_script → examples.web-inspection.demo.print
+  testql.runner.DslCliExecutor.run_script → examples.browser-inspection.run.print
   testql.openapi_generator.OpenAPIGenerator._infer_tags → code2llm_output.map.toon.list
   testql.openapi_generator.OpenAPIGenerator._infer_tags → testql._base_fallback.VariableStore.set
   testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_path_params
   testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_ep_params
-  testql._base_fallback.InterpreterOutput.emit → examples.web-inspection.demo.print
+  testql._base_fallback.InterpreterOutput.emit → examples.browser-inspection.run.print
   testql.sumd_generator.generate_sumd → testql.sumd_generator._header_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._metadata_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._architecture_section
@@ -2192,31 +2211,28 @@ EDGES:
   testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_bool_prop
   testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_count_prop
   testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_text_prop
-  testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_classes_prop
-  testql.commands.encoder_routes._exec_assert_cmd → testql.commands.encoder_routes._evaluate_assertion
-  testql.commands.encoder_routes._execute_iql_line → testql.commands.encoder_routes._exec_encoder_cmd
 ```
 
 ### Code Analysis (`project/analysis.toon.yaml`)
 
 ```toon markpact:analysis path=project/analysis.toon.yaml
-# code2llm | 330f 37837L | python:201,yaml:110,shell:11,txt:3,json:2,yml:2,toml:1 | 2026-04-25
-# CC̄=2.1 | critical:0/1715 | dups:0 | cycles:0
+# code2llm | 355f 38341L | python:202,yaml:111,shell:18,txt:3,json:2,yml:2,toml:1,doql:1 | 2026-04-25
+# CC̄=2.1 | critical:0/1726 | dups:0 | cycles:0
 
 HEALTH[0]: ok
 
 REFACTOR[0]: none needed
 
-PIPELINES[563]:
-  [1] Src [validate]: validate
+PIPELINES[571]:
+  [1] Src [main]: main → print
       PURITY: 100% pure
-  [2] Src [parse_testtoon]: parse_testtoon → detect_separator
+  [2] Src [validate]: validate
       PURITY: 100% pure
-  [3] Src [print_parsed]: print_parsed → print
+  [3] Src [parse_testtoon]: parse_testtoon → detect_separator
       PURITY: 100% pure
-  [4] Src [__init__]: __init__
+  [4] Src [print_parsed]: print_parsed → print
       PURITY: 100% pure
-  [5] Src [parse_file]: parse_file
+  [5] Src [__init__]: __init__
       PURITY: 100% pure
 
 LAYERS:
@@ -2232,8 +2248,8 @@ LAYERS:
   │ generators                 372L  4C   17m  CC=12     ←0
   │ runner                     371L  3C   18m  CC=12     ←0
   │ nl_adapter                 353L  1C   30m  CC=7      ←0
-  │ testtoon_adapter           345L  1C   23m  CC=10     ←0
-  │ sql_adapter                333L  1C   26m  CC=8      ←3
+  │ testtoon_adapter           345L  1C   23m  CC=10     ←3
+  │ sql_adapter                333L  1C   26m  CC=8      ←0
   │ analyzers                  299L  1C   16m  CC=10     ←0
   │ misc_cmds                  292L  0C    7m  CC=6      ←0
   │ sumd_parser                277L  5C   12m  CC=11     ←0
@@ -2338,9 +2354,9 @@ LAYERS:
   │ test-gui-connect-test.testql.toon.yaml    61L  0C    0m  CC=0.0    ←0
   │ models                      60L  2C    2m  CC=2      ←0
   │ registry                    59L  1C    6m  CC=5      ←1
+  │ base                        59L  3C    3m  CC=1      ←0
   │ express_detector            59L  1C    3m  CC=5      ←0
   │ graphql                     59L  0C    3m  CC=5      ←0
-  │ base                        59L  3C    3m  CC=1      ←0
   │ templates                   59L  0C    0m  CC=0.0    ←0
   │ generate_topology_cmd       58L  0C    2m  CC=5      ←0
   │ core                        58L  0C    3m  CC=5      ←0
@@ -2378,9 +2394,9 @@ LAYERS:
   │ container_compose           44L  1C    3m  CC=9      ←0
   │ connect-id-rfid.testql.toon.yaml    44L  0C    0m  CC=0.0    ←0
   │ connect-reports-week.testql.toon.yaml    43L  0C    0m  CC=0.0    ←0
+  │ plan                        42L  1C    1m  CC=3      ←0
   │ context                     42L  1C    1m  CC=1      ←0
   │ unit                        42L  0C    2m  CC=6      ←0
-  │ plan                        42L  1C    1m  CC=3      ←0
   │ connect-reports-quarter.testql.toon.yaml    42L  0C    0m  CC=0.0    ←0
   │ connect-reports-chart.testql.toon.yaml    42L  0C    0m  CC=0.0    ←0
   │ container_dockerfile        41L  1C    3m  CC=6      ←0
@@ -2500,47 +2516,71 @@ LAYERS:
   │ __init__                     5L  0C    0m  CC=0.0    ←0
   │ __init__                     0L  0C    0m  CC=0.0    ←0
   │
-  examples/                       CC̄=1.0    ←in:0  →out:0
-  │ demo.sh                     38L  0C    1m  CC=0.0    ←9
+  examples/                       CC̄=0.9    ←in:0  →out:0
+  │ run-all.sh                  71L  0C    1m  CC=0.0    ←0
+  │ run.sh                      64L  0C    1m  CC=0.0    ←9
+  │ mock_server                 50L  0C    8m  CC=2      ←0
+  │ run.sh                      42L  0C    1m  CC=0.0    ←0
+  │ app.doql                    41L  0C    0m  CC=0.0    ←0
+  │ run.sh                      37L  0C    0m  CC=0.0    ←0
   │ generate_bundle             36L  0C    1m  CC=2      ←0
   │ crud-workflow.testql.toon.yaml    32L  0C    0m  CC=0.0    ←0
-  │ assertions.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
-  │ run.sh                      19L  0C    0m  CC=0.0    ←0
-  │ run.sh                      19L  0C    0m  CC=0.0    ←0
+  │ run.sh                      27L  0C    0m  CC=0.0    ←0
+  │ run.sh                      23L  0C    0m  CC=0.0    ←0
+  │ run.sh                      22L  0C    0m  CC=0.0    ←0
+  │ run.sh                      22L  0C    0m  CC=0.0    ←0
+  │ run.sh                      22L  0C    0m  CC=0.0    ←0
+  │ run.sh                      21L  0C    0m  CC=0.0    ←0
+  │ inspect-web.sh              20L  0C    0m  CC=0.0    ←0
+  │ topology.sh                 18L  0C    0m  CC=0.0    ←0
+  │ run.sh                      18L  0C    0m  CC=0.0    ←0
   │ health-check.testql.toon.yaml    17L  0C    0m  CC=0.0    ←0
-  │ inspect-web.sh              17L  0C    0m  CC=0.0    ←0
+  │ run.sh                      17L  0C    0m  CC=0.0    ←0
   │ api-contract.testql.toon.yaml    17L  0C    0m  CC=0.0    ←0
-  │ variables.testql.toon.yaml    15L  0C    0m  CC=0.0    ←0
-  │ topology.sh                 15L  0C    0m  CC=0.0    ←0
-  │ run.sh                      15L  0C    0m  CC=0.0    ←0
-  │ run.sh                      14L  0C    0m  CC=0.0    ←0
-  │ run.sh                      14L  0C    0m  CC=0.0    ←0
+  │ run.sh                      16L  0C    0m  CC=0.0    ←0
+  │ assertions.testql.toon.yaml    14L  0C    0m  CC=0.0    ←0
+  │ discover-local.sh           14L  0C    0m  CC=0.0    ←0
   │ run.sh                      13L  0C    0m  CC=0.0    ←0
-  │ discover-local.sh           11L  0C    0m  CC=0.0    ←0
+  │ variables.testql.toon.yaml    13L  0C    0m  CC=0.0    ←0
   │ minimal.testql.toon.yaml     7L  0C    0m  CC=0.0    ←0
+  │ Makefile                     0L  0C    0m  CC=0.0    ←0
+  │ Makefile                     0L  0C    0m  CC=0.0    ←0
+  │ Makefile                     0L  0C    0m  CC=0.0    ←0
+  │ Makefile                     0L  0C    0m  CC=0.0    ←0
+  │ Makefile                     0L  0C    0m  CC=0.0    ←0
+  │ Makefile                     0L  0C    0m  CC=0.0    ←0
+  │ Makefile                     0L  0C    0m  CC=0.0    ←0
+  │ Makefile                     0L  0C    0m  CC=0.0    ←0
+  │ Makefile                     0L  0C    0m  CC=0.0    ←0
+  │ Makefile                     0L  0C    0m  CC=0.0    ←0
+  │ Makefile                     0L  0C    0m  CC=0.0    ←0
+  │ Makefile                     0L  0C    0m  CC=0.0    ←0
+  │ Makefile                     0L  0C    0m  CC=0.0    ←0
+  │ Makefile                     0L  0C    0m  CC=0.0    ←0
+  │ Makefile                     0L  0C    0m  CC=0.0    ←0
   │
   code2llm_output/                CC̄=0.0    ←in:0  →out:0
   │ !! calls.yaml                 799L  0C    0m  CC=0.0    ←0
-  │ map.toon.yaml              258L  0C   83m  CC=0.0    ←28
+  │ map.toon.yaml              258L  0C   83m  CC=0.0    ←29
   │ analysis.toon.yaml          93L  0C    0m  CC=0.0    ←0
   │ evolution.toon.yaml         82L  0C    0m  CC=0.0    ←0
   │ prompt.txt                  47L  0C    0m  CC=0.0    ←0
   │ project.toon.yaml            9L  0C    0m  CC=0.0    ←0
   │
   project/                        CC̄=0.0    ←in:0  →out:0
-  │ !! calls.yaml                7050L  0C    0m  CC=0.0    ←0
-  │ !! map.toon.yaml             1943L  0C  576m  CC=0.0    ←4
-  │ !! calls.toon.yaml            669L  0C    0m  CC=0.0    ←0
+  │ !! calls.yaml                7110L  0C    0m  CC=0.0    ←0
+  │ !! map.toon.yaml             1958L  0C  577m  CC=0.0    ←4
+  │ !! calls.toon.yaml            645L  0C    0m  CC=0.0    ←0
   │ validation.toon.yaml       421L  0C    0m  CC=0.0    ←0
-  │ analysis.toon.yaml         387L  0C    0m  CC=0.0    ←0
+  │ analysis.toon.yaml         405L  0C    0m  CC=0.0    ←0
   │ project.toon.yaml           51L  0C    0m  CC=0.0    ←0
   │ prompt.txt                  47L  0C    0m  CC=0.0    ←0
-  │ evolution.toon.yaml         43L  0C    0m  CC=0.0    ←0
+  │ evolution.toon.yaml         39L  0C    0m  CC=0.0    ←0
   │ duplication.toon.yaml        9L  0C    0m  CC=0.0    ←0
   │
   ./                              CC̄=0.0    ←in:0  →out:0
   │ !! planfile.yaml             1319L  0C    0m  CC=0.0    ←0
-  │ !! tree.txt                   649L  0C    0m  CC=0.0    ←0
+  │ !! tree.txt                   715L  0C    0m  CC=0.0    ←0
   │ !! goal.yaml                  511L  0C    0m  CC=0.0    ←0
   │ sumd.json                  204L  0C    0m  CC=0.0    ←0
   │ Taskfile.yml               185L  0C    0m  CC=0.0    ←0
@@ -2551,6 +2591,7 @@ LAYERS:
   │ pyqual.yaml                 71L  0C    0m  CC=0.0    ←0
   │ project.sh                  50L  0C    0m  CC=0.0    ←0
   │ coverage.json                1L  0C    0m  CC=0.0    ←0
+  │ topology.toon.yaml           0L  0C    0m  CC=0.0    ←0
   │
   testql-scenarios/               CC̄=0.0    ←in:0  →out:0
   │ generated-api-smoke.testql.toon.yaml    35L  0C    0m  CC=0.0    ←0
@@ -2565,42 +2606,58 @@ LAYERS:
   │ generated-cli-tests.testql.toon.yaml    12L  0C    0m  CC=0.0    ←0
   │
   ── zero ──
+     examples/Makefile                         0L
+     examples/api-testing/Makefile             0L
+     examples/artifact-bundle/Makefile         0L
+     examples/browser-inspection/Makefile      0L
+     examples/discovery/Makefile               0L
+     examples/encoder-testing/Makefile         0L
+     examples/flow-control/Makefile            0L
+     examples/gui-testing/Makefile             0L
+     examples/project-echo/Makefile            0L
+     examples/shell-testing/Makefile           0L
+     examples/testtoon-basics/Makefile         0L
+     examples/topology/Makefile                0L
+     examples/unit-testing/Makefile            0L
+     examples/web-inspection-dot-testql/Makefile  0L
+     examples/web-inspection/Makefile          0L
      testql/runners/__init__.py                0L
+     topology.toon.yaml                        0L
 
 COUPLING:
-                                              testql       code2llm_output.map   examples.web-inspection           testql.commands           testql.adapters            testql.results         testql.generators        testql.interpreter          testql.discovery          testql.ir_runner                      TODO               testql.meta           testql.topology  examples.artifact-bundle               project.map
-                    testql                        ──                         2                        21                        ←6                        ←5                                                  ←3                        ←3                        ←6                        ←2                                                  ←4                                                                                hub
-       code2llm_output.map                        ←2                        ──                                                 ←13                        ←7                        ←8                        ←3                        ←5                        ←2                                                                            ←2                        ←2                                                      hub
-   examples.web-inspection                       ←21                                                  ──                        ←2                                                                                                      ←1                                                                            ←8                                                                            ←4                            hub
-           testql.commands                         6                        13                         2                        ──                                                   5                         5                                                   1                         1                                                                             1                                                   3  !! fan-out
-           testql.adapters                         5                         7                                                                            ──                                                  ←3                                                                            ←6                                                  ←2                                                                                hub
-            testql.results                                                   8                                                  ←5                                                  ──                                                                                                                                                                                     3                        ←2                         1  hub
-         testql.generators                         3                         3                                                  ←5                         3                                                  ──                         1                                                                                                                                ←1                                                      hub
-        testql.interpreter                         3                         5                         1                                                                                                      ←1                        ──                                                                                                                                                                                        !! fan-out
-          testql.discovery                         6                         2                                                  ←1                                                                                                                                ──                                                                                                                                                              !! fan-out
-          testql.ir_runner                         2                                                                            ←1                         6                                                                                                                                ──                                                                                                                                    !! fan-out
-                      TODO                                                                             8                                                                                                                                                                                                              ──                                                                                                          !! fan-out
-               testql.meta                         4                         2                                                                             2                                                                                                                                                                                    ──                                                                                !! fan-out
-           testql.topology                                                   2                                                  ←1                                                  ←3                         1                                                                                                                                                          ──                                                    
-  examples.artifact-bundle                                                                             4                                                                             2                                                                                                                                                                                                              ──                          
-               project.map                                                                                                      ←3                                                  ←1                                                                                                                                                                                                                                        ──
+                                                    testql          code2llm_output.map  examples.browser-inspection              testql.commands              testql.adapters               testql.results            testql.generators           testql.interpreter             testql.discovery             testql.ir_runner                         TODO                  testql.meta              testql.topology     examples.artifact-bundle                  project.map
+                       testql                           ──                            2                           21                           ←6                           ←5                                                        ←3                           ←3                           ←6                           ←2                                                        ←4                                                                                         hub
+          code2llm_output.map                           ←2                           ──                                                       ←13                           ←7                           ←8                           ←3                           ←5                           ←2                                                                                     ←2                           ←2                                                            hub
+  examples.browser-inspection                          ←21                                                        ──                           ←2                                                                                                                  ←1                                                                                     ←8                                                                                     ←4                               hub
+              testql.commands                            6                           13                            2                           ──                                                         5                            5                                                         1                            1                                                                                      1                                                         3  !! fan-out
+              testql.adapters                            5                            7                                                                                     ──                                                        ←3                                                                                     ←6                                                        ←2                                                                                         hub
+               testql.results                                                         8                                                        ←5                                                        ──                                                                                                                                                                                                          3                           ←2                            1  hub
+            testql.generators                            3                            3                                                        ←5                            3                                                        ──                            1                                                                                                                                               ←1                                                            hub
+           testql.interpreter                            3                            5                            1                                                                                                                  ←1                           ──                                                                                                                                                                                                             !! fan-out
+             testql.discovery                            6                            2                                                        ←1                                                                                                                                               ──                                                                                                                                                                                !! fan-out
+             testql.ir_runner                            2                                                                                     ←1                            6                                                                                                                                               ──                                                                                                                                                   !! fan-out
+                         TODO                                                                                      8                                                                                                                                                                                                                                      ──                                                                                                                      !! fan-out
+                  testql.meta                            4                            2                                                                                      2                                                                                                                                                                                                         ──                                                                                         !! fan-out
+              testql.topology                                                         2                                                        ←1                                                        ←3                            1                                                                                                                                                                            ──                                                          
+     examples.artifact-bundle                                                                                      4                                                                                      2                                                                                                                                                                                                                                      ──                             
+                  project.map                                                                                                                  ←3                                                        ←1                                                                                                                                                                                                                                                                   ──
   CYCLES: none
+  HUB: code2llm_output.map/ (fan-in=47)
   HUB: testql.generators/ (fan-in=6)
-  HUB: examples.web-inspection/ (fan-in=37)
-  HUB: code2llm_output.map/ (fan-in=46)
+  HUB: testql/ (fan-in=30)
   HUB: testql.results/ (fan-in=7)
   HUB: testql.adapters/ (fan-in=11)
-  HUB: testql/ (fan-in=30)
+  HUB: examples.browser-inspection/ (fan-in=37)
   SMELL: testql.generators/ fan-out=10 → split needed
-  SMELL: testql.ir_runner/ fan-out=8 → split needed
-  SMELL: testql.results/ fan-out=12 → split needed
-  SMELL: TODO/ fan-out=8 → split needed
-  SMELL: testql.adapters/ fan-out=12 → split needed
-  SMELL: testql.meta/ fan-out=8 → split needed
-  SMELL: testql.discovery/ fan-out=8 → split needed
-  SMELL: testql/ fan-out=23 → split needed
-  SMELL: testql.commands/ fan-out=37 → split needed
   SMELL: testql.interpreter/ fan-out=9 → split needed
+  SMELL: testql/ fan-out=23 → split needed
+  SMELL: testql.results/ fan-out=12 → split needed
+  SMELL: testql.adapters/ fan-out=12 → split needed
+  SMELL: testql.ir_runner/ fan-out=8 → split needed
+  SMELL: testql.meta/ fan-out=8 → split needed
+  SMELL: TODO/ fan-out=8 → split needed
+  SMELL: testql.commands/ fan-out=37 → split needed
+  SMELL: testql.discovery/ fan-out=8 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon
@@ -2618,13 +2675,13 @@ SUMMARY:
   dup_groups:    0
   dup_fragments: 0
   saved_lines:   0
-  scan_ms:       3512
+  scan_ms:       3645
 ```
 
 ### Evolution / Churn (`project/evolution.toon.yaml`)
 
 ```toon markpact:analysis path=project/evolution.toon.yaml
-# code2llm/evolution | 1713 func | 166f | 2026-04-25
+# code2llm/evolution | 1714 func | 166f | 2026-04-25
 
 NEXT[0]: no refactoring needed
 

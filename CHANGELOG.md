@@ -130,6 +130,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Remaining
 - Add Playwright-backed browser execution, JavaScript-rendered DOM capture, screenshots, console errors, network logs, link-by-link validation, accessibility/performance checks, MCP service integration, and runtime-vs-code delta reports.
 
+## [1.2.6] - 2026-04-25
+
+### Docs
+- Update README.md
+- Update SUMD.md
+- Update SUMR.md
+- Update examples/README.md
+- Update examples/api-testing/README.md
+- Update examples/discovery/README.md
+- Update examples/encoder-testing/README.md
+- Update examples/flow-control/README.md
+- Update examples/gui-testing/README.md
+- Update examples/shell-testing/README.md
+- ... and 4 more files
+
+### Other
+- Update app.doql.less
+- Update examples/.gitignore
+- Update examples/Makefile
+- Update examples/api-testing/Makefile
+- Update examples/api-testing/mock_server.py
+- Update examples/api-testing/run.sh
+- Update examples/artifact-bundle/Makefile
+- Update examples/artifact-bundle/run.sh
+- Update examples/browser-inspection/Makefile
+- Update examples/browser-inspection/run.sh
+- ... and 48 more files
+
 ## [1.2.5] - 2026-04-25
 
 ### Docs

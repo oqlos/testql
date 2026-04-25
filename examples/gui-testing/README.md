@@ -20,7 +20,7 @@ This example demonstrates Playwright-based GUI testing using TestQL's IQL syntax
 
 ## Concepts demonstrated
 
-- **Navigation**: `NAVIGATE`, `WAIT`
-- **Interaction**: `CLICK`, `INPUT`
-- **Assertions**: `ASSERT_VISIBLE`, `ASSERT_TEXT`
+- **Navigation**: `GUI_START`, `WAIT`
+- **Interaction**: `GUI_CLICK`, `GUI_INPUT`
+- **Assertions**: `GUI_ASSERT_VISIBLE`, `GUI_ASSERT_TEXT`
 - **Variables**: `SET` and `${var}` interpolation

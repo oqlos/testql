@@ -18,4 +18,4 @@ This example demonstrates testing shell commands and CLI tools using TestQL.
 
 - **Shell execution**: `SHELL`, `EXEC`, `RUN`
 - **Exit code assertions**: `ASSERT_EXIT_CODE`
-- **Output assertions**: `ASSERT_CONTAINS`
+- **Dry-run safe**: examples use `ASSERT_EXIT_CODE` instead of stdout checks

@@ -1,0 +1,41 @@
+TOPOLOGY{key, value}:
+  root, testql
+  confidence, full
+  nodes, 15
+  edges, 14
+
+NODES[15]{id, kind, source}:
+  artifact.root, artifact, testql
+  type.python_pkg, artifact_type, testql
+  type.fastapi, artifact_type, testql
+  type.openapi3, artifact_type, testql
+  interface.rest.1, interface, openapi.yaml
+  dependency.httpx, dependency, httpx
+  dependency.click, dependency, click
+  dependency.rich, dependency, rich
+  dependency.pyyaml, dependency, pyyaml
+  dependency.goal, dependency, goal
+  dependency.costs, dependency, costs
+  dependency.pfix, dependency, pfix
+  dependency.websockets, dependency, websockets
+  evidence.1, evidence, pyproject.toml
+  evidence.2, evidence, openapi.yaml
+
+EDGES[14]{source_id, relation, target_id, protocol}:
+  artifact.root, classified_as, type.python_pkg, manifest
+  artifact.root, classified_as, type.fastapi, manifest
+  artifact.root, classified_as, type.openapi3, manifest
+  artifact.root, exposes, interface.rest.1, http
+  artifact.root, depends_on, dependency.httpx, package
+  artifact.root, depends_on, dependency.click, package
+  artifact.root, depends_on, dependency.rich, package
+  artifact.root, depends_on, dependency.pyyaml, package
+  artifact.root, depends_on, dependency.goal, package
+  artifact.root, depends_on, dependency.costs, package
+  artifact.root, depends_on, dependency.pfix, package
+  artifact.root, depends_on, dependency.websockets, package
+  artifact.root, supported_by, evidence.1, file
+  artifact.root, supported_by, evidence.2, file
+
+TRACES[1]{id, status, nodes, edges}:
+  trace.discovery.topology, planned, 15, 14

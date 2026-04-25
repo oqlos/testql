@@ -1,0 +1,9 @@
+# Generated artifacts from example runs
+*/.testql/
+*/.testql-browser/
+*/topology.json
+*/topology.yaml
+*/topology.toon.yaml
+*/ai-context.txt
+*/ai-context.json
+*.ir.json

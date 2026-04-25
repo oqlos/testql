@@ -24,7 +24,7 @@ TestQL — Multi-DSL Test Platform: TestTOON / NL / SQL / Proto / GraphQL adapte
 ## Metadata
 
 - **name**: `testql`
-- **version**: `1.2.4`
+- **version**: `1.2.5`
 - **python_requires**: `>=3.10`
 - **license**: Apache-2.0
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -45,7 +45,7 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 1.2.4;
+  version: 1.2.5;
 }
 
 dependencies {
@@ -3369,7 +3369,7 @@ pipeline:
 ```yaml
 project:
   name: testql
-  version: 1.2.4
+  version: 1.2.5
   env: local
 ```
 
@@ -3441,26 +3441,34 @@ pip install -e .[dev]
 ### `project/map.toon.yaml`
 
 ```toon markpact:analysis path=project/map.toon.yaml
-# testql | 295f 31070L | python:279,shell:12,less:4 | 2026-04-25
-# stats: 641 func | 494 cls | 295 mod | CC̄=3.5 | critical:14 | cycles:0
+# testql | 303f 31420L | python:280,shell:19,less:4 | 2026-04-25
+# stats: 649 func | 494 cls | 303 mod | CC̄=3.5 | critical:14 | cycles:0
 # alerts[5]: CC parse_testtoon=14; CC _check_link_statuses=14; CC _action_type=14; CC suite=13; CC _check_asset_statuses=12
 # hotspots[5]: watch fan=19; suite fan=19; main fan=18; analyze_topology fan=17; generate_topology fan=16
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[295]:
+M[303]:
   TODO/testtoon_parser.py,142
   app.doql.less,167
-  examples/api-testing/run.sh,16
+  examples/api-testing/mock_server.py,51
+  examples/api-testing/run.sh,28
   examples/artifact-bundle/generate_bundle.py,37
-  examples/discovery/discover-local.sh,12
-  examples/discovery/inspect-web.sh,18
-  examples/discovery/topology.sh,16
-  examples/gui-testing/run.sh,20
+  examples/artifact-bundle/run.sh,19
+  examples/browser-inspection/run.sh,65
+  examples/discovery/discover-local.sh,15
+  examples/discovery/inspect-web.sh,21
+  examples/discovery/topology.sh,19
+  examples/encoder-testing/run.sh,22
+  examples/flow-control/run.sh,18
+  examples/gui-testing/run.sh,23
   examples/project-echo/app.doql.less,37
-  examples/project-echo/run.sh,15
-  examples/shell-testing/run.sh,15
-  examples/testtoon-basics/run.sh,20
-  examples/web-inspection/demo.sh,39
+  examples/project-echo/run.sh,38
+  examples/run-all.sh,72
+  examples/shell-testing/run.sh,17
+  examples/testtoon-basics/run.sh,23
+  examples/topology/run.sh,23
+  examples/unit-testing/run.sh,24
+  examples/web-inspection/run.sh,43
   examples/web-inspection-dot-testql/run.sh,14
   project.sh,50
   testql/__init__.py,10
@@ -3752,6 +3760,16 @@ D:
     parse_testtoon(text)
     validate(parsed)
     print_parsed(parsed)
+  examples/api-testing/mock_server.py:
+    e: health,devices,list_scenarios,create_scenario,get_scenario,update_scenario,delete_scenario,users
+    health()
+    devices()
+    list_scenarios()
+    create_scenario(body)
+    get_scenario(sid)
+    update_scenario(sid;body)
+    delete_scenario(sid)
+    users()
   examples/artifact-bundle/generate_bundle.py:
     e: main
     main()
@@ -5541,67 +5559,67 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 
 ## Call Graph
 
-*527 nodes · 500 edges · 109 modules · CC̄=2.1*
+*534 nodes · 500 edges · 111 modules · CC̄=2.1*
 
 ### Hubs (by degree)
 
 | Function | CC | in | out | total |
 |----------|----|----|-----|-------|
 | `_render_toon` *(in testql.results.serializers)* | 6 | 1 | 46 | **47** |
-| `print` *(in examples.web-inspection.demo)* | 0 | 37 | 0 | **37** |
+| `print` *(in examples.browser-inspection.run)* | 0 | 37 | 0 | **37** |
+| `list` *(in code2llm_output.map.toon)* | 0 | 31 | 0 | **31** |
 | `write_inspection_artifacts` *(in testql.results.artifacts)* | 1 | 2 | 28 | **30** |
-| `list` *(in code2llm_output.map.toon)* | 0 | 30 | 0 | **30** |
-| `_print_routes_section` *(in testql.commands.generate_cmd)* | 10 ⚠ | 1 | 23 | **24** |
 | `inspect` *(in testql.commands.inspect_cmd)* | 6 | 0 | 24 | **24** |
 | `generate_topology` *(in testql.commands.generate_topology_cmd)* | 5 | 0 | 24 | **24** |
+| `_print_routes_section` *(in testql.commands.generate_cmd)* | 10 ⚠ | 1 | 23 | **24** |
 | `interp_value` *(in testql.ir_runner.interpolation)* | 6 | 16 | 7 | **23** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# nodes: 527 | edges: 500 | modules: 109
+# nodes: 534 | edges: 500 | modules: 111
 # CC̄=2.1
 
 HUBS[20]:
   testql.results.serializers._render_toon
     CC=6  in:1  out:46  total:47
-  examples.web-inspection.demo.print
+  examples.browser-inspection.run.print
     CC=0  in:37  out:0  total:37
+  code2llm_output.map.toon.list
+    CC=0  in:31  out:0  total:31
   testql.results.artifacts.write_inspection_artifacts
     CC=1  in:2  out:28  total:30
-  code2llm_output.map.toon.list
-    CC=0  in:30  out:0  total:30
-  testql.commands.generate_cmd._print_routes_section
-    CC=10  in:1  out:23  total:24
   testql.commands.inspect_cmd.inspect
     CC=6  in:0  out:24  total:24
   testql.commands.generate_topology_cmd.generate_topology
     CC=5  in:0  out:24  total:24
+  testql.commands.generate_cmd._print_routes_section
+    CC=10  in:1  out:23  total:24
   testql.ir_runner.interpolation.interp_value
     CC=6  in:16  out:7  total:23
   testql.commands.echo.parsers.doql._parse_workflows
     CC=7  in:1  out:22  total:23
+  testql.adapters.testtoon_adapter._render_plan
+    CC=9  in:4  out:19  total:23
   testql.commands.encoder_routes._run_iql_lines
     CC=6  in:1  out:22  total:23
-  testql.runner.parse_line
-    CC=9  in:2  out:20  total:22
   testql._base_fallback.VariableStore.set
     CC=1  in:22  out:0  total:22
   testql.commands.misc_cmds.report
     CC=4  in:0  out:22  total:22
+  testql.runner.parse_line
+    CC=9  in:2  out:20  total:22
   testql.adapters.sql.fixtures.schema_fixture_from_rows
     CC=4  in:1  out:20  total:21
-  testql.commands.misc_cmds.init
-    CC=4  in:0  out:20  total:20
   testql.commands.endpoints_cmd.endpoints
     CC=9  in:0  out:20  total:20
-  testql.runner.DslCliExecutor.run_script
-    CC=11  in:0  out:20  total:20
   testql.adapters.base.read_source
     CC=5  in:11  out:9  total:20
   testql.commands.misc_cmds.echo
     CC=4  in:0  out:20  total:20
-  testql.results.analyzer.analyze_topology
-    CC=2  in:1  out:18  total:19
+  testql.runner.DslCliExecutor.run_script
+    CC=11  in:0  out:20  total:20
+  testql.commands.misc_cmds.init
+    CC=4  in:0  out:20  total:20
 
 MODULES:
   TODO.testtoon_parser  [2 funcs]
@@ -5618,7 +5636,9 @@ MODULES:
     parse_doql_less  CC=0  out:0
     parse_iql  CC=0  out:0
     parse_script  CC=0  out:0
-  examples.web-inspection.demo  [1 funcs]
+  examples.artifact-bundle.generate_bundle  [1 funcs]
+    main  CC=2  out:10
+  examples.browser-inspection.run  [1 funcs]
     print  CC=0  out:0
   project.map.toon  [2 funcs]
     build_topology  CC=0  out:0
@@ -5701,14 +5721,13 @@ MODULES:
     _strip_comments  CC=1  out:2
     load_proto_file  CC=1  out:3
     parse_proto  CC=4  out:9
-  testql.adapters.proto.message_validator  [10 funcs]
+  testql.adapters.proto.message_validator  [9 funcs]
     _missing_required  CC=4  out:1
     _row_issues  CC=3  out:4
     _validate_field_known  CC=2  out:2
     _validate_field_type  CC=3  out:2
     _validate_field_value  CC=3  out:2
     coerce_scalar  CC=5  out:6
-    lookup_message  CC=1  out:1
     parse_instance_fields  CC=7  out:10
     round_trip_equal  CC=6  out:4
     validate_message_instance  CC=5  out:7
@@ -5762,6 +5781,17 @@ MODULES:
     _h_assert  CC=3  out:2
     _h_config  CC=1  out:3
     _h_query  CC=1  out:3
+  testql.adapters.testtoon_adapter  [11 funcs]
+    detect  CC=9  out:12
+    parse  CC=1  out:3
+    render  CC=1  out:1
+    _capture_section_apply  CC=8  out:12
+    _config_to_dict  CC=3  out:3
+    _render_config  CC=3  out:3
+    _render_meta  CC=5  out:4
+    _render_plan  CC=9  out:19
+    _resolve_capture_target  CC=4  out:3
+    _toon_to_plan  CC=6  out:12
   testql.cli  [2 funcs]
     cli  CC=1  out:2
     main  CC=1  out:1
@@ -5909,6 +5939,8 @@ MODULES:
     __init__  CC=2  out:1
     default_probes  CC=3  out:9
     discover_path  CC=1  out:2
+  testql.generators.base  [1 funcs]
+    _should_exclude_path  CC=1  out:3
   testql.generators.generators  [1 funcs]
     _deduplicate_rest_routes  CC=4  out:3
   testql.generators.multi  [1 funcs]
@@ -6038,11 +6070,6 @@ MODULES:
     run_plan  CC=1  out:2
   testql.ir_runner.executors  [1 funcs]
     get_executor  CC=1  out:1
-  testql.ir_runner.executors.api  [4 funcs]
-    _do_request  CC=4  out:10
-    _parse_response  CC=3  out:1
-    _resolve_url  CC=2  out:1
-    execute  CC=4  out:10
   testql.ir_runner.executors.base  [6 funcs]
     _aggregate_assertion_status  CC=3  out:0
     _compose_message  CC=3  out:1
@@ -6058,11 +6085,10 @@ MODULES:
     execute  CC=2  out:3
   testql.ir_runner.executors.nl  [1 funcs]
     execute  CC=1  out:2
-  testql.ir_runner.executors.proto  [4 funcs]
+  testql.ir_runner.executors.proto  [3 funcs]
     _instance_tuples  CC=2  out:3
     _resolve_source  CC=3  out:6
     _run_check  CC=6  out:3
-    execute  CC=5  out:13
   testql.ir_runner.interpolation  [1 funcs]
     interp_value  CC=6  out:7
   testql.meta.confidence_scorer  [6 funcs]
@@ -6152,21 +6178,24 @@ MODULES:
     render_topology  CC=4  out:5
 
 EDGES:
-  TODO.testtoon_parser.print_parsed → examples.web-inspection.demo.print
+  examples.artifact-bundle.generate_bundle.main → examples.browser-inspection.run.print
+  examples.artifact-bundle.generate_bundle.main → testql.results.analyzer.inspect_source
+  examples.artifact-bundle.generate_bundle.main → testql.results.artifacts.write_inspection_artifacts
+  TODO.testtoon_parser.print_parsed → examples.browser-inspection.run.print
   TODO.testtoon_parser.print_parsed → TODO.testtoon_parser.validate
   testql.cli.main → testql.cli.cli
-  testql.runner.parse_line → examples.web-inspection.demo.print
+  testql.runner.parse_line → examples.browser-inspection.run.print
   testql.runner.parse_script → testql.runner.parse_line
-  testql.runner.DslCliExecutor._dispatch → examples.web-inspection.demo.print
-  testql.runner.DslCliExecutor.cmd_log → examples.web-inspection.demo.print
-  testql.runner.DslCliExecutor.cmd_print → examples.web-inspection.demo.print
+  testql.runner.DslCliExecutor._dispatch → examples.browser-inspection.run.print
+  testql.runner.DslCliExecutor.cmd_log → examples.browser-inspection.run.print
+  testql.runner.DslCliExecutor.cmd_print → examples.browser-inspection.run.print
   testql.runner.DslCliExecutor.run_script → code2llm_output.map.toon.parse_script
-  testql.runner.DslCliExecutor.run_script → examples.web-inspection.demo.print
+  testql.runner.DslCliExecutor.run_script → examples.browser-inspection.run.print
   testql.openapi_generator.OpenAPIGenerator._infer_tags → code2llm_output.map.toon.list
   testql.openapi_generator.OpenAPIGenerator._infer_tags → testql._base_fallback.VariableStore.set
   testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_path_params
   testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_ep_params
-  testql._base_fallback.InterpreterOutput.emit → examples.web-inspection.demo.print
+  testql._base_fallback.InterpreterOutput.emit → examples.browser-inspection.run.print
   testql.sumd_generator.generate_sumd → testql.sumd_generator._header_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._metadata_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._architecture_section
@@ -6199,9 +6228,6 @@ EDGES:
   testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_bool_prop
   testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_count_prop
   testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_text_prop
-  testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_classes_prop
-  testql.commands.encoder_routes._exec_assert_cmd → testql.commands.encoder_routes._evaluate_assertion
-  testql.commands.encoder_routes._execute_iql_line → testql.commands.encoder_routes._exec_encoder_cmd
 ```
 
 ## API Stubs

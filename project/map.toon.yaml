@@ -1,23 +1,31 @@
-# testql | 295f 31070L | python:279,shell:12,less:4 | 2026-04-25
-# stats: 641 func | 494 cls | 295 mod | CC̄=3.5 | critical:14 | cycles:0
+# testql | 303f 31420L | python:280,shell:19,less:4 | 2026-04-25
+# stats: 649 func | 494 cls | 303 mod | CC̄=3.5 | critical:14 | cycles:0
 # alerts[5]: CC parse_testtoon=14; CC _check_link_statuses=14; CC _action_type=14; CC suite=13; CC _check_asset_statuses=12
 # hotspots[5]: watch fan=19; suite fan=19; main fan=18; analyze_topology fan=17; generate_topology fan=16
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[295]:
+M[303]:
   TODO/testtoon_parser.py,142
   app.doql.less,167
-  examples/api-testing/run.sh,16
+  examples/api-testing/mock_server.py,51
+  examples/api-testing/run.sh,28
   examples/artifact-bundle/generate_bundle.py,37
-  examples/discovery/discover-local.sh,12
-  examples/discovery/inspect-web.sh,18
-  examples/discovery/topology.sh,16
-  examples/gui-testing/run.sh,20
+  examples/artifact-bundle/run.sh,19
+  examples/browser-inspection/run.sh,65
+  examples/discovery/discover-local.sh,15
+  examples/discovery/inspect-web.sh,21
+  examples/discovery/topology.sh,19
+  examples/encoder-testing/run.sh,22
+  examples/flow-control/run.sh,18
+  examples/gui-testing/run.sh,23
   examples/project-echo/app.doql.less,37
-  examples/project-echo/run.sh,15
-  examples/shell-testing/run.sh,15
-  examples/testtoon-basics/run.sh,20
-  examples/web-inspection/demo.sh,39
+  examples/project-echo/run.sh,38
+  examples/run-all.sh,72
+  examples/shell-testing/run.sh,17
+  examples/testtoon-basics/run.sh,23
+  examples/topology/run.sh,23
+  examples/unit-testing/run.sh,24
+  examples/web-inspection/run.sh,43
   examples/web-inspection-dot-testql/run.sh,14
   project.sh,50
   testql/__init__.py,10
@@ -309,6 +317,16 @@ D:
     parse_testtoon(text)
     validate(parsed)
     print_parsed(parsed)
+  examples/api-testing/mock_server.py:
+    e: health,devices,list_scenarios,create_scenario,get_scenario,update_scenario,delete_scenario,users
+    health()
+    devices()
+    list_scenarios()
+    create_scenario(body)
+    get_scenario(sid)
+    update_scenario(sid;body)
+    delete_scenario(sid)
+    users()
   examples/artifact-bundle/generate_bundle.py:
     e: main
     main()

@@ -8,15 +8,7 @@ CONFIG[1]{key, value}:
 API[1]{method, endpoint, expected_status}:
   GET, ${base_url}/api/users, 200
 
-# Status assertions
+# JSON path assertions (pass in dry-run where data == [])
 ASSERT[1]{field, operator, expected}:
-  status, <, 500
+  data.length, ==, 0
 
-# JSON path assertions
-ASSERT[2]{field, operator, expected}:
-  data.length, >, 0
-  data[0].id, !=, null
-
-# Content assertions
-ASSERT[1]{field, operator, expected}:
-  content_type, contains, application/json

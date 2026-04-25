@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+TESTQL="$ROOT_DIR/venv/bin/testql"
+if [ ! -x "$TESTQL" ]; then TESTQL="testql"; fi
+
 # Web inspection demo — run against a target URL
 
 set -euo pipefail
@@ -10,7 +14,7 @@ echo "==> Inspecting $URL"
 echo "==> Output directory: $OUTDIR"
 
 # Full scan with network probes
-testql inspect "$URL" --scan-network --out-dir "$OUTDIR"
+"$TESTQL" inspect "$URL" --scan-network --out-dir "$OUTDIR"
 
 echo "==> Generated files in $OUTDIR:"
 ls -la "$OUTDIR"

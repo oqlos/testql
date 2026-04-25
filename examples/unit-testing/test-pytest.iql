@@ -1,0 +1,11 @@
+# SCENARIO: Unit Testing — Pytest Suite
+# TYPE: unit
+
+LOG "Running pytest on testql test suite"
+UNIT_PYTEST "tests/test_cli.py" --verbose
+
+LOG "Running specific test module"
+UNIT_PYTEST "tests/test_browser_discovery.py" -v --no-cov
+
+LOG "Running with markers"
+UNIT_PYTEST "tests/" -m "not slow"

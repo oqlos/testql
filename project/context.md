@@ -4,17 +4,17 @@
 
 - **Project**: /home/tom/github/oqlos/testql
 - **Primary Language**: python
-- **Languages**: python: 201, yaml: 110, shell: 11, txt: 3, json: 2
+- **Languages**: python: 202, yaml: 111, shell: 18, txt: 3, json: 2
 - **Analysis Mode**: static
-- **Total Functions**: 1715
+- **Total Functions**: 1726
 - **Total Classes**: 176
-- **Modules**: 330
-- **Entry Points**: 1275
+- **Modules**: 355
+- **Entry Points**: 1286
 
 ## Architecture by Module
 
 ### project.map.toon
-- **Functions**: 639
+- **Functions**: 641
 - **File**: `map.toon.yaml`
 
 ### code2llm_output.map.toon
@@ -49,15 +49,15 @@
 - **Classes**: 2
 - **File**: `_testtoon_parser.py`
 
-### testql.adapters.graphql.graphql_adapter
-- **Functions**: 23
-- **Classes**: 1
-- **File**: `graphql_adapter.py`
-
 ### testql.adapters.testtoon_adapter
 - **Functions**: 23
 - **Classes**: 1
 - **File**: `testtoon_adapter.py`
+
+### testql.adapters.graphql.graphql_adapter
+- **Functions**: 23
+- **Classes**: 1
+- **File**: `graphql_adapter.py`
 
 ### testql.openapi_generator
 - **Functions**: 21
@@ -213,9 +213,13 @@ Examples:
 > Create new test file from template.
 - **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, out_dir.mkdir, TestContentBuilder.build
 
+### testql.report_generator.generate_report
+> Generate HTML report from data.json file.
+- **Calls**: json.loads, data.get, round, TestSuiteReport, HTMLReportGenerator, generator.generate, data_json.read_text, data.get
+
 ### testql.runner.DslCliExecutor.run_script
 > Execute a DSL script
-- **Calls**: code2llm_output.map.toon.parse_script, examples.web-inspection.demo.print, examples.web-inspection.demo.print, examples.web-inspection.demo.print, examples.web-inspection.demo.print, enumerate, examples.web-inspection.demo.print, sum
+- **Calls**: code2llm_output.map.toon.parse_script, examples.browser-inspection.run.print, examples.browser-inspection.run.print, examples.browser-inspection.run.print, examples.browser-inspection.run.print, enumerate, examples.browser-inspection.run.print, sum
 
 ### testql.echo_schemas.ProjectEcho.to_text
 > Convert to human-readable text format.
@@ -236,10 +240,6 @@ Examples:
 ### testql.commands.endpoints_cmd.endpoints
 > List all detected API endpoints in a project.
 - **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, Path, UnifiedEndpointDetector
-
-### testql.report_generator.generate_report
-> Generate HTML report from data.json file.
-- **Calls**: json.loads, data.get, round, TestSuiteReport, HTMLReportGenerator, generator.generate, data_json.read_text, data.get
 
 ### testql.doql_parser.DoqlParser.parse
 > Parse doql LESS content.
@@ -509,6 +509,7 @@ Functions exposed as public API (no underscore prefix):
 - `testql.commands.generate_cmd.analyze` - 22 calls
 - `testql.commands.misc_cmds.report` - 22 calls
 - `testql.commands.misc_cmds.create` - 21 calls
+- `testql.report_generator.generate_report` - 20 calls
 - `testql.runner.parse_line` - 20 calls
 - `testql.runner.DslCliExecutor.run_script` - 20 calls
 - `testql.echo_schemas.ProjectEcho.to_text` - 20 calls
@@ -517,7 +518,6 @@ Functions exposed as public API (no underscore prefix):
 - `testql.commands.run_cmd.run` - 20 calls
 - `testql.commands.endpoints_cmd.endpoints` - 20 calls
 - `testql.adapters.sql.fixtures.schema_fixture_from_rows` - 20 calls
-- `testql.report_generator.generate_report` - 20 calls
 - `testql.doql_parser.DoqlParser.parse` - 19 calls
 - `testql.discovery.probes.filesystem.package_python.PythonPackageProbe.probe` - 18 calls
 - `testql.results.analyzer.analyze_topology` - 18 calls

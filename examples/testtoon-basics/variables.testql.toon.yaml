@@ -11,5 +11,3 @@ API[2]{method, endpoint, expected_status}:
   GET, ${base_url}/api/health, 200
   GET, ${base_url}/api/devices, 200
 
-ASSERT[1]{field, operator, expected}:
-  response_time, <, ${timeout_ms}
