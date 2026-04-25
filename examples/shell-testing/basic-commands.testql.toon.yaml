@@ -1,0 +1,7 @@
+# SCENARIO: Basic Shell Commands Test
+# TYPE: shell
+# VERSION: 2
+
+SHELL[2]{command, exit_code}:
+  echo Hello TestQL, 0
+  ls -la, 0

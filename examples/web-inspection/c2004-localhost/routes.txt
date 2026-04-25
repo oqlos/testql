@@ -1,0 +1,3 @@
+http://localhost:8100
+http://localhost:8100/connect-id/manual?font=default&theme=dark&role=operator&lang=pl&size=1280
+http://localhost:8100/connect-test/devices?font=default&theme=dark&role=admin&lang=pl&size=1280

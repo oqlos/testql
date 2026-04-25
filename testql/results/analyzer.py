@@ -354,6 +354,14 @@ def _check_web_links(node_id: str, metadata: dict) -> CheckResult:
         internal = sum(1 for item in links if item.get("kind") == "internal")
         external = sum(1 for item in links if item.get("kind") == "external")
         return CheckResult("check.web.links", "passed", f"Extracted {len(links)} links ({internal} internal, {external} external).", node_id=node_id, metadata={"links": len(links), "internal": internal, "external": external})
+    if _looks_like_spa(metadata):
+        return CheckResult(
+            "check.web.links",
+            "skipped",
+            "No static links were extracted; page looks like SPA with JS-rendered navigation.",
+            node_id=node_id,
+            metadata={"links": 0, "spa_suspected": True},
+        )
     return CheckResult("check.web.links", "warning", "No links were extracted from the page.", node_id=node_id, metadata={"links": 0})
 
 
@@ -377,6 +385,12 @@ def _status_code(metadata: dict) -> int | None:
         return int(value) if value is not None else None
     except (TypeError, ValueError):
         return None
+
+
+def _looks_like_spa(metadata: dict) -> bool:
+    assets = metadata.get("assets") or []
+    script_assets = [asset for asset in assets if str(asset.get("kind", "")).lower() == "script"]
+    return len(script_assets) > 0
 
 
 def _findings_from_checks(checks: list[CheckResult]) -> list[FailureFinding]:

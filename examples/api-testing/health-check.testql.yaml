@@ -1,0 +1,19 @@
+scenario: API Health Check
+type: api
+version: 2
+
+targets:
+  api:
+    base_url: http://localhost:8101
+    timeout_ms: 5000
+
+steps:
+  - request: GET /api/health
+    expect:
+      status: 200
+  - request: GET /api/v3/data/devices
+    expect:
+      status: 200
+  - request: GET /api/v3/scenarios
+    expect:
+      status: 200

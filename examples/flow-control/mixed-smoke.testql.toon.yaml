@@ -1,0 +1,20 @@
+# SCENARIO: Cross-environment Smoke
+# TYPE: mixed
+# VERSION: 2
+
+CONFIG[5]{key, value}:
+  device_id, dev-001
+  targets, {'api': {'base_url': 'http://localhost:8101'}, 'shell': {'cwd': '.'}}
+  api.base_url, http://localhost:8101
+  base_url, http://localhost:8101
+  shell.cwd, .
+API[2]{method, endpoint, status}:
+  GET, /api/health, 200
+  GET, /api/v3/data/devices/${device_id}, 200
+SHELL[1]{command, exit_code}:
+  echo Starting, 0
+LOG[2]{message}:
+  Smoke for device ${device_id}
+  Final state: ${device_state}
+CAPTURE[1]{step, var, from}:
+  4, device_state, data.status

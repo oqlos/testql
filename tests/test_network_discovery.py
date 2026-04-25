@@ -27,6 +27,20 @@ HTML = """
 """
 
 
+SPA_HTML = """
+<html>
+    <head>
+        <title>SPA App</title>
+        <script src="/assets/app.js"></script>
+        <script src="/assets/vendor.js"></script>
+    </head>
+    <body>
+        <div id="app"></div>
+    </body>
+</html>
+"""
+
+
 class FakeClient:
     status_code = 200
     html = HTML
@@ -60,6 +74,11 @@ class FakeClient:
 class FakeErrorClient(FakeClient):
     status_code = 500
     html = "<html><head></head><body></body></html>"
+
+
+class FakeSpaClient(FakeClient):
+    status_code = 200
+    html = SPA_HTML
 
 
 def test_discover_url_requires_scan_network_for_match(monkeypatch):
@@ -130,3 +149,14 @@ def test_inspect_url_builds_sitemap_with_mocked_network(monkeypatch):
     assert "check.sitemap.crawl" in check_ids
     assert "check.sitemap.broken" in check_ids
     assert "check.sitemap.duplicates" in check_ids
+
+
+def test_inspect_spa_without_anchors_skips_web_links(monkeypatch):
+    monkeypatch.setattr(httpx, "Client", FakeSpaClient)
+    _, envelope, _ = inspect_source("https://spa.example.test/", scan_network=True)
+
+    links_check = next((check for check in envelope.checks if check.id == "check.web.links"), None)
+    assert links_check is not None
+    assert links_check.status == "skipped"
+    assert envelope.status == "passed"
+    assert not any(finding.id == "finding.web.links" for finding in envelope.failures)

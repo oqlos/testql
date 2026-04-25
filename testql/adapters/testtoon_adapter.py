@@ -23,9 +23,12 @@ from testql.ir import (
     Capture,
     EncoderStep,
     GuiStep,
+    NlStep,
     ScenarioMetadata,
+    ShellStep,
     Step,
     TestPlan,
+    UnitStep,
 )
 
 from .base import BaseDSLAdapter, DSLDetectionResult, SourceLike, read_source
@@ -66,6 +69,21 @@ def _navigate_section_to_steps(section: ToonSection) -> list[Step]:
             action="navigate",
             path=str(row.get("path", "/")),
             wait_ms=int(wait_ms) if wait_ms is not None else None,
+        ))
+    return steps
+
+
+def _gui_section_to_steps(section: ToonSection) -> list[Step]:
+    steps: list[Step] = []
+    for row in section.rows:
+        wait_ms = row.get("wait_ms")
+        action = str(row.get("action", "")).strip().lower() or "noop"
+        selector = row.get("selector") or row.get("target")
+        steps.append(GuiStep(
+            action=action,
+            selector=str(selector) if selector not in (None, "-") else None,
+            value=row.get("value") if row.get("value") not in (None, "-") else None,
+            wait_ms=int(wait_ms) if isinstance(wait_ms, int) else None,
         ))
     return steps
 
@@ -136,11 +154,52 @@ def _generic_section_to_steps(section: ToonSection) -> list[Step]:
     return steps
 
 
+def _shell_section_to_steps(section: ToonSection) -> list[Step]:
+    steps: list[Step] = []
+    for row in section.rows:
+        command = str(row.get("command") or row.get("cmd") or "").strip()
+        if not command:
+            continue
+        step = ShellStep(command=command, cwd=row.get("cwd"))
+        exit_code = row.get("exit_code")
+        if exit_code is None:
+            exit_code = row.get("expect_exit_code")
+        if isinstance(exit_code, int):
+            step.expect_exit_code = exit_code
+        elif isinstance(exit_code, str) and exit_code.strip().lstrip("-").isdigit():
+            step.expect_exit_code = int(exit_code)
+        steps.append(step)
+    return steps
+
+
+def _unit_section_to_steps(section: ToonSection) -> list[Step]:
+    steps: list[Step] = []
+    for row in section.rows:
+        target = str(row.get("target") or row.get("test") or "").strip()
+        if target:
+            steps.append(UnitStep(target=target))
+    return steps
+
+
+def _log_section_to_steps(section: ToonSection) -> list[Step]:
+    steps: list[Step] = []
+    for row in section.rows:
+        message = row.get("message") or row.get("text")
+        if message is None:
+            continue
+        steps.append(NlStep(text=str(message)))
+    return steps
+
+
 _SECTION_TRANSLATORS = {
     "API": _api_section_to_steps,
     "NAVIGATE": _navigate_section_to_steps,
+    "GUI": _gui_section_to_steps,
     "ENCODER": _encoder_section_to_steps,
     "ASSERT": _assert_section_to_steps,
+    "SHELL": _shell_section_to_steps,
+    "UNIT": _unit_section_to_steps,
+    "LOG": _log_section_to_steps,
 }
 
 
@@ -233,6 +292,51 @@ def _render_encoder_steps(steps: list[EncoderStep]) -> list[str]:
     return lines
 
 
+def _render_gui_action_steps(steps: list[Step]) -> list[str]:
+    actions = [s for s in steps if isinstance(s, GuiStep) and s.action != "navigate"]
+    if not actions:
+        return []
+    lines = [f"GUI[{len(actions)}]" + "{action, selector, value, wait_ms}:"]
+    for s in actions:
+        selector = s.selector if s.selector is not None else "-"
+        value = s.value if s.value is not None else "-"
+        wait = s.wait_ms if s.wait_ms is not None else "-"
+        lines.append(f"  {s.action}, {selector}, {value}, {wait}")
+    return lines
+
+
+def _render_shell_steps(steps: list[Step]) -> list[str]:
+    shells = [s for s in steps if isinstance(s, ShellStep)]
+    if not shells:
+        return []
+    lines = [f"SHELL[{len(shells)}]" + "{command, exit_code}:"]
+    for s in shells:
+        ec = s.expect_exit_code if s.expect_exit_code is not None else "-"
+        lines.append(f"  {s.command}, {ec}")
+    return lines
+
+
+def _render_unit_steps(steps: list[Step]) -> list[str]:
+    units = [s for s in steps if isinstance(s, UnitStep)]
+    if not units:
+        return []
+    lines = [f"UNIT[{len(units)}]" + "{target}:"]
+    for s in units:
+        lines.append(f"  {s.target}")
+    return lines
+
+
+def _render_log_steps(steps: list[Step]) -> list[str]:
+    logs = [s for s in steps if isinstance(s, NlStep)]
+    if not logs:
+        return []
+    lines = [f"LOG[{len(logs)}]" + "{message}:"]
+    for s in logs:
+        text = s.text.replace("\n", " ").strip()
+        lines.append(f"  {text}")
+    return lines
+
+
 def _render_assertions(steps: list[Step]) -> list[str]:
     asserts = [a for s in steps for a in s.asserts if s.kind == "assert"]
     if not asserts:
@@ -277,8 +381,12 @@ def _render_plan(plan: TestPlan) -> str:
     parts.extend(_render_api_steps(api_steps))
     gui_steps = [s for s in plan.steps if isinstance(s, GuiStep)]
     parts.extend(_render_navigate_steps(gui_steps))
+    parts.extend(_render_gui_action_steps(plan.steps))
     encoder_steps = [s for s in plan.steps if isinstance(s, EncoderStep)]
     parts.extend(_render_encoder_steps(encoder_steps))
+    parts.extend(_render_shell_steps(plan.steps))
+    parts.extend(_render_unit_steps(plan.steps))
+    parts.extend(_render_log_steps(plan.steps))
     parts.extend(_render_assertions(plan.steps))
     parts.extend(_render_captures(plan.steps))
     return "\n".join(parts) + ("\n" if parts else "")
@@ -296,8 +404,6 @@ class TestToonAdapter(BaseDSLAdapter):
     file_extensions: tuple[str, ...] = field(default_factory=lambda: (
         ".testql.toon.yaml",
         ".testql.toon.yml",
-        ".testql.yaml",
-        ".testql.yml",
     ))
 
     def detect(self, source: SourceLike) -> DSLDetectionResult:

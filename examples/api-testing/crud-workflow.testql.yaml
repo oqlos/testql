@@ -1,0 +1,42 @@
+scenario: CRUD Workflow Test
+type: api
+version: 2
+
+targets:
+  api:
+    base_url: http://localhost:8101
+
+steps:
+  - name: create
+    request:
+      method: POST
+      path: /api/v3/scenarios
+    expect:
+      status: 201
+      json:
+        data.id:
+          not_equals: null
+    capture:
+      scenario_id: response.data.id
+
+  - name: read
+    request: GET /api/v3/scenarios/${scenario_id}
+    expect:
+      status: 200
+      json:
+        data.id:
+          equals: ${scenario_id}
+
+  - name: update
+    request:
+      method: PUT
+      path: /api/v3/scenarios/${scenario_id}
+    expect:
+      status: 200
+
+  - name: delete
+    request:
+      method: DELETE
+      path: /api/v3/scenarios/${scenario_id}
+    expect:
+      status: 204

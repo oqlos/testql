@@ -1,0 +1,12 @@
+scenario: Basic Shell Commands Test
+type: shell
+version: 2
+
+steps:
+  - run: echo Hello TestQL
+    expect:
+      exit_code: 0
+
+  - run: ls -la
+    expect:
+      exit_code: 0

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "testql"
-version = "1.2.6"
+version = "1.2.7"
 description = "TestQL — Multi-DSL Test Platform: TestTOON / NL / SQL / Proto / GraphQL adapters with Unified IR, generator engine, and meta-testing"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -22,6 +22,12 @@ dependencies = [
 
 [project.scripts]
 testql = "testql.cli:main"
+
+[project.entry-points."testql.plugins"]
+# Third-party packages can ship adapters by registering an entry point in
+# this group. The loaded module may expose either:
+#   - a `register_testql_plugin(registry)` callable, or
+#   - an `adapter` / `adapters` attribute with `BaseDSLAdapter` instance(s).
 
 [project.optional-dependencies]
 playwright = ["playwright>=1.40"]

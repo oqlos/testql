@@ -1,0 +1,33 @@
+scenario: Cross-environment Smoke
+type: mixed
+version: 2
+
+targets:
+  api:
+    base_url: http://localhost:8101
+  shell:
+    cwd: .
+
+vars:
+  device_id: dev-001
+
+steps:
+  - log: "Smoke for device ${device_id}"
+
+  - run: echo Starting
+    expect:
+      exit_code: 0
+
+  - request: GET /api/health
+    using: api
+    expect:
+      status: 200
+
+  - request: GET /api/v3/data/devices/${device_id}
+    using: api
+    expect:
+      status: 200
+    capture:
+      device_state: response.data.status
+
+  - log: "Final state: ${device_state}"

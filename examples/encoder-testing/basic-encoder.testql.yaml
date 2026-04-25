@@ -1,0 +1,23 @@
+scenario: Basic Encoder Lifecycle
+type: encoder
+version: 2
+
+steps:
+  - encoder:
+      action: on
+    wait: 200ms
+  - encoder:
+      action: status
+  - encoder:
+      action: focus
+      target: column1
+    wait: 100ms
+  - encoder:
+      action: scroll
+      value: 3
+    wait: 100ms
+  - encoder:
+      action: click
+    wait: 100ms
+  - encoder:
+      action: off

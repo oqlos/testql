@@ -1,0 +1,20 @@
+# SCENARIO: Login Form Test
+# TYPE: gui
+# VERSION: 2
+
+CONFIG[7]{key, value}:
+  username, testuser
+  password, testpass123
+  targets, {'browser': {'base_url': 'https://example.com', 'engine': 'chromium', 'headless': True}}
+  browser.base_url, https://example.com
+  base_url, https://example.com
+  browser.engine, chromium
+  browser.headless, True
+NAVIGATE[1]{path, wait_ms}:
+  ${browser.base_url}/login, 500
+GUI[5]{action, selector, value, wait_ms}:
+  input, #username, ${username}, -
+  input, #password, ${password}, -
+  click, button[type='submit'], -, 1000
+  assert_visible, [data-testid='dashboard'], -, -
+  assert_text, h1, Welcome, ${username}, -

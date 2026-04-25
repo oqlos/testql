@@ -18,16 +18,19 @@ from .graphql import GraphQLDSLAdapter
 from .nl import NLDSLAdapter
 from .proto import ProtoDSLAdapter
 from .registry import AdapterRegistry, get_registry
+from .scenario_yaml import ScenarioYamlAdapter
 from .sql import SqlDSLAdapter
 from .testtoon_adapter import TestToonAdapter
 
 # Module-level singleton registry, pre-populated with built-in adapters.
 registry: AdapterRegistry = get_registry()
+registry.register(ScenarioYamlAdapter())
 registry.register(TestToonAdapter())
 registry.register(NLDSLAdapter())
 registry.register(SqlDSLAdapter())
 registry.register(ProtoDSLAdapter())
 registry.register(GraphQLDSLAdapter())
+registry.ensure_plugins_loaded()
 
 __all__ = [
     "BaseDSLAdapter",
@@ -36,6 +39,7 @@ __all__ = [
     "SourceLike",
     "AdapterRegistry",
     "TestToonAdapter",
+    "ScenarioYamlAdapter",
     "NLDSLAdapter",
     "SqlDSLAdapter",
     "ProtoDSLAdapter",

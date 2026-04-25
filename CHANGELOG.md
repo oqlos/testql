@@ -130,6 +130,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Remaining
 - Add Playwright-backed browser execution, JavaScript-rendered DOM capture, screenshots, console errors, network logs, link-by-link validation, accessibility/performance checks, MCP service integration, and runtime-vs-code delta reports.
 
+## [1.2.7] - 2026-04-25
+
+### Docs
+- Update DSL.md
+- Update README.md
+- Update articles/testql-plugins-and-formats.md
+- Update examples/web-inspection/c2004-localhost/README.md
+
+### Test
+- Update testql/adapters/__init__.py
+- Update testql/adapters/registry.py
+- Update testql/adapters/scenario_yaml.py
+- Update testql/adapters/testtoon_adapter.py
+- Update testql/ir_runner/engine.py
+- Update testql/results/analyzer.py
+- Update tests/test_network_discovery.py
+- Update tests/test_plugin_registry.py
+- Update tests/test_scenario_yaml_adapter.py
+
+### Other
+- Update .gitignore
+- Update coverage.json
+- Update examples/api-testing/crud-workflow.testql.toon.yaml
+- Update examples/api-testing/crud-workflow.testql.yaml
+- Update examples/api-testing/health-check.testql.toon.yaml
+- Update examples/api-testing/health-check.testql.yaml
+- Update examples/encoder-testing/basic-encoder.testql.toon.yaml
+- Update examples/encoder-testing/basic-encoder.testql.yaml
+- Update examples/flow-control/mixed-smoke.testql.toon.yaml
+- Update examples/flow-control/mixed-smoke.testql.yaml
+- ... and 8 more files
+
 ## [1.2.6] - 2026-04-25
 
 ### Docs

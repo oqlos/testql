@@ -29,6 +29,7 @@ def load_plan(source: Union[str, Path, TestPlan]) -> TestPlan:
         return source
     if not isinstance(source, (str, Path)):
         raise ValueError(f"unsupported source type: {type(source).__name__}")
+    import testql.adapters  # noqa: F401
     adapter = get_registry().detect(source)
     if adapter is None:
         raise ValueError(f"no adapter detected for source: {source!r}")
@@ -91,10 +92,25 @@ class IRRunner:
         )
         self.ctx.out.quiet = quiet
 
+    def _apply_plan_config(self, plan: TestPlan) -> None:
+        for key, value in plan.config.items():
+            if not self.ctx.vars.has(key):
+                self.ctx.vars.set(key, value)
+        api_base = plan.config.get("api.base_url") or plan.config.get("base_url")
+        encoder_base = plan.config.get("encoder.base_url") or plan.config.get("encoder_url")
+        graphql_base = plan.config.get("graphql.url") or plan.config.get("graphql_url")
+        if api_base:
+            self.ctx.api_url = str(api_base).rstrip("/")
+        if encoder_base:
+            self.ctx.encoder_url = str(encoder_base).rstrip("/")
+        if graphql_base:
+            self.ctx.graphql_url = str(graphql_base)
+
     def run(self, plan: Union[str, Path, TestPlan],
             source_label: str = "<plan>") -> ScriptResult:
         """Execute `plan`. Returns a `ScriptResult` with all step outcomes."""
         loaded = load_plan(plan)
+        self._apply_plan_config(loaded)
         t0 = time.monotonic()
         for step in loaded.steps:
             result = _run_step(step, self.ctx)

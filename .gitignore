@@ -1,4 +1,9 @@
 .testql
+.testql-c2004
+.testql-connect-id
+.testql-connect-test
+.testql-matrix
+.testql-*
 .pyqual
 .taskill
 .testql-browser

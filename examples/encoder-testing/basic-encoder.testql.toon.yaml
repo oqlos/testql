@@ -1,0 +1,11 @@
+# SCENARIO: Basic Encoder Lifecycle
+# TYPE: encoder
+# VERSION: 2
+
+ENCODER[6]{action, target, value, wait_ms}:
+  on, -, -, 200
+  status, -, -, -
+  focus, column1, -, 100
+  scroll, -, 3, 100
+  click, -, -, 100
+  status, -, -, -
