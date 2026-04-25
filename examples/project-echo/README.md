@@ -14,20 +14,60 @@ application from the DOQL model.
 
 ## Usage
 
-### 1. Generate AI context (TestQL echo)
+### 1. `run.sh` — Quick commands
+
+| Command | Description |
+|---------|-------------|
+| `./run.sh echo text` | Print human-readable AI context (default) |
+| `./run.sh echo json` | Print JSON echo (pipe to `> ai-context.json`) |
+| `./run.sh echo sumd` | Print SUMD-format echo |
+| `./run.sh build` | Run `doql build` to regenerate `build/` from `app.doql` |
+| `./run.sh export-less` | Re-export `app.doql` -> `app.doql.less` (sync formats) |
+
+```bash
+# Most common — get JSON context for an LLM
+./run.sh echo json > ai-context.json
+
+# Rebuild the application after editing app.doql
+./run.sh build
+
+# Re-export LESS after changing DOQL model
+./run.sh export-less
+```
+
+### 2. Makefile — All tasks in one place
+
+A `Makefile` is provided for convenience:
+
+```bash
+make help          # Show all available targets
+make echo          # Same as ./run.sh echo text
+make echo-json     # JSON echo
+make build         # doql build
+make export-less   # Sync LESS export
+make run           # docker compose up (with build)
+make run-daemon    # docker compose up -d
+make stop          # docker compose down
+make run-local     # uvicorn main:app --reload (inside build/api/)
+make test-api      # curl smoke tests against :8008
+make clean         # rm -rf build/
+make rebuild       # clean + build + run-daemon
+```
+
+### 3. Generate AI context (TestQL echo)
 
 ```bash
 # Generate text output (human-readable)
-./run.sh text
+./run.sh echo text
 
 # Generate JSON output (for LLM consumption)
-./run.sh json
+./run.sh echo json
 
 # Save to file
-./run.sh json > ai-context.json
+./run.sh echo json > ai-context.json
 ```
 
-### 2. Generate a working application from DOQL
+### 4. Generate a working application from DOQL
 
 ```bash
 # Ensure doql CLI is installed
@@ -36,9 +76,8 @@ application from the DOQL model.
 # Build the entire app (FastAPI backend, Docker infra, workflows)
 doql -f app.doql build
 
-# Run locally (requires .env)
-cp build/infra/.env.docker .env
-doql -f app.doql run
+# Or via Makefile
+make build
 
 # Export to other formats
 doql -f app.doql export --format openapi -o openapi.yaml
@@ -50,8 +89,58 @@ After `doql build`, the generated application is in `build/`:
 | Artifact | Path | Description |
 |----------|------|-------------|
 | FastAPI app | `build/api/` | `main.py`, `routes.py`, `models.py`, `schemas.py` |
-| Infrastructure | `build/infra/` | `docker-compose.yml`, `Dockerfile` |
+| Infrastructure | `build/infra/` | `docker-compose.yml`, `Dockerfile`, `.env.docker` |
 | Workflows | `build/workflows/` | Workflow engine + scheduler |
+
+### 5. Run the generated application
+
+#### Docker (recommended)
+
+```bash
+# Start services (API + Traefik)
+cd build/infra
+docker compose up --build
+
+# Or from project root
+make run           # foreground
+make run-daemon    # background
+make stop          # stop everything
+```
+
+**Ports after `docker compose up`:**
+- `http://localhost:8008` — API directly (host-mapped from container port 8000)
+- `http://example-api-server.localhost` — via Traefik reverse proxy (port 80/443)
+
+#### Local uvicorn (for quick dev)
+
+```bash
+cd build/api
+pip install -r requirements.txt
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+# Or from project root
+make run-local
+```
+
+### 6. Verify the running API
+
+```bash
+# Health check
+curl http://localhost:8008/health
+
+# List devices
+curl http://localhost:8008/api/v1/devices
+
+# Create a scenario
+curl -X POST http://localhost:8008/api/v1/scenarios \
+  -H "Content-Type: application/json" \
+  -d '{"name":"demo","config":{}}'
+
+# Or use the Makefile target
+make test-api
+```
+
+> **Note:** `GET /` returns 404 — the application serves API routes under `/api/v1/*` and `/health`. This is expected.
 
 ## TestQL vs DOQL — Data Comparison
 

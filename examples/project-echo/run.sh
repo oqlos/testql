@@ -8,7 +8,7 @@ FORMAT="${2:-text}"
 case "$CMD" in
   echo)
     echo "=== Generating Project Echo ($FORMAT) ==="
-    testql echo \
+    python3 -m testql echo \
       --toon-path "$ROOT_DIR/examples/project-echo" \
       --doql-path "$ROOT_DIR/examples/project-echo/app.doql.less" \
       --format "$FORMAT"

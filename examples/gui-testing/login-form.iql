@@ -5,17 +5,19 @@ SET base_url "https://example.com"
 SET username "testuser"
 SET password "testpass123"
 
-NAVIGATE "${base_url}/login"
+GUI_START "${base_url}/login"
 WAIT 500
 
 # Fill login form
-INPUT "#username" "${username}"
-INPUT "#password" "${password}"
+GUI_INPUT "#username" "${username}"
+GUI_INPUT "#password" "${password}"
 
 # Submit
-CLICK "button[type='submit']"
+GUI_CLICK "button[type='submit']"
 WAIT 1000
 
 # Verify redirect to dashboard
-ASSERT_VISIBLE "[data-testid='dashboard']"
-ASSERT_TEXT "h1" "Welcome, ${username}"
+GUI_ASSERT_VISIBLE "[data-testid='dashboard']"
+GUI_ASSERT_TEXT "h1" "Welcome, ${username}"
+
+GUI_STOP

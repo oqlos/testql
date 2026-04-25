@@ -9,7 +9,14 @@ pip install playwright
 playwright install chromium
 ```
 
-## Run browser inspection
+## Quick start
+
+```bash
+cd browser-inspection
+./run.sh https://tom.sapletta.com/
+```
+
+Or run directly:
 
 ```bash
 testql inspect https://tom.sapletta.com/ \

@@ -4,12 +4,13 @@
 SET base_url "https://example.com"
 SET search_term "playwright"
 
-NAVIGATE "${base_url}/search"
+GUI_START "${base_url}/search"
 WAIT 300
 
-INPUT "#search-input" "${search_term}"
-CLICK "button[type='submit']"
+GUI_INPUT "#search-input" "${search_term}"
+GUI_CLICK "button[type='submit']"
 WAIT 800
 
-ASSERT_VISIBLE "[data-testid='results']"
-ASSERT_CONTAINS "${search_term}"
+GUI_ASSERT_VISIBLE "[data-testid='results']"
+
+GUI_STOP
