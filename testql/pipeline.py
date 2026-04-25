@@ -101,6 +101,7 @@ class GenerationPipeline:
         *,
         output_dir: str | Path | None = None,
         analyze_only: bool = False,
+        validate_url: str | None = None,
     ) -> list[Path]:
         """Run the full pipeline.
 
@@ -113,6 +114,15 @@ class GenerationPipeline:
             List of paths to generated scenario files.
         """
         ctx = self._collect()
+        
+        # Inject validate_url into configs
+        if validate_url:
+            if ctx.is_workspace:
+                for profile in ctx.workspace_profiles.values():
+                    profile.config['validate_url'] = validate_url
+            elif ctx.profile:
+                ctx.profile.config['validate_url'] = validate_url
+                
         if analyze_only:
             return []
         out = Path(output_dir) if output_dir else None

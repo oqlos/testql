@@ -189,10 +189,20 @@ class ProjectAnalyzer(BaseAnalyzer):
         commands = []
         assertions = []
 
+        import re
         for line in source_lines:
             line_stripped = line.strip()
             if line_stripped.startswith('assert'):
                 assertions.append({'type': 'assert', 'expression': line_stripped})
+            
+            # Simple heuristic for API requests
+            api_match = re.search(r'(client|requests)\.(get|post|put|delete|patch)\(([\'"])(.*?)\3', line_stripped)
+            if api_match:
+                commands.append({
+                    'type': 'api',
+                    'method': api_match.group(2).upper(),
+                    'path': api_match.group(4)
+                })
 
         return commands, assertions
 

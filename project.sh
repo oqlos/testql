@@ -47,4 +47,4 @@ $PIP install goal --upgrade --quiet
 bash ./tree.sh
 python3 -m testql.cli inspect https://tom.sapletta.com/ --scan-network --out-dir .testql
 
-$VENV/bin/goal -a
+#$VENV/bin/goal -a

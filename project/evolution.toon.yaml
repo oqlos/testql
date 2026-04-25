@@ -1,14 +1,44 @@
-# code2llm/evolution | 1714 func | 166f | 2026-04-25
+# code2llm/evolution | 1845 func | 171f | 2026-04-25
 
-NEXT[0]: no refactoring needed
+NEXT[7] (ranked by impact):
+  [1] !! SPLIT           testql/generators/generators.py
+      WHY: 501L, 4 classes, max CC=19
+      EFFORT: ~4h  IMPACT: 9519
 
-RISKS[0]: none
+  [2] !! SPLIT           testql/results/analyzer.py
+      WHY: 504L, 0 classes, max CC=14
+      EFFORT: ~4h  IMPACT: 7056
+
+  [3] !  SPLIT-FUNC      auto  CC=19  fan=24
+      WHY: CC=19 exceeds 15
+      EFFORT: ~1h  IMPACT: 456
+
+  [4] !  SPLIT-FUNC      _typed_step  CC=22  fan=17
+      WHY: CC=22 exceeds 15
+      EFFORT: ~1h  IMPACT: 374
+
+  [5] !  SPLIT-FUNC      OqlParser.parse_file  CC=17  fan=17
+      WHY: CC=17 exceeds 15
+      EFFORT: ~1h  IMPACT: 289
+
+  [6] !! SPLIT-FUNC      OqlParser._parse_command  CC=31  fan=8
+      WHY: CC=31 exceeds 15
+      EFFORT: ~1h  IMPACT: 248
+
+  [7] !  SPLIT-FUNC      PythonTestGeneratorMixin._generate_from_python_tests  CC=19  fan=11
+      WHY: CC=19 exceeds 15
+      EFFORT: ~1h  IMPACT: 209
+
+
+RISKS[2]:
+  ⚠ Splitting testql/results/analyzer.py may break 38 import paths
+  ⚠ Splitting testql/generators/generators.py may break 19 import paths
 
 METRICS-TARGET:
-  CC̄:          2.1 → ≤1.5
-  max-CC:      14 → ≤7
-  god-modules: 0 → 0
-  high-CC(≥15): 0 → ≤0
+  CC̄:          2.3 → ≤1.6
+  max-CC:      31 → ≤15
+  god-modules: 2 → 0
+  high-CC(≥15): 7 → ≤3
   hub-types:   0 → ≤0
 
 PATTERNS (language parser shared logic):
@@ -36,4 +66,4 @@ PATTERNS (language parser shared logic):
     - Standardized FunctionInfo/ClassInfo models
 
 HISTORY:
-  prev CC̄=2.1 → now CC̄=2.1
+  prev CC̄=2.3 → now CC̄=2.3

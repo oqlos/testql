@@ -269,11 +269,38 @@ def _expand_select(section: ToonSection, lines: list[IqlLine], line_num: int) ->
 
 
 def _expand_assert(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
-    """Expand ASSERT section → ASSERT_JSON commands."""
+    """Expand ASSERT section → ASSERT_* commands.
+
+    Supports two formats:
+    - {field, op, expected} → ASSERT_JSON (for API/JSON assertions)
+    - {selector, expected} → ASSERT_VISIBLE (for GUI assertions)
+    """
     for row in section.rows:
+        # GUI format: {selector, expected}
+        if 'selector' in section.columns:
+            selector = row.get('selector', '')
+            expected = row.get('expected', '')
+            if expected == 'visible':
+                raw = f'ASSERT_VISIBLE "{selector}"'
+                lines.append(IqlLine(
+                    number=line_num, command='ASSERT_VISIBLE',
+                    args=f'"{selector}"', raw=raw,
+                ))
+            else:
+                raw = f'ASSERT_TEXT "{selector}" "{expected}"'
+                lines.append(IqlLine(
+                    number=line_num, command='ASSERT_TEXT',
+                    args=f'"{selector}" "{expected}"', raw=raw,
+                ))
+            line_num += 1
+            continue
+
+        # JSON format: {field, op, expected}
         field_name = row.get('field', '')
         op = row.get('op', '==')
         expected = row.get('expected', '')
+        if not field_name:
+            continue  # Skip empty assertions
         raw = f'ASSERT_JSON {field_name} {op} {expected}'
         lines.append(IqlLine(
             number=line_num, command='ASSERT_JSON',

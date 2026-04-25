@@ -2,7 +2,8 @@
 ├── app.doql.less
 ├── articles
 │   ├── testql-multi-dsl-refactor-plan.md
-│   └── testql-phase-6-artifact-discovery.md
+│   ├── testql-phase-6-artifact-discovery.md
+│   └── testql-plugins-and-formats.md
 ├── bin
 ├── CHANGELOG.md
 ├── code2llm_output
@@ -22,10 +23,13 @@
 │   ├── prompt.txt
 │   └── README.md
 ├── coverage.json
+├── DSL.md
 ├── examples
 │   ├── api-testing
 │   │   ├── crud-workflow.testql.toon.yaml
+│   │   ├── crud-workflow.testql.yaml
 │   │   ├── health-check.testql.toon.yaml
+│   │   ├── health-check.testql.yaml
 │   │   ├── Makefile
 │   │   ├── mock_server.py
 │   │   ├── README.md
@@ -47,17 +51,23 @@
 │   │   └── topology.sh
 │   ├── encoder-testing
 │   │   ├── basic-encoder.iql
+│   │   ├── basic-encoder.testql.toon.yaml
+│   │   ├── basic-encoder.testql.yaml
 │   │   ├── complex-sequence.iql
 │   │   ├── Makefile
 │   │   ├── README.md
 │   │   └── run.sh
 │   ├── flow-control
 │   │   ├── Makefile
+│   │   ├── mixed-smoke.testql.toon.yaml
+│   │   ├── mixed-smoke.testql.yaml
 │   │   ├── README.md
 │   │   ├── run.sh
 │   │   └── variables.iql
 │   ├── gui-testing
 │   │   ├── login-form.iql
+│   │   ├── login-form.testql.toon.yaml
+│   │   ├── login-form.testql.yaml
 │   │   ├── Makefile
 │   │   ├── README.md
 │   │   ├── run.sh
@@ -97,6 +107,8 @@
 │   ├── run-all.sh
 │   ├── shell-testing
 │   │   ├── basic-commands.iql
+│   │   ├── basic-commands.testql.toon.yaml
+│   │   ├── basic-commands.testql.yaml
 │   │   ├── file-operations.iql
 │   │   ├── Makefile
 │   │   ├── README.md
@@ -119,6 +131,12 @@
 │   │   ├── test-math.iql
 │   │   └── test-pytest.iql
 │   ├── web-inspection
+│   │   ├── c2004-localhost
+│   │   │   ├── Makefile
+│   │   │   ├── README.md
+│   │   │   ├── routes.txt
+│   │   │   ├── run-matrix.sh
+│   │   │   └── run.sh
 │   │   ├── Makefile
 │   │   ├── README.md
 │   │   └── run.sh
@@ -188,6 +206,7 @@
 │   │   │   ├── message_validator.py
 │   │   │   └── proto_adapter.py
 │   │   ├── registry.py
+│   │   ├── scenario_yaml.py
 │   │   ├── sql
 │   │   │   ├── ddl_parser.py
 │   │   │   ├── dialect_resolver.py
@@ -200,6 +219,7 @@
 │   ├── base.py
 │   ├── cli.py
 │   ├── commands
+│   │   ├── auto_cmd.py
 │   │   ├── discover_cmd.py
 │   │   ├── echo
 │   │   │   ├── cli.py
@@ -295,7 +315,9 @@
 │   │   │   ├── __init__.py
 │   │   │   ├── nl_source.py
 │   │   │   ├── openapi_source.py
+│   │   │   ├── oql_source.py
 │   │   │   ├── proto_source.py
+│   │   │   ├── pytest_source.py
 │   │   │   ├── sql_source.py
 │   │   │   └── ui_source.py
 │   │   ├── targets
@@ -333,6 +355,7 @@
 │   │   ├── _encoder.py
 │   │   ├── _flow.py
 │   │   ├── _gui.py
+│   │   ├── _hardware.py
 │   │   ├── __init__.py
 │   │   ├── interpreter.py
 │   │   ├── _parser.py
@@ -707,6 +730,7 @@
 │   ├── test_nl_scenarios_e2e.py
 │   ├── test_openapi_generator.py
 │   ├── test_pipeline.py
+│   ├── test_plugin_registry.py
 │   ├── test_proto_adapter.py
 │   ├── test_proto_compatibility.py
 │   ├── test_proto_descriptor_loader.py
@@ -717,6 +741,7 @@
 │   ├── test_results.py
 │   ├── test_run_ir_cli.py
 │   ├── test_runner.py
+│   ├── test_scenario_yaml_adapter.py
 │   ├── test_shell_execution.py
 │   ├── test_sources.py
 │   ├── test_sql_adapter.py
@@ -748,4 +773,4 @@
 ├── tree.txt
 └── VERSION
 
-93 directories, 656 files
+94 directories, 680 files

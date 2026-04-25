@@ -19,13 +19,15 @@ from ._assertions import AssertionsMixin
 from ._encoder import EncoderMixin
 from ._flow import FlowMixin
 from ._gui import GuiMixin
+from ._dom_scan import DomScanMixin
+from ._hardware import HardwareMixin
 from ._shell import ShellMixin
 from ._unit import UnitMixin
 from ._websockets import WebSocketMixin
 from .dispatcher import CommandDispatcher
 
 
-class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, GuiMixin, ShellMixin, UnitMixin, WebSocketMixin, BaseInterpreter):
+class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, GuiMixin, DomScanMixin, HardwareMixin, ShellMixin, UnitMixin, WebSocketMixin, BaseInterpreter):
     """
     IQL interpreter — runs .testql.toon.yaml / .iql / .tql scripts.
 
@@ -71,7 +73,7 @@ class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, G
     @staticmethod
     def _is_testtoon(source: str, filename: str) -> bool:
         """Detect TestTOON format by extension or content."""
-        if filename.endswith('.testql.toon.yaml') or filename.endswith('.testtoon'):
+        if filename.endswith('.testql.yaml') or filename.endswith('.testql.toon.yaml') or filename.endswith('.testtoon'):
             return True
         # Content-based detection: look for TOON section headers
         import re

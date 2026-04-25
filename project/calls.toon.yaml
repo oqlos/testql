@@ -1,48 +1,48 @@
 # code2llm call graph | /home/tom/github/oqlos/testql
-# nodes: 534 | edges: 500 | modules: 111
-# CC̄=2.1
+# nodes: 529 | edges: 500 | modules: 103
+# CC̄=2.3
 
 HUBS[20]:
   testql.results.serializers._render_toon
     CC=6  in:1  out:46  total:47
+  testql.adapters.scenario_yaml._typed_step
+    CC=22  in:1  out:38  total:39
   examples.browser-inspection.run.print
-    CC=0  in:37  out:0  total:37
+    CC=0  in:38  out:0  total:38
   code2llm_output.map.toon.list
-    CC=0  in:31  out:0  total:31
+    CC=0  in:32  out:0  total:32
+  testql.adapters.testtoon_adapter._render_plan
+    CC=9  in:4  out:27  total:31
   testql.results.artifacts.write_inspection_artifacts
-    CC=1  in:2  out:28  total:30
+    CC=1  in:3  out:28  total:31
+  testql.adapters.scenario_yaml._gui_step
+    CC=9  in:3  out:23  total:26
   testql.commands.inspect_cmd.inspect
     CC=6  in:0  out:24  total:24
-  testql.commands.generate_topology_cmd.generate_topology
-    CC=5  in:0  out:24  total:24
   testql.commands.generate_cmd._print_routes_section
     CC=10  in:1  out:23  total:24
-  testql.ir_runner.interpolation.interp_value
-    CC=6  in:16  out:7  total:23
-  testql.commands.echo.parsers.doql._parse_workflows
-    CC=7  in:1  out:22  total:23
-  testql.adapters.testtoon_adapter._render_plan
-    CC=9  in:4  out:19  total:23
+  testql.commands.generate_topology_cmd.generate_topology
+    CC=5  in:0  out:24  total:24
   testql.commands.encoder_routes._run_iql_lines
     CC=6  in:1  out:22  total:23
-  testql._base_fallback.VariableStore.set
-    CC=1  in:22  out:0  total:22
-  testql.commands.misc_cmds.report
-    CC=4  in:0  out:22  total:22
+  testql.commands.echo.parsers.doql._parse_workflows
+    CC=7  in:1  out:22  total:23
   testql.runner.parse_line
     CC=9  in:2  out:20  total:22
+  testql._base_fallback.VariableStore.set
+    CC=1  in:22  out:0  total:22
+  testql.adapters.base.read_source
+    CC=5  in:13  out:9  total:22
+  testql.commands.misc_cmds.report
+    CC=4  in:0  out:22  total:22
   testql.adapters.sql.fixtures.schema_fixture_from_rows
     CC=4  in:1  out:20  total:21
-  testql.commands.endpoints_cmd.endpoints
-    CC=9  in:0  out:20  total:20
-  testql.adapters.base.read_source
-    CC=5  in:11  out:9  total:20
-  testql.commands.misc_cmds.echo
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+    CC=7  in:0  out:21  total:21
+  testql.commands.misc_cmds.init
     CC=4  in:0  out:20  total:20
   testql.runner.DslCliExecutor.run_script
     CC=11  in:0  out:20  total:20
-  testql.commands.misc_cmds.init
-    CC=4  in:0  out:20  total:20
 
 MODULES:
   TODO.testtoon_parser  [2 funcs]
@@ -59,12 +59,16 @@ MODULES:
     parse_doql_less  CC=0  out:0
     parse_iql  CC=0  out:0
     parse_script  CC=0  out:0
+  examples.api-testing.mock_server  [1 funcs]
+    list_scenarios  CC=1  out:3
   examples.artifact-bundle.generate_bundle  [1 funcs]
     main  CC=2  out:10
   examples.browser-inspection.run  [1 funcs]
     print  CC=0  out:0
-  project.map.toon  [2 funcs]
+  project.map.toon  [4 funcs]
+    available_sources  CC=0  out:0
     build_topology  CC=0  out:0
+    get_source  CC=0  out:0
     run_self_test  CC=0  out:0
   testql._base_fallback  [4 funcs]
     emit  CC=2  out:2
@@ -144,14 +148,13 @@ MODULES:
     _strip_comments  CC=1  out:2
     load_proto_file  CC=1  out:3
     parse_proto  CC=4  out:9
-  testql.adapters.proto.message_validator  [9 funcs]
+  testql.adapters.proto.message_validator  [8 funcs]
     _missing_required  CC=4  out:1
     _row_issues  CC=3  out:4
     _validate_field_known  CC=2  out:2
     _validate_field_type  CC=3  out:2
     _validate_field_value  CC=3  out:2
     coerce_scalar  CC=5  out:6
-    parse_instance_fields  CC=7  out:10
     round_trip_equal  CC=6  out:4
     validate_message_instance  CC=5  out:7
   testql.adapters.proto.proto_adapter  [16 funcs]
@@ -165,10 +168,20 @@ MODULES:
     _h_proto  CC=1  out:4
     _message_section  CC=5  out:8
     _proto_section  CC=3  out:7
-  testql.adapters.registry  [3 funcs]
+  testql.adapters.registry  [2 funcs]
     all  CC=1  out:2
     detect  CC=9  out:8
-    get_registry  CC=1  out:0
+  testql.adapters.scenario_yaml  [23 funcs]
+    detect  CC=5  out:9
+    parse  CC=3  out:5
+    render  CC=9  out:7
+    _api_step  CC=9  out:19
+    _as_dict  CC=2  out:1
+    _as_list  CC=3  out:1
+    _assertion_from_field  CC=3  out:11
+    _assertions_from_expect  CC=9  out:13
+    _captures_from  CC=2  out:5
+    _config_from  CC=7  out:11
   testql.adapters.sql.ddl_parser  [12 funcs]
     _column_from_sqlglot  CC=4  out:11
     _depth_delta  CC=3  out:0
@@ -204,17 +217,16 @@ MODULES:
     _h_assert  CC=3  out:2
     _h_config  CC=1  out:3
     _h_query  CC=1  out:3
-  testql.adapters.testtoon_adapter  [11 funcs]
+  testql.adapters.testtoon_adapter  [9 funcs]
     detect  CC=9  out:12
     parse  CC=1  out:3
     render  CC=1  out:1
     _capture_section_apply  CC=8  out:12
     _config_to_dict  CC=3  out:3
-    _render_config  CC=3  out:3
-    _render_meta  CC=5  out:4
-    _render_plan  CC=9  out:19
+    _render_plan  CC=9  out:27
     _resolve_capture_target  CC=4  out:3
     _toon_to_plan  CC=6  out:12
+    _translate_section  CC=2  out:3
   testql.cli  [2 funcs]
     cli  CC=1  out:2
     main  CC=1  out:1
@@ -269,11 +281,9 @@ MODULES:
     _format_endpoints_json  CC=3  out:3
     _format_endpoints_table  CC=5  out:8
     endpoints  CC=9  out:20
-  testql.commands.generate_cmd  [4 funcs]
+  testql.commands.generate_cmd  [2 funcs]
     _count_routes_by  CC=2  out:3
-    _echo_analysis  CC=4  out:17
     _print_routes_section  CC=10  out:23
-    generate  CC=5  out:17
   testql.commands.generate_ir_cmd  [2 funcs]
     _split_from_arg  CC=2  out:6
     generate_ir  CC=2  out:12
@@ -321,8 +331,8 @@ MODULES:
   testql.commands.topology_cmd  [1 funcs]
     topology  CC=3  out:13
   testql.detectors.unified  [2 funcs]
-    _deduplicate_endpoints  CC=3  out:4
     detect_all  CC=4  out:6
+    detect_and_validate  CC=2  out:5
   testql.discovery.manifest  [8 funcs]
     from_probe_results  CC=8  out:6
     to_dict  CC=9  out:11
@@ -364,8 +374,6 @@ MODULES:
     discover_path  CC=1  out:2
   testql.generators.base  [1 funcs]
     _should_exclude_path  CC=1  out:3
-  testql.generators.generators  [1 funcs]
-    _deduplicate_rest_routes  CC=4  out:3
   testql.generators.multi  [1 funcs]
     generate_cross_project_tests  CC=3  out:11
   testql.generators.pipeline  [6 funcs]
@@ -375,9 +383,6 @@ MODULES:
     sorted_sources  CC=1  out:1
     sorted_targets  CC=1  out:1
     write  CC=5  out:9
-  testql.generators.sources  [2 funcs]
-    available_sources  CC=1  out:2
-    get_source  CC=2  out:3
   testql.generators.sources.graphql_source  [4 funcs]
     load  CC=3  out:7
     _is_smoke_target  CC=3  out:2
@@ -418,7 +423,7 @@ MODULES:
     _navigate_step  CC=4  out:4
     _resolve_length  CC=4  out:6
   testql.interpreter._assertions  [1 funcs]
-    _cmd_assert_json  CC=6  out:17
+    _cmd_assert_json  CC=7  out:21
   testql.interpreter._flow  [1 funcs]
     _cmd_include  CC=7  out:17
   testql.interpreter._testtoon_parser  [10 funcs]
@@ -480,40 +485,8 @@ MODULES:
     to_dict  CC=3  out:2
   testql.ir.steps  [1 funcs]
     to_dict  CC=3  out:4
-  testql.ir_runner.assertion_eval  [4 funcs]
-    _next_segment  CC=6  out:7
-    evaluate  CC=3  out:6
-    evaluate_all  CC=2  out:1
-    navigate  CC=3  out:2
-  testql.ir_runner.engine  [5 funcs]
-    run  CC=5  out:9
-    _apply_captures  CC=6  out:5
-    _run_step  CC=4  out:12
-    load_plan  CC=4  out:8
+  testql.ir_runner.engine  [1 funcs]
     run_plan  CC=1  out:2
-  testql.ir_runner.executors  [1 funcs]
-    get_executor  CC=1  out:1
-  testql.ir_runner.executors.base  [6 funcs]
-    _aggregate_assertion_status  CC=3  out:0
-    _compose_message  CC=3  out:1
-    assemble_result  CC=5  out:6
-    error_result  CC=1  out:2
-    skipped_result  CC=1  out:1
-    step_label  CC=2  out:0
-  testql.ir_runner.executors.encoder  [3 funcs]
-    _do_call  CC=5  out:7
-    _request_body  CC=5  out:2
-    execute  CC=5  out:11
-  testql.ir_runner.executors.gui  [1 funcs]
-    execute  CC=2  out:3
-  testql.ir_runner.executors.nl  [1 funcs]
-    execute  CC=1  out:2
-  testql.ir_runner.executors.proto  [3 funcs]
-    _instance_tuples  CC=2  out:3
-    _resolve_source  CC=3  out:6
-    _run_check  CC=6  out:3
-  testql.ir_runner.interpolation  [1 funcs]
-    interp_value  CC=6  out:7
   testql.meta.confidence_scorer  [6 funcs]
     to_dict  CC=1  out:2
     _is_llm_resolved  CC=3  out:1
@@ -548,7 +521,7 @@ MODULES:
     _infer_tags  CC=7  out:9
     _extract_ep_params  CC=7  out:8
     _extract_path_params  CC=4  out:4
-  testql.results.analyzer  [37 funcs]
+  testql.results.analyzer  [38 funcs]
     _action_summary  CC=1  out:0
     _action_type  CC=14  out:0
     _actions_from_findings  CC=4  out:6
@@ -559,7 +532,8 @@ MODULES:
     _check_browser_render  CC=3  out:4
     _check_confidence  CC=2  out:2
     _check_edges  CC=2  out:3
-  testql.results.artifacts  [2 funcs]
+  testql.results.artifacts  [3 funcs]
+    _render_summary_md  CC=10  out:17
     _write_group  CC=2  out:3
     write_inspection_artifacts  CC=1  out:28
   testql.results.models  [4 funcs]
@@ -604,6 +578,7 @@ EDGES:
   examples.artifact-bundle.generate_bundle.main → examples.browser-inspection.run.print
   examples.artifact-bundle.generate_bundle.main → testql.results.analyzer.inspect_source
   examples.artifact-bundle.generate_bundle.main → testql.results.artifacts.write_inspection_artifacts
+  examples.api-testing.mock_server.list_scenarios → code2llm_output.map.toon.list
   TODO.testtoon_parser.print_parsed → examples.browser-inspection.run.print
   TODO.testtoon_parser.print_parsed → TODO.testtoon_parser.validate
   testql.cli.main → testql.cli.cli
@@ -634,7 +609,6 @@ EDGES:
   testql.commands.self_test_cmd.self_test → project.map.toon.run_self_test
   testql.commands.self_test_cmd.self_test → testql.commands.self_test_cmd._print_human
   testql.commands.discover_cmd.discover → testql.discovery.registry.discover_path
-  testql.commands.generate_cmd.generate → testql.commands.generate_cmd._echo_analysis
   testql.commands.generate_cmd._print_routes_section → testql.commands.generate_cmd._count_routes_by
   testql.commands.topology_cmd.topology → project.map.toon.build_topology
   testql.commands.topology_cmd.topology → testql.topology.serializers.render_topology

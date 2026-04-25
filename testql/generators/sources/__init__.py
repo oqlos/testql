@@ -12,7 +12,9 @@ from .base import BaseSource, SourceLike
 from .graphql_source import GraphQLSource
 from .nl_source import NLSource
 from .openapi_source import OpenAPISource
+from .oql_source import OqlSource
 from .proto_source import ProtoSource
+from .pytest_source import PytestSource
 from .sql_source import SqlSource
 from .ui_source import UISource
 
@@ -24,6 +26,8 @@ _BUILTIN: dict[str, type[BaseSource]] = {
     "graphql": GraphQLSource,
     "nl": NLSource,
     "ui": UISource,
+    "pytest": PytestSource,
+    "oql": OqlSource,
 }
 
 
@@ -46,6 +50,8 @@ __all__ = [
     "GraphQLSource",
     "NLSource",
     "UISource",
+    "PytestSource",
+    "OqlSource",
     "get_source",
     "available_sources",
 ]

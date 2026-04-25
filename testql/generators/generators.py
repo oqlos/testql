@@ -9,7 +9,12 @@ This module provides specialized generators for:
 
 from __future__ import annotations
 
+import urllib.request
+import urllib.error
 from pathlib import Path
+
+from .sources.pytest_source import PytestParser
+from .sources.oql_source import OqlParser
 
 
 class APIGeneratorMixin:
@@ -23,6 +28,12 @@ class APIGeneratorMixin:
         if not routes:
             return None
 
+        validate_url = self.profile.config.get('validate_url')
+        if validate_url:
+            routes = self._validate_endpoints(routes, validate_url)
+            if not routes:
+                return None
+
         sections = self._build_api_test_header(frameworks)
         sections.extend(self._build_api_test_config(frameworks))
         sections.extend(self._build_api_test_endpoints(routes))
@@ -34,6 +45,40 @@ class APIGeneratorMixin:
         output_file.write_text(content)
 
         return output_file
+
+    def _validate_endpoints(self, routes: list[dict], base_url: str) -> list[dict]:
+        """Validate endpoints by pinging them and returning only the valid ones."""
+        import sys
+        
+        valid_routes = []
+        # Print directly to stderr to avoid mixing with stdout payload
+        sys.stderr.write(f"🔍 Validating {len(routes)} endpoints against {base_url}...\n")
+        
+        for route in routes:
+            path = route.get('path', '')
+            method = route.get('method', 'GET')
+            # Skip parameterized routes for simple validation
+            if '{' in path or '<' in path:
+                continue
+                
+            url = f"{base_url.rstrip('/')}{path}"
+            try:
+                # Use a fast timeout (2s)
+                req = urllib.request.Request(url, method=method)
+                with urllib.request.urlopen(req, timeout=2.0) as resp:
+                    if resp.status < 400 or resp.status in (401, 403, 405): 
+                        # 401/403 means it exists but requires auth, 405 means method not allowed but endpoint exists
+                        valid_routes.append(route)
+            except urllib.error.HTTPError as e:
+                # If it's a 404, it means it's not implemented or wrong path
+                if e.code != 404:
+                    valid_routes.append(route)
+            except Exception:
+                # Connection error, timeout, etc. We'll be strict and exclude it
+                pass
+                
+        sys.stderr.write(f"✅ Validation complete: {len(valid_routes)} valid endpoints found.\n")
+        return valid_routes
 
     def _build_api_test_header(self, frameworks: list[str]) -> list[str]:
         """Build header section for API test scenario."""
@@ -48,10 +93,11 @@ class APIGeneratorMixin:
     def _build_api_test_config(self, frameworks: list[str]) -> list[str]:
         """Build CONFIG section for API test scenario."""
         return [
-            "CONFIG[4]{key, value}:",
+            "CONFIG[5]{key, value}:",
             "  base_url, ${api_url:-http://localhost:8100}",
             "  timeout_ms, 10000",
             "  retry_count, 3",
+            "  retry_backoff_ms, 1000",
             f"  detected_frameworks, {', '.join(frameworks)}",
             "",
         ]
@@ -162,29 +208,57 @@ class PythonTestGeneratorMixin:
             "# TYPE: integration",
             "# GENERATED: true",
             "",
-            "# NOTE: Python pytest files are detected but not converted to IQL.",
-            "# To run pytest tests directly, use: pytest <test_file>",
+            "CONFIG[2]{key, value}:",
+            "  base_url, ${api_url:-http://localhost:8101}",
+            "  timeout_ms, 10000",
             "",
         ]
 
-        # Group by type
-        api_patterns = [p for p in patterns if p.pattern_type == 'api']
-        other_patterns = [p for p in patterns if p.pattern_type != 'api']
+        api_commands = []
+        for p in patterns:
+            for cmd in p.commands:
+                if cmd.get('type') == 'api':
+                    api_commands.append(cmd)
 
-        if api_patterns:
-            sections.append(f"LOG[{len(api_patterns)}]{{message}}:")
-            for p in api_patterns[:10]:
-                sections.append(f'  "Test: {p.name}"')
+        if api_commands:
+            sections.append(f"# Converted {len(api_commands)} API calls from pytest")
+            sections.append(f"API[{len(api_commands)}]{{method, endpoint, expected_status}}:")
+            for cmd in api_commands:
+                sections.append(f"  {cmd['method']}, {cmd['path']}, 200")
             sections.append("")
 
-        if other_patterns:
-            sections.append(f"LOG[{len(other_patterns)}]{{message}}:")
-            for p in other_patterns[:5]:
-                source_file = p.metadata.get("source_file", "unknown")
-                sections.append(f'  "Detected pytest file: {source_file}"')
+        all_assertions = []
+        for p in patterns:
+            for ast_assert in p.assertions:
+                expr = ast_assert.get('expression', '')
+                if '==' in expr:
+                    parts = expr.split('==')
+                    left = parts[0].replace('assert ', '').strip()
+                    right = parts[1].strip()
+                    all_assertions.append((left, '==', right))
+                elif '!=' in expr:
+                    parts = expr.split('!=')
+                    left = parts[0].replace('assert ', '').strip()
+                    right = parts[1].strip()
+                    all_assertions.append((left, '!=', right))
+
+        if all_assertions:
+            sections.append(f"# Converted {len(all_assertions)} assertions from pytest")
+            sections.append(f"ASSERT[{len(all_assertions)}]{{field, operator, expected}}:")
+            for left, op, right in all_assertions:
+                # Clean up response.json() or response.status_code to TestQL friendly fields
+                field = left
+                if 'status_code' in left:
+                    field = 'status'
+                elif 'json()' in left:
+                    field = 'body'
+                sections.append(f"  {field}, {op}, {right}")
             sections.append("")
-            sections.append("# To run these pytest tests:")
-            sections.append("#   pytest <path_to_test_file>")
+
+        if not api_commands and not all_assertions:
+            sections.append("# NOTE: Python pytest files were detected but no convertible HTTP calls or assertions were found.")
+            sections.append("# To run pytest tests directly, use: pytest <test_file>")
+            sections.append("")
 
         content = '\n'.join(sections)
         output_file = output_dir / 'generated-from-pytests.testql.toon.yaml'
@@ -198,8 +272,21 @@ class ScenarioGeneratorMixin:
 
     def _generate_from_scenarios(self: "TestGenerator", output_dir: Path) -> Path | None:
         """Generate tests from existing OQL/CQL scenarios."""
-        scenarios = self.profile.config.get('scenario_patterns', [])
-        if not scenarios:
+        scenario_files = self.profile.discovered_files.get('scenarios_oql', [])
+        if not scenario_files:
+            return None
+
+        parser = OqlParser()
+        all_scenarios = []
+        for sf in scenario_files[:10]:
+            try:
+                scenario = parser.parse_file(sf)
+                if scenario:
+                    all_scenarios.append(scenario)
+            except Exception:
+                continue
+
+        if not all_scenarios:
             return None
 
         sections = [
@@ -207,24 +294,54 @@ class ScenarioGeneratorMixin:
             "# TYPE: hardware",
             "# GENERATED: true",
             "",
-            "CONFIG[1]{key, value}:",
-            "  generated_from, oql_scenarios",
-            "",
-            f"LOG[{len(scenarios)}]{{message}}:",
         ]
 
-        for s in scenarios[:10]:
-            sections.append(f'  "Scenario: {s["name"]}"')
+        # Generate CONFIG
+        all_config = {'generated_from': 'oql_scenarios', 'timeout_ms': '10000'}
+        for scenario in all_scenarios:
+            all_config.update(scenario.config)
 
+        sections.append(f"CONFIG[{len(all_config)}]{{key, value}}:")
+        for k, v in all_config.items():
+            sections.append(f"  {k}, {v}")
         sections.append("")
-        sections.append("# NOTE: OQL/CQL scenario conversion to IQL is not yet implemented.")
-        sections.append("# Scenarios are detected but require manual conversion to testql format.")
+
+        # Convert commands
+        all_steps = []
+        for scenario in all_scenarios:
+            for cmd in scenario.test_commands:
+                iql = self._convert_oql_command(cmd)
+                if iql:
+                    all_steps.append(iql)
+
+        if all_steps:
+            sections.append(f"# Converted {len(all_steps)} commands")
+            for step in all_steps[:25]:
+                sections.append(step)
+            sections.append("")
 
         content = '\n'.join(sections)
         output_file = output_dir / 'generated-from-scenarios.testql.toon.yaml'
         output_file.write_text(content)
 
         return output_file
+
+    def _convert_oql_command(self, cmd) -> str | None:
+        """Convert OQL command to IQL."""
+        cmd_type = cmd.command.upper()
+        if cmd_type == 'WAIT':
+            return f"WAIT {cmd.target}"
+        elif cmd_type == 'ENCODER_ON':
+            return "ENCODER_ON"
+        elif cmd_type == 'ENCODER_OFF':
+            return "ENCODER_OFF"
+        elif cmd_type == 'ENCODER_STATUS':
+            return "ENCODER_STATUS"
+        elif cmd_type == 'LOG':
+            return f'LOG "{cmd.target}"'
+        elif cmd_type == 'EXEC':
+            return f'SHELL "{cmd.target}"'
+        return None
 
 
 class SpecializedGeneratorMixin:
@@ -361,22 +478,20 @@ class SpecializedGeneratorMixin:
             "# TYPE: hardware",
             "# GENERATED: true",
             "",
-            "CONFIG[3]{key, value}:",
-            "  firmware_url, http://localhost:8202",
+            "CONFIG[4]{key, value}:",
+            "  hardware_url, http://localhost:8202",
             "  timeout_ms, 10000",
             "  auto_start_firmware, true",
+            "  retry_count, 3",
             "",
             "API[2]{method, endpoint, expected_status}:",
             "  GET, /api/v1/hardware/health, 200",
             "  GET, /api/v1/hardware/identify, 200",
             "",
-            "# NOTE: HARDWARE commands are not yet implemented in testql interpreter.",
-            "# Hardware peripheral checks require custom implementation.",
-            "# LOG placeholder for detected hardware:",
-            'LOG[3]{message}:',
-            '  "Hardware check: piadc"',
-            '  "Hardware check: motor-dri0050"',
-            '  "Hardware check: modbus-io"',
+            "HARDWARE[3]{command, peripheral}:",
+            "  check, piadc",
+            "  check, motor-dri0050",
+            "  check, modbus-io",
         ]
 
         content = '\n'.join(sections)

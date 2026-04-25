@@ -47,7 +47,8 @@ def _echo_generation(ctx, generated: list[Path]) -> None:
 @click.option("--analyze-only", is_flag=True, help="Only analyze, don't generate")
 @click.option("--format", "fmt", type=click.Choice(["testql", "json"]), default="testql")
 @click.option("--to-ir", is_flag=True, help="Parse generated TestTOON into IR JSON")
-def generate(path: str, output_dir: str | None, analyze_only: bool, fmt: str, to_ir: bool) -> None:
+@click.option("--validate-url", help="Base URL to ping for endpoint validation (e.g. http://localhost:8100)")
+def generate(path: str, output_dir: str | None, analyze_only: bool, fmt: str, to_ir: bool, validate_url: str | None) -> None:
     """Generate TestQL scenarios from project structure."""
     from testql.pipeline import GenerationPipeline
 
@@ -60,7 +61,7 @@ def generate(path: str, output_dir: str | None, analyze_only: bool, fmt: str, to
         return
 
     out_dir = Path(output_dir) if output_dir else None
-    generated = pipeline.run(output_dir=out_dir, analyze_only=False)
+    generated = pipeline.run(output_dir=out_dir, analyze_only=False, validate_url=validate_url)
     _echo_generation(ctx, generated)
 
     if to_ir and generated:

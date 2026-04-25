@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import time
 import urllib.error
 import urllib.request
 from typing import Any
@@ -21,10 +22,15 @@ class ApiRunnerMixin:
     last_response: dict[str, Any] | None
     last_status: int
 
+    # Retry configuration
+    retry_max_attempts: int = 3
+    retry_backoff_ms: int = 1000
+    retry_status_codes: set[int] = {429, 500, 502, 503, 504}
+
     # ── Internal helpers ──────────────────────────────────────────────────────
 
-    def _do_http_request(self, method: str, url: str, body_data: dict | None) -> tuple[int, dict]:
-        """Execute an HTTP request, returning (status, parsed_response)."""
+    def _do_http_request(self, method: str, url: str, body_data: dict | None) -> tuple[int, dict, dict]:
+        """Execute an HTTP request, returning (status, parsed_response, headers)."""
         req_body = json.dumps(body_data).encode("utf-8") if body_data else None
         req = urllib.request.Request(
             url, data=req_body, method=method,
@@ -32,19 +38,56 @@ class ApiRunnerMixin:
         )
         with urllib.request.urlopen(req, timeout=15) as resp:
             status = resp.status
+            headers = dict(resp.headers)
             text = resp.read().decode("utf-8")
             try:
                 data = json.loads(text)
             except Exception:
                 data = {"text": text[:500]}
-            return status, data
+            return status, data, headers
 
-    def _store_api_response(self, status: int, response: dict) -> None:
+    def _do_http_request_with_retry(self, method: str, url: str, body_data: dict | None) -> tuple[int, dict, dict]:
+        """Execute HTTP request with retry logic for transient failures."""
+        last_exception = None
+
+        for attempt in range(1, self.retry_max_attempts + 1):
+            try:
+                status, data, headers = self._do_http_request(method, url, body_data)
+
+                # Check if status code warrants retry
+                if status in self.retry_status_codes and attempt < self.retry_max_attempts:
+                    backoff = self.retry_backoff_ms * attempt
+                    self.out.warn(f"Retry {attempt}/{self.retry_max_attempts} for {status} (wait {backoff}ms)")
+                    time.sleep(backoff / 1000)
+                    continue
+
+                return status, data, headers
+
+            except (urllib.error.URLError, urllib.error.HTTPError) as e:
+                last_exception = e
+                if hasattr(e, 'code') and e.code in self.retry_status_codes and attempt < self.retry_max_attempts:
+                    backoff = self.retry_backoff_ms * attempt
+                    self.out.warn(f"Retry {attempt}/{self.retry_max_attempts} for {e.code} (wait {backoff}ms)")
+                    time.sleep(backoff / 1000)
+                    continue
+                # Re-raise non-retryable errors
+                raise
+            except Exception as e:
+                # Non-retryable errors
+                raise
+
+        # All retries exhausted, raise last exception
+        if last_exception:
+            raise last_exception
+        raise RuntimeError("Max retries exceeded")
+
+    def _store_api_response(self, status: int, response: dict, headers: dict | None = None) -> None:
         """Persist last API response into interpreter state and variables."""
         self.last_status = status
         self.last_response = response
         self.vars.set("_status", status)
         self.vars.set("_response", response)
+        self.vars.set("_headers", headers or {})
         if isinstance(response, dict):
             data = response.get("data")
             if isinstance(data, list):
@@ -52,9 +95,9 @@ class ApiRunnerMixin:
 
     # ── Commands ─────────────────────────────────────────────────────────────
 
-    def _record_api_success(self, label: str, status: int, response: dict) -> None:
+    def _record_api_success(self, label: str, status: int, response: dict, headers: dict | None = None) -> None:
         """Store successful API response and append a PASSED step."""
-        self._store_api_response(status, response)
+        self._store_api_response(status, response, headers)
         icon = "✅" if status < 400 else "❌"
         self.out.step(icon, f"{label} → {status}")
         self.results.append(StepResult(
@@ -109,8 +152,8 @@ class ApiRunnerMixin:
             return
 
         try:
-            status, response = self._do_http_request(method, url, body_data)
-            self._record_api_success(label, status, response)
+            status, response, headers = self._do_http_request_with_retry(method, url, body_data)
+            self._record_api_success(label, status, response, headers)
         except urllib.error.HTTPError as e:
             self._record_api_http_error(label, e)
         except Exception as e:

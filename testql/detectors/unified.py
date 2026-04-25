@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import urllib.request
+import urllib.error
 from pathlib import Path
 
 from .models import EndpointInfo
@@ -31,10 +33,13 @@ class UnifiedEndpointDetector:
         ConfigEndpointDetector,
     ]
 
-    def __init__(self, project_path: str | Path):
+    def __init__(self, project_path: str | Path, base_url: str = "http://localhost:8100"):
         self.project_path = Path(project_path)
+        self.base_url = base_url
         self.all_endpoints: list[EndpointInfo] = []
         self.detectors_used: list[str] = []
+        self.valid_endpoints: list[EndpointInfo] = []
+        self.invalid_endpoints: list[dict] = []
 
     def detect_all(self) -> list[EndpointInfo]:
         """Run all detectors and merge results."""
@@ -53,6 +58,79 @@ class UnifiedEndpointDetector:
                 continue
 
         self.all_endpoints = self._deduplicate_endpoints(self.all_endpoints)
+        return self.all_endpoints
+
+    def validate_endpoints(self, endpoints: list[EndpointInfo], timeout: int = 5) -> tuple[list[EndpointInfo], list[dict]]:
+        """Validate endpoints by attempting to connect to them.
+
+        Returns (valid_endpoints, invalid_endpoints).
+        """
+        valid: list[EndpointInfo] = []
+        invalid: list[dict] = []
+
+        for ep in endpoints:
+            if ep.endpoint_type != "rest":
+                # Skip non-REST endpoints for validation
+                valid.append(ep)
+                continue
+
+            url = f"{self.base_url}{ep.path}"
+            try:
+                req = urllib.request.Request(url, method=ep.method.upper())
+                with urllib.request.urlopen(req, timeout=timeout) as resp:
+                    if resp.status < 500:
+                        valid.append(ep)
+                    else:
+                        invalid.append({
+                            "endpoint": ep,
+                            "url": url,
+                            "status": resp.status,
+                            "reason": "Server error (5xx)"
+                        })
+            except urllib.error.HTTPError as e:
+                if e.code in (404, 405):
+                    invalid.append({
+                        "endpoint": ep,
+                        "url": url,
+                        "status": e.code,
+                        "reason": "Not found or method not allowed"
+                    })
+                elif e.code < 500:
+                    # 4xx errors might be expected (auth required, etc.)
+                    valid.append(ep)
+                else:
+                    invalid.append({
+                        "endpoint": ep,
+                        "url": url,
+                        "status": e.code,
+                        "reason": "Server error"
+                    })
+            except (urllib.error.URLError, TimeoutError, ConnectionError) as e:
+                invalid.append({
+                    "endpoint": ep,
+                    "url": url,
+                    "status": None,
+                    "reason": f"Connection error: {e}"
+                })
+            except Exception as e:
+                invalid.append({
+                    "endpoint": ep,
+                    "url": url,
+                    "status": None,
+                    "reason": f"Unexpected error: {e}"
+                })
+
+        return valid, invalid
+
+    def detect_and_validate(self, validate: bool = True) -> list[EndpointInfo]:
+        """Detect all endpoints and optionally validate them."""
+        self.all_endpoints = self.detect_all()
+
+        if validate:
+            self.valid_endpoints, self.invalid_endpoints = self.validate_endpoints(self.all_endpoints)
+            print(f"Validation: {len(self.valid_endpoints)} valid, {len(self.invalid_endpoints)} invalid endpoints")
+            return self.valid_endpoints
+
         return self.all_endpoints
 
     def _deduplicate_endpoints(self, endpoints: list[EndpointInfo]) -> list[EndpointInfo]:
@@ -79,16 +157,27 @@ class UnifiedEndpointDetector:
         """Filter endpoints by framework."""
         return [ep for ep in self.all_endpoints if ep.framework == framework]
 
-    def generate_testql_scenario(self, output_file: Path | None = None) -> str:
-        """Generate TestQL scenario from detected endpoints."""
-        if not self.all_endpoints:
+    def generate_testql_scenario(self, output_file: Path | None = None, use_validated: bool = False) -> str:
+        """Generate TestQL scenario from detected endpoints.
+
+        Args:
+            output_file: Optional file to write the scenario to
+            use_validated: If True, use only validated endpoints; otherwise use all detected endpoints
+        """
+        endpoints = self.valid_endpoints if use_validated and self.valid_endpoints else self.all_endpoints
+
+        if not endpoints:
             return ""
 
-        rest_eps = [ep for ep in self.all_endpoints if ep.endpoint_type == "rest"]
-        graphql_eps = [ep for ep in self.all_endpoints if ep.endpoint_type == "graphql"]
-        ws_eps = [ep for ep in self.all_endpoints if ep.endpoint_type == "websocket"]
+        rest_eps = [ep for ep in endpoints if ep.endpoint_type == "rest"]
+        graphql_eps = [ep for ep in endpoints if ep.endpoint_type == "graphql"]
+        ws_eps = [ep for ep in endpoints if ep.endpoint_type == "websocket"]
 
         lines = ["# SCENARIO: Auto-detected API Endpoints", "# TYPE: api", ""]
+        if use_validated and self.invalid_endpoints:
+            lines.append(f"# NOTE: {len(self.invalid_endpoints)} invalid endpoints filtered out during validation")
+            lines.append("")
+
         lines.extend(self._rest_block(rest_eps))
         lines.extend(self._graphql_block(graphql_eps))
         lines.extend(self._ws_block(ws_eps))
@@ -136,7 +225,15 @@ class UnifiedEndpointDetector:
         return lines
 
 
-def detect_endpoints(project_path: str | Path) -> list[EndpointInfo]:
-    """Convenience function to detect all endpoints in a project."""
-    detector = UnifiedEndpointDetector(project_path)
+def detect_endpoints(project_path: str | Path, validate: bool = False, base_url: str = "http://localhost:8100") -> list[EndpointInfo]:
+    """Convenience function to detect all endpoints in a project.
+
+    Args:
+        project_path: Path to the project
+        validate: If True, validate endpoints by attempting to connect
+        base_url: Base URL for validation (default: http://localhost:8100)
+    """
+    detector = UnifiedEndpointDetector(project_path, base_url=base_url)
+    if validate:
+        return detector.detect_and_validate(validate=True)
     return detector.detect_all()

@@ -102,7 +102,8 @@ class GuiMixin:
         if app_path.startswith("http://") or app_path.startswith("https://"):
             # Web app
             p = sync_playwright().start()
-            browser = p.chromium.launch(headless=False)
+            headless = str(self.vars.get("headless", "true")).lower() == "true"
+            browser = p.chromium.launch(headless=headless)
             self._gui_page = browser.new_page()
             self._gui_page.goto(app_path)
             self._gui_app = (p, browser)
