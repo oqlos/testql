@@ -39,6 +39,8 @@ class TestGenerator(
         files = generator.generate_tests("./output")  # auto-runs analyze()
     """
 
+    __test__ = False  # Not a pytest test class
+
     def analyze(self):
         """Run full project analysis.
 

@@ -9,6 +9,7 @@ from typing import Any
 @dataclass
 class TestResult:
     """Single test result."""
+    __test__ = False  # Not a pytest test class
     name: str
     status: str  # passed, failed, skipped
     duration_ms: int
@@ -19,6 +20,7 @@ class TestResult:
 @dataclass
 class TestSuiteReport:
     """Test suite report data."""
+    __test__ = False  # Not a pytest test class
     suite_name: str
     total: int
     passed: int

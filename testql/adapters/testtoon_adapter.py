@@ -290,6 +290,8 @@ def _render_plan(plan: TestPlan) -> str:
 class TestToonAdapter(BaseDSLAdapter):
     """Adapter for the legacy `*.testql.toon.yaml` format (TestTOON)."""
 
+    __test__ = False  # Not a pytest test class
+
     name: str = "testtoon"
     file_extensions: tuple[str, ...] = field(default_factory=lambda: (
         ".testql.toon.yaml",

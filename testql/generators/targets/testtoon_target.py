@@ -12,6 +12,7 @@ from .base import BaseTarget
 
 @dataclass
 class TestToonTarget(BaseTarget):
+    __test__ = False  # Not a pytest test class
     name: str = "testtoon"
     file_extension: str = ".testql.toon.yaml"
 

@@ -18,6 +18,8 @@ class TestPlan:
     *render* a `TestPlan` back into their own DSL (round-trip / generation).
     """
 
+    __test__ = False  # Not a pytest test class
+
     metadata: ScenarioMetadata = field(default_factory=ScenarioMetadata)
     fixtures: list[Fixture] = field(default_factory=list)
     steps: list[Step] = field(default_factory=list)

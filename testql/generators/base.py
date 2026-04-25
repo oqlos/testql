@@ -10,6 +10,7 @@ from collections import defaultdict
 @dataclass
 class TestPattern:
     """Discovered test pattern from source code."""
+    __test__ = False  # Not a pytest test class
     name: str
     target: str
     pattern_type: str  # 'api', 'gui', 'unit', 'integration', 'e2e'
