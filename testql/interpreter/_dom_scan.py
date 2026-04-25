@@ -617,15 +617,23 @@ class DomScanMixin:
             ))
 
     def _cmd_dom_audit_buttons(self, args: str, line: IqlLine) -> None:
-        """DOM_AUDIT_BUTTONS [--ignore "#logout, .delete"]"""
+        """DOM_AUDIT_BUTTONS [--selector "css"] [--ignore "#logout, .delete"] [--report-file path]"""
         import shlex
         parts = shlex.split(args)
-        
+
+        selector = None
         ignore_selectors = []
+        report_file = None
         i = 0
         while i < len(parts):
-            if parts[i] == "--ignore" and i + 1 < len(parts):
+            if parts[i] == "--selector" and i + 1 < len(parts):
+                selector = parts[i + 1]
+                i += 2
+            elif parts[i] == "--ignore" and i + 1 < len(parts):
                 ignore_selectors = [s.strip() for s in parts[i+1].split(",")]
+                i += 2
+            elif parts[i] == "--report-file" and i + 1 < len(parts):
+                report_file = parts[i + 1]
                 i += 2
             else:
                 i += 1
@@ -653,10 +661,18 @@ class DomScanMixin:
             output_str = to_text_audit(report)
             self.out.emit(output_str)
 
+            # Save report to file if specified
+            if report_file:
+                import json
+                report_dict = asdict(report)
+                with open(report_file, "w", encoding="utf-8") as f:
+                    json.dump(report_dict, f, indent=2, ensure_ascii=False)
+                self.out.step("📄", f"Report saved to {report_file}")
+
             if report.dead > 0 or report.broken > 0:
                 self.out.fail(f"DOM_AUDIT_BUTTONS failed: {report.dead} dead, {report.broken} broken buttons.")
                 self.results.append(StepResult(
-                    name="DOM_AUDIT_BUTTONS", status=StepStatus.FAILED, 
+                    name="DOM_AUDIT_BUTTONS", status=StepStatus.FAILED,
                     message=f"{report.dead} dead, {report.broken} broken",
                     details=asdict(report)
                 ))

@@ -23,6 +23,7 @@ from ._parser import IqlLine, IqlScript
 
 HEADER_RE = re.compile(r'^([A-Z_]+)(?:\[(\d+)\])?\{([^}]*)\}:\s*$')
 META_RE = re.compile(r'^#\s*([A-Z_]+):\s*(.+)$')
+MAPPING_HEADER_RE = re.compile(r'^([A-Z_]+):\s*$')
 
 
 @dataclass
@@ -31,6 +32,7 @@ class ToonSection:
     columns: list[str]
     rows: list[dict]
     expected_count: Optional[int] = None
+    is_mapping: bool = False  # True if using YAML mapping format instead of tabular
 
     def validate(self) -> list[str]:
         errors = []
@@ -98,12 +100,32 @@ def _make_section(m: re.Match) -> ToonSection:
     )
 
 
+def _make_mapping_section(m: re.Match) -> ToonSection:
+    """Build a ToonSection from a MAPPING_HEADER_RE match (YAML key-value format)."""
+    return ToonSection(
+        type=m.group(1),
+        columns=[],  # No columns in mapping format
+        rows=[],
+        expected_count=None,
+        is_mapping=True,
+    )
+
+
 def _make_data_row(raw: str, section: ToonSection) -> dict:
     """Parse one indented data line into a column→value dict."""
     line = raw.strip()
     sep = _detect_separator(line)
     parts = line.split(sep, len(section.columns) - 1)
     return {col: _parse_value(val) for col, val in zip(section.columns, parts)}
+
+
+def _make_mapping_row(raw: str) -> dict:
+    """Parse a YAML key-value line (key: value) into a dict."""
+    line = raw.strip()
+    if ':' not in line:
+        return {}
+    key, value = line.split(':', 1)
+    return {key.strip(): _parse_value(value.strip())}
 
 
 def parse_testtoon(text: str, filename: str = "<string>") -> ToonScript:
@@ -124,14 +146,30 @@ def parse_testtoon(text: str, filename: str = "<string>") -> ToonScript:
         if stripped.startswith('#'):
             continue
 
+        # Try tabular format first: SECTION[count]{columns}:
         m = HEADER_RE.match(stripped)
         if m:
             current = _make_section(m)
             script.sections.append(current)
             continue
 
+        # Try mapping format: SECTION:
+        m = MAPPING_HEADER_RE.match(stripped)
+        if m:
+            current = _make_mapping_section(m)
+            script.sections.append(current)
+            continue
+
         if current and raw.startswith('  '):
-            current.rows.append(_make_data_row(raw, current))
+            if current.is_mapping:
+                # Merge mapping rows into a single dict
+                mapping_row = _make_mapping_row(raw)
+                if mapping_row and current.rows:
+                    current.rows[0].update(mapping_row)
+                elif mapping_row:
+                    current.rows.append(mapping_row)
+            else:
+                current.rows.append(_make_data_row(raw, current))
 
     return script
 
@@ -165,8 +203,13 @@ def _expand_config(section: ToonSection, lines: list[IqlLine], line_num: int) ->
         key = row.get('key', '')
         value = row.get('value', '')
         if key and value is not None:
-            raw = f'SET {key} "{value}"'
-            lines.append(IqlLine(number=line_num, command='SET', args=f'{key} "{value}"', raw=raw))
+            # Check if value contains variable substitution syntax - don't quote it
+            if '${' in str(value) and '}' in str(value):
+                raw = f'SET {key} {value}'
+                lines.append(IqlLine(number=line_num, command='SET', args=f'{key} {value}', raw=raw))
+            else:
+                raw = f'SET {key} "{value}"'
+                lines.append(IqlLine(number=line_num, command='SET', args=f'{key} "{value}"', raw=raw))
             line_num += 1
     return line_num
 
@@ -398,6 +441,36 @@ def _expand_record(section: ToonSection, lines: list[IqlLine], line_num: int) ->
     return line_num
 
 
+def _expand_dom_audit_buttons(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
+    """Expand DOM_AUDIT_BUTTONS section (mapping format) → DOM_AUDIT_BUTTONS command."""
+    if not section.rows:
+        # No arguments, just emit the command
+        raw = 'DOM_AUDIT_BUTTONS'
+        lines.append(IqlLine(number=line_num, command='DOM_AUDIT_BUTTONS', args='', raw=raw))
+        return line_num + 1
+
+    # Extract mapping data
+    data = section.rows[0] if section.rows else {}
+    selector = data.get('selector', '')
+    ignore = data.get('ignore', '')
+    report_file = data.get('report_file', '')
+
+    # Build command args
+    args_parts = []
+    if selector:
+        args_parts.append(f'--selector "{selector}"')
+    if ignore:
+        args_parts.append(f'--ignore "{ignore}"')
+    if report_file:
+        args_parts.append(f'--report-file "{report_file}"')
+
+    args = ' '.join(args_parts)
+    raw = f'DOM_AUDIT_BUTTONS {args}'.strip()
+
+    lines.append(IqlLine(number=line_num, command='DOM_AUDIT_BUTTONS', args=args, raw=raw))
+    return line_num + 1
+
+
 def _expand_generic(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
     """Expand unknown section types as generic commands."""
     for row in section.rows:
@@ -424,6 +497,7 @@ _SECTION_EXPANDERS = {
     'INCLUDE': _expand_include,
     'RECORD_START': _expand_record,
     'RECORD_STOP': _expand_record,
+    'DOM_AUDIT_BUTTONS': _expand_dom_audit_buttons,
 }
 
 

@@ -28,12 +28,14 @@ class APIGeneratorMixin:
         if not routes:
             return None
 
-        # Validate endpoints by default - use validate_url or auto-detect from config
-        base_url = self.profile.config.get('validate_url') or self.profile.config.get('base_url')
-        if base_url:
-            routes = self._validate_endpoints(routes, base_url)
-            if not routes:
-                return None
+        # Determine the base_url to use for validation and testing
+        # Priority: validate_url > base_url from config > default localhost
+        base_url = self.profile.config.get('validate_url') or self.profile.config.get('base_url', 'http://localhost:8101')
+
+        # Always validate endpoints to avoid generating 404 errors
+        routes = self._validate_endpoints(routes, base_url)
+        if not routes:
+            return None
 
         # Filter to only GET endpoints for smoke tests (POST/PATCH need request bodies)
         get_routes = [r for r in routes if r.get('method', 'GET').upper() == 'GET']
@@ -41,7 +43,7 @@ class APIGeneratorMixin:
             return None
 
         sections = self._build_api_test_header(frameworks)
-        sections.extend(self._build_api_test_config(frameworks))
+        sections.extend(self._build_api_test_config(frameworks, base_url))
         sections.extend(self._build_api_test_endpoints(get_routes))
         sections.extend(self._build_api_test_assertions())
         sections.extend(self._build_api_test_summary(get_routes))
@@ -96,12 +98,13 @@ class APIGeneratorMixin:
             "",
         ]
 
-    def _build_api_test_config(self, frameworks: list[str]) -> list[str]:
+    def _build_api_test_config(self, frameworks: list[str], base_url: str = None) -> list[str]:
         """Build CONFIG section for API test scenario."""
-        # Use explicit base_url from config, fallback to localhost
-        base_url = 'http://localhost:8101'
-        if hasattr(self, 'profile') and self.profile and hasattr(self.profile, 'config'):
-            base_url = self.profile.config.get('base_url', base_url)
+        # Use provided base_url or fallback to localhost
+        if base_url is None:
+            base_url = 'http://localhost:8101'
+            if hasattr(self, 'profile') and self.profile and hasattr(self.profile, 'config'):
+                base_url = self.profile.config.get('base_url', base_url)
         return [
             "CONFIG[5]{key, value}:",
             f"  base_url, {base_url}",
@@ -180,8 +183,8 @@ class APIGeneratorMixin:
         """Build assertions section for API test scenario."""
         return [
             "ASSERT[2]{field, operator, expected}:",
-            "  status, <, 500",
-            "  response_time, <, 2000",
+            "  _status, <, 500",
+            "  _status, >=, 200",
         ]
 
     def _build_api_test_summary(self, routes: list[dict]) -> list[str]:
