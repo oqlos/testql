@@ -18,7 +18,7 @@ SUMD - Structured Unified Markdown Descriptor for AI-aware project refactorizati
 ## Metadata
 
 - **name**: `testql`
-- **version**: `0.6.20`
+- **version**: `0.6.21`
 - **python_requires**: `>=3.10`
 - **license**: Apache-2.0
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -39,7 +39,7 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 0.6.20;
+  version: 0.6.21;
 }
 
 dependencies {
@@ -665,10 +665,10 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 | `_print_routes_section` *(in testql.commands.generate_cmd)* | 10 ⚠ | 1 | 23 | **24** |
 | `_run_iql_lines` *(in testql.commands.encoder_routes)* | 6 | 1 | 22 | **23** |
 | `_parse_workflows` *(in testql.commands.echo.parsers.doql)* | 7 | 1 | 22 | **23** |
-| `report` *(in testql.commands.misc_cmds)* | 4 | 0 | 22 | **22** |
 | `parse_line` *(in testql.runner)* | 9 | 2 | 20 | **22** |
+| `report` *(in testql.commands.misc_cmds)* | 4 | 0 | 22 | **22** |
 | `run_script` *(in testql.runner.DslCliExecutor)* | 11 ⚠ | 0 | 20 | **20** |
-| `init` *(in testql.commands.misc_cmds)* | 4 | 0 | 20 | **20** |
+| `endpoints` *(in testql.commands.endpoints_cmd)* | 9 | 0 | 20 | **20** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
@@ -684,38 +684,38 @@ HUBS[20]:
     CC=6  in:1  out:22  total:23
   testql.commands.echo.parsers.doql._parse_workflows
     CC=7  in:1  out:22  total:23
-  testql.commands.misc_cmds.report
-    CC=4  in:0  out:22  total:22
   testql.runner.parse_line
     CC=9  in:2  out:20  total:22
+  testql.commands.misc_cmds.report
+    CC=4  in:0  out:22  total:22
   testql.runner.DslCliExecutor.run_script
     CC=11  in:0  out:20  total:20
-  testql.commands.misc_cmds.init
-    CC=4  in:0  out:20  total:20
   testql.commands.endpoints_cmd.endpoints
     CC=9  in:0  out:20  total:20
   testql.commands.misc_cmds.echo
     CC=4  in:0  out:20  total:20
-  testql.commands.echo.parsers.doql._parse_entities
-    CC=7  in:1  out:16  total:17
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
-    CC=6  in:0  out:17  total:17
-  testql.commands.echo.cli.echo
-    CC=3  in:0  out:17  total:17
+  testql.commands.misc_cmds.init
+    CC=4  in:0  out:20  total:20
   testql.interpreter._flow.FlowMixin._cmd_include
     CC=7  in:0  out:17  total:17
+  testql.commands.echo.parsers.doql._parse_entities
+    CC=7  in:1  out:16  total:17
+  testql.commands.echo.cli.echo
+    CC=3  in:0  out:17  total:17
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+    CC=6  in:0  out:17  total:17
+  testql.interpreter._testtoon_parser.parse_testtoon
+    CC=8  in:1  out:15  total:16
   testql.commands.echo.parsers.toon._parse_scenario
     CC=5  in:1  out:15  total:16
   testql.interpreter.converter.parsers.parse_target_from_args
     CC=4  in:7  out:9  total:16
-  testql.interpreter._testtoon_parser.parse_testtoon
-    CC=8  in:1  out:15  total:16
   testql.interpreter.interpreter.IqlInterpreter.execute
     CC=4  in:0  out:16  total:16
-  testql.commands.encoder_routes._execute_iql_line
-    CC=10  in:2  out:13  total:15
   testql.commands.encoder_routes.iql_run_file
     CC=3  in:0  out:15  total:15
+  testql.commands.encoder_routes._execute_iql_line
+    CC=10  in:2  out:13  total:15
 
 MODULES:
   TODO.testtoon_parser  [2 funcs]
@@ -1213,38 +1213,38 @@ HUBS[20]:
     CC=6  in:1  out:22  total:23
   testql.commands.echo.parsers.doql._parse_workflows
     CC=7  in:1  out:22  total:23
-  testql.commands.misc_cmds.report
-    CC=4  in:0  out:22  total:22
   testql.runner.parse_line
     CC=9  in:2  out:20  total:22
+  testql.commands.misc_cmds.report
+    CC=4  in:0  out:22  total:22
   testql.runner.DslCliExecutor.run_script
     CC=11  in:0  out:20  total:20
-  testql.commands.misc_cmds.init
-    CC=4  in:0  out:20  total:20
   testql.commands.endpoints_cmd.endpoints
     CC=9  in:0  out:20  total:20
   testql.commands.misc_cmds.echo
     CC=4  in:0  out:20  total:20
-  testql.commands.echo.parsers.doql._parse_entities
-    CC=7  in:1  out:16  total:17
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
-    CC=6  in:0  out:17  total:17
-  testql.commands.echo.cli.echo
-    CC=3  in:0  out:17  total:17
+  testql.commands.misc_cmds.init
+    CC=4  in:0  out:20  total:20
   testql.interpreter._flow.FlowMixin._cmd_include
     CC=7  in:0  out:17  total:17
+  testql.commands.echo.parsers.doql._parse_entities
+    CC=7  in:1  out:16  total:17
+  testql.commands.echo.cli.echo
+    CC=3  in:0  out:17  total:17
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+    CC=6  in:0  out:17  total:17
+  testql.interpreter._testtoon_parser.parse_testtoon
+    CC=8  in:1  out:15  total:16
   testql.commands.echo.parsers.toon._parse_scenario
     CC=5  in:1  out:15  total:16
   testql.interpreter.converter.parsers.parse_target_from_args
     CC=4  in:7  out:9  total:16
-  testql.interpreter._testtoon_parser.parse_testtoon
-    CC=8  in:1  out:15  total:16
   testql.interpreter.interpreter.IqlInterpreter.execute
     CC=4  in:0  out:16  total:16
-  testql.commands.encoder_routes._execute_iql_line
-    CC=10  in:2  out:13  total:15
   testql.commands.encoder_routes.iql_run_file
     CC=3  in:0  out:15  total:15
+  testql.commands.encoder_routes._execute_iql_line
+    CC=10  in:2  out:13  total:15
 
 MODULES:
   TODO.testtoon_parser  [2 funcs]
@@ -1504,7 +1504,7 @@ EDGES:
 ### Code Analysis (`project/analysis.toon.yaml`)
 
 ```toon markpact:analysis path=project/analysis.toon.yaml
-# code2llm | 200f 19615L | yaml:96,python:95,json:2,shell:2,yml:2,txt:2,toml:1 | 2026-04-25
+# code2llm | 200f 19617L | yaml:96,python:95,json:2,shell:2,yml:2,txt:2,toml:1 | 2026-04-25
 # CC̄=2.3 | critical:0/746 | dups:0 | cycles:0
 
 HEALTH[0]: ok
@@ -1706,14 +1706,14 @@ LAYERS:
   │ project.toon.yaml            9L  0C    0m  CC=0.0    ←0
   │
   project/                        CC̄=0.0    ←in:0  →out:0
-  │ !! calls.yaml                2497L  0C    0m  CC=0.0    ←0
+  │ !! calls.yaml                2503L  0C    0m  CC=0.0    ←0
   │ !! map.toon.yaml              771L  0C  200m  CC=0.0    ←0
   │ validation.toon.yaml       421L  0C    0m  CC=0.0    ←0
   │ calls.toon.yaml            299L  0C    0m  CC=0.0    ←0
   │ analysis.toon.yaml         252L  0C    0m  CC=0.0    ←0
   │ project.toon.yaml           51L  0C    0m  CC=0.0    ←0
   │ prompt.txt                  47L  0C    0m  CC=0.0    ←0
-  │ evolution.toon.yaml         43L  0C    0m  CC=0.0    ←0
+  │ evolution.toon.yaml         39L  0C    0m  CC=0.0    ←0
   │ duplication.toon.yaml        9L  0C    0m  CC=0.0    ←0
   │
   ./                              CC̄=0.0    ←in:0  →out:0
@@ -1769,7 +1769,7 @@ SUMMARY:
   dup_groups:    0
   dup_fragments: 0
   saved_lines:   0
-  scan_ms:       4428
+  scan_ms:       4400
 ```
 
 ### Evolution / Churn (`project/evolution.toon.yaml`)

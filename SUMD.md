@@ -24,7 +24,7 @@ TestQL with endpoint detection, OpenAPI, SUMD generation, SUMD parser and HTML r
 ## Metadata
 
 - **name**: `testql`
-- **version**: `0.6.20`
+- **version**: `0.6.21`
 - **python_requires**: `>=3.10`
 - **license**: Apache-2.0
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -45,7 +45,7 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 0.6.20;
+  version: 0.6.21;
 }
 
 dependencies {
@@ -3368,7 +3368,7 @@ pipeline:
 ```yaml
 project:
   name: testql
-  version: 0.6.20
+  version: 0.6.21
   env: local
 ```
 
@@ -4360,10 +4360,10 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 | `_print_routes_section` *(in testql.commands.generate_cmd)* | 10 ⚠ | 1 | 23 | **24** |
 | `_run_iql_lines` *(in testql.commands.encoder_routes)* | 6 | 1 | 22 | **23** |
 | `_parse_workflows` *(in testql.commands.echo.parsers.doql)* | 7 | 1 | 22 | **23** |
-| `report` *(in testql.commands.misc_cmds)* | 4 | 0 | 22 | **22** |
 | `parse_line` *(in testql.runner)* | 9 | 2 | 20 | **22** |
+| `report` *(in testql.commands.misc_cmds)* | 4 | 0 | 22 | **22** |
 | `run_script` *(in testql.runner.DslCliExecutor)* | 11 ⚠ | 0 | 20 | **20** |
-| `init` *(in testql.commands.misc_cmds)* | 4 | 0 | 20 | **20** |
+| `endpoints` *(in testql.commands.endpoints_cmd)* | 9 | 0 | 20 | **20** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
@@ -4379,38 +4379,38 @@ HUBS[20]:
     CC=6  in:1  out:22  total:23
   testql.commands.echo.parsers.doql._parse_workflows
     CC=7  in:1  out:22  total:23
-  testql.commands.misc_cmds.report
-    CC=4  in:0  out:22  total:22
   testql.runner.parse_line
     CC=9  in:2  out:20  total:22
+  testql.commands.misc_cmds.report
+    CC=4  in:0  out:22  total:22
   testql.runner.DslCliExecutor.run_script
     CC=11  in:0  out:20  total:20
-  testql.commands.misc_cmds.init
-    CC=4  in:0  out:20  total:20
   testql.commands.endpoints_cmd.endpoints
     CC=9  in:0  out:20  total:20
   testql.commands.misc_cmds.echo
     CC=4  in:0  out:20  total:20
-  testql.commands.echo.parsers.doql._parse_entities
-    CC=7  in:1  out:16  total:17
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
-    CC=6  in:0  out:17  total:17
-  testql.commands.echo.cli.echo
-    CC=3  in:0  out:17  total:17
+  testql.commands.misc_cmds.init
+    CC=4  in:0  out:20  total:20
   testql.interpreter._flow.FlowMixin._cmd_include
     CC=7  in:0  out:17  total:17
+  testql.commands.echo.parsers.doql._parse_entities
+    CC=7  in:1  out:16  total:17
+  testql.commands.echo.cli.echo
+    CC=3  in:0  out:17  total:17
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+    CC=6  in:0  out:17  total:17
+  testql.interpreter._testtoon_parser.parse_testtoon
+    CC=8  in:1  out:15  total:16
   testql.commands.echo.parsers.toon._parse_scenario
     CC=5  in:1  out:15  total:16
   testql.interpreter.converter.parsers.parse_target_from_args
     CC=4  in:7  out:9  total:16
-  testql.interpreter._testtoon_parser.parse_testtoon
-    CC=8  in:1  out:15  total:16
   testql.interpreter.interpreter.IqlInterpreter.execute
     CC=4  in:0  out:16  total:16
-  testql.commands.encoder_routes._execute_iql_line
-    CC=10  in:2  out:13  total:15
   testql.commands.encoder_routes.iql_run_file
     CC=3  in:0  out:15  total:15
+  testql.commands.encoder_routes._execute_iql_line
+    CC=10  in:2  out:13  total:15
 
 MODULES:
   TODO.testtoon_parser  [2 funcs]

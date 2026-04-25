@@ -1,4 +1,4 @@
-# testql | 746 func | 76f | 38358L | yaml | 2026-04-25
+# testql | 746 func | 76f | 38367L | yaml | 2026-04-25
 
 HEALTH:
   CC̄=2.3  critical=17 (limit:10)  dup=1  cycles=0
@@ -16,7 +16,7 @@ ALERTS[20]:
   !!  high_fan_out     _parse_entities = 15 (limit:10)
 
 MODULES[200] (top by size):
-  M[project/calls.yaml] 2497L C:0 F:0 CC↑0 D:0 (yaml)
+  M[project/calls.yaml] 2503L C:0 F:0 CC↑0 D:0 (yaml)
   M[code2llm_output/calls.yaml] 799L C:0 F:0 CC↑0 D:0 (yaml)
   M[project/map.toon.yaml] 771L C:0 F:200 CC↑0 D:0 (yaml)
   M[goal.yaml] 511L C:0 F:0 CC↑0 D:0 (yaml)
@@ -43,9 +43,9 @@ HOTSPOTS[10]:
 REFACTOR[7]:
   [1] H/H Split god module code2llm_output/calls.yaml (799L, 0 classes)
   [2] H/H Split god module goal.yaml (511L, 0 classes)
-  [3] H/H Split god module project/calls.yaml (2497L, 0 classes)
+  [3] H/H Split god module project/calls.yaml (2503L, 0 classes)
   [4] H/H Split god module project/map.toon.yaml (771L, 0 classes)
   [5] M/M Reduce parse_testtoon fan-out (currently 21)
 
 EVOLUTION:
-  2026-04-25 CC̄=2.3 crit=17 38358L // Automated analysis
+  2026-04-25 CC̄=2.3 crit=17 38367L // Automated analysis
