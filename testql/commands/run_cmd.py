@@ -56,13 +56,21 @@ def run(file: str, url: str, dry_run: bool, output: str, quiet: bool, planfile: 
 
     if not result.ok and planfile:
         from testql.integrations.planfile_hook import create_test_failure_ticket
-        # Format errors for ticket
+        from testql.base import StepStatus
         error_msgs = []
+        # Collect failed steps
+        for step in result.steps:
+            if step.status in (StepStatus.FAILED, StepStatus.ERROR):
+                msg = f"`{step.name}`"
+                if step.message:
+                    msg += f": {step.message}"
+                error_msgs.append(msg)
+        
+        # Add system errors if not already represented
         for err in result.errors:
-            if isinstance(err, dict):
-                error_msgs.append(f"`{err.get('step', 'N/A')}`: {err.get('message', '')}")
-            else:
-                error_msgs.append(str(err))
+            err_str = str(err)
+            if not any(err_str in m for m in error_msgs):
+                error_msgs.append(err_str)
             
         create_test_failure_ticket(error_msgs, filename)
 
