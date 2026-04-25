@@ -1,22 +1,18 @@
-# code2llm | 210f 32096L | python:95,yaml:94,md:12,json:2,shell:2,yml:2,txt:2,toml:1 | 2026-04-24
-# CC̄=1.5 | critical:1/1116 | dups:0 | cycles:0
+# code2llm | 198f 20021L | python:95,yaml:94,json:2,shell:2,yml:2,txt:2,toml:1 | 2026-04-25
+# CC̄=2.3 | critical:1/740 | dups:0 | cycles:0
 
-HEALTH[3]:
-  🔴 GOD   SUMR.md = 1515L, 18 classes, 79m, max CC=0.0
-  🔴 GOD   SUMD.md = 4710L, 18 classes, 227m, max CC=0.0
+HEALTH[1]:
   🟡 CC    _cmd_unit_pytest CC=15 (limit:15)
 
-REFACTOR[3]:
-  1. split SUMR.md  (god module)
-  2. split SUMD.md  (god module)
-  3. split 1 high-CC methods  (CC>15)
+REFACTOR[1]:
+  1. split 1 high-CC methods  (CC>15)
 
-PIPELINES[343]:
+PIPELINES[315]:
   [1] Src [validate]: validate
       PURITY: 100% pure
   [2] Src [parse_testtoon]: parse_testtoon → detect_separator
       PURITY: 100% pure
-  [3] Src [print_parsed]: print_parsed → print
+  [3] Src [print_parsed]: print_parsed → validate
       PURITY: 100% pure
   [4] Src [__init__]: __init__
       PURITY: 100% pure
@@ -24,11 +20,10 @@ PIPELINES[343]:
       PURITY: 100% pure
 
 LAYERS:
-  TODO/                           CC̄=4.1    ←in:25  →out:0
-  │ testql-table-format-spec.md   362L  1C    3m  CC=0.0    ←8
+  TODO/                           CC̄=5.9    ←in:0  →out:0
   │ testtoon_parser            141L  1C    7m  CC=14     ←0
   │
-  testql/                         CC̄=3.7    ←in:0  →out:29  !! split
+  testql/                         CC̄=3.7    ←in:11  →out:2
   │ encoder_routes             477L  0C   27m  CC=10     ←0
   │ openapi_generator          444L  3C   21m  CC=11     ←0
   │ _gui                       425L  1C   10m  CC=9      ←0
@@ -41,7 +36,7 @@ LAYERS:
   │ !! _unit                      249L  1C    4m  CC=15     ←0
   │ report_generator           248L  4C    8m  CC=5      ←0
   │ _shell                     243L  1C    6m  CC=14     ←0
-  │ _base_fallback             221L  7C   26m  CC=4      ←0
+  │ _base_fallback             221L  7C   26m  CC=4      ←10
   │ sumd_generator             208L  0C   11m  CC=7      ←0
   │ _api_runner                186L  1C   10m  CC=9      ←0
   │ doql_parser                172L  1C    9m  CC=6      ←0
@@ -55,33 +50,33 @@ LAYERS:
   │ endpoints_cmd              136L  0C    6m  CC=9      ←0
   │ _flow                      136L  1C    6m  CC=9      ←0
   │ interpreter                131L  1C    7m  CC=4      ←0
-  │ collection                 122L  0C    8m  CC=6      ←0
+  │ collection                 122L  0C    8m  CC=6      ←1
   │ flask_detector             121L  1C    9m  CC=6      ←0
   │ doql                       115L  0C    9m  CC=7      ←0
-  │ listing                    114L  0C    6m  CC=7      ←0
+  │ listing                    114L  0C    6m  CC=7      ←1
   │ run-all-views.testql.toon.yaml   112L  0C    0m  CC=0.0    ←0
   │ toon_parser                110L  1C    7m  CC=4      ←0
   │ multi                      105L  1C    5m  CC=6      ←0
   │ _assertions                103L  1C    4m  CC=6      ←0
   │ cli                        100L  0C    2m  CC=13     ←0
   │ text                        95L  0C    7m  CC=6      ←0
-  │ parsers                     93L  0C    6m  CC=11     ←0
+  │ parsers                     93L  0C    6m  CC=11     ←9
   │ openapi_detector            90L  1C    3m  CC=9      ←0
-  │ reports                     89L  0C    5m  CC=6      ←0
+  │ reports                     89L  0C    5m  CC=6      ←1
   │ __init__                    89L  0C    1m  CC=8      ←0
   │ graphql_detector            87L  1C    3m  CC=5      ←0
-  │ dispatcher                  86L  1C    6m  CC=5      ←0
+  │ dispatcher                  86L  1C    6m  CC=5      ←1
   │ config_detector             86L  1C    4m  CC=7      ←0
   │ _encoder                    79L  1C   12m  CC=4      ←0
   │ junit                       79L  1C    3m  CC=8      ←0
   │ toon                        76L  0C    4m  CC=5      ←0
   │ test-device-flow.testql.toon.yaml    76L  0C    0m  CC=0.0    ←0
-  │ execution                   73L  0C    2m  CC=5      ←0
+  │ execution                   73L  0C    2m  CC=5      ←1
   │ test-gui-connect-id.testql.toon.yaml    70L  0C    0m  CC=0.0    ←0
-  │ echo_helpers                68L  0C    4m  CC=8      ←0
+  │ echo_helpers                68L  0C    4m  CC=8      ←1
   │ full-diagnostic.testql.toon.yaml    66L  0C    0m  CC=0.0    ←0
   │ test-gui-connect-workshop.testql.toon.yaml    65L  0C    0m  CC=0.0    ←0
-  │ renderer                    64L  0C    4m  CC=7      ←0
+  │ renderer                    64L  0C    4m  CC=7      ←1
   │ endpoint_detector           62L  0C    0m  CC=0.0    ←0
   │ _converter                  62L  0C    0m  CC=0.0    ←0
   │ generator                   61L  0C    0m  CC=0.0    ←0
@@ -121,7 +116,7 @@ LAYERS:
   │ console                     38L  0C    1m  CC=6      ←0
   │ base                        37L  0C    0m  CC=0.0    ←0
   │ connect-manager-scenarios.testql.toon.yaml    37L  0C    0m  CC=0.0    ←0
-  │ assertions                  34L  0C    1m  CC=9      ←0
+  │ assertions                  34L  0C    1m  CC=9      ←1
   │ base                        34L  1C    3m  CC=6      ←0
   │ connect-id-qr.testql.toon.yaml    34L  0C    0m  CC=0.0    ←0
   │ _parser                     33L  2C    1m  CC=5      ←0
@@ -171,7 +166,7 @@ LAYERS:
   │ __init__                    19L  0C    0m  CC=0.0    ←0
   │ device-identification.testql.toon.yaml    19L  0C    0m  CC=0.0    ←0
   │ encoder-workshop.testql.toon.yaml    19L  0C    0m  CC=0.0    ←0
-  │ unknown                     18L  0C    1m  CC=3      ←0
+  │ unknown                     18L  0C    1m  CC=3      ←1
   │ __init__                    18L  0C    0m  CC=0.0    ←0
   │ test-api.testql.toon.yaml    17L  0C    0m  CC=0.0    ←0
   │ connect-workshop-transport.testql.toon.yaml    16L  0C    0m  CC=0.0    ←0
@@ -198,28 +193,9 @@ LAYERS:
   │ __init__                     3L  0C    0m  CC=0.0    ←0
   │ __init__                     0L  0C    0m  CC=0.0    ←0
   │
-  ./                              CC̄=0.0    ←in:0  →out:0
-  │ !! SUMD.md                   4710L  18C  227m  CC=0.0    ←19
-  │ !! SUMR.md                   1515L  18C   79m  CC=0.0    ←11
-  │ !! goal.yaml                  511L  0C    0m  CC=0.0    ←0
-  │ CHANGELOG.md               424L  0C    0m  CC=0.0    ←0
-  │ README.md                  407L  0C    0m  CC=0.0    ←0
-  │ sumd.json                  204L  0C    0m  CC=0.0    ←0
-  │ TODO.md                    198L  0C    0m  CC=0.0    ←0
-  │ Taskfile.yml               185L  0C    0m  CC=0.0    ←0
-  │ openapi.yaml               175L  0C    0m  CC=0.0    ←0
-  │ Taskfile.testql.yml        117L  0C    0m  CC=0.0    ←0
-  │ pyqual.yaml                 71L  0C    0m  CC=0.0    ←0
-  │ pyproject.toml              70L  0C    0m  CC=0.0    ←0
-  │ project.sh                  39L  0C    0m  CC=0.0    ←0
-  │ coverage.json                1L  0C    0m  CC=0.0    ←0
-  │ tree.sh                      1L  0C    0m  CC=0.0    ←0
-  │
   code2llm_output/                CC̄=0.0    ←in:0  →out:0
   │ !! calls.yaml                 799L  0C    0m  CC=0.0    ←0
-  │ !! context.md                 652L  0C    0m  CC=0.0    ←0
-  │ README.md                  339L  0C    0m  CC=0.0    ←0
-  │ map.toon.yaml              258L  0C   83m  CC=0.0    ←4
+  │ map.toon.yaml              258L  0C   83m  CC=0.0    ←12
   │ analysis.toon.yaml          93L  0C    0m  CC=0.0    ←0
   │ evolution.toon.yaml         82L  0C    0m  CC=0.0    ←0
   │ prompt.txt                  47L  0C    0m  CC=0.0    ←0
@@ -227,10 +203,8 @@ LAYERS:
   │
   project/                        CC̄=0.0    ←in:0  →out:0
   │ !! calls.yaml                3007L  0C    0m  CC=0.0    ←0
-  │ !! map.toon.yaml             2065L  0C  266m  CC=0.0    ←2
-  │ !! context.md                 590L  0C    0m  CC=0.0    ←0
+  │ !! map.toon.yaml              771L  0C  200m  CC=0.0    ←0
   │ validation.toon.yaml       421L  0C    0m  CC=0.0    ←0
-  │ README.md                  339L  0C    0m  CC=0.0    ←0
   │ calls.toon.yaml            299L  0C    0m  CC=0.0    ←0
   │ analysis.toon.yaml         277L  0C    0m  CC=0.0    ←0
   │ project.toon.yaml           51L  0C    0m  CC=0.0    ←0
@@ -238,9 +212,17 @@ LAYERS:
   │ evolution.toon.yaml         43L  0C    0m  CC=0.0    ←0
   │ duplication.toon.yaml        9L  0C    0m  CC=0.0    ←0
   │
-  docs/                           CC̄=0.0    ←in:0  →out:0
-  │ !! README.md                 1126L  0C    1m  CC=0.0    ←0
-  │ testql-spec.md             125L  0C    0m  CC=0.0    ←0
+  ./                              CC̄=0.0    ←in:0  →out:0
+  │ !! goal.yaml                  511L  0C    0m  CC=0.0    ←0
+  │ sumd.json                  204L  0C    0m  CC=0.0    ←0
+  │ Taskfile.yml               185L  0C    0m  CC=0.0    ←0
+  │ openapi.yaml               175L  0C    0m  CC=0.0    ←0
+  │ Taskfile.testql.yml        117L  0C    0m  CC=0.0    ←0
+  │ pyqual.yaml                 71L  0C    0m  CC=0.0    ←0
+  │ pyproject.toml              70L  0C    0m  CC=0.0    ←0
+  │ project.sh                  45L  0C    0m  CC=0.0    ←0
+  │ coverage.json                1L  0C    0m  CC=0.0    ←0
+  │ tree.sh                      1L  0C    0m  CC=0.0    ←0
   │
   testql-scenarios/               CC̄=0.0    ←in:0  →out:0
   │ generated-api-smoke.testql.toon.yaml    35L  0C    0m  CC=0.0    ←0
@@ -252,25 +234,18 @@ LAYERS:
      testql/runners/__init__.py                0L
 
 COUPLING:
-                                      SUMD      testql.commands               testql   testql.interpreter                 TODO                 SUMR  code2llm_output.map          project.map    testql.generators     testql.detectors
-                 SUMD                   ──                  ←20                                       ←25                                                                                                                                hub
-      testql.commands                   20                   ──                                                              2                    6                    3                                                                 !! fan-out
-               testql                                                             ──                                        21                    3                    1                    4                                            !! fan-out
-   testql.interpreter                   25                                                             ──                    1                    3                                                                                      !! fan-out
-                 TODO                                        ←2                  ←21                   ←1                   ──                                                                                                       ←1  hub
-                 SUMR                                        ←6                   ←3                   ←3                                        ──                                                             ←2                   ←1  hub
-  code2llm_output.map                                        ←3                   ←1                                                                                  ──                                        ←1                       hub
-          project.map                                                             ←4                                                                                                       ──                                          
-    testql.generators                                                                                                                             2                    1                                        ──                     
-     testql.detectors                                                                                                        1                    1                                                                                  ──
+                       code2llm_output.map      testql.commands               testql   testql.interpreter    testql.generators     testql.detectors
+  code2llm_output.map                   ──                  ←13                   ←2                   ←5                   ←1                       hub
+      testql.commands                   13                   ──                    5                                                                 !! fan-out
+               testql                    2                   ←5                   ──                   ←3                   ←2                   ←1  hub
+   testql.interpreter                    5                                         3                   ──                                            !! fan-out
+    testql.generators                    1                                         2                                        ──                     
+     testql.detectors                                                              1                                                             ──
   CYCLES: none
-  HUB: TODO/ (fan-in=25)
-  HUB: code2llm_output.map/ (fan-in=5)
-  HUB: SUMR/ (fan-in=15)
-  HUB: SUMD/ (fan-in=45)
-  SMELL: testql.commands/ fan-out=31 → split needed
-  SMELL: testql/ fan-out=29 → split needed
-  SMELL: testql.interpreter/ fan-out=29 → split needed
+  HUB: testql/ (fan-in=11)
+  HUB: code2llm_output.map/ (fan-in=21)
+  SMELL: testql.commands/ fan-out=18 → split needed
+  SMELL: testql.interpreter/ fan-out=8 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon

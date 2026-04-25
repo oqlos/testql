@@ -24,7 +24,7 @@ TestQL with endpoint detection, OpenAPI, SUMD generation, SUMD parser and HTML r
 ## Metadata
 
 - **name**: `testql`
-- **version**: `0.6.10`
+- **version**: `0.6.18`
 - **python_requires**: `>=3.10`
 - **license**: Apache-2.0
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -45,7 +45,17 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 0.6.9;
+  version: 0.6.18;
+}
+
+dependencies {
+  runtime: "httpx>=0.27, click>=8.0, rich>=13.0, pyyaml>=6.0, goal>=2.1.0, costs>=0.1.20, pfix>=0.1.60, websockets>=13.0";
+  dev: "pytest, pytest-asyncio, pytest-cov, fastapi, goal>=2.1.0, costs>=0.1.20, pfix>=0.1.60";
+}
+
+interface[type="api"] {
+  type: rest;
+  framework: fastapi;
 }
 
 interface[type="cli"] {
@@ -58,6 +68,21 @@ interface[type="cli"] page[name="testql"] {
 workflow[name="install"] {
   trigger: manual;
   step-1: run cmd=pip install -e .[dev];
+}
+
+workflow[name="deps:update"] {
+  trigger: manual;
+  step-1: run cmd=PIP="pip"
+[ -f "{{.PWD}}/.venv/bin/pip" ] && PIP="{{.PWD}}/.venv/bin/pip"
+$PIP install --upgrade pip
+OUTDATED=$($PIP list --outdated --format=columns 2>/dev/null | tail -n +3 | awk '{print $1}')
+if [ -z "$OUTDATED" ]; then
+  echo "✅ All packages are up to date."
+else
+  echo "📦 Upgrading: $OUTDATED"
+  echo "$OUTDATED" | xargs $PIP install --upgrade
+  echo "✅ Done."
+fi;
 }
 
 workflow[name="quality"] {
@@ -173,19 +198,14 @@ workflow[name="help"] {
   step-1: run cmd=task --list;
 }
 
-workflow[name="analyze"] {
-  trigger: manual;
-  step-1: run cmd=echo "🔬 Running project analysis...";
-  step-2: run cmd=testql analyze . --tools code2llm,redup,vallm;
-}
-
 deploy {
-  target: docker-compose;
+  target: pip;
 }
 
 environment[name="local"] {
-  runtime: docker-compose;
+  runtime: python;
   env_file: .env;
+  python_version: >=3.10;
 }
 ```
 
@@ -3285,7 +3305,7 @@ pipeline:
   metrics:
     cc_max: 10           # cyclomatic complexity per function
     vallm_pass_min: 60   # actual: 64.6%
-    coverage_min: 66     # baseline — increase as tests are added (currently 64%)
+    coverage_min: 65     # baseline — increase as tests are added (currently 65%)
 
   # Pipeline stages — use 'tool:' for built-in presets or 'run:' for custom commands
   # See all presets: pyqual tools
@@ -3348,7 +3368,7 @@ pipeline:
 ```yaml
 project:
   name: testql
-  version: 0.6.10
+  version: 0.6.18
   env: local
 ```
 
@@ -3417,17 +3437,16 @@ pip install -e .[dev]
 ### `project/map.toon.yaml`
 
 ```toon markpact:analysis path=project/map.toon.yaml
-# testql | 125f 13983L | python:119,less:3,shell:2,css:1 | 2026-04-19
-# stats: 173 func | 183 cls | 125 mod | CC̄=3.6 | critical:9 | cycles:0
-# alerts[5]: CC _print_routes_section=11; CC watch=11; CC parse_value=10; CC _normalize_iql_path=10; CC iql_run_file=10
-# hotspots[5]: iql_run_file fan=26; generate fan=19; watch fan=19; suite fan=19; main fan=18
+# testql | 132f 15567L | python:127,less:3,shell:2 | 2026-04-25
+# stats: 204 func | 195 cls | 132 mod | CC̄=3.9 | critical:8 | cycles:0
+# alerts[5]: CC parse_testtoon=14; CC suite=13; CC parse_value=11; CC detect_scenario_type=11; CC _execute_iql_line=10
+# hotspots[5]: generate fan=19; watch fan=19; suite fan=19; main fan=18; _run_iql_lines fan=15
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[125]:
+M[132]:
   TODO/testtoon_parser.py,142
-  app.doql.css,139
-  app.doql.less,147
-  project.sh,35
+  app.doql.less,167
+  project.sh,45
   testql/__init__.py,4
   testql/__main__.py,7
   testql/_base_fallback.py,222
@@ -3443,17 +3462,17 @@ M[125]:
   testql/commands/echo/parsers/doql.py,116
   testql/commands/echo/parsers/toon.py,77
   testql/commands/echo.py,25
-  testql/commands/echo_helpers.py,62
-  testql/commands/encoder_routes.py,425
+  testql/commands/echo_helpers.py,69
+  testql/commands/encoder_routes.py,478
   testql/commands/endpoints_cmd.py,137
-  testql/commands/generate_cmd.py,155
-  testql/commands/misc_cmds.py,294
+  testql/commands/generate_cmd.py,158
+  testql/commands/misc_cmds.py,293
   testql/commands/run_cmd.py,57
   testql/commands/suite/__init__.py,9
   testql/commands/suite/cli.py,101
-  testql/commands/suite/collection.py,121
+  testql/commands/suite/collection.py,123
   testql/commands/suite/execution.py,74
-  testql/commands/suite/listing.py,113
+  testql/commands/suite/listing.py,115
   testql/commands/suite/reports.py,90
   testql/commands/suite_cmd.py,13
   testql/commands/templates/__init__.py,19
@@ -3477,20 +3496,23 @@ M[125]:
   testql/endpoint_detector.py,63
   testql/generator.py,62
   testql/generators/__init__.py,53
-  testql/generators/analyzers.py,279
+  testql/generators/analyzers.py,300
   testql/generators/base.py,59
   testql/generators/convenience.py,52
-  testql/generators/generators.py,345
+  testql/generators/generators.py,373
   testql/generators/multi.py,106
   testql/generators/test_generator.py,105
   testql/interpreter/__init__.py,90
-  testql/interpreter/_api_runner.py,169
+  testql/interpreter/_api_runner.py,187
   testql/interpreter/_assertions.py,104
   testql/interpreter/_converter.py,63
-  testql/interpreter/_encoder.py,74
+  testql/interpreter/_encoder.py,80
   testql/interpreter/_flow.py,137
+  testql/interpreter/_gui.py,426
   testql/interpreter/_parser.py,34
-  testql/interpreter/_testtoon_parser.py,394
+  testql/interpreter/_shell.py,244
+  testql/interpreter/_testtoon_parser.py,414
+  testql/interpreter/_unit.py,250
   testql/interpreter/_websockets.py,173
   testql/interpreter/converter/__init__.py,20
   testql/interpreter/converter/core.py,59
@@ -3498,7 +3520,7 @@ M[125]:
   testql/interpreter/converter/handlers/__init__.py,31
   testql/interpreter/converter/handlers/api.py,32
   testql/interpreter/converter/handlers/assertions.py,35
-  testql/interpreter/converter/handlers/encoder.py,46
+  testql/interpreter/converter/handlers/encoder.py,48
   testql/interpreter/converter/handlers/flow.py,40
   testql/interpreter/converter/handlers/include.py,15
   testql/interpreter/converter/handlers/navigate.py,33
@@ -3508,10 +3530,11 @@ M[125]:
   testql/interpreter/converter/handlers/wait.py,23
   testql/interpreter/converter/models.py,21
   testql/interpreter/converter/parsers.py,94
-  testql/interpreter/converter/renderer.py,62
-  testql/interpreter/interpreter.py,126
+  testql/interpreter/converter/renderer.py,65
+  testql/interpreter/dispatcher.py,87
+  testql/interpreter/interpreter.py,132
   testql/interpreter.py,28
-  testql/openapi_generator.py,450
+  testql/openapi_generator.py,445
   testql/report_generator.py,249
   testql/reporters/__init__.py,7
   testql/reporters/console.py,39
@@ -3522,13 +3545,14 @@ M[125]:
   testql/scenarios/c2004/c2004.testql.less,29
   testql/scenarios/config.testql.less,44
   testql/sumd_generator.py,209
-  testql/sumd_parser.py,288
+  testql/sumd_parser.py,278
   testql/toon_parser.py,111
   tests/test_api_handler.py,90
   tests/test_cli.py,98
   tests/test_converter.py,178
   tests/test_converter_handlers.py,352
   tests/test_detectors.py,331
+  tests/test_dispatcher.py,140
   tests/test_doql_parser_sumd_gen.py,323
   tests/test_echo.py,227
   tests/test_echo_doql_parser.py,220
@@ -3536,18 +3560,21 @@ M[125]:
   tests/test_encoder_routes.py,42
   tests/test_generate_cmd.py,101
   tests/test_generators.py,111
+  tests/test_gui_execution.py,124
   tests/test_interpreter.py,173
   tests/test_misc_cmds.py,111
   tests/test_openapi_generator.py,344
   tests/test_report_generator.py,169
   tests/test_reporters.py,317
   tests/test_runner.py,188
+  tests/test_shell_execution.py,134
   tests/test_suite_cmd_helpers.py,141
   tests/test_suite_execution.py,93
   tests/test_suite_listing.py,167
   tests/test_sumd_parser.py,206
-  tests/test_test_generator.py,98
+  tests/test_test_generator.py,118
   tests/test_toon_parser.py,84
+  tests/test_unit_execution.py,113
   tree.sh,2
 D:
   TODO/testtoon_parser.py:
@@ -3614,14 +3641,22 @@ D:
     parse_toon_scenarios(path)
   testql/commands/echo.py:
   testql/commands/echo_helpers.py:
-    e: collect_toon_data,collect_doql_data,render_echo
+    e: _collect_toon_directory,collect_toon_data,collect_doql_data,render_echo
+    _collect_toon_directory(toon_file_path;project_echo)
     collect_toon_data(toon_path;project_echo)
     collect_doql_data(doql_path;project_echo)
     render_echo(project_echo;fmt;project_path_obj)
   testql/commands/encoder_routes.py:
-    e: _normalize_iql_path,_resolve_iql_path,_evaluate_assertion,_format_log_detail,_exec_encoder_cmd,_exec_browser_cmd,_exec_assert_cmd,_execute_iql_line,iql_list_files,iql_read_file,iql_list_tables,iql_run_line,iql_run_file,iql_list_logs,iql_read_log
+    e: _strip_path_segments,_migrate_legacy_extension,_remap_tests_prefix,_normalize_iql_path,_resolve_iql_path,_assert_bool_prop,_assert_count_prop,_assert_text_prop,_assert_classes_prop,_evaluate_assertion,_format_log_detail,_exec_encoder_cmd,_exec_browser_cmd,_exec_assert_cmd,_execute_iql_line,iql_list_files,iql_read_file,iql_list_tables,_extract_table_names,iql_run_line,iql_run_file,_run_iql_lines,_update_counters,_build_run_summary,_write_run_log,iql_list_logs,iql_read_log
+    _strip_path_segments(candidate)
+    _migrate_legacy_extension(candidate)
+    _remap_tests_prefix(candidate)
     _normalize_iql_path(path)
     _resolve_iql_path(path)
+    _assert_bool_prop(result;prop;expected)
+    _assert_count_prop(result;expected)
+    _assert_text_prop(result;expected)
+    _assert_classes_prop(result;expected)
     _evaluate_assertion(result;prop;expected)
     _format_log_detail(cmd;result)
     _exec_encoder_cmd(cmd;arg)
@@ -3631,8 +3666,13 @@ D:
     iql_list_files()
     iql_read_file(path)
     iql_list_tables(path)
+    _extract_table_names(content)
     iql_run_line(req)
     iql_run_file(req)
+    _run_iql_lines(lines;label)
+    _update_counters(counters;result)
+    _build_run_summary(normalized_path;requested_path;lines;results;counters)
+    _write_run_log(normalized_path;lines;log_lines;summary)
     iql_list_logs()
     iql_read_log(name)
   testql/commands/endpoints_cmd.py:
@@ -3644,14 +3684,16 @@ D:
     _format_endpoints(eps;fmt;target_path;detector)
     openapi(path;output;format;title;version;contract_tests)
   testql/commands/generate_cmd.py:
-    e: _is_workspace,generate,analyze,_print_routes_section,_print_scenarios_section
+    e: _is_workspace,generate,analyze,_count_routes_by,_print_routes_section,_print_scenarios_section
     _is_workspace(target_path)
     generate(path;output_dir;analyze_only;fmt)
     analyze(path)
+    _count_routes_by(routes;key)
     _print_routes_section(profile)
     _print_scenarios_section(profile)
   testql/commands/misc_cmds.py:
-    e: init,create,watch,from_sumd,report,echo
+    e: _create_templates,init,create,watch,from_sumd,report,echo
+    _create_templates(templates_dir;project_type)
     init(path;name;project_type)
     create(name;test_type;module;output;force)
     watch(path;pattern;command;debounce)
@@ -3667,7 +3709,8 @@ D:
     suite(suite_name;base_path;pattern;tags;test_types;parallel;fail_fast;output;report;url)
     list_tests(path;test_type;tag;fmt)
   testql/commands/suite/collection.py:
-    e: _find_files,_collect_from_suite,_collect_by_pattern,_collect_recursive,_deduplicate_files,collect_test_files,collect_list_files
+    e: _resolve_search_dir_and_pattern,_find_files,_collect_from_suite,_collect_by_pattern,_collect_recursive,_deduplicate_files,collect_test_files,collect_list_files
+    _resolve_search_dir_and_pattern(base_dir;file_pattern)
     _find_files(base_dir;file_pattern)
     _collect_from_suite(target_path;suite_name;config)
     _collect_by_pattern(target_path;pattern)
@@ -3680,8 +3723,9 @@ D:
     run_single_file(test_file;interp)
     run_suite_files(test_files;url;output;fail_fast;config)
   testql/commands/suite/listing.py:
-    e: _parse_testtoon_header,_parse_yaml_meta_block,parse_meta,filter_tests,render_test_list
+    e: _parse_testtoon_header,_collect_meta_lines,_parse_yaml_meta_block,parse_meta,filter_tests,render_test_list
     _parse_testtoon_header(content)
+    _collect_meta_lines(content)
     _parse_yaml_meta_block(content;yaml_module)
     parse_meta(tf;yaml_module)
     filter_tests(raw_files;target_path;test_type;tag;yaml_module)
@@ -3755,7 +3799,7 @@ D:
   testql/generators/__init__.py:
   testql/generators/analyzers.py:
     e: ProjectAnalyzer
-    ProjectAnalyzer: _detect_web_frontend(1),_detect_python_type(1),_detect_hardware(0),detect_project_type(0),run_full_analysis(0),_scan_directory_structure(0),_collect_patterns_from_tree(3),_analyze_python_tests(0),_extract_test_pattern(4),_detect_pattern_type(2),_extract_commands_and_assertions(1),_analyze_config_files(0),_analyze_api_routes(0),_analyze_api_routes_fallback(0),_analyze_scenarios(0)  # Analyzes project structure to discover testable patterns.
+    ProjectAnalyzer: _detect_web_frontend(1),_detect_python_type(1),_has_argparse_usage(0),_detect_hardware(0),detect_project_type(0),run_full_analysis(0),_scan_directory_structure(0),_collect_patterns_from_tree(3),_analyze_python_tests(0),_extract_test_pattern(4),_detect_pattern_type(2),_extract_commands_and_assertions(1),_analyze_config_files(0),_analyze_api_routes(0),_analyze_api_routes_fallback(0),_analyze_scenarios(0)  # Analyzes project structure to discover testable patterns.
   testql/generators/base.py:
     e: TestPattern,ProjectProfile,BaseAnalyzer
     TestPattern:  # Discovered test pattern from source code.
@@ -3781,8 +3825,10 @@ D:
     e: main
     main()
   testql/interpreter/_api_runner.py:
-    e: _navigate_json_path,ApiRunnerMixin
-    ApiRunnerMixin: _do_http_request(3),_store_api_response(2),_cmd_api(2),_cmd_capture(2)  # Mixin providing HTTP API execution commands: API, CAPTURE.
+    e: _resolve_length,_navigate_step,_navigate_json_path,ApiRunnerMixin
+    ApiRunnerMixin: _do_http_request(3),_store_api_response(2),_record_api_success(3),_record_api_http_error(2),_record_api_error(2),_cmd_api(2),_cmd_capture(2)  # Mixin providing HTTP API execution commands: API, CAPTURE.
+    _resolve_length(root;path)
+    _navigate_step(obj;key)
     _navigate_json_path(root;path)
   testql/interpreter/_assertions.py:
     e: AssertionsMixin
@@ -3790,24 +3836,35 @@ D:
   testql/interpreter/_converter.py:
   testql/interpreter/_encoder.py:
     e: EncoderMixin
-    EncoderMixin: _encoder_url(0),_encoder_call(5),_cmd_encoder_on(2),_cmd_encoder_off(2),_cmd_encoder_scroll(2),_cmd_encoder_click(2),_cmd_encoder_dblclick(2),_cmd_encoder_focus(2),_cmd_encoder_status(2),_cmd_encoder_page_next(2),_cmd_encoder_page_prev(2)  # Mixin providing all ENCODER_* hardware control commands.
+    EncoderMixin: _encoder_url(0),_encoder_do_http(4),_encoder_call(5),_cmd_encoder_on(2),_cmd_encoder_off(2),_cmd_encoder_scroll(2),_cmd_encoder_click(2),_cmd_encoder_dblclick(2),_cmd_encoder_focus(2),_cmd_encoder_status(2),_cmd_encoder_page_next(2),_cmd_encoder_page_prev(2)  # Mixin providing all ENCODER_* hardware control commands.
   testql/interpreter/_flow.py:
     e: FlowMixin
     FlowMixin: _cmd_wait_for(2),_cmd_wait(2),_cmd_log(2),_cmd_print(2),_cmd_include(2),_emit_event(3)  # Mixin providing: WAIT, LOG, PRINT, INCLUDE and _emit_event.
+  testql/interpreter/_gui.py:
+    e: GuiMixin
+    GuiMixin: _init_gui_driver(0),_cmd_gui_start(2),_start_playwright(2),_start_selenium(2),_cmd_gui_click(2),_cmd_gui_input(2),_cmd_gui_assert_visible(2),_cmd_gui_assert_text(2),_cmd_gui_capture(2),_cmd_gui_stop(2)  # Mixin providing desktop GUI test commands using Playwright.
   testql/interpreter/_parser.py:
     e: parse_iql,IqlLine,IqlScript
     IqlLine:
     IqlScript:
     parse_iql(source;filename)
+  testql/interpreter/_shell.py:
+    e: ShellMixin
+    ShellMixin: _cmd_shell(2),_cmd_exec(2),_cmd_run(2),_cmd_assert_exit_code(2),_cmd_assert_stdout_contains(2),_cmd_assert_stderr_contains(2)  # Mixin providing shell command execution: SHELL, EXEC, RUN, A
   testql/interpreter/_testtoon_parser.py:
-    e: _detect_separator,_parse_value,parse_testtoon,validate_testtoon,_expand_config,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_generic,testtoon_to_iql,ToonSection,ToonScript
+    e: _detect_separator,_parse_inline_array,_parse_inline_dict,_parse_value,_make_section,_make_data_row,parse_testtoon,validate_testtoon,_expand_config,_append_api_asserts,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_generic,testtoon_to_iql,ToonSection,ToonScript
     ToonSection: validate(0)
     ToonScript:
     _detect_separator(line)
+    _parse_inline_array(v)
+    _parse_inline_dict(v)
     _parse_value(v)
+    _make_section(m)
+    _make_data_row(raw;section)
     parse_testtoon(text;filename)
     validate_testtoon(script)
     _expand_config(section;lines;line_num)
+    _append_api_asserts(row;lines;line_num)
     _expand_api(section;lines;line_num)
     _expand_navigate(section;lines;line_num)
     _expand_encoder(section;lines;line_num)
@@ -3821,9 +3878,12 @@ D:
     _expand_record(section;lines;line_num)
     _expand_generic(section;lines;line_num)
     testtoon_to_iql(text;filename)
+  testql/interpreter/_unit.py:
+    e: UnitMixin
+    UnitMixin: _cmd_unit_pytest(2),_cmd_unit_pytest_discover(2),_cmd_unit_import(2),_cmd_unit_assert(2)  # Mixin providing unit test execution: UNIT_PYTEST, UNIT_IMPOR
   testql/interpreter/_websockets.py:
     e: WebSocketMixin
-    WebSocketMixin: __init_subclass__(1),_get_ws_context(0),_cmd_ws_connect(2),_cmd_ws_send(2),_cmd_ws_receive(2),_cmd_ws_assert_msg(2),_cmd_ws_close(2)  # Mixin for WebSocket testing support.
+    WebSocketMixin: __init_subclass__(1),_get_ws_context(0),_cmd_ws_connect(2),_cmd_ws_send(2),_ws_do_receive(4),_cmd_ws_receive(2),_cmd_ws_assert_msg(2),_cmd_ws_close(2)  # Mixin for WebSocket testing support.
   testql/interpreter/converter/__init__.py:
   testql/interpreter/converter/core.py:
     e: convert_iql_to_testtoon,convert_file,convert_directory
@@ -3841,7 +3901,9 @@ D:
     e: collect_assert
     collect_assert(filtered;j)
   testql/interpreter/converter/handlers/encoder.py:
-    e: handle_encoder
+    e: _encoder_action_fields,_advance_past_wait,handle_encoder
+    _encoder_action_fields(action;args)
+    _advance_past_wait(filtered;i)
     handle_encoder(filtered;i)
   testql/interpreter/converter/handlers/flow.py:
     e: handle_flow
@@ -3878,19 +3940,25 @@ D:
     detect_scenario_type(commands)
     extract_scenario_name(comments;filename)
   testql/interpreter/converter/renderer.py:
-    e: build_config_section,render_sections,build_header
+    e: build_config_section,_render_section_header,render_sections,build_header
     build_config_section(commands)
+    _render_section_header(sec)
     render_sections(sections)
     build_header(scenario_name;scenario_type)
+  testql/interpreter/dispatcher.py:
+    e: CommandDispatcher
+    CommandDispatcher: __init__(1),_discover_handlers(0),register(2),dispatch(3),list_commands(0),has_command(1)  # Central command dispatcher with auto-discovery and better er
   testql/interpreter/interpreter.py:
     e: IqlInterpreter
     IqlInterpreter: __init__(6),parse(2),_is_testtoon(2),execute(1),_dispatch(3),_cmd_set(2),_cmd_get(2)  # IQL interpreter — runs .testql.toon.yaml / .iql / .tql scrip
   testql/interpreter.py:
   testql/openapi_generator.py:
-    e: generate_openapi_spec,generate_contract_tests_from_spec,OpenAPISpec,OpenAPIGenerator,ContractTestGenerator
+    e: _extract_path_params,_extract_ep_params,generate_openapi_spec,generate_contract_tests_from_spec,OpenAPISpec,OpenAPIGenerator,ContractTestGenerator
     OpenAPISpec: to_dict(0),to_json(1),to_yaml(0)  # OpenAPI specification container.
     OpenAPIGenerator: __init__(1),generate(2),_normalize_path(1),_build_operation(1),_infer_tags(1),_extract_parameters(1),_build_request_body(1),_build_responses(1),save(2)  # Generate OpenAPI specs from detected endpoints.
     ContractTestGenerator: __init__(1),_load_spec(1),generate_contract_tests(1),_get_expected_status(2),validate_response(3)  # Generate contract tests from OpenAPI specs.
+    _extract_path_params(path)
+    _extract_ep_params(ep_params;existing)
     generate_openapi_spec(project_path;output;format)
     generate_contract_tests_from_spec(spec_path;output)
   testql/report_generator.py:
@@ -3935,12 +4003,14 @@ D:
     _workflow_snippet(workflows;name;comment;cmd)
     save_sumd(project_echo;project_path;output_path)
   testql/sumd_parser.py:
-    e: parse_sumd_file,SumdMetadata,SumdInterface,SumdWorkflow,SumdDocument,SumdParser
+    e: _parse_block_interfaces,_parse_api_interfaces,parse_sumd_file,SumdMetadata,SumdInterface,SumdWorkflow,SumdDocument,SumdParser
     SumdMetadata:  # Metadata from SUMD.
     SumdInterface:  # Interface from SUMD.
     SumdWorkflow:  # Workflow from SUMD.
     SumdDocument:  # Parsed SUMD document.
     SumdParser: parse_file(1),parse(1),_parse_metadata(1),_parse_interfaces(1),_parse_workflows(1),_parse_testql_scenarios(1),_parse_architecture(1),_extract_section(2),generate_testql_scenarios(1)  # Parser for SUMD markdown files.
+    _parse_block_interfaces(content)
+    _parse_api_interfaces(content)
     parse_sumd_file(path)
   testql/toon_parser.py:
     e: parse_toon_file,ToonParser
@@ -3987,6 +4057,10 @@ D:
     TestOpenAPIDetector: test_empty_project(1),test_detects_yaml_spec(1),test_detects_json_spec(1),test_framework_is_openapi(1),test_base_path_from_servers(1),test_base_path_swagger2(1),test_x_extension_methods_skipped(1),test_invalid_yaml_skipped(1),test_spec_without_paths_skipped(1)
     TestExpressDetector: test_empty_project(1),test_detects_app_get(1),test_detects_router_post(1),test_framework_is_express(1),test_typescript_file_detected(1)
     _write(tmp_path;name;content)
+  tests/test_dispatcher.py:
+    e: TestCommandDispatcher,TestDispatcherIntegration
+    TestCommandDispatcher: interpreter(0),dispatcher(1),test_auto_discovery(1),test_has_command(1),test_dispatch_known_command(2),test_dispatch_unknown_command(2),test_dispatch_with_suggestion(2),test_register_custom_command(2),test_case_insensitive_dispatch(1)  # Test CommandDispatcher functionality.
+    TestDispatcherIntegration: interpreter(0),test_interpreter_uses_dispatcher(1),test_dispatch_through_interpreter(1),test_all_mixin_commands_discovered(1)  # Test CommandDispatcher integration with IqlInterpreter.
   tests/test_doql_parser_sumd_gen.py:
     e: TestDoqlParser,TestHeaderSection,TestMetadataSection,TestArchitectureSection,TestGenerateSumd,TestApiContractSection,TestWorkflowsTableSection,TestConfigurationSection,TestLlmSuggestionsSection,TestSaveSumd
     TestDoqlParser: test_init(0),test_parse_empty(0),test_parse_app_block(0),test_parse_entities(0),test_entity_fields(0),test_entity_fields_contain_domain(0),test_parse_workflow(0),test_parse_interface(0),test_parse_resets_between_calls(0),test_parse_file(1),test_no_app_block(0)
@@ -4050,6 +4124,10 @@ D:
     TestBaseAnalyzer: test_init(1),test_get_exclude_dirs(1),test_should_exclude_path_venv(1),test_should_exclude_path_src(1)
     TestProjectAnalyzerDetectType: test_detect_python_api_fastapi(1),test_detect_python_api_flask(1),test_detect_python_cli(1),test_detect_python_lib(1),test_detect_hardware(1),test_detect_mixed_default(1),test_detect_web_frontend(1),test_detect_web_frontend_missing_e2e_markers(1)
     TestTestPattern: test_defaults(0),test_metadata(0)
+  tests/test_gui_execution.py:
+    e: TestGuiExecution,TestGuiDriverSelection
+    TestGuiExecution: interpreter(0),test_gui_start_dry_run(1),test_gui_click_dry_run(1),test_gui_input_dry_run(1),test_gui_assert_visible_dry_run(1),test_gui_assert_text_dry_run(1),test_gui_capture_dry_run(1),test_gui_stop_dry_run(1),test_gui_click_no_session_error(1),test_gui_start_no_args_error(1)  # Test GUI commands in dry-run mode (full tests require Playwr
+    TestGuiDriverSelection: interpreter(0),test_gui_driver_default_playwright(1),test_gui_driver_selenium_fallback(1)  # Test GUI driver selection and initialization.
   tests/test_interpreter.py:
     e: TestParseIql,TestParseTestTOON,TestTestTOONExpansion,TestIqlInterpreter
     TestParseIql: test_empty(0),test_comments_ignored(0),test_basic_commands(0)
@@ -4091,6 +4169,10 @@ D:
     TestParseLine: test_empty_returns_none(0),test_comment_returns_none(0),test_blank_line_returns_none(0),test_api_get(0),test_api_post_with_body(0),test_api_with_expected(0),test_api_with_comment(0),test_wait_command(0),test_wait_with_comment(0),test_general_command_with_quotes(0),test_simple_command(0),test_api_patch(0),test_api_delete(0)
     TestParseScript: test_empty_script(0),test_comments_and_blanks_skipped(0),test_multiline_script(0),test_mixed_content(0)
     TestDslCliExecutor: test_init_defaults(0),test_init_custom_url(0),test_browser_command_skipped(0),test_semantic_command_logged(0),test_browser_command_verbose(1),test_semantic_command_verbose(1),test_execute_unknown_command_returns_result(0),test_execute_returns_duration(0),test_wait_command_via_execute(0)
+  tests/test_shell_execution.py:
+    e: TestShellExecution,TestShellDryRun
+    TestShellExecution: interpreter(1),test_shell_echo_command(2),test_shell_with_exit_code(1),test_assert_exit_code_success(1),test_assert_exit_code_failure(1),test_assert_stdout_contains_success(1),test_assert_stdout_contains_failure(1),test_shell_timeout(1),test_shell_no_previous_command_warning(1)  # Test SHELL, EXEC, RUN commands and assertions.
+    TestShellDryRun: interpreter(0),test_shell_dry_run(1)  # Test shell commands in dry-run mode.
   tests/test_suite_cmd_helpers.py:
     e: _collect_test_files,TestFindFiles,TestCollectFromSuite,TestCollectByPattern,TestCollectRecursive,TestCollectTestFiles
     TestFindFiles: test_returns_empty_for_missing_dir(1),test_finds_matching_files(1),test_finds_files_in_subdirs(1),test_path_with_separator(1),test_path_with_missing_subdir(1)
@@ -4117,11 +4199,15 @@ D:
     TestSumdParser: test_parse_returns_document(0),test_parse_metadata_name(0),test_parse_metadata_version(0),test_parse_metadata_ecosystem(0),test_parse_metadata_ai_model(0),test_parse_metadata_fallback_header(0),test_parse_architecture(0),test_parse_empty_architecture(0),test_parse_interface_rest(0),test_parse_workflow(0),test_extract_section(0),test_extract_section_missing(0),test_generate_testql_scenarios(0),test_parse_file(1),test_parse_toon_testql_block_with_api_entries(0),test_parse_toon_code_block_scenario(0),test_generate_testql_scenarios_with_testql_scenarios(0),test_generate_testql_scenarios_empty_interfaces_and_scenarios(0),test_parse_toon_api_block_with_comment_and_blank_lines(0),test_parse_toon_scenario_with_type_meta_comment(0)
   tests/test_test_generator.py:
     e: TestTestGeneratorAnalyze,TestTestGeneratorGenerateTests
-    TestTestGeneratorAnalyze: test_analyze_returns_profile(1),test_analyze_empty_project_mixed_type(1),test_analyze_fastapi_project(1),test_analyze_cli_project(1),test_analyze_sets_project_path(1)
+    TestTestGeneratorAnalyze: test_analyze_returns_profile(1),test_analyze_empty_project_mixed_type(1),test_analyze_fastapi_project(1),test_analyze_cli_project(1),test_analyze_argparse_cli_project(1),test_analyze_typer_cli_project(1),test_analyze_sets_project_path(1)
     TestTestGeneratorGenerateTests: test_generate_empty_project_returns_empty_list(1),test_generate_creates_output_dir(1),test_generate_default_output_dir(1),test_generate_auto_analyzes_if_not_analyzed(1),test_generate_returns_list(1),test_generate_with_python_tests(1),test_generate_accepts_string_output_dir(1),test_generate_with_discovered_routes(1)
   tests/test_toon_parser.py:
     e: TestToonParser
     TestToonParser: test_init(0),test_parse_empty(0),test_parse_api_get(0),test_parse_api_post(0),test_parse_api_no_status_defaults_200(0),test_parse_assert_block(0),test_parse_log_block_sets_base_url(0),test_parse_multiple_api_blocks(0),test_parse_resets_contract_between_calls(0),test_parse_file(1)
+  tests/test_unit_execution.py:
+    e: TestUnitExecution,TestUnitDryRun
+    TestUnitExecution: interpreter(0),test_unit_import_success(1),test_unit_import_failure(1),test_unit_assert_success(1),test_unit_assert_failure(1),test_unit_assert_builtin_function(1),test_unit_pytest_no_args(1),test_unit_pytest_dry_run(1)  # Test UNIT_PYTEST, UNIT_IMPORT, UNIT_ASSERT commands.
+    TestUnitDryRun: interpreter(0),test_unit_import_dry_run(1),test_unit_pytest_discover_dry_run(1)  # Test unit commands in dry-run mode.
 ```
 
 ## Source Map
@@ -4134,17 +4220,17 @@ D:
 class StepStatus:
 class StepResult:
 class ScriptResult:
-    def passed()  # CC=1
-    def failed()  # CC=1
-    def summary()  # CC=1
+    def passed()  # CC=3
+    def failed()  # CC=3
+    def summary()  # CC=2
 class VariableStore:  # Simple key-value store with interpolation support.
-    def __init__(initial)  # CC=2
+    def __init__(initial)  # CC=1
     def set(key, value)  # CC=1
     def get(key, default)  # CC=1
     def has(key)  # CC=1
     def all()  # CC=1
     def clear()  # CC=1
-    def interpolate(text)  # CC=2
+    def interpolate(text)  # CC=1
 class InterpreterOutput:  # Collects interpreter output lines for display or testing.
     def __init__(quiet)  # CC=1
     def emit(msg)  # CC=2
@@ -4159,8 +4245,8 @@ class BaseInterpreter:  # Abstract base for language interpreters.
     def parse(source, filename)  # CC=1
     def execute(parsed)  # CC=1
     def run(source, filename)  # CC=1
-    def run_file(path)  # CC=2
-    def strip_comments(lines)  # CC=2
+    def run_file(path)  # CC=1
+    def strip_comments(lines)  # CC=3
 class EventBridge:  # Optional WebSocket bridge to DSL Event Server (port 8104).
     def __init__(url)  # CC=1
     def connect()  # CC=2
@@ -4172,6 +4258,8 @@ class EventBridge:  # Optional WebSocket bridge to DSL Event Server (port 8104).
 ### `testql.openapi_generator` (`testql/openapi_generator.py`)
 
 ```python
+def _extract_path_params(path)  # CC=4, fan=3
+def _extract_ep_params(ep_params, existing)  # CC=7, fan=4
 def generate_openapi_spec(project_path, output, format)  # CC=1, fan=3
 def generate_contract_tests_from_spec(spec_path, output)  # CC=1, fan=2
 class OpenAPISpec:  # OpenAPI specification container.
@@ -4179,12 +4267,12 @@ class OpenAPISpec:  # OpenAPI specification container.
     def to_json(indent)  # CC=1
     def to_yaml()  # CC=1
 class OpenAPIGenerator:  # Generate OpenAPI specs from detected endpoints.
-    def __init__(project_path)  # CC=1
+    def __init__(project_path)  # CC=3
     def generate(title, version)  # CC=5
     def _normalize_path(path)  # CC=2
     def _build_operation(ep)  # CC=7
-    def _infer_tags(ep)  # CC=6
-    def _extract_parameters(ep)  # CC=10 ⚠
+    def _infer_tags(ep)  # CC=7
+    def _extract_parameters(ep)  # CC=1
     def _build_request_body(ep)  # CC=6
     def _build_responses(ep)  # CC=3
     def save(output_path, format)  # CC=3
@@ -4192,34 +4280,56 @@ class ContractTestGenerator:  # Generate contract tests from OpenAPI specs.
     def __init__(spec)  # CC=3
     def _load_spec(path)  # CC=2
     def generate_contract_tests(output_file)  # CC=6
-    def _get_expected_status(method, operation)  # CC=3
-    def validate_response(endpoint, method, response)  # CC=10 ⚠
+    def _get_expected_status(method, operation)  # CC=4
+    def validate_response(endpoint, method, response)  # CC=11 ⚠
 ```
 
 ### `testql.runner` (`testql/runner.py`)
 
 ```python
-def parse_line(line)  # CC=7, fan=8
-def parse_script(content)  # CC=1, fan=2
-def main()  # CC=7, fan=14
+def parse_line(line)  # CC=9, fan=8
+def parse_script(content)  # CC=3, fan=2
+def main()  # CC=10, fan=14 ⚠
 class DslCommand:
 class ExecutionResult:
 class DslCliExecutor:
     def __init__(base_url, verbose)  # CC=1
     def execute(cmd)  # CC=2
     def _dispatch(cmd)  # CC=6
-    def cmd_api(cmd)  # CC=3
+    def cmd_api(cmd)  # CC=7
     def cmd_wait(cmd)  # CC=1
-    def cmd_log(cmd)  # CC=1
-    def cmd_print(cmd)  # CC=1
-    def cmd_store(cmd)  # CC=1
-    def cmd_env(cmd)  # CC=1
+    def cmd_log(cmd)  # CC=2
+    def cmd_print(cmd)  # CC=2
+    def cmd_store(cmd)  # CC=2
+    def cmd_env(cmd)  # CC=2
     def cmd_assert_status(cmd)  # CC=2
-    def cmd_assert_json(cmd)  # CC=9
-    def cmd_set_header(cmd)  # CC=1
+    def cmd_assert_json(cmd)  # CC=12 ⚠
+    def cmd_set_header(cmd)  # CC=2
     def cmd_set_base_url(cmd)  # CC=1
-    def run_script(content, stop_on_error)  # CC=9
-    def _format_cmd(cmd)  # CC=1
+    def run_script(content, stop_on_error)  # CC=11 ⚠
+    def _format_cmd(cmd)  # CC=2
+```
+
+### `testql.sumd_parser` (`testql/sumd_parser.py`)
+
+```python
+def _parse_block_interfaces(content)  # CC=3, fan=5
+def _parse_api_interfaces(content)  # CC=8, fan=7
+def parse_sumd_file(path)  # CC=1, fan=2
+class SumdMetadata:  # Metadata from SUMD.
+class SumdInterface:  # Interface from SUMD.
+class SumdWorkflow:  # Workflow from SUMD.
+class SumdDocument:  # Parsed SUMD document.
+class SumdParser:  # Parser for SUMD markdown files.
+    def parse_file(path)  # CC=1
+    def parse(content)  # CC=1
+    def _parse_metadata(content)  # CC=8
+    def _parse_interfaces(content)  # CC=1
+    def _parse_workflows(content)  # CC=4
+    def _parse_testql_scenarios(content)  # CC=11 ⚠
+    def _parse_architecture(content)  # CC=3
+    def _extract_section(content, section_name)  # CC=2
+    def generate_testql_scenarios(doc)  # CC=5
 ```
 
 ### `testql.sumd_generator` (`testql/sumd_generator.py`)
@@ -4230,167 +4340,260 @@ def _header_section(project_name, version)  # CC=1, fan=1
 def _metadata_section(project_name, version)  # CC=1, fan=0
 def _architecture_section()  # CC=1, fan=0
 def _doql_declaration_section(project_echo, project_name, version)  # CC=7, fan=1
-def _api_contract_section(project_echo)  # CC=5, fan=4
+def _api_contract_section(project_echo)  # CC=6, fan=4
 def _workflows_table_section(project_echo)  # CC=5, fan=2
 def _configuration_section(project_echo, project_name, version)  # CC=2, fan=1
-def _llm_suggestions_section(project_echo)  # CC=2, fan=3
-def _workflow_snippet(workflows, name, comment, cmd)  # CC=2, fan=1
+def _llm_suggestions_section(project_echo)  # CC=4, fan=3
+def _workflow_snippet(workflows, name, comment, cmd)  # CC=4, fan=1
 def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
-```
-
-### `testql.sumd_parser` (`testql/sumd_parser.py`)
-
-```python
-def parse_sumd_file(path)  # CC=1, fan=2
-class SumdMetadata:  # Metadata from SUMD.
-class SumdInterface:  # Interface from SUMD.
-class SumdWorkflow:  # Workflow from SUMD.
-class SumdDocument:  # Parsed SUMD document.
-class SumdParser:  # Parser for SUMD markdown files.
-    def parse_file(path)  # CC=1
-    def parse(content)  # CC=1
-    def _parse_metadata(content)  # CC=8
-    def _parse_interfaces(content)  # CC=10 ⚠
-    def _parse_workflows(content)  # CC=4
-    def _parse_testql_scenarios(content)  # CC=9
-    def _parse_architecture(content)  # CC=3
-    def _extract_section(content, section_name)  # CC=2
-    def generate_testql_scenarios(doc)  # CC=5
 ```
 
 ## Call Graph
 
-*65 nodes · 49 edges · 21 modules · CC̄=4.6*
+*173 nodes · 151 edges · 46 modules · CC̄=2.3*
 
 ### Hubs (by degree)
 
 | Function | CC | in | out | total |
 |----------|----|----|-----|-------|
-| `convert_iql_to_testtoon` *(in testql.interpreter._converter)* | 66 ⚠ | 1 | 116 | **117** |
-| `parse_doql_less` *(in testql.commands.echo)* | 29 ⚠ | 1 | 85 | **86** |
-| `format_text_output` *(in testql.commands.echo)* | 19 ⚠ | 1 | 46 | **47** |
-| `iql_run_file` *(in testql.commands.encoder_routes)* | 12 ⚠ | 0 | 43 | **43** |
-| `parse_testtoon` *(in testql.interpreter._testtoon_parser)* | 12 ⚠ | 1 | 31 | **32** |
-| `list_tests` *(in testql.commands.suite_cmd)* | 9 | 0 | 27 | **27** |
-| `_collect_test_files` *(in testql.commands.suite_cmd)* | 15 ⚠ | 1 | 23 | **24** |
+| `generate` *(in testql.commands.generate_cmd)* | 10 ⚠ | 0 | 44 | **44** |
+| `_print_routes_section` *(in testql.commands.generate_cmd)* | 10 ⚠ | 1 | 23 | **24** |
+| `_parse_workflows` *(in testql.commands.echo.parsers.doql)* | 7 | 1 | 22 | **23** |
+| `_run_iql_lines` *(in testql.commands.encoder_routes)* | 6 | 1 | 22 | **23** |
 | `parse_line` *(in testql.runner)* | 9 | 2 | 20 | **22** |
+| `report` *(in testql.commands.misc_cmds)* | 4 | 0 | 22 | **22** |
+| `run_script` *(in testql.runner.DslCliExecutor)* | 11 ⚠ | 0 | 20 | **20** |
+| `endpoints` *(in testql.commands.endpoints_cmd)* | 9 | 0 | 20 | **20** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# nodes: 65 | edges: 49 | modules: 21
-# CC̄=4.6
+# nodes: 173 | edges: 151 | modules: 46
+# CC̄=2.3
 
 HUBS[20]:
-  testql.interpreter._converter.convert_iql_to_testtoon
-    CC=66  in:1  out:116  total:117
-  testql.commands.echo.parse_doql_less
-    CC=29  in:1  out:85  total:86
-  testql.commands.echo.format_text_output
-    CC=19  in:1  out:46  total:47
-  testql.commands.encoder_routes.iql_run_file
-    CC=12  in:0  out:43  total:43
-  testql.interpreter._testtoon_parser.parse_testtoon
-    CC=12  in:1  out:31  total:32
-  testql.commands.suite_cmd.list_tests
-    CC=9  in:0  out:27  total:27
-  testql.commands.suite_cmd._collect_test_files
-    CC=15  in:1  out:23  total:24
+  testql.commands.generate_cmd.generate
+    CC=10  in:0  out:44  total:44
+  testql.commands.generate_cmd._print_routes_section
+    CC=10  in:1  out:23  total:24
+  testql.commands.echo.parsers.doql._parse_workflows
+    CC=7  in:1  out:22  total:23
+  testql.commands.encoder_routes._run_iql_lines
+    CC=6  in:1  out:22  total:23
   testql.runner.parse_line
     CC=9  in:2  out:20  total:22
-  testql.commands.echo.parse_toon_scenarios
-    CC=8  in:1  out:21  total:22
   testql.commands.misc_cmds.report
     CC=4  in:0  out:22  total:22
-  testql.report_generator.generate_report
-    CC=3  in:1  out:20  total:21
-  testql.commands.misc_cmds.create
-    CC=6  in:0  out:21  total:21
   testql.runner.DslCliExecutor.run_script
     CC=11  in:0  out:20  total:20
   testql.commands.endpoints_cmd.endpoints
     CC=9  in:0  out:20  total:20
-  testql.commands.endpoints_cmd._format_endpoints
-    CC=13  in:1  out:18  total:19
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
-    CC=6  in:0  out:17  total:17
+  testql.commands.misc_cmds.init
+    CC=4  in:0  out:20  total:20
+  testql.commands.misc_cmds.echo
+    CC=4  in:0  out:20  total:20
+  testql.commands.echo.parsers.doql._parse_entities
+    CC=7  in:1  out:16  total:17
+  testql.commands.echo.cli.echo
+    CC=3  in:0  out:17  total:17
   testql.interpreter._flow.FlowMixin._cmd_include
     CC=7  in:0  out:17  total:17
-  testql.commands.echo.echo
-    CC=3  in:0  out:17  total:17
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+    CC=6  in:0  out:17  total:17
+  testql.interpreter._testtoon_parser.parse_testtoon
+    CC=8  in:1  out:15  total:16
+  testql.interpreter.converter.parsers.parse_target_from_args
+    CC=4  in:7  out:9  total:16
+  testql.commands.echo.parsers.toon._parse_scenario
+    CC=5  in:1  out:15  total:16
   testql.interpreter.interpreter.IqlInterpreter.execute
     CC=4  in:0  out:16  total:16
-  testql.commands.encoder_routes.iql_list_tables
-    CC=4  in:0  out:15  total:15
+  testql.commands.encoder_routes.iql_run_file
+    CC=3  in:0  out:15  total:15
+  testql.commands.encoder_routes._execute_iql_line
+    CC=10  in:2  out:13  total:15
 
 MODULES:
   TODO.testtoon_parser  [2 funcs]
     print_parsed  CC=8  out:12
     validate  CC=2  out:2
+  code2llm_output.map.toon  [13 funcs]
+    _navigate_json_path  CC=0  out:0
+    format_text_output  CC=0  out:0
+    generate_context  CC=0  out:0
+    generate_report  CC=0  out:0
+    generate_sumd  CC=0  out:0
+    list  CC=0  out:0
+    parse_doql_file  CC=0  out:0
+    parse_doql_less  CC=0  out:0
+    parse_iql  CC=0  out:0
+    parse_script  CC=0  out:0
   testql._base_fallback  [2 funcs]
     all  CC=1  out:1
     set  CC=1  out:0
   testql.cli  [2 funcs]
     cli  CC=1  out:2
     main  CC=1  out:1
-  testql.commands.echo  [5 funcs]
+  testql.commands.echo.cli  [1 funcs]
     echo  CC=3  out:17
-    format_text_output  CC=19  out:46
-    generate_context  CC=7  out:9
-    parse_doql_less  CC=29  out:85
-    parse_toon_scenarios  CC=8  out:21
-  testql.commands.encoder_routes  [12 funcs]
-    _evaluate_assertion  CC=10  out:12
+  testql.commands.echo.context  [3 funcs]
+    _find_doql_file  CC=4  out:5
+    _find_toon_path  CC=2  out:1
+    generate_context  CC=4  out:5
+  testql.commands.echo.formatters.text  [7 funcs]
+    _build_header  CC=1  out:4
+    _fmt_contracts  CC=5  out:8
+    _fmt_entities  CC=4  out:10
+    _fmt_interfaces  CC=3  out:5
+    _fmt_suggestions  CC=6  out:8
+    _fmt_workflows  CC=3  out:6
+    format_text_output  CC=1  out:7
+  testql.commands.echo.parsers.doql  [9 funcs]
+    _parse_app_block  CC=2  out:3
+    _parse_deploy  CC=2  out:3
+    _parse_entities  CC=7  out:16
+    _parse_environment  CC=2  out:3
+    _parse_integrations  CC=4  out:12
+    _parse_interfaces  CC=2  out:4
+    _parse_kv_block  CC=3  out:6
+    _parse_workflows  CC=7  out:22
+    parse_doql_less  CC=1  out:8
+  testql.commands.echo.parsers.toon  [2 funcs]
+    _parse_scenario  CC=5  out:15
+    parse_toon_scenarios  CC=3  out:5
+  testql.commands.echo_helpers  [4 funcs]
+    _collect_toon_directory  CC=8  out:9
+    collect_doql_data  CC=2  out:5
+    collect_toon_data  CC=3  out:7
+    render_echo  CC=3  out:4
+  testql.commands.encoder_routes  [25 funcs]
+    _assert_bool_prop  CC=2  out:5
+    _assert_classes_prop  CC=2  out:1
+    _assert_count_prop  CC=2  out:2
+    _assert_text_prop  CC=2  out:2
+    _build_run_summary  CC=2  out:1
+    _evaluate_assertion  CC=6  out:6
     _exec_assert_cmd  CC=7  out:11
     _exec_browser_cmd  CC=9  out:10
     _exec_encoder_cmd  CC=6  out:4
     _execute_iql_line  CC=10  out:13
-    _normalize_iql_path  CC=10  out:13
-    _resolve_iql_path  CC=1  out:2
-    iql_list_files  CC=7  out:14
-    iql_list_tables  CC=4  out:15
-    iql_read_file  CC=3  out:11
-  testql.commands.endpoints_cmd  [2 funcs]
-    _format_endpoints  CC=13  out:18
+  testql.commands.endpoints_cmd  [5 funcs]
+    _format_endpoints  CC=3  out:3
+    _format_endpoints_csv  CC=5  out:7
+    _format_endpoints_json  CC=3  out:3
+    _format_endpoints_table  CC=5  out:8
     endpoints  CC=9  out:20
-  testql.commands.misc_cmds  [3 funcs]
-    _build_test_content  CC=7  out:1
-    create  CC=6  out:21
+  testql.commands.generate_cmd  [4 funcs]
+    _count_routes_by  CC=2  out:3
+    _is_workspace  CC=5  out:5
+    _print_routes_section  CC=10  out:23
+    generate  CC=10  out:44
+  testql.commands.misc_cmds  [4 funcs]
+    _create_templates  CC=4  out:4
+    echo  CC=4  out:20
+    init  CC=4  out:20
     report  CC=4  out:22
-  testql.commands.suite_cmd  [4 funcs]
-    _collect_test_files  CC=15  out:23
-    _find_files  CC=9  out:8
-    _parse_meta  CC=12  out:10
-    list_tests  CC=9  out:27
-  testql.endpoint_detector  [1 funcs]
+  testql.commands.suite.cli  [1 funcs]
+    list_tests  CC=2  out:13
+  testql.commands.suite.collection  [8 funcs]
+    _collect_by_pattern  CC=2  out:3
+    _collect_from_suite  CC=4  out:7
+    _collect_recursive  CC=4  out:3
+    _deduplicate_files  CC=5  out:5
+    _find_files  CC=6  out:7
+    _resolve_search_dir_and_pattern  CC=4  out:2
+    collect_list_files  CC=4  out:5
+    collect_test_files  CC=5  out:7
+  testql.commands.suite.execution  [2 funcs]
+    run_single_file  CC=3  out:7
+    run_suite_files  CC=5  out:11
+  testql.commands.suite.listing  [6 funcs]
+    _collect_meta_lines  CC=7  out:6
+    _parse_testtoon_header  CC=6  out:8
+    _parse_yaml_meta_block  CC=5  out:4
+    filter_tests  CC=6  out:9
+    parse_meta  CC=6  out:6
+    render_test_list  CC=6  out:9
+  testql.commands.suite.reports  [3 funcs]
+    _build_junit_xml  CC=5  out:8
+    _save_json_report  CC=1  out:3
+    save_report  CC=3  out:5
+  testql.detectors.unified  [1 funcs]
     _deduplicate_endpoints  CC=3  out:4
-  testql.generator  [1 funcs]
-    _scan_directory_structure  CC=8  out:6
-  testql.interpreter._api_runner  [2 funcs]
+  testql.generators.base  [1 funcs]
+    _should_exclude_path  CC=1  out:3
+  testql.generators.generators  [1 funcs]
+    _deduplicate_rest_routes  CC=4  out:3
+  testql.generators.multi  [1 funcs]
+    generate_cross_project_tests  CC=3  out:11
+  testql.interpreter._api_runner  [4 funcs]
     _cmd_capture  CC=3  out:13
-    _navigate_json_path  CC=10  out:13
+    _navigate_json_path  CC=5  out:5
+    _navigate_step  CC=4  out:4
+    _resolve_length  CC=4  out:6
   testql.interpreter._assertions  [1 funcs]
     _cmd_assert_json  CC=6  out:17
-  testql.interpreter._converter  [5 funcs]
-    _detect_scenario_type  CC=12  out:7
-    _extract_scenario_name  CC=6  out:8
-    convert_directory  CC=4  out:7
-    convert_file  CC=1  out:3
-    convert_iql_to_testtoon  CC=66  out:116
   testql.interpreter._flow  [1 funcs]
     _cmd_include  CC=7  out:17
-  testql.interpreter._parser  [1 funcs]
-    parse_iql  CC=5  out:10
-  testql.interpreter._testtoon_parser  [2 funcs]
-    parse_testtoon  CC=12  out:31
+  testql.interpreter._testtoon_parser  [10 funcs]
+    _append_api_asserts  CC=8  out:10
+    _detect_separator  CC=2  out:0
+    _expand_api  CC=2  out:5
+    _make_data_row  CC=2  out:6
+    _make_section  CC=4  out:9
+    _parse_inline_array  CC=2  out:2
+    _parse_inline_dict  CC=3  out:4
+    _parse_value  CC=8  out:10
+    parse_testtoon  CC=8  out:15
     testtoon_to_iql  CC=2  out:4
+  testql.interpreter.converter.core  [3 funcs]
+    convert_directory  CC=4  out:7
+    convert_file  CC=1  out:3
+    convert_iql_to_testtoon  CC=5  out:10
+  testql.interpreter.converter.dispatcher  [1 funcs]
+    dispatch  CC=3  out:3
+  testql.interpreter.converter.handlers.api  [1 funcs]
+    handle_api  CC=6  out:7
+  testql.interpreter.converter.handlers.assertions  [1 funcs]
+    collect_assert  CC=9  out:9
+  testql.interpreter.converter.handlers.encoder  [3 funcs]
+    _advance_past_wait  CC=4  out:2
+    _encoder_action_fields  CC=5  out:4
+    handle_encoder  CC=3  out:8
+  testql.interpreter.converter.handlers.flow  [1 funcs]
+    handle_flow  CC=3  out:6
+  testql.interpreter.converter.handlers.include  [1 funcs]
+    handle_include  CC=1  out:2
+  testql.interpreter.converter.handlers.navigate  [1 funcs]
+    handle_navigate  CC=6  out:8
+  testql.interpreter.converter.handlers.record  [1 funcs]
+    handle_record_start  CC=1  out:2
+  testql.interpreter.converter.handlers.select  [1 funcs]
+    handle_select  CC=3  out:8
+  testql.interpreter.converter.handlers.unknown  [1 funcs]
+    handle_unknown  CC=3  out:4
+  testql.interpreter.converter.parsers  [6 funcs]
+    detect_scenario_type  CC=11  out:6
+    extract_scenario_name  CC=6  out:8
+    parse_api_args  CC=5  out:9
+    parse_commands  CC=5  out:10
+    parse_meta_from_args  CC=4  out:6
+    parse_target_from_args  CC=4  out:9
+  testql.interpreter.converter.renderer  [4 funcs]
+    _render_section_header  CC=3  out:2
+    build_config_section  CC=6  out:6
+    build_header  CC=1  out:0
+    render_sections  CC=7  out:12
+  testql.interpreter.dispatcher  [1 funcs]
+    dispatch  CC=5  out:13
   testql.interpreter.interpreter  [3 funcs]
-    __init__  CC=2  out:3
+    __init__  CC=2  out:4
     execute  CC=4  out:16
     parse  CC=2  out:3
-  testql.openapi_generator  [1 funcs]
+  testql.openapi_generator  [4 funcs]
+    _extract_parameters  CC=1  out:3
     _infer_tags  CC=7  out:9
-  testql.report_generator  [1 funcs]
-    generate_report  CC=3  out:20
+    _extract_ep_params  CC=7  out:8
+    _extract_path_params  CC=4  out:4
   testql.runner  [3 funcs]
     run_script  CC=11  out:20
     parse_line  CC=9  out:20
@@ -4406,12 +4609,20 @@ MODULES:
     _workflow_snippet  CC=4  out:1
     _workflows_table_section  CC=5  out:3
     generate_sumd  CC=4  out:10
+  testql.sumd_parser  [3 funcs]
+    _parse_interfaces  CC=1  out:2
+    _parse_api_interfaces  CC=8  out:13
+    _parse_block_interfaces  CC=3  out:7
 
 EDGES:
-  testql.cli.main → testql.cli.cli
-  testql.generator.TestGenerator._scan_directory_structure → testql._base_fallback.VariableStore.set
   TODO.testtoon_parser.print_parsed → TODO.testtoon_parser.validate
+  testql.cli.main → testql.cli.cli
+  testql.runner.parse_script → testql.runner.parse_line
+  testql.runner.DslCliExecutor.run_script → code2llm_output.map.toon.parse_script
+  testql.openapi_generator.OpenAPIGenerator._infer_tags → code2llm_output.map.toon.list
   testql.openapi_generator.OpenAPIGenerator._infer_tags → testql._base_fallback.VariableStore.set
+  testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_path_params
+  testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_ep_params
   testql.sumd_generator.generate_sumd → testql.sumd_generator._header_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._metadata_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._architecture_section
@@ -4422,41 +4633,38 @@ EDGES:
   testql.sumd_generator.generate_sumd → testql.sumd_generator._llm_suggestions_section
   testql.sumd_generator._llm_suggestions_section → testql.sumd_generator._workflow_snippet
   testql.sumd_generator.save_sumd → testql.sumd_generator.generate_sumd
-  testql.runner.parse_script → testql.runner.parse_line
-  testql.runner.DslCliExecutor.run_script → testql.runner.parse_script
-  testql.commands.echo.generate_context → testql.commands.echo.parse_toon_scenarios
-  testql.commands.echo.generate_context → testql.commands.echo.parse_doql_less
-  testql.commands.echo.echo → testql.commands.echo.generate_context
-  testql.commands.echo.echo → testql.commands.echo.format_text_output
-  testql.commands.endpoints_cmd.endpoints → testql.commands.endpoints_cmd._format_endpoints
-  testql.endpoint_detector.UnifiedEndpointDetector._deduplicate_endpoints → testql._base_fallback.VariableStore.set
-  testql.commands.misc_cmds.create → testql.commands.misc_cmds._build_test_content
-  testql.commands.misc_cmds.report → testql.report_generator.generate_report
-  testql.commands.suite_cmd._collect_test_files → testql._base_fallback.VariableStore.set
-  testql.commands.suite_cmd._collect_test_files → testql.commands.suite_cmd._find_files
-  testql.commands.suite_cmd.list_tests → testql._base_fallback.VariableStore.set
-  testql.commands.suite_cmd.list_tests → testql.commands.suite_cmd._parse_meta
-  testql.interpreter._api_runner.ApiRunnerMixin._cmd_capture → testql.interpreter._api_runner._navigate_json_path
-  testql.interpreter._flow.FlowMixin._cmd_include → testql.interpreter._parser.parse_iql
-  testql.interpreter._testtoon_parser.testtoon_to_iql → testql.interpreter._testtoon_parser.parse_testtoon
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json → testql.interpreter._api_runner._navigate_json_path
-  testql.interpreter._converter.convert_iql_to_testtoon → testql.interpreter._converter._extract_scenario_name
-  testql.interpreter._converter.convert_iql_to_testtoon → testql.interpreter._converter._detect_scenario_type
-  testql.interpreter._converter.convert_file → testql.interpreter._converter.convert_iql_to_testtoon
-  testql.interpreter._converter.convert_directory → testql.interpreter._converter.convert_file
-  testql.interpreter.interpreter.IqlInterpreter.__init__ → testql._base_fallback.VariableStore.set
-  testql.interpreter.interpreter.IqlInterpreter.parse → testql.interpreter._parser.parse_iql
-  testql.interpreter.interpreter.IqlInterpreter.parse → testql.interpreter._testtoon_parser.testtoon_to_iql
-  testql.interpreter.interpreter.IqlInterpreter.execute → testql._base_fallback.VariableStore.all
+  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_block_interfaces
+  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_api_interfaces
+  testql.commands.generate_cmd.generate → testql.commands.generate_cmd._is_workspace
+  testql.commands.generate_cmd._print_routes_section → testql.commands.generate_cmd._count_routes_by
+  testql.commands.misc_cmds.init → testql.commands.misc_cmds._create_templates
+  testql.commands.misc_cmds.report → code2llm_output.map.toon.generate_report
+  testql.commands.misc_cmds.echo → testql.commands.echo_helpers.render_echo
+  testql.commands.misc_cmds.echo → testql.commands.echo_helpers.collect_toon_data
+  testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._strip_path_segments
+  testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._migrate_legacy_extension
+  testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._remap_tests_prefix
   testql.commands.encoder_routes._resolve_iql_path → testql.commands.encoder_routes._normalize_iql_path
+  testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_bool_prop
+  testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_count_prop
+  testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_text_prop
+  testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_classes_prop
   testql.commands.encoder_routes._exec_assert_cmd → testql.commands.encoder_routes._evaluate_assertion
   testql.commands.encoder_routes._execute_iql_line → testql.commands.encoder_routes._exec_encoder_cmd
   testql.commands.encoder_routes._execute_iql_line → testql.commands.encoder_routes._exec_browser_cmd
   testql.commands.encoder_routes.iql_list_files → testql._base_fallback.VariableStore.set
   testql.commands.encoder_routes.iql_read_file → testql.commands.encoder_routes._resolve_iql_path
   testql.commands.encoder_routes.iql_list_tables → testql.commands.encoder_routes._resolve_iql_path
+  testql.commands.encoder_routes.iql_list_tables → testql.commands.encoder_routes._extract_table_names
+  testql.commands.encoder_routes._extract_table_names → testql._base_fallback.VariableStore.set
   testql.commands.encoder_routes.iql_run_line → testql.commands.encoder_routes._execute_iql_line
   testql.commands.encoder_routes.iql_run_file → testql.commands.encoder_routes._resolve_iql_path
+  testql.commands.encoder_routes.iql_run_file → testql.commands.encoder_routes._build_run_summary
+  testql.commands.encoder_routes.iql_run_file → testql.commands.encoder_routes._write_run_log
+  testql.commands.encoder_routes._run_iql_lines → testql.commands.encoder_routes._update_counters
+  testql.commands.encoder_routes._run_iql_lines → testql.commands.encoder_routes._format_log_detail
+  testql.commands.echo_helpers._collect_toon_directory → code2llm_output.map.toon.parse_toon_file
+  testql.commands.echo_helpers.collect_toon_data → testql.commands.echo_helpers._collect_toon_directory
 ```
 
 ## API Stubs

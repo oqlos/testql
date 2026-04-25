@@ -87,6 +87,7 @@ testql/
 ├── Taskfile
 ├── openapi
 ├── project
+├── README
     ├── testql-spec
     ├── README
     ├── context
@@ -101,7 +102,6 @@ testql/
     ├── testtoon_parser
         ├── toon
         ├── toon
-    ├── README
             ├── toon
             ├── toon
             ├── toon
@@ -274,11 +274,11 @@ testql/
                     ├── toon
                     ├── toon
                     ├── toon
-├── README
     ├── prompt
+    ├── README
+        ├── toon
         ├── toon
     ├── context
-        ├── toon
         ├── toon
         ├── toon
     ├── calls
@@ -915,7 +915,7 @@ testql/
 📄 `project.context`
 📄 `project.duplication.toon`
 📄 `project.evolution.toon`
-📄 `project.map.toon` (2080 functions)
+📄 `project.map.toon` (2716 functions)
 📄 `project.project.toon`
 📄 `project.prompt`
 📄 `project.validation.toon`

@@ -4,28 +4,18 @@
 
 - **Project**: /home/tom/github/oqlos/testql
 - **Primary Language**: python
-- **Languages**: python: 95, yaml: 94, md: 12, json: 2, shell: 2
+- **Languages**: python: 95, yaml: 94, json: 2, shell: 2, yml: 2
 - **Analysis Mode**: static
-- **Total Functions**: 1116
-- **Total Classes**: 107
-- **Modules**: 210
-- **Entry Points**: 979
+- **Total Functions**: 740
+- **Total Classes**: 70
+- **Modules**: 198
+- **Entry Points**: 604
 
 ## Architecture by Module
 
 ### project.map.toon
-- **Functions**: 1444
+- **Functions**: 204
 - **File**: `map.toon.yaml`
-
-### SUMD
-- **Functions**: 267
-- **Classes**: 18
-- **File**: `SUMD.md`
-
-### SUMR
-- **Functions**: 87
-- **Classes**: 18
-- **File**: `SUMR.md`
 
 ### code2llm_output.map.toon
 - **Functions**: 87
@@ -108,6 +98,15 @@
 - **Functions**: 9
 - **Classes**: 1
 - **File**: `content.py`
+
+### testql.commands.echo.parsers.doql
+- **Functions**: 9
+- **File**: `doql.py`
+
+### testql.detectors.flask_detector
+- **Functions**: 9
+- **Classes**: 1
+- **File**: `flask_detector.py`
 
 ## Key Entry Points
 
@@ -194,7 +193,7 @@ Examples:
 
 ### testql.commands.misc_cmds.report
 > Generate HTML report from test data.json.
-- **Calls**: click.command, click.argument, click.option, click.option, SUMD.generate_report, click.echo, click.echo, Path
+- **Calls**: click.command, click.argument, click.option, click.option, code2llm_output.map.toon.generate_report, click.echo, click.echo, Path
 
 ### testql.interpreter._gui.GuiMixin._cmd_gui_assert_visible
 > GUI_ASSERT_VISIBLE "selector" — Assert element is visible.
@@ -218,7 +217,7 @@ Examples:
 
 ### testql.runner.DslCliExecutor.run_script
 > Execute a DSL script
-- **Calls**: SUMR.parse_script, TODO.testql-table-format-spec.print, TODO.testql-table-format-spec.print, TODO.testql-table-format-spec.print, TODO.testql-table-format-spec.print, enumerate, TODO.testql-table-format-spec.print, sum
+- **Calls**: code2llm_output.map.toon.parse_script, print, print, print, print, enumerate, print, sum
 
 ### testql.echo_schemas.ProjectEcho.to_text
 > Convert to human-readable text format.
@@ -432,55 +431,56 @@ Supports both legacy IQL format and
 
 Key functions that process and transform data:
 
-### SUMR.parse
+### code2llm_output.map.toon._parse_api_args
 
-### SUMR.validate_response
+### code2llm_output.map.toon._parse_meta_from_args
 
-### SUMR.parse_line
+### code2llm_output.map.toon._parse_target_from_args
 
-### SUMR.parse_script
+### code2llm_output.map.toon.convert_iql_to_testtoon
 
-### SUMR._format_cmd
+### code2llm_output.map.toon.convert_file
 
-### SUMR.parse_sumd_file
+### code2llm_output.map.toon.convert_directory
 
-### SUMR.parse_file
+### code2llm_output.map.toon.parse_doql_less
 
-### SUMR._parse_metadata
+### code2llm_output.map.toon.parse_toon_scenarios
 
-### SUMR._parse_interfaces
+### code2llm_output.map.toon.format_text_output
 
-### SUMR._parse_workflows
+### code2llm_output.map.toon.parse_value
 
-### SUMR._parse_testql_scenarios
+### code2llm_output.map.toon.parse_testtoon
 
-### SUMR._parse_architecture
+### code2llm_output.map.toon.validate
 
-### SUMD.parse_value
+### code2llm_output.map.toon.print_parsed
 
-### SUMD.parse_testtoon
+### code2llm_output.map.toon.parse_line
 
-### SUMD.validate
+### code2llm_output.map.toon.parse_script
 
-### SUMD.print_parsed
+### code2llm_output.map.toon.parse_sumd_file
 
-### SUMD.format_text_output
+### code2llm_output.map.toon._parse_value
 
-### SUMD._parse_kv_block
+### code2llm_output.map.toon.validate_testtoon
 
-### SUMD._parse_app_block
+### code2llm_output.map.toon._expand_encoder
 
-### SUMD._parse_entities
+### code2llm_output.map.toon._format_log_detail
 
-### SUMD._parse_interfaces
+### code2llm_output.map.toon._exec_encoder_cmd
 
-### SUMD._parse_workflows
+### code2llm_output.map.toon.parse_doql_file
 
-### SUMD._parse_deploy
+### code2llm_output.map.toon.parse_iql
 
-### SUMD._parse_environment
+### code2llm_output.map.toon.parse_toon_file
 
-### SUMD._parse_integrations
+### TODO.testtoon_parser.Section.validate
+- **Output to**: errors.append, len, len
 
 ## Behavioral Patterns
 

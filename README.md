@@ -3,29 +3,38 @@
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.6.18-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$5.25-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-24.1h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.6.19-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$5.55-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-24.4h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $5.2500 (35 commits)
-- 👤 **Human dev:** ~$2414 (24.1h @ $100/h, 30min dedup)
+- 🤖 **LLM usage:** $5.5500 (37 commits)
+- 👤 **Human dev:** ~$2436 (24.4h @ $100/h, 30min dedup)
 
-Generated on 2026-04-24 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
+Generated on 2026-04-25 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 
 ---
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-0.6.18-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-0.6.19-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
 
 TestQL is a declarative DSL (Domain Specific Language) for testing GUI, REST API, and hardware encoder interfaces. It provides a simple, readable syntax for writing automated tests without programming overhead.
 
-### What's new in 0.6.6
+### What's new in 0.6.18
 
-- **Refactored `_converter.py`**: `convert_iql_to_testtoon` CC 66 → ≤12; 12 handler functions extracted
-- **Refactored `echo.py`**: `parse_doql_less` CC 29 → ≤8; `format_text_output` CC 19 → ≤6
-- **Fixed `testql generate`**: workspace detection now correctly handles Python packages
-- **Fixed `testql list`**: renders table/simple output and reads TestTOON `# SCENARIO:` headers
-- **Scenarios generated for all 6 OqlOS projects** — 17/17 parse correctly
+- **Executor Refactoring**: Complete implementation of CLI/Shell, GUI, and Unit test execution
+- **CommandDispatcher**: New centralized command dispatcher with auto-discovery and better error messages
+- **Test Coverage**: Increased from 16% to 65% (target: ≥50% achieved)
+- **Code Quality**: All CC hotspots resolved, god modules eliminated
+- **New Test Mixins**: Shell, GUI, and Unit execution mixins with 39 new tests
+
+### Recent Improvements (0.6.7 - 0.6.17)
+
+- **CLI/Shell Execution**: `SHELL`, `EXEC`, `RUN` commands with exit code and stdout/stderr assertions
+- **GUI Execution**: Playwright/Selenium support with `GUI_START`, `GUI_CLICK`, `GUI_INPUT`, etc.
+- **Unit Test Execution**: `UNIT_PYTEST`, `UNIT_ASSERT`, `UNIT_IMPORT` for Python test integration
+- **Architecture**: Modular interpreter structure with auto-discovery of command handlers
+- **OpenAPI**: 7 endpoints auto-generated with FastAPI integration
+- **Quality Pipeline**: pyqual.yaml with 65% coverage target, vallm validation at 64.6%
 
 
 

@@ -18,7 +18,7 @@ SUMD - Structured Unified Markdown Descriptor for AI-aware project refactorizati
 ## Metadata
 
 - **name**: `testql`
-- **version**: `0.6.10`
+- **version**: `0.6.18`
 - **python_requires**: `>=3.10`
 - **license**: Apache-2.0
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -39,7 +39,17 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 0.6.9;
+  version: 0.6.18;
+}
+
+dependencies {
+  runtime: "httpx>=0.27, click>=8.0, rich>=13.0, pyyaml>=6.0, goal>=2.1.0, costs>=0.1.20, pfix>=0.1.60, websockets>=13.0";
+  dev: "pytest, pytest-asyncio, pytest-cov, fastapi, goal>=2.1.0, costs>=0.1.20, pfix>=0.1.60";
+}
+
+interface[type="api"] {
+  type: rest;
+  framework: fastapi;
 }
 
 interface[type="cli"] {
@@ -52,6 +62,21 @@ interface[type="cli"] page[name="testql"] {
 workflow[name="install"] {
   trigger: manual;
   step-1: run cmd=pip install -e .[dev];
+}
+
+workflow[name="deps:update"] {
+  trigger: manual;
+  step-1: run cmd=PIP="pip"
+[ -f "{{.PWD}}/.venv/bin/pip" ] && PIP="{{.PWD}}/.venv/bin/pip"
+$PIP install --upgrade pip
+OUTDATED=$($PIP list --outdated --format=columns 2>/dev/null | tail -n +3 | awk '{print $1}')
+if [ -z "$OUTDATED" ]; then
+  echo "✅ All packages are up to date."
+else
+  echo "📦 Upgrading: $OUTDATED"
+  echo "$OUTDATED" | xargs $PIP install --upgrade
+  echo "✅ Done."
+fi;
 }
 
 workflow[name="quality"] {
@@ -167,19 +192,14 @@ workflow[name="help"] {
   step-1: run cmd=task --list;
 }
 
-workflow[name="analyze"] {
-  trigger: manual;
-  step-1: run cmd=echo "🔬 Running project analysis...";
-  step-2: run cmd=testql analyze . --tools code2llm,redup,vallm;
-}
-
 deploy {
-  target: docker-compose;
+  target: pip;
 }
 
 environment[name="local"] {
-  runtime: docker-compose;
+  runtime: python;
   env_file: .env;
+  python_version: >=3.10;
 }
 ```
 
@@ -410,7 +430,7 @@ pipeline:
   metrics:
     cc_max: 10           # cyclomatic complexity per function
     vallm_pass_min: 60   # actual: 64.6%
-    coverage_min: 66     # baseline — increase as tests are added (currently 64%)
+    coverage_min: 65     # baseline — increase as tests are added (currently 65%)
 
   # Pipeline stages — use 'tool:' for built-in presets or 'run:' for custom commands
   # See all presets: pyqual tools
@@ -505,17 +525,17 @@ pfix>=0.1.60
 class StepStatus:
 class StepResult:
 class ScriptResult:
-    def passed()  # CC=1
-    def failed()  # CC=1
-    def summary()  # CC=1
+    def passed()  # CC=3
+    def failed()  # CC=3
+    def summary()  # CC=2
 class VariableStore:  # Simple key-value store with interpolation support.
-    def __init__(initial)  # CC=2
+    def __init__(initial)  # CC=1
     def set(key, value)  # CC=1
     def get(key, default)  # CC=1
     def has(key)  # CC=1
     def all()  # CC=1
     def clear()  # CC=1
-    def interpolate(text)  # CC=2
+    def interpolate(text)  # CC=1
 class InterpreterOutput:  # Collects interpreter output lines for display or testing.
     def __init__(quiet)  # CC=1
     def emit(msg)  # CC=2
@@ -530,8 +550,8 @@ class BaseInterpreter:  # Abstract base for language interpreters.
     def parse(source, filename)  # CC=1
     def execute(parsed)  # CC=1
     def run(source, filename)  # CC=1
-    def run_file(path)  # CC=2
-    def strip_comments(lines)  # CC=2
+    def run_file(path)  # CC=1
+    def strip_comments(lines)  # CC=3
 class EventBridge:  # Optional WebSocket bridge to DSL Event Server (port 8104).
     def __init__(url)  # CC=1
     def connect()  # CC=2
@@ -543,6 +563,8 @@ class EventBridge:  # Optional WebSocket bridge to DSL Event Server (port 8104).
 ### `testql.openapi_generator` (`testql/openapi_generator.py`)
 
 ```python
+def _extract_path_params(path)  # CC=4, fan=3
+def _extract_ep_params(ep_params, existing)  # CC=7, fan=4
 def generate_openapi_spec(project_path, output, format)  # CC=1, fan=3
 def generate_contract_tests_from_spec(spec_path, output)  # CC=1, fan=2
 class OpenAPISpec:  # OpenAPI specification container.
@@ -550,12 +572,12 @@ class OpenAPISpec:  # OpenAPI specification container.
     def to_json(indent)  # CC=1
     def to_yaml()  # CC=1
 class OpenAPIGenerator:  # Generate OpenAPI specs from detected endpoints.
-    def __init__(project_path)  # CC=1
+    def __init__(project_path)  # CC=3
     def generate(title, version)  # CC=5
     def _normalize_path(path)  # CC=2
     def _build_operation(ep)  # CC=7
-    def _infer_tags(ep)  # CC=6
-    def _extract_parameters(ep)  # CC=10 ⚠
+    def _infer_tags(ep)  # CC=7
+    def _extract_parameters(ep)  # CC=1
     def _build_request_body(ep)  # CC=6
     def _build_responses(ep)  # CC=3
     def save(output_path, format)  # CC=3
@@ -563,34 +585,56 @@ class ContractTestGenerator:  # Generate contract tests from OpenAPI specs.
     def __init__(spec)  # CC=3
     def _load_spec(path)  # CC=2
     def generate_contract_tests(output_file)  # CC=6
-    def _get_expected_status(method, operation)  # CC=3
-    def validate_response(endpoint, method, response)  # CC=10 ⚠
+    def _get_expected_status(method, operation)  # CC=4
+    def validate_response(endpoint, method, response)  # CC=11 ⚠
 ```
 
 ### `testql.runner` (`testql/runner.py`)
 
 ```python
-def parse_line(line)  # CC=7, fan=8
-def parse_script(content)  # CC=1, fan=2
-def main()  # CC=7, fan=14
+def parse_line(line)  # CC=9, fan=8
+def parse_script(content)  # CC=3, fan=2
+def main()  # CC=10, fan=14 ⚠
 class DslCommand:
 class ExecutionResult:
 class DslCliExecutor:
     def __init__(base_url, verbose)  # CC=1
     def execute(cmd)  # CC=2
     def _dispatch(cmd)  # CC=6
-    def cmd_api(cmd)  # CC=3
+    def cmd_api(cmd)  # CC=7
     def cmd_wait(cmd)  # CC=1
-    def cmd_log(cmd)  # CC=1
-    def cmd_print(cmd)  # CC=1
-    def cmd_store(cmd)  # CC=1
-    def cmd_env(cmd)  # CC=1
+    def cmd_log(cmd)  # CC=2
+    def cmd_print(cmd)  # CC=2
+    def cmd_store(cmd)  # CC=2
+    def cmd_env(cmd)  # CC=2
     def cmd_assert_status(cmd)  # CC=2
-    def cmd_assert_json(cmd)  # CC=9
-    def cmd_set_header(cmd)  # CC=1
+    def cmd_assert_json(cmd)  # CC=12 ⚠
+    def cmd_set_header(cmd)  # CC=2
     def cmd_set_base_url(cmd)  # CC=1
-    def run_script(content, stop_on_error)  # CC=9
-    def _format_cmd(cmd)  # CC=1
+    def run_script(content, stop_on_error)  # CC=11 ⚠
+    def _format_cmd(cmd)  # CC=2
+```
+
+### `testql.sumd_parser` (`testql/sumd_parser.py`)
+
+```python
+def _parse_block_interfaces(content)  # CC=3, fan=5
+def _parse_api_interfaces(content)  # CC=8, fan=7
+def parse_sumd_file(path)  # CC=1, fan=2
+class SumdMetadata:  # Metadata from SUMD.
+class SumdInterface:  # Interface from SUMD.
+class SumdWorkflow:  # Workflow from SUMD.
+class SumdDocument:  # Parsed SUMD document.
+class SumdParser:  # Parser for SUMD markdown files.
+    def parse_file(path)  # CC=1
+    def parse(content)  # CC=1
+    def _parse_metadata(content)  # CC=8
+    def _parse_interfaces(content)  # CC=1
+    def _parse_workflows(content)  # CC=4
+    def _parse_testql_scenarios(content)  # CC=11 ⚠
+    def _parse_architecture(content)  # CC=3
+    def _extract_section(content, section_name)  # CC=2
+    def generate_testql_scenarios(doc)  # CC=5
 ```
 
 ### `testql.sumd_generator` (`testql/sumd_generator.py`)
@@ -601,167 +645,260 @@ def _header_section(project_name, version)  # CC=1, fan=1
 def _metadata_section(project_name, version)  # CC=1, fan=0
 def _architecture_section()  # CC=1, fan=0
 def _doql_declaration_section(project_echo, project_name, version)  # CC=7, fan=1
-def _api_contract_section(project_echo)  # CC=5, fan=4
+def _api_contract_section(project_echo)  # CC=6, fan=4
 def _workflows_table_section(project_echo)  # CC=5, fan=2
 def _configuration_section(project_echo, project_name, version)  # CC=2, fan=1
-def _llm_suggestions_section(project_echo)  # CC=2, fan=3
-def _workflow_snippet(workflows, name, comment, cmd)  # CC=2, fan=1
+def _llm_suggestions_section(project_echo)  # CC=4, fan=3
+def _workflow_snippet(workflows, name, comment, cmd)  # CC=4, fan=1
 def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
-```
-
-### `testql.sumd_parser` (`testql/sumd_parser.py`)
-
-```python
-def parse_sumd_file(path)  # CC=1, fan=2
-class SumdMetadata:  # Metadata from SUMD.
-class SumdInterface:  # Interface from SUMD.
-class SumdWorkflow:  # Workflow from SUMD.
-class SumdDocument:  # Parsed SUMD document.
-class SumdParser:  # Parser for SUMD markdown files.
-    def parse_file(path)  # CC=1
-    def parse(content)  # CC=1
-    def _parse_metadata(content)  # CC=8
-    def _parse_interfaces(content)  # CC=10 ⚠
-    def _parse_workflows(content)  # CC=4
-    def _parse_testql_scenarios(content)  # CC=9
-    def _parse_architecture(content)  # CC=3
-    def _extract_section(content, section_name)  # CC=2
-    def generate_testql_scenarios(doc)  # CC=5
 ```
 
 ## Call Graph
 
-*65 nodes · 49 edges · 21 modules · CC̄=4.6*
+*173 nodes · 151 edges · 46 modules · CC̄=2.3*
 
 ### Hubs (by degree)
 
 | Function | CC | in | out | total |
 |----------|----|----|-----|-------|
-| `convert_iql_to_testtoon` *(in testql.interpreter._converter)* | 66 ⚠ | 1 | 116 | **117** |
-| `parse_doql_less` *(in testql.commands.echo)* | 29 ⚠ | 1 | 85 | **86** |
-| `format_text_output` *(in testql.commands.echo)* | 19 ⚠ | 1 | 46 | **47** |
-| `iql_run_file` *(in testql.commands.encoder_routes)* | 12 ⚠ | 0 | 43 | **43** |
-| `parse_testtoon` *(in testql.interpreter._testtoon_parser)* | 12 ⚠ | 1 | 31 | **32** |
-| `list_tests` *(in testql.commands.suite_cmd)* | 9 | 0 | 27 | **27** |
-| `_collect_test_files` *(in testql.commands.suite_cmd)* | 15 ⚠ | 1 | 23 | **24** |
+| `generate` *(in testql.commands.generate_cmd)* | 10 ⚠ | 0 | 44 | **44** |
+| `_print_routes_section` *(in testql.commands.generate_cmd)* | 10 ⚠ | 1 | 23 | **24** |
+| `_parse_workflows` *(in testql.commands.echo.parsers.doql)* | 7 | 1 | 22 | **23** |
+| `_run_iql_lines` *(in testql.commands.encoder_routes)* | 6 | 1 | 22 | **23** |
 | `parse_line` *(in testql.runner)* | 9 | 2 | 20 | **22** |
+| `report` *(in testql.commands.misc_cmds)* | 4 | 0 | 22 | **22** |
+| `run_script` *(in testql.runner.DslCliExecutor)* | 11 ⚠ | 0 | 20 | **20** |
+| `endpoints` *(in testql.commands.endpoints_cmd)* | 9 | 0 | 20 | **20** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# nodes: 65 | edges: 49 | modules: 21
-# CC̄=4.6
+# nodes: 173 | edges: 151 | modules: 46
+# CC̄=2.3
 
 HUBS[20]:
-  testql.interpreter._converter.convert_iql_to_testtoon
-    CC=66  in:1  out:116  total:117
-  testql.commands.echo.parse_doql_less
-    CC=29  in:1  out:85  total:86
-  testql.commands.echo.format_text_output
-    CC=19  in:1  out:46  total:47
-  testql.commands.encoder_routes.iql_run_file
-    CC=12  in:0  out:43  total:43
-  testql.interpreter._testtoon_parser.parse_testtoon
-    CC=12  in:1  out:31  total:32
-  testql.commands.suite_cmd.list_tests
-    CC=9  in:0  out:27  total:27
-  testql.commands.suite_cmd._collect_test_files
-    CC=15  in:1  out:23  total:24
+  testql.commands.generate_cmd.generate
+    CC=10  in:0  out:44  total:44
+  testql.commands.generate_cmd._print_routes_section
+    CC=10  in:1  out:23  total:24
+  testql.commands.echo.parsers.doql._parse_workflows
+    CC=7  in:1  out:22  total:23
+  testql.commands.encoder_routes._run_iql_lines
+    CC=6  in:1  out:22  total:23
   testql.runner.parse_line
     CC=9  in:2  out:20  total:22
-  testql.commands.echo.parse_toon_scenarios
-    CC=8  in:1  out:21  total:22
   testql.commands.misc_cmds.report
     CC=4  in:0  out:22  total:22
-  testql.report_generator.generate_report
-    CC=3  in:1  out:20  total:21
-  testql.commands.misc_cmds.create
-    CC=6  in:0  out:21  total:21
   testql.runner.DslCliExecutor.run_script
     CC=11  in:0  out:20  total:20
   testql.commands.endpoints_cmd.endpoints
     CC=9  in:0  out:20  total:20
-  testql.commands.endpoints_cmd._format_endpoints
-    CC=13  in:1  out:18  total:19
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
-    CC=6  in:0  out:17  total:17
+  testql.commands.misc_cmds.init
+    CC=4  in:0  out:20  total:20
+  testql.commands.misc_cmds.echo
+    CC=4  in:0  out:20  total:20
+  testql.commands.echo.parsers.doql._parse_entities
+    CC=7  in:1  out:16  total:17
+  testql.commands.echo.cli.echo
+    CC=3  in:0  out:17  total:17
   testql.interpreter._flow.FlowMixin._cmd_include
     CC=7  in:0  out:17  total:17
-  testql.commands.echo.echo
-    CC=3  in:0  out:17  total:17
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+    CC=6  in:0  out:17  total:17
+  testql.interpreter._testtoon_parser.parse_testtoon
+    CC=8  in:1  out:15  total:16
+  testql.interpreter.converter.parsers.parse_target_from_args
+    CC=4  in:7  out:9  total:16
+  testql.commands.echo.parsers.toon._parse_scenario
+    CC=5  in:1  out:15  total:16
   testql.interpreter.interpreter.IqlInterpreter.execute
     CC=4  in:0  out:16  total:16
-  testql.commands.encoder_routes.iql_list_tables
-    CC=4  in:0  out:15  total:15
+  testql.commands.encoder_routes.iql_run_file
+    CC=3  in:0  out:15  total:15
+  testql.commands.encoder_routes._execute_iql_line
+    CC=10  in:2  out:13  total:15
 
 MODULES:
   TODO.testtoon_parser  [2 funcs]
     print_parsed  CC=8  out:12
     validate  CC=2  out:2
+  code2llm_output.map.toon  [13 funcs]
+    _navigate_json_path  CC=0  out:0
+    format_text_output  CC=0  out:0
+    generate_context  CC=0  out:0
+    generate_report  CC=0  out:0
+    generate_sumd  CC=0  out:0
+    list  CC=0  out:0
+    parse_doql_file  CC=0  out:0
+    parse_doql_less  CC=0  out:0
+    parse_iql  CC=0  out:0
+    parse_script  CC=0  out:0
   testql._base_fallback  [2 funcs]
     all  CC=1  out:1
     set  CC=1  out:0
   testql.cli  [2 funcs]
     cli  CC=1  out:2
     main  CC=1  out:1
-  testql.commands.echo  [5 funcs]
+  testql.commands.echo.cli  [1 funcs]
     echo  CC=3  out:17
-    format_text_output  CC=19  out:46
-    generate_context  CC=7  out:9
-    parse_doql_less  CC=29  out:85
-    parse_toon_scenarios  CC=8  out:21
-  testql.commands.encoder_routes  [12 funcs]
-    _evaluate_assertion  CC=10  out:12
+  testql.commands.echo.context  [3 funcs]
+    _find_doql_file  CC=4  out:5
+    _find_toon_path  CC=2  out:1
+    generate_context  CC=4  out:5
+  testql.commands.echo.formatters.text  [7 funcs]
+    _build_header  CC=1  out:4
+    _fmt_contracts  CC=5  out:8
+    _fmt_entities  CC=4  out:10
+    _fmt_interfaces  CC=3  out:5
+    _fmt_suggestions  CC=6  out:8
+    _fmt_workflows  CC=3  out:6
+    format_text_output  CC=1  out:7
+  testql.commands.echo.parsers.doql  [9 funcs]
+    _parse_app_block  CC=2  out:3
+    _parse_deploy  CC=2  out:3
+    _parse_entities  CC=7  out:16
+    _parse_environment  CC=2  out:3
+    _parse_integrations  CC=4  out:12
+    _parse_interfaces  CC=2  out:4
+    _parse_kv_block  CC=3  out:6
+    _parse_workflows  CC=7  out:22
+    parse_doql_less  CC=1  out:8
+  testql.commands.echo.parsers.toon  [2 funcs]
+    _parse_scenario  CC=5  out:15
+    parse_toon_scenarios  CC=3  out:5
+  testql.commands.echo_helpers  [4 funcs]
+    _collect_toon_directory  CC=8  out:9
+    collect_doql_data  CC=2  out:5
+    collect_toon_data  CC=3  out:7
+    render_echo  CC=3  out:4
+  testql.commands.encoder_routes  [25 funcs]
+    _assert_bool_prop  CC=2  out:5
+    _assert_classes_prop  CC=2  out:1
+    _assert_count_prop  CC=2  out:2
+    _assert_text_prop  CC=2  out:2
+    _build_run_summary  CC=2  out:1
+    _evaluate_assertion  CC=6  out:6
     _exec_assert_cmd  CC=7  out:11
     _exec_browser_cmd  CC=9  out:10
     _exec_encoder_cmd  CC=6  out:4
     _execute_iql_line  CC=10  out:13
-    _normalize_iql_path  CC=10  out:13
-    _resolve_iql_path  CC=1  out:2
-    iql_list_files  CC=7  out:14
-    iql_list_tables  CC=4  out:15
-    iql_read_file  CC=3  out:11
-  testql.commands.endpoints_cmd  [2 funcs]
-    _format_endpoints  CC=13  out:18
+  testql.commands.endpoints_cmd  [5 funcs]
+    _format_endpoints  CC=3  out:3
+    _format_endpoints_csv  CC=5  out:7
+    _format_endpoints_json  CC=3  out:3
+    _format_endpoints_table  CC=5  out:8
     endpoints  CC=9  out:20
-  testql.commands.misc_cmds  [3 funcs]
-    _build_test_content  CC=7  out:1
-    create  CC=6  out:21
+  testql.commands.generate_cmd  [4 funcs]
+    _count_routes_by  CC=2  out:3
+    _is_workspace  CC=5  out:5
+    _print_routes_section  CC=10  out:23
+    generate  CC=10  out:44
+  testql.commands.misc_cmds  [4 funcs]
+    _create_templates  CC=4  out:4
+    echo  CC=4  out:20
+    init  CC=4  out:20
     report  CC=4  out:22
-  testql.commands.suite_cmd  [4 funcs]
-    _collect_test_files  CC=15  out:23
-    _find_files  CC=9  out:8
-    _parse_meta  CC=12  out:10
-    list_tests  CC=9  out:27
-  testql.endpoint_detector  [1 funcs]
+  testql.commands.suite.cli  [1 funcs]
+    list_tests  CC=2  out:13
+  testql.commands.suite.collection  [8 funcs]
+    _collect_by_pattern  CC=2  out:3
+    _collect_from_suite  CC=4  out:7
+    _collect_recursive  CC=4  out:3
+    _deduplicate_files  CC=5  out:5
+    _find_files  CC=6  out:7
+    _resolve_search_dir_and_pattern  CC=4  out:2
+    collect_list_files  CC=4  out:5
+    collect_test_files  CC=5  out:7
+  testql.commands.suite.execution  [2 funcs]
+    run_single_file  CC=3  out:7
+    run_suite_files  CC=5  out:11
+  testql.commands.suite.listing  [6 funcs]
+    _collect_meta_lines  CC=7  out:6
+    _parse_testtoon_header  CC=6  out:8
+    _parse_yaml_meta_block  CC=5  out:4
+    filter_tests  CC=6  out:9
+    parse_meta  CC=6  out:6
+    render_test_list  CC=6  out:9
+  testql.commands.suite.reports  [3 funcs]
+    _build_junit_xml  CC=5  out:8
+    _save_json_report  CC=1  out:3
+    save_report  CC=3  out:5
+  testql.detectors.unified  [1 funcs]
     _deduplicate_endpoints  CC=3  out:4
-  testql.generator  [1 funcs]
-    _scan_directory_structure  CC=8  out:6
-  testql.interpreter._api_runner  [2 funcs]
+  testql.generators.base  [1 funcs]
+    _should_exclude_path  CC=1  out:3
+  testql.generators.generators  [1 funcs]
+    _deduplicate_rest_routes  CC=4  out:3
+  testql.generators.multi  [1 funcs]
+    generate_cross_project_tests  CC=3  out:11
+  testql.interpreter._api_runner  [4 funcs]
     _cmd_capture  CC=3  out:13
-    _navigate_json_path  CC=10  out:13
+    _navigate_json_path  CC=5  out:5
+    _navigate_step  CC=4  out:4
+    _resolve_length  CC=4  out:6
   testql.interpreter._assertions  [1 funcs]
     _cmd_assert_json  CC=6  out:17
-  testql.interpreter._converter  [5 funcs]
-    _detect_scenario_type  CC=12  out:7
-    _extract_scenario_name  CC=6  out:8
-    convert_directory  CC=4  out:7
-    convert_file  CC=1  out:3
-    convert_iql_to_testtoon  CC=66  out:116
   testql.interpreter._flow  [1 funcs]
     _cmd_include  CC=7  out:17
-  testql.interpreter._parser  [1 funcs]
-    parse_iql  CC=5  out:10
-  testql.interpreter._testtoon_parser  [2 funcs]
-    parse_testtoon  CC=12  out:31
+  testql.interpreter._testtoon_parser  [10 funcs]
+    _append_api_asserts  CC=8  out:10
+    _detect_separator  CC=2  out:0
+    _expand_api  CC=2  out:5
+    _make_data_row  CC=2  out:6
+    _make_section  CC=4  out:9
+    _parse_inline_array  CC=2  out:2
+    _parse_inline_dict  CC=3  out:4
+    _parse_value  CC=8  out:10
+    parse_testtoon  CC=8  out:15
     testtoon_to_iql  CC=2  out:4
+  testql.interpreter.converter.core  [3 funcs]
+    convert_directory  CC=4  out:7
+    convert_file  CC=1  out:3
+    convert_iql_to_testtoon  CC=5  out:10
+  testql.interpreter.converter.dispatcher  [1 funcs]
+    dispatch  CC=3  out:3
+  testql.interpreter.converter.handlers.api  [1 funcs]
+    handle_api  CC=6  out:7
+  testql.interpreter.converter.handlers.assertions  [1 funcs]
+    collect_assert  CC=9  out:9
+  testql.interpreter.converter.handlers.encoder  [3 funcs]
+    _advance_past_wait  CC=4  out:2
+    _encoder_action_fields  CC=5  out:4
+    handle_encoder  CC=3  out:8
+  testql.interpreter.converter.handlers.flow  [1 funcs]
+    handle_flow  CC=3  out:6
+  testql.interpreter.converter.handlers.include  [1 funcs]
+    handle_include  CC=1  out:2
+  testql.interpreter.converter.handlers.navigate  [1 funcs]
+    handle_navigate  CC=6  out:8
+  testql.interpreter.converter.handlers.record  [1 funcs]
+    handle_record_start  CC=1  out:2
+  testql.interpreter.converter.handlers.select  [1 funcs]
+    handle_select  CC=3  out:8
+  testql.interpreter.converter.handlers.unknown  [1 funcs]
+    handle_unknown  CC=3  out:4
+  testql.interpreter.converter.parsers  [6 funcs]
+    detect_scenario_type  CC=11  out:6
+    extract_scenario_name  CC=6  out:8
+    parse_api_args  CC=5  out:9
+    parse_commands  CC=5  out:10
+    parse_meta_from_args  CC=4  out:6
+    parse_target_from_args  CC=4  out:9
+  testql.interpreter.converter.renderer  [4 funcs]
+    _render_section_header  CC=3  out:2
+    build_config_section  CC=6  out:6
+    build_header  CC=1  out:0
+    render_sections  CC=7  out:12
+  testql.interpreter.dispatcher  [1 funcs]
+    dispatch  CC=5  out:13
   testql.interpreter.interpreter  [3 funcs]
-    __init__  CC=2  out:3
+    __init__  CC=2  out:4
     execute  CC=4  out:16
     parse  CC=2  out:3
-  testql.openapi_generator  [1 funcs]
+  testql.openapi_generator  [4 funcs]
+    _extract_parameters  CC=1  out:3
     _infer_tags  CC=7  out:9
-  testql.report_generator  [1 funcs]
-    generate_report  CC=3  out:20
+    _extract_ep_params  CC=7  out:8
+    _extract_path_params  CC=4  out:4
   testql.runner  [3 funcs]
     run_script  CC=11  out:20
     parse_line  CC=9  out:20
@@ -777,12 +914,20 @@ MODULES:
     _workflow_snippet  CC=4  out:1
     _workflows_table_section  CC=5  out:3
     generate_sumd  CC=4  out:10
+  testql.sumd_parser  [3 funcs]
+    _parse_interfaces  CC=1  out:2
+    _parse_api_interfaces  CC=8  out:13
+    _parse_block_interfaces  CC=3  out:7
 
 EDGES:
-  testql.cli.main → testql.cli.cli
-  testql.generator.TestGenerator._scan_directory_structure → testql._base_fallback.VariableStore.set
   TODO.testtoon_parser.print_parsed → TODO.testtoon_parser.validate
+  testql.cli.main → testql.cli.cli
+  testql.runner.parse_script → testql.runner.parse_line
+  testql.runner.DslCliExecutor.run_script → code2llm_output.map.toon.parse_script
+  testql.openapi_generator.OpenAPIGenerator._infer_tags → code2llm_output.map.toon.list
   testql.openapi_generator.OpenAPIGenerator._infer_tags → testql._base_fallback.VariableStore.set
+  testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_path_params
+  testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_ep_params
   testql.sumd_generator.generate_sumd → testql.sumd_generator._header_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._metadata_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._architecture_section
@@ -793,41 +938,38 @@ EDGES:
   testql.sumd_generator.generate_sumd → testql.sumd_generator._llm_suggestions_section
   testql.sumd_generator._llm_suggestions_section → testql.sumd_generator._workflow_snippet
   testql.sumd_generator.save_sumd → testql.sumd_generator.generate_sumd
-  testql.runner.parse_script → testql.runner.parse_line
-  testql.runner.DslCliExecutor.run_script → testql.runner.parse_script
-  testql.commands.echo.generate_context → testql.commands.echo.parse_toon_scenarios
-  testql.commands.echo.generate_context → testql.commands.echo.parse_doql_less
-  testql.commands.echo.echo → testql.commands.echo.generate_context
-  testql.commands.echo.echo → testql.commands.echo.format_text_output
-  testql.commands.endpoints_cmd.endpoints → testql.commands.endpoints_cmd._format_endpoints
-  testql.endpoint_detector.UnifiedEndpointDetector._deduplicate_endpoints → testql._base_fallback.VariableStore.set
-  testql.commands.misc_cmds.create → testql.commands.misc_cmds._build_test_content
-  testql.commands.misc_cmds.report → testql.report_generator.generate_report
-  testql.commands.suite_cmd._collect_test_files → testql._base_fallback.VariableStore.set
-  testql.commands.suite_cmd._collect_test_files → testql.commands.suite_cmd._find_files
-  testql.commands.suite_cmd.list_tests → testql._base_fallback.VariableStore.set
-  testql.commands.suite_cmd.list_tests → testql.commands.suite_cmd._parse_meta
-  testql.interpreter._api_runner.ApiRunnerMixin._cmd_capture → testql.interpreter._api_runner._navigate_json_path
-  testql.interpreter._flow.FlowMixin._cmd_include → testql.interpreter._parser.parse_iql
-  testql.interpreter._testtoon_parser.testtoon_to_iql → testql.interpreter._testtoon_parser.parse_testtoon
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json → testql.interpreter._api_runner._navigate_json_path
-  testql.interpreter._converter.convert_iql_to_testtoon → testql.interpreter._converter._extract_scenario_name
-  testql.interpreter._converter.convert_iql_to_testtoon → testql.interpreter._converter._detect_scenario_type
-  testql.interpreter._converter.convert_file → testql.interpreter._converter.convert_iql_to_testtoon
-  testql.interpreter._converter.convert_directory → testql.interpreter._converter.convert_file
-  testql.interpreter.interpreter.IqlInterpreter.__init__ → testql._base_fallback.VariableStore.set
-  testql.interpreter.interpreter.IqlInterpreter.parse → testql.interpreter._parser.parse_iql
-  testql.interpreter.interpreter.IqlInterpreter.parse → testql.interpreter._testtoon_parser.testtoon_to_iql
-  testql.interpreter.interpreter.IqlInterpreter.execute → testql._base_fallback.VariableStore.all
+  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_block_interfaces
+  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_api_interfaces
+  testql.commands.generate_cmd.generate → testql.commands.generate_cmd._is_workspace
+  testql.commands.generate_cmd._print_routes_section → testql.commands.generate_cmd._count_routes_by
+  testql.commands.misc_cmds.init → testql.commands.misc_cmds._create_templates
+  testql.commands.misc_cmds.report → code2llm_output.map.toon.generate_report
+  testql.commands.misc_cmds.echo → testql.commands.echo_helpers.render_echo
+  testql.commands.misc_cmds.echo → testql.commands.echo_helpers.collect_toon_data
+  testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._strip_path_segments
+  testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._migrate_legacy_extension
+  testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._remap_tests_prefix
   testql.commands.encoder_routes._resolve_iql_path → testql.commands.encoder_routes._normalize_iql_path
+  testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_bool_prop
+  testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_count_prop
+  testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_text_prop
+  testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_classes_prop
   testql.commands.encoder_routes._exec_assert_cmd → testql.commands.encoder_routes._evaluate_assertion
   testql.commands.encoder_routes._execute_iql_line → testql.commands.encoder_routes._exec_encoder_cmd
   testql.commands.encoder_routes._execute_iql_line → testql.commands.encoder_routes._exec_browser_cmd
   testql.commands.encoder_routes.iql_list_files → testql._base_fallback.VariableStore.set
   testql.commands.encoder_routes.iql_read_file → testql.commands.encoder_routes._resolve_iql_path
   testql.commands.encoder_routes.iql_list_tables → testql.commands.encoder_routes._resolve_iql_path
+  testql.commands.encoder_routes.iql_list_tables → testql.commands.encoder_routes._extract_table_names
+  testql.commands.encoder_routes._extract_table_names → testql._base_fallback.VariableStore.set
   testql.commands.encoder_routes.iql_run_line → testql.commands.encoder_routes._execute_iql_line
   testql.commands.encoder_routes.iql_run_file → testql.commands.encoder_routes._resolve_iql_path
+  testql.commands.encoder_routes.iql_run_file → testql.commands.encoder_routes._build_run_summary
+  testql.commands.encoder_routes.iql_run_file → testql.commands.encoder_routes._write_run_log
+  testql.commands.encoder_routes._run_iql_lines → testql.commands.encoder_routes._update_counters
+  testql.commands.encoder_routes._run_iql_lines → testql.commands.encoder_routes._format_log_detail
+  testql.commands.echo_helpers._collect_toon_directory → code2llm_output.map.toon.parse_toon_file
+  testql.commands.echo_helpers.collect_toon_data → testql.commands.echo_helpers._collect_toon_directory
 ```
 
 ## Test Contracts
@@ -1059,120 +1201,233 @@ EDGES:
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# nodes: 65 | edges: 49 | modules: 21
-# CC̄=4.6
+# nodes: 173 | edges: 151 | modules: 46
+# CC̄=2.3
 
 HUBS[20]:
-  testql.interpreter._converter.convert_iql_to_testtoon
-    CC=66  in:1  out:116  total:117
-  testql.commands.echo.parse_doql_less
-    CC=29  in:1  out:85  total:86
-  testql.commands.echo.format_text_output
-    CC=19  in:1  out:46  total:47
-  testql.commands.encoder_routes.iql_run_file
-    CC=12  in:0  out:43  total:43
-  testql.interpreter._testtoon_parser.parse_testtoon
-    CC=12  in:1  out:31  total:32
-  testql.commands.suite_cmd.list_tests
-    CC=9  in:0  out:27  total:27
-  testql.commands.suite_cmd._collect_test_files
-    CC=15  in:1  out:23  total:24
+  testql.commands.generate_cmd.generate
+    CC=10  in:0  out:44  total:44
+  testql.commands.generate_cmd._print_routes_section
+    CC=10  in:1  out:23  total:24
+  testql.commands.echo.parsers.doql._parse_workflows
+    CC=7  in:1  out:22  total:23
+  testql.commands.encoder_routes._run_iql_lines
+    CC=6  in:1  out:22  total:23
   testql.runner.parse_line
     CC=9  in:2  out:20  total:22
-  testql.commands.echo.parse_toon_scenarios
-    CC=8  in:1  out:21  total:22
   testql.commands.misc_cmds.report
     CC=4  in:0  out:22  total:22
-  testql.report_generator.generate_report
-    CC=3  in:1  out:20  total:21
-  testql.commands.misc_cmds.create
-    CC=6  in:0  out:21  total:21
   testql.runner.DslCliExecutor.run_script
     CC=11  in:0  out:20  total:20
   testql.commands.endpoints_cmd.endpoints
     CC=9  in:0  out:20  total:20
-  testql.commands.endpoints_cmd._format_endpoints
-    CC=13  in:1  out:18  total:19
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
-    CC=6  in:0  out:17  total:17
+  testql.commands.misc_cmds.init
+    CC=4  in:0  out:20  total:20
+  testql.commands.misc_cmds.echo
+    CC=4  in:0  out:20  total:20
+  testql.commands.echo.parsers.doql._parse_entities
+    CC=7  in:1  out:16  total:17
+  testql.commands.echo.cli.echo
+    CC=3  in:0  out:17  total:17
   testql.interpreter._flow.FlowMixin._cmd_include
     CC=7  in:0  out:17  total:17
-  testql.commands.echo.echo
-    CC=3  in:0  out:17  total:17
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+    CC=6  in:0  out:17  total:17
+  testql.interpreter._testtoon_parser.parse_testtoon
+    CC=8  in:1  out:15  total:16
+  testql.interpreter.converter.parsers.parse_target_from_args
+    CC=4  in:7  out:9  total:16
+  testql.commands.echo.parsers.toon._parse_scenario
+    CC=5  in:1  out:15  total:16
   testql.interpreter.interpreter.IqlInterpreter.execute
     CC=4  in:0  out:16  total:16
-  testql.commands.encoder_routes.iql_list_tables
-    CC=4  in:0  out:15  total:15
+  testql.commands.encoder_routes.iql_run_file
+    CC=3  in:0  out:15  total:15
+  testql.commands.encoder_routes._execute_iql_line
+    CC=10  in:2  out:13  total:15
 
 MODULES:
   TODO.testtoon_parser  [2 funcs]
     print_parsed  CC=8  out:12
     validate  CC=2  out:2
+  code2llm_output.map.toon  [13 funcs]
+    _navigate_json_path  CC=0  out:0
+    format_text_output  CC=0  out:0
+    generate_context  CC=0  out:0
+    generate_report  CC=0  out:0
+    generate_sumd  CC=0  out:0
+    list  CC=0  out:0
+    parse_doql_file  CC=0  out:0
+    parse_doql_less  CC=0  out:0
+    parse_iql  CC=0  out:0
+    parse_script  CC=0  out:0
   testql._base_fallback  [2 funcs]
     all  CC=1  out:1
     set  CC=1  out:0
   testql.cli  [2 funcs]
     cli  CC=1  out:2
     main  CC=1  out:1
-  testql.commands.echo  [5 funcs]
+  testql.commands.echo.cli  [1 funcs]
     echo  CC=3  out:17
-    format_text_output  CC=19  out:46
-    generate_context  CC=7  out:9
-    parse_doql_less  CC=29  out:85
-    parse_toon_scenarios  CC=8  out:21
-  testql.commands.encoder_routes  [12 funcs]
-    _evaluate_assertion  CC=10  out:12
+  testql.commands.echo.context  [3 funcs]
+    _find_doql_file  CC=4  out:5
+    _find_toon_path  CC=2  out:1
+    generate_context  CC=4  out:5
+  testql.commands.echo.formatters.text  [7 funcs]
+    _build_header  CC=1  out:4
+    _fmt_contracts  CC=5  out:8
+    _fmt_entities  CC=4  out:10
+    _fmt_interfaces  CC=3  out:5
+    _fmt_suggestions  CC=6  out:8
+    _fmt_workflows  CC=3  out:6
+    format_text_output  CC=1  out:7
+  testql.commands.echo.parsers.doql  [9 funcs]
+    _parse_app_block  CC=2  out:3
+    _parse_deploy  CC=2  out:3
+    _parse_entities  CC=7  out:16
+    _parse_environment  CC=2  out:3
+    _parse_integrations  CC=4  out:12
+    _parse_interfaces  CC=2  out:4
+    _parse_kv_block  CC=3  out:6
+    _parse_workflows  CC=7  out:22
+    parse_doql_less  CC=1  out:8
+  testql.commands.echo.parsers.toon  [2 funcs]
+    _parse_scenario  CC=5  out:15
+    parse_toon_scenarios  CC=3  out:5
+  testql.commands.echo_helpers  [4 funcs]
+    _collect_toon_directory  CC=8  out:9
+    collect_doql_data  CC=2  out:5
+    collect_toon_data  CC=3  out:7
+    render_echo  CC=3  out:4
+  testql.commands.encoder_routes  [25 funcs]
+    _assert_bool_prop  CC=2  out:5
+    _assert_classes_prop  CC=2  out:1
+    _assert_count_prop  CC=2  out:2
+    _assert_text_prop  CC=2  out:2
+    _build_run_summary  CC=2  out:1
+    _evaluate_assertion  CC=6  out:6
     _exec_assert_cmd  CC=7  out:11
     _exec_browser_cmd  CC=9  out:10
     _exec_encoder_cmd  CC=6  out:4
     _execute_iql_line  CC=10  out:13
-    _normalize_iql_path  CC=10  out:13
-    _resolve_iql_path  CC=1  out:2
-    iql_list_files  CC=7  out:14
-    iql_list_tables  CC=4  out:15
-    iql_read_file  CC=3  out:11
-  testql.commands.endpoints_cmd  [2 funcs]
-    _format_endpoints  CC=13  out:18
+  testql.commands.endpoints_cmd  [5 funcs]
+    _format_endpoints  CC=3  out:3
+    _format_endpoints_csv  CC=5  out:7
+    _format_endpoints_json  CC=3  out:3
+    _format_endpoints_table  CC=5  out:8
     endpoints  CC=9  out:20
-  testql.commands.misc_cmds  [3 funcs]
-    _build_test_content  CC=7  out:1
-    create  CC=6  out:21
+  testql.commands.generate_cmd  [4 funcs]
+    _count_routes_by  CC=2  out:3
+    _is_workspace  CC=5  out:5
+    _print_routes_section  CC=10  out:23
+    generate  CC=10  out:44
+  testql.commands.misc_cmds  [4 funcs]
+    _create_templates  CC=4  out:4
+    echo  CC=4  out:20
+    init  CC=4  out:20
     report  CC=4  out:22
-  testql.commands.suite_cmd  [4 funcs]
-    _collect_test_files  CC=15  out:23
-    _find_files  CC=9  out:8
-    _parse_meta  CC=12  out:10
-    list_tests  CC=9  out:27
-  testql.endpoint_detector  [1 funcs]
+  testql.commands.suite.cli  [1 funcs]
+    list_tests  CC=2  out:13
+  testql.commands.suite.collection  [8 funcs]
+    _collect_by_pattern  CC=2  out:3
+    _collect_from_suite  CC=4  out:7
+    _collect_recursive  CC=4  out:3
+    _deduplicate_files  CC=5  out:5
+    _find_files  CC=6  out:7
+    _resolve_search_dir_and_pattern  CC=4  out:2
+    collect_list_files  CC=4  out:5
+    collect_test_files  CC=5  out:7
+  testql.commands.suite.execution  [2 funcs]
+    run_single_file  CC=3  out:7
+    run_suite_files  CC=5  out:11
+  testql.commands.suite.listing  [6 funcs]
+    _collect_meta_lines  CC=7  out:6
+    _parse_testtoon_header  CC=6  out:8
+    _parse_yaml_meta_block  CC=5  out:4
+    filter_tests  CC=6  out:9
+    parse_meta  CC=6  out:6
+    render_test_list  CC=6  out:9
+  testql.commands.suite.reports  [3 funcs]
+    _build_junit_xml  CC=5  out:8
+    _save_json_report  CC=1  out:3
+    save_report  CC=3  out:5
+  testql.detectors.unified  [1 funcs]
     _deduplicate_endpoints  CC=3  out:4
-  testql.generator  [1 funcs]
-    _scan_directory_structure  CC=8  out:6
-  testql.interpreter._api_runner  [2 funcs]
+  testql.generators.base  [1 funcs]
+    _should_exclude_path  CC=1  out:3
+  testql.generators.generators  [1 funcs]
+    _deduplicate_rest_routes  CC=4  out:3
+  testql.generators.multi  [1 funcs]
+    generate_cross_project_tests  CC=3  out:11
+  testql.interpreter._api_runner  [4 funcs]
     _cmd_capture  CC=3  out:13
-    _navigate_json_path  CC=10  out:13
+    _navigate_json_path  CC=5  out:5
+    _navigate_step  CC=4  out:4
+    _resolve_length  CC=4  out:6
   testql.interpreter._assertions  [1 funcs]
     _cmd_assert_json  CC=6  out:17
-  testql.interpreter._converter  [5 funcs]
-    _detect_scenario_type  CC=12  out:7
-    _extract_scenario_name  CC=6  out:8
-    convert_directory  CC=4  out:7
-    convert_file  CC=1  out:3
-    convert_iql_to_testtoon  CC=66  out:116
   testql.interpreter._flow  [1 funcs]
     _cmd_include  CC=7  out:17
-  testql.interpreter._parser  [1 funcs]
-    parse_iql  CC=5  out:10
-  testql.interpreter._testtoon_parser  [2 funcs]
-    parse_testtoon  CC=12  out:31
+  testql.interpreter._testtoon_parser  [10 funcs]
+    _append_api_asserts  CC=8  out:10
+    _detect_separator  CC=2  out:0
+    _expand_api  CC=2  out:5
+    _make_data_row  CC=2  out:6
+    _make_section  CC=4  out:9
+    _parse_inline_array  CC=2  out:2
+    _parse_inline_dict  CC=3  out:4
+    _parse_value  CC=8  out:10
+    parse_testtoon  CC=8  out:15
     testtoon_to_iql  CC=2  out:4
+  testql.interpreter.converter.core  [3 funcs]
+    convert_directory  CC=4  out:7
+    convert_file  CC=1  out:3
+    convert_iql_to_testtoon  CC=5  out:10
+  testql.interpreter.converter.dispatcher  [1 funcs]
+    dispatch  CC=3  out:3
+  testql.interpreter.converter.handlers.api  [1 funcs]
+    handle_api  CC=6  out:7
+  testql.interpreter.converter.handlers.assertions  [1 funcs]
+    collect_assert  CC=9  out:9
+  testql.interpreter.converter.handlers.encoder  [3 funcs]
+    _advance_past_wait  CC=4  out:2
+    _encoder_action_fields  CC=5  out:4
+    handle_encoder  CC=3  out:8
+  testql.interpreter.converter.handlers.flow  [1 funcs]
+    handle_flow  CC=3  out:6
+  testql.interpreter.converter.handlers.include  [1 funcs]
+    handle_include  CC=1  out:2
+  testql.interpreter.converter.handlers.navigate  [1 funcs]
+    handle_navigate  CC=6  out:8
+  testql.interpreter.converter.handlers.record  [1 funcs]
+    handle_record_start  CC=1  out:2
+  testql.interpreter.converter.handlers.select  [1 funcs]
+    handle_select  CC=3  out:8
+  testql.interpreter.converter.handlers.unknown  [1 funcs]
+    handle_unknown  CC=3  out:4
+  testql.interpreter.converter.parsers  [6 funcs]
+    detect_scenario_type  CC=11  out:6
+    extract_scenario_name  CC=6  out:8
+    parse_api_args  CC=5  out:9
+    parse_commands  CC=5  out:10
+    parse_meta_from_args  CC=4  out:6
+    parse_target_from_args  CC=4  out:9
+  testql.interpreter.converter.renderer  [4 funcs]
+    _render_section_header  CC=3  out:2
+    build_config_section  CC=6  out:6
+    build_header  CC=1  out:0
+    render_sections  CC=7  out:12
+  testql.interpreter.dispatcher  [1 funcs]
+    dispatch  CC=5  out:13
   testql.interpreter.interpreter  [3 funcs]
-    __init__  CC=2  out:3
+    __init__  CC=2  out:4
     execute  CC=4  out:16
     parse  CC=2  out:3
-  testql.openapi_generator  [1 funcs]
+  testql.openapi_generator  [4 funcs]
+    _extract_parameters  CC=1  out:3
     _infer_tags  CC=7  out:9
-  testql.report_generator  [1 funcs]
-    generate_report  CC=3  out:20
+    _extract_ep_params  CC=7  out:8
+    _extract_path_params  CC=4  out:4
   testql.runner  [3 funcs]
     run_script  CC=11  out:20
     parse_line  CC=9  out:20
@@ -1188,12 +1443,20 @@ MODULES:
     _workflow_snippet  CC=4  out:1
     _workflows_table_section  CC=5  out:3
     generate_sumd  CC=4  out:10
+  testql.sumd_parser  [3 funcs]
+    _parse_interfaces  CC=1  out:2
+    _parse_api_interfaces  CC=8  out:13
+    _parse_block_interfaces  CC=3  out:7
 
 EDGES:
-  testql.cli.main → testql.cli.cli
-  testql.generator.TestGenerator._scan_directory_structure → testql._base_fallback.VariableStore.set
   TODO.testtoon_parser.print_parsed → TODO.testtoon_parser.validate
+  testql.cli.main → testql.cli.cli
+  testql.runner.parse_script → testql.runner.parse_line
+  testql.runner.DslCliExecutor.run_script → code2llm_output.map.toon.parse_script
+  testql.openapi_generator.OpenAPIGenerator._infer_tags → code2llm_output.map.toon.list
   testql.openapi_generator.OpenAPIGenerator._infer_tags → testql._base_fallback.VariableStore.set
+  testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_path_params
+  testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_ep_params
   testql.sumd_generator.generate_sumd → testql.sumd_generator._header_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._metadata_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._architecture_section
@@ -1204,137 +1467,291 @@ EDGES:
   testql.sumd_generator.generate_sumd → testql.sumd_generator._llm_suggestions_section
   testql.sumd_generator._llm_suggestions_section → testql.sumd_generator._workflow_snippet
   testql.sumd_generator.save_sumd → testql.sumd_generator.generate_sumd
-  testql.runner.parse_script → testql.runner.parse_line
-  testql.runner.DslCliExecutor.run_script → testql.runner.parse_script
-  testql.commands.echo.generate_context → testql.commands.echo.parse_toon_scenarios
-  testql.commands.echo.generate_context → testql.commands.echo.parse_doql_less
-  testql.commands.echo.echo → testql.commands.echo.generate_context
-  testql.commands.echo.echo → testql.commands.echo.format_text_output
-  testql.commands.endpoints_cmd.endpoints → testql.commands.endpoints_cmd._format_endpoints
-  testql.endpoint_detector.UnifiedEndpointDetector._deduplicate_endpoints → testql._base_fallback.VariableStore.set
-  testql.commands.misc_cmds.create → testql.commands.misc_cmds._build_test_content
-  testql.commands.misc_cmds.report → testql.report_generator.generate_report
-  testql.commands.suite_cmd._collect_test_files → testql._base_fallback.VariableStore.set
-  testql.commands.suite_cmd._collect_test_files → testql.commands.suite_cmd._find_files
-  testql.commands.suite_cmd.list_tests → testql._base_fallback.VariableStore.set
-  testql.commands.suite_cmd.list_tests → testql.commands.suite_cmd._parse_meta
-  testql.interpreter._api_runner.ApiRunnerMixin._cmd_capture → testql.interpreter._api_runner._navigate_json_path
-  testql.interpreter._flow.FlowMixin._cmd_include → testql.interpreter._parser.parse_iql
-  testql.interpreter._testtoon_parser.testtoon_to_iql → testql.interpreter._testtoon_parser.parse_testtoon
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json → testql.interpreter._api_runner._navigate_json_path
-  testql.interpreter._converter.convert_iql_to_testtoon → testql.interpreter._converter._extract_scenario_name
-  testql.interpreter._converter.convert_iql_to_testtoon → testql.interpreter._converter._detect_scenario_type
-  testql.interpreter._converter.convert_file → testql.interpreter._converter.convert_iql_to_testtoon
-  testql.interpreter._converter.convert_directory → testql.interpreter._converter.convert_file
-  testql.interpreter.interpreter.IqlInterpreter.__init__ → testql._base_fallback.VariableStore.set
-  testql.interpreter.interpreter.IqlInterpreter.parse → testql.interpreter._parser.parse_iql
-  testql.interpreter.interpreter.IqlInterpreter.parse → testql.interpreter._testtoon_parser.testtoon_to_iql
-  testql.interpreter.interpreter.IqlInterpreter.execute → testql._base_fallback.VariableStore.all
+  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_block_interfaces
+  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_api_interfaces
+  testql.commands.generate_cmd.generate → testql.commands.generate_cmd._is_workspace
+  testql.commands.generate_cmd._print_routes_section → testql.commands.generate_cmd._count_routes_by
+  testql.commands.misc_cmds.init → testql.commands.misc_cmds._create_templates
+  testql.commands.misc_cmds.report → code2llm_output.map.toon.generate_report
+  testql.commands.misc_cmds.echo → testql.commands.echo_helpers.render_echo
+  testql.commands.misc_cmds.echo → testql.commands.echo_helpers.collect_toon_data
+  testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._strip_path_segments
+  testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._migrate_legacy_extension
+  testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._remap_tests_prefix
   testql.commands.encoder_routes._resolve_iql_path → testql.commands.encoder_routes._normalize_iql_path
+  testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_bool_prop
+  testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_count_prop
+  testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_text_prop
+  testql.commands.encoder_routes._evaluate_assertion → testql.commands.encoder_routes._assert_classes_prop
   testql.commands.encoder_routes._exec_assert_cmd → testql.commands.encoder_routes._evaluate_assertion
   testql.commands.encoder_routes._execute_iql_line → testql.commands.encoder_routes._exec_encoder_cmd
   testql.commands.encoder_routes._execute_iql_line → testql.commands.encoder_routes._exec_browser_cmd
   testql.commands.encoder_routes.iql_list_files → testql._base_fallback.VariableStore.set
   testql.commands.encoder_routes.iql_read_file → testql.commands.encoder_routes._resolve_iql_path
   testql.commands.encoder_routes.iql_list_tables → testql.commands.encoder_routes._resolve_iql_path
+  testql.commands.encoder_routes.iql_list_tables → testql.commands.encoder_routes._extract_table_names
+  testql.commands.encoder_routes._extract_table_names → testql._base_fallback.VariableStore.set
   testql.commands.encoder_routes.iql_run_line → testql.commands.encoder_routes._execute_iql_line
   testql.commands.encoder_routes.iql_run_file → testql.commands.encoder_routes._resolve_iql_path
+  testql.commands.encoder_routes.iql_run_file → testql.commands.encoder_routes._build_run_summary
+  testql.commands.encoder_routes.iql_run_file → testql.commands.encoder_routes._write_run_log
+  testql.commands.encoder_routes._run_iql_lines → testql.commands.encoder_routes._update_counters
+  testql.commands.encoder_routes._run_iql_lines → testql.commands.encoder_routes._format_log_detail
+  testql.commands.echo_helpers._collect_toon_directory → code2llm_output.map.toon.parse_toon_file
+  testql.commands.echo_helpers.collect_toon_data → testql.commands.echo_helpers._collect_toon_directory
 ```
 
 ### Code Analysis (`project/analysis.toon.yaml`)
 
 ```toon markpact:analysis path=project/analysis.toon.yaml
-# code2llm | 41f 7839L | python:39,shell:2 | 2026-04-19
-# CC̄=4.6 | critical:7/308 | dups:0 | cycles:2
+# code2llm | 198f 20021L | python:95,yaml:94,json:2,shell:2,yml:2,txt:2,toml:1 | 2026-04-25
+# CC̄=2.3 | critical:1/740 | dups:0 | cycles:0
 
-HEALTH[9]:
-  🔴 GOD   testql/generator.py = 709L, 4 classes, 26m, max CC=23
-  🔴 GOD   testql/endpoint_detector.py = 835L, 13 classes, 46m, max CC=13
-  🟡 CC    _generate_api_tests CC=23 (limit:15)
-  🟡 CC    parse_doql_less CC=29 (limit:15)
-  🟡 CC    format_text_output CC=19 (limit:15)
-  🟡 CC    echo CC=16 (limit:15)
-  🟡 CC    _collect_test_files CC=15 (limit:15)
-  🟡 CC    suite CC=18 (limit:15)
-  🟡 CC    convert_iql_to_testtoon CC=66 (limit:15)
+HEALTH[1]:
+  🟡 CC    _cmd_unit_pytest CC=15 (limit:15)
 
-REFACTOR[4]:
-  1. split testql/generator.py  (god module)
-  2. split testql/endpoint_detector.py  (god module)
-  3. split 7 high-CC methods  (CC>15)
-  4. break 2 circular dependencies
+REFACTOR[1]:
+  1. split 1 high-CC methods  (CC>15)
 
-PIPELINES[236]:
-  [1] Src [main]: main → cli
+PIPELINES[315]:
+  [1] Src [validate]: validate
       PURITY: 100% pure
-  [2] Src [parse_testql_results]: parse_testql_results
+  [2] Src [parse_testtoon]: parse_testtoon → detect_separator
       PURITY: 100% pure
-  [3] Src [to_json]: to_json
+  [3] Src [print_parsed]: print_parsed → validate
       PURITY: 100% pure
   [4] Src [__init__]: __init__
       PURITY: 100% pure
-  [5] Src [generate]: generate
+  [5] Src [parse_file]: parse_file
       PURITY: 100% pure
 
 LAYERS:
   TODO/                           CC̄=5.9    ←in:0  →out:0
   │ testtoon_parser            141L  1C    7m  CC=14     ←0
   │
-  testql/                         CC̄=4.6    ←in:14  →out:0
-  │ !! endpoint_detector          835L  13C   46m  CC=13     ←0
-  │ !! generator                  709L  4C   26m  CC=23     ←0
-  │ !! misc_cmds                  529L  0C    7m  CC=16     ←0
-  │ !! _converter                 475L  2C    8m  CC=66     ←0
-  │ openapi_generator          449L  3C   19m  CC=11     ←0
-  │ encoder_routes             424L  0C   15m  CC=12     ←0
-  │ _testtoon_parser           393L  2C   19m  CC=12     ←1
+  testql/                         CC̄=3.7    ←in:11  →out:2
+  │ encoder_routes             477L  0C   27m  CC=10     ←0
+  │ openapi_generator          444L  3C   21m  CC=11     ←0
+  │ _gui                       425L  1C   10m  CC=9      ←0
+  │ _testtoon_parser           413L  2C   24m  CC=8      ←0
+  │ generators                 372L  4C   17m  CC=12     ←0
   │ runner                     371L  3C   18m  CC=12     ←0
-  │ !! suite_cmd                  314L  0C    8m  CC=18     ←0
-  │ sumd_parser                287L  5C   10m  CC=12     ←0
-  │ !! echo                       262L  0C    5m  CC=29     ←0
-  │ report_generator           248L  4C    8m  CC=5      ←1
-  │ _base_fallback             221L  7C   26m  CC=4      ←9
-  │ sumd_generator             208L  0C   11m  CC=7      ←1
-  │ doql_parser                172L  1C    9m  CC=6      ←1
-  │ _websockets                172L  1C    7m  CC=9      ←0
-  │ _api_runner                168L  1C    5m  CC=10     ←1
+  │ analyzers                  299L  1C   16m  CC=10     ←0
+  │ misc_cmds                  292L  0C    7m  CC=6      ←0
+  │ sumd_parser                277L  5C   12m  CC=11     ←0
+  │ !! _unit                      249L  1C    4m  CC=15     ←0
+  │ report_generator           248L  4C    8m  CC=5      ←0
+  │ _shell                     243L  1C    6m  CC=14     ←0
+  │ _base_fallback             221L  7C   26m  CC=4      ←10
+  │ sumd_generator             208L  0C   11m  CC=7      ←0
+  │ _api_runner                186L  1C   10m  CC=9      ←0
+  │ doql_parser                172L  1C    9m  CC=6      ←0
+  │ _websockets                172L  1C    8m  CC=8      ←0
+  │ content                    166L  1C    9m  CC=2      ←1
+  │ generate_cmd               157L  0C    6m  CC=10     ←0
   │ echo_schemas               153L  6C    2m  CC=8      ←0
-  │ generate_cmd               140L  0C    4m  CC=11     ←0
-  │ endpoints_cmd              137L  0C    3m  CC=13     ←0
+  │ fastapi_detector           153L  1C   12m  CC=6      ←0
+  │ generate-test-reports.testql.toon.yaml   150L  0C    0m  CC=0.0    ←0
+  │ unified                    137L  1C   10m  CC=9      ←0
+  │ endpoints_cmd              136L  0C    6m  CC=9      ←0
   │ _flow                      136L  1C    6m  CC=9      ←0
-  │ interpreter                125L  1C    7m  CC=4      ←0
-  │ toon_parser                110L  1C    7m  CC=4      ←1
+  │ interpreter                131L  1C    7m  CC=4      ←0
+  │ collection                 122L  0C    8m  CC=6      ←1
+  │ flask_detector             121L  1C    9m  CC=6      ←0
+  │ doql                       115L  0C    9m  CC=7      ←0
+  │ listing                    114L  0C    6m  CC=7      ←1
+  │ run-all-views.testql.toon.yaml   112L  0C    0m  CC=0.0    ←0
+  │ toon_parser                110L  1C    7m  CC=4      ←0
+  │ multi                      105L  1C    5m  CC=6      ←0
   │ _assertions                103L  1C    4m  CC=6      ←0
+  │ cli                        100L  0C    2m  CC=13     ←0
+  │ text                        95L  0C    7m  CC=6      ←0
+  │ parsers                     93L  0C    6m  CC=11     ←9
+  │ openapi_detector            90L  1C    3m  CC=9      ←0
+  │ reports                     89L  0C    5m  CC=6      ←1
   │ __init__                    89L  0C    1m  CC=8      ←0
+  │ graphql_detector            87L  1C    3m  CC=5      ←0
+  │ dispatcher                  86L  1C    6m  CC=5      ←1
+  │ config_detector             86L  1C    4m  CC=7      ←0
+  │ _encoder                    79L  1C   12m  CC=4      ←0
   │ junit                       79L  1C    3m  CC=8      ←0
-  │ _encoder                    73L  1C   11m  CC=6      ←0
+  │ toon                        76L  0C    4m  CC=5      ←0
+  │ test-device-flow.testql.toon.yaml    76L  0C    0m  CC=0.0    ←0
+  │ execution                   73L  0C    2m  CC=5      ←1
+  │ test-gui-connect-id.testql.toon.yaml    70L  0C    0m  CC=0.0    ←0
+  │ echo_helpers                68L  0C    4m  CC=8      ←1
+  │ full-diagnostic.testql.toon.yaml    66L  0C    0m  CC=0.0    ←0
+  │ test-gui-connect-workshop.testql.toon.yaml    65L  0C    0m  CC=0.0    ←0
+  │ renderer                    64L  0C    4m  CC=7      ←1
+  │ endpoint_detector           62L  0C    0m  CC=0.0    ←0
+  │ _converter                  62L  0C    0m  CC=0.0    ←0
+  │ generator                   61L  0C    0m  CC=0.0    ←0
+  │ test-gui-connect-test.testql.toon.yaml    61L  0C    0m  CC=0.0    ←0
+  │ models                      60L  2C    2m  CC=2      ←0
+  │ express_detector            59L  1C    3m  CC=5      ←0
+  │ templates                   59L  0C    0m  CC=0.0    ←0
+  │ core                        58L  0C    3m  CC=5      ←0
+  │ base                        58L  3C    3m  CC=1      ←0
+  │ create-todays-reports.testql.toon.yaml    58L  0C    0m  CC=0.0    ←0
   │ run_cmd                     56L  0C    1m  CC=3      ←0
+  │ context                     54L  0C    3m  CC=4      ←0
+  │ __init__                    53L  0C    0m  CC=0.0    ←0
+  │ __init__                    52L  0C    0m  CC=0.0    ←0
+  │ recorded-test-session.testql.toon.yaml    52L  0C    0m  CC=0.0    ←0
+  │ convenience                 51L  0C    2m  CC=1      ←0
+  │ django_detector             51L  1C    2m  CC=4      ←0
+  │ test-gui-connect-config.testql.toon.yaml    50L  0C    0m  CC=0.0    ←0
+  │ dispatcher                  49L  0C    1m  CC=3      ←0
+  │ connect-reports-year.testql.toon.yaml    49L  0C    0m  CC=0.0    ←0
+  │ websocket_detector          48L  1C    2m  CC=3      ←0
+  │ test-gui-connect-reports.testql.toon.yaml    48L  0C    0m  CC=0.0    ←0
+  │ encoder                     47L  0C    3m  CC=5      ←0
+  │ test-gui-connect-manager.testql.toon.yaml    47L  0C    0m  CC=0.0    ←0
+  │ session-recording.testql.toon.yaml    45L  0C    0m  CC=0.0    ←0
+  │ connect-reports-month.testql.toon.yaml    45L  0C    0m  CC=0.0    ←0
+  │ connect-id-rfid.testql.toon.yaml    44L  0C    0m  CC=0.0    ←0
+  │ connect-reports-week.testql.toon.yaml    43L  0C    0m  CC=0.0    ←0
+  │ connect-reports-quarter.testql.toon.yaml    42L  0C    0m  CC=0.0    ←0
+  │ connect-reports-chart.testql.toon.yaml    42L  0C    0m  CC=0.0    ←0
   │ cli                         41L  0C    2m  CC=1      ←0
+  │ test-encoder.testql.toon.yaml    41L  0C    0m  CC=0.0    ←0
+  │ test-mixed-workflow.testql.toon.yaml    40L  0C    0m  CC=0.0    ←0
+  │ cli                         39L  0C    1m  CC=3      ←0
+  │ flow                        39L  0C    1m  CC=3      ←0
+  │ connect-reports-custom.testql.toon.yaml    39L  0C    0m  CC=0.0    ←0
   │ console                     38L  0C    1m  CC=6      ←0
   │ base                        37L  0C    0m  CC=0.0    ←0
-  │ _parser                     33L  2C    1m  CC=5      ←2
+  │ connect-manager-scenarios.testql.toon.yaml    37L  0C    0m  CC=0.0    ←0
+  │ assertions                  34L  0C    1m  CC=9      ←1
+  │ base                        34L  1C    3m  CC=6      ←0
+  │ connect-id-qr.testql.toon.yaml    34L  0C    0m  CC=0.0    ←0
+  │ _parser                     33L  2C    1m  CC=5      ←0
   │ json_reporter               33L  0C    1m  CC=2      ←0
+  │ navigate                    32L  0C    1m  CC=6      ←0
+  │ api                         31L  0C    1m  CC=6      ←0
+  │ __init__                    30L  0C    0m  CC=0.0    ←0
+  │ test-app-lifecycle.testql.toon.yaml    29L  0C    0m  CC=0.0    ←0
   │ __init__                    27L  0C    0m  CC=0.0    ←0
+  │ select                      26L  0C    1m  CC=3      ←0
+  │ reproduce-view.testql.toon.yaml    26L  0C    0m  CC=0.0    ←0
+  │ test-gui-all.testql.toon.yaml    26L  0C    0m  CC=0.0    ←0
+  │ connect-config-users.testql.toon.yaml    25L  0C    0m  CC=0.0    ←0
+  │ record                      24L  0C    2m  CC=1      ←0
+  │ test-protocol-flow.testql.toon.yaml    24L  0C    0m  CC=0.0    ←0
+  │ connect-test-testing-search.testql.toon.yaml    23L  0C    0m  CC=0.0    ←0
+  │ connect-test-protocols.testql.toon.yaml    23L  0C    0m  CC=0.0    ←0
+  │ connect-test-devices-search.testql.toon.yaml    23L  0C    0m  CC=0.0    ←0
+  │ wait                        22L  0C    1m  CC=4      ←0
+  │ __init__                    22L  0C    0m  CC=0.0    ←0
+  │ backend-diagnostic.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
+  │ connect-id-barcode.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
+  │ connect-workshop-requests-search.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
+  │ connect-manager-activities.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
+  │ connect-id-list.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
+  │ connect-config-labels.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
+  │ connect-manager-intervals.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
+  │ connect-workshop-services-search.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
+  │ connect-config-settings.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-test-testing-rfid.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-config-tables.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-reports-filter.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-id-barcode.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-config-users.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-config-feature-flags.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-id-manual.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-test-full-test.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-workshop-transport-search.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-config-theme.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-workshop-dispositions-search.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ models                      20L  2C    0m  CC=0.0    ←0
+  │ connect-test-testing-barcode.testql.toon.yaml    20L  0C    0m  CC=0.0    ←0
+  │ connect-manager-library.testql.toon.yaml    20L  0C    0m  CC=0.0    ←0
+  │ connect-test-scenario-view.testql.toon.yaml    20L  0C    0m  CC=0.0    ←0
+  │ connect-test-testing-qr.testql.toon.yaml    20L  0C    0m  CC=0.0    ←0
+  │ connect-manager-test-types.testql.toon.yaml    20L  0C    0m  CC=0.0    ←0
+  │ __init__                    19L  0C    0m  CC=0.0    ←0
+  │ device-identification.testql.toon.yaml    19L  0C    0m  CC=0.0    ←0
+  │ encoder-workshop.testql.toon.yaml    19L  0C    0m  CC=0.0    ←0
+  │ unknown                     18L  0C    1m  CC=3      ←1
+  │ __init__                    18L  0C    0m  CC=0.0    ←0
+  │ test-api.testql.toon.yaml    17L  0C    0m  CC=0.0    ←0
+  │ connect-workshop-transport.testql.toon.yaml    16L  0C    0m  CC=0.0    ←0
+  │ encoder-navigation.testql.toon.yaml    15L  0C    0m  CC=0.0    ←0
+  │ include                     14L  0C    1m  CC=1      ←0
+  │ api-crud-template.testql.toon.yaml    14L  0C    0m  CC=0.0    ←0
+  │ test-ui-navigation.testql.toon.yaml    13L  0C    0m  CC=0.0    ←0
+  │ suite_cmd                   12L  0C    0m  CC=0.0    ←0
+  │ test-dsl-objects.testql.toon.yaml    12L  0C    0m  CC=0.0    ←0
+  │ health-check.testql.toon.yaml    12L  0C    0m  CC=0.0    ←0
+  │ quick-navigation.testql.toon.yaml    11L  0C    0m  CC=0.0    ←0
+  │ api-smoke.testql.toon.yaml    11L  0C    0m  CC=0.0    ←0
+  │ run-mask-test-protocol.testql.toon.yaml    11L  0C    0m  CC=0.0    ←0
+  │ auth-login.testql.toon.yaml    11L  0C    0m  CC=0.0    ←0
+  │ __init__                    10L  0C    0m  CC=0.0    ←0
+  │ test-devices-crud.testql.toon.yaml    10L  0C    0m  CC=0.0    ←0
+  │ test-devices-crud.testql.toon.yaml    10L  0C    0m  CC=0.0    ←0
+  │ __init__                     9L  0C    0m  CC=0.0    ←0
+  │ test-protocol-flow.testql.toon.yaml     9L  0C    0m  CC=0.0    ←0
+  │ __init__                     8L  0C    0m  CC=0.0    ←0
+  │ api-health.testql.toon.yaml     7L  0C    0m  CC=0.0    ←0
   │ __main__                     6L  0C    0m  CC=0.0    ←0
   │ __init__                     6L  0C    0m  CC=0.0    ←0
   │ __init__                     3L  0C    0m  CC=0.0    ←0
   │ __init__                     0L  0C    0m  CC=0.0    ←0
   │
+  code2llm_output/                CC̄=0.0    ←in:0  →out:0
+  │ !! calls.yaml                 799L  0C    0m  CC=0.0    ←0
+  │ map.toon.yaml              258L  0C   83m  CC=0.0    ←12
+  │ analysis.toon.yaml          93L  0C    0m  CC=0.0    ←0
+  │ evolution.toon.yaml         82L  0C    0m  CC=0.0    ←0
+  │ prompt.txt                  47L  0C    0m  CC=0.0    ←0
+  │ project.toon.yaml            9L  0C    0m  CC=0.0    ←0
+  │
+  project/                        CC̄=0.0    ←in:0  →out:0
+  │ !! calls.yaml                3007L  0C    0m  CC=0.0    ←0
+  │ !! map.toon.yaml              771L  0C  200m  CC=0.0    ←0
+  │ validation.toon.yaml       421L  0C    0m  CC=0.0    ←0
+  │ calls.toon.yaml            299L  0C    0m  CC=0.0    ←0
+  │ analysis.toon.yaml         277L  0C    0m  CC=0.0    ←0
+  │ project.toon.yaml           51L  0C    0m  CC=0.0    ←0
+  │ prompt.txt                  47L  0C    0m  CC=0.0    ←0
+  │ evolution.toon.yaml         43L  0C    0m  CC=0.0    ←0
+  │ duplication.toon.yaml        9L  0C    0m  CC=0.0    ←0
+  │
   ./                              CC̄=0.0    ←in:0  →out:0
-  │ project.sh                  35L  0C    0m  CC=0.0    ←0
+  │ !! goal.yaml                  511L  0C    0m  CC=0.0    ←0
+  │ sumd.json                  204L  0C    0m  CC=0.0    ←0
+  │ Taskfile.yml               185L  0C    0m  CC=0.0    ←0
+  │ openapi.yaml               175L  0C    0m  CC=0.0    ←0
+  │ Taskfile.testql.yml        117L  0C    0m  CC=0.0    ←0
+  │ pyqual.yaml                 71L  0C    0m  CC=0.0    ←0
+  │ pyproject.toml              70L  0C    0m  CC=0.0    ←0
+  │ project.sh                  45L  0C    0m  CC=0.0    ←0
+  │ coverage.json                1L  0C    0m  CC=0.0    ←0
   │ tree.sh                      1L  0C    0m  CC=0.0    ←0
+  │
+  testql-scenarios/               CC̄=0.0    ←in:0  →out:0
+  │ generated-api-smoke.testql.toon.yaml    35L  0C    0m  CC=0.0    ←0
+  │ generated-api-integration.testql.toon.yaml    18L  0C    0m  CC=0.0    ←0
+  │ generated-from-pytests.testql.toon.yaml    15L  0C    0m  CC=0.0    ←0
+  │ generated-cli-tests.testql.toon.yaml    12L  0C    0m  CC=0.0    ←0
   │
   ── zero ──
      testql/runners/__init__.py                0L
 
 COUPLING:
-                                  testql     testql.commands  testql.interpreter
-              testql                  ──                 ←11                  ←3  hub
-     testql.commands                  11                  ──                      !! fan-out
-  testql.interpreter                   3                                      ──
-  CYCLES: 2
-  HUB: testql/ (fan-in=14)
-  SMELL: testql.commands/ fan-out=11 → split needed
+                       code2llm_output.map      testql.commands               testql   testql.interpreter    testql.generators     testql.detectors
+  code2llm_output.map                   ──                  ←13                   ←2                   ←5                   ←1                       hub
+      testql.commands                   13                   ──                    5                                                                 !! fan-out
+               testql                    2                   ←5                   ──                   ←3                   ←2                   ←1  hub
+   testql.interpreter                    5                                         3                   ──                                            !! fan-out
+    testql.generators                    1                                         2                                        ──                     
+     testql.detectors                                                              1                                                             ──
+  CYCLES: none
+  HUB: testql/ (fan-in=11)
+  HUB: code2llm_output.map/ (fan-in=21)
+  SMELL: testql.commands/ fan-out=18 → split needed
+  SMELL: testql.interpreter/ fan-out=8 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon
@@ -1344,7 +1761,7 @@ EXTERNAL:
 ### Duplication (`project/duplication.toon.yaml`)
 
 ```toon markpact:analysis path=project/duplication.toon.yaml
-# redup/duplication | 0 groups | 0f 0L | 2026-04-19
+# redup/duplication | 0 groups | 0f 0L | 2026-04-25
 
 SUMMARY:
   files_scanned: 0
@@ -1352,66 +1769,27 @@ SUMMARY:
   dup_groups:    0
   dup_fragments: 0
   saved_lines:   0
-  scan_ms:       3915
+  scan_ms:       4017
 ```
 
 ### Evolution / Churn (`project/evolution.toon.yaml`)
 
 ```toon markpact:analysis path=project/evolution.toon.yaml
-# code2llm/evolution | 308 func | 33f | 2026-04-19
+# code2llm/evolution | 740 func | 76f | 2026-04-25
 
-NEXT[10] (ranked by impact):
-  [1] !! SPLIT           testql/generator.py
-      WHY: 709L, 4 classes, max CC=23
-      EFFORT: ~4h  IMPACT: 16307
-
-  [2] !! SPLIT           testql/endpoint_detector.py
-      WHY: 835L, 13 classes, max CC=13
-      EFFORT: ~4h  IMPACT: 10855
-
-  [3] !! SPLIT           testql/commands/misc_cmds.py
-      WHY: 529L, 0 classes, max CC=16
-      EFFORT: ~4h  IMPACT: 8464
-
-  [4] !! SPLIT-FUNC      convert_iql_to_testtoon  CC=66  fan=40
-      WHY: CC=66 exceeds 15
-      EFFORT: ~1h  IMPACT: 2640
-
-  [5] !! SPLIT-FUNC      parse_doql_less  CC=29  fan=20
-      WHY: CC=29 exceeds 15
-      EFFORT: ~1h  IMPACT: 580
-
-  [6] !  SPLIT-FUNC      suite  CC=18  fan=26
-      WHY: CC=18 exceeds 15
-      EFFORT: ~1h  IMPACT: 468
-
-  [7] !  SPLIT-FUNC      echo  CC=16  fan=22
-      WHY: CC=16 exceeds 15
-      EFFORT: ~1h  IMPACT: 352
-
-  [8] !  SPLIT-FUNC      TestGenerator._generate_api_tests  CC=23  fan=12
-      WHY: CC=23 exceeds 15
-      EFFORT: ~1h  IMPACT: 276
-
-  [9] !  SPLIT-FUNC      format_text_output  CC=19  fan=11
-      WHY: CC=19 exceeds 15
-      EFFORT: ~1h  IMPACT: 209
-
-  [10] !  SPLIT-FUNC      _collect_test_files  CC=15  fan=13
+NEXT[1] (ranked by impact):
+  [1] !  SPLIT-FUNC      UnitMixin._cmd_unit_pytest  CC=15  fan=17
       WHY: CC=15 exceeds 15
-      EFFORT: ~1h  IMPACT: 195
+      EFFORT: ~1h  IMPACT: 255
 
 
-RISKS[3]:
-  ⚠ Splitting testql/endpoint_detector.py may break 46 import paths
-  ⚠ Splitting testql/generator.py may break 26 import paths
-  ⚠ Splitting testql/commands/misc_cmds.py may break 7 import paths
+RISKS[0]: none
 
 METRICS-TARGET:
-  CC̄:          4.6 → ≤3.2
-  max-CC:      66 → ≤20
-  god-modules: 3 → 0
-  high-CC(≥15): 7 → ≤3
+  CC̄:          2.3 → ≤1.6
+  max-CC:      15 → ≤7
+  god-modules: 0 → 0
+  high-CC(≥15): 1 → ≤0
   hub-types:   0 → ≤0
 
 PATTERNS (language parser shared logic):
@@ -1439,75 +1817,432 @@ PATTERNS (language parser shared logic):
     - Standardized FunctionInfo/ClassInfo models
 
 HISTORY:
-  prev CC̄=4.9 → now CC̄=4.6
+  prev CC̄=1.5 → now CC̄=2.3
 ```
 
 ### Validation (`project/validation.toon.yaml`)
 
 ```toon markpact:analysis path=project/validation.toon.yaml
-# vallm batch | 77f | 44✓ 6⚠ 3✗ | 2026-04-19
+# vallm batch | 171f | 0✓ 138⚠ 0✗ | 2026-04-25
 
 SUMMARY:
-  scanned: 77  passed: 44 (57.1%)  warnings: 6  errors: 3  unsupported: 30
+  scanned: 171  passed: 0 (0.0%)  warnings: 138  errors: 0  unsupported: 0
 
-WARNINGS[6]{path,score}:
-  testql/cli.py,0.80
-    issues[12]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,analyze has cyclomatic complexity 16 (max: 15),125
-      complexity.cyclomatic,warning,endpoints has cyclomatic complexity 21 (max: 15),201
-      complexity.cyclomatic,warning,suite has cyclomatic complexity 47 (max: 15),671
-      complexity.cyclomatic,warning,list has cyclomatic complexity 21 (max: 15),862
-      complexity.cyclomatic,warning,echo has cyclomatic complexity 17 (max: 15),942
-      complexity.maintainability,warning,Low maintainability index: 7.1 (threshold: 20),
-      complexity.lizard_cc,warning,analyze: CC=16 exceeds limit 15,125
-      complexity.lizard_cc,warning,endpoints: CC=21 exceeds limit 15,201
-      complexity.lizard_cc,warning,suite: CC=43 exceeds limit 15,671
-      complexity.lizard_length,warning,suite: 120 lines exceeds limit 100,671
-      complexity.lizard_cc,warning,list: CC=21 exceeds limit 15,862
-      complexity.lizard_cc,warning,echo: CC=17 exceeds limit 15,942
-  testql/commands/echo.py,0.93
-    issues[4]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,parse_doql_less has cyclomatic complexity 29 (max: 15),14
-      complexity.cyclomatic,warning,format_text_output has cyclomatic complexity 19 (max: 15),175
-      complexity.lizard_cc,warning,parse_doql_less: CC=29 exceeds limit 15,14
-      complexity.lizard_cc,warning,format_text_output: CC=19 exceeds limit 15,175
-  testql/interpreter/_converter.py,0.93
-    issues[3]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,convert_iql_to_testtoon has cyclomatic complexity 66 (max: 15),100
-      complexity.lizard_cc,warning,convert_iql_to_testtoon: CC=66 exceeds limit 15,100
-      complexity.lizard_length,warning,convert_iql_to_testtoon: 280 lines exceeds limit 100,100
-  testql/sumd_generator.py,0.93
-    issues[3]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,generate_sumd has cyclomatic complexity 29 (max: 15),11
-      complexity.lizard_cc,warning,generate_sumd: CC=29 exceeds limit 15,11
-      complexity.lizard_length,warning,generate_sumd: 130 lines exceeds limit 100,11
-  testql/endpoint_detector.py,0.96
-    issues[2]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,generate_testql_scenario has cyclomatic complexity 16 (max: 15),768
-      complexity.maintainability,warning,Low maintainability index: 6.6 (threshold: 20),
-  testql/generator.py,0.96
-    issues[3]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,_generate_api_tests has cyclomatic complexity 23 (max: 15),342
-      complexity.maintainability,warning,Low maintainability index: 15.1 (threshold: 20),
-      complexity.lizard_cc,warning,_generate_api_tests: CC=23 exceeds limit 15,342
-
-ERRORS[3]{path,score}:
-  testql/commands/encoder_routes.py,0.92
-    issues[2]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'fastapi' not found,12
-      python.import.resolvable,error,Module 'fastapi.responses' not found,13
-  testql/interpreter/_websockets.py,0.93
+WARNINGS[138]{path,score}:
+  .pyqual/runtime_errors.json,0.78
     issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'websockets' not found,46
-  testql/_base_fallback.py,0.95
+      syntax.unsupported,warning,"Could not parse JSON: Download error: Language 'JSON' not available for download. Available groups: [""all""]",
+  TODO/testtoon_parser.py,0.78
     issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'websockets' not found,186
-
-UNSUPPORTED[4]{bucket,count}:
-  *.md,10
-  *.txt,2
-  *.yml,2
-  other,16
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  code2llm_output/calls.yaml,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse YAML: Download error: Language 'YAML' not available for download. Available groups: [""all""]",
+  coverage.json,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse JSON: Download error: Language 'JSON' not available for download. Available groups: [""all""]",
+  goal.yaml,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse YAML: Download error: Language 'YAML' not available for download. Available groups: [""all""]",
+  openapi.yaml,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse YAML: Download error: Language 'YAML' not available for download. Available groups: [""all""]",
+  project.sh,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse BASH: Download error: Language 'BASH' not available for download. Available groups: [""all""]",
+  project/calls.yaml,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse YAML: Download error: Language 'YAML' not available for download. Available groups: [""all""]",
+  pyproject.toml,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse TOML: Download error: Language 'TOML' not available for download. Available groups: [""all""]",
+  pyqual.yaml,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse YAML: Download error: Language 'YAML' not available for download. Available groups: [""all""]",
+  sumd.json,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse JSON: Download error: Language 'JSON' not available for download. Available groups: [""all""]",
+  testql/__init__.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/__main__.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/_base_fallback.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/base.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/cli.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/__init__.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/echo.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/echo/__init__.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/echo/cli.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/echo/context.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/echo/formatters/__init__.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/echo/formatters/text.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/echo/parsers/__init__.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/echo/parsers/doql.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/echo/parsers/toon.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/echo_helpers.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/encoder_routes.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/endpoints_cmd.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/generate_cmd.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/misc_cmds.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/run_cmd.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/suite/__init__.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/suite/cli.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/suite/collection.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/suite/execution.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/suite/listing.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/suite/reports.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/suite_cmd.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/templates/__init__.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/templates/content.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/commands/templates/templates.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/detectors/__init__.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/detectors/base.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/detectors/config_detector.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/detectors/django_detector.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/detectors/express_detector.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/detectors/fastapi_detector.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/detectors/flask_detector.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/detectors/graphql_detector.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/detectors/models.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/detectors/openapi_detector.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/detectors/test_detector.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/detectors/unified.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/detectors/websocket_detector.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/doql_parser.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/echo_schemas.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/endpoint_detector.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/generator.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/generators/__init__.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/generators/analyzers.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/generators/base.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/generators/convenience.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/generators/generators.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/generators/multi.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/generators/test_generator.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/__init__.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/_api_runner.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/_assertions.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/_converter.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/_encoder.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/_flow.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/_gui.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/_parser.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/_shell.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/_testtoon_parser.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/_unit.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/_websockets.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/converter/__init__.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/converter/core.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/converter/dispatcher.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/converter/handlers/__init__.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/converter/handlers/api.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/converter/handlers/assertions.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/converter/handlers/encoder.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/converter/handlers/flow.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/converter/handlers/include.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/converter/handlers/navigate.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/converter/handlers/record.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/converter/handlers/select.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/converter/handlers/unknown.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/converter/handlers/wait.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/converter/models.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/converter/parsers.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/converter/renderer.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/dispatcher.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/interpreter/interpreter.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/openapi_generator.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/report_generator.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/reporters/__init__.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/reporters/console.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/reporters/json_reporter.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/reporters/junit.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/runner.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/runners/__init__.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/sumd_generator.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/sumd_parser.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  testql/toon_parser.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_api_handler.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_cli.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_converter.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_converter_handlers.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_detectors.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_dispatcher.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_doql_parser_sumd_gen.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_echo.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_echo_doql_parser.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_echo_schemas_helpers.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_encoder_routes.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_generate_cmd.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_generators.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_gui_execution.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_interpreter.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_misc_cmds.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_openapi_generator.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_report_generator.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_reporters.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_runner.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_shell_execution.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_suite_cmd_helpers.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_suite_execution.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_suite_listing.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_sumd_parser.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_test_generator.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_toon_parser.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tests/test_unit_execution.py,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse PYTHON: Download error: Language 'PYTHON' not available for download. Available groups: [""all""]",
+  tree.sh,0.78
+    issues[1]{rule,severity,message,line}:
+      syntax.unsupported,warning,"Could not parse BASH: Download error: Language 'BASH' not available for download. Available groups: [""all""]",
 ```
 
 ## Intent

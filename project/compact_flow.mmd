@@ -1,10 +1,5 @@
 flowchart TD
-    SUMD["SUMD<br/>227 funcs"]
-    SUMR["SUMR<br/>79 funcs"]
-    TODO__testql_table_format_spec["TODO.testql-table-format-spec<br/>3 funcs"]
-    TODO__testtoon_parser["TODO.testtoon_parser<br/>7 funcs"]
     code2llm_output__map["code2llm_output.map<br/>83 funcs"]
-    project__map["project.map<br/>266 funcs"]
     testql___base_fallback["testql._base_fallback<br/>26 funcs"]
     testql__commands["testql.commands<br/>107 funcs"]
     testql__detectors["testql.detectors<br/>53 funcs"]
@@ -12,23 +7,14 @@ flowchart TD
     testql__interpreter["testql.interpreter<br/>126 funcs"]
     testql__openapi_generator["testql.openapi_generator<br/>21 funcs"]
     testql__runner["testql.runner<br/>18 funcs"]
-    testql__sumd_parser["testql.sumd_parser<br/>12 funcs"]
-    testql__interpreter ==>|25| SUMD
-    testql__commands ==>|20| SUMD
-    testql__runner ==>|19| TODO__testql_table_format_spec
-    TODO__testtoon_parser ==>|8| TODO__testql_table_format_spec
-    testql__commands ==>|6| SUMR
-    testql__commands -->|3| code2llm_output__map
-    testql__interpreter -->|3| SUMR
-    testql__runner -->|2| SUMR
-    testql__openapi_generator -->|2| project__map
-    testql__sumd_parser -->|2| project__map
-    testql__commands -->|2| TODO__testql_table_format_spec
-    testql__interpreter -->|2| TODO__testql_table_format_spec
-    testql__generators -->|2| SUMR
+    testql__commands ==>|13| code2llm_output__map
+    testql__commands ==>|5| testql___base_fallback
+    testql__interpreter ==>|5| code2llm_output__map
+    testql__interpreter -->|3| testql___base_fallback
+    testql__generators -->|2| testql___base_fallback
+    testql__runner -->|1| code2llm_output__map
+    testql__runner -->|1| testql___base_fallback
     testql__openapi_generator -->|1| code2llm_output__map
-    testql__openapi_generator -->|1| SUMR
-    testql___base_fallback -->|1| TODO__testql_table_format_spec
+    testql__openapi_generator -->|1| testql___base_fallback
     testql__generators -->|1| code2llm_output__map
-    testql__detectors -->|1| TODO__testql_table_format_spec
-    testql__detectors -->|1| SUMR
+    testql__detectors -->|1| testql___base_fallback

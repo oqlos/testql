@@ -1,237 +1,209 @@
 flowchart LR
-    subgraph SUMD
-        SUMD__build_config_section["build_config_section"]
-        SUMD__collect_assert["collect_assert"]
-        SUMD__build_header["build_header"]
-        SUMD__collect_toon_data["collect_toon_data"]
-        SUMD__render_echo["render_echo"]
-        SUMD__extract_scenario_name["extract_scenario_name"]
-        SUMD__generate_context["generate_context"]
-        SUMD__parse_toon_file["parse_toon_file"]
-        SUMD__parse_target_from_args["parse_target_from_args"]
-        SUMD__generate_report["generate_report"]
-        SUMD__format_text_output["format_text_output"]
-        SUMD__handle_unknown["handle_unknown"]
-        SUMD__parse_doql_file["parse_doql_file"]
-        SUMD__collect_list_files["collect_list_files"]
-        SUMD__parse_toon_scenarios["parse_toon_scenarios"]
-        SUMD__render_test_list["render_test_list"]
-        SUMD__render_sections["render_sections"]
-        SUMD__parse_commands["parse_commands"]
-        SUMD__parse_meta_from_args["parse_meta_from_args"]
-        SUMD__parse_api_args["parse_api_args"]
-        SUMD__detect_scenario_type["detect_scenario_type"]
-        SUMD__parse_iql["parse_iql"]
-        SUMD___navigate_json_path["_navigate_json_path"]
-        SUMD__filter_tests["filter_tests"]
-        SUMD__dispatch["dispatch"]
-        SUMD__parse_doql_less["parse_doql_less"]
-        SUMD__testtoon_to_iql["testtoon_to_iql"]
-    end
-    subgraph SUMR
-        SUMR__parse_script["parse_script"]
-        SUMR__all["all"]
-        SUMR__generate_sumd["generate_sumd"]
-        SUMR__set["set"]
-    end
-    subgraph TODO__testql_table_format_spec
-        TODO__testql_table_format_spec__print["print"]
-    end
     subgraph TODO__testtoon_parser
-        TODO__testtoon_parser__validate["validate"]
         TODO__testtoon_parser__print_parsed["print_parsed"]
+        TODO__testtoon_parser__validate["validate"]
     end
     subgraph code2llm_output__map
+        code2llm_output__map__toon__parse_toon_scenarios["parse_toon_scenarios"]
+        code2llm_output__map__toon__parse_doql_file["parse_doql_file"]
+        code2llm_output__map__toon__parse_toon_file["parse_toon_file"]
         code2llm_output__map__toon__list["list"]
-    end
-    subgraph project__map
-        project__map__toon___extract_ep_params["_extract_ep_params"]
-        project__map__toon___extract_path_params["_extract_path_params"]
-        project__map__toon___parse_block_interfaces["_parse_block_interfaces"]
-        project__map__toon___parse_api_interfaces["_parse_api_interfaces"]
+        code2llm_output__map__toon__testtoon_to_iql["testtoon_to_iql"]
+        code2llm_output__map__toon__parse_doql_less["parse_doql_less"]
+        code2llm_output__map__toon__format_text_output["format_text_output"]
+        code2llm_output__map__toon__generate_report["generate_report"]
+        code2llm_output__map__toon__parse_script["parse_script"]
+        code2llm_output__map__toon__parse_iql["parse_iql"]
+        code2llm_output__map__toon__generate_sumd["generate_sumd"]
+        code2llm_output__map__toon___navigate_json_path["_navigate_json_path"]
+        code2llm_output__map__toon__generate_context["generate_context"]
     end
     subgraph testql___base_fallback
-        testql___base_fallback__InterpreterOutput__emit["emit"]
+        testql___base_fallback__VariableStore__set["set"]
+        testql___base_fallback__VariableStore__all["all"]
     end
     subgraph testql__cli
-        testql__cli__main["main"]
         testql__cli__cli["cli"]
+        testql__cli__main["main"]
     end
     subgraph testql__commands
-        testql__commands__encoder_routes___strip_path_segments["_strip_path_segments"]
-        testql__commands__encoder_routes___evaluate_assertion["_evaluate_assertion"]
-        testql__commands__encoder_routes___migrate_legacy_extension["_migrate_legacy_extension"]
-        testql__commands__encoder_routes___assert_count_prop["_assert_count_prop"]
-        testql__commands__encoder_routes___format_log_detail["_format_log_detail"]
-        testql__commands__suite__collection___find_files["_find_files"]
-        testql__commands__suite__execution__run_suite_files["run_suite_files"]
-        testql__commands__encoder_routes___exec_browser_cmd["_exec_browser_cmd"]
-        testql__commands__encoder_routes___extract_table_names["_extract_table_names"]
-        testql__commands__suite__reports___save_json_report["_save_json_report"]
-        testql__commands__echo__formatters__text___fmt_suggestions["_fmt_suggestions"]
-        testql__commands__echo_helpers__collect_doql_data["collect_doql_data"]
-        testql__commands__encoder_routes___write_run_log["_write_run_log"]
-        testql__commands__suite__reports__save_report["save_report"]
-        testql__commands__generate_cmd___is_workspace["_is_workspace"]
-        testql__commands__misc_cmds__report["report"]
-        testql__commands__encoder_routes___assert_bool_prop["_assert_bool_prop"]
-        testql__commands__echo__formatters__text___fmt_contracts["_fmt_contracts"]
-        testql__commands__suite__listing___collect_meta_lines["_collect_meta_lines"]
-        testql__commands__encoder_routes__iql_read_file["iql_read_file"]
-        testql__commands__suite__listing___parse_yaml_meta_block["_parse_yaml_meta_block"]
-        testql__commands__endpoints_cmd___format_endpoints["_format_endpoints"]
-        testql__commands__suite__collection__collect_list_files["collect_list_files"]
-        testql__commands__endpoints_cmd___format_endpoints_json["_format_endpoints_json"]
-        testql__commands__encoder_routes___execute_iql_line["_execute_iql_line"]
-        testql__commands__echo__parsers__doql___parse_kv_block["_parse_kv_block"]
-        testql__commands__encoder_routes___exec_assert_cmd["_exec_assert_cmd"]
-        testql__commands__encoder_routes___build_run_summary["_build_run_summary"]
-        testql__commands__endpoints_cmd__endpoints["endpoints"]
-        testql__commands__encoder_routes___update_counters["_update_counters"]
-        testql__commands__suite__reports___build_junit_xml["_build_junit_xml"]
-        testql__commands__echo__context___find_toon_path["_find_toon_path"]
-        testql__commands__echo_helpers__collect_toon_data["collect_toon_data"]
-        testql__commands__echo__formatters__text___build_header["_build_header"]
-        testql__commands__generate_cmd___count_routes_by["_count_routes_by"]
-        testql__commands__suite__listing__filter_tests["filter_tests"]
-        testql__commands__echo__formatters__text___fmt_workflows["_fmt_workflows"]
-        testql__commands__echo__parsers__toon__parse_toon_scenarios["parse_toon_scenarios"]
-        testql__commands__echo__parsers__toon___parse_scenario["_parse_scenario"]
-        testql__commands__echo__parsers__doql___parse_integrations["_parse_integrations"]
-        testql__commands__suite__collection__collect_test_files["collect_test_files"]
-        testql__commands__encoder_routes___run_iql_lines["_run_iql_lines"]
         testql__commands__echo__parsers__doql___parse_workflows["_parse_workflows"]
-        testql__commands__echo__formatters__text___fmt_interfaces["_fmt_interfaces"]
-        testql__commands__encoder_routes___assert_text_prop["_assert_text_prop"]
-        testql__commands__encoder_routes___remap_tests_prefix["_remap_tests_prefix"]
-        testql__commands__encoder_routes__iql_list_tables["iql_list_tables"]
-        testql__commands__misc_cmds__init["init"]
-        testql__commands__suite__cli__list_tests["list_tests"]
-        testql__commands__misc_cmds__echo["echo"]
-        testql__commands__generate_cmd__generate["generate"]
-        testql__commands__suite__collection___resolve_search_dir_and_pattern["_resolve_search_dir_and_patter"]
-        testql__commands__echo__context__generate_context["generate_context"]
-        testql__commands__echo__formatters__text__format_text_output["format_text_output"]
-        testql__commands__endpoints_cmd___format_endpoints_table["_format_endpoints_table"]
+        testql__commands__echo__parsers__doql__parse_doql_less["parse_doql_less"]
+        testql__commands__suite__listing___collect_meta_lines["_collect_meta_lines"]
         testql__commands__echo__parsers__doql___parse_entities["_parse_entities"]
+        testql__commands__echo_helpers__collect_doql_data["collect_doql_data"]
+        testql__commands__suite__listing___parse_testtoon_header["_parse_testtoon_header"]
+        testql__commands__echo__cli__echo["echo"]
+        testql__commands__echo__parsers__doql___parse_interfaces["_parse_interfaces"]
+        testql__commands__suite__collection___deduplicate_files["_deduplicate_files"]
+        testql__commands__echo__parsers__doql___parse_environment["_parse_environment"]
+        testql__commands__echo__parsers__doql___parse_app_block["_parse_app_block"]
+        testql__commands__echo__parsers__doql___parse_integrations["_parse_integrations"]
+        testql__commands__encoder_routes___assert_classes_prop["_assert_classes_prop"]
+        testql__commands__echo__formatters__text___fmt_contracts["_fmt_contracts"]
+        testql__commands__endpoints_cmd__endpoints["endpoints"]
+        testql__commands__encoder_routes___strip_path_segments["_strip_path_segments"]
+        testql__commands__encoder_routes__iql_run_file["iql_run_file"]
+        testql__commands__misc_cmds__init["init"]
+        testql__commands__echo__formatters__text___fmt_workflows["_fmt_workflows"]
+        testql__commands__echo__parsers__doql___parse_deploy["_parse_deploy"]
+        testql__commands__suite__collection__collect_list_files["collect_list_files"]
         testql__commands__echo_helpers__render_echo["render_echo"]
         testql__commands__suite__collection___collect_by_pattern["_collect_by_pattern"]
         testql__commands__suite__execution__run_single_file["run_single_file"]
-        testql__commands__encoder_routes___exec_encoder_cmd["_exec_encoder_cmd"]
-        testql__commands__echo__formatters__text___fmt_entities["_fmt_entities"]
-        testql__commands__suite__listing__render_test_list["render_test_list"]
-        testql__commands__encoder_routes___resolve_iql_path["_resolve_iql_path"]
-        testql__commands__echo__parsers__doql___parse_deploy["_parse_deploy"]
-        testql__commands__suite__collection___collect_from_suite["_collect_from_suite"]
-        testql__commands__encoder_routes___assert_classes_prop["_assert_classes_prop"]
-        testql__commands__echo__context___find_doql_file["_find_doql_file"]
-        testql__commands__encoder_routes__iql_run_line["iql_run_line"]
-        testql__commands__misc_cmds___create_templates["_create_templates"]
-        testql__commands__echo__cli__echo["echo"]
-        testql__commands__encoder_routes__iql_list_files["iql_list_files"]
-        testql__commands__encoder_routes__iql_run_file["iql_run_file"]
+        testql__commands__encoder_routes___write_run_log["_write_run_log"]
+        testql__commands__misc_cmds__report["report"]
+        testql__commands__encoder_routes___assert_count_prop["_assert_count_prop"]
+        testql__commands__encoder_routes___migrate_legacy_extension["_migrate_legacy_extension"]
+        testql__commands__echo__formatters__text___fmt_suggestions["_fmt_suggestions"]
+        testql__commands__encoder_routes___assert_text_prop["_assert_text_prop"]
+        testql__commands__endpoints_cmd___format_endpoints_table["_format_endpoints_table"]
+        testql__commands__encoder_routes___exec_browser_cmd["_exec_browser_cmd"]
+        testql__commands__suite__collection__collect_test_files["collect_test_files"]
+        testql__commands__echo__context___find_toon_path["_find_toon_path"]
         testql__commands__generate_cmd___print_routes_section["_print_routes_section"]
-        testql__commands__suite__listing__parse_meta["parse_meta"]
-        testql__commands__encoder_routes___normalize_iql_path["_normalize_iql_path"]
-        testql__commands__suite__collection___collect_recursive["_collect_recursive"]
-        testql__commands__endpoints_cmd___format_endpoints_csv["_format_endpoints_csv"]
-        testql__commands__echo__parsers__doql___parse_environment["_parse_environment"]
-        testql__commands__suite__collection___deduplicate_files["_deduplicate_files"]
-        testql__commands__echo__parsers__doql___parse_interfaces["_parse_interfaces"]
         testql__commands__echo_helpers___collect_toon_directory["_collect_toon_directory"]
-        testql__commands__echo__parsers__doql__parse_doql_less["parse_doql_less"]
-        testql__commands__suite__listing___parse_testtoon_header["_parse_testtoon_header"]
-        testql__commands__echo__parsers__doql___parse_app_block["_parse_app_block"]
+        testql__commands__suite__reports___save_json_report["_save_json_report"]
+        testql__commands__misc_cmds___create_templates["_create_templates"]
+        testql__commands__suite__reports__save_report["save_report"]
+        testql__commands__suite__collection___resolve_search_dir_and_pattern["_resolve_search_dir_and_patter"]
+        testql__commands__encoder_routes__iql_run_line["iql_run_line"]
+        testql__commands__encoder_routes___exec_encoder_cmd["_exec_encoder_cmd"]
+        testql__commands__encoder_routes___update_counters["_update_counters"]
+        testql__commands__suite__reports___build_junit_xml["_build_junit_xml"]
+        testql__commands__encoder_routes___build_run_summary["_build_run_summary"]
+        testql__commands__suite__cli__list_tests["list_tests"]
+        testql__commands__echo__parsers__toon___parse_scenario["_parse_scenario"]
+        testql__commands__suite__execution__run_suite_files["run_suite_files"]
+        testql__commands__endpoints_cmd___format_endpoints_csv["_format_endpoints_csv"]
+        testql__commands__encoder_routes___assert_bool_prop["_assert_bool_prop"]
+        testql__commands__echo__context__generate_context["generate_context"]
+        testql__commands__encoder_routes___execute_iql_line["_execute_iql_line"]
+        testql__commands__encoder_routes___run_iql_lines["_run_iql_lines"]
+        testql__commands__encoder_routes___evaluate_assertion["_evaluate_assertion"]
+        testql__commands__encoder_routes___format_log_detail["_format_log_detail"]
+        testql__commands__encoder_routes___remap_tests_prefix["_remap_tests_prefix"]
+        testql__commands__echo__formatters__text___fmt_entities["_fmt_entities"]
+        testql__commands__suite__listing__filter_tests["filter_tests"]
+        testql__commands__endpoints_cmd___format_endpoints["_format_endpoints"]
+        testql__commands__generate_cmd__generate["generate"]
+        testql__commands__encoder_routes___extract_table_names["_extract_table_names"]
+        testql__commands__echo__formatters__text__format_text_output["format_text_output"]
+        testql__commands__encoder_routes___exec_assert_cmd["_exec_assert_cmd"]
+        testql__commands__echo__formatters__text___build_header["_build_header"]
+        testql__commands__echo__parsers__doql___parse_kv_block["_parse_kv_block"]
+        testql__commands__suite__listing___parse_yaml_meta_block["_parse_yaml_meta_block"]
+        testql__commands__endpoints_cmd___format_endpoints_json["_format_endpoints_json"]
+        testql__commands__encoder_routes___resolve_iql_path["_resolve_iql_path"]
+        testql__commands__generate_cmd___is_workspace["_is_workspace"]
+        testql__commands__suite__listing__render_test_list["render_test_list"]
+        testql__commands__echo__formatters__text___fmt_interfaces["_fmt_interfaces"]
+        testql__commands__encoder_routes__iql_list_files["iql_list_files"]
+        testql__commands__suite__collection___collect_recursive["_collect_recursive"]
+        testql__commands__echo__parsers__toon__parse_toon_scenarios["parse_toon_scenarios"]
+        testql__commands__suite__collection___find_files["_find_files"]
+        testql__commands__suite__collection___collect_from_suite["_collect_from_suite"]
+        testql__commands__echo__context___find_doql_file["_find_doql_file"]
+        testql__commands__encoder_routes__iql_read_file["iql_read_file"]
+        testql__commands__echo_helpers__collect_toon_data["collect_toon_data"]
+        testql__commands__suite__listing__parse_meta["parse_meta"]
+        testql__commands__generate_cmd___count_routes_by["_count_routes_by"]
+        testql__commands__encoder_routes___normalize_iql_path["_normalize_iql_path"]
+        testql__commands__encoder_routes__iql_list_tables["iql_list_tables"]
+        testql__commands__misc_cmds__echo["echo"]
     end
     subgraph testql__detectors
-        testql__detectors__unified__UnifiedEndpointDetector__detect_all["detect_all"]
         testql__detectors__unified__UnifiedEndpointDetector___deduplicate_endpoints["_deduplicate_endpoints"]
     end
     subgraph testql__generators
         testql__generators__multi__MultiProjectTestGenerator__generate_cross_project_tests["generate_cross_project_tests"]
-        testql__generators__generators__APIGeneratorMixin___deduplicate_rest_routes["_deduplicate_rest_routes"]
         testql__generators__base__BaseAnalyzer___should_exclude_path["_should_exclude_path"]
+        testql__generators__generators__APIGeneratorMixin___deduplicate_rest_routes["_deduplicate_rest_routes"]
     end
     subgraph testql__interpreter
-        testql__interpreter__converter__handlers__unknown__handle_unknown["handle_unknown"]
-        testql__interpreter__converter__handlers__flow__handle_flow["handle_flow"]
-        testql__interpreter__converter__dispatcher__dispatch["dispatch"]
+        testql__interpreter__converter__handlers__assertions__collect_assert["collect_assert"]
         testql__interpreter__converter__handlers__encoder___advance_past_wait["_advance_past_wait"]
-        testql__interpreter___testtoon_parser___parse_inline_array["_parse_inline_array"]
-        testql__interpreter___assertions__AssertionsMixin___cmd_assert_json["_cmd_assert_json"]
-        testql__interpreter___api_runner___navigate_json_path["_navigate_json_path"]
-        testql__interpreter__converter__handlers__record__handle_record_start["handle_record_start"]
-        testql__interpreter___testtoon_parser___detect_separator["_detect_separator"]
-        testql__interpreter__converter__renderer___render_section_header["_render_section_header"]
-        testql__interpreter__interpreter__IqlInterpreter__execute["execute"]
-        testql__interpreter___api_runner__ApiRunnerMixin___cmd_capture["_cmd_capture"]
-        testql__interpreter__converter__renderer__render_sections["render_sections"]
-        testql__interpreter__converter__handlers__include__handle_include["handle_include"]
-        testql__interpreter___testtoon_parser__parse_testtoon["parse_testtoon"]
-        testql__interpreter___testtoon_parser___make_section["_make_section"]
-        testql__interpreter___testtoon_parser__testtoon_to_iql["testtoon_to_iql"]
-        testql__interpreter__interpreter__IqlInterpreter____init__["__init__"]
-        testql__interpreter__converter__handlers__encoder__handle_encoder["handle_encoder"]
-        testql__interpreter___api_runner___navigate_step["_navigate_step"]
         testql__interpreter___testtoon_parser___make_data_row["_make_data_row"]
-        testql__interpreter__converter__handlers__api__handle_api["handle_api"]
-        testql__interpreter__converter__core__convert_file["convert_file"]
-        testql__interpreter___testtoon_parser___parse_value["_parse_value"]
-        testql__interpreter__converter__core__convert_directory["convert_directory"]
-        testql__interpreter___flow__FlowMixin___cmd_include["_cmd_include"]
-        testql__interpreter__converter__handlers__encoder___encoder_action_fields["_encoder_action_fields"]
-        testql__interpreter__converter__core__convert_iql_to_testtoon["convert_iql_to_testtoon"]
-        testql__interpreter__interpreter__IqlInterpreter__parse["parse"]
-        testql__interpreter___testtoon_parser___append_api_asserts["_append_api_asserts"]
-        testql__interpreter___testtoon_parser___expand_api["_expand_api"]
+        testql__interpreter___api_runner___navigate_json_path["_navigate_json_path"]
         testql__interpreter__converter__handlers__select__handle_select["handle_select"]
+        testql__interpreter__interpreter__IqlInterpreter____init__["__init__"]
+        testql__interpreter___testtoon_parser___make_section["_make_section"]
+        testql__interpreter___testtoon_parser__parse_testtoon["parse_testtoon"]
+        testql__interpreter___testtoon_parser___parse_inline_array["_parse_inline_array"]
+        testql__interpreter___api_runner___navigate_step["_navigate_step"]
+        testql__interpreter__converter__parsers__parse_commands["parse_commands"]
+        testql__interpreter__converter__renderer___render_section_header["_render_section_header"]
+        testql__interpreter__converter__parsers__extract_scenario_name["extract_scenario_name"]
+        testql__interpreter__interpreter__IqlInterpreter__parse["parse"]
+        testql__interpreter__converter__renderer__build_header["build_header"]
+        testql__interpreter__converter__handlers__encoder___encoder_action_fields["_encoder_action_fields"]
+        testql__interpreter___flow__FlowMixin___cmd_include["_cmd_include"]
+        testql__interpreter__converter__parsers__parse_api_args["parse_api_args"]
+        testql__interpreter___testtoon_parser___expand_api["_expand_api"]
+        testql__interpreter__converter__handlers__encoder__handle_encoder["handle_encoder"]
+        testql__interpreter__converter__parsers__parse_target_from_args["parse_target_from_args"]
+        testql__interpreter__converter__parsers__parse_meta_from_args["parse_meta_from_args"]
+        testql__interpreter__converter__handlers__api__handle_api["handle_api"]
         testql__interpreter___testtoon_parser___parse_inline_dict["_parse_inline_dict"]
         testql__interpreter___api_runner___resolve_length["_resolve_length"]
+        testql__interpreter__converter__core__convert_iql_to_testtoon["convert_iql_to_testtoon"]
+        testql__interpreter__converter__handlers__unknown__handle_unknown["handle_unknown"]
+        testql__interpreter__converter__core__convert_directory["convert_directory"]
+        testql__interpreter___api_runner__ApiRunnerMixin___cmd_capture["_cmd_capture"]
+        testql__interpreter__converter__renderer__render_sections["render_sections"]
+        testql__interpreter___assertions__AssertionsMixin___cmd_assert_json["_cmd_assert_json"]
+        testql__interpreter__dispatcher__CommandDispatcher__dispatch["dispatch"]
+        testql__interpreter___testtoon_parser___append_api_asserts["_append_api_asserts"]
+        testql__interpreter__converter__renderer__build_config_section["build_config_section"]
+        testql__interpreter___testtoon_parser___parse_value["_parse_value"]
+        testql__interpreter__converter__core__convert_file["convert_file"]
         testql__interpreter__converter__handlers__navigate__handle_navigate["handle_navigate"]
+        testql__interpreter__interpreter__IqlInterpreter__execute["execute"]
+        testql__interpreter___testtoon_parser__testtoon_to_iql["testtoon_to_iql"]
+        testql__interpreter__converter__handlers__flow__handle_flow["handle_flow"]
+        testql__interpreter__converter__parsers__detect_scenario_type["detect_scenario_type"]
+        testql__interpreter__converter__handlers__record__handle_record_start["handle_record_start"]
+        testql__interpreter__converter__dispatcher__dispatch["dispatch"]
+        testql__interpreter___testtoon_parser___detect_separator["_detect_separator"]
+        testql__interpreter__converter__handlers__include__handle_include["handle_include"]
     end
     subgraph testql__openapi_generator
-        testql__openapi_generator__OpenAPIGenerator___extract_parameters["_extract_parameters"]
         testql__openapi_generator__OpenAPIGenerator___infer_tags["_infer_tags"]
+        testql__openapi_generator___extract_path_params["_extract_path_params"]
+        testql__openapi_generator__OpenAPIGenerator___extract_parameters["_extract_parameters"]
+        testql__openapi_generator___extract_ep_params["_extract_ep_params"]
     end
     subgraph testql__runner
-        testql__runner__parse_line["parse_line"]
-        testql__runner__DslCliExecutor___dispatch["_dispatch"]
         testql__runner__DslCliExecutor__run_script["run_script"]
+        testql__runner__parse_line["parse_line"]
         testql__runner__parse_script["parse_script"]
-        testql__runner__DslCliExecutor__cmd_log["cmd_log"]
-        testql__runner__DslCliExecutor__cmd_print["cmd_print"]
     end
     subgraph testql__sumd_generator
-        testql__sumd_generator__save_sumd["save_sumd"]
-        testql__sumd_generator__generate_sumd["generate_sumd"]
-        testql__sumd_generator___llm_suggestions_section["_llm_suggestions_section"]
-        testql__sumd_generator___header_section["_header_section"]
-        testql__sumd_generator___configuration_section["_configuration_section"]
-        testql__sumd_generator___doql_declaration_section["_doql_declaration_section"]
-        testql__sumd_generator___metadata_section["_metadata_section"]
         testql__sumd_generator___api_contract_section["_api_contract_section"]
-        testql__sumd_generator___architecture_section["_architecture_section"]
-        testql__sumd_generator___workflow_snippet["_workflow_snippet"]
         testql__sumd_generator___workflows_table_section["_workflows_table_section"]
+        testql__sumd_generator___architecture_section["_architecture_section"]
+        testql__sumd_generator___header_section["_header_section"]
+        testql__sumd_generator___llm_suggestions_section["_llm_suggestions_section"]
+        testql__sumd_generator___metadata_section["_metadata_section"]
+        testql__sumd_generator__save_sumd["save_sumd"]
+        testql__sumd_generator___doql_declaration_section["_doql_declaration_section"]
+        testql__sumd_generator__generate_sumd["generate_sumd"]
+        testql__sumd_generator___configuration_section["_configuration_section"]
+        testql__sumd_generator___workflow_snippet["_workflow_snippet"]
     end
     subgraph testql__sumd_parser
         testql__sumd_parser__SumdParser___parse_interfaces["_parse_interfaces"]
+        testql__sumd_parser___parse_api_interfaces["_parse_api_interfaces"]
+        testql__sumd_parser___parse_block_interfaces["_parse_block_interfaces"]
     end
-    TODO__testtoon_parser__print_parsed --> TODO__testql_table_format_spec__print
     TODO__testtoon_parser__print_parsed --> TODO__testtoon_parser__validate
     testql__cli__main --> testql__cli__cli
-    testql__runner__parse_line --> TODO__testql_table_format_spec__print
     testql__runner__parse_script --> testql__runner__parse_line
-    testql__runner__DslCliExecutor___dispatch --> TODO__testql_table_format_spec__print
-    testql__runner__DslCliExecutor__cmd_log --> TODO__testql_table_format_spec__print
-    testql__runner__DslCliExecutor__cmd_print --> TODO__testql_table_format_spec__print
-    testql__runner__DslCliExecutor__run_script --> SUMR__parse_script
-    testql__runner__DslCliExecutor__run_script --> TODO__testql_table_format_spec__print
+    testql__runner__DslCliExecutor__run_script --> code2llm_output__map__toon__parse_script
     testql__openapi_generator__OpenAPIGenerator___infer_tags --> code2llm_output__map__toon__list
-    testql__openapi_generator__OpenAPIGenerator___infer_tags --> SUMR__set
-    testql__openapi_generator__OpenAPIGenerator___extract_parameters --> project__map__toon___extract_path_params
-    testql__openapi_generator__OpenAPIGenerator___extract_parameters --> project__map__toon___extract_ep_params
-    testql___base_fallback__InterpreterOutput__emit --> TODO__testql_table_format_spec__print
+    testql__openapi_generator__OpenAPIGenerator___infer_tags --> testql___base_fallback__VariableStore__set
+    testql__openapi_generator__OpenAPIGenerator___extract_parameters --> testql__openapi_generator___extract_path_params
+    testql__openapi_generator__OpenAPIGenerator___extract_parameters --> testql__openapi_generator___extract_ep_params
     testql__sumd_generator__generate_sumd --> testql__sumd_generator___header_section
     testql__sumd_generator__generate_sumd --> testql__sumd_generator___metadata_section
     testql__sumd_generator__generate_sumd --> testql__sumd_generator___architecture_section
@@ -242,14 +214,14 @@ flowchart LR
     testql__sumd_generator__generate_sumd --> testql__sumd_generator___llm_suggestions_section
     testql__sumd_generator___llm_suggestions_section --> testql__sumd_generator___workflow_snippet
     testql__sumd_generator__save_sumd --> testql__sumd_generator__generate_sumd
-    testql__sumd_parser__SumdParser___parse_interfaces --> project__map__toon___parse_block_interfaces
-    testql__sumd_parser__SumdParser___parse_interfaces --> project__map__toon___parse_api_interfaces
+    testql__sumd_parser__SumdParser___parse_interfaces --> testql__sumd_parser___parse_block_interfaces
+    testql__sumd_parser__SumdParser___parse_interfaces --> testql__sumd_parser___parse_api_interfaces
     testql__commands__generate_cmd__generate --> testql__commands__generate_cmd___is_workspace
     testql__commands__generate_cmd___print_routes_section --> testql__commands__generate_cmd___count_routes_by
     testql__commands__misc_cmds__init --> testql__commands__misc_cmds___create_templates
-    testql__commands__misc_cmds__report --> SUMD__generate_report
-    testql__commands__misc_cmds__echo --> SUMD__render_echo
-    testql__commands__misc_cmds__echo --> SUMD__collect_toon_data
+    testql__commands__misc_cmds__report --> code2llm_output__map__toon__generate_report
+    testql__commands__misc_cmds__echo --> testql__commands__echo_helpers__render_echo
+    testql__commands__misc_cmds__echo --> testql__commands__echo_helpers__collect_toon_data
     testql__commands__encoder_routes___normalize_iql_path --> testql__commands__encoder_routes___strip_path_segments
     testql__commands__encoder_routes___normalize_iql_path --> testql__commands__encoder_routes___migrate_legacy_extension
     testql__commands__encoder_routes___normalize_iql_path --> testql__commands__encoder_routes___remap_tests_prefix
@@ -261,54 +233,53 @@ flowchart LR
     testql__commands__encoder_routes___exec_assert_cmd --> testql__commands__encoder_routes___evaluate_assertion
     testql__commands__encoder_routes___execute_iql_line --> testql__commands__encoder_routes___exec_encoder_cmd
     testql__commands__encoder_routes___execute_iql_line --> testql__commands__encoder_routes___exec_browser_cmd
-    testql__commands__encoder_routes__iql_list_files --> SUMR__set
+    testql__commands__encoder_routes__iql_list_files --> testql___base_fallback__VariableStore__set
     testql__commands__encoder_routes__iql_read_file --> testql__commands__encoder_routes___resolve_iql_path
     testql__commands__encoder_routes__iql_list_tables --> testql__commands__encoder_routes___resolve_iql_path
     testql__commands__encoder_routes__iql_list_tables --> testql__commands__encoder_routes___extract_table_names
-    testql__commands__encoder_routes___extract_table_names --> SUMR__set
+    testql__commands__encoder_routes___extract_table_names --> testql___base_fallback__VariableStore__set
     testql__commands__encoder_routes__iql_run_line --> testql__commands__encoder_routes___execute_iql_line
     testql__commands__encoder_routes__iql_run_file --> testql__commands__encoder_routes___resolve_iql_path
     testql__commands__encoder_routes__iql_run_file --> testql__commands__encoder_routes___build_run_summary
     testql__commands__encoder_routes__iql_run_file --> testql__commands__encoder_routes___write_run_log
     testql__commands__encoder_routes___run_iql_lines --> testql__commands__encoder_routes___update_counters
     testql__commands__encoder_routes___run_iql_lines --> testql__commands__encoder_routes___format_log_detail
-    testql__commands__echo_helpers___collect_toon_directory --> SUMD__parse_toon_file
+    testql__commands__echo_helpers___collect_toon_directory --> code2llm_output__map__toon__parse_toon_file
     testql__commands__echo_helpers__collect_toon_data --> testql__commands__echo_helpers___collect_toon_directory
-    testql__commands__echo_helpers__collect_toon_data --> SUMD__parse_toon_file
-    testql__commands__echo_helpers__collect_doql_data --> SUMD__parse_doql_file
-    testql__commands__echo_helpers__render_echo --> SUMR__generate_sumd
+    testql__commands__echo_helpers__collect_toon_data --> code2llm_output__map__toon__parse_toon_file
+    testql__commands__echo_helpers__collect_doql_data --> code2llm_output__map__toon__parse_doql_file
+    testql__commands__echo_helpers__render_echo --> code2llm_output__map__toon__generate_sumd
     testql__commands__endpoints_cmd__endpoints --> testql__commands__endpoints_cmd___format_endpoints
     testql__commands__endpoints_cmd___format_endpoints --> testql__commands__endpoints_cmd___format_endpoints_table
     testql__commands__endpoints_cmd___format_endpoints --> testql__commands__endpoints_cmd___format_endpoints_json
     testql__commands__endpoints_cmd___format_endpoints --> testql__commands__endpoints_cmd___format_endpoints_csv
-    testql__commands__suite__cli__list_tests --> SUMD__collect_list_files
-    testql__commands__suite__cli__list_tests --> SUMD__filter_tests
-    testql__commands__suite__cli__list_tests --> SUMD__render_test_list
+    testql__commands__suite__cli__list_tests --> testql__commands__suite__collection__collect_list_files
+    testql__commands__suite__cli__list_tests --> testql__commands__suite__listing__filter_tests
+    testql__commands__suite__cli__list_tests --> testql__commands__suite__listing__render_test_list
     testql__commands__suite__execution__run_suite_files --> testql__commands__suite__execution__run_single_file
     testql__commands__suite__listing___parse_yaml_meta_block --> testql__commands__suite__listing___collect_meta_lines
     testql__commands__suite__listing__parse_meta --> testql__commands__suite__listing___parse_testtoon_header
     testql__commands__suite__listing__parse_meta --> testql__commands__suite__listing___parse_yaml_meta_block
     testql__commands__suite__listing__filter_tests --> testql__commands__suite__listing__parse_meta
-    testql__commands__suite__listing__render_test_list --> TODO__testql_table_format_spec__print
     testql__commands__suite__collection___find_files --> testql__commands__suite__collection___resolve_search_dir_and_pattern
     testql__commands__suite__collection___collect_from_suite --> testql__commands__suite__collection___find_files
     testql__commands__suite__collection___collect_by_pattern --> testql__commands__suite__collection___find_files
     testql__commands__suite__collection___collect_recursive --> testql__commands__suite__collection___find_files
-    testql__commands__suite__collection___deduplicate_files --> SUMR__set
+    testql__commands__suite__collection___deduplicate_files --> testql___base_fallback__VariableStore__set
     testql__commands__suite__collection__collect_test_files --> testql__commands__suite__collection___deduplicate_files
     testql__commands__suite__collection__collect_test_files --> testql__commands__suite__collection___collect_from_suite
     testql__commands__suite__collection__collect_test_files --> testql__commands__suite__collection___collect_by_pattern
     testql__commands__suite__collection__collect_test_files --> testql__commands__suite__collection___collect_recursive
-    testql__commands__suite__collection__collect_list_files --> SUMR__set
+    testql__commands__suite__collection__collect_list_files --> testql___base_fallback__VariableStore__set
     testql__commands__suite__reports__save_report --> testql__commands__suite__reports___save_json_report
     testql__commands__suite__reports__save_report --> testql__commands__suite__reports___build_junit_xml
-    testql__commands__echo__cli__echo --> SUMD__generate_context
-    testql__commands__echo__cli__echo --> SUMD__format_text_output
+    testql__commands__echo__cli__echo --> code2llm_output__map__toon__generate_context
+    testql__commands__echo__cli__echo --> code2llm_output__map__toon__format_text_output
     testql__commands__echo__context___find_doql_file --> code2llm_output__map__toon__list
     testql__commands__echo__context__generate_context --> testql__commands__echo__context___find_doql_file
     testql__commands__echo__context__generate_context --> testql__commands__echo__context___find_toon_path
-    testql__commands__echo__context__generate_context --> SUMD__parse_toon_scenarios
-    testql__commands__echo__context__generate_context --> SUMD__parse_doql_less
+    testql__commands__echo__context__generate_context --> code2llm_output__map__toon__parse_toon_scenarios
+    testql__commands__echo__context__generate_context --> code2llm_output__map__toon__parse_doql_less
     testql__commands__echo__formatters__text__format_text_output --> testql__commands__echo__formatters__text___fmt_suggestions
     testql__commands__echo__formatters__text__format_text_output --> testql__commands__echo__formatters__text___fmt_entities
     testql__commands__echo__formatters__text__format_text_output --> testql__commands__echo__formatters__text___fmt_contracts
@@ -321,7 +292,7 @@ flowchart LR
     testql__commands__echo__parsers__doql___parse_deploy --> testql__commands__echo__parsers__doql___parse_kv_block
     testql__commands__echo__parsers__doql___parse_environment --> testql__commands__echo__parsers__doql___parse_kv_block
     testql__commands__echo__parsers__doql___parse_integrations --> code2llm_output__map__toon__list
-    testql__commands__echo__parsers__doql___parse_integrations --> SUMR__set
+    testql__commands__echo__parsers__doql___parse_integrations --> testql___base_fallback__VariableStore__set
     testql__commands__echo__parsers__doql__parse_doql_less --> testql__commands__echo__parsers__doql___parse_app_block
     testql__commands__echo__parsers__doql__parse_doql_less --> testql__commands__echo__parsers__doql___parse_entities
     testql__commands__echo__parsers__doql__parse_doql_less --> testql__commands__echo__parsers__doql___parse_interfaces
@@ -338,43 +309,41 @@ flowchart LR
     testql__interpreter___testtoon_parser__parse_testtoon --> testql__interpreter___testtoon_parser___make_section
     testql__interpreter___testtoon_parser___expand_api --> testql__interpreter___testtoon_parser___append_api_asserts
     testql__interpreter___testtoon_parser__testtoon_to_iql --> testql__interpreter___testtoon_parser__parse_testtoon
-    testql__interpreter___api_runner__ApiRunnerMixin___cmd_capture --> SUMD___navigate_json_path
+    testql__interpreter___api_runner__ApiRunnerMixin___cmd_capture --> code2llm_output__map__toon___navigate_json_path
     testql__interpreter___api_runner___navigate_json_path --> testql__interpreter___api_runner___navigate_step
     testql__interpreter___api_runner___navigate_json_path --> testql__interpreter___api_runner___resolve_length
-    testql__interpreter___flow__FlowMixin___cmd_include --> SUMD__parse_iql
-    testql__interpreter___assertions__AssertionsMixin___cmd_assert_json --> SUMD___navigate_json_path
-    testql__interpreter__interpreter__IqlInterpreter____init__ --> SUMR__set
-    testql__interpreter__interpreter__IqlInterpreter__parse --> SUMD__parse_iql
-    testql__interpreter__interpreter__IqlInterpreter__parse --> SUMD__testtoon_to_iql
-    testql__interpreter__interpreter__IqlInterpreter__execute --> SUMR__all
-    testql__interpreter__converter__core__convert_iql_to_testtoon --> SUMD__parse_commands
-    testql__interpreter__converter__core__convert_iql_to_testtoon --> SUMD__extract_scenario_name
-    testql__interpreter__converter__core__convert_iql_to_testtoon --> SUMD__detect_scenario_type
-    testql__interpreter__converter__core__convert_iql_to_testtoon --> SUMD__build_config_section
-    testql__interpreter__converter__core__convert_iql_to_testtoon --> SUMD__build_header
-    testql__interpreter__converter__core__convert_iql_to_testtoon --> SUMD__dispatch
-    testql__interpreter__converter__core__convert_iql_to_testtoon --> SUMD__render_sections
+    testql__interpreter___flow__FlowMixin___cmd_include --> code2llm_output__map__toon__parse_iql
+    testql__interpreter___assertions__AssertionsMixin___cmd_assert_json --> code2llm_output__map__toon___navigate_json_path
+    testql__interpreter__interpreter__IqlInterpreter____init__ --> testql___base_fallback__VariableStore__set
+    testql__interpreter__interpreter__IqlInterpreter__parse --> code2llm_output__map__toon__parse_iql
+    testql__interpreter__interpreter__IqlInterpreter__parse --> code2llm_output__map__toon__testtoon_to_iql
+    testql__interpreter__interpreter__IqlInterpreter__execute --> testql___base_fallback__VariableStore__all
+    testql__interpreter__converter__core__convert_iql_to_testtoon --> testql__interpreter__converter__parsers__parse_commands
+    testql__interpreter__converter__core__convert_iql_to_testtoon --> testql__interpreter__converter__parsers__extract_scenario_name
+    testql__interpreter__converter__core__convert_iql_to_testtoon --> testql__interpreter__converter__parsers__detect_scenario_type
+    testql__interpreter__converter__core__convert_iql_to_testtoon --> testql__interpreter__converter__renderer__build_config_section
+    testql__interpreter__converter__core__convert_iql_to_testtoon --> testql__interpreter__converter__renderer__build_header
+    testql__interpreter__converter__core__convert_iql_to_testtoon --> testql__interpreter__dispatcher__CommandDispatcher__dispatch
+    testql__interpreter__converter__core__convert_iql_to_testtoon --> testql__interpreter__converter__renderer__render_sections
     testql__interpreter__converter__core__convert_file --> testql__interpreter__converter__core__convert_iql_to_testtoon
     testql__interpreter__converter__core__convert_directory --> testql__interpreter__converter__core__convert_file
-    testql__interpreter__converter__core__convert_directory --> TODO__testql_table_format_spec__print
     testql__interpreter__converter__renderer__render_sections --> testql__interpreter__converter__renderer___render_section_header
-    testql__interpreter__converter__dispatcher__dispatch --> SUMD__handle_unknown
-    testql__interpreter__converter__handlers__encoder___encoder_action_fields --> SUMD__parse_target_from_args
+    testql__interpreter__converter__dispatcher__dispatch --> testql__interpreter__converter__handlers__unknown__handle_unknown
+    testql__interpreter__converter__handlers__encoder___encoder_action_fields --> testql__interpreter__converter__parsers__parse_target_from_args
     testql__interpreter__converter__handlers__encoder__handle_encoder --> testql__interpreter__converter__handlers__encoder___encoder_action_fields
     testql__interpreter__converter__handlers__encoder__handle_encoder --> testql__interpreter__converter__handlers__encoder___advance_past_wait
-    testql__interpreter__converter__handlers__unknown__handle_unknown --> SUMD__parse_target_from_args
-    testql__interpreter__converter__handlers__unknown__handle_unknown --> SUMD__parse_meta_from_args
-    testql__interpreter__converter__handlers__include__handle_include --> SUMD__parse_target_from_args
-    testql__interpreter__converter__handlers__api__handle_api --> SUMD__parse_api_args
-    testql__interpreter__converter__handlers__api__handle_api --> SUMD__collect_assert
-    testql__interpreter__converter__handlers__select__handle_select --> SUMD__parse_target_from_args
-    testql__interpreter__converter__handlers__select__handle_select --> SUMD__parse_meta_from_args
-    testql__interpreter__converter__handlers__navigate__handle_navigate --> SUMD__parse_target_from_args
-    testql__interpreter__converter__handlers__flow__handle_flow --> SUMD__parse_target_from_args
-    testql__interpreter__converter__handlers__flow__handle_flow --> SUMD__parse_meta_from_args
-    testql__interpreter__converter__handlers__record__handle_record_start --> SUMD__parse_target_from_args
-    testql__generators__base__BaseAnalyzer___should_exclude_path --> SUMR__set
+    testql__interpreter__converter__handlers__unknown__handle_unknown --> testql__interpreter__converter__parsers__parse_target_from_args
+    testql__interpreter__converter__handlers__unknown__handle_unknown --> testql__interpreter__converter__parsers__parse_meta_from_args
+    testql__interpreter__converter__handlers__include__handle_include --> testql__interpreter__converter__parsers__parse_target_from_args
+    testql__interpreter__converter__handlers__api__handle_api --> testql__interpreter__converter__parsers__parse_api_args
+    testql__interpreter__converter__handlers__api__handle_api --> testql__interpreter__converter__handlers__assertions__collect_assert
+    testql__interpreter__converter__handlers__select__handle_select --> testql__interpreter__converter__parsers__parse_target_from_args
+    testql__interpreter__converter__handlers__select__handle_select --> testql__interpreter__converter__parsers__parse_meta_from_args
+    testql__interpreter__converter__handlers__navigate__handle_navigate --> testql__interpreter__converter__parsers__parse_target_from_args
+    testql__interpreter__converter__handlers__flow__handle_flow --> testql__interpreter__converter__parsers__parse_target_from_args
+    testql__interpreter__converter__handlers__flow__handle_flow --> testql__interpreter__converter__parsers__parse_meta_from_args
+    testql__interpreter__converter__handlers__record__handle_record_start --> testql__interpreter__converter__parsers__parse_target_from_args
+    testql__generators__base__BaseAnalyzer___should_exclude_path --> testql___base_fallback__VariableStore__set
     testql__generators__multi__MultiProjectTestGenerator__generate_cross_project_tests --> code2llm_output__map__toon__list
-    testql__generators__generators__APIGeneratorMixin___deduplicate_rest_routes --> SUMR__set
-    testql__detectors__unified__UnifiedEndpointDetector__detect_all --> TODO__testql_table_format_spec__print
-    testql__detectors__unified__UnifiedEndpointDetector___deduplicate_endpoints --> SUMR__set
+    testql__generators__generators__APIGeneratorMixin___deduplicate_rest_routes --> testql___base_fallback__VariableStore__set
+    testql__detectors__unified__UnifiedEndpointDetector___deduplicate_endpoints --> testql___base_fallback__VariableStore__set
