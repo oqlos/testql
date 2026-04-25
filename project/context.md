@@ -3,13 +3,13 @@
 ## Overview
 
 - **Project**: /home/tom/github/oqlos/testql
-- **Primary Language**: python
-- **Languages**: python: 95, yaml: 94, json: 2, shell: 2, yml: 2
+- **Primary Language**: yaml
+- **Languages**: yaml: 96, python: 95, json: 2, shell: 2, yml: 2
 - **Analysis Mode**: static
-- **Total Functions**: 740
+- **Total Functions**: 746
 - **Total Classes**: 70
-- **Modules**: 198
-- **Entry Points**: 604
+- **Modules**: 200
+- **Entry Points**: 610
 
 ## Architecture by Module
 
@@ -89,6 +89,11 @@
 - **Classes**: 1
 - **File**: `unified.py`
 
+### testql.interpreter._unit
+- **Functions**: 10
+- **Classes**: 1
+- **File**: `_unit.py`
+
 ### testql.doql_parser
 - **Functions**: 9
 - **Classes**: 1
@@ -102,11 +107,6 @@
 ### testql.commands.echo.parsers.doql
 - **Functions**: 9
 - **File**: `doql.py`
-
-### testql.detectors.flask_detector
-- **Functions**: 9
-- **Classes**: 1
-- **File**: `flask_detector.py`
 
 ## Key Entry Points
 
@@ -135,14 +135,6 @@ Examples:
     SHELL "python --version" 5000
     SHELL "cat file.tx
 - **Calls**: args.strip, self.out.fail, args_clean.startswith, args_clean.startswith, args_clean.find, None.strip, args_clean.split, self.out.step
-
-### testql.interpreter._unit.UnitMixin._cmd_unit_pytest
-> UNIT_PYTEST "path/to/test.py" [timeout_ms] — Run pytest on specific file.
-
-Examples:
-    UNIT_PYTEST "tests/test_main.py"
-    UNIT_PYTEST "tests/" 300
-- **Calls**: None.split, None.strip, self.out.fail, None.isdigit, extra_args.rsplit, None.isdigit, self.out.step, self.results.append
 
 ### testql.interpreter.main
 > CLI entry point — unchanged from original.
@@ -262,6 +254,10 @@ Examples:
 WAIT_FOR NETWORK_IDLE 10000
 - **Calls**: None.split, None.strip, self.out.step, time.time, self.out.step, self.results.append, len, self.out.step
 
+### testql.sumd_parser.SumdParser._parse_testql_scenarios
+> Parse testql scenarios from SUMD.
+- **Calls**: re.finditer, match.group, match.group, re.finditer, re.search, None.split, type_match.group, scenarios.append
+
 ## Process Flows
 
 Key execution flows identified:
@@ -291,29 +287,29 @@ parse_testtoon [TODO.testtoon_parser]
 _cmd_shell [testql.interpreter._shell.ShellMixin]
 ```
 
-### Flow 6: _cmd_unit_pytest
-```
-_cmd_unit_pytest [testql.interpreter._unit.UnitMixin]
-```
-
-### Flow 7: main
+### Flow 6: main
 ```
 main [testql.interpreter]
 ```
 
-### Flow 8: _cmd_unit_assert
+### Flow 7: _cmd_unit_assert
 ```
 _cmd_unit_assert [testql.interpreter._unit.UnitMixin]
 ```
 
-### Flow 9: _cmd_gui_assert_text
+### Flow 8: _cmd_gui_assert_text
 ```
 _cmd_gui_assert_text [testql.interpreter._gui.GuiMixin]
 ```
 
-### Flow 10: from_sumd
+### Flow 9: from_sumd
 ```
 from_sumd [testql.commands.misc_cmds]
+```
+
+### Flow 10: openapi
+```
+openapi [testql.commands.endpoints_cmd]
 ```
 
 ## Key Classes
@@ -351,6 +347,11 @@ Commands:
 > Mixin for generating API-focused test scenarios.
 - **Methods**: 10
 - **Key Methods**: testql.generators.generators.APIGeneratorMixin._generate_api_tests, testql.generators.generators.APIGeneratorMixin._build_api_test_header, testql.generators.generators.APIGeneratorMixin._build_api_test_config, testql.generators.generators.APIGeneratorMixin._build_rest_section, testql.generators.generators.APIGeneratorMixin._build_graphql_section, testql.generators.generators.APIGeneratorMixin._build_websocket_section, testql.generators.generators.APIGeneratorMixin._build_api_test_endpoints, testql.generators.generators.APIGeneratorMixin._deduplicate_rest_routes, testql.generators.generators.APIGeneratorMixin._build_api_test_assertions, testql.generators.generators.APIGeneratorMixin._build_api_test_summary
+
+### testql.interpreter._unit.UnitMixin
+> Mixin providing unit test execution: UNIT_PYTEST, UNIT_IMPORT, UNIT_ASSERT.
+- **Methods**: 10
+- **Key Methods**: testql.interpreter._unit.UnitMixin._parse_pytest_args, testql.interpreter._unit.UnitMixin._extract_pytest_summary, testql.interpreter._unit.UnitMixin._run_pytest_subprocess, testql.interpreter._unit.UnitMixin._handle_pytest_dry_run, testql.interpreter._unit.UnitMixin._handle_pytest_success, testql.interpreter._unit.UnitMixin._handle_pytest_error, testql.interpreter._unit.UnitMixin._cmd_unit_pytest, testql.interpreter._unit.UnitMixin._cmd_unit_pytest_discover, testql.interpreter._unit.UnitMixin._cmd_unit_import, testql.interpreter._unit.UnitMixin._cmd_unit_assert
 
 ### testql.openapi_generator.OpenAPIGenerator
 > Generate OpenAPI specs from detected endpoints.
@@ -421,11 +422,6 @@ Supports both legacy IQL format and
 - **Methods**: 6
 - **Key Methods**: testql._base_fallback.BaseInterpreter.__init__, testql._base_fallback.BaseInterpreter.parse, testql._base_fallback.BaseInterpreter.execute, testql._base_fallback.BaseInterpreter.run, testql._base_fallback.BaseInterpreter.run_file, testql._base_fallback.BaseInterpreter.strip_comments
 - **Inherits**: ABC
-
-### testql.interpreter._shell.ShellMixin
-> Mixin providing shell command execution: SHELL, EXEC, RUN, ASSERT_EXIT_CODE, etc.
-- **Methods**: 6
-- **Key Methods**: testql.interpreter._shell.ShellMixin._cmd_shell, testql.interpreter._shell.ShellMixin._cmd_exec, testql.interpreter._shell.ShellMixin._cmd_run, testql.interpreter._shell.ShellMixin._cmd_assert_exit_code, testql.interpreter._shell.ShellMixin._cmd_assert_stdout_contains, testql.interpreter._shell.ShellMixin._cmd_assert_stderr_contains
 
 ## Data Transformation Functions
 
@@ -561,11 +557,6 @@ graph TD
     _cmd_shell --> fail
     _cmd_shell --> startswith
     _cmd_shell --> find
-    _cmd_unit_pytest --> split
-    _cmd_unit_pytest --> strip
-    _cmd_unit_pytest --> fail
-    _cmd_unit_pytest --> isdigit
-    _cmd_unit_pytest --> rsplit
     main --> ArgumentParser
     main --> add_argument
     _cmd_unit_assert --> split
@@ -575,6 +566,11 @@ graph TD
     _cmd_gui_assert_text --> strip
     _cmd_gui_assert_text --> len
     _cmd_gui_assert_text --> fail
+    from_sumd --> command
+    from_sumd --> argument
+    from_sumd --> option
+    from_sumd --> Path
+    openapi --> command
 ```
 
 ## Reverse Engineering Guidelines

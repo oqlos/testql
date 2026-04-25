@@ -18,22 +18,15 @@ class UnitMixin:
 
     _last_unit_result: dict[str, Any] | None = None
 
-    def _cmd_unit_pytest(self, args: str, line: IqlLine) -> None:
-        """UNIT_PYTEST "path/to/test.py" [timeout_ms] — Run pytest on specific file.
-
-        Examples:
-            UNIT_PYTEST "tests/test_main.py"
-            UNIT_PYTEST "tests/" 30000
-            UNIT_PYTEST "tests/test_api.py -v"
-        """
+    def _parse_pytest_args(self, args: str) -> tuple[str, str, int]:
+        """Parse UNIT_PYTEST arguments into (test_path, extra_args, timeout_ms)."""
         parts = args.strip().split(None, 1)
         if not parts:
-            self.out.fail(f"L{line.number}: UNIT_PYTEST requires path argument")
-            return
+            return "", "", 60000
 
         test_path = parts[0].strip('"\'')
         extra_args = parts[1] if len(parts) > 1 else ""
-        timeout_ms = 60000  # default 60s
+        timeout_ms = 60000
 
         # Extract timeout if specified
         if extra_args and extra_args.split()[-1].isdigit():
@@ -42,78 +35,103 @@ class UnitMixin:
                 timeout_ms = int(parts_extra[-1])
                 extra_args = parts_extra[0]
 
+        return test_path, extra_args, timeout_ms
+
+    def _extract_pytest_summary(self, stdout: str) -> dict[str, str]:
+        """Extract summary line from pytest stdout."""
+        for line in stdout.split('\n'):
+            if "passed" in line and "failed" in line:
+                return {"summary": line}
+        return {}
+
+    def _run_pytest_subprocess(self, test_path: str, extra_args: str, timeout_ms: int) -> subprocess.CompletedProcess:
+        """Execute pytest subprocess and return result."""
+        cmd = [sys.executable, "-m", "pytest", test_path]
+        if extra_args:
+            cmd.extend(extra_args.split())
+
+        return subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=timeout_ms / 1000,
+            cwd=str(Path.cwd()),
+        )
+
+    def _handle_pytest_dry_run(self, test_path: str, timeout_ms: int) -> None:
+        """Handle UNIT_PYTEST in dry-run mode."""
+        self.out.step("🧪", f'UNIT_PYTEST "{test_path[:50]}" [{timeout_ms}ms] (dry-run)')
+        self._last_unit_result = {
+            "path": test_path,
+            "exit_code": 0,
+            "passed": 1,
+            "failed": 0,
+            "dry_run": True,
+        }
+        self.results.append(StepResult(
+            name=f'UNIT_PYTEST "{test_path[:40]}"', status=StepStatus.PASSED
+        ))
+
+    def _handle_pytest_success(self, test_path: str, result: subprocess.CompletedProcess) -> None:
+        """Handle successful pytest execution."""
+        passed = result.returncode == 0
+        summary = self._extract_pytest_summary(result.stdout)
+
+        self._last_unit_result = {
+            "path": test_path,
+            "exit_code": result.returncode,
+            "passed": passed,
+            "stdout": result.stdout,
+            "stderr": result.stderr,
+            "summary": summary,
+        }
+
+        icon = "✅" if passed else "❌"
+        status = StepStatus.PASSED if passed else StepStatus.FAILED
+
+        self.out.step(icon, f'UNIT_PYTEST "{test_path[:50]}" → exit {result.returncode}')
+        self.results.append(StepResult(
+            name=f'UNIT_PYTEST "{test_path[:40]}"',
+            status=status,
+            details={"exit_code": result.returncode, "summary": summary},
+        ))
+
+    def _handle_pytest_error(self, test_path: str, error: Exception, timeout_ms: int | None = None) -> None:
+        """Handle pytest execution errors."""
+        if isinstance(error, subprocess.TimeoutExpired):
+            message = f"Timeout after {timeout_ms}ms" if timeout_ms else "Timeout"
+        else:
+            message = str(error)
+
+        self.out.fail(f"UNIT_PYTEST error: {message}")
+        self.results.append(StepResult(
+            name=f'UNIT_PYTEST "{test_path[:40]}"',
+            status=StepStatus.ERROR,
+            message=message,
+        ))
+
+    def _cmd_unit_pytest(self, args: str, line: IqlLine) -> None:
+        """UNIT_PYTEST "path/to/test.py" [timeout_ms] — Run pytest on specific file.
+
+        Examples:
+            UNIT_PYTEST "tests/test_main.py"
+            UNIT_PYTEST "tests/" 30000
+            UNIT_PYTEST "tests/test_api.py -v"
+        """
+        test_path, extra_args, timeout_ms = self._parse_pytest_args(args)
+        if not test_path:
+            self.out.fail(f"L{line.number}: UNIT_PYTEST requires path argument")
+            return
+
         if self.dry_run:
-            self.out.step("🧪", f'UNIT_PYTEST "{test_path[:50]}" [{timeout_ms}ms] (dry-run)')
-            self._last_unit_result = {
-                "path": test_path,
-                "exit_code": 0,
-                "passed": 1,
-                "failed": 0,
-                "dry_run": True,
-            }
-            self.results.append(StepResult(
-                name=f'UNIT_PYTEST "{test_path[:40]}"', status=StepStatus.PASSED
-            ))
+            self._handle_pytest_dry_run(test_path, timeout_ms)
             return
 
         try:
-            # Run pytest with JSON output if possible, otherwise plain
-            cmd = [sys.executable, "-m", "pytest", test_path]
-            if extra_args:
-                cmd.extend(extra_args.split())
-
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                timeout=timeout_ms / 1000,
-                cwd=str(Path.cwd()),
-            )
-
-            # Parse basic results from output
-            passed = result.returncode == 0
-            stdout_lines = result.stdout.split('\n')
-
-            # Try to extract summary
-            summary = {}
-            for line in stdout_lines:
-                if "passed" in line and "failed" in line:
-                    summary = {"summary": line}
-                    break
-
-            self._last_unit_result = {
-                "path": test_path,
-                "exit_code": result.returncode,
-                "passed": passed,
-                "stdout": result.stdout,
-                "stderr": result.stderr,
-                "summary": summary,
-            }
-
-            icon = "✅" if passed else "❌"
-            status = StepStatus.PASSED if passed else StepStatus.FAILED
-
-            self.out.step(icon, f'UNIT_PYTEST "{test_path[:50]}" → exit {result.returncode}')
-            self.results.append(StepResult(
-                name=f'UNIT_PYTEST "{test_path[:40]}"',
-                status=status,
-                details={"exit_code": result.returncode, "summary": summary},
-            ))
-
-        except subprocess.TimeoutExpired:
-            self.out.fail(f"UNIT_PYTEST timeout after {timeout_ms}ms")
-            self.results.append(StepResult(
-                name=f'UNIT_PYTEST "{test_path[:40]}"',
-                status=StepStatus.ERROR,
-                message=f"Timeout after {timeout_ms}ms",
-            ))
+            result = self._run_pytest_subprocess(test_path, extra_args, timeout_ms)
+            self._handle_pytest_success(test_path, result)
         except Exception as e:
-            self.out.fail(f"UNIT_PYTEST error: {e}")
-            self.results.append(StepResult(
-                name=f'UNIT_PYTEST "{test_path[:40]}"',
-                status=StepStatus.ERROR,
-                message=str(e),
-            ))
+            self._handle_pytest_error(test_path, e, timeout_ms)
 
     def _cmd_unit_pytest_discover(self, args: str, line: IqlLine) -> None:
         """UNIT_PYTEST_DISCOVER "tests/" [timeout_ms] — Discover and run all tests.

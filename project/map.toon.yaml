@@ -1,4 +1,4 @@
-# testql | 132f 15567L | python:127,less:3,shell:2 | 2026-04-25
+# testql | 132f 15586L | python:127,less:3,shell:2 | 2026-04-25
 # stats: 204 func | 195 cls | 132 mod | CC̄=3.9 | critical:8 | cycles:0
 # alerts[5]: CC parse_testtoon=14; CC suite=13; CC parse_value=11; CC detect_scenario_type=11; CC _execute_iql_line=10
 # hotspots[5]: generate fan=19; watch fan=19; suite fan=19; main fan=18; _run_iql_lines fan=15
@@ -7,7 +7,7 @@
 M[132]:
   TODO/testtoon_parser.py,142
   app.doql.less,167
-  project.sh,45
+  project.sh,46
   testql/__init__.py,4
   testql/__main__.py,7
   testql/_base_fallback.py,222
@@ -73,7 +73,7 @@ M[132]:
   testql/interpreter/_parser.py,34
   testql/interpreter/_shell.py,244
   testql/interpreter/_testtoon_parser.py,414
-  testql/interpreter/_unit.py,250
+  testql/interpreter/_unit.py,268
   testql/interpreter/_websockets.py,173
   testql/interpreter/converter/__init__.py,20
   testql/interpreter/converter/core.py,59
@@ -441,7 +441,7 @@ D:
     testtoon_to_iql(text;filename)
   testql/interpreter/_unit.py:
     e: UnitMixin
-    UnitMixin: _cmd_unit_pytest(2),_cmd_unit_pytest_discover(2),_cmd_unit_import(2),_cmd_unit_assert(2)  # Mixin providing unit test execution: UNIT_PYTEST, UNIT_IMPOR
+    UnitMixin: _parse_pytest_args(1),_extract_pytest_summary(1),_run_pytest_subprocess(3),_handle_pytest_dry_run(2),_handle_pytest_success(2),_handle_pytest_error(3),_cmd_unit_pytest(2),_cmd_unit_pytest_discover(2),_cmd_unit_import(2),_cmd_unit_assert(2)  # Mixin providing unit test execution: UNIT_PYTEST, UNIT_IMPOR
   testql/interpreter/_websockets.py:
     e: WebSocketMixin
     WebSocketMixin: __init_subclass__(1),_get_ws_context(0),_cmd_ws_connect(2),_cmd_ws_send(2),_ws_do_receive(4),_cmd_ws_receive(2),_cmd_ws_assert_msg(2),_cmd_ws_close(2)  # Mixin for WebSocket testing support.

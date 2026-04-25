@@ -18,7 +18,7 @@ SUMD - Structured Unified Markdown Descriptor for AI-aware project refactorizati
 ## Metadata
 
 - **name**: `testql`
-- **version**: `0.6.18`
+- **version**: `0.6.20`
 - **python_requires**: `>=3.10`
 - **license**: Apache-2.0
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -39,7 +39,7 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 0.6.18;
+  version: 0.6.20;
 }
 
 dependencies {
@@ -663,12 +663,12 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 |----------|----|----|-----|-------|
 | `generate` *(in testql.commands.generate_cmd)* | 10 ⚠ | 0 | 44 | **44** |
 | `_print_routes_section` *(in testql.commands.generate_cmd)* | 10 ⚠ | 1 | 23 | **24** |
-| `_parse_workflows` *(in testql.commands.echo.parsers.doql)* | 7 | 1 | 22 | **23** |
 | `_run_iql_lines` *(in testql.commands.encoder_routes)* | 6 | 1 | 22 | **23** |
-| `parse_line` *(in testql.runner)* | 9 | 2 | 20 | **22** |
+| `_parse_workflows` *(in testql.commands.echo.parsers.doql)* | 7 | 1 | 22 | **23** |
 | `report` *(in testql.commands.misc_cmds)* | 4 | 0 | 22 | **22** |
+| `parse_line` *(in testql.runner)* | 9 | 2 | 20 | **22** |
 | `run_script` *(in testql.runner.DslCliExecutor)* | 11 ⚠ | 0 | 20 | **20** |
-| `endpoints` *(in testql.commands.endpoints_cmd)* | 9 | 0 | 20 | **20** |
+| `init` *(in testql.commands.misc_cmds)* | 4 | 0 | 20 | **20** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
@@ -680,42 +680,42 @@ HUBS[20]:
     CC=10  in:0  out:44  total:44
   testql.commands.generate_cmd._print_routes_section
     CC=10  in:1  out:23  total:24
-  testql.commands.echo.parsers.doql._parse_workflows
-    CC=7  in:1  out:22  total:23
   testql.commands.encoder_routes._run_iql_lines
     CC=6  in:1  out:22  total:23
-  testql.runner.parse_line
-    CC=9  in:2  out:20  total:22
+  testql.commands.echo.parsers.doql._parse_workflows
+    CC=7  in:1  out:22  total:23
   testql.commands.misc_cmds.report
     CC=4  in:0  out:22  total:22
+  testql.runner.parse_line
+    CC=9  in:2  out:20  total:22
   testql.runner.DslCliExecutor.run_script
     CC=11  in:0  out:20  total:20
-  testql.commands.endpoints_cmd.endpoints
-    CC=9  in:0  out:20  total:20
   testql.commands.misc_cmds.init
     CC=4  in:0  out:20  total:20
+  testql.commands.endpoints_cmd.endpoints
+    CC=9  in:0  out:20  total:20
   testql.commands.misc_cmds.echo
     CC=4  in:0  out:20  total:20
   testql.commands.echo.parsers.doql._parse_entities
     CC=7  in:1  out:16  total:17
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+    CC=6  in:0  out:17  total:17
   testql.commands.echo.cli.echo
     CC=3  in:0  out:17  total:17
   testql.interpreter._flow.FlowMixin._cmd_include
     CC=7  in:0  out:17  total:17
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
-    CC=6  in:0  out:17  total:17
-  testql.interpreter._testtoon_parser.parse_testtoon
-    CC=8  in:1  out:15  total:16
-  testql.interpreter.converter.parsers.parse_target_from_args
-    CC=4  in:7  out:9  total:16
   testql.commands.echo.parsers.toon._parse_scenario
     CC=5  in:1  out:15  total:16
+  testql.interpreter.converter.parsers.parse_target_from_args
+    CC=4  in:7  out:9  total:16
+  testql.interpreter._testtoon_parser.parse_testtoon
+    CC=8  in:1  out:15  total:16
   testql.interpreter.interpreter.IqlInterpreter.execute
     CC=4  in:0  out:16  total:16
-  testql.commands.encoder_routes.iql_run_file
-    CC=3  in:0  out:15  total:15
   testql.commands.encoder_routes._execute_iql_line
     CC=10  in:2  out:13  total:15
+  testql.commands.encoder_routes.iql_run_file
+    CC=3  in:0  out:15  total:15
 
 MODULES:
   TODO.testtoon_parser  [2 funcs]
@@ -1209,42 +1209,42 @@ HUBS[20]:
     CC=10  in:0  out:44  total:44
   testql.commands.generate_cmd._print_routes_section
     CC=10  in:1  out:23  total:24
-  testql.commands.echo.parsers.doql._parse_workflows
-    CC=7  in:1  out:22  total:23
   testql.commands.encoder_routes._run_iql_lines
     CC=6  in:1  out:22  total:23
-  testql.runner.parse_line
-    CC=9  in:2  out:20  total:22
+  testql.commands.echo.parsers.doql._parse_workflows
+    CC=7  in:1  out:22  total:23
   testql.commands.misc_cmds.report
     CC=4  in:0  out:22  total:22
+  testql.runner.parse_line
+    CC=9  in:2  out:20  total:22
   testql.runner.DslCliExecutor.run_script
     CC=11  in:0  out:20  total:20
-  testql.commands.endpoints_cmd.endpoints
-    CC=9  in:0  out:20  total:20
   testql.commands.misc_cmds.init
     CC=4  in:0  out:20  total:20
+  testql.commands.endpoints_cmd.endpoints
+    CC=9  in:0  out:20  total:20
   testql.commands.misc_cmds.echo
     CC=4  in:0  out:20  total:20
   testql.commands.echo.parsers.doql._parse_entities
     CC=7  in:1  out:16  total:17
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+    CC=6  in:0  out:17  total:17
   testql.commands.echo.cli.echo
     CC=3  in:0  out:17  total:17
   testql.interpreter._flow.FlowMixin._cmd_include
     CC=7  in:0  out:17  total:17
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
-    CC=6  in:0  out:17  total:17
-  testql.interpreter._testtoon_parser.parse_testtoon
-    CC=8  in:1  out:15  total:16
-  testql.interpreter.converter.parsers.parse_target_from_args
-    CC=4  in:7  out:9  total:16
   testql.commands.echo.parsers.toon._parse_scenario
     CC=5  in:1  out:15  total:16
+  testql.interpreter.converter.parsers.parse_target_from_args
+    CC=4  in:7  out:9  total:16
+  testql.interpreter._testtoon_parser.parse_testtoon
+    CC=8  in:1  out:15  total:16
   testql.interpreter.interpreter.IqlInterpreter.execute
     CC=4  in:0  out:16  total:16
-  testql.commands.encoder_routes.iql_run_file
-    CC=3  in:0  out:15  total:15
   testql.commands.encoder_routes._execute_iql_line
     CC=10  in:2  out:13  total:15
+  testql.commands.encoder_routes.iql_run_file
+    CC=3  in:0  out:15  total:15
 
 MODULES:
   TODO.testtoon_parser  [2 funcs]
@@ -1504,16 +1504,14 @@ EDGES:
 ### Code Analysis (`project/analysis.toon.yaml`)
 
 ```toon markpact:analysis path=project/analysis.toon.yaml
-# code2llm | 198f 20021L | python:95,yaml:94,json:2,shell:2,yml:2,txt:2,toml:1 | 2026-04-25
-# CC̄=2.3 | critical:1/740 | dups:0 | cycles:0
+# code2llm | 200f 19615L | yaml:96,python:95,json:2,shell:2,yml:2,txt:2,toml:1 | 2026-04-25
+# CC̄=2.3 | critical:0/746 | dups:0 | cycles:0
 
-HEALTH[1]:
-  🟡 CC    _cmd_unit_pytest CC=15 (limit:15)
+HEALTH[0]: ok
 
-REFACTOR[1]:
-  1. split 1 high-CC methods  (CC>15)
+REFACTOR[0]: none needed
 
-PIPELINES[315]:
+PIPELINES[321]:
   [1] Src [validate]: validate
       PURITY: 100% pure
   [2] Src [parse_testtoon]: parse_testtoon → detect_separator
@@ -1539,7 +1537,7 @@ LAYERS:
   │ analyzers                  299L  1C   16m  CC=10     ←0
   │ misc_cmds                  292L  0C    7m  CC=6      ←0
   │ sumd_parser                277L  5C   12m  CC=11     ←0
-  │ !! _unit                      249L  1C    4m  CC=15     ←0
+  │ _unit                      267L  1C   10m  CC=10     ←0
   │ report_generator           248L  4C    8m  CC=5      ←0
   │ _shell                     243L  1C    6m  CC=14     ←0
   │ _base_fallback             221L  7C   26m  CC=4      ←10
@@ -1708,11 +1706,11 @@ LAYERS:
   │ project.toon.yaml            9L  0C    0m  CC=0.0    ←0
   │
   project/                        CC̄=0.0    ←in:0  →out:0
-  │ !! calls.yaml                3007L  0C    0m  CC=0.0    ←0
+  │ !! calls.yaml                2497L  0C    0m  CC=0.0    ←0
   │ !! map.toon.yaml              771L  0C  200m  CC=0.0    ←0
   │ validation.toon.yaml       421L  0C    0m  CC=0.0    ←0
   │ calls.toon.yaml            299L  0C    0m  CC=0.0    ←0
-  │ analysis.toon.yaml         277L  0C    0m  CC=0.0    ←0
+  │ analysis.toon.yaml         252L  0C    0m  CC=0.0    ←0
   │ project.toon.yaml           51L  0C    0m  CC=0.0    ←0
   │ prompt.txt                  47L  0C    0m  CC=0.0    ←0
   │ evolution.toon.yaml         43L  0C    0m  CC=0.0    ←0
@@ -1724,11 +1722,13 @@ LAYERS:
   │ Taskfile.yml               185L  0C    0m  CC=0.0    ←0
   │ openapi.yaml               175L  0C    0m  CC=0.0    ←0
   │ Taskfile.testql.yml        117L  0C    0m  CC=0.0    ←0
+  │ prefact.yaml                91L  0C    0m  CC=0.0    ←0
   │ pyqual.yaml                 71L  0C    0m  CC=0.0    ←0
   │ pyproject.toml              70L  0C    0m  CC=0.0    ←0
-  │ project.sh                  45L  0C    0m  CC=0.0    ←0
-  │ coverage.json                1L  0C    0m  CC=0.0    ←0
+  │ project.sh                  46L  0C    0m  CC=0.0    ←0
+  │ planfile.yaml               19L  0C    0m  CC=0.0    ←0
   │ tree.sh                      1L  0C    0m  CC=0.0    ←0
+  │ coverage.json                1L  0C    0m  CC=0.0    ←0
   │
   testql-scenarios/               CC̄=0.0    ←in:0  →out:0
   │ generated-api-smoke.testql.toon.yaml    35L  0C    0m  CC=0.0    ←0
@@ -1750,8 +1750,8 @@ COUPLING:
   CYCLES: none
   HUB: testql/ (fan-in=11)
   HUB: code2llm_output.map/ (fan-in=21)
-  SMELL: testql.commands/ fan-out=18 → split needed
   SMELL: testql.interpreter/ fan-out=8 → split needed
+  SMELL: testql.commands/ fan-out=18 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon
@@ -1769,27 +1769,23 @@ SUMMARY:
   dup_groups:    0
   dup_fragments: 0
   saved_lines:   0
-  scan_ms:       4017
+  scan_ms:       4428
 ```
 
 ### Evolution / Churn (`project/evolution.toon.yaml`)
 
 ```toon markpact:analysis path=project/evolution.toon.yaml
-# code2llm/evolution | 740 func | 76f | 2026-04-25
+# code2llm/evolution | 746 func | 76f | 2026-04-25
 
-NEXT[1] (ranked by impact):
-  [1] !  SPLIT-FUNC      UnitMixin._cmd_unit_pytest  CC=15  fan=17
-      WHY: CC=15 exceeds 15
-      EFFORT: ~1h  IMPACT: 255
-
+NEXT[0]: no refactoring needed
 
 RISKS[0]: none
 
 METRICS-TARGET:
   CC̄:          2.3 → ≤1.6
-  max-CC:      15 → ≤7
+  max-CC:      14 → ≤7
   god-modules: 0 → 0
-  high-CC(≥15): 1 → ≤0
+  high-CC(≥15): 0 → ≤0
   hub-types:   0 → ≤0
 
 PATTERNS (language parser shared logic):
@@ -1817,7 +1813,7 @@ PATTERNS (language parser shared logic):
     - Standardized FunctionInfo/ClassInfo models
 
 HISTORY:
-  prev CC̄=1.5 → now CC̄=2.3
+  prev CC̄=2.3 → now CC̄=2.3
 ```
 
 ### Validation (`project/validation.toon.yaml`)

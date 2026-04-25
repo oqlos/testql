@@ -1,7 +1,7 @@
-# testql | 740 func | 76f | 38906L | python | 2026-04-25
+# testql | 746 func | 76f | 38358L | yaml | 2026-04-25
 
 HEALTH:
-  CC̄=2.3  critical=18 (limit:10)  dup=1  cycles=0
+  CC̄=2.3  critical=17 (limit:10)  dup=1  cycles=0
 
 ALERTS[20]:
   !!! high_fan_out     parse_testtoon = 21 (limit:10)
@@ -9,14 +9,14 @@ ALERTS[20]:
   !!! high_fan_out     watch = 20 (limit:10)
   !!! high_fan_out     suite = 20 (limit:10)
   !!  high_fan_out     main = 19 (limit:10)
-  !!  high_fan_out     UnitMixin._cmd_unit_pytest = 17 (limit:10)
   !!  high_fan_out     _run_iql_lines = 16 (limit:10)
   !!  high_fan_out     ApiRunnerMixin._cmd_api = 16 (limit:10)
   !!  high_fan_out     main = 15 (limit:10)
   !!  high_fan_out     run = 15 (limit:10)
+  !!  high_fan_out     _parse_entities = 15 (limit:10)
 
-MODULES[198] (top by size):
-  M[project/calls.yaml] 3007L C:0 F:0 CC↑0 D:0 (yaml)
+MODULES[200] (top by size):
+  M[project/calls.yaml] 2497L C:0 F:0 CC↑0 D:0 (yaml)
   M[code2llm_output/calls.yaml] 799L C:0 F:0 CC↑0 D:0 (yaml)
   M[project/map.toon.yaml] 771L C:0 F:200 CC↑0 D:0 (yaml)
   M[goal.yaml] 511L C:0 F:0 CC↑0 D:0 (yaml)
@@ -31,7 +31,7 @@ MODULES[198] (top by size):
   M[project/calls.toon.yaml] 299L C:0 F:0 CC↑0 D:0 (yaml)
   M[testql/commands/misc_cmds.py] 292L C:0 F:7 CC↑6 D:0 (python)
   M[testql/sumd_parser.py] 277L C:5 F:12 CC↑11 D:0 (python)
-  LANGS: python:95/yaml:94/yml:2/txt:2/json:2/shell:2/toml:1
+  LANGS: yaml:96/python:95/yml:2/txt:2/json:2/shell:2/toml:1
 
 HOTSPOTS[10]:
   ★ parse_testtoon fan=21  // Orchestrates 21 calls
@@ -40,12 +40,12 @@ HOTSPOTS[10]:
   ★ suite fan=20  // Run test suite(s) — predefined or custom pattern.
   ★ main fan=19  // CLI entry point — unchanged from original.
 
-REFACTOR[8]:
+REFACTOR[7]:
   [1] H/H Split god module code2llm_output/calls.yaml (799L, 0 classes)
   [2] H/H Split god module goal.yaml (511L, 0 classes)
-  [3] H/H Split god module project/calls.yaml (3007L, 0 classes)
+  [3] H/H Split god module project/calls.yaml (2497L, 0 classes)
   [4] H/H Split god module project/map.toon.yaml (771L, 0 classes)
-  [5] M/L Split UnitMixin._cmd_unit_pytest (CC=15)
+  [5] M/M Reduce parse_testtoon fan-out (currently 21)
 
 EVOLUTION:
-  2026-04-25 CC̄=2.3 crit=18 38906L // Automated analysis
+  2026-04-25 CC̄=2.3 crit=17 38358L // Automated analysis

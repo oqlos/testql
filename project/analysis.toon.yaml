@@ -1,13 +1,11 @@
-# code2llm | 198f 20021L | python:95,yaml:94,json:2,shell:2,yml:2,txt:2,toml:1 | 2026-04-25
-# CC̄=2.3 | critical:1/740 | dups:0 | cycles:0
+# code2llm | 200f 19615L | yaml:96,python:95,json:2,shell:2,yml:2,txt:2,toml:1 | 2026-04-25
+# CC̄=2.3 | critical:0/746 | dups:0 | cycles:0
 
-HEALTH[1]:
-  🟡 CC    _cmd_unit_pytest CC=15 (limit:15)
+HEALTH[0]: ok
 
-REFACTOR[1]:
-  1. split 1 high-CC methods  (CC>15)
+REFACTOR[0]: none needed
 
-PIPELINES[315]:
+PIPELINES[321]:
   [1] Src [validate]: validate
       PURITY: 100% pure
   [2] Src [parse_testtoon]: parse_testtoon → detect_separator
@@ -33,7 +31,7 @@ LAYERS:
   │ analyzers                  299L  1C   16m  CC=10     ←0
   │ misc_cmds                  292L  0C    7m  CC=6      ←0
   │ sumd_parser                277L  5C   12m  CC=11     ←0
-  │ !! _unit                      249L  1C    4m  CC=15     ←0
+  │ _unit                      267L  1C   10m  CC=10     ←0
   │ report_generator           248L  4C    8m  CC=5      ←0
   │ _shell                     243L  1C    6m  CC=14     ←0
   │ _base_fallback             221L  7C   26m  CC=4      ←10
@@ -202,11 +200,11 @@ LAYERS:
   │ project.toon.yaml            9L  0C    0m  CC=0.0    ←0
   │
   project/                        CC̄=0.0    ←in:0  →out:0
-  │ !! calls.yaml                3007L  0C    0m  CC=0.0    ←0
+  │ !! calls.yaml                2497L  0C    0m  CC=0.0    ←0
   │ !! map.toon.yaml              771L  0C  200m  CC=0.0    ←0
   │ validation.toon.yaml       421L  0C    0m  CC=0.0    ←0
   │ calls.toon.yaml            299L  0C    0m  CC=0.0    ←0
-  │ analysis.toon.yaml         277L  0C    0m  CC=0.0    ←0
+  │ analysis.toon.yaml         252L  0C    0m  CC=0.0    ←0
   │ project.toon.yaml           51L  0C    0m  CC=0.0    ←0
   │ prompt.txt                  47L  0C    0m  CC=0.0    ←0
   │ evolution.toon.yaml         43L  0C    0m  CC=0.0    ←0
@@ -218,11 +216,13 @@ LAYERS:
   │ Taskfile.yml               185L  0C    0m  CC=0.0    ←0
   │ openapi.yaml               175L  0C    0m  CC=0.0    ←0
   │ Taskfile.testql.yml        117L  0C    0m  CC=0.0    ←0
+  │ prefact.yaml                91L  0C    0m  CC=0.0    ←0
   │ pyqual.yaml                 71L  0C    0m  CC=0.0    ←0
   │ pyproject.toml              70L  0C    0m  CC=0.0    ←0
-  │ project.sh                  45L  0C    0m  CC=0.0    ←0
-  │ coverage.json                1L  0C    0m  CC=0.0    ←0
+  │ project.sh                  46L  0C    0m  CC=0.0    ←0
+  │ planfile.yaml               19L  0C    0m  CC=0.0    ←0
   │ tree.sh                      1L  0C    0m  CC=0.0    ←0
+  │ coverage.json                1L  0C    0m  CC=0.0    ←0
   │
   testql-scenarios/               CC̄=0.0    ←in:0  →out:0
   │ generated-api-smoke.testql.toon.yaml    35L  0C    0m  CC=0.0    ←0
@@ -244,8 +244,8 @@ COUPLING:
   CYCLES: none
   HUB: testql/ (fan-in=11)
   HUB: code2llm_output.map/ (fan-in=21)
-  SMELL: testql.commands/ fan-out=18 → split needed
   SMELL: testql.interpreter/ fan-out=8 → split needed
+  SMELL: testql.commands/ fan-out=18 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon

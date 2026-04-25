@@ -24,7 +24,7 @@ TestQL with endpoint detection, OpenAPI, SUMD generation, SUMD parser and HTML r
 ## Metadata
 
 - **name**: `testql`
-- **version**: `0.6.18`
+- **version**: `0.6.20`
 - **python_requires**: `>=3.10`
 - **license**: Apache-2.0
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -45,7 +45,7 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 0.6.18;
+  version: 0.6.20;
 }
 
 dependencies {
@@ -3368,7 +3368,7 @@ pipeline:
 ```yaml
 project:
   name: testql
-  version: 0.6.18
+  version: 0.6.20
   env: local
 ```
 
@@ -3437,7 +3437,7 @@ pip install -e .[dev]
 ### `project/map.toon.yaml`
 
 ```toon markpact:analysis path=project/map.toon.yaml
-# testql | 132f 15567L | python:127,less:3,shell:2 | 2026-04-25
+# testql | 132f 15586L | python:127,less:3,shell:2 | 2026-04-25
 # stats: 204 func | 195 cls | 132 mod | CC̄=3.9 | critical:8 | cycles:0
 # alerts[5]: CC parse_testtoon=14; CC suite=13; CC parse_value=11; CC detect_scenario_type=11; CC _execute_iql_line=10
 # hotspots[5]: generate fan=19; watch fan=19; suite fan=19; main fan=18; _run_iql_lines fan=15
@@ -3446,7 +3446,7 @@ pip install -e .[dev]
 M[132]:
   TODO/testtoon_parser.py,142
   app.doql.less,167
-  project.sh,45
+  project.sh,46
   testql/__init__.py,4
   testql/__main__.py,7
   testql/_base_fallback.py,222
@@ -3512,7 +3512,7 @@ M[132]:
   testql/interpreter/_parser.py,34
   testql/interpreter/_shell.py,244
   testql/interpreter/_testtoon_parser.py,414
-  testql/interpreter/_unit.py,250
+  testql/interpreter/_unit.py,268
   testql/interpreter/_websockets.py,173
   testql/interpreter/converter/__init__.py,20
   testql/interpreter/converter/core.py,59
@@ -3880,7 +3880,7 @@ D:
     testtoon_to_iql(text;filename)
   testql/interpreter/_unit.py:
     e: UnitMixin
-    UnitMixin: _cmd_unit_pytest(2),_cmd_unit_pytest_discover(2),_cmd_unit_import(2),_cmd_unit_assert(2)  # Mixin providing unit test execution: UNIT_PYTEST, UNIT_IMPOR
+    UnitMixin: _parse_pytest_args(1),_extract_pytest_summary(1),_run_pytest_subprocess(3),_handle_pytest_dry_run(2),_handle_pytest_success(2),_handle_pytest_error(3),_cmd_unit_pytest(2),_cmd_unit_pytest_discover(2),_cmd_unit_import(2),_cmd_unit_assert(2)  # Mixin providing unit test execution: UNIT_PYTEST, UNIT_IMPOR
   testql/interpreter/_websockets.py:
     e: WebSocketMixin
     WebSocketMixin: __init_subclass__(1),_get_ws_context(0),_cmd_ws_connect(2),_cmd_ws_send(2),_ws_do_receive(4),_cmd_ws_receive(2),_cmd_ws_assert_msg(2),_cmd_ws_close(2)  # Mixin for WebSocket testing support.
@@ -4358,12 +4358,12 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 |----------|----|----|-----|-------|
 | `generate` *(in testql.commands.generate_cmd)* | 10 ⚠ | 0 | 44 | **44** |
 | `_print_routes_section` *(in testql.commands.generate_cmd)* | 10 ⚠ | 1 | 23 | **24** |
-| `_parse_workflows` *(in testql.commands.echo.parsers.doql)* | 7 | 1 | 22 | **23** |
 | `_run_iql_lines` *(in testql.commands.encoder_routes)* | 6 | 1 | 22 | **23** |
-| `parse_line` *(in testql.runner)* | 9 | 2 | 20 | **22** |
+| `_parse_workflows` *(in testql.commands.echo.parsers.doql)* | 7 | 1 | 22 | **23** |
 | `report` *(in testql.commands.misc_cmds)* | 4 | 0 | 22 | **22** |
+| `parse_line` *(in testql.runner)* | 9 | 2 | 20 | **22** |
 | `run_script` *(in testql.runner.DslCliExecutor)* | 11 ⚠ | 0 | 20 | **20** |
-| `endpoints` *(in testql.commands.endpoints_cmd)* | 9 | 0 | 20 | **20** |
+| `init` *(in testql.commands.misc_cmds)* | 4 | 0 | 20 | **20** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
@@ -4375,42 +4375,42 @@ HUBS[20]:
     CC=10  in:0  out:44  total:44
   testql.commands.generate_cmd._print_routes_section
     CC=10  in:1  out:23  total:24
-  testql.commands.echo.parsers.doql._parse_workflows
-    CC=7  in:1  out:22  total:23
   testql.commands.encoder_routes._run_iql_lines
     CC=6  in:1  out:22  total:23
-  testql.runner.parse_line
-    CC=9  in:2  out:20  total:22
+  testql.commands.echo.parsers.doql._parse_workflows
+    CC=7  in:1  out:22  total:23
   testql.commands.misc_cmds.report
     CC=4  in:0  out:22  total:22
+  testql.runner.parse_line
+    CC=9  in:2  out:20  total:22
   testql.runner.DslCliExecutor.run_script
     CC=11  in:0  out:20  total:20
-  testql.commands.endpoints_cmd.endpoints
-    CC=9  in:0  out:20  total:20
   testql.commands.misc_cmds.init
     CC=4  in:0  out:20  total:20
+  testql.commands.endpoints_cmd.endpoints
+    CC=9  in:0  out:20  total:20
   testql.commands.misc_cmds.echo
     CC=4  in:0  out:20  total:20
   testql.commands.echo.parsers.doql._parse_entities
     CC=7  in:1  out:16  total:17
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+    CC=6  in:0  out:17  total:17
   testql.commands.echo.cli.echo
     CC=3  in:0  out:17  total:17
   testql.interpreter._flow.FlowMixin._cmd_include
     CC=7  in:0  out:17  total:17
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
-    CC=6  in:0  out:17  total:17
-  testql.interpreter._testtoon_parser.parse_testtoon
-    CC=8  in:1  out:15  total:16
-  testql.interpreter.converter.parsers.parse_target_from_args
-    CC=4  in:7  out:9  total:16
   testql.commands.echo.parsers.toon._parse_scenario
     CC=5  in:1  out:15  total:16
+  testql.interpreter.converter.parsers.parse_target_from_args
+    CC=4  in:7  out:9  total:16
+  testql.interpreter._testtoon_parser.parse_testtoon
+    CC=8  in:1  out:15  total:16
   testql.interpreter.interpreter.IqlInterpreter.execute
     CC=4  in:0  out:16  total:16
-  testql.commands.encoder_routes.iql_run_file
-    CC=3  in:0  out:15  total:15
   testql.commands.encoder_routes._execute_iql_line
     CC=10  in:2  out:13  total:15
+  testql.commands.encoder_routes.iql_run_file
+    CC=3  in:0  out:15  total:15
 
 MODULES:
   TODO.testtoon_parser  [2 funcs]
