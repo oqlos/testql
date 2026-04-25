@@ -507,8 +507,8 @@ flowchart TD
     testql__runner__main --> testql__runner__parse_line
     testql__openapi_generator__OpenAPIGenerator___infer_tags --> code2llm_output__map__toon__list
     testql__openapi_generator__OpenAPIGenerator___infer_tags --> testql___base_fallback__VariableStore__set
-    testql__openapi_generator__OpenAPIGenerator___extract_parameters --> testql__openapi_generator___extract_path_params
-    testql__openapi_generator__OpenAPIGenerator___extract_parameters --> testql__openapi_generator___extract_ep_params
+    testql__openapi_generator__OpenAPIGenerator___extract_parameters --> project__map__toon___extract_path_params
+    testql__openapi_generator__OpenAPIGenerator___extract_parameters --> project__map__toon___extract_ep_params
     testql__sumd_generator__generate_sumd --> testql__sumd_generator___header_section
     testql__sumd_generator__generate_sumd --> testql__sumd_generator___metadata_section
     testql__sumd_generator__generate_sumd --> testql__sumd_generator___architecture_section
@@ -519,17 +519,17 @@ flowchart TD
     testql__sumd_generator__generate_sumd --> testql__sumd_generator___llm_suggestions_section
     testql__sumd_generator___llm_suggestions_section --> testql__sumd_generator___workflow_snippet
     testql__sumd_generator__save_sumd --> testql__sumd_generator__generate_sumd
-    testql__sumd_parser__SumdParser___parse_interfaces --> testql__sumd_parser___parse_block_interfaces
-    testql__sumd_parser__SumdParser___parse_interfaces --> testql__sumd_parser___parse_api_interfaces
+    testql__sumd_parser__SumdParser___parse_interfaces --> project__map__toon___parse_block_interfaces
+    testql__sumd_parser__SumdParser___parse_interfaces --> project__map__toon___parse_api_interfaces
     testql__commands__generate_cmd__generate --> testql__commands__generate_cmd___is_workspace
     testql__commands__generate_cmd__analyze --> testql__commands__generate_cmd___print_routes_section
     testql__commands__generate_cmd__analyze --> testql__commands__generate_cmd___print_scenarios_section
     testql__commands__generate_cmd___print_routes_section --> testql__commands__generate_cmd___count_routes_by
     testql__commands__misc_cmds__init --> testql__commands__misc_cmds___create_templates
     testql__commands__misc_cmds__report --> code2llm_output__map__toon__generate_report
-    testql__commands__misc_cmds__echo --> testql__commands__echo_helpers__render_echo
-    testql__commands__misc_cmds__echo --> testql__commands__echo_helpers__collect_toon_data
-    testql__commands__misc_cmds__echo --> testql__commands__echo_helpers__collect_doql_data
+    testql__commands__misc_cmds__echo --> project__map__toon__render_echo
+    testql__commands__misc_cmds__echo --> project__map__toon__collect_toon_data
+    testql__commands__misc_cmds__echo --> project__map__toon__collect_doql_data
     testql__commands__encoder_routes___normalize_iql_path --> testql__commands__encoder_routes___strip_path_segments
     testql__commands__encoder_routes___normalize_iql_path --> testql__commands__encoder_routes___migrate_legacy_extension
     testql__commands__encoder_routes___normalize_iql_path --> testql__commands__encoder_routes___remap_tests_prefix
@@ -563,10 +563,10 @@ flowchart TD
     testql__commands__endpoints_cmd___format_endpoints --> testql__commands__endpoints_cmd___format_endpoints_table
     testql__commands__endpoints_cmd___format_endpoints --> testql__commands__endpoints_cmd___format_endpoints_json
     testql__commands__endpoints_cmd___format_endpoints --> testql__commands__endpoints_cmd___format_endpoints_csv
-    testql__commands__suite__cli__suite --> testql__commands__suite__collection__collect_test_files
-    testql__commands__suite__cli__list_tests --> testql__commands__suite__collection__collect_list_files
-    testql__commands__suite__cli__list_tests --> testql__commands__suite__listing__filter_tests
-    testql__commands__suite__cli__list_tests --> testql__commands__suite__listing__render_test_list
+    testql__commands__suite__cli__suite --> project__map__toon__collect_test_files
+    testql__commands__suite__cli__list_tests --> project__map__toon__collect_list_files
+    testql__commands__suite__cli__list_tests --> project__map__toon__filter_tests
+    testql__commands__suite__cli__list_tests --> project__map__toon__render_test_list
     testql__commands__suite__execution__run_suite_files --> testql__commands__suite__execution__run_single_file
     testql__commands__suite__listing___parse_yaml_meta_block --> testql__commands__suite__listing___collect_meta_lines
     testql__commands__suite__listing__parse_meta --> testql__commands__suite__listing___parse_testtoon_header
@@ -633,31 +633,31 @@ flowchart TD
     testql__interpreter__interpreter__IqlInterpreter__parse --> code2llm_output__map__toon__testtoon_to_iql
     testql__interpreter__interpreter__IqlInterpreter__execute --> testql___base_fallback__VariableStore__all
     testql__interpreter___websockets__WebSocketMixin___cmd_ws_connect --> testql___base_fallback__EventBridge__connect
-    testql__interpreter__converter__core__convert_iql_to_testtoon --> testql__interpreter__converter__parsers__parse_commands
-    testql__interpreter__converter__core__convert_iql_to_testtoon --> testql__interpreter__converter__parsers__extract_scenario_name
-    testql__interpreter__converter__core__convert_iql_to_testtoon --> testql__interpreter__converter__parsers__detect_scenario_type
-    testql__interpreter__converter__core__convert_iql_to_testtoon --> testql__interpreter__converter__renderer__build_config_section
-    testql__interpreter__converter__core__convert_iql_to_testtoon --> testql__interpreter__converter__renderer__build_header
-    testql__interpreter__converter__core__convert_iql_to_testtoon --> testql__interpreter__dispatcher__CommandDispatcher__dispatch
-    testql__interpreter__converter__core__convert_iql_to_testtoon --> testql__interpreter__converter__renderer__render_sections
+    testql__interpreter__converter__core__convert_iql_to_testtoon --> project__map__toon__parse_commands
+    testql__interpreter__converter__core__convert_iql_to_testtoon --> project__map__toon__extract_scenario_name
+    testql__interpreter__converter__core__convert_iql_to_testtoon --> project__map__toon__detect_scenario_type
+    testql__interpreter__converter__core__convert_iql_to_testtoon --> project__map__toon__build_config_section
+    testql__interpreter__converter__core__convert_iql_to_testtoon --> project__map__toon__build_header
+    testql__interpreter__converter__core__convert_iql_to_testtoon --> project__map__toon__dispatch
+    testql__interpreter__converter__core__convert_iql_to_testtoon --> project__map__toon__render_sections
     testql__interpreter__converter__core__convert_file --> testql__interpreter__converter__core__convert_iql_to_testtoon
     testql__interpreter__converter__core__convert_directory --> testql__interpreter__converter__core__convert_file
     testql__interpreter__converter__renderer__render_sections --> testql__interpreter__converter__renderer___render_section_header
-    testql__interpreter__converter__dispatcher__dispatch --> testql__interpreter__converter__handlers__unknown__handle_unknown
-    testql__interpreter__converter__handlers__encoder___encoder_action_fields --> testql__interpreter__converter__parsers__parse_target_from_args
+    testql__interpreter__converter__dispatcher__dispatch --> project__map__toon__handle_unknown
+    testql__interpreter__converter__handlers__encoder___encoder_action_fields --> project__map__toon__parse_target_from_args
     testql__interpreter__converter__handlers__encoder__handle_encoder --> testql__interpreter__converter__handlers__encoder___encoder_action_fields
     testql__interpreter__converter__handlers__encoder__handle_encoder --> testql__interpreter__converter__handlers__encoder___advance_past_wait
-    testql__interpreter__converter__handlers__unknown__handle_unknown --> testql__interpreter__converter__parsers__parse_target_from_args
-    testql__interpreter__converter__handlers__unknown__handle_unknown --> testql__interpreter__converter__parsers__parse_meta_from_args
-    testql__interpreter__converter__handlers__include__handle_include --> testql__interpreter__converter__parsers__parse_target_from_args
-    testql__interpreter__converter__handlers__api__handle_api --> testql__interpreter__converter__parsers__parse_api_args
-    testql__interpreter__converter__handlers__api__handle_api --> testql__interpreter__converter__handlers__assertions__collect_assert
-    testql__interpreter__converter__handlers__select__handle_select --> testql__interpreter__converter__parsers__parse_target_from_args
-    testql__interpreter__converter__handlers__select__handle_select --> testql__interpreter__converter__parsers__parse_meta_from_args
-    testql__interpreter__converter__handlers__navigate__handle_navigate --> testql__interpreter__converter__parsers__parse_target_from_args
-    testql__interpreter__converter__handlers__flow__handle_flow --> testql__interpreter__converter__parsers__parse_target_from_args
-    testql__interpreter__converter__handlers__flow__handle_flow --> testql__interpreter__converter__parsers__parse_meta_from_args
-    testql__interpreter__converter__handlers__record__handle_record_start --> testql__interpreter__converter__parsers__parse_target_from_args
+    testql__interpreter__converter__handlers__unknown__handle_unknown --> project__map__toon__parse_target_from_args
+    testql__interpreter__converter__handlers__unknown__handle_unknown --> project__map__toon__parse_meta_from_args
+    testql__interpreter__converter__handlers__include__handle_include --> project__map__toon__parse_target_from_args
+    testql__interpreter__converter__handlers__api__handle_api --> project__map__toon__parse_api_args
+    testql__interpreter__converter__handlers__api__handle_api --> project__map__toon__collect_assert
+    testql__interpreter__converter__handlers__select__handle_select --> project__map__toon__parse_target_from_args
+    testql__interpreter__converter__handlers__select__handle_select --> project__map__toon__parse_meta_from_args
+    testql__interpreter__converter__handlers__navigate__handle_navigate --> project__map__toon__parse_target_from_args
+    testql__interpreter__converter__handlers__flow__handle_flow --> project__map__toon__parse_target_from_args
+    testql__interpreter__converter__handlers__flow__handle_flow --> project__map__toon__parse_meta_from_args
+    testql__interpreter__converter__handlers__record__handle_record_start --> project__map__toon__parse_target_from_args
     testql__generators__base__BaseAnalyzer___should_exclude_path --> testql___base_fallback__VariableStore__set
     testql__generators__multi__MultiProjectTestGenerator__generate_cross_project_tests --> code2llm_output__map__toon__list
     testql__generators__generators__APIGeneratorMixin___deduplicate_rest_routes --> testql___base_fallback__VariableStore__set

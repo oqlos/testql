@@ -1,4 +1,4 @@
-# testql | 746 func | 76f | 38367L | yaml | 2026-04-25
+# testql | 746 func | 76f | 38372L | yaml | 2026-04-25
 
 HEALTH:
   CC̄=2.3  critical=17 (limit:10)  dup=1  cycles=0
@@ -18,7 +18,7 @@ ALERTS[20]:
 MODULES[200] (top by size):
   M[project/calls.yaml] 2503L C:0 F:0 CC↑0 D:0 (yaml)
   M[code2llm_output/calls.yaml] 799L C:0 F:0 CC↑0 D:0 (yaml)
-  M[project/map.toon.yaml] 771L C:0 F:200 CC↑0 D:0 (yaml)
+  M[project/map.toon.yaml] 771L C:0 F:200 CC↑0 D:14 (yaml)
   M[goal.yaml] 511L C:0 F:0 CC↑0 D:0 (yaml)
   M[testql/commands/encoder_routes.py] 477L C:0 F:27 CC↑10 D:0 (python)
   M[testql/openapi_generator.py] 444L C:3 F:21 CC↑11 D:0 (python)
@@ -48,4 +48,4 @@ REFACTOR[7]:
   [5] M/M Reduce parse_testtoon fan-out (currently 21)
 
 EVOLUTION:
-  2026-04-25 CC̄=2.3 crit=17 38367L // Automated analysis
+  2026-04-25 CC̄=2.3 crit=17 38372L // Automated analysis

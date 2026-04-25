@@ -18,7 +18,7 @@ SUMD - Structured Unified Markdown Descriptor for AI-aware project refactorizati
 ## Metadata
 
 - **name**: `testql`
-- **version**: `0.6.21`
+- **version**: `0.6.22`
 - **python_requires**: `>=3.10`
 - **license**: Apache-2.0
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -39,7 +39,7 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 0.6.21;
+  version: 0.6.22;
 }
 
 dependencies {
@@ -655,7 +655,7 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 
 ## Call Graph
 
-*173 nodes · 151 edges · 46 modules · CC̄=2.3*
+*179 nodes · 151 edges · 44 modules · CC̄=2.3*
 
 ### Hubs (by degree)
 
@@ -665,14 +665,14 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 | `_print_routes_section` *(in testql.commands.generate_cmd)* | 10 ⚠ | 1 | 23 | **24** |
 | `_run_iql_lines` *(in testql.commands.encoder_routes)* | 6 | 1 | 22 | **23** |
 | `_parse_workflows` *(in testql.commands.echo.parsers.doql)* | 7 | 1 | 22 | **23** |
-| `parse_line` *(in testql.runner)* | 9 | 2 | 20 | **22** |
 | `report` *(in testql.commands.misc_cmds)* | 4 | 0 | 22 | **22** |
+| `parse_line` *(in testql.runner)* | 9 | 2 | 20 | **22** |
 | `run_script` *(in testql.runner.DslCliExecutor)* | 11 ⚠ | 0 | 20 | **20** |
-| `endpoints` *(in testql.commands.endpoints_cmd)* | 9 | 0 | 20 | **20** |
+| `echo` *(in testql.commands.misc_cmds)* | 4 | 0 | 20 | **20** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# nodes: 173 | edges: 151 | modules: 46
+# nodes: 179 | edges: 151 | modules: 44
 # CC̄=2.3
 
 HUBS[20]:
@@ -684,38 +684,38 @@ HUBS[20]:
     CC=6  in:1  out:22  total:23
   testql.commands.echo.parsers.doql._parse_workflows
     CC=7  in:1  out:22  total:23
-  testql.runner.parse_line
-    CC=9  in:2  out:20  total:22
   testql.commands.misc_cmds.report
     CC=4  in:0  out:22  total:22
+  testql.runner.parse_line
+    CC=9  in:2  out:20  total:22
   testql.runner.DslCliExecutor.run_script
     CC=11  in:0  out:20  total:20
-  testql.commands.endpoints_cmd.endpoints
-    CC=9  in:0  out:20  total:20
   testql.commands.misc_cmds.echo
     CC=4  in:0  out:20  total:20
+  testql.commands.endpoints_cmd.endpoints
+    CC=9  in:0  out:20  total:20
   testql.commands.misc_cmds.init
     CC=4  in:0  out:20  total:20
-  testql.interpreter._flow.FlowMixin._cmd_include
-    CC=7  in:0  out:17  total:17
   testql.commands.echo.parsers.doql._parse_entities
     CC=7  in:1  out:16  total:17
-  testql.commands.echo.cli.echo
-    CC=3  in:0  out:17  total:17
+  testql.interpreter._flow.FlowMixin._cmd_include
+    CC=7  in:0  out:17  total:17
   testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
     CC=6  in:0  out:17  total:17
+  testql.commands.echo.cli.echo
+    CC=3  in:0  out:17  total:17
+  testql.interpreter.interpreter.IqlInterpreter.execute
+    CC=4  in:0  out:16  total:16
   testql.interpreter._testtoon_parser.parse_testtoon
     CC=8  in:1  out:15  total:16
   testql.commands.echo.parsers.toon._parse_scenario
     CC=5  in:1  out:15  total:16
-  testql.interpreter.converter.parsers.parse_target_from_args
-    CC=4  in:7  out:9  total:16
-  testql.interpreter.interpreter.IqlInterpreter.execute
-    CC=4  in:0  out:16  total:16
   testql.commands.encoder_routes.iql_run_file
     CC=3  in:0  out:15  total:15
   testql.commands.encoder_routes._execute_iql_line
     CC=10  in:2  out:13  total:15
+  testql.commands.encoder_routes.iql_list_files
+    CC=7  in:0  out:14  total:14
 
 MODULES:
   TODO.testtoon_parser  [2 funcs]
@@ -732,6 +732,17 @@ MODULES:
     parse_doql_less  CC=0  out:0
     parse_iql  CC=0  out:0
     parse_script  CC=0  out:0
+  project.map.toon  [21 funcs]
+    _extract_ep_params  CC=0  out:0
+    _extract_path_params  CC=0  out:0
+    _parse_api_interfaces  CC=0  out:0
+    _parse_block_interfaces  CC=0  out:0
+    build_config_section  CC=0  out:0
+    build_header  CC=0  out:0
+    collect_assert  CC=0  out:0
+    collect_list_files  CC=0  out:0
+    collect_toon_data  CC=0  out:0
+    detect_scenario_type  CC=0  out:0
   testql._base_fallback  [2 funcs]
     all  CC=1  out:1
     set  CC=1  out:0
@@ -811,13 +822,12 @@ MODULES:
   testql.commands.suite.execution  [2 funcs]
     run_single_file  CC=3  out:7
     run_suite_files  CC=5  out:11
-  testql.commands.suite.listing  [6 funcs]
+  testql.commands.suite.listing  [5 funcs]
     _collect_meta_lines  CC=7  out:6
     _parse_testtoon_header  CC=6  out:8
     _parse_yaml_meta_block  CC=5  out:4
     filter_tests  CC=6  out:9
     parse_meta  CC=6  out:6
-    render_test_list  CC=6  out:9
   testql.commands.suite.reports  [3 funcs]
     _build_junit_xml  CC=5  out:8
     _save_json_report  CC=1  out:3
@@ -858,8 +868,6 @@ MODULES:
     dispatch  CC=3  out:3
   testql.interpreter.converter.handlers.api  [1 funcs]
     handle_api  CC=6  out:7
-  testql.interpreter.converter.handlers.assertions  [1 funcs]
-    collect_assert  CC=9  out:9
   testql.interpreter.converter.handlers.encoder  [3 funcs]
     _advance_past_wait  CC=4  out:2
     _encoder_action_fields  CC=5  out:4
@@ -876,29 +884,16 @@ MODULES:
     handle_select  CC=3  out:8
   testql.interpreter.converter.handlers.unknown  [1 funcs]
     handle_unknown  CC=3  out:4
-  testql.interpreter.converter.parsers  [6 funcs]
-    detect_scenario_type  CC=11  out:6
-    extract_scenario_name  CC=6  out:8
-    parse_api_args  CC=5  out:9
-    parse_commands  CC=5  out:10
-    parse_meta_from_args  CC=4  out:6
-    parse_target_from_args  CC=4  out:9
-  testql.interpreter.converter.renderer  [4 funcs]
+  testql.interpreter.converter.renderer  [2 funcs]
     _render_section_header  CC=3  out:2
-    build_config_section  CC=6  out:6
-    build_header  CC=1  out:0
     render_sections  CC=7  out:12
-  testql.interpreter.dispatcher  [1 funcs]
-    dispatch  CC=5  out:13
   testql.interpreter.interpreter  [3 funcs]
     __init__  CC=2  out:4
     execute  CC=4  out:16
     parse  CC=2  out:3
-  testql.openapi_generator  [4 funcs]
+  testql.openapi_generator  [2 funcs]
     _extract_parameters  CC=1  out:3
     _infer_tags  CC=7  out:9
-    _extract_ep_params  CC=7  out:8
-    _extract_path_params  CC=4  out:4
   testql.runner  [3 funcs]
     run_script  CC=11  out:20
     parse_line  CC=9  out:20
@@ -914,10 +909,8 @@ MODULES:
     _workflow_snippet  CC=4  out:1
     _workflows_table_section  CC=5  out:3
     generate_sumd  CC=4  out:10
-  testql.sumd_parser  [3 funcs]
+  testql.sumd_parser  [1 funcs]
     _parse_interfaces  CC=1  out:2
-    _parse_api_interfaces  CC=8  out:13
-    _parse_block_interfaces  CC=3  out:7
 
 EDGES:
   TODO.testtoon_parser.print_parsed → TODO.testtoon_parser.validate
@@ -926,8 +919,8 @@ EDGES:
   testql.runner.DslCliExecutor.run_script → code2llm_output.map.toon.parse_script
   testql.openapi_generator.OpenAPIGenerator._infer_tags → code2llm_output.map.toon.list
   testql.openapi_generator.OpenAPIGenerator._infer_tags → testql._base_fallback.VariableStore.set
-  testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_path_params
-  testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_ep_params
+  testql.openapi_generator.OpenAPIGenerator._extract_parameters → project.map.toon._extract_path_params
+  testql.openapi_generator.OpenAPIGenerator._extract_parameters → project.map.toon._extract_ep_params
   testql.sumd_generator.generate_sumd → testql.sumd_generator._header_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._metadata_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._architecture_section
@@ -938,14 +931,14 @@ EDGES:
   testql.sumd_generator.generate_sumd → testql.sumd_generator._llm_suggestions_section
   testql.sumd_generator._llm_suggestions_section → testql.sumd_generator._workflow_snippet
   testql.sumd_generator.save_sumd → testql.sumd_generator.generate_sumd
-  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_block_interfaces
-  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_api_interfaces
+  testql.sumd_parser.SumdParser._parse_interfaces → project.map.toon._parse_block_interfaces
+  testql.sumd_parser.SumdParser._parse_interfaces → project.map.toon._parse_api_interfaces
   testql.commands.generate_cmd.generate → testql.commands.generate_cmd._is_workspace
   testql.commands.generate_cmd._print_routes_section → testql.commands.generate_cmd._count_routes_by
   testql.commands.misc_cmds.init → testql.commands.misc_cmds._create_templates
   testql.commands.misc_cmds.report → code2llm_output.map.toon.generate_report
-  testql.commands.misc_cmds.echo → testql.commands.echo_helpers.render_echo
-  testql.commands.misc_cmds.echo → testql.commands.echo_helpers.collect_toon_data
+  testql.commands.misc_cmds.echo → project.map.toon.render_echo
+  testql.commands.misc_cmds.echo → project.map.toon.collect_toon_data
   testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._strip_path_segments
   testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._migrate_legacy_extension
   testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._remap_tests_prefix
@@ -1201,7 +1194,7 @@ EDGES:
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# nodes: 173 | edges: 151 | modules: 46
+# nodes: 179 | edges: 151 | modules: 44
 # CC̄=2.3
 
 HUBS[20]:
@@ -1213,38 +1206,38 @@ HUBS[20]:
     CC=6  in:1  out:22  total:23
   testql.commands.echo.parsers.doql._parse_workflows
     CC=7  in:1  out:22  total:23
-  testql.runner.parse_line
-    CC=9  in:2  out:20  total:22
   testql.commands.misc_cmds.report
     CC=4  in:0  out:22  total:22
+  testql.runner.parse_line
+    CC=9  in:2  out:20  total:22
   testql.runner.DslCliExecutor.run_script
     CC=11  in:0  out:20  total:20
-  testql.commands.endpoints_cmd.endpoints
-    CC=9  in:0  out:20  total:20
   testql.commands.misc_cmds.echo
     CC=4  in:0  out:20  total:20
+  testql.commands.endpoints_cmd.endpoints
+    CC=9  in:0  out:20  total:20
   testql.commands.misc_cmds.init
     CC=4  in:0  out:20  total:20
-  testql.interpreter._flow.FlowMixin._cmd_include
-    CC=7  in:0  out:17  total:17
   testql.commands.echo.parsers.doql._parse_entities
     CC=7  in:1  out:16  total:17
-  testql.commands.echo.cli.echo
-    CC=3  in:0  out:17  total:17
+  testql.interpreter._flow.FlowMixin._cmd_include
+    CC=7  in:0  out:17  total:17
   testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
     CC=6  in:0  out:17  total:17
+  testql.commands.echo.cli.echo
+    CC=3  in:0  out:17  total:17
+  testql.interpreter.interpreter.IqlInterpreter.execute
+    CC=4  in:0  out:16  total:16
   testql.interpreter._testtoon_parser.parse_testtoon
     CC=8  in:1  out:15  total:16
   testql.commands.echo.parsers.toon._parse_scenario
     CC=5  in:1  out:15  total:16
-  testql.interpreter.converter.parsers.parse_target_from_args
-    CC=4  in:7  out:9  total:16
-  testql.interpreter.interpreter.IqlInterpreter.execute
-    CC=4  in:0  out:16  total:16
   testql.commands.encoder_routes.iql_run_file
     CC=3  in:0  out:15  total:15
   testql.commands.encoder_routes._execute_iql_line
     CC=10  in:2  out:13  total:15
+  testql.commands.encoder_routes.iql_list_files
+    CC=7  in:0  out:14  total:14
 
 MODULES:
   TODO.testtoon_parser  [2 funcs]
@@ -1261,6 +1254,17 @@ MODULES:
     parse_doql_less  CC=0  out:0
     parse_iql  CC=0  out:0
     parse_script  CC=0  out:0
+  project.map.toon  [21 funcs]
+    _extract_ep_params  CC=0  out:0
+    _extract_path_params  CC=0  out:0
+    _parse_api_interfaces  CC=0  out:0
+    _parse_block_interfaces  CC=0  out:0
+    build_config_section  CC=0  out:0
+    build_header  CC=0  out:0
+    collect_assert  CC=0  out:0
+    collect_list_files  CC=0  out:0
+    collect_toon_data  CC=0  out:0
+    detect_scenario_type  CC=0  out:0
   testql._base_fallback  [2 funcs]
     all  CC=1  out:1
     set  CC=1  out:0
@@ -1340,13 +1344,12 @@ MODULES:
   testql.commands.suite.execution  [2 funcs]
     run_single_file  CC=3  out:7
     run_suite_files  CC=5  out:11
-  testql.commands.suite.listing  [6 funcs]
+  testql.commands.suite.listing  [5 funcs]
     _collect_meta_lines  CC=7  out:6
     _parse_testtoon_header  CC=6  out:8
     _parse_yaml_meta_block  CC=5  out:4
     filter_tests  CC=6  out:9
     parse_meta  CC=6  out:6
-    render_test_list  CC=6  out:9
   testql.commands.suite.reports  [3 funcs]
     _build_junit_xml  CC=5  out:8
     _save_json_report  CC=1  out:3
@@ -1387,8 +1390,6 @@ MODULES:
     dispatch  CC=3  out:3
   testql.interpreter.converter.handlers.api  [1 funcs]
     handle_api  CC=6  out:7
-  testql.interpreter.converter.handlers.assertions  [1 funcs]
-    collect_assert  CC=9  out:9
   testql.interpreter.converter.handlers.encoder  [3 funcs]
     _advance_past_wait  CC=4  out:2
     _encoder_action_fields  CC=5  out:4
@@ -1405,29 +1406,16 @@ MODULES:
     handle_select  CC=3  out:8
   testql.interpreter.converter.handlers.unknown  [1 funcs]
     handle_unknown  CC=3  out:4
-  testql.interpreter.converter.parsers  [6 funcs]
-    detect_scenario_type  CC=11  out:6
-    extract_scenario_name  CC=6  out:8
-    parse_api_args  CC=5  out:9
-    parse_commands  CC=5  out:10
-    parse_meta_from_args  CC=4  out:6
-    parse_target_from_args  CC=4  out:9
-  testql.interpreter.converter.renderer  [4 funcs]
+  testql.interpreter.converter.renderer  [2 funcs]
     _render_section_header  CC=3  out:2
-    build_config_section  CC=6  out:6
-    build_header  CC=1  out:0
     render_sections  CC=7  out:12
-  testql.interpreter.dispatcher  [1 funcs]
-    dispatch  CC=5  out:13
   testql.interpreter.interpreter  [3 funcs]
     __init__  CC=2  out:4
     execute  CC=4  out:16
     parse  CC=2  out:3
-  testql.openapi_generator  [4 funcs]
+  testql.openapi_generator  [2 funcs]
     _extract_parameters  CC=1  out:3
     _infer_tags  CC=7  out:9
-    _extract_ep_params  CC=7  out:8
-    _extract_path_params  CC=4  out:4
   testql.runner  [3 funcs]
     run_script  CC=11  out:20
     parse_line  CC=9  out:20
@@ -1443,10 +1431,8 @@ MODULES:
     _workflow_snippet  CC=4  out:1
     _workflows_table_section  CC=5  out:3
     generate_sumd  CC=4  out:10
-  testql.sumd_parser  [3 funcs]
+  testql.sumd_parser  [1 funcs]
     _parse_interfaces  CC=1  out:2
-    _parse_api_interfaces  CC=8  out:13
-    _parse_block_interfaces  CC=3  out:7
 
 EDGES:
   TODO.testtoon_parser.print_parsed → TODO.testtoon_parser.validate
@@ -1455,8 +1441,8 @@ EDGES:
   testql.runner.DslCliExecutor.run_script → code2llm_output.map.toon.parse_script
   testql.openapi_generator.OpenAPIGenerator._infer_tags → code2llm_output.map.toon.list
   testql.openapi_generator.OpenAPIGenerator._infer_tags → testql._base_fallback.VariableStore.set
-  testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_path_params
-  testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_ep_params
+  testql.openapi_generator.OpenAPIGenerator._extract_parameters → project.map.toon._extract_path_params
+  testql.openapi_generator.OpenAPIGenerator._extract_parameters → project.map.toon._extract_ep_params
   testql.sumd_generator.generate_sumd → testql.sumd_generator._header_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._metadata_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._architecture_section
@@ -1467,14 +1453,14 @@ EDGES:
   testql.sumd_generator.generate_sumd → testql.sumd_generator._llm_suggestions_section
   testql.sumd_generator._llm_suggestions_section → testql.sumd_generator._workflow_snippet
   testql.sumd_generator.save_sumd → testql.sumd_generator.generate_sumd
-  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_block_interfaces
-  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_api_interfaces
+  testql.sumd_parser.SumdParser._parse_interfaces → project.map.toon._parse_block_interfaces
+  testql.sumd_parser.SumdParser._parse_interfaces → project.map.toon._parse_api_interfaces
   testql.commands.generate_cmd.generate → testql.commands.generate_cmd._is_workspace
   testql.commands.generate_cmd._print_routes_section → testql.commands.generate_cmd._count_routes_by
   testql.commands.misc_cmds.init → testql.commands.misc_cmds._create_templates
   testql.commands.misc_cmds.report → code2llm_output.map.toon.generate_report
-  testql.commands.misc_cmds.echo → testql.commands.echo_helpers.render_echo
-  testql.commands.misc_cmds.echo → testql.commands.echo_helpers.collect_toon_data
+  testql.commands.misc_cmds.echo → project.map.toon.render_echo
+  testql.commands.misc_cmds.echo → project.map.toon.collect_toon_data
   testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._strip_path_segments
   testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._migrate_legacy_extension
   testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._remap_tests_prefix
@@ -1504,14 +1490,14 @@ EDGES:
 ### Code Analysis (`project/analysis.toon.yaml`)
 
 ```toon markpact:analysis path=project/analysis.toon.yaml
-# code2llm | 200f 19617L | yaml:96,python:95,json:2,shell:2,yml:2,txt:2,toml:1 | 2026-04-25
+# code2llm | 200f 19619L | yaml:96,python:95,json:2,yml:2,txt:2,shell:2,toml:1 | 2026-04-25
 # CC̄=2.3 | critical:0/746 | dups:0 | cycles:0
 
 HEALTH[0]: ok
 
 REFACTOR[0]: none needed
 
-PIPELINES[321]:
+PIPELINES[347]:
   [1] Src [validate]: validate
       PURITY: 100% pure
   [2] Src [parse_testtoon]: parse_testtoon → detect_separator
@@ -1527,7 +1513,7 @@ LAYERS:
   TODO/                           CC̄=5.9    ←in:0  →out:0
   │ testtoon_parser            141L  1C    7m  CC=14     ←0
   │
-  testql/                         CC̄=3.7    ←in:11  →out:2
+  testql/                         CC̄=3.7    ←in:11  →out:6
   │ encoder_routes             477L  0C   27m  CC=10     ←0
   │ openapi_generator          444L  3C   21m  CC=11     ←0
   │ _gui                       425L  1C   10m  CC=9      ←0
@@ -1554,33 +1540,33 @@ LAYERS:
   │ endpoints_cmd              136L  0C    6m  CC=9      ←0
   │ _flow                      136L  1C    6m  CC=9      ←0
   │ interpreter                131L  1C    7m  CC=4      ←0
-  │ collection                 122L  0C    8m  CC=6      ←1
+  │ collection                 122L  0C    8m  CC=6      ←0
   │ flask_detector             121L  1C    9m  CC=6      ←0
   │ doql                       115L  0C    9m  CC=7      ←0
-  │ listing                    114L  0C    6m  CC=7      ←1
+  │ listing                    114L  0C    6m  CC=7      ←0
   │ run-all-views.testql.toon.yaml   112L  0C    0m  CC=0.0    ←0
   │ toon_parser                110L  1C    7m  CC=4      ←0
   │ multi                      105L  1C    5m  CC=6      ←0
   │ _assertions                103L  1C    4m  CC=6      ←0
   │ cli                        100L  0C    2m  CC=13     ←0
   │ text                        95L  0C    7m  CC=6      ←0
-  │ parsers                     93L  0C    6m  CC=11     ←9
+  │ parsers                     93L  0C    6m  CC=11     ←0
   │ openapi_detector            90L  1C    3m  CC=9      ←0
-  │ reports                     89L  0C    5m  CC=6      ←1
+  │ reports                     89L  0C    5m  CC=6      ←0
   │ __init__                    89L  0C    1m  CC=8      ←0
   │ graphql_detector            87L  1C    3m  CC=5      ←0
-  │ dispatcher                  86L  1C    6m  CC=5      ←1
+  │ dispatcher                  86L  1C    6m  CC=5      ←0
   │ config_detector             86L  1C    4m  CC=7      ←0
   │ _encoder                    79L  1C   12m  CC=4      ←0
   │ junit                       79L  1C    3m  CC=8      ←0
   │ toon                        76L  0C    4m  CC=5      ←0
   │ test-device-flow.testql.toon.yaml    76L  0C    0m  CC=0.0    ←0
-  │ execution                   73L  0C    2m  CC=5      ←1
+  │ execution                   73L  0C    2m  CC=5      ←0
   │ test-gui-connect-id.testql.toon.yaml    70L  0C    0m  CC=0.0    ←0
-  │ echo_helpers                68L  0C    4m  CC=8      ←1
+  │ echo_helpers                68L  0C    4m  CC=8      ←0
   │ full-diagnostic.testql.toon.yaml    66L  0C    0m  CC=0.0    ←0
   │ test-gui-connect-workshop.testql.toon.yaml    65L  0C    0m  CC=0.0    ←0
-  │ renderer                    64L  0C    4m  CC=7      ←1
+  │ renderer                    64L  0C    4m  CC=7      ←0
   │ endpoint_detector           62L  0C    0m  CC=0.0    ←0
   │ _converter                  62L  0C    0m  CC=0.0    ←0
   │ generator                   61L  0C    0m  CC=0.0    ←0
@@ -1620,7 +1606,7 @@ LAYERS:
   │ console                     38L  0C    1m  CC=6      ←0
   │ base                        37L  0C    0m  CC=0.0    ←0
   │ connect-manager-scenarios.testql.toon.yaml    37L  0C    0m  CC=0.0    ←0
-  │ assertions                  34L  0C    1m  CC=9      ←1
+  │ assertions                  34L  0C    1m  CC=9      ←0
   │ base                        34L  1C    3m  CC=6      ←0
   │ connect-id-qr.testql.toon.yaml    34L  0C    0m  CC=0.0    ←0
   │ _parser                     33L  2C    1m  CC=5      ←0
@@ -1670,7 +1656,7 @@ LAYERS:
   │ __init__                    19L  0C    0m  CC=0.0    ←0
   │ device-identification.testql.toon.yaml    19L  0C    0m  CC=0.0    ←0
   │ encoder-workshop.testql.toon.yaml    19L  0C    0m  CC=0.0    ←0
-  │ unknown                     18L  0C    1m  CC=3      ←1
+  │ unknown                     18L  0C    1m  CC=3      ←0
   │ __init__                    18L  0C    0m  CC=0.0    ←0
   │ test-api.testql.toon.yaml    17L  0C    0m  CC=0.0    ←0
   │ connect-workshop-transport.testql.toon.yaml    16L  0C    0m  CC=0.0    ←0
@@ -1707,7 +1693,7 @@ LAYERS:
   │
   project/                        CC̄=0.0    ←in:0  →out:0
   │ !! calls.yaml                2503L  0C    0m  CC=0.0    ←0
-  │ !! map.toon.yaml              771L  0C  200m  CC=0.0    ←0
+  │ !! map.toon.yaml              771L  0C  200m  CC=0.0    ←14
   │ validation.toon.yaml       421L  0C    0m  CC=0.0    ←0
   │ calls.toon.yaml            299L  0C    0m  CC=0.0    ←0
   │ analysis.toon.yaml         252L  0C    0m  CC=0.0    ←0
@@ -1725,10 +1711,10 @@ LAYERS:
   │ prefact.yaml                91L  0C    0m  CC=0.0    ←0
   │ pyqual.yaml                 71L  0C    0m  CC=0.0    ←0
   │ pyproject.toml              70L  0C    0m  CC=0.0    ←0
-  │ project.sh                  46L  0C    0m  CC=0.0    ←0
+  │ project.sh                  48L  0C    0m  CC=0.0    ←0
   │ planfile.yaml               19L  0C    0m  CC=0.0    ←0
-  │ tree.sh                      1L  0C    0m  CC=0.0    ←0
   │ coverage.json                1L  0C    0m  CC=0.0    ←0
+  │ tree.sh                      1L  0C    0m  CC=0.0    ←0
   │
   testql-scenarios/               CC̄=0.0    ←in:0  →out:0
   │ generated-api-smoke.testql.toon.yaml    35L  0C    0m  CC=0.0    ←0
@@ -1740,18 +1726,20 @@ LAYERS:
      testql/runners/__init__.py                0L
 
 COUPLING:
-                       code2llm_output.map      testql.commands               testql   testql.interpreter    testql.generators     testql.detectors
-  code2llm_output.map                   ──                  ←13                   ←2                   ←5                   ←1                       hub
-      testql.commands                   13                   ──                    5                                                                 !! fan-out
-               testql                    2                   ←5                   ──                   ←3                   ←2                   ←1  hub
-   testql.interpreter                    5                                         3                   ──                                            !! fan-out
-    testql.generators                    1                                         2                                        ──                     
-     testql.detectors                                                              1                                                             ──
+                               project.map      testql.commands   testql.interpreter  code2llm_output.map               testql    testql.generators     testql.detectors
+          project.map                   ──                  ←11                  ←20                                        ←4                                            hub
+      testql.commands                   11                   ──                                        13                    5                                            !! fan-out
+   testql.interpreter                   20                                        ──                    5                    3                                            !! fan-out
+  code2llm_output.map                                       ←13                   ←5                   ──                   ←2                   ←1                       hub
+               testql                    4                   ←5                   ←3                    2                   ──                   ←2                   ←1  hub
+    testql.generators                                                                                   1                    2                   ──                     
+     testql.detectors                                                                                                        1                                        ──
   CYCLES: none
   HUB: testql/ (fan-in=11)
   HUB: code2llm_output.map/ (fan-in=21)
-  SMELL: testql.interpreter/ fan-out=8 → split needed
-  SMELL: testql.commands/ fan-out=18 → split needed
+  HUB: project.map/ (fan-in=35)
+  SMELL: testql.commands/ fan-out=29 → split needed
+  SMELL: testql.interpreter/ fan-out=28 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon
@@ -1769,7 +1757,7 @@ SUMMARY:
   dup_groups:    0
   dup_fragments: 0
   saved_lines:   0
-  scan_ms:       4400
+  scan_ms:       4257
 ```
 
 ### Evolution / Churn (`project/evolution.toon.yaml`)

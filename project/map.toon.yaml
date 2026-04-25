@@ -1,4 +1,4 @@
-# testql | 132f 15586L | python:127,less:3,shell:2 | 2026-04-25
+# testql | 132f 15588L | python:127,less:3,shell:2 | 2026-04-25
 # stats: 204 func | 195 cls | 132 mod | CC̄=3.9 | critical:8 | cycles:0
 # alerts[5]: CC parse_testtoon=14; CC suite=13; CC parse_value=11; CC detect_scenario_type=11; CC _execute_iql_line=10
 # hotspots[5]: generate fan=19; watch fan=19; suite fan=19; main fan=18; _run_iql_lines fan=15
@@ -7,7 +7,7 @@
 M[132]:
   TODO/testtoon_parser.py,142
   app.doql.less,167
-  project.sh,46
+  project.sh,48
   testql/__init__.py,4
   testql/__main__.py,7
   testql/_base_fallback.py,222

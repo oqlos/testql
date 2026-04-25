@@ -16,4 +16,1304 @@ sprints:
   duration: 2 weeks
   objectives:
   - Fix code quality issues
-  task_patterns: []
+  task_patterns:
+  - id: ticket-3ab87bce
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in testql/__main__.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/__main__.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-0ffa8da6
+    name: Fix smart-return-type issues
+    description: Resolve 2 smart-return-type issues in testql/cli.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/cli.py
+    rule_id: smart-return-type
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-e7d3db7a
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/cli.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/cli.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-eaa83cd3
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in testql/cli.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/cli.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-2bc02840
+    name: Fix duplicate-imports issues
+    description: Resolve 7 duplicate-imports issues in testql/base.py
+    task_type: prefactor
+    priority: high
+    estimate: 2d
+    files:
+    - testql/base.py
+    rule_id: duplicate-imports
+    count: 7
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-6661134e
+    name: Fix smart-return-type issues
+    description: Resolve 2 smart-return-type issues in TODO/testtoon_parser.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - TODO/testtoon_parser.py
+    rule_id: smart-return-type
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-9bef7a51
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in TODO/testtoon_parser.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - TODO/testtoon_parser.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-276a0040
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/_base_fallback.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/_base_fallback.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-28878ebe
+    name: Fix magic-numbers issues
+    description: Resolve 1 magic-numbers issues in testql/_base_fallback.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/_base_fallback.py
+    rule_id: magic-numbers
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-52ad90d2
+    name: Fix relative-imports issues
+    description: Resolve 10 relative-imports issues in testql/commands/echo/__init__.py
+    task_type: prefactor
+    priority: high
+    estimate: 2d
+    files:
+    - testql/commands/echo/__init__.py
+    rule_id: relative-imports
+    count: 10
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-049b5620
+    name: Fix relative-imports issues
+    description: Resolve 4 relative-imports issues in testql/commands/echo/context.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - testql/commands/echo/context.py
+    rule_id: relative-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-4905d15b
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in testql/commands/echo/context.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/echo/context.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-5a769ac3
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/echo/context.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/echo/context.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-495ca82b
+    name: Fix relative-imports issues
+    description: Resolve 4 relative-imports issues in testql/commands/echo/cli.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - testql/commands/echo/cli.py
+    rule_id: relative-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-19db84d1
+    name: Fix smart-return-type issues
+    description: Resolve 1 smart-return-type issues in testql/commands/echo/cli.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/echo/cli.py
+    rule_id: smart-return-type
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-06a0662c
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/echo/cli.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/echo/cli.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-d2afe350
+    name: Fix relative-imports issues
+    description: Resolve 2 relative-imports issues in testql/commands/echo/formatters/__init__.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/echo/formatters/__init__.py
+    rule_id: relative-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-6b1313b4
+    name: Fix string-concat issues
+    description: Resolve 5 string-concat issues in testql/commands/echo/formatters/text.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - testql/commands/echo/formatters/text.py
+    rule_id: string-concat
+    count: 5
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-e01dbf4a
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/echo/formatters/text.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/echo/formatters/text.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-b4725322
+    name: Fix magic-numbers issues
+    description: Resolve 1 magic-numbers issues in testql/commands/echo/formatters/text.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/echo/formatters/text.py
+    rule_id: magic-numbers
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-bd4e67d9
+    name: Fix relative-imports issues
+    description: Resolve 4 relative-imports issues in testql/commands/echo/parsers/__init__.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - testql/commands/echo/parsers/__init__.py
+    rule_id: relative-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-985d4781
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/echo/parsers/doql.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/echo/parsers/doql.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-d85fe2e1
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/echo/parsers/toon.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/echo/parsers/toon.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-750054c3
+    name: Fix relative-imports issues
+    description: Resolve 2 relative-imports issues in testql/commands/echo.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/echo.py
+    rule_id: relative-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-583bf3b0
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/echo.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/echo.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-5814de13
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/echo_helpers.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/echo_helpers.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-17ade819
+    name: Fix duplicate-imports issues
+    description: Resolve 1 duplicate-imports issues in testql/commands/echo_helpers.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/echo_helpers.py
+    rule_id: duplicate-imports
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-34dda1ad
+    name: Fix string-concat issues
+    description: Resolve 2 string-concat issues in testql/commands/endpoints_cmd.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/endpoints_cmd.py
+    rule_id: string-concat
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-c5a24a62
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/endpoints_cmd.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/endpoints_cmd.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-6e1852a3
+    name: Fix duplicate-imports issues
+    description: Resolve 3 duplicate-imports issues in testql/commands/endpoints_cmd.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/endpoints_cmd.py
+    rule_id: duplicate-imports
+    count: 3
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-3cd9ef58
+    name: Fix magic-numbers issues
+    description: Resolve 7 magic-numbers issues in testql/commands/endpoints_cmd.py
+    task_type: prefactor
+    priority: high
+    estimate: 2d
+    files:
+    - testql/commands/endpoints_cmd.py
+    rule_id: magic-numbers
+    count: 7
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-1e184955
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in testql/commands/generate_cmd.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/generate_cmd.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-744e426a
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/generate_cmd.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/generate_cmd.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-07761a3c
+    name: Fix duplicate-imports issues
+    description: Resolve 1 duplicate-imports issues in testql/commands/generate_cmd.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/generate_cmd.py
+    rule_id: duplicate-imports
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-1b834778
+    name: Fix relative-imports issues
+    description: Resolve 4 relative-imports issues in testql/commands/misc_cmds.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - testql/commands/misc_cmds.py
+    rule_id: relative-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-e56faf2d
+    name: Fix smart-return-type issues
+    description: Resolve 1 smart-return-type issues in testql/commands/misc_cmds.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/misc_cmds.py
+    rule_id: smart-return-type
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-81a326f8
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in testql/commands/misc_cmds.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/misc_cmds.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-7525697a
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/misc_cmds.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/misc_cmds.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-a3951532
+    name: Fix magic-numbers issues
+    description: Resolve 7 magic-numbers issues in testql/commands/misc_cmds.py
+    task_type: prefactor
+    priority: high
+    estimate: 2d
+    files:
+    - testql/commands/misc_cmds.py
+    rule_id: magic-numbers
+    count: 7
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-954124c9
+    name: Fix relative-imports issues
+    description: Resolve 2 relative-imports issues in testql/commands/suite/__init__.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/suite/__init__.py
+    rule_id: relative-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-538b495d
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/run_cmd.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/run_cmd.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-ddd4785e
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/suite/collection.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/suite/collection.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-069078ea
+    name: Fix relative-imports issues
+    description: Resolve 8 relative-imports issues in testql/commands/suite/cli.py
+    task_type: prefactor
+    priority: high
+    estimate: 2d
+    files:
+    - testql/commands/suite/cli.py
+    rule_id: relative-imports
+    count: 8
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-1d087dee
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/suite/cli.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/suite/cli.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-870e06c8
+    name: Fix string-concat issues
+    description: Resolve 4 string-concat issues in testql/commands/encoder_routes.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - testql/commands/encoder_routes.py
+    rule_id: string-concat
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-019f2720
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/encoder_routes.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/encoder_routes.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-0dc8c55c
+    name: Fix magic-numbers issues
+    description: Resolve 2 magic-numbers issues in testql/commands/encoder_routes.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/encoder_routes.py
+    rule_id: magic-numbers
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-ec0e4788
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/suite/execution.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/suite/execution.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-caf170d6
+    name: Fix duplicate-imports issues
+    description: Resolve 1 duplicate-imports issues in testql/commands/suite/execution.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/suite/execution.py
+    rule_id: duplicate-imports
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-7e5fcc77
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in testql/commands/suite/listing.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/suite/listing.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-8e6c8b42
+    name: Fix unused-imports issues
+    description: Resolve 6 unused-imports issues in testql/commands/suite/listing.py
+    task_type: prefactor
+    priority: high
+    estimate: 2d
+    files:
+    - testql/commands/suite/listing.py
+    rule_id: unused-imports
+    count: 6
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-7f03c92c
+    name: Fix magic-numbers issues
+    description: Resolve 2 magic-numbers issues in testql/commands/suite/listing.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/suite/listing.py
+    rule_id: magic-numbers
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-6973fa64
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in testql/commands/suite/reports.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/suite/reports.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-850489eb
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/suite/reports.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/suite/reports.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-ab5434e6
+    name: Fix magic-numbers issues
+    description: Resolve 1 magic-numbers issues in testql/commands/suite/reports.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/suite/reports.py
+    rule_id: magic-numbers
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-ee8e9336
+    name: Fix relative-imports issues
+    description: Resolve 2 relative-imports issues in testql/commands/suite_cmd.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/suite_cmd.py
+    rule_id: relative-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-6f2e587a
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/suite_cmd.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/suite_cmd.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-ce7e034d
+    name: Fix relative-imports issues
+    description: Resolve 4 relative-imports issues in testql/commands/templates/__init__.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - testql/commands/templates/__init__.py
+    rule_id: relative-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-ce8f3544
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in testql/commands/templates/content.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/templates/content.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-1f909b6a
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/templates/content.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/templates/content.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-a0d5d507
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/commands/templates/templates.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/commands/templates/templates.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-62752b16
+    name: Fix relative-imports issues
+    description: Resolve 24 relative-imports issues in testql/detectors/__init__.py
+    task_type: prefactor
+    priority: high
+    estimate: 3d
+    files:
+    - testql/detectors/__init__.py
+    rule_id: relative-imports
+    count: 24
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-a759a879
+    name: Fix relative-imports issues
+    description: Resolve 2 relative-imports issues in testql/detectors/base.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/base.py
+    rule_id: relative-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-a8996fa0
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/detectors/base.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/base.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-701ad13d
+    name: Fix relative-imports issues
+    description: Resolve 4 relative-imports issues in testql/detectors/config_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - testql/detectors/config_detector.py
+    rule_id: relative-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-1f182970
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in testql/detectors/config_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/config_detector.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-a826b6cc
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/detectors/config_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/config_detector.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-ce85ae9c
+    name: Fix magic-numbers issues
+    description: Resolve 16 magic-numbers issues in testql/detectors/config_detector.py
+    task_type: prefactor
+    priority: high
+    estimate: 3d
+    files:
+    - testql/detectors/config_detector.py
+    rule_id: magic-numbers
+    count: 16
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-38095c43
+    name: Fix relative-imports issues
+    description: Resolve 4 relative-imports issues in testql/detectors/django_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - testql/detectors/django_detector.py
+    rule_id: relative-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-f74b8e43
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in testql/detectors/django_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/django_detector.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-d885784a
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/detectors/django_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/django_detector.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-8cc4f988
+    name: Fix relative-imports issues
+    description: Resolve 4 relative-imports issues in testql/detectors/express_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - testql/detectors/express_detector.py
+    rule_id: relative-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-66ded905
+    name: Fix string-concat issues
+    description: Resolve 2 string-concat issues in testql/detectors/express_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/express_detector.py
+    rule_id: string-concat
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-3d4e844a
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/detectors/express_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/express_detector.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-516016b6
+    name: Fix magic-numbers issues
+    description: Resolve 1 magic-numbers issues in testql/detectors/express_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/express_detector.py
+    rule_id: magic-numbers
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-419a1eb0
+    name: Fix relative-imports issues
+    description: Resolve 4 relative-imports issues in testql/detectors/flask_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - testql/detectors/flask_detector.py
+    rule_id: relative-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-2a33e8e8
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in testql/detectors/flask_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/flask_detector.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-8d33d325
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/detectors/flask_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/flask_detector.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-a8f11c1a
+    name: Fix relative-imports issues
+    description: Resolve 4 relative-imports issues in testql/detectors/fastapi_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - testql/detectors/fastapi_detector.py
+    rule_id: relative-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-a64fb907
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in testql/detectors/fastapi_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/fastapi_detector.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-b41fb5f3
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/detectors/fastapi_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/fastapi_detector.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-a1a99b91
+    name: Fix relative-imports issues
+    description: Resolve 4 relative-imports issues in testql/detectors/graphql_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - testql/detectors/graphql_detector.py
+    rule_id: relative-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-2e4b51a3
+    name: Fix string-concat issues
+    description: Resolve 2 string-concat issues in testql/detectors/graphql_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/graphql_detector.py
+    rule_id: string-concat
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-3026ce5c
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/detectors/graphql_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/graphql_detector.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-3376a001
+    name: Fix magic-numbers issues
+    description: Resolve 2 magic-numbers issues in testql/detectors/graphql_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/graphql_detector.py
+    rule_id: magic-numbers
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-36904e44
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/detectors/models.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/models.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-354323f1
+    name: Fix magic-numbers issues
+    description: Resolve 8 magic-numbers issues in testql/detectors/models.py
+    task_type: prefactor
+    priority: high
+    estimate: 2d
+    files:
+    - testql/detectors/models.py
+    rule_id: magic-numbers
+    count: 8
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-fc1e18f7
+    name: Fix relative-imports issues
+    description: Resolve 4 relative-imports issues in testql/detectors/test_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - testql/detectors/test_detector.py
+    rule_id: relative-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-7a0d3fde
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in testql/detectors/test_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/test_detector.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-a87b6e2e
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/detectors/test_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/test_detector.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-4f01158d
+    name: Fix relative-imports issues
+    description: Resolve 20 relative-imports issues in testql/detectors/unified.py
+    task_type: prefactor
+    priority: high
+    estimate: 3d
+    files:
+    - testql/detectors/unified.py
+    rule_id: relative-imports
+    count: 20
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-17e3e236
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/detectors/unified.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/unified.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-30e233ef
+    name: Fix magic-numbers issues
+    description: Resolve 2 magic-numbers issues in testql/detectors/unified.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/unified.py
+    rule_id: magic-numbers
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-207f96f9
+    name: Fix relative-imports issues
+    description: Resolve 4 relative-imports issues in testql/detectors/openapi_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - testql/detectors/openapi_detector.py
+    rule_id: relative-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-dd4aeb75
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in testql/detectors/openapi_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/openapi_detector.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-d4afc64c
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/detectors/openapi_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/openapi_detector.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-a50f9748
+    name: Fix relative-imports issues
+    description: Resolve 4 relative-imports issues in testql/detectors/websocket_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - testql/detectors/websocket_detector.py
+    rule_id: relative-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-4e1e2991
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in testql/detectors/websocket_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/websocket_detector.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-b86d3e4e
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in testql/detectors/websocket_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/websocket_detector.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-d4a09f0e
+    name: Fix magic-numbers issues
+    description: Resolve 1 magic-numbers issues in testql/detectors/websocket_detector.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - testql/detectors/websocket_detector.py
+    rule_id: magic-numbers
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced

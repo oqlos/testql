@@ -44,3 +44,5 @@ $VENV/bin/sumr .
 pip install -U goal
 $PIP install goal --upgrade --quiet
 $VENV/bin/goal -a
+
+tree.sh

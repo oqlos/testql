@@ -24,7 +24,7 @@ TestQL with endpoint detection, OpenAPI, SUMD generation, SUMD parser and HTML r
 ## Metadata
 
 - **name**: `testql`
-- **version**: `0.6.21`
+- **version**: `0.6.22`
 - **python_requires**: `>=3.10`
 - **license**: Apache-2.0
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -45,7 +45,7 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 0.6.21;
+  version: 0.6.22;
 }
 
 dependencies {
@@ -3368,7 +3368,7 @@ pipeline:
 ```yaml
 project:
   name: testql
-  version: 0.6.21
+  version: 0.6.22
   env: local
 ```
 
@@ -3437,7 +3437,7 @@ pip install -e .[dev]
 ### `project/map.toon.yaml`
 
 ```toon markpact:analysis path=project/map.toon.yaml
-# testql | 132f 15586L | python:127,less:3,shell:2 | 2026-04-25
+# testql | 132f 15588L | python:127,less:3,shell:2 | 2026-04-25
 # stats: 204 func | 195 cls | 132 mod | CC̄=3.9 | critical:8 | cycles:0
 # alerts[5]: CC parse_testtoon=14; CC suite=13; CC parse_value=11; CC detect_scenario_type=11; CC _execute_iql_line=10
 # hotspots[5]: generate fan=19; watch fan=19; suite fan=19; main fan=18; _run_iql_lines fan=15
@@ -3446,7 +3446,7 @@ pip install -e .[dev]
 M[132]:
   TODO/testtoon_parser.py,142
   app.doql.less,167
-  project.sh,46
+  project.sh,48
   testql/__init__.py,4
   testql/__main__.py,7
   testql/_base_fallback.py,222
@@ -4350,7 +4350,7 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 
 ## Call Graph
 
-*173 nodes · 151 edges · 46 modules · CC̄=2.3*
+*179 nodes · 151 edges · 44 modules · CC̄=2.3*
 
 ### Hubs (by degree)
 
@@ -4360,14 +4360,14 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 | `_print_routes_section` *(in testql.commands.generate_cmd)* | 10 ⚠ | 1 | 23 | **24** |
 | `_run_iql_lines` *(in testql.commands.encoder_routes)* | 6 | 1 | 22 | **23** |
 | `_parse_workflows` *(in testql.commands.echo.parsers.doql)* | 7 | 1 | 22 | **23** |
-| `parse_line` *(in testql.runner)* | 9 | 2 | 20 | **22** |
 | `report` *(in testql.commands.misc_cmds)* | 4 | 0 | 22 | **22** |
+| `parse_line` *(in testql.runner)* | 9 | 2 | 20 | **22** |
 | `run_script` *(in testql.runner.DslCliExecutor)* | 11 ⚠ | 0 | 20 | **20** |
-| `endpoints` *(in testql.commands.endpoints_cmd)* | 9 | 0 | 20 | **20** |
+| `echo` *(in testql.commands.misc_cmds)* | 4 | 0 | 20 | **20** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# nodes: 173 | edges: 151 | modules: 46
+# nodes: 179 | edges: 151 | modules: 44
 # CC̄=2.3
 
 HUBS[20]:
@@ -4379,38 +4379,38 @@ HUBS[20]:
     CC=6  in:1  out:22  total:23
   testql.commands.echo.parsers.doql._parse_workflows
     CC=7  in:1  out:22  total:23
-  testql.runner.parse_line
-    CC=9  in:2  out:20  total:22
   testql.commands.misc_cmds.report
     CC=4  in:0  out:22  total:22
+  testql.runner.parse_line
+    CC=9  in:2  out:20  total:22
   testql.runner.DslCliExecutor.run_script
     CC=11  in:0  out:20  total:20
-  testql.commands.endpoints_cmd.endpoints
-    CC=9  in:0  out:20  total:20
   testql.commands.misc_cmds.echo
     CC=4  in:0  out:20  total:20
+  testql.commands.endpoints_cmd.endpoints
+    CC=9  in:0  out:20  total:20
   testql.commands.misc_cmds.init
     CC=4  in:0  out:20  total:20
-  testql.interpreter._flow.FlowMixin._cmd_include
-    CC=7  in:0  out:17  total:17
   testql.commands.echo.parsers.doql._parse_entities
     CC=7  in:1  out:16  total:17
-  testql.commands.echo.cli.echo
-    CC=3  in:0  out:17  total:17
+  testql.interpreter._flow.FlowMixin._cmd_include
+    CC=7  in:0  out:17  total:17
   testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
     CC=6  in:0  out:17  total:17
+  testql.commands.echo.cli.echo
+    CC=3  in:0  out:17  total:17
+  testql.interpreter.interpreter.IqlInterpreter.execute
+    CC=4  in:0  out:16  total:16
   testql.interpreter._testtoon_parser.parse_testtoon
     CC=8  in:1  out:15  total:16
   testql.commands.echo.parsers.toon._parse_scenario
     CC=5  in:1  out:15  total:16
-  testql.interpreter.converter.parsers.parse_target_from_args
-    CC=4  in:7  out:9  total:16
-  testql.interpreter.interpreter.IqlInterpreter.execute
-    CC=4  in:0  out:16  total:16
   testql.commands.encoder_routes.iql_run_file
     CC=3  in:0  out:15  total:15
   testql.commands.encoder_routes._execute_iql_line
     CC=10  in:2  out:13  total:15
+  testql.commands.encoder_routes.iql_list_files
+    CC=7  in:0  out:14  total:14
 
 MODULES:
   TODO.testtoon_parser  [2 funcs]
@@ -4427,6 +4427,17 @@ MODULES:
     parse_doql_less  CC=0  out:0
     parse_iql  CC=0  out:0
     parse_script  CC=0  out:0
+  project.map.toon  [21 funcs]
+    _extract_ep_params  CC=0  out:0
+    _extract_path_params  CC=0  out:0
+    _parse_api_interfaces  CC=0  out:0
+    _parse_block_interfaces  CC=0  out:0
+    build_config_section  CC=0  out:0
+    build_header  CC=0  out:0
+    collect_assert  CC=0  out:0
+    collect_list_files  CC=0  out:0
+    collect_toon_data  CC=0  out:0
+    detect_scenario_type  CC=0  out:0
   testql._base_fallback  [2 funcs]
     all  CC=1  out:1
     set  CC=1  out:0
@@ -4506,13 +4517,12 @@ MODULES:
   testql.commands.suite.execution  [2 funcs]
     run_single_file  CC=3  out:7
     run_suite_files  CC=5  out:11
-  testql.commands.suite.listing  [6 funcs]
+  testql.commands.suite.listing  [5 funcs]
     _collect_meta_lines  CC=7  out:6
     _parse_testtoon_header  CC=6  out:8
     _parse_yaml_meta_block  CC=5  out:4
     filter_tests  CC=6  out:9
     parse_meta  CC=6  out:6
-    render_test_list  CC=6  out:9
   testql.commands.suite.reports  [3 funcs]
     _build_junit_xml  CC=5  out:8
     _save_json_report  CC=1  out:3
@@ -4553,8 +4563,6 @@ MODULES:
     dispatch  CC=3  out:3
   testql.interpreter.converter.handlers.api  [1 funcs]
     handle_api  CC=6  out:7
-  testql.interpreter.converter.handlers.assertions  [1 funcs]
-    collect_assert  CC=9  out:9
   testql.interpreter.converter.handlers.encoder  [3 funcs]
     _advance_past_wait  CC=4  out:2
     _encoder_action_fields  CC=5  out:4
@@ -4571,29 +4579,16 @@ MODULES:
     handle_select  CC=3  out:8
   testql.interpreter.converter.handlers.unknown  [1 funcs]
     handle_unknown  CC=3  out:4
-  testql.interpreter.converter.parsers  [6 funcs]
-    detect_scenario_type  CC=11  out:6
-    extract_scenario_name  CC=6  out:8
-    parse_api_args  CC=5  out:9
-    parse_commands  CC=5  out:10
-    parse_meta_from_args  CC=4  out:6
-    parse_target_from_args  CC=4  out:9
-  testql.interpreter.converter.renderer  [4 funcs]
+  testql.interpreter.converter.renderer  [2 funcs]
     _render_section_header  CC=3  out:2
-    build_config_section  CC=6  out:6
-    build_header  CC=1  out:0
     render_sections  CC=7  out:12
-  testql.interpreter.dispatcher  [1 funcs]
-    dispatch  CC=5  out:13
   testql.interpreter.interpreter  [3 funcs]
     __init__  CC=2  out:4
     execute  CC=4  out:16
     parse  CC=2  out:3
-  testql.openapi_generator  [4 funcs]
+  testql.openapi_generator  [2 funcs]
     _extract_parameters  CC=1  out:3
     _infer_tags  CC=7  out:9
-    _extract_ep_params  CC=7  out:8
-    _extract_path_params  CC=4  out:4
   testql.runner  [3 funcs]
     run_script  CC=11  out:20
     parse_line  CC=9  out:20
@@ -4609,10 +4604,8 @@ MODULES:
     _workflow_snippet  CC=4  out:1
     _workflows_table_section  CC=5  out:3
     generate_sumd  CC=4  out:10
-  testql.sumd_parser  [3 funcs]
+  testql.sumd_parser  [1 funcs]
     _parse_interfaces  CC=1  out:2
-    _parse_api_interfaces  CC=8  out:13
-    _parse_block_interfaces  CC=3  out:7
 
 EDGES:
   TODO.testtoon_parser.print_parsed → TODO.testtoon_parser.validate
@@ -4621,8 +4614,8 @@ EDGES:
   testql.runner.DslCliExecutor.run_script → code2llm_output.map.toon.parse_script
   testql.openapi_generator.OpenAPIGenerator._infer_tags → code2llm_output.map.toon.list
   testql.openapi_generator.OpenAPIGenerator._infer_tags → testql._base_fallback.VariableStore.set
-  testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_path_params
-  testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_ep_params
+  testql.openapi_generator.OpenAPIGenerator._extract_parameters → project.map.toon._extract_path_params
+  testql.openapi_generator.OpenAPIGenerator._extract_parameters → project.map.toon._extract_ep_params
   testql.sumd_generator.generate_sumd → testql.sumd_generator._header_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._metadata_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._architecture_section
@@ -4633,14 +4626,14 @@ EDGES:
   testql.sumd_generator.generate_sumd → testql.sumd_generator._llm_suggestions_section
   testql.sumd_generator._llm_suggestions_section → testql.sumd_generator._workflow_snippet
   testql.sumd_generator.save_sumd → testql.sumd_generator.generate_sumd
-  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_block_interfaces
-  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_api_interfaces
+  testql.sumd_parser.SumdParser._parse_interfaces → project.map.toon._parse_block_interfaces
+  testql.sumd_parser.SumdParser._parse_interfaces → project.map.toon._parse_api_interfaces
   testql.commands.generate_cmd.generate → testql.commands.generate_cmd._is_workspace
   testql.commands.generate_cmd._print_routes_section → testql.commands.generate_cmd._count_routes_by
   testql.commands.misc_cmds.init → testql.commands.misc_cmds._create_templates
   testql.commands.misc_cmds.report → code2llm_output.map.toon.generate_report
-  testql.commands.misc_cmds.echo → testql.commands.echo_helpers.render_echo
-  testql.commands.misc_cmds.echo → testql.commands.echo_helpers.collect_toon_data
+  testql.commands.misc_cmds.echo → project.map.toon.render_echo
+  testql.commands.misc_cmds.echo → project.map.toon.collect_toon_data
   testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._strip_path_segments
   testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._migrate_legacy_extension
   testql.commands.encoder_routes._normalize_iql_path → testql.commands.encoder_routes._remap_tests_prefix

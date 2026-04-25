@@ -4,7 +4,7 @@
 
 - **Project**: /home/tom/github/oqlos/testql
 - **Primary Language**: yaml
-- **Languages**: yaml: 96, python: 95, json: 2, shell: 2, yml: 2
+- **Languages**: yaml: 96, python: 95, json: 2, yml: 2, txt: 2
 - **Analysis Mode**: static
 - **Total Functions**: 746
 - **Total Classes**: 70
