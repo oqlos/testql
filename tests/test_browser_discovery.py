@@ -81,7 +81,7 @@ class FakePlaywrightImport:
         return FakePlaywright()
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def mock_playwright():
     """Mock playwright.sync_api before any imports happen."""
     sys.modules["playwright.sync_api"] = FakePlaywrightImport()
@@ -92,7 +92,7 @@ def mock_playwright():
     sys.modules.pop("playwright.sync_api", None)
 
 
-def test_playwright_probe_collects_console_and_network():
+def test_playwright_probe_collects_console_and_network(mock_playwright):
     # Import the probe after the fixture has set up the mock
     from testql.discovery.probes.browser.playwright_page import PlaywrightPageProbe
     probe = PlaywrightPageProbe()

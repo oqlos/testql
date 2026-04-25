@@ -111,13 +111,19 @@ class TestGuiDriverSelection:
     def interpreter(self):
         return IqlInterpreter(api_url="http://localhost:8101", quiet=True, dry_run=True)
 
-    def test_gui_driver_default_playwright(self, interpreter):
+    def test_gui_driver_default_playwright(self, interpreter, monkeypatch):
         """Test default driver is playwright."""
         assert interpreter._gui_driver is None
         interpreter.vars.set("gui_driver", "playwright")
+        # Mock playwright import to simulate it not being installed
+        import sys
+        monkeypatch.setitem(sys.modules, "playwright.sync_api", None)
         assert interpreter._init_gui_driver() is False  # Returns False if not installed (dry-run)
 
-    def test_gui_driver_selenium_fallback(self, interpreter):
+    def test_gui_driver_selenium_fallback(self, interpreter, monkeypatch):
         """Test selenium driver selection."""
         interpreter.vars.set("gui_driver", "selenium")
+        # Mock selenium import to simulate it not being installed
+        import sys
+        monkeypatch.setitem(sys.modules, "selenium", None)
         assert interpreter._init_gui_driver() is False  # Returns False if not installed (dry-run)
