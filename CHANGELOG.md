@@ -130,6 +130,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Remaining
 - Add Playwright-backed browser execution, JavaScript-rendered DOM capture, screenshots, console errors, network logs, link-by-link validation, accessibility/performance checks, MCP service integration, and runtime-vs-code delta reports.
 
+## [1.2.11] - 2026-04-25
+
+### Docs
+- Update README.md
+
+### Test
+- Update testql/detectors/unified.py
+- Update testql/generators/generators.py
+- Update testql/interpreter/_assertions.py
+
+### Other
+- Update coverage.json
+
 ## [1.2.10] - 2026-04-25
 
 ### Docs

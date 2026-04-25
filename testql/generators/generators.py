@@ -49,7 +49,7 @@ class APIGeneratorMixin:
         """Build CONFIG section for API test scenario."""
         return [
             "CONFIG[4]{key, value}:",
-            "  base_url, http://localhost:8101",
+            "  base_url, ${api_url:-http://localhost:8100}",
             "  timeout_ms, 10000",
             "  retry_count, 3",
             f"  detected_frameworks, {', '.join(frameworks)}",
@@ -162,6 +162,9 @@ class PythonTestGeneratorMixin:
             "# TYPE: integration",
             "# GENERATED: true",
             "",
+            "# NOTE: Python pytest files are detected but not converted to IQL.",
+            "# To run pytest tests directly, use: pytest <test_file>",
+            "",
         ]
 
         # Group by type
@@ -175,9 +178,13 @@ class PythonTestGeneratorMixin:
             sections.append("")
 
         if other_patterns:
-            sections.append(f"INCLUDE[{len(other_patterns)}]{{file}}:")
+            sections.append(f"LOG[{len(other_patterns)}]{{message}}:")
             for p in other_patterns[:5]:
-                sections.append(f'  "{p.metadata.get("source_file", "unknown")}"')
+                source_file = p.metadata.get("source_file", "unknown")
+                sections.append(f'  "Detected pytest file: {source_file}"')
+            sections.append("")
+            sections.append("# To run these pytest tests:")
+            sections.append("#   pytest <path_to_test_file>")
 
         content = '\n'.join(sections)
         output_file = output_dir / 'generated-from-pytests.testql.toon.yaml'
@@ -208,6 +215,10 @@ class ScenarioGeneratorMixin:
 
         for s in scenarios[:10]:
             sections.append(f'  "Scenario: {s["name"]}"')
+
+        sections.append("")
+        sections.append("# NOTE: OQL/CQL scenario conversion to IQL is not yet implemented.")
+        sections.append("# Scenarios are detected but require manual conversion to testql format.")
 
         content = '\n'.join(sections)
         output_file = output_dir / 'generated-from-scenarios.testql.toon.yaml'
@@ -359,10 +370,13 @@ class SpecializedGeneratorMixin:
             "  GET, /api/v1/hardware/health, 200",
             "  GET, /api/v1/hardware/identify, 200",
             "",
-            "HARDWARE[3]{command, peripheral}:",
-            "  check, piadc",
-            "  check, motor-dri0050",
-            "  check, modbus-io",
+            "# NOTE: HARDWARE commands are not yet implemented in testql interpreter.",
+            "# Hardware peripheral checks require custom implementation.",
+            "# LOG placeholder for detected hardware:",
+            'LOG[3]{message}:',
+            '  "Hardware check: piadc"',
+            '  "Hardware check: motor-dri0050"',
+            '  "Hardware check: modbus-io"',
         ]
 
         content = '\n'.join(sections)

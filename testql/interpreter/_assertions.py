@@ -83,6 +83,16 @@ class AssertionsMixin:
         path, op, expected_str = parts[0], parts[1], parts[2]
         obj = _navigate_json_path(self.last_response, path)
 
+        # Handle None values - fail assertion if path not found
+        if obj is None:
+            desc = f"ASSERT_JSON {path} {op} {expected_str}"
+            self.out.step("  ❌", f"{desc} (path not found)")
+            self.errors.append(f"L{line.number}: {desc} failed (path '{path}' not found in response)")
+            self.results.append(StepResult(
+                name=desc, status=StepStatus.FAILED, message=f"path '{path}' not found",
+            ))
+            return
+
         try:
             expected: Any = float(expected_str) if "." in expected_str else int(expected_str)
         except ValueError:

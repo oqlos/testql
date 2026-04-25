@@ -105,7 +105,7 @@ class UnifiedEndpointDetector:
             return []
         lines = [
             "CONFIG[2]{key, value}:",
-            "  base_url, ${api_url:-http://localhost:8101}",
+            "  base_url, ${api_url:-http://localhost:8100}",
             "  timeout_ms, 10000",
             "",
             f"API[{len(rest_eps[:30])}]{{method, endpoint, expected_status}}:",
@@ -131,7 +131,7 @@ class UnifiedEndpointDetector:
             return []
         lines = [f"WEBSOCKET[{len(ws_eps[:5])}]{{url, action}}:"]
         for ep in ws_eps[:5]:
-            lines.append(f"  ws://localhost:8101{ep.path}, connect")
+            lines.append(f"  ws://${api_url:-localhost:8100}{ep.path}, connect")
         lines.append("")
         return lines
 
