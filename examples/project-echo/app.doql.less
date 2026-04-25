@@ -1,0 +1,36 @@
+// LESS format — define @variables here as needed
+
+app {
+  name: "Example API Server";
+  version: 1.0.0;
+}
+
+entity[name="Device"] {
+  id: string! unique;
+  name: string!;
+  status: enum(active, default=active;
+  created_at: datetime auto;
+}
+
+entity[name="Scenario"] {
+  id: string! unique;
+  name: string!;
+  config: json;
+  device_ids: json;
+}
+
+interface[type="api"] {
+  type: rest;
+}
+
+interface[type="ws"] {
+  type: websocket;
+}
+
+workflow[name="device_provisioning"] {
+  trigger: manual;
+}
+
+deploy {
+  target: docker-compose;
+}

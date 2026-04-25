@@ -1,18 +1,14 @@
-# code2llm/evolution | 1700 func | 166f | 2026-04-25
+# code2llm/evolution | 1713 func | 166f | 2026-04-25
 
-NEXT[1] (ranked by impact):
-  [1] !  SPLIT-FUNC      build_sitemap  CC=15  fan=19
-      WHY: CC=15 exceeds 15
-      EFFORT: ~1h  IMPACT: 285
-
+NEXT[0]: no refactoring needed
 
 RISKS[0]: none
 
 METRICS-TARGET:
   CC̄:          2.1 → ≤1.5
-  max-CC:      15 → ≤7
+  max-CC:      14 → ≤7
   god-modules: 0 → 0
-  high-CC(≥15): 1 → ≤0
+  high-CC(≥15): 0 → ≤0
   hub-types:   0 → ≤0
 
 PATTERNS (language parser shared logic):

@@ -1,0 +1,41 @@
+APP: "Example API Server"
+VERSION: "1.0.0"
+
+# ─── Data Model ───
+
+ENTITY Device:
+  id: string! unique
+  name: string!
+  status: enum(active, inactive) default=active
+  created_at: datetime auto
+
+ENTITY Scenario:
+  id: string! unique
+  name: string!
+  config: json
+  device_ids: json
+
+# ─── Interfaces ───
+
+INTERFACE api:
+  type: rest
+  auth: bearer
+
+INTERFACE ws:
+  type: websocket
+  events: [device_update, scenario_change]
+
+# ─── Workflows ───
+
+WORKFLOW device_provisioning:
+  trigger: manual
+  steps:
+    1. register device
+    2. configure device
+    3. activate device
+    4. monitor device
+
+# ─── Deploy ───
+
+DEPLOY:
+  target: docker-compose

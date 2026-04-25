@@ -4,17 +4,17 @@
 
 - **Project**: /home/tom/github/oqlos/testql
 - **Primary Language**: python
-- **Languages**: python: 200, yaml: 104, txt: 3, json: 2, yml: 2
+- **Languages**: python: 201, yaml: 110, shell: 11, txt: 3, json: 2
 - **Analysis Mode**: static
-- **Total Functions**: 1700
+- **Total Functions**: 1715
 - **Total Classes**: 176
-- **Modules**: 314
-- **Entry Points**: 1266
+- **Modules**: 330
+- **Entry Points**: 1275
 
 ## Architecture by Module
 
 ### project.map.toon
-- **Functions**: 1268
+- **Functions**: 639
 - **File**: `map.toon.yaml`
 
 ### code2llm_output.map.toon
@@ -49,15 +49,15 @@
 - **Classes**: 2
 - **File**: `_testtoon_parser.py`
 
-### testql.adapters.testtoon_adapter
-- **Functions**: 23
-- **Classes**: 1
-- **File**: `testtoon_adapter.py`
-
 ### testql.adapters.graphql.graphql_adapter
 - **Functions**: 23
 - **Classes**: 1
 - **File**: `graphql_adapter.py`
+
+### testql.adapters.testtoon_adapter
+- **Functions**: 23
+- **Classes**: 1
+- **File**: `testtoon_adapter.py`
 
 ### testql.openapi_generator
 - **Functions**: 21
@@ -121,10 +121,6 @@ Main execution flows into the system:
 > Watch for file changes and re-run tests automatically.
 - **Calls**: click.command, click.option, click.option, click.option, click.option, None.resolve, click.echo, click.echo
 
-### testql.topology.sitemap.build_sitemap
-> Extend *topology* with bounded sub-page crawl starting from the root page node.
-- **Calls**: next, str, schema.get, topology.nodes.append, topology.edges.append, enumerate, urljoin, crawled.append
-
 ### TODO.testtoon_parser.parse_testtoon
 - **Calls**: text.splitlines, META_RE.match, None.startswith, HEADER_RE.match, raw.strip, raw.strip, None.strip, raw.strip
 
@@ -136,6 +132,9 @@ Examples:
     SHELL "python --version" 5000
     SHELL "cat file.tx
 - **Calls**: args.strip, self.out.fail, args_clean.startswith, args_clean.startswith, args_clean.find, None.strip, args_clean.split, self.out.step
+
+### testql.discovery.probes.browser.playwright_page.PlaywrightPageProbe.probe
+- **Calls**: self.result, ImportError, self.result, sync_playwright, p.chromium.launch, browser.new_page, page.on, page.on
 
 ### testql.interpreter.main
 > CLI entry point — unchanged from original.
@@ -149,18 +148,8 @@ Examples:
     
 - **Calls**: None.split, None.strip, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append
 
-### testql.discovery.probes.browser.playwright_page.PlaywrightPageProbe.probe
-- **Calls**: self.result, sync_playwright, p.chromium.launch, browser.new_page, page.on, page.on, page.title, page.evaluate
-
 ### testql.runner.main
 - **Calls**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.parse_args, DslCliExecutor
-
-### testql.interpreter._gui.GuiMixin._cmd_gui_assert_text
-> GUI_ASSERT_TEXT "selector" "expected" — Assert element contains text.
-- **Calls**: None.split, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append, self.out.fail
-
-### testql.adapters.testtoon_adapter._api_section_to_steps
-- **Calls**: steps.append, row.get, row.get, asserts.append, row.get, asserts.append, None.strip, ApiStep
 
 ### testql.commands.generate_topology_cmd.generate_topology
 > Generate an executable scenario from a topology trace.
@@ -168,6 +157,13 @@ Examples:
 
 ### testql.commands.inspect_cmd.inspect
 - **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, click.option, Path
+
+### testql.interpreter._gui.GuiMixin._cmd_gui_assert_text
+> GUI_ASSERT_TEXT "selector" "expected" — Assert element contains text.
+- **Calls**: None.split, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append, self.out.fail
+
+### testql.adapters.testtoon_adapter._api_section_to_steps
+- **Calls**: steps.append, row.get, row.get, asserts.append, row.get, asserts.append, None.strip, ApiStep
 
 ### testql.commands.misc_cmds.from_sumd
 > Generate TestQL scenarios from SUMD.md documentation.
@@ -217,13 +213,9 @@ Examples:
 > Create new test file from template.
 - **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, out_dir.mkdir, TestContentBuilder.build
 
-### testql.report_generator.generate_report
-> Generate HTML report from data.json file.
-- **Calls**: json.loads, data.get, round, TestSuiteReport, HTMLReportGenerator, generator.generate, data_json.read_text, data.get
-
 ### testql.runner.DslCliExecutor.run_script
 > Execute a DSL script
-- **Calls**: code2llm_output.map.toon.parse_script, print, print, print, print, enumerate, print, sum
+- **Calls**: code2llm_output.map.toon.parse_script, examples.web-inspection.demo.print, examples.web-inspection.demo.print, examples.web-inspection.demo.print, examples.web-inspection.demo.print, enumerate, examples.web-inspection.demo.print, sum
 
 ### testql.echo_schemas.ProjectEcho.to_text
 > Convert to human-readable text format.
@@ -245,6 +237,20 @@ Examples:
 > List all detected API endpoints in a project.
 - **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, Path, UnifiedEndpointDetector
 
+### testql.report_generator.generate_report
+> Generate HTML report from data.json file.
+- **Calls**: json.loads, data.get, round, TestSuiteReport, HTMLReportGenerator, generator.generate, data_json.read_text, data.get
+
+### testql.doql_parser.DoqlParser.parse
+> Parse doql LESS content.
+
+Args:
+    content: Doql LESS content
+    
+Returns:
+    SystemModel: Extracted system model
+- **Calls**: SystemModel, re.search, re.finditer, re.finditer, re.finditer, re.search, app_match.group, self._parse_app_block
+
 ## Process Flows
 
 Key execution flows identified:
@@ -259,19 +265,19 @@ suite [testql.commands.suite.cli]
 watch [testql.commands.misc_cmds]
 ```
 
-### Flow 3: build_sitemap
-```
-build_sitemap [testql.topology.sitemap]
-```
-
-### Flow 4: parse_testtoon
+### Flow 3: parse_testtoon
 ```
 parse_testtoon [TODO.testtoon_parser]
 ```
 
-### Flow 5: _cmd_shell
+### Flow 4: _cmd_shell
 ```
 _cmd_shell [testql.interpreter._shell.ShellMixin]
+```
+
+### Flow 5: probe
+```
+probe [testql.discovery.probes.browser.playwright_page.PlaywrightPageProbe]
 ```
 
 ### Flow 6: main
@@ -284,19 +290,19 @@ main [testql.interpreter]
 _cmd_unit_assert [testql.interpreter._unit.UnitMixin]
 ```
 
-### Flow 8: probe
+### Flow 8: generate_topology
 ```
-probe [testql.discovery.probes.browser.playwright_page.PlaywrightPageProbe]
+generate_topology [testql.commands.generate_topology_cmd]
 ```
 
-### Flow 9: _cmd_gui_assert_text
+### Flow 9: inspect
+```
+inspect [testql.commands.inspect_cmd]
+```
+
+### Flow 10: _cmd_gui_assert_text
 ```
 _cmd_gui_assert_text [testql.interpreter._gui.GuiMixin]
-```
-
-### Flow 10: _api_section_to_steps
-```
-_api_section_to_steps [testql.adapters.testtoon_adapter]
 ```
 
 ## Key Classes
@@ -489,11 +495,10 @@ Functions exposed as public API (no underscore prefix):
 
 - `testql.commands.suite.cli.suite` - 36 calls
 - `testql.commands.misc_cmds.watch` - 35 calls
-- `testql.topology.sitemap.build_sitemap` - 32 calls
 - `TODO.testtoon_parser.parse_testtoon` - 31 calls
 - `testql.results.artifacts.write_inspection_artifacts` - 28 calls
+- `testql.discovery.probes.browser.playwright_page.PlaywrightPageProbe.probe` - 27 calls
 - `testql.interpreter.main` - 26 calls
-- `testql.discovery.probes.browser.playwright_page.PlaywrightPageProbe.probe` - 26 calls
 - `testql.runner.main` - 24 calls
 - `testql.commands.generate_topology_cmd.generate_topology` - 24 calls
 - `testql.commands.inspect_cmd.inspect` - 24 calls
@@ -504,7 +509,6 @@ Functions exposed as public API (no underscore prefix):
 - `testql.commands.generate_cmd.analyze` - 22 calls
 - `testql.commands.misc_cmds.report` - 22 calls
 - `testql.commands.misc_cmds.create` - 21 calls
-- `testql.report_generator.generate_report` - 20 calls
 - `testql.runner.parse_line` - 20 calls
 - `testql.runner.DslCliExecutor.run_script` - 20 calls
 - `testql.echo_schemas.ProjectEcho.to_text` - 20 calls
@@ -513,6 +517,7 @@ Functions exposed as public API (no underscore prefix):
 - `testql.commands.run_cmd.run` - 20 calls
 - `testql.commands.endpoints_cmd.endpoints` - 20 calls
 - `testql.adapters.sql.fixtures.schema_fixture_from_rows` - 20 calls
+- `testql.report_generator.generate_report` - 20 calls
 - `testql.doql_parser.DoqlParser.parse` - 19 calls
 - `testql.discovery.probes.filesystem.package_python.PythonPackageProbe.probe` - 18 calls
 - `testql.results.analyzer.analyze_topology` - 18 calls
@@ -527,6 +532,7 @@ Functions exposed as public API (no underscore prefix):
 - `testql.discovery.probes.filesystem.package_node.NodePackageProbe.probe` - 15 calls
 - `testql.reporters.junit.JUnitReporter.generate` - 15 calls
 - `TODO.testtoon_parser.parse_value` - 14 calls
+- `testql.commands.encoder_routes.iql_list_files` - 14 calls
 
 ## System Interactions
 
@@ -539,10 +545,6 @@ graph TD
     suite --> option
     watch --> command
     watch --> option
-    build_sitemap --> next
-    build_sitemap --> str
-    build_sitemap --> get
-    build_sitemap --> append
     parse_testtoon --> splitlines
     parse_testtoon --> match
     parse_testtoon --> startswith
@@ -551,19 +553,23 @@ graph TD
     _cmd_shell --> fail
     _cmd_shell --> startswith
     _cmd_shell --> find
+    probe --> result
+    probe --> ImportError
+    probe --> sync_playwright
+    probe --> launch
     main --> ArgumentParser
     main --> add_argument
     _cmd_unit_assert --> split
     _cmd_unit_assert --> strip
     _cmd_unit_assert --> len
-    probe --> result
-    probe --> sync_playwright
-    probe --> launch
-    probe --> new_page
-    probe --> on
+    generate_topology --> command
+    generate_topology --> argument
+    generate_topology --> option
+    inspect --> command
+    inspect --> argument
+    inspect --> option
     _cmd_gui_assert_text --> split
     _cmd_gui_assert_text --> strip
-    _cmd_gui_assert_text --> len
 ```
 
 ## Reverse Engineering Guidelines

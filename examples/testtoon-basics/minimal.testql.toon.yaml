@@ -1,0 +1,7 @@
+# SCENARIO: Minimal TestTOON Example
+# TYPE: api
+# VERSION: 1.0
+
+API[2]{method, endpoint, expected_status}:
+  GET, /api/health, 200
+  GET, /api/users, 200

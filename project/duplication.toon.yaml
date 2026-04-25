@@ -1,9 +1,9 @@
-# redup/duplication | 0 groups | 0f 0L | 2026-04-25
+# redup/duplication | 0 groups | 1f 36L | 2026-04-25
 
 SUMMARY:
-  files_scanned: 0
-  total_lines:   0
+  files_scanned: 1
+  total_lines:   36
   dup_groups:    0
   dup_fragments: 0
   saved_lines:   0
-  scan_ms:       4502
+  scan_ms:       3512

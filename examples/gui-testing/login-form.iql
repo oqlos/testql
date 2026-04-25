@@ -1,0 +1,21 @@
+# SCENARIO: Login Form Test
+# TYPE: gui
+
+SET base_url "https://example.com"
+SET username "testuser"
+SET password "testpass123"
+
+NAVIGATE "${base_url}/login"
+WAIT 500
+
+# Fill login form
+INPUT "#username" "${username}"
+INPUT "#password" "${password}"
+
+# Submit
+CLICK "button[type='submit']"
+WAIT 1000
+
+# Verify redirect to dashboard
+ASSERT_VISIBLE "[data-testid='dashboard']"
+ASSERT_TEXT "h1" "Welcome, ${username}"

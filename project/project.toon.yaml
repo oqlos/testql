@@ -1,51 +1,51 @@
-# testql | 1700 func | 166f | 114685L | python | 2026-04-25
+# testql | 1715 func | 168f | 115360L | python | 2026-04-25
 
 HEALTH:
-  CC̄=2.1  critical=27 (limit:10)  dup=4  cycles=0
+  CC̄=2.1  critical=26 (limit:10)  dup=4  cycles=0
 
 ALERTS[20]:
   !!! high_fan_out     parse_testtoon = 21 (limit:10)
   !!! high_fan_out     watch = 20 (limit:10)
   !!! high_fan_out     suite = 20 (limit:10)
   !!  high_fan_out     main = 19 (limit:10)
-  !!  high_fan_out     build_sitemap = 19 (limit:10)
   !!  high_fan_out     generate_topology = 17 (limit:10)
   !!  high_fan_out     analyze_topology = 17 (limit:10)
   !!  high_fan_out     _run_iql_lines = 16 (limit:10)
+  !!  high_fan_out     inspect = 16 (limit:10)
   !!  high_fan_out     ApiRunnerMixin._cmd_api = 16 (limit:10)
   !!  high_fan_out     PythonPackageProbe.probe = 16 (limit:10)
 
-MODULES[314] (top by size):
-  M[project/calls.yaml] 6999L C:0 F:0 CC↑0 D:0 (yaml)
-  M[project/map.toon.yaml] 2257L C:0 F:568 CC↑0 D:7 (yaml)
+MODULES[330] (top by size):
+  M[project/calls.yaml] 7050L C:0 F:0 CC↑0 D:0 (yaml)
+  M[project/map.toon.yaml] 1943L C:0 F:576 CC↑0 D:4 (yaml)
   M[planfile.yaml] 1319L C:0 F:0 CC↑0 D:0 (yaml)
   M[code2llm_output/calls.yaml] 799L C:0 F:0 CC↑0 D:0 (yaml)
-  M[project/calls.toon.yaml] 649L C:0 F:0 CC↑0 D:0 (yaml)
-  M[tree.txt] 639L C:0 F:0 CC↑0 D:0 (txt)
+  M[project/calls.toon.yaml] 669L C:0 F:0 CC↑0 D:0 (yaml)
+  M[tree.txt] 649L C:0 F:0 CC↑0 D:0 (txt)
   M[goal.yaml] 511L C:0 F:0 CC↑0 D:0 (yaml)
-  M[testql/results/analyzer.py] 490L C:0 F:37 CC↑14 D:0 (python)
+  M[testql/results/analyzer.py] 490L C:0 F:37 CC↑14 D:2 (python)
   M[testql/commands/encoder_routes.py] 477L C:0 F:27 CC↑10 D:0 (python)
   M[testql/openapi_generator.py] 444L C:3 F:21 CC↑11 D:1 (python)
   M[testql/interpreter/_gui.py] 425L C:1 F:10 CC↑9 D:0 (python)
   M[project/validation.toon.yaml] 421L C:0 F:0 CC↑0 D:0 (yaml)
   M[testql/interpreter/_testtoon_parser.py] 413L C:2 F:24 CC↑8 D:0 (python)
-  M[project/analysis.toon.yaml] 383L C:0 F:0 CC↑0 D:0 (yaml)
+  M[project/analysis.toon.yaml] 387L C:0 F:0 CC↑0 D:0 (yaml)
   M[testql/generators/generators.py] 372L C:4 F:17 CC↑12 D:0 (python)
-  LANGS: python:200/yaml:104/txt:3/yml:2/json:2/shell:2/toml:1
+  LANGS: python:201/yaml:110/shell:11/txt:3/yml:2/json:2/toml:1
 
 HOTSPOTS[10]:
   ★ parse_testtoon fan=21  // Orchestrates 21 calls
   ★ watch fan=20  // Watch for file changes and re-run tests automatically.
   ★ suite fan=20  // Run test suite(s) — predefined or custom pattern.
   ★ main fan=19  // CLI entry point — unchanged from original.
-  ★ build_sitemap fan=19  // Extend *topology* with bounded sub-page crawl starting from the root page node.
+  ★ generate_topology fan=17  // Generate an executable scenario from a topology trace.
 
-REFACTOR[11]:
+REFACTOR[10]:
   [1] H/H Split god module code2llm_output/calls.yaml (799L, 0 classes)
   [2] H/H Split god module goal.yaml (511L, 0 classes)
   [3] H/H Split god module planfile.yaml (1319L, 0 classes)
-  [4] H/H Split god module project/calls.toon.yaml (649L, 0 classes)
-  [5] H/H Split god module project/calls.yaml (6999L, 0 classes)
+  [4] H/H Split god module project/calls.toon.yaml (669L, 0 classes)
+  [5] H/H Split god module project/calls.yaml (7050L, 0 classes)
 
 EVOLUTION:
-  2026-04-25 CC̄=2.1 crit=27 114685L // Automated analysis
+  2026-04-25 CC̄=2.1 crit=26 115360L // Automated analysis

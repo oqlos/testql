@@ -1,6 +1,9 @@
 flowchart TD
+    TODO__testtoon_parser["TODO.testtoon_parser<br/>7 funcs"]
     code2llm_output__map["code2llm_output.map<br/>83 funcs"]
-    project__map["project.map<br/>568 funcs"]
+    examples__artifact_bundle["examples.artifact-bundle<br/>1 funcs"]
+    examples__web_inspection["examples.web-inspection<br/>1 funcs"]
+    project__map["project.map<br/>576 funcs"]
     testql___base_fallback["testql._base_fallback<br/>26 funcs"]
     testql__adapters["testql.adapters<br/>240 funcs"]
     testql__commands["testql.commands<br/>123 funcs"]
@@ -14,23 +17,28 @@ flowchart TD
     testql__openapi_generator["testql.openapi_generator<br/>21 funcs"]
     testql__results["testql.results<br/>54 funcs"]
     testql__runner["testql.runner<br/>18 funcs"]
-    testql__topology["testql.topology<br/>33 funcs"]
+    testql__topology["testql.topology<br/>38 funcs"]
+    testql__runner ==>|19| examples__web_inspection
     testql__commands ==>|13| code2llm_output__map
+    TODO__testtoon_parser ==>|8| examples__web_inspection
     testql__results ==>|8| code2llm_output__map
     testql__adapters ==>|7| code2llm_output__map
     testql__discovery ==>|6| testql___base_fallback
     testql__ir_runner ==>|6| testql__adapters
-    testql__commands ==>|5| project__map
     testql__commands ==>|5| testql___base_fallback
+    testql__commands ==>|5| testql__results
     testql__interpreter ==>|5| code2llm_output__map
     testql__adapters ==>|5| testql___base_fallback
     testql__meta ==>|4| testql___base_fallback
-    testql__commands ==>|4| testql__results
+    examples__artifact_bundle ==>|4| examples__web_inspection
+    testql__commands -->|3| project__map
     testql__interpreter -->|3| testql___base_fallback
     testql__results -->|3| testql__topology
     testql__generators -->|3| code2llm_output__map
     testql__generators -->|3| testql__adapters
+    testql__commands -->|2| examples__web_inspection
     testql__commands -->|2| testql__generators
+    testql__interpreter -->|2| examples__web_inspection
     testql__ir -->|2| code2llm_output__map
     testql__discovery -->|2| code2llm_output__map
     testql__generators -->|2| testql___base_fallback
@@ -38,15 +46,18 @@ flowchart TD
     testql__meta -->|2| testql__adapters
     testql__ir_runner -->|2| testql___base_fallback
     testql__topology -->|2| code2llm_output__map
+    examples__artifact_bundle -->|2| testql__results
     testql__runner -->|1| code2llm_output__map
     testql__runner -->|1| testql___base_fallback
     testql__openapi_generator -->|1| code2llm_output__map
     testql__openapi_generator -->|1| testql___base_fallback
+    testql___base_fallback -->|1| examples__web_inspection
+    testql__commands -->|1| testql__discovery
     testql__commands -->|1| testql__topology
     testql__commands -->|1| testql__ir_runner
+    testql__results -->|1| project__map
     testql__generators -->|1| testql__openapi_generator
     testql__generators -->|1| testql__interpreter
+    testql__detectors -->|1| examples__web_inspection
     testql__detectors -->|1| testql___base_fallback
-    testql__discovery -->|1| project__map
-    testql__results -->|1| project__map
     testql__topology -->|1| testql__generators

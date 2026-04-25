@@ -1,0 +1,16 @@
+# SCENARIO: Basic Shell Commands Test
+# TYPE: shell
+
+LOG "Testing basic shell commands"
+
+# Test echo command
+SHELL echo "Hello TestQL"
+ASSERT_CONTAINS "Hello TestQL"
+
+# Test command with exit code
+RUN ls -la
+ASSERT_EXIT_CODE 0
+
+# Test non-existent command (should fail)
+RUN nonexistent-command-12345
+ASSERT_EXIT_CODE 127

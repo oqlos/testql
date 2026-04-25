@@ -1,0 +1,12 @@
+{
+  "version": "2",
+  "generated_at": "2026-04-25T13:19:07.413811Z",
+  "doql_version": "0.1.1",
+  "sections": {
+    "spec_file": "277d5539d2836b91740ac0f0b8c9eb500359db31e2740b850065dbdec0ec4ea3",
+    "entity:Device": "dd1697f18ace9f9f",
+    "entity:Scenario": "330235877883c472",
+    "interface:api": "b1b8e5a8fd680212",
+    "interface:ws": "925c5c687204cbfb"
+  }
+}

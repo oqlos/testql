@@ -1,0 +1,22 @@
+# SCENARIO: Different Assertion Types
+# TYPE: api
+# VERSION: 1.0
+
+CONFIG[1]{key, value}:
+  base_url, http://localhost:8101
+
+API[1]{method, endpoint, expected_status}:
+  GET, ${base_url}/api/users, 200
+
+# Status assertions
+ASSERT[1]{field, operator, expected}:
+  status, <, 500
+
+# JSON path assertions
+ASSERT[2]{field, operator, expected}:
+  data.length, >, 0
+  data[0].id, !=, null
+
+# Content assertions
+ASSERT[1]{field, operator, expected}:
+  content_type, contains, application/json
