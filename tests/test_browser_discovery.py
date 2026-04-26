@@ -23,7 +23,7 @@ class FakePlaywright:
 
 
 class FakeBrowserLauncher:
-    def launch(self):
+    def launch(self, **kwargs):
         return FakeBrowser()
 
 

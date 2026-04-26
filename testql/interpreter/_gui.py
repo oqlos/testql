@@ -201,7 +201,7 @@ class GuiMixin:
             # Web app
             p = sync_playwright().start()
             headless = str(self.vars.get("headless", "true")).lower() == "true"
-            browser = p.chromium.launch(headless=headless)
+            browser = p.chromium.launch(headless=headless, args=["--no-sandbox", "--disable-setuid-sandbox"])
             self._gui_page = browser.new_page()
             self._gui_page.goto(app_path)
             self._gui_app = (p, browser)

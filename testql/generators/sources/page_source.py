@@ -149,7 +149,7 @@ class PageSource(BaseSource):
             ) from exc
 
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=self.headless)
+            browser = p.chromium.launch(headless=self.headless, args=["--no-sandbox", "--disable-setuid-sandbox"])
             try:
                 page = browser.new_page()
                 page.goto(url, wait_until=self.wait_until, timeout=self.timeout_ms)

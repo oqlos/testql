@@ -41,7 +41,7 @@ class PlaywrightPageProbe(BaseProbe):
         network_calls: list[dict[str, Any]] = []
 
         with sync_playwright() as p:
-            browser = p.chromium.launch()
+            browser = p.chromium.launch(args=["--no-sandbox", "--disable-setuid-sandbox"])
             page = browser.new_page()
 
             page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)

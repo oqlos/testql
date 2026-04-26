@@ -218,21 +218,57 @@ def _navigate_step(obj: Any, key: str) -> Any:
 
 
 def _navigate_json_path(root: Any, path: str) -> Any:
-    """Navigate a dotted JSON path, supporting list index key[0] and .length."""
+    """Navigate a JSON path supporting both bracket ['key'] and dot notation.
+    
+    Examples:
+        ['transport']['http']['method']  - bracket notation
+        transport.http.method            - dot notation  
+        devices[0].id                    - mixed notation
+        data.length                      - virtual length field
+    """
+    if root is None:
+        return None
+        
     obj = root
-    # Split by dots, but then also handle [index] inside keys
-    for part in path.split("."):
-        if '[' in part and part.endswith(']'):
-            key, index_part = part.split('[', 1)
-            index = int(index_part[:-1])
-            if key:
-                obj = _navigate_step(obj, key)
-            obj = _navigate_step(obj, str(index))
-        else:
-            obj = _navigate_step(obj, part)
+    
+    # Handle pure bracket notation: ['transport']['http']['method']
+    if path.startswith('[') and path.endswith(']'):
+        # Parse ['key1']['key2'][0]['key3'] format
+        # Remove outer brackets and split
+        inner = path[1:-1]  # Remove outer [ and ]
+        # Split by '][' to get individual keys
+        parts = inner.split('][')
+        for part in parts:
+            part = part.strip('"\'')  # Remove quotes
+            if part.isdigit():
+                obj = _navigate_step(obj, part)
+            else:
+                obj = _navigate_step(obj, part)
+            if obj is None:
+                return None
+    else:
+        # Handle dot notation and mixed notation
+        for part in path.split("."):
+            if part == "length":
+                # Handle .length special case
+                if isinstance(obj, (list, dict)):
+                    return len(obj)
+                return None
+            elif '[' in part and part.endswith(']'):
+                # Mixed notation: devices[0]
+                key, index_part = part.split('[', 1)
+                index = index_part[:-1]  # Remove trailing ]
+                if key:
+                    obj = _navigate_step(obj, key)
+                if index.isdigit():
+                    obj = _navigate_step(obj, index)
+                else:
+                    obj = _navigate_step(obj, index.strip('"\''))
+            else:
+                # Simple dot notation: transport
+                obj = _navigate_step(obj, part)
             
-    if path.endswith(".length") and isinstance(root, dict):
-        length = _resolve_length(root, path)
-        if length is not None:
-            obj = length
+            if obj is None:
+                return None
+    
     return obj
