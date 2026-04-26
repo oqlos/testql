@@ -162,6 +162,64 @@ class TestAdapterRegistration:
         assert ".testql.toon.yml" in a.file_extensions
 
 
+class TestFlowExpansion:
+    """FLOW section third-column handling (regression for GUI_INPUT empty-arg bug)."""
+
+    def _expand(self, source: str):
+        from testql.interpreter._testtoon_parser import testtoon_to_iql
+        return testtoon_to_iql(source).lines
+
+    def test_flow_value_column_quoted_for_input(self):
+        # The third column is `value`: text must be forwarded as a quoted positional arg
+        src = (
+            "FLOW[2]{command, target, value}:\n"
+            "  input, #add-name, Test User\n"
+            "  input, #add-id, TEST123\n"
+        )
+        lines = self._expand(src)
+        assert [(l.command, l.args) for l in lines] == [
+            ("INPUT", '"#add-name" "Test User"'),
+            ("INPUT", '"#add-id" "TEST123"'),
+        ]
+
+    def test_flow_text_column_alias(self):
+        src = (
+            "FLOW[1]{command, target, text}:\n"
+            "  type, input#search, hello world\n"
+        )
+        lines = self._expand(src)
+        assert lines[0].command == "TYPE"
+        assert lines[0].args == '"input#search" "hello world"'
+
+    def test_flow_meta_dash_emits_no_extra_arg(self):
+        # `-` is parsed as None → no extra arg appended; CLICK stays clean
+        src = (
+            "FLOW[1]{command, target, meta}:\n"
+            "  click, #btn-go, -\n"
+        )
+        lines = self._expand(src)
+        assert lines[0].command == "CLICK"
+        assert lines[0].args == '"#btn-go"'
+
+    def test_flow_meta_dict_legacy_passthrough(self):
+        src = (
+            "FLOW[1]{command, target, meta}:\n"
+            "  select_device, dev1, {role:admin}\n"
+        )
+        lines = self._expand(src)
+        assert lines[0].command == "SELECT_DEVICE"
+        assert lines[0].args == '"dev1" {"role": "admin"}'
+
+    def test_flow_two_column_still_works(self):
+        src = (
+            "FLOW[1]{command, target}:\n"
+            "  click, #btn\n"
+        )
+        lines = self._expand(src)
+        assert lines[0].command == "CLICK"
+        assert lines[0].args == '"#btn"'
+
+
 class TestBackwardCompatibility:
     """The legacy parser must still work unchanged after Phase 0."""
 

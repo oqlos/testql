@@ -105,11 +105,16 @@ LANG: en
 # ── Registry ────────────────────────────────────────────────────────────────
 
 
-class TestRegistry:
-    def test_eight_builtin_sources(self):
-        assert set(available_sources()) == {"openapi", "sql", "proto", "graphql", "nl", "ui", "pytest", "oql"}
+_BUILTIN_SOURCE_NAMES = {
+    "openapi", "sql", "proto", "graphql", "nl", "ui", "page", "pytest", "oql",
+}
 
-    @pytest.mark.parametrize("name", ["openapi", "sql", "proto", "graphql", "nl", "ui", "pytest", "oql"])
+
+class TestRegistry:
+    def test_builtin_sources(self):
+        assert set(available_sources()) == _BUILTIN_SOURCE_NAMES
+
+    @pytest.mark.parametrize("name", sorted(_BUILTIN_SOURCE_NAMES))
     def test_get_source(self, name):
         s = get_source(name)
         assert s is not None

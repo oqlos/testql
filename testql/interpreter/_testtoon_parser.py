@@ -431,20 +431,37 @@ def _expand_steps(section: ToonSection, lines: list[IqlLine], line_num: int) -> 
 
 
 def _expand_flow(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
-    """Expand FLOW section → semantic commands (START_TEST, PROTOCOL_*, etc.)."""
+    """Expand FLOW section → semantic commands (CLICK, INPUT, START_TEST, …).
+
+    Supported third columns (any one):
+        - ``meta``  → legacy raw passthrough (supports inline ``{k:v}`` dicts).
+        - ``value`` / ``text`` → quoted positional argument (e.g. for INPUT).
+
+    A ``-`` / null placeholder yields no extra argument so commands like CLICK
+    still emit ``CLICK "selector"`` cleanly.
+    """
     for row in section.rows:
         command = str(row.get('command', '')).upper()
         target = row.get('target', '')
-        meta = row.get('meta')
 
-        meta_str = ''
-        if isinstance(meta, dict):
-            pairs = ', '.join(f'"{k}": "{v}"' for k, v in meta.items())
-            meta_str = f' {{{pairs}}}'
-        elif meta:
-            meta_str = f' {meta}'
+        extra = ''
+        # Prefer explicit value/text columns (typed text input)
+        if 'value' in row or 'text' in row:
+            v = row.get('value') if 'value' in row else row.get('text')
+            if isinstance(v, dict):
+                pairs = ', '.join(f'"{k}": "{val}"' for k, val in v.items())
+                extra = f' {{{pairs}}}'
+            elif v is not None and v != '':
+                extra = f' "{v}"'
+        else:
+            meta = row.get('meta')
+            if isinstance(meta, dict):
+                pairs = ', '.join(f'"{k}": "{v}"' for k, v in meta.items())
+                extra = f' {{{pairs}}}'
+            elif meta:
+                extra = f' {meta}'
 
-        args = f'"{target}"{meta_str}'
+        args = f'"{target}"{extra}'
         raw = f'{command} {args}'
         lines.append(IqlLine(number=line_num, command=command, args=args, raw=raw))
         line_num += 1

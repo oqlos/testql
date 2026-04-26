@@ -63,7 +63,36 @@ class FlowMixin:
         ))
 
     def _cmd_wait(self, args: str, line: IqlLine) -> None:
-        ms = int(args.strip())
+        import re
+        # Parse various time formats: 500, "500", '500', "10 s", "500ms", "10s"
+        args_clean = args.strip().strip("\"'")
+        
+        # Try to extract numeric value with optional unit
+        # Matches: 500, 10 s, 500ms, 10s, 10.5s
+        match = re.match(r'^(\d+(?:\.\d+)?)\s*(ms|s|m|h)?$', args_clean, re.IGNORECASE)
+        if match:
+            value = float(match.group(1))
+            unit = (match.group(2) or 'ms').lower()
+            
+            # Convert to milliseconds
+            if unit == 's':
+                ms = int(value * 1000)
+            elif unit == 'm':
+                ms = int(value * 60 * 1000)
+            elif unit == 'h':
+                ms = int(value * 60 * 60 * 1000)
+            else:  # ms
+                ms = int(value)
+        else:
+            # Fallback: try simple integer parsing
+            try:
+                ms = int(args_clean)
+            except ValueError:
+                # If all fails, default to 1000ms and log error
+                self.out.fail(f"L{line.number}: Invalid WAIT duration: {args!r}, defaulting to 1000ms")
+                self.errors.append(f"Invalid WAIT duration: {args!r}")
+                ms = 1000
+        
         if self.dry_run:
             self.out.step("⏳", f"WAIT {ms}ms (dry-run)")
         else:

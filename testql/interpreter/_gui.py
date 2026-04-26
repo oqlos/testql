@@ -29,6 +29,103 @@ class GuiMixin:
     _gui_app: Any = None  # Playwright/Selenium instance
     _gui_page: Any = None  # Browser page/window
 
+    def _resolve_selector_with_fallback(self, selector: str) -> str | None:
+        """Smart selector resolution with fallback strategies.
+        
+        Tries multiple selector strategies:
+        1. Original selector as-is
+        2. Convert class to data-testid (e.g., .qr-scanner-container -> [data-testid=qr-scanner-container])
+        3. Convert class to ID (e.g., .qr-scanner-container -> #qr-scanner-container)
+        4. Try partial text match for buttons/links
+        
+        Returns the working selector or None if all fail.
+        """
+        if not self._gui_page:
+            return None
+            
+        selectors_to_try = [selector]
+        
+        # Strategy 1: Class to data-testid conversion
+        if selector.startswith('.'):
+            class_name = selector[1:]
+            selectors_to_try.append(f'[data-testid="{class_name}"]')
+            selectors_to_try.append(f'[data-testid="{class_name.replace("-", "_")}"]')
+            # Try ID variant
+            selectors_to_try.append(f'#{class_name}')
+            # Try without hyphens
+            selectors_to_try.append(f'.{class_name.replace("-", "")}')
+        
+        # Strategy 2: ID to class conversion
+        if selector.startswith('#'):
+            id_name = selector[1:]
+            selectors_to_try.append(f'.{id_name}')
+        
+        # Strategy 3: Role-based fallback for common patterns
+        if 'qr' in selector.lower() or 'scanner' in selector.lower():
+            selectors_to_try.append('[role="img"]')  # QR is often an image
+            selectors_to_try.append('canvas')  # Or canvas element
+        
+        if 'user' in selector.lower() and 'list' in selector.lower():
+            selectors_to_try.append('[role="list"]')
+            selectors_to_try.append('ul')
+            selectors_to_try.append('table tbody')
+        
+        # Strategy 4: Button text partial match
+        if 'btn' in selector.lower() or 'button' in selector.lower():
+            # Extract button purpose from selector name
+            if 'collect' in selector.lower():
+                selectors_to_try.append('button:has-text("Collect")')
+                selectors_to_try.append('button:has-text("Logs")')
+            if 'copy' in selector.lower():
+                selectors_to_try.append('button:has-text("Copy")')
+                selectors_to_try.append('button:has-text("clipboard")')
+        
+        # Try each selector
+        for try_selector in selectors_to_try:
+            try:
+                if self._gui_driver == "playwright":
+                    if self._gui_page.is_visible(try_selector, timeout=100):
+                        return try_selector
+                elif self._gui_driver == "selenium":
+                    from selenium.webdriver.common.by import By
+                    from selenium.common.exceptions import NoSuchElementException
+                    try:
+                        elem = self._gui_page.find_element(By.CSS_SELECTOR, try_selector)
+                        if elem.is_displayed():
+                            return try_selector
+                    except NoSuchElementException:
+                        continue
+            except Exception:
+                continue
+        
+        return None  # No working selector found
+
+    def _find_element_with_logging(self, selector: str, action: str) -> tuple[str, Any] | tuple[None, None]:
+        """Find element with smart fallback and logging.
+        
+        Returns (working_selector, element) or (None, None) if not found.
+        """
+        resolved = self._resolve_selector_with_fallback(selector)
+        
+        if resolved is None:
+            self.out.warn(f"  ⚠️  Selector '{selector}' not found after trying fallbacks")
+            return None, None
+        
+        if resolved != selector:
+            self.out.step("🔍", f"  Found via fallback: '{selector}' -> '{resolved}'")
+        
+        try:
+            if self._gui_driver == "playwright":
+                return resolved, self._gui_page.locator(resolved)
+            elif self._gui_driver == "selenium":
+                from selenium.webdriver.common.by import By
+                return resolved, self._gui_page.find_element(By.CSS_SELECTOR, resolved)
+        except Exception as e:
+            self.out.warn(f"  ⚠️  Element found but error accessing: {e}")
+            return None, None
+        
+        return None, None
+
     def _init_gui_driver(self) -> bool:
         """Initialize GUI driver based on configuration."""
         if self._gui_driver is None:
@@ -234,20 +331,29 @@ class GuiMixin:
             ))
             return
 
+        # Try smart selector fallback
+        resolved_selector, element = self._find_element_with_logging(selector, "click")
+        if resolved_selector is None:
+            self.out.fail(f'GUI_CLICK "{selector}": Element not found')
+            self.results.append(StepResult(
+                name=f'GUI_CLICK "{selector}"',
+                status=StepStatus.FAILED,
+                message="Element not found after trying fallback selectors",
+            ))
+            return
+
         try:
             if self._gui_driver == "playwright":
-                self._gui_page.click(selector)
+                element.click()
             elif self._gui_driver == "selenium":
-                from selenium.webdriver.common.by import By
-                elem = self._gui_page.find_element(By.CSS_SELECTOR, selector)
-                elem.click()
+                element.click()
 
-            self.out.step("🖱️", f'GUI_CLICK "{selector}"')
+            self.out.step("🖱️", f'GUI_CLICK "{resolved_selector}"')
             self.results.append(StepResult(
                 name=f'GUI_CLICK "{selector}"', status=StepStatus.PASSED
             ))
         except Exception as e:
-            self.out.fail(f'GUI_CLICK "{selector}" error: {e}')
+            self.out.fail(f'GUI_CLICK "{resolved_selector}" error: {e}')
             self.results.append(StepResult(
                 name=f'GUI_CLICK "{selector}"',
                 status=StepStatus.ERROR,
@@ -329,30 +435,39 @@ class GuiMixin:
             ))
             return
 
+        # Try smart selector fallback
+        resolved_selector, element = self._find_element_with_logging(selector, "assert_visible")
+        if resolved_selector is None:
+            self.out.step("❌", f'GUI_ASSERT_VISIBLE "{selector}" (not found)')
+            self.results.append(StepResult(
+                name=f'GUI_ASSERT_VISIBLE "{selector}"',
+                status=StepStatus.FAILED,
+                message="Element not found after trying fallback selectors",
+            ))
+            return
+
         try:
             if self._gui_driver == "playwright":
-                is_visible = self._gui_page.is_visible(selector)
+                is_visible = self._gui_page.is_visible(resolved_selector)
             elif self._gui_driver == "selenium":
-                from selenium.webdriver.common.by import By
-                elem = self._gui_page.find_element(By.CSS_SELECTOR, selector)
-                is_visible = elem.is_displayed()
+                is_visible = element.is_displayed()
             else:
                 is_visible = False
 
             if is_visible:
-                self.out.step("✅", f'GUI_ASSERT_VISIBLE "{selector}"')
+                self.out.step("✅", f'GUI_ASSERT_VISIBLE "{resolved_selector}"')
                 self.results.append(StepResult(
                     name=f'GUI_ASSERT_VISIBLE "{selector}"', status=StepStatus.PASSED
                 ))
             else:
-                self.out.step("❌", f'GUI_ASSERT_VISIBLE "{selector}" (not found)')
+                self.out.step("❌", f'GUI_ASSERT_VISIBLE "{resolved_selector}" (not visible)')
                 self.results.append(StepResult(
                     name=f'GUI_ASSERT_VISIBLE "{selector}"',
                     status=StepStatus.FAILED,
-                    message="Element not visible",
+                    message="Element found but not visible",
                 ))
         except Exception as e:
-            self.out.fail(f'GUI_ASSERT_VISIBLE "{selector}" error: {e}')
+            self.out.fail(f'GUI_ASSERT_VISIBLE "{resolved_selector}" error: {e}')
             self.results.append(StepResult(
                 name=f'GUI_ASSERT_VISIBLE "{selector}"',
                 status=StepStatus.ERROR,

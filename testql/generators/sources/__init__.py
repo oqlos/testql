@@ -17,6 +17,7 @@ from .proto_source import ProtoSource
 from .pytest_source import PytestSource
 from .sql_source import SqlSource
 from .ui_source import UISource
+from .page_source import PageSource
 
 
 _BUILTIN: dict[str, type[BaseSource]] = {
@@ -26,6 +27,7 @@ _BUILTIN: dict[str, type[BaseSource]] = {
     "graphql": GraphQLSource,
     "nl": NLSource,
     "ui": UISource,
+    "page": PageSource,
     "pytest": PytestSource,
     "oql": OqlSource,
 }
@@ -50,6 +52,7 @@ __all__ = [
     "GraphQLSource",
     "NLSource",
     "UISource",
+    "PageSource",
     "PytestSource",
     "OqlSource",
     "get_source",
