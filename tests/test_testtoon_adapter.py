@@ -201,6 +201,25 @@ class TestFlowExpansion:
         assert lines[0].command == "CLICK"
         assert lines[0].args == '"#btn-go"'
 
+    def test_flow_value_dash_does_not_pollute_click(self):
+        # Regression: a `value` column with `-` placeholder must NOT add
+        # `"-"` as a stray positional arg (would break CLICK/ASSERT_VISIBLE).
+        src = (
+            "FLOW[1]{command, target, value}:\n"
+            "  click, #btn-go, -\n"
+        )
+        lines = self._expand(src)
+        assert lines[0].command == "CLICK"
+        assert lines[0].args == '"#btn-go"'
+
+    def test_flow_value_null_treated_as_empty(self):
+        src = (
+            "FLOW[1]{command, target, value}:\n"
+            "  click, #btn-go, null\n"
+        )
+        lines = self._expand(src)
+        assert lines[0].args == '"#btn-go"'
+
     def test_flow_meta_dict_legacy_passthrough(self):
         src = (
             "FLOW[1]{command, target, meta}:\n"

@@ -451,7 +451,7 @@ def _expand_flow(section: ToonSection, lines: list[IqlLine], line_num: int) -> i
             if isinstance(v, dict):
                 pairs = ', '.join(f'"{k}": "{val}"' for k, val in v.items())
                 extra = f' {{{pairs}}}'
-            elif v is not None and v != '':
+            elif v is not None and v != '' and v != '-' and str(v).lower() != 'null':
                 extra = f' "{v}"'
         else:
             meta = row.get('meta')

@@ -76,10 +76,13 @@ class TestGenerateFromPageCli:
         assert "base_url, http://localhost:8100" in content
         # NAVIGATE step
         assert "NAVIGATE[" in content and "/login" in content
-        # The login button selected via data-testid (most stable)
-        assert "[data-testid='login-submit']" in content
+        # The login button selected via data-testid (most stable). The
+        # renderer prefixes a universal selector so TOON doesn't parse the
+        # bracket cell as a list literal — `*[data-testid='X']` is the
+        # TOON-safe form that still resolves to the same DOM element.
+        assert "*[data-testid='login-submit']" in content
         # email input via name_attr (more specific than input_type='email')
-        assert "[data-testid='login-email']" in content or "input[name='email']" in content
+        assert "*[data-testid='login-email']" in content or "input[name='email']" in content
         # The password input received the Polish-aware default
         assert "Password123!" in content
 
@@ -159,7 +162,9 @@ class TestHealScenarioCli:
         healed = scenario.with_suffix(".healed.testql.toon.yaml")
         assert healed.exists(), result.output
         text = healed.read_text(encoding="utf-8")
-        # `.email-old` → `[data-testid='login-email']` (fuzzy-matched on "email" token)
+        # `.email-old` → `[data-testid='login-email']` (fuzzy-matched on "email" token).
+        # Heal writes the *raw* pick_selector output (no `*` prefix) — the prefix
+        # is only added by the renderer when a TestPlan is rendered fresh.
         assert ".email-old" not in text
         assert "[data-testid='login-email']" in text
         # `#login-submit` → `[data-testid='login-submit']`

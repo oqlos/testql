@@ -292,16 +292,53 @@ def _render_encoder_steps(steps: list[EncoderStep]) -> list[str]:
     return lines
 
 
+_GUI_ACTION_COMMANDS = {
+    "click": "GUI_CLICK",
+    "input": "GUI_INPUT",
+    "type": "GUI_INPUT",
+    "assert_visible": "GUI_ASSERT_VISIBLE",
+    "visible": "GUI_ASSERT_VISIBLE",
+    "wait": "WAIT",
+    "select": "GUI_SELECT",
+    "hover": "GUI_HOVER",
+    "scroll": "GUI_SCROLL",
+}
+
+
+def _toon_safe_selector(selector: str | None) -> str:
+    """Render a CSS selector so the TOON parser treats it as a string.
+
+    TOON (like YAML) parses bare ``[...]`` cell values as list literals, which
+    mangles attribute selectors such as ``[data-testid='x']``. Prefixing the
+    universal selector ``*`` is functionally equivalent but TOON-safe. Other
+    forms (``#id``, ``.class``, ``tag[attr=...]``) are returned unchanged.
+    """
+    if selector is None:
+        return "-"
+    s = str(selector)
+    if s.startswith("["):
+        return "*" + s
+    return s
+
+
 def _render_gui_action_steps(steps: list[Step]) -> list[str]:
+    """Render non-navigate GuiSteps as a FLOW section.
+
+    Earlier versions emitted ``GUI[N]{...}`` which had no parser-side expander
+    and surfaced as ``Unknown command: GUI`` at runtime. The TestTOON parser's
+    ``_expand_flow`` is the canonical pathway for one-line GUI commands, so we
+    use ``FLOW[N]{command, target, value}``.
+    """
     actions = [s for s in steps if isinstance(s, GuiStep) and s.action != "navigate"]
     if not actions:
         return []
-    lines = [f"GUI[{len(actions)}]" + "{action, selector, value, wait_ms}:"]
+    lines = [f"FLOW[{len(actions)}]" + "{command, target, value}:"]
     for s in actions:
-        selector = s.selector if s.selector is not None else "-"
+        action = (s.action or "").lower()
+        cmd = _GUI_ACTION_COMMANDS.get(action, action.upper() or "GUI_NOOP")
+        target = _toon_safe_selector(s.selector)
         value = s.value if s.value is not None else "-"
-        wait = s.wait_ms if s.wait_ms is not None else "-"
-        lines.append(f"  {s.action}, {selector}, {value}, {wait}")
+        lines.append(f"  {cmd}, {target}, {value}")
     return lines
 
 

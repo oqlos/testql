@@ -309,11 +309,16 @@ def snapshot_to_plan(
                 ))
                 seen_selectors.add(sel)
 
-    # 3) Final body-visibility sentinel so the scenario always ends with an assert
+    # 3) Final body-visibility sentinel so the scenario always ends with an assert.
+    # Use a GuiStep (rendered as `FLOW: GUI_ASSERT_VISIBLE, body, -`) — a generic
+    # `Step(kind='assert', field='body', op='!=')` would render as
+    # `ASSERT_JSON body != None` and fail in pure-GUI scenarios that have no
+    # JSON response to query.
     if include_assert_visible:
-        plan.steps.append(Step(
-            kind="assert", name="ASSERT",
-            asserts=[Assertion(field="body", op="!=", expected=None)],
+        plan.steps.append(GuiStep(
+            action="assert_visible",
+            selector="body",
+            name="visible_body",
         ))
     return plan
 
