@@ -44,7 +44,9 @@ class APIGeneratorMixin:
 
         sections = self._build_api_test_header(frameworks)
         sections.extend(self._build_api_test_config(frameworks, base_url))
+        sections.extend(self._build_api_test_preamble(base_url))
         sections.extend(self._build_api_test_endpoints(get_routes))
+        sections.extend(self._build_api_test_captures())
         sections.extend(self._build_api_test_assertions())
         sections.extend(self._build_api_test_summary(get_routes))
 
@@ -55,38 +57,81 @@ class APIGeneratorMixin:
         return output_file
 
     def _validate_endpoints(self, routes: list[dict], base_url: str) -> list[dict]:
-        """Validate endpoints by pinging them and returning only the valid ones."""
+        """Validate endpoints by pinging them with retry and exponential backoff."""
         import sys
+        import time
         
         valid_routes = []
-        # Print directly to stderr to avoid mixing with stdout payload
+        rejected = []  # Track rejected endpoints for logging
+        
         sys.stderr.write(f"🔍 Validating {len(routes)} endpoints against {base_url}...\n")
         
         for route in routes:
             path = route.get('path', '')
             method = route.get('method', 'GET')
+            
             # Skip parameterized routes for simple validation
             if '{' in path or '<' in path:
+                rejected.append(f"{method} {path} (parameterized path)")
                 continue
                 
             url = f"{base_url.rstrip('/')}{path}"
-            try:
-                # Use a fast timeout (2s)
-                req = urllib.request.Request(url, method=method)
-                with urllib.request.urlopen(req, timeout=2.0) as resp:
-                    if resp.status < 400 or resp.status in (401, 403): 
-                        # 401/403 means it exists but requires auth
+            
+            # Retry with exponential backoff
+            max_retries = 3
+            base_delay = 0.5
+            is_valid = False
+            
+            for attempt in range(max_retries):
+                try:
+                    req = urllib.request.Request(url, method=method)
+                    with urllib.request.urlopen(req, timeout=3.0) as resp:
+                        status = resp.status
+                        if status < 400 or status in (401, 403):
+                            valid_routes.append(route)
+                            is_valid = True
+                            break
+                        else:
+                            rejected.append(f"{method} {path} (HTTP {status})")
+                            break
+                except urllib.error.HTTPError as e:
+                    if e.code in (404, 405):
+                        rejected.append(f"{method} {path} (HTTP {e.code})")
+                        break
+                    elif e.code < 500:
+                        # 4xx errors might be expected (auth required)
                         valid_routes.append(route)
-            except urllib.error.HTTPError as e:
-                # If it's a 404, it means it's not implemented or wrong path
-                # 405 means this method is not allowed, so don't include it for THIS method
-                if e.code not in (404, 405):
-                    valid_routes.append(route)
-            except Exception:
-                # Connection error, timeout, etc. We'll be strict and exclude it
-                pass
+                        is_valid = True
+                        break
+                    elif attempt < max_retries - 1:
+                        delay = base_delay * (2 ** attempt)
+                        time.sleep(delay)
+                        continue
+                    else:
+                        rejected.append(f"{method} {path} (HTTP {e.code} after {max_retries} retries)")
+                except (urllib.error.URLError, TimeoutError, ConnectionError) as e:
+                    if attempt < max_retries - 1:
+                        delay = base_delay * (2 ** attempt)
+                        time.sleep(delay)
+                        continue
+                    else:
+                        rejected.append(f"{method} {path} ({type(e).__name__}: {e})")
+                except Exception as e:
+                    rejected.append(f"{method} {path} (unexpected: {e})")
+                    break
+            
+            if is_valid and attempt > 0:
+                sys.stderr.write(f"  ⚠️  {method} {path} succeeded after {attempt + 1} attempts\n")
+        
+        # Log summary of rejected endpoints
+        if rejected:
+            sys.stderr.write(f"\n⚠️  Rejected {len(rejected)} endpoints:\n")
+            for r in rejected[:10]:  # Show first 10
+                sys.stderr.write(f"   - {r}\n")
+            if len(rejected) > 10:
+                sys.stderr.write(f"   ... and {len(rejected) - 10} more\n")
                 
-        sys.stderr.write(f"✅ Validation complete: {len(valid_routes)} valid endpoints found.\n")
+        sys.stderr.write(f"✅ Validation complete: {len(valid_routes)}/{len(routes)} valid endpoints found.\n")
         return valid_routes
 
     def _build_api_test_header(self, frameworks: list[str]) -> list[str]:
@@ -113,6 +158,27 @@ class APIGeneratorMixin:
             "  retry_count, 3",
             "  retry_backoff_ms, 1000",
             f"  detected_frameworks, {', '.join(frameworks)}",
+            "",
+        ]
+
+    def _build_api_test_preamble(self, base_url: str) -> list[str]:
+        """Build preamble with WAIT and health check."""
+        return [
+            "# Wait for service to be ready",
+            "WAIT 1000",
+            "",
+            "# Health check",
+            "API GET /api/health 200",
+            "ASSERT_STATUS 200",
+            "",
+        ]
+
+    def _build_api_test_captures(self) -> list[str]:
+        """Build CAPTURE section for dynamic values from responses."""
+        return [
+            "# Capture useful values from responses for subsequent tests",
+            "# CAPTURE request_id FROM 'headers.x-request-id'",
+            "# CAPTURE session_token FROM 'body.token'",
             "",
         ]
 
