@@ -48,6 +48,7 @@ class APIGeneratorMixin:
         sections.extend(self._build_api_test_endpoints(get_routes))
         sections.extend(self._build_api_test_captures())
         sections.extend(self._build_api_test_assertions())
+        sections.extend(self._build_api_test_flow())
         sections.extend(self._build_api_test_summary(get_routes))
 
         content = '\n'.join(sections)
@@ -252,6 +253,17 @@ class APIGeneratorMixin:
             "ASSERT[2]{field, operator, expected}:",
             "  _status, <, 500",
             "  _status, >=, 200",
+        ]
+
+    def _build_api_test_flow(self) -> list[str]:
+        """Build FLOW section for conditional execution and error handling."""
+        return [
+            "",
+            "# Conditional flow for error handling",
+            "FLOW[2]{condition, action}:",
+            "  _status >= 500, LOG 'Server error detected'",
+            "  _status == 429, WAIT 2000  # Rate limit - wait and retry",
+            "",
         ]
 
     def _build_api_test_summary(self, routes: list[dict]) -> list[str]:
