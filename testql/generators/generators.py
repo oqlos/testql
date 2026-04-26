@@ -74,12 +74,13 @@ class APIGeneratorMixin:
                 # Use a fast timeout (2s)
                 req = urllib.request.Request(url, method=method)
                 with urllib.request.urlopen(req, timeout=2.0) as resp:
-                    if resp.status < 400 or resp.status in (401, 403, 405): 
-                        # 401/403 means it exists but requires auth, 405 means method not allowed but endpoint exists
+                    if resp.status < 400 or resp.status in (401, 403): 
+                        # 401/403 means it exists but requires auth
                         valid_routes.append(route)
             except urllib.error.HTTPError as e:
                 # If it's a 404, it means it's not implemented or wrong path
-                if e.code != 404:
+                # 405 means this method is not allowed, so don't include it for THIS method
+                if e.code not in (404, 405):
                     valid_routes.append(route)
             except Exception:
                 # Connection error, timeout, etc. We'll be strict and exclude it
@@ -247,7 +248,7 @@ class PythonTestGeneratorMixin:
                 if '==' in expr:
                     parts = expr.split('==')
                     left = parts[0].replace('assert ', '').strip()
-                    right = parts[1].strip()
+                    right = parts[1].split(',')[0].strip()  # Remove comma-separated messages
                     all_assertions.append((left, '==', right))
                 elif '!=' in expr:
                     parts = expr.split('!=')
@@ -262,9 +263,28 @@ class PythonTestGeneratorMixin:
                 # Clean up response.json() or response.status_code to TestQL friendly fields
                 field = left
                 if 'status_code' in left:
-                    field = 'status'
+                    field = '_status'
                 elif 'json()' in left:
+                    field = left.split('json()')[-1].strip('[]"\' .') or 'body'
+                
+                # Cleanup common dictionary access patterns (e.g. data["key"] -> data.key)
+                field = field.replace('["', '.').replace('"]', '').replace("['", '.').replace("']", '')
+                
+                # Cleanup .get("key") patterns
+                import re
+                field = re.sub(r'\.get\([\'"]([^\'"]+)[\'"]\)', r'.\1', field)
+                
+                # Remove prefixes like 'data.', 'body.', 'response.' if they are common roots
+                for root in ('data.', 'body.', 'response.', 'resp.', 'c.', 'obj.'):
+                    if field.startswith(root):
+                        field = field[len(root):]
+                
+                # Final cleanup of leading/trailing dots and quotes
+                field = field.strip('."\' ')
+                
+                if not field:
                     field = 'body'
+
                 sections.append(f"  {field}, {op}, {right}")
             sections.append("")
 

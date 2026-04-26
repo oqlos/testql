@@ -218,10 +218,19 @@ def _navigate_step(obj: Any, key: str) -> Any:
 
 
 def _navigate_json_path(root: Any, path: str) -> Any:
-    """Navigate a dotted JSON path, supporting list index and .length."""
+    """Navigate a dotted JSON path, supporting list index key[0] and .length."""
     obj = root
-    for key in path.split("."):
-        obj = _navigate_step(obj, key)
+    # Split by dots, but then also handle [index] inside keys
+    for part in path.split("."):
+        if '[' in part and part.endswith(']'):
+            key, index_part = part.split('[', 1)
+            index = int(index_part[:-1])
+            if key:
+                obj = _navigate_step(obj, key)
+            obj = _navigate_step(obj, str(index))
+        else:
+            obj = _navigate_step(obj, part)
+            
     if path.endswith(".length") and isinstance(root, dict):
         length = _resolve_length(root, path)
         if length is not None:

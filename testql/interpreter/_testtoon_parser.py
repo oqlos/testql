@@ -16,6 +16,7 @@ Format spec:
 from __future__ import annotations
 
 import re
+import json
 from dataclasses import dataclass, field
 from typing import Optional
 
@@ -65,7 +66,8 @@ def _parse_inline_dict(v: str) -> dict:
     for pair in v[1:-1].split(','):
         if ':' in pair:
             k, val = pair.split(':', 1)
-            result[k.strip()] = _parse_value(val)
+            key = k.strip().strip('"').strip("'")
+            result[key] = _parse_value(val)
     return result
 
 
@@ -125,7 +127,12 @@ def _make_mapping_row(raw: str) -> dict:
     if ':' not in line:
         return {}
     key, value = line.split(':', 1)
-    return {key.strip(): _parse_value(value.strip())}
+    key = key.strip()
+    if key.startswith('- '):
+        key = key[2:].strip()
+    elif key.startswith('-'):
+        key = key[1:].strip()
+    return {key: _parse_value(value.strip())}
 
 
 def parse_testtoon(text: str, filename: str = "<string>") -> ToonScript:
@@ -247,7 +254,7 @@ def _expand_config(section: ToonSection, lines: list[IqlLine], line_num: int) ->
 
 def _append_api_asserts(row: dict, lines: list[IqlLine], line_num: int) -> int:
     """Append optional ASSERT_STATUS and ASSERT_JSON lines for an API row."""
-    status = row.get('status') or row.get('expect_status')
+    status = row.get('status') or row.get('expect_status') or row.get('expected_status')
     if status is not None:
         raw_a = f'ASSERT_STATUS {status}'
         lines.append(IqlLine(number=line_num, command='ASSERT_STATUS', args=str(status), raw=raw_a))
@@ -270,8 +277,17 @@ def _expand_api(section: ToonSection, lines: list[IqlLine], line_num: int) -> in
     for row in section.rows:
         method = row.get('method', 'GET')
         endpoint = row.get('endpoint', '/')
-        raw = f'API {method} "{endpoint}"'
-        lines.append(IqlLine(number=line_num, command='API', args=f'{method} "{endpoint}"', raw=raw))
+        body = row.get('body')
+        
+        body_str = ''
+        if isinstance(body, dict):
+            # Encode dict to JSON string for the IQL command
+            body_str = ' ' + json.dumps(body)
+        elif body:
+            body_str = ' ' + str(body)
+
+        raw = f'API {method} "{endpoint}"{body_str}'
+        lines.append(IqlLine(number=line_num, command='API', args=f'{method} "{endpoint}"{body_str}', raw=raw))
         line_num = _append_api_asserts(row, lines, line_num + 1)
     return line_num
 
@@ -371,15 +387,25 @@ def _expand_assert(section: ToonSection, lines: list[IqlLine], line_num: int) ->
 
         # JSON format: {field, op, expected}
         field_name = row.get('field', '')
-        op = row.get('op', '==')
+        op = row.get('op') or row.get('operator') or '=='
         expected = row.get('expected', '')
         if not field_name:
             continue  # Skip empty assertions
-        raw = f'ASSERT_JSON {field_name} {op} {expected}'
-        lines.append(IqlLine(
-            number=line_num, command='ASSERT_JSON',
-            args=f'{field_name} {op} {expected}', raw=raw,
-        ))
+
+        # Special handling for status assertions
+        if field_name in ('_status', 'status', 'status_code') and op in ('==', '=', '!='):
+            cmd = 'ASSERT_STATUS'
+            raw = f'{cmd} {expected}'
+            lines.append(IqlLine(
+                number=line_num, command=cmd,
+                args=str(expected), raw=raw,
+            ))
+        else:
+            raw = f'ASSERT_JSON {field_name} {op} {expected}'
+            lines.append(IqlLine(
+                number=line_num, command='ASSERT_JSON',
+                args=f'{field_name} {op} {expected}', raw=raw,
+            ))
         line_num += 1
     return line_num
 

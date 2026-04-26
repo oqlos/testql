@@ -15,7 +15,7 @@ class HardwareMixin:
     """Mixin providing HARDWARE command support for peripheral checks."""
 
     def _hardware_url(self) -> str:
-        return self.vars.get("hardware_url", "http://localhost:8202")
+        return self.vars.get("hardware_url", "http://127.0.0.1:8202")
 
     def _hardware_do_http(
         self, method: str, url: str, body: dict | None, label: str

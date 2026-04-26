@@ -19,6 +19,7 @@ _COMPARE_OPS: dict[str, Any] = {
     ">=": lambda a, b: (a or 0) >= b,
     "<":  lambda a, b: (a or 0) < b,
     "<=": lambda a, b: (a or 0) <= b,
+    "CONTAINS": lambda a, b: str(b) in str(a),
 }
 
 
@@ -82,8 +83,13 @@ class AssertionsMixin:
             return
 
         path, op, expected_str = parts[0], parts[1], parts[2]
-        obj = _navigate_json_path(self.last_response, path)
-
+        
+        # Support virtual fields like _status by checking variables first
+        if path.startswith("_"):
+            obj = self.vars.get(path)
+        else:
+            obj = _navigate_json_path(self.last_response, path)
+        
         # Handle None values - fail assertion if path not found
         if obj is None:
             desc = f"ASSERT_JSON {path} {op} {expected_str}"

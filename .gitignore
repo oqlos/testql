@@ -1,4 +1,5 @@
 .testql
+uv.lock
 .testql-c2004
 .testql-connect-id
 .testql-connect-test
