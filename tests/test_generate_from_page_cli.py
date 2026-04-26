@@ -159,17 +159,19 @@ class TestHealScenarioCli:
         ])
         assert result.exit_code == 0, result.output
 
-        healed = scenario.with_suffix(".healed.testql.toon.yaml")
+        # The healed sibling has only one `.testql.toon.yaml` suffix —
+        # `with_suffix` would have produced a doubled extension.
+        healed = scenario.with_name("legacy.healed.testql.toon.yaml")
         assert healed.exists(), result.output
         text = healed.read_text(encoding="utf-8")
-        # `.email-old` → `[data-testid='login-email']` (fuzzy-matched on "email" token).
-        # Heal writes the *raw* pick_selector output (no `*` prefix) — the prefix
-        # is only added by the renderer when a TestPlan is rendered fresh.
+        # `.email-old` → `*[data-testid='login-email']` (fuzzy-matched on
+        # "email" token). Heal applies the same TOON-safe `*` prefix the
+        # renderer uses, so the result is parseable in place.
         assert ".email-old" not in text
-        assert "[data-testid='login-email']" in text
-        # `#login-submit` → `[data-testid='login-submit']`
+        assert "*[data-testid='login-email']" in text
+        # `#login-submit` → `*[data-testid='login-submit']`
         assert "#login-submit" not in text
-        assert "[data-testid='login-submit']" in text
+        assert "*[data-testid='login-submit']" in text
 
     def test_write_in_place(self, tmp_path: Path):
         scenario = tmp_path / "legacy.testql.toon.yaml"
@@ -184,9 +186,69 @@ class TestHealScenarioCli:
         ])
         assert result.exit_code == 0, result.output
         text = scenario.read_text(encoding="utf-8")
-        assert "[data-testid='login-submit']" in text
+        assert "*[data-testid='login-submit']" in text
         # No .healed file when --write
-        assert not scenario.with_suffix(".healed.testql.toon.yaml").exists()
+        assert not scenario.with_name("legacy.healed.testql.toon.yaml").exists()
+
+    def test_section_header_brackets_not_treated_as_selectors(self, tmp_path: Path):
+        # Regression: `FLOW[3]{...}` brackets used to be picked up as `[3]`
+        # candidate selectors, which then failed to heal. The heal pass
+        # should ignore numeric-only brackets entirely.
+        scenario = tmp_path / "noisy.testql.toon.yaml"
+        scenario.write_text(
+            "# SCENARIO: noisy\n"
+            "# TYPE: gui\n"
+            "\n"
+            "FLOW[3]{command, target, value}:\n"
+            "  GUI_INPUT, .email-old, hello@example.com\n"
+            "  GUI_CLICK, #login-submit, -\n"
+            "  GUI_ASSERT_VISIBLE, #ok-x, -\n",
+            encoding="utf-8",
+        )
+        elements_path = _write_elements(tmp_path)
+        report_path = tmp_path / "report.json"
+        runner = CliRunner()
+        result = runner.invoke(heal_scenario, [
+            str(scenario),
+            "--url", "http://localhost:8100/login",
+            "--from-elements", str(elements_path),
+            "--report", str(report_path),
+        ])
+        assert result.exit_code == 0, result.output
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+        all_seen = list(report["replacements"].keys()) + [
+            entry["selector"] for entry in report["unhealable"]
+        ]
+        # No section-header brackets, no email-suffix classes leaked through.
+        assert "[3]" not in all_seen
+        assert ".com" not in all_seen
+
+    def test_data_testid_used_for_fuzzy_match(self, tmp_path: Path):
+        # Regression: previously the haystack ignored `data_testid`, so a
+        # broken `#login-submit` matched `#page-title` (which contains "login"
+        # in its accessible name) instead of the actual login button whose
+        # only stable identifier was `data-testid='login-submit'`.
+        scenario = tmp_path / "fuzzy.testql.toon.yaml"
+        scenario.write_text(
+            "# SCENARIO: fuzzy\n"
+            "# TYPE: gui\n"
+            "\n"
+            "FLOW[1]{command, target, value}:\n"
+            "  GUI_CLICK, #login-submit, -\n",
+            encoding="utf-8",
+        )
+        elements_path = _write_elements(tmp_path)
+        runner = CliRunner()
+        result = runner.invoke(heal_scenario, [
+            str(scenario),
+            "--url", "http://localhost:8100/login",
+            "--from-elements", str(elements_path),
+        ])
+        assert result.exit_code == 0, result.output
+        healed = scenario.with_name("fuzzy.healed.testql.toon.yaml")
+        text = healed.read_text(encoding="utf-8")
+        assert "*[data-testid='login-submit']" in text
+        assert "#page-title" not in text  # the false positive
 
     def test_unhealable_selector_reported(self, tmp_path: Path):
         scenario = tmp_path / "weird.testql.toon.yaml"

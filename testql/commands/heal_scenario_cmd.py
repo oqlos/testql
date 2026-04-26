@@ -32,12 +32,17 @@ import click
 #   FLOW: "  click,  #btn-go,  -"             → "#btn-go"
 #   ASSERT: "  .qr-scanner-container, visible" → ".qr-scanner-container"
 #   GUI_CLICK "[data-testid=submit]"          → "[data-testid=submit]"
+#
+# False positives we deliberately reject:
+#   FLOW[3]{...}    →  `[3]` (numeric — TOON section header)
+#   user@gmail.com  →  `.com` (alphanumeric prefix — part of email/url)
 _SELECTOR_RE = re.compile(
     r"""
+    (?<![A-Za-z0-9_])                     # selector must not be glued to a word
     (?P<sel>
-        \[ [^\]\n]+ \]               # [attr=value]
-        | \# [A-Za-z][\w\-]*          # #id
-        | \. [A-Za-z][\w\-]*          # .class
+        \[ \s* [A-Za-z][\w\-]* [^\]\n]* \] # [attr=...]; first char of attr must be a letter
+        | \# [A-Za-z][\w\-]*                # #id (must start with letter, not digit)
+        | \. [A-Za-z][\w\-]*                # .class (must start with letter)
     )
     """,
     re.VERBOSE,
@@ -79,6 +84,21 @@ def _selector_resolves(page: Any, selector: str) -> bool:
         return page.locator(selector).count() > 0
     except Exception:
         return False
+
+
+def _healed_path(file: Path) -> Path:
+    """Compute the ``.healed.testql.toon.yaml`` sibling path.
+
+    ``Path.with_suffix`` only swaps the *last* suffix, so for a file named
+    ``foo.testql.toon.yaml`` it would produce ``foo.testql.toon.healed.testql.toon.yaml``.
+    Strip every recognised TestTOON suffix before re-appending the healed one.
+    """
+    name = file.name
+    for suffix in (".testql.toon.yaml", ".testql.toon.yml", ".testql.yaml", ".testql.yml"):
+        if name.endswith(suffix):
+            stem = name[: -len(suffix)]
+            return file.with_name(f"{stem}.healed{suffix}")
+    return file.with_suffix(".healed" + file.suffix)
 
 
 def _heal_text(
@@ -168,7 +188,7 @@ def heal_scenario(
 
     healed_text = _heal_text(text, replacements)
     if replacements:
-        target = file if write else file.with_suffix(".healed.testql.toon.yaml")
+        target = file if write else _healed_path(file)
         target.write_text(healed_text, encoding="utf-8")
         click.echo(f"✅ Wrote {target}")
 
@@ -199,6 +219,7 @@ def _heal_with_elements(
     elements: list[dict[str, Any]],
 ) -> tuple[dict[str, str], list[tuple[str, str]], int]:
     """Heal using a pre-extracted element list (no browser)."""
+    from testql.adapters.testtoon_adapter import _toon_safe_selector
     from testql.generators.page_analyzer import find_replacement, pick_selector
 
     # Selector → "valid if it matches any element's pick_selector(...) output"
@@ -214,7 +235,7 @@ def _heal_with_elements(
             continue
         new = find_replacement(sel, elements)
         if new and new != sel:
-            replacements[sel] = new
+            replacements[sel] = _toon_safe_selector(new)
         else:
             unhealable.append((sel, "no fuzzy match"))
     return replacements, unhealable, valid_count
@@ -235,6 +256,7 @@ def _heal_with_browser(
             "pip install playwright && playwright install chromium"
         ) from exc
 
+    from testql.adapters.testtoon_adapter import _toon_safe_selector
     from testql.generators.page_analyzer import find_replacement
     from testql.generators.sources.page_source import extract_elements_from_page
 
@@ -254,7 +276,7 @@ def _heal_with_browser(
                     continue
                 new = find_replacement(sel, elements)
                 if new and new != sel and _selector_resolves(page, new):
-                    replacements[sel] = new
+                    replacements[sel] = _toon_safe_selector(new)
                 else:
                     unhealable.append((sel, "no live match"))
         finally:

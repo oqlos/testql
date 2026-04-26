@@ -358,15 +358,25 @@ def find_replacement(
                 if sel:
                     return sel
 
-    # substring match on name / aria-label / id / classes
+    # substring match on every signal we have for the element
     tokens = [t for t in re.split(r"[\s\-_]+", normalised_hint) if t]
     if not tokens:
         return None
     best: tuple[int, Optional[str]] = (0, None)
     for elem in candidates:
-        haystack = " ".join(str(elem.get(k) or "") for k in ("name", "aria_label", "id", "name_attr"))
-        haystack += " " + " ".join(elem.get("classes") or [])
-        haystack_norm = _normalise(haystack)
+        # Include data-* attributes and visible text — without them, an element
+        # like {data_testid: 'login-submit'} would never match a hint like
+        # `#login-submit`, since data attributes are typically the *most* stable
+        # signal we have.
+        haystack_parts = [
+            str(elem.get(k) or "")
+            for k in (
+                "name", "aria_label", "id", "name_attr",
+                "data_testid", "data_test", "text", "placeholder",
+            )
+        ]
+        haystack_parts.extend(elem.get("classes") or [])
+        haystack_norm = _normalise(" ".join(haystack_parts))
         score = sum(1 for t in tokens if t in haystack_norm)
         if score > best[0]:
             sel = pick_selector(elem)
