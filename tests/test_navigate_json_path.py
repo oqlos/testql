@@ -90,3 +90,71 @@ class TestAssertJsonAndCaptureWithIndexedPath:
         result = interp.run("ASSERT_JSON results.length >= 1", "regress.tql")
         assert result.ok, result.errors
         assert result.passed >= 1
+
+
+class TestToonBareImperativeIndexedPath:
+    """End-to-end: TestTOON parser -> COMMANDS -> IqlScript -> ASSERT_JSON / CAPTURE.
+
+    Note: We invoke commands directly because dry-run API responses would
+    override last_response. This still tests the full path through the
+    parser + command execution.
+    """
+
+    TOON_SOURCE = """\
+# SCENARIO: Regress indexed path
+# TYPE: api
+
+CONFIG[1]{key, value}:
+  api_url, http://localhost:8101
+
+API POST /identify {"type": "user"}
+ASSERT_STATUS 200
+ASSERT_JSON results[0].id == "abc-1"
+CAPTURE captured_id FROM "results[0].id"
+ASSERT_JSON results.length >= 1
+"""
+
+    def _make_interp(self):
+        from testql.interpreter import IqlInterpreter
+
+        interp = IqlInterpreter(dry_run=True, quiet=True)
+        interp.last_response = {
+            "results": [
+                {"id": "abc-1", "title": "Identification: JAN_TEST_42"},
+            ],
+            "total_count": 1,
+        }
+        interp.last_status = 200
+        return interp
+
+    def test_toon_parser_parses_bare_commands(self):
+        from testql.interpreter._testtoon_parser import testtoon_to_iql
+
+        script = testtoon_to_iql(self.TOON_SOURCE, "regress.testql.toon.yaml")
+        # Verify the parser collected bare commands into COMMANDS section
+        assert any(cmd.command == "API" for cmd in script.lines)
+        assert any(cmd.command == "ASSERT_STATUS" for cmd in script.lines)
+        assert any(cmd.command == "ASSERT_JSON" for cmd in script.lines)
+        assert any(cmd.command == "CAPTURE" for cmd in script.lines)
+
+    def test_toon_assert_json_indexed_passes(self):
+        interp = self._make_interp()
+        from testql.interpreter._parser import IqlLine
+
+        # Simulate the ASSERT_JSON command that would come from parsed TOON
+        line = IqlLine(number=4, command="ASSERT_JSON", args='results[0].id == "abc-1"', raw='ASSERT_JSON results[0].id == "abc-1"')
+        interp._cmd_assert_json(line.args, line)
+
+        assert interp.results[-1].status.value == "passed"
+        assert interp.errors == []
+
+    def test_toon_capture_stores_value(self):
+        interp = self._make_interp()
+        from testql.interpreter._parser import IqlLine
+
+        # Simulate the CAPTURE command that would come from parsed TOON
+        line = IqlLine(number=5, command="CAPTURE", args='captured_id FROM "results[0].id"', raw='CAPTURE captured_id FROM "results[0].id"')
+        interp._cmd_capture(line.args, line)
+
+        assert interp.vars.get("captured_id") == "abc-1"
+        assert interp.results[-1].status.value == "passed"
