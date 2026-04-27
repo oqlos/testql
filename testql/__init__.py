@@ -6,4 +6,4 @@ external artifacts into IR; meta-testing (`testql.meta`) analyses the
 generated plans for coverage, confidence and mutation resilience.
 """
 
-__version__ = "1.2.38"
+__version__ = "1.2.39"
