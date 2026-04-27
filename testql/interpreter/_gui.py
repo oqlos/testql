@@ -25,6 +25,20 @@ class GuiMixin:
       - GUI_STOP (STOP, CLOSE) — Close session
     """
 
+    CMD_MAP = {
+        "NAVIGATE": "navigate",
+        "CLICK": "click",
+        "GUI_CLICK": "click",
+        "SELECT": "select",
+        "GUI_SELECT": "select",
+        "INPUT": "input",
+        "GUI_INPUT": "input",
+        "SUBMIT": "submit",
+        "GUI_SUBMIT": "submit",
+        "GUI_ASSERT_VISIBLE": "assert_visible",
+        "GUI_ASSERT_TEXT": "assert_text",
+    }
+
     _gui_driver: str | None = None  # "playwright" or "selenium"
     _gui_app: Any = None  # Playwright/Selenium instance
     _gui_page: Any = None  # Browser page/window

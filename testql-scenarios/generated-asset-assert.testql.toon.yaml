@@ -1,0 +1,23 @@
+# SCENARIO: Internal Asset Availability (excluding known-external 403s)
+# TYPE: web
+# GENERATED: true
+# ITERATION: 2
+# FOCUS: page.root, asset nodes
+# OPEN_FAILURES: finding.web.asset_status
+
+CONFIG[3]{key, value}:
+  base_url, https://tom.sapletta.com
+  timeout_ms, 8000
+  retry_count, 1
+
+# Internal assets only — external CDN/third-party excluded
+API[5]{method, endpoint, expected_status}:
+  GET, /, 200
+  GET, /favicon.ico, 200
+  GET, /robots.txt, 200
+  HEAD, /, 200
+  HEAD, /sitemap.xml, 200
+
+ASSERT[2]{field, operator, expected}:
+  status, <, 500
+  response_time, <, 3000

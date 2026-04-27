@@ -1,9 +1,39 @@
 ---
-description: Run one TestQL + aider autoloop iteration
+description: Run one TestQL autoloop iteration using Windsurf (Cascade) as the LLM
 ---
-1. Ensure `.env.testql.autoloop` exists with `OPENROUTER_API_KEY`, `AIDER_MODEL_PRIMARY`, and `AIDER_MODEL_FALLBACK`.
-2. Generate topology JSON: `testql topology . --format json > .testql/reports/topology.json`.
-3. Run test scenario to JSON: `testql run testql-scenarios/generated-cli-tests.testql.toon.yaml --output json > .testql/reports/test-run.json`.
-4. Run aider in Docker: `docker compose -f .aider/docker-compose.yml run --rm aider`.
-5. Validate decision JSON: `python -m jsonschema -i .testql/reports/llm-decision.json .testql/schemas/llm-decision.schema.json`.
-6. If quality gates pass in 2 consecutive iterations, stop. Otherwise loop from step 2.
+
+# TestQL Autoloop — Windsurf Edition
+
+No aider, no Docker, no OpenRouter needed. Windsurf/Cascade is the LLM.
+
+## Iteration steps
+
+1. Read current state.
+   - Read `.testql/autoloop-state.json` to get `iteration`, `last_decision`, `open_failures`.
+   - Read `.testql/schemas/llm-decision.schema.json` to know required output format.
+
+2. Generate topology.
+   - Run: `venv/bin/python3.13 -m testql topology . --format json`
+   - Save output to `.testql/reports/topology.json`.
+
+3. Run test scenarios.
+   - Run: `venv/bin/python3.13 -m testql run testql-scenarios/generated-api-smoke.testql.toon.yaml --output json`
+   - Save output to `.testql/reports/test-run.json`.
+
+4. Cascade makes the decision.
+   - Read `.testql/reports/topology.json` and `.testql/reports/test-run.json`.
+   - Choose one of: `fix_code` | `fix_test` | `generate_more_tests` | `infra_blocked` | `stabilize_done`.
+   - Apply minimal code or test changes if needed.
+   - Write decision JSON to `.testql/reports/llm-decision.json` matching `.testql/schemas/llm-decision.schema.json`.
+
+5. Validate decision JSON.
+   - Run: `venv/bin/python3.13 -m jsonschema -i .testql/reports/llm-decision.json .testql/schemas/llm-decision.schema.json`
+
+6. Update autoloop state.
+   - Increment `iteration` in `.testql/autoloop-state.json`.
+   - Set `last_decision` to the chosen decision value.
+
+7. Check stop condition.
+   - Stop if `decision == stabilize_done`.
+   - Stop if `iteration >= max_iterations` (default 8).
+   - Otherwise ask user to invoke `/testql-autoloop` again for next iteration.

@@ -1,15 +1,23 @@
 # SCENARIO: Auto-generated from Python Tests
 # TYPE: integration
 # GENERATED: true
+# ITERATION: 3 (fix_test — replaced LOG stubs with UNIT steps)
 
-LOG[20]{message}:
-  "Test: TestParseOql_test_basic_commands"
-  "Test: TestParseTestTOON_test_api_section"
-  "Test: TestTestTOONExpansion_test_api_expansion"
-  "Test: TestTestTOONExpansion_test_config_expansion"
-  "Test: TestOqlInterpreter_test_dry_run_api"
-  "Test: test_basic_commands"
-  "Test: test_api_section"
-  "Test: test_api_expansion"
-  "Test: test_config_expansion"
-  "Test: test_dry_run_api"
+CONFIG[2]{key, value}:
+  runner, pytest
+  flags, --no-cov -q
+
+UNIT[10]{target}:
+  tests/test_cli.py
+  tests/test_mcp_autoloop.py
+  tests/test_cli_no_block.py
+  tests/test_smoke_decisions.py
+  tests/test_interpreter.py
+  tests/test_runner.py
+  tests/test_detectors.py
+  tests/test_generators.py
+  tests/test_discovery.py
+  tests/test_pipeline.py
+
+ASSERT[1]{field, operator, expected}:
+  exit_code, ==, 0

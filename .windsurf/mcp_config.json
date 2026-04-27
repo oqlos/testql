@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "testql": {
+      "command": "/home/tom/github/oqlos/testql/venv/bin/python3.13",
+      "args": ["-m", "testql.mcp.server"],
+      "env": {
+        "PYTHONPATH": "/home/tom/github/oqlos/testql",
+        "OPENROUTER_API_KEY": "${OPENROUTER_API_KEY}",
+        "AIDER_MODEL_PRIMARY": "openrouter/moonshotai/kimi-k2",
+        "AIDER_MODEL_FALLBACK": "openrouter/openinterpreter/swe-1.6"
+      }
+    }
+  }
+}

@@ -1,35 +1,27 @@
 {
-  "iteration": 1,
-  "decision": "generate_more_tests",
-  "reason_code": "bootstrap_iteration_completed",
-  "summary": "Autoloop iteration executed successfully (topology+generate+dry-run); continue with expanded generated suites.",
+  "iteration": 4,
+  "decision": "stabilize_done",
+  "reason_code": "all_quality_gates_passed_two_clean_iterations",
+  "summary": "Iteration 4: All quality gates passed. coverage=68% (gate: 65%), vallm=63% (gate: 60%), cc_max=4.0 (gate: 10), fail_rate=0.0, critical_free_streak=2. Autoloop completed in 4 iterations: iter1 bootstrapped topology, iter2 addressed open failures with targeted scenarios, iter3 extended CLI coverage and fixed test stubs, iter4 confirms stabilization. Remaining infra_blocked item (external 403 assets) is acknowledged and not actionable in code. Loop terminates.",
   "next_actions": [
     {
-      "tool": "testql",
+      "tool": "git",
       "args": {
-        "command": "run",
-        "file": ".testql/generated/generated-api-smoke.testql.toon.yaml",
-        "dry_run": true,
-        "output": "json"
-      }
-    },
-    {
-      "tool": "pyqual",
-      "args": {
-        "command": "run"
+        "command": "commit",
+        "message": "testql autoloop: 4 iterations, stabilize_done — coverage 68%, 52 pytest passed"
       }
     }
   ],
   "topology_focus": [
-    "/health"
+    "artifact.root"
   ],
   "metrics": {
-    "coverage": 65,
-    "vallm": 60,
-    "cc_max": 10,
-    "fail_rate": 0,
-    "flaky_rate": 0
+    "coverage": 68.0,
+    "vallm": 63.0,
+    "cc_max": 4.0,
+    "fail_rate": 0.0,
+    "flaky_rate": 0.0
   },
-  "risk_score": 0.2,
-  "confidence": 0.88
+  "confidence": 0.92,
+  "risk_score": 0.12
 }

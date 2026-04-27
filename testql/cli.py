@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import os
-import subprocess
 import sys
 
 import click
@@ -25,6 +23,16 @@ from testql.commands.run_ir_cmd import run_ir
 from testql.commands.self_test_cmd import self_test
 from testql.commands.suite_cmd import list_tests, suite
 from testql.commands.topology_cmd import topology
+
+
+@click.command(name="mcp")
+def mcp_serve():
+    """Start TestQL MCP stdio server for Windsurf / VS Code / JetBrains."""
+    try:
+        from testql.mcp.server import run_server
+        run_server()
+    except RuntimeError as exc:
+        raise click.ClickException(str(exc)) from exc
 
 
 @click.group()
@@ -57,62 +65,31 @@ cli.add_command(from_sumd)
 cli.add_command(report)
 cli.add_command(echo)
 cli.add_command(self_test)
+cli.add_command(mcp_serve)
+
+
+def _fetch_latest_version() -> str | None:
+    try:
+        response = httpx.get("https://pypi.org/pypi/testql/json", timeout=2.0)
+        response.raise_for_status()
+        return response.json()["info"]["version"]
+    except Exception:
+        return None
 
 
 def check_and_upgrade():
-    """Check for updates and auto-upgrade if available (similar to goal)."""
+    """Print version hint to stderr if outdated. Never prompts or blocks."""
     try:
         current_version = pkg_version("testql")
     except Exception:
-        current_version = "unknown"
-
-    try:
-        # Check PyPI for latest version
-        response = httpx.get("https://pypi.org/pypi/testql/json", timeout=2.0)
-        response.raise_for_status()
-        latest_version = response.json()["info"]["version"]
-
-        # Display version info
-        if current_version == latest_version:
-            print(f"TestQL v{current_version} ✓")
-        else:
-            print(f"TestQL v{current_version} (latest: v{latest_version})")
-            if not sys.stdin.isatty():
-                print("Non-interactive mode — skipping auto-update. Run manually to update.")
-                return
-
-            response = input("Auto-update to latest version? [Y/n] ").strip().lower()
-
-            if response in ('', 'y', 'yes'):
-                print(f"🔄 Auto-updating testql from v{current_version} to v{latest_version}...")
-
-                # Auto-upgrade using pip
-                try:
-                    # Use the same pip that installed testql
-                    pip_executable = sys.executable.replace("python", "pip")
-                    subprocess.run(
-                        [pip_executable, "install", "--upgrade", "testql"],
-                        check=True,
-                        capture_output=True,
-                    )
-                    print(f"✅ Successfully updated to v{latest_version}")
-
-                    # Restart the process with the new version
-                    print("🔄 Restarting testql with new version...")
-                    os.execv(sys.executable, [sys.executable] + sys.argv)
-                except subprocess.CalledProcessError as e:
-                    print(f"⚠️  Failed to auto-upgrade: {e}")
-                    print("Run: pip install --upgrade testql")
-                except Exception as e:
-                    print(f"⚠️  Failed to restart: {e}")
-            else:
-                print("Skipping update.")
-    except httpx.RequestError:
-        # Network error - just show current version
-        print(f"TestQL v{current_version}")
-    except Exception:
-        # Any other error - just show current version
-        print(f"TestQL v{current_version}")
+        return
+    latest = _fetch_latest_version()
+    if latest and latest != current_version:
+        print(
+            f"TestQL v{current_version} (latest: v{latest})"
+            " — run: pip install --upgrade testql",
+            file=sys.stderr,
+        )
 
 
 def main():

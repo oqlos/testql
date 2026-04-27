@@ -11,9 +11,69 @@ META_RE = re.compile(r'^#\s*([A-Z_]+):\s*(.+)$')
 MAPPING_HEADER_RE = re.compile(r'^([A-Z_]+):\s*$')
 
 
+def _strip_quoted_regions(line: str) -> str:
+    """Return line with characters inside `"..."` / `'...'` removed.
+
+    Used by the separator detector and the row splitter so that
+    metacharacters living inside a quoted criterion (e.g. a regex with
+    ``|`` alternation) do not influence column parsing.
+    """
+    out: list[str] = []
+    in_quote: str | None = None
+    prev: str = ''
+    for ch in line:
+        if in_quote:
+            if ch == in_quote and prev != '\\':
+                in_quote = None
+            prev = ch
+            continue
+        if ch in ('"', "'"):
+            in_quote = ch
+            prev = ch
+            continue
+        out.append(ch)
+        prev = ch
+    return ''.join(out)
+
+
 def _detect_separator(line: str) -> str:
-    """Detect column separator in a line."""
-    return '|' if '|' in line else ','
+    """Detect column separator (only consider ``|`` outside quoted regions)."""
+    return '|' if '|' in _strip_quoted_regions(line) else ','
+
+
+def _split_quoted(line: str, sep: str, maxsplit: int = -1) -> list[str]:
+    """Split ``line`` on ``sep``, ignoring separators inside quoted regions.
+
+    Honours both single- and double-quoted spans and treats ``\\<quote>``
+    as an escaped literal (does not close the span).
+    """
+    parts: list[str] = []
+    buf: list[str] = []
+    in_quote: str | None = None
+    prev: str = ''
+    splits = 0
+    for ch in line:
+        if in_quote:
+            buf.append(ch)
+            if ch == in_quote and prev != '\\':
+                in_quote = None
+            prev = ch
+            continue
+        if ch in ('"', "'"):
+            in_quote = ch
+            buf.append(ch)
+            prev = ch
+            continue
+        if ch == sep and (maxsplit < 0 or splits < maxsplit):
+            parts.append(''.join(buf))
+            buf = []
+            splits += 1
+            prev = ch
+            continue
+        buf.append(ch)
+        prev = ch
+    parts.append(''.join(buf))
+    return parts
 
 
 def _parse_inline_array(v: str) -> list:
@@ -75,10 +135,14 @@ def _make_mapping_section(m: re.Match) -> ToonSection:
 
 
 def _make_data_row(raw: str, section: ToonSection) -> dict:
-    """Parse one indented data line into a column→value dict."""
+    """Parse one indented data line into a column→value dict.
+
+    Uses a quote-aware splitter so commas / pipes inside ``"..."`` or
+    ``'...'`` are preserved as literal data (e.g. regex alternation).
+    """
     line = raw.strip()
     sep = _detect_separator(line)
-    parts = line.split(sep, len(section.columns) - 1)
+    parts = _split_quoted(line, sep, len(section.columns) - 1)
     return {col: _parse_value(val) for col, val in zip(section.columns, parts)}
 
 

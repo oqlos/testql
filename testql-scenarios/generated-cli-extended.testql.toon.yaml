@@ -1,0 +1,23 @@
+# SCENARIO: Extended CLI Smoke Tests
+# TYPE: cli
+# GENERATED: true
+# ITERATION: 3
+# FOCUS: page.root CLI paths, coverage gap closure
+
+CONFIG[2]{key, value}:
+  cli_command, venv/bin/python3.13 -m testql
+  timeout_ms, 15000
+
+# Core CLI subcommands — must exit cleanly with --help
+SHELL[8]{command, exit_code}:
+  venv/bin/python3.13 -m testql --help, 0
+  venv/bin/python3.13 -m testql --version, 0
+  venv/bin/python3.13 -m testql topology --help, 0
+  venv/bin/python3.13 -m testql run --help, 0
+  venv/bin/python3.13 -m testql discover --help, 0
+  venv/bin/python3.13 -m testql generate --help, 0
+  venv/bin/python3.13 -m testql inspect --help, 0
+  venv/bin/python3.13 -m testql mcp --help, 0
+
+ASSERT[1]{field, operator, expected}:
+  exit_code, ==, 0

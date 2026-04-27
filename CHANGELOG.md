@@ -130,6 +130,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Remaining
 - Add Playwright-backed browser execution, JavaScript-rendered DOM capture, screenshots, console errors, network logs, link-by-link validation, accessibility/performance checks, MCP service integration, and runtime-vs-code delta reports.
 
+## [1.2.37] - 2026-04-27
+
+### Docs
+- Update .windsurf/workflows/testql-autoloop.md
+- Update .windsurf/workflows/testql-model-smoke.md
+- Update README.md
+
+### Test
+- Update test_autoloop_api.py
+- Update test_autoloop_mcp.py
+- Update testql-scenarios/generated-asset-assert.testql.toon.yaml
+- Update testql-scenarios/generated-cli-extended.testql.toon.yaml
+- Update testql-scenarios/generated-from-pytests.testql.toon.yaml
+- Update testql-scenarios/generated-sitemap-assert.testql.toon.yaml
+- Update testql/cli.py
+- Update testql/interpreter/_gui.py
+- Update testql/interpreter/testtoon_parser.py
+- Update tests/test_cli_no_block.py
+- ... and 3 more files
+
+### Other
+- Update .env.testql.autoloop.example
+- Update .testql/autoloop-state.json
+- Update .testql/reports/llm-decision.json
+- Update .testql/reports/llm-decision.kimi.json
+- Update .testql/reports/llm-decision.swe.json
+- Update .windsurf/mcp_config.json
+- Update coverage.json
+- Update scripts/setup_mcp_windsurf.sh
+
 ## [1.2.36] - 2026-04-27
 
 ### Docs

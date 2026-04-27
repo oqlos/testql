@@ -1,0 +1,41 @@
+{
+  "iteration": 1,
+  "decision": "fix_test",
+  "reason_code": "broken_assets_and_duplicate_titles_require_targeted_test_coverage",
+  "summary": "Topology inspection reveals 2 high/medium severity findings: 4 broken assets (403/404 responses for external resources) and 2 duplicate sitemap titles. Current test scenarios cover API smoke paths but do not assert on asset availability or sitemap SEO uniqueness. Recommend generating targeted test scenarios for these failure nodes before declaring coverage sufficient. No code changes needed — infrastructure issues (xmlrpc.php 403, Google Fonts 404) are external and acceptable; sitemap duplicates require a new ASSERT scenario.",
+  "next_actions": [
+    {
+      "tool": "generate_ir",
+      "args": {
+        "source": "testtoon",
+        "artifact": "testql-scenarios/generated-api-smoke.testql.toon.yaml",
+        "target": "testtoon",
+        "out": "testql-scenarios/generated-sitemap-assert.testql.toon.yaml"
+      }
+    },
+    {
+      "tool": "run_scenarios",
+      "args": {
+        "file_spec": "testql-scenarios/generated-api-smoke.testql.toon.yaml",
+        "dry_run": true
+      }
+    }
+  ],
+  "topology_focus": [
+    "page.root",
+    "sitemap.root",
+    "asset.1",
+    "asset.2",
+    "asset.3",
+    "asset.4"
+  ],
+  "metrics": {
+    "coverage": 42.0,
+    "vallm": 58.0,
+    "cc_max": 4.0,
+    "fail_rate": 0.067,
+    "flaky_rate": 0.0
+  },
+  "confidence": 0.87,
+  "risk_score": 0.31
+}

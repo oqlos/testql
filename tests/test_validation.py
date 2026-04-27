@@ -34,6 +34,29 @@ class TestValidateExpansion:
         assert lines[0].args.startswith("regex stderr ")
         assert "line" in lines[0].args
 
+    def test_validate_pipe_inside_quoted_criteria_is_literal(self):
+        # Regression: TOON used to treat `|` as alt column separator even
+        # when the `|` was inside quoted criteria. Now criteria pipes
+        # must survive intact for regex alternation.
+        src = (
+            "VALIDATE[1]{type, target, criteria}:\n"
+            '  regex, output, "validated|OK|ready"\n'
+        )
+        lines = _testtoon_to_oql(src).lines
+        assert len(lines) == 1
+        assert lines[0].command == "VALIDATE"
+        assert lines[0].args.startswith("regex output ")
+        assert "validated|OK|ready" in lines[0].args
+
+    def test_validate_comma_inside_quoted_criteria_is_literal(self):
+        src = (
+            "VALIDATE[1]{type, target, criteria}:\n"
+            '  contains, output, "Hello, world"\n'
+        )
+        lines = _testtoon_to_oql(src).lines
+        assert len(lines) == 1
+        assert "Hello, world" in lines[0].args
+
     def test_validate_skips_rows_without_type_or_target(self):
         src = (
             "VALIDATE[2]{type, target, criteria}:\n"

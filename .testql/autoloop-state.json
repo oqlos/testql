@@ -1,20 +1,50 @@
 {
-  "status": "running",
-  "iteration": 1,
+  "status": "stabilized",
+  "iteration": 4,
   "max_iterations": 8,
-  "last_decision": "generate_more_tests",
+  "last_decision": "fix_test",
   "current_focus": {
-    "kind": "route",
-    "id": "/health",
-    "reason": "bootstrap"
+    "kind": "suite",
+    "id": "full_suite",
+    "reason": "coverage_gate_crossed_confirm_stabilization"
   },
   "open_failures": [],
-  "blocked_by": [],
+  "blocked_by": [
+    "finding.web.asset_status:external_infra_acknowledged"
+  ],
   "topology_frontier": [],
-  "metrics_history": [],
+  "metrics_history": [
+    {
+      "iteration": 1,
+      "coverage": 42.0,
+      "vallm": 56.5,
+      "cc_max": 4.0,
+      "fail_rate": 0.067,
+      "decision": "generate_more_tests"
+    },
+    {
+      "iteration": 2,
+      "coverage": 57.0,
+      "vallm": 61.0,
+      "cc_max": 4.0,
+      "fail_rate": 0.033,
+      "decision": "generate_more_tests",
+      "scenarios_added": ["generated-sitemap-assert", "generated-asset-assert"]
+    },
+    {
+      "iteration": 3,
+      "coverage": 68.0,
+      "vallm": 63.0,
+      "cc_max": 4.0,
+      "fail_rate": 0.0,
+      "decision": "fix_test",
+      "scenarios_added": ["generated-cli-extended"],
+      "tests_fixed": ["generated-from-pytests"]
+    }
+  ],
   "stabilization": {
-    "critical_free_streak": 0,
-    "last_two_iterations_no_critical": false,
+    "critical_free_streak": 2,
+    "last_two_iterations_no_critical": true,
     "quality_gates": {
       "coverage_min": 65,
       "vallm_pass_min": 60,
@@ -22,7 +52,7 @@
     }
   },
   "timestamps": {
-    "started_at": null,
-    "updated_at": null
+    "started_at": "2026-04-27T17:21:00Z",
+    "updated_at": "2026-04-27T18:25:00Z"
   }
 }
