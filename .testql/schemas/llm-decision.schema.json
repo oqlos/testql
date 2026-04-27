@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oqlos.dev/testql/schemas/llm-decision.schema.json",
+  "title": "TestQL LLM Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "iteration",
+    "decision",
+    "reason_code",
+    "summary",
+    "next_actions",
+    "topology_focus",
+    "metrics",
+    "risk_score",
+    "confidence"
+  ],
+  "properties": {
+    "iteration": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "fix_code",
+        "fix_test",
+        "generate_more_tests",
+        "infra_blocked",
+        "stabilize_done"
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "next_actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["tool", "args"],
+        "properties": {
+          "tool": {
+            "type": "string",
+            "minLength": 1
+          },
+          "args": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "topology_focus": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "coverage",
+        "vallm",
+        "cc_max",
+        "fail_rate",
+        "flaky_rate"
+      ],
+      "properties": {
+        "coverage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "vallm": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "cc_max": {
+          "type": "number",
+          "minimum": 0
+        },
+        "fail_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "flaky_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "risk_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}
