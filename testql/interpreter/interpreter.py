@@ -126,13 +126,30 @@ class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, G
     # ── Variables ─────────────────────────────────────────────────────────────
 
     def _cmd_set(self, args: str, line: IqlLine) -> None:
-        parts = args.split(None, 1)
-        if len(parts) < 2:
-            self.out.warn(f"L{line.number}: SET requires <name> <value>")
-            return
-        key, val = parts[0], parts[1].strip().strip('"\'')
-        self.vars.set(key, val)
-        self.out.step("📝", f"SET {key} = {val}")
+        # Handle quoted keys with spaces: SET "key with spaces" "value"
+        import shlex
+        try:
+            parts = shlex.split(args)
+            if len(parts) < 2:
+                self.out.warn(f"L{line.number}: SET requires <name> <value>")
+                return
+            key, val = parts[0], parts[1]
+            # Strip quotes from value if present
+            if val.startswith('"') and val.endswith('"'):
+                val = val[1:-1]
+            elif val.startswith("'") and val.endswith("'"):
+                val = val[1:-1]
+            self.vars.set(key, val)
+            self.out.step("📝", f'SET "{key}" = "{val}"')
+        except ValueError:
+            # Fallback to simple split if shlex fails
+            parts = args.split(None, 1)
+            if len(parts) < 2:
+                self.out.warn(f"L{line.number}: SET requires <name> <value>")
+                return
+            key, val = parts[0], parts[1].strip().strip('"\'')
+            self.vars.set(key, val)
+            self.out.step("📝", f"SET {key} = {val}")
 
     def _cmd_get(self, args: str, line: IqlLine) -> None:
         key = args.strip()

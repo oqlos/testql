@@ -122,16 +122,24 @@ def _make_data_row(raw: str, section: ToonSection) -> dict:
 
 
 def _make_mapping_row(raw: str) -> dict:
-    """Parse a YAML key-value line (key: value) into a dict."""
+    """Parse a YAML key-value line (key: value) into a dict.
+    
+    Supports formats:
+    - key: value
+    - key1 key2: value (for keys with spaces)
+    """
     line = raw.strip()
     if ':' not in line:
         return {}
-    key, value = line.split(':', 1)
-    key = key.strip()
+    
+    # Split on first colon only
+    key_part, value = line.split(':', 1)
+    key = key_part.strip()
     if key.startswith('- '):
         key = key[2:].strip()
     elif key.startswith('-'):
         key = key[1:].strip()
+    
     return {key: _parse_value(value.strip())}
 
 
@@ -165,9 +173,10 @@ def parse_testtoon(text: str, filename: str = "<string>") -> ToonScript:
             script.sections.append(current)
             continue
 
-        # Try mapping format: SECTION:
+        # Try mapping format: SECTION: (but only if not matching tabular format)
+        # Don't match if line contains {columns} pattern
         m = MAPPING_HEADER_RE.match(stripped)
-        if m:
+        if m and '{' not in stripped:
             current = _make_mapping_section(m)
             script.sections.append(current)
             continue
@@ -241,13 +250,16 @@ def _expand_config(section: ToonSection, lines: list[IqlLine], line_num: int) ->
         key = row.get('key', '')
         value = row.get('value', '')
         if key and value is not None:
+            # Quote key if it contains spaces
+            key_quoted = f'"{key}"' if ' ' in str(key) else key
+            
             # Check if value contains variable substitution syntax - don't quote it
             if '${' in str(value) and '}' in str(value):
-                raw = f'SET {key} {value}'
-                lines.append(IqlLine(number=line_num, command='SET', args=f'{key} {value}', raw=raw))
+                raw = f'SET {key_quoted} {value}'
+                lines.append(IqlLine(number=line_num, command='SET', args=f'{key_quoted} {value}', raw=raw))
             else:
-                raw = f'SET {key} "{value}"'
-                lines.append(IqlLine(number=line_num, command='SET', args=f'{key} "{value}"', raw=raw))
+                raw = f'SET {key_quoted} "{value}"'
+                lines.append(IqlLine(number=line_num, command='SET', args=f'{key_quoted} "{value}"', raw=raw))
             line_num += 1
     return line_num
 
