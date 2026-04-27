@@ -261,17 +261,13 @@ class GuiMixin:
             return
 
         if not self._gui_page:
-            self.out.step("🖥️", "Auto-starting GUI session for navigation...")
-            base_url = self.vars.get("base_url", "http://127.0.0.1:8100")
-            self._cmd_gui_start(base_url, line)
-            if not self._gui_page:
-                self.out.fail("GUI_NAVIGATE: Failed to auto-start GUI session")
-                self.results.append(StepResult(
-                    name=f'GUI_NAVIGATE "{path}"',
-                    status=StepStatus.ERROR,
-                    message="Failed to auto-start GUI session",
-                ))
-                return
+            self.out.fail("GUI_NAVIGATE: No active GUI session. Call GUI_START first (auto-start disabled to prevent Playwright sync API errors)")
+            self.results.append(StepResult(
+                name=f'GUI_NAVIGATE "{path}"',
+                status=StepStatus.ERROR,
+                message="No active GUI session (auto-start disabled)",
+            ))
+            return
 
         try:
             if self._gui_driver == "playwright":
