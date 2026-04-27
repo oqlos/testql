@@ -209,3 +209,15 @@ class TestIqlInterpreter:
 
         assert result.ok, result.errors
         assert result.failed == 0
+
+    def test_assert_json_nested_virtual_encoder_status_bool(self):
+        interp = IqlInterpreter(dry_run=True, quiet=True)
+        interp.vars.set("_encoder_status", {"active": True, "error": None})
+
+        result = interp.run(
+            "ASSERT_JSON _encoder_status.active == true",
+            "encoder-assert-bool.tql",
+        )
+
+        assert result.ok, result.errors
+        assert result.failed == 0

@@ -5,7 +5,7 @@
 CONFIG[4]{key, value}:
   base_url, http://localhost:8100
   encoder_url, http://localhost:8105
-  encoder_endpoint_prefix, /dashboard/action
+  encoder_endpoint_prefix, /encoder
   headless, false
 
 NAVIGATE[1]{path, wait_ms}:
@@ -26,4 +26,4 @@ ENCODER[6]{action, target, value, wait_ms}:
   status, -, -, -
 
 ASSERT[1]{field, op, expected}:
-  _encoder_status.error, !=, no_response
+  _encoder_status.active, ==, true

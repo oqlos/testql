@@ -110,10 +110,19 @@ class AssertionsMixin:
             ))
             return
 
-        try:
-            expected: Any = float(expected_str) if "." in expected_str else int(expected_str)
-        except ValueError:
-            expected = expected_str.strip("\"'")
+        literal = expected_str.strip().strip("\"'")
+        lowered = literal.lower()
+        if lowered == "true":
+            expected = True
+        elif lowered == "false":
+            expected = False
+        elif lowered in {"null", "none"}:
+            expected = None
+        else:
+            try:
+                expected = float(literal) if "." in literal else int(literal)
+            except ValueError:
+                expected = literal
 
         cmp_fn = _COMPARE_OPS.get(op)
         ok = cmp_fn(obj, expected) if cmp_fn else False
