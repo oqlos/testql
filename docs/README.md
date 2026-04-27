@@ -34,6 +34,7 @@ pip install sumd[dev]    # development tools
 ## Quick Start
 
 - [TestQL Autoloop Onboarding (Windsurf MCP + aider)](./TESTQL_AUTOLOOP_ONBOARDING.md)
+- [Manifest Testing and Refactor Flow](./MANIFEST_TESTING_AND_REFACTOR_FLOW.md)
 
 ### CLI Usage
 

@@ -54,7 +54,7 @@ def _parse_makefile(content: str, file_path: Path) -> list[dict[str, Any]]:
     phony_targets = [t.strip() for match in phony_matches for t in match.split()]
     
     # Find target definitions
-    target_pattern = r'^([a-zA-Z0-9_-]+):\s*(?:##\s*(.+))?'
+    target_pattern = r'^([a-zA-Z0-9_-]+):[ \t]*(?:##[ \t]*(.+))?$'
     for match in re.finditer(target_pattern, content, re.MULTILINE):
         target_name = match.group(1)
         comment = match.group(2) or ""
@@ -62,11 +62,12 @@ def _parse_makefile(content: str, file_path: Path) -> list[dict[str, Any]]:
         # Get target commands (next lines until next target or empty line)
         lines_after = content[match.end():].split('\n')
         commands = []
+        saw_command = False
         for line in lines_after[:10]:  # Max 10 lines
             stripped = line.strip()
             # Skip empty lines and comments
             if not stripped or stripped.startswith('#'):
-                if not stripped:
+                if not stripped and saw_command:
                     break
                 continue
             # Check if it's a command (starts with tab or whitespace, or has @, -, +)
@@ -75,6 +76,7 @@ def _parse_makefile(content: str, file_path: Path) -> list[dict[str, Any]]:
                 cmd = stripped.lstrip('@-+')
                 if cmd:
                     commands.append(cmd)
+                    saw_command = True
             elif ':' in stripped and not any(c in stripped for c in ['=', ':=']):
                 # Likely another target definition
                 break
@@ -126,6 +128,38 @@ def _parse_docker_compose(content: str) -> list[dict[str, Any]]:
         }
         for name, service in services.items()
     ]
+
+
+def _select_parser_for_file(file_name: str):
+    lowered = file_name.lower()
+    if lowered in {"makefile", "makefile"}:
+        return "makefile"
+    if lowered in {"taskfile.yml", "taskfile.yaml"}:
+        return "taskfile"
+    if "docker-compose" in lowered:
+        return "docker-compose"
+    if lowered in {"buf.yaml", "buf.gen.yaml"}:
+        return "buf"
+    return None
+
+
+def _auto_detect_parser(content: str) -> str:
+    if "targets:" in content or "tasks:" in content:
+        return "taskfile"
+    if "services:" in content:
+        return "docker-compose"
+    return "makefile"
+
+
+def _parse_targets(content: str, source_path: Path) -> list[dict[str, Any]]:
+    parser = _select_parser_for_file(source_path.name) or _auto_detect_parser(content)
+    if parser == "makefile":
+        return _parse_makefile(content, source_path)
+    if parser == "taskfile":
+        return _parse_taskfile(content)
+    if parser == "docker-compose":
+        return _parse_docker_compose(content)
+    return _parse_buf_yaml(content)
 
 
 def _parse_buf_yaml(content: str) -> list[dict[str, Any]]:
@@ -188,25 +222,7 @@ class ConfigSource(BaseSource):
         
         content = _load_file(source)
         file_name = source_path.name
-        
-        # Parse based on file type
-        targets = []
-        if file_name in ['Makefile', 'makefile']:
-            targets = _parse_makefile(content, source_path)
-        elif file_name in ['Taskfile.yml', 'taskfile.yml']:
-            targets = _parse_taskfile(content)
-        elif 'docker-compose' in file_name:
-            targets = _parse_docker_compose(content)
-        elif 'buf.yaml' in file_name or 'buf.gen.yaml' in file_name:
-            targets = _parse_buf_yaml(content)
-        else:
-            # Try to detect type
-            if 'targets:' in content or 'tasks:' in content:
-                targets = _parse_taskfile(content)
-            elif 'services:' in content:
-                targets = _parse_docker_compose(content)
-            else:
-                targets = _parse_makefile(content, source_path)
+        targets = _parse_targets(content, source_path)
         
         # Create TestPlan
         plan = TestPlan(metadata=ScenarioMetadata(
@@ -220,7 +236,6 @@ class ConfigSource(BaseSource):
         plan.config["fail_fast"] = False
         
         # Add shell steps for key targets
-        step_count = 0
         for target in targets[:10]:  # Limit to 10 targets
             if not target['commands']:
                 continue
@@ -236,7 +251,6 @@ class ConfigSource(BaseSource):
                 expect_exit_code=0,
                 name=f"{target['name']}: {target['comment']}",
             ))
-            step_count += 1
         
         # Add assertions
         plan.assertions = [

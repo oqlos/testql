@@ -16,6 +16,31 @@ paths:
   /a: { get: { responses: { "200": { description: OK } } } }
 """
 
+MAKEFILE = """\
+.PHONY: test
+test:
+\tpytest -q
+"""
+
+TASKFILE = """\
+version: "3"
+tasks:
+  test:
+    desc: run tests
+    cmds:
+      - pytest -q
+"""
+
+DOCKER_COMPOSE = """\
+services:
+  web:
+    image: nginx:latest
+"""
+
+BUF_YAML = """\
+version: v1
+"""
+
 
 class TestGenerateIRCLI:
     def test_command_exists(self):
@@ -67,3 +92,59 @@ class TestGenerateIRCLI:
         runner = CliRunner()
         result = runner.invoke(cli, ["generate", "--help"])
         assert result.exit_code == 0
+
+    def test_generate_ir_makefile_alias(self, tmp_path: Path):
+        mf = tmp_path / "Makefile"
+        mf.write_text(MAKEFILE, encoding="utf-8")
+        runner = CliRunner()
+
+        for alias in ("makefile", "config"):
+            result = runner.invoke(cli, [
+                "generate-ir",
+                "--from", f"{alias}:{mf}",
+                "--to", "testtoon",
+            ])
+            assert result.exit_code == 0
+            assert "SHELL[" in result.output
+
+    def test_generate_ir_taskfile_alias(self, tmp_path: Path):
+        tf = tmp_path / "Taskfile.yml"
+        tf.write_text(TASKFILE, encoding="utf-8")
+        runner = CliRunner()
+
+        for alias in ("taskfile", "config"):
+            result = runner.invoke(cli, [
+                "generate-ir",
+                "--from", f"{alias}:{tf}",
+                "--to", "testtoon",
+            ])
+            assert result.exit_code == 0
+            assert "SHELL[" in result.output
+
+    def test_generate_ir_docker_compose_alias(self, tmp_path: Path):
+        dc = tmp_path / "docker-compose.yml"
+        dc.write_text(DOCKER_COMPOSE, encoding="utf-8")
+        runner = CliRunner()
+
+        for alias in ("docker-compose", "config"):
+            result = runner.invoke(cli, [
+                "generate-ir",
+                "--from", f"{alias}:{dc}",
+                "--to", "testtoon",
+            ])
+            assert result.exit_code == 0
+            assert "SHELL[" in result.output
+
+    def test_generate_ir_buf_alias(self, tmp_path: Path):
+        bf = tmp_path / "buf.yaml"
+        bf.write_text(BUF_YAML, encoding="utf-8")
+        runner = CliRunner()
+
+        for alias in ("buf", "config"):
+            result = runner.invoke(cli, [
+                "generate-ir",
+                "--from", f"{alias}:{bf}",
+                "--to", "testtoon",
+            ])
+            assert result.exit_code == 0
+            assert "SHELL[" in result.output
