@@ -341,6 +341,39 @@ def _expand_record(section: ToonSection, lines: list[OqlLine], line_num: int) ->
     return line_num
 
 
+def _expand_validate(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
+    """Expand VALIDATE section → VALIDATE commands.
+
+    Row schema: {type, target, criteria}
+        type     : regex | contains | not_contains | template | semantic
+        target   : output | stdout | stderr | response | <var_name>
+        criteria : regex / substring / template path / NL criterion
+
+    Each row becomes a single ``VALIDATE`` OQL line.
+    """
+    for row in section.rows:
+        vtype = str(row.get('type', '')).strip()
+        target = str(row.get('target', '')).strip()
+        criteria = row.get('criteria', '')
+
+        if not vtype or not target:
+            continue
+
+        if isinstance(criteria, dict):
+            criteria_str = json.dumps(criteria)
+        else:
+            criteria_str = str(criteria) if criteria is not None else ''
+
+        # Always quote criteria so that whitespace / regex metacharacters
+        # survive the OQL split-on-whitespace tokenizer.
+        criteria_quoted = '"' + criteria_str.replace('"', '\\"') + '"'
+        args = f'{vtype} {target} {criteria_quoted}'
+        raw = f'VALIDATE {args}'
+        lines.append(OqlLine(number=line_num, command='VALIDATE', args=args, raw=raw))
+        line_num += 1
+    return line_num
+
+
 def _expand_commands(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand COMMANDS section (bare imperative commands) → emit as-is."""
     for row in section.rows:
@@ -418,6 +451,7 @@ _SECTION_EXPANDERS = {
     'RECORD_STOP': _expand_record,
     'DOM_AUDIT_BUTTONS': _expand_dom_audit_buttons,
     'COMMANDS': _expand_commands,
+    'VALIDATE': _expand_validate,
 }
 
 
