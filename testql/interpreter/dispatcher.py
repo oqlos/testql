@@ -1,11 +1,11 @@
-"""Command dispatcher for IqlInterpreter — central command routing with auto-discovery."""
+"""Command dispatcher for OqlInterpreter — central command routing with auto-discovery."""
 
 from __future__ import annotations
 
 from typing import Callable, Any
 from difflib import get_close_matches
 
-from ._parser import IqlLine
+from ._parser import OqlLine
 
 
 class CommandDispatcher:
@@ -15,7 +15,7 @@ class CommandDispatcher:
         """Initialize dispatcher with interpreter instance.
 
         Args:
-            interpreter: IqlInterpreter instance containing mixin handlers
+            interpreter: OqlInterpreter instance containing mixin handlers
         """
         self.interpreter = interpreter
         self._handlers: dict[str, Callable] = {}
@@ -34,17 +34,17 @@ class CommandDispatcher:
 
         Args:
             cmd_name: Command name (without _cmd_ prefix)
-            handler: Handler function with signature (args: str, line: IqlLine) -> None
+            handler: Handler function with signature (args: str, line: OqlLine) -> None
         """
         self._handlers[cmd_name.lower()] = handler
 
-    def dispatch(self, cmd: str, args: str, line: IqlLine) -> bool:
+    def dispatch(self, cmd: str, args: str, line: OqlLine) -> bool:
         """Dispatch command to registered handler.
 
         Args:
             cmd: Command name (case-insensitive)
             args: Command arguments
-            line: IqlLine with line number and raw content
+            line: OqlLine with line number and raw content
 
         Returns:
             True if handler was found and executed, False otherwise

@@ -1,4 +1,4 @@
-"""IQL parser — tokenises source into IqlLine / IqlScript AST."""
+"""OQL parser — tokenises source into OqlLine / OqlScript AST."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 
 
 @dataclass
-class IqlLine:
+class OqlLine:
     number: int
     command: str
     args: str
@@ -14,14 +14,14 @@ class IqlLine:
 
 
 @dataclass
-class IqlScript:
+class OqlScript:
     filename: str = ""
-    lines: list[IqlLine] = field(default_factory=list)
+    lines: list[OqlLine] = field(default_factory=list)
 
 
-def parse_iql(source: str, filename: str = "<string>") -> IqlScript:
-    """Parse IQL source into a flat command list, stripping comments."""
-    script = IqlScript(filename=filename)
+def parse_oql(source: str, filename: str = "<string>") -> OqlScript:
+    """Parse OQL source into a flat command list, stripping comments."""
+    script = OqlScript(filename=filename)
     for i, raw in enumerate(source.split("\n"), start=1):
         line = raw.strip()
         if not line or line.startswith("#"):
@@ -29,5 +29,5 @@ def parse_iql(source: str, filename: str = "<string>") -> IqlScript:
         parts = line.split(None, 1)
         cmd = parts[0].upper()
         args = parts[1] if len(parts) > 1 else ""
-        script.lines.append(IqlLine(number=i, command=cmd, args=args, raw=line))
+        script.lines.append(OqlLine(number=i, command=cmd, args=args, raw=line))
     return script

@@ -4,31 +4,56 @@
 
 - **Project**: /home/tom/github/oqlos/testql
 - **Primary Language**: python
-- **Languages**: python: 207, yaml: 120, shell: 20, txt: 4, json: 2
+- **Languages**: python: 221, yaml: 127, shell: 20, txt: 4, yml: 2
 - **Analysis Mode**: static
-- **Total Functions**: 1857
-- **Total Classes**: 185
-- **Modules**: 373
-- **Entry Points**: 1389
+- **Total Functions**: 2084
+- **Total Classes**: 195
+- **Modules**: 395
+- **Entry Points**: 1547
 
 ## Architecture by Module
 
 ### project.map.toon
-- **Functions**: 687
+- **Functions**: 726
 - **File**: `map.toon.yaml`
 
 ### code2llm_output.map.toon
 - **Functions**: 87
 - **File**: `map.toon.yaml`
 
+### testql.adapters.scenario_yaml
+- **Functions**: 43
+- **Classes**: 1
+- **File**: `scenario_yaml.py`
+
 ### testql.results.analyzer
 - **Functions**: 38
 - **File**: `analyzer.py`
 
+### testql.interpreter._testtoon_parser
+- **Functions**: 38
+- **Classes**: 2
+- **File**: `_testtoon_parser.py`
+
+### testql.generators.sources.oql_source
+- **Functions**: 37
+- **Classes**: 4
+- **File**: `oql_source.py`
+
+### testql.interpreter._gui
+- **Functions**: 34
+- **Classes**: 1
+- **File**: `_gui.py`
+
 ### testql.adapters.testtoon_adapter
-- **Functions**: 31
+- **Functions**: 32
 - **Classes**: 1
 - **File**: `testtoon_adapter.py`
+
+### testql.generators.page_analyzer
+- **Functions**: 31
+- **Classes**: 1
+- **File**: `page_analyzer.py`
 
 ### testql.adapters.nl.nl_adapter
 - **Functions**: 30
@@ -39,25 +64,20 @@
 - **Functions**: 27
 - **File**: `encoder_routes.py`
 
-### testql._base_fallback
-- **Functions**: 26
-- **Classes**: 7
-- **File**: `_base_fallback.py`
-
 ### testql.adapters.sql.sql_adapter
 - **Functions**: 26
 - **Classes**: 1
 - **File**: `sql_adapter.py`
 
-### testql.adapters.scenario_yaml
-- **Functions**: 25
+### testql.interpreter.dom_scanner
+- **Functions**: 26
 - **Classes**: 1
-- **File**: `scenario_yaml.py`
+- **File**: `dom_scanner.py`
 
-### testql.interpreter._testtoon_parser
-- **Functions**: 24
-- **Classes**: 2
-- **File**: `_testtoon_parser.py`
+### testql._base_fallback
+- **Functions**: 26
+- **Classes**: 7
+- **File**: `_base_fallback.py`
 
 ### testql.adapters.graphql.graphql_adapter
 - **Functions**: 23
@@ -79,35 +99,15 @@
 - **Classes**: 1
 - **File**: `package_python.py`
 
-### testql.generators.generators
+### testql.generators.api_generator
 - **Functions**: 19
-- **Classes**: 4
-- **File**: `generators.py`
+- **Classes**: 2
+- **File**: `api_generator.py`
 
 ### testql.runner
 - **Functions**: 18
 - **Classes**: 3
 - **File**: `runner.py`
-
-### testql.adapters.proto.proto_adapter
-- **Functions**: 18
-- **Classes**: 1
-- **File**: `proto_adapter.py`
-
-### testql.adapters.sql.ddl_parser
-- **Functions**: 17
-- **Classes**: 3
-- **File**: `ddl_parser.py`
-
-### testql.topology.generator
-- **Functions**: 17
-- **Classes**: 2
-- **File**: `generator.py`
-
-### testql.generators.analyzers
-- **Functions**: 16
-- **Classes**: 1
-- **File**: `analyzers.py`
 
 ## Key Entry Points
 
@@ -124,20 +124,16 @@ Examples:
   
 - **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, click.option, click.option
 
-### testql.generators.sources.oql_source.OqlParser._parse_command
-> Parse a single command line.
-- **Calls**: self.COMMAND_PATTERNS.items, line.split, re.match, OqlCommand, match.groups, OqlCommand, None.upper, raw_line.strip
-
-### testql.generators.sources.oql_source.OqlSource.to_iql
-> Convert Unified IR to IQL commands.
-- **Calls**: ir.get, lines.append, lines.append, lines.append, lines.append, ir.get, ir.get, ir.get
+### testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_dom_scan
+> DOM_SCAN <type> [--output <format>] [--out-file <path>]
+- **Calls**: args.split, None.lower, self.out.fail, self.results.append, len, getattr, self.out.fail, self.out.info
 
 ### testql.commands.suite.cli.suite
 > Run test suite(s) — predefined or custom pattern.
 - **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, click.option, click.option
 
-### testql.generators.sources.pytest_source.PytestSource.to_iql
-> Convert Unified IR to IQL commands.
+### testql.generators.sources.pytest_source.PytestSource.to_oql
+> Convert Unified IR to OQL commands.
 - **Calls**: ir.get, lines.append, lines.append, lines.append, meta.get, lines.append, ir.get, ir.get
 
 ### testql.commands.misc_cmds.watch
@@ -147,9 +143,13 @@ Examples:
 ### TODO.testtoon_parser.parse_testtoon
 - **Calls**: text.splitlines, META_RE.match, None.startswith, HEADER_RE.match, raw.strip, raw.strip, None.strip, raw.strip
 
-### testql.generators.generators.PythonTestGeneratorMixin._generate_from_python_tests
-> Generate tests from existing Python test patterns.
-- **Calls**: None.join, output_file.write_text, sections.append, sections.append, sections.append, sections.append, sections.append, sections.append
+### testql.commands.heal_scenario_cmd.heal_scenario
+> Validate and heal selectors in an existing TestTOON scenario.
+- **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, click.option, file.read_text
+
+### testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+> ASSERT_JSON path op value — e.g. ASSERT_JSON data.length > 0
+- **Calls**: None.split, path.startswith, None.strip, literal.lower, _COMPARE_OPS.get, len, self.out.warn, re.match
 
 ### testql.interpreter._shell.ShellMixin._cmd_shell
 > SHELL "command" [timeout_ms] — Execute arbitrary shell command.
@@ -168,6 +168,14 @@ Examples:
     ASSERT_SCHEMA '{"typ
 - **Calls**: None.strip, self.out.warn, jsonschema.validate, self.out.step, self.results.append, args.strip, schema_input.startswith, schema_input.startswith
 
+### testql.interpreter._gui.GuiMixin._cmd_gui_navigate
+> GUI_NAVIGATE "path_or_url" — Navigate to another page.
+
+Examples:
+    GUI_NAVIGATE "/connect-id"
+    GUI_NAVIGATE "http://google.com"
+- **Calls**: None.strip, self.out.fail, self.out.step, self.results.append, self.out.fail, self.results.append, self.out.step, self.results.append
+
 ### testql.interpreter._assertions.AssertionsMixin._cmd_assert_cookies
 > ASSERT_COOKIES <cookie_name> <op> <expected> — Assert cookie value.
 
@@ -179,9 +187,20 @@ Examples:
 ### testql.discovery.probes.browser.playwright_page.PlaywrightPageProbe.probe
 - **Calls**: self.result, ImportError, self.result, sync_playwright, p.chromium.launch, browser.new_page, page.on, page.on
 
-### testql.interpreter.main
-> CLI entry point — unchanged from original.
-- **Calls**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument
+### testql.commands.run_cmd.run
+> Run a TestQL (.testql.toon.yaml) scenario.
+- **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, click.option, click.option
+
+### testql.adapters.testtoon_adapter._render_plan
+> Lossy renderer covering CONFIG / API / NAVIGATE / ENCODER / ASSERT.
+
+Phase 0 keeps this minimal — adapters that need richer round-trip can
+extend late
+- **Calls**: parts.extend, parts.extend, parts.extend, parts.extend, parts.extend, parts.extend, parts.extend, parts.extend
+
+### testql.commands.generate_from_page_cmd.generate_from_page
+> Auto-generate a TestTOON GUI scenario from a live URL.
+- **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, click.option, None.render
 
 ### testql.interpreter._unit.UnitMixin._cmd_unit_assert
 > UNIT_ASSERT "module.function" "args_json" "expected" — Assert function returns expected value.
@@ -190,6 +209,17 @@ Examples:
     UNIT_ASSERT "math.sqrt" "[4]" "2.0"
     
 - **Calls**: None.split, None.strip, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append
+
+### testql.interpreter.main
+> CLI entry point — unchanged from original.
+- **Calls**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument
+
+### testql.adapters.scenario_yaml._render_step
+- **Calls**: isinstance, testql.adapters.scenario_yaml._add_common_step_attributes, data.update, isinstance, testql.adapters.scenario_yaml._render_api_step, data.update, isinstance, testql.adapters.scenario_yaml._render_gui_step
+
+### testql.interpreter._gui.GuiMixin._cmd_gui_assert_visible
+> GUI_ASSERT_VISIBLE "selector" — Assert element is visible.
+- **Calls**: None.strip, self._find_element_with_logging, self.out.fail, self.out.step, self.results.append, self.out.fail, self.results.append, self.out.step
 
 ### testql.runner.main
 - **Calls**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.parse_args, DslCliExecutor
@@ -204,6 +234,13 @@ Examples:
 ### testql.interpreter._gui.GuiMixin._cmd_gui_assert_text
 > GUI_ASSERT_TEXT "selector" "expected" — Assert element contains text.
 - **Calls**: None.split, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append, self.out.fail
+
+### testql.generators.api_generator.APIGeneratorMixin._generate_api_tests
+> Generate comprehensive API tests from discovered routes.
+- **Calls**: self.profile.config.get, self.profile.config.get, self._validate_endpoints, self._build_api_test_header, sections.extend, sections.extend, sections.extend, sections.extend
+
+### testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_taborder
+- **Calls**: shlex.split, DomScanner, scanner.assert_taborder, len, self.out.fail, self.results.append, int, getattr
 
 ### testql.adapters.testtoon_adapter._api_section_to_steps
 - **Calls**: steps.append, row.get, row.get, asserts.append, row.get, asserts.append, None.strip, ApiStep
@@ -224,42 +261,6 @@ Examples:
     GUI_INPUT "input#username" "te
 - **Calls**: None.split, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append, self.out.fail
 
-### testql.openapi_generator.ContractTestGenerator.generate_contract_tests
-> Generate TestQL contract tests from OpenAPI spec.
-- **Calls**: self.spec.get, paths.items, lines.append, lines.append, lines.append, lines.append, lines.append, lines.append
-
-### testql.sumd_parser.SumdParser.generate_testql_scenarios
-> Generate testql scenario content from SUMD document.
-- **Calls**: lines.append, lines.append, lines.append, lines.append, lines.append, lines.append, lines.append, lines.append
-
-### testql.commands.generate_cmd.analyze
-> Analyze project structure and show testability report.
-- **Calls**: click.command, click.argument, Path, TestGenerator, gen.analyze, click.echo, click.echo, click.echo
-
-### testql.commands.misc_cmds.report
-> Generate HTML report from test data.json.
-- **Calls**: click.command, click.argument, click.option, click.option, code2llm_output.map.toon.generate_report, click.echo, click.echo, Path
-
-### testql.interpreter._gui.GuiMixin._cmd_gui_assert_visible
-> GUI_ASSERT_VISIBLE "selector" — Assert element is visible.
-- **Calls**: None.strip, self.out.fail, self.out.step, self.results.append, self.out.fail, self.results.append, args.strip, StepResult
-
-### testql.interpreter._gui.GuiMixin._cmd_gui_capture
-> GUI_CAPTURE "selector" "screenshot.png" — Take screenshot of element or full page.
-
-Examples:
-    GUI_CAPTURE "" "full-page.png"  # Full page
-    GUI_
-- **Calls**: None.split, None.strip, None.strip, self.out.step, self.results.append, self.out.fail, self.results.append, self.out.step
-
-### testql.commands.misc_cmds.create
-> Create new test file from template.
-- **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, out_dir.mkdir, TestContentBuilder.build
-
-### testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
-> ASSERT_JSON path op value — e.g. ASSERT_JSON data.length > 0
-- **Calls**: None.split, code2llm_output.map.toon._navigate_json_path, _COMPARE_OPS.get, len, self.out.warn, self.out.step, self.errors.append, self.results.append
-
 ## Process Flows
 
 Key execution flows identified:
@@ -269,19 +270,19 @@ Key execution flows identified:
 auto [testql.commands.auto_cmd]
 ```
 
-### Flow 2: _parse_command
+### Flow 2: _cmd_dom_scan
 ```
-_parse_command [testql.generators.sources.oql_source.OqlParser]
-```
-
-### Flow 3: to_iql
-```
-to_iql [testql.generators.sources.oql_source.OqlSource]
+_cmd_dom_scan [testql.interpreter.dom_scan_mixin.DomScanMixin]
 ```
 
-### Flow 4: suite
+### Flow 3: suite
 ```
 suite [testql.commands.suite.cli]
+```
+
+### Flow 4: to_oql
+```
+to_oql [testql.generators.sources.pytest_source.PytestSource]
 ```
 
 ### Flow 5: watch
@@ -294,27 +295,45 @@ watch [testql.commands.misc_cmds]
 parse_testtoon [TODO.testtoon_parser]
 ```
 
-### Flow 7: _generate_from_python_tests
+### Flow 7: heal_scenario
 ```
-_generate_from_python_tests [testql.generators.generators.PythonTestGeneratorMixin]
+heal_scenario [testql.commands.heal_scenario_cmd]
 ```
 
-### Flow 8: _cmd_shell
+### Flow 8: _cmd_assert_json
+```
+_cmd_assert_json [testql.interpreter._assertions.AssertionsMixin]
+```
+
+### Flow 9: _cmd_shell
 ```
 _cmd_shell [testql.interpreter._shell.ShellMixin]
 ```
 
-### Flow 9: _cmd_assert_schema
+### Flow 10: _cmd_assert_schema
 ```
 _cmd_assert_schema [testql.interpreter._assertions.AssertionsMixin]
 ```
 
-### Flow 10: _cmd_assert_cookies
-```
-_cmd_assert_cookies [testql.interpreter._assertions.AssertionsMixin]
-```
-
 ## Key Classes
+
+### testql.interpreter._gui.GuiMixin
+> Mixin providing desktop GUI test commands using Playwright.
+
+Commands:
+  - GUI_START (START) "path" 
+- **Methods**: 34
+- **Key Methods**: testql.interpreter._gui.GuiMixin._resolve_selector_with_fallback, testql.interpreter._gui.GuiMixin._generate_fallback_selectors, testql.interpreter._gui.GuiMixin._get_class_fallbacks, testql.interpreter._gui.GuiMixin._get_id_fallbacks, testql.interpreter._gui.GuiMixin._get_role_based_fallbacks, testql.interpreter._gui.GuiMixin._get_button_text_fallbacks, testql.interpreter._gui.GuiMixin._try_selectors, testql.interpreter._gui.GuiMixin._try_single_selector, testql.interpreter._gui.GuiMixin._find_element_with_logging, testql.interpreter._gui.GuiMixin._init_gui_driver
+
+### testql.interpreter.dom_scanner.DomScanner
+- **Methods**: 24
+- **Key Methods**: testql.interpreter.dom_scanner.DomScanner.__init__, testql.interpreter.dom_scanner.DomScanner.scan_focusable, testql.interpreter.dom_scanner.DomScanner.scan_aria, testql.interpreter.dom_scanner.DomScanner.scan_interactive, testql.interpreter.dom_scanner.DomScanner.scan_taborder, testql.interpreter.dom_scanner.DomScanner.audit_buttons, testql.interpreter.dom_scanner.DomScanner._should_skip_button, testql.interpreter.dom_scanner.DomScanner._audit_single_button, testql.interpreter.dom_scanner.DomScanner._setup_mutation_observer, testql.interpreter.dom_scanner.DomScanner._classify_button_result
+
+### testql.generators.sources.oql_source.OqlSource
+> Source adapter for OQL/CQL scenario files.
+- **Methods**: 22
+- **Key Methods**: testql.generators.sources.oql_source.OqlSource.load, testql.generators.sources.oql_source.OqlSource.ingest, testql.generators.sources.oql_source.OqlSource._to_unified_ir, testql.generators.sources.oql_source.OqlSource._detect_scenario_type, testql.generators.sources.oql_source.OqlSource._convert_command, testql.generators.sources.oql_source.OqlSource._convert_set, testql.generators.sources.oql_source.OqlSource._convert_read, testql.generators.sources.oql_source.OqlSource._convert_write, testql.generators.sources.oql_source.OqlSource._convert_check, testql.generators.sources.oql_source.OqlSource._convert_wait
+- **Inherits**: BaseSource
 
 ### testql.topology.generator.TopologyScenarioGenerator
 > Generate executable TestPlans from topology traversal traces.
@@ -331,16 +350,22 @@ _cmd_assert_cookies [testql.interpreter._assertions.AssertionsMixin]
 - **Methods**: 15
 - **Key Methods**: testql.runner.DslCliExecutor.__init__, testql.runner.DslCliExecutor.execute, testql.runner.DslCliExecutor._dispatch, testql.runner.DslCliExecutor.cmd_api, testql.runner.DslCliExecutor.cmd_wait, testql.runner.DslCliExecutor.cmd_log, testql.runner.DslCliExecutor.cmd_print, testql.runner.DslCliExecutor.cmd_store, testql.runner.DslCliExecutor.cmd_env, testql.runner.DslCliExecutor.cmd_assert_status
 
-### testql.generators.sources.oql_source.OqlSource
-> Source adapter for OQL/CQL scenario files.
-- **Methods**: 14
-- **Key Methods**: testql.generators.sources.oql_source.OqlSource.ingest, testql.generators.sources.oql_source.OqlSource._to_unified_ir, testql.generators.sources.oql_source.OqlSource._detect_scenario_type, testql.generators.sources.oql_source.OqlSource._convert_command, testql.generators.sources.oql_source.OqlSource._convert_set, testql.generators.sources.oql_source.OqlSource._convert_read, testql.generators.sources.oql_source.OqlSource._convert_write, testql.generators.sources.oql_source.OqlSource._convert_check, testql.generators.sources.oql_source.OqlSource._convert_wait, testql.generators.sources.oql_source.OqlSource._convert_poll
-- **Inherits**: BaseSource
+### testql.generators.sources.oql_source.OqlParser
+> Parse OQL/CQL scenario files.
+
+OQL (Object Query Language) and CQL (Command Query Language) are comm
+- **Methods**: 15
+- **Key Methods**: testql.generators.sources.oql_source.OqlParser.parse_file, testql.generators.sources.oql_source.OqlParser._parse_command, testql.generators.sources.oql_source.OqlParser._create_command_from_match, testql.generators.sources.oql_source.OqlParser._parse_set_command, testql.generators.sources.oql_source.OqlParser._parse_read_command, testql.generators.sources.oql_source.OqlParser._parse_write_command, testql.generators.sources.oql_source.OqlParser._parse_check_command, testql.generators.sources.oql_source.OqlParser._parse_wait_command, testql.generators.sources.oql_source.OqlParser._parse_poll_command, testql.generators.sources.oql_source.OqlParser._parse_exec_command
 
 ### testql.interpreter._encoder.EncoderMixin
 > Mixin providing all ENCODER_* hardware control commands.
-- **Methods**: 12
-- **Key Methods**: testql.interpreter._encoder.EncoderMixin._encoder_url, testql.interpreter._encoder.EncoderMixin._encoder_do_http, testql.interpreter._encoder.EncoderMixin._encoder_call, testql.interpreter._encoder.EncoderMixin._cmd_encoder_on, testql.interpreter._encoder.EncoderMixin._cmd_encoder_off, testql.interpreter._encoder.EncoderMixin._cmd_encoder_scroll, testql.interpreter._encoder.EncoderMixin._cmd_encoder_click, testql.interpreter._encoder.EncoderMixin._cmd_encoder_dblclick, testql.interpreter._encoder.EncoderMixin._cmd_encoder_focus, testql.interpreter._encoder.EncoderMixin._cmd_encoder_status
+- **Methods**: 13
+- **Key Methods**: testql.interpreter._encoder.EncoderMixin._encoder_url, testql.interpreter._encoder.EncoderMixin._encoder_prefix, testql.interpreter._encoder.EncoderMixin._encoder_do_http, testql.interpreter._encoder.EncoderMixin._encoder_call, testql.interpreter._encoder.EncoderMixin._cmd_encoder_on, testql.interpreter._encoder.EncoderMixin._cmd_encoder_off, testql.interpreter._encoder.EncoderMixin._cmd_encoder_scroll, testql.interpreter._encoder.EncoderMixin._cmd_encoder_click, testql.interpreter._encoder.EncoderMixin._cmd_encoder_dblclick, testql.interpreter._encoder.EncoderMixin._cmd_encoder_focus
+
+### testql.generators.api_generator._ValidationResult
+> Result of endpoint validation.
+- **Methods**: 13
+- **Key Methods**: testql.generators.api_generator._ValidationResult.__init__, testql.generators.api_generator._ValidationResult._build_api_test_header, testql.generators.api_generator._ValidationResult._build_api_test_config, testql.generators.api_generator._ValidationResult._build_api_test_preamble, testql.generators.api_generator._ValidationResult._build_api_test_captures, testql.generators.api_generator._ValidationResult._build_rest_section, testql.generators.api_generator._ValidationResult._build_graphql_section, testql.generators.api_generator._ValidationResult._build_websocket_section, testql.generators.api_generator._ValidationResult._build_api_test_endpoints, testql.generators.api_generator._ValidationResult._deduplicate_rest_routes
 
 ### testql.adapters.registry.AdapterRegistry
 > In-process registry of `BaseDSLAdapter` instances.
@@ -359,19 +384,6 @@ Adapters register themselves on import (or are r
 > Unified detector that runs all specialized detectors.
 - **Methods**: 11
 - **Key Methods**: testql.detectors.unified.UnifiedEndpointDetector.__init__, testql.detectors.unified.UnifiedEndpointDetector.detect_all, testql.detectors.unified.UnifiedEndpointDetector.validate_endpoints, testql.detectors.unified.UnifiedEndpointDetector.detect_and_validate, testql.detectors.unified.UnifiedEndpointDetector._deduplicate_endpoints, testql.detectors.unified.UnifiedEndpointDetector.get_endpoints_by_type, testql.detectors.unified.UnifiedEndpointDetector.get_endpoints_by_framework, testql.detectors.unified.UnifiedEndpointDetector.generate_testql_scenario, testql.detectors.unified.UnifiedEndpointDetector._rest_block, testql.detectors.unified.UnifiedEndpointDetector._graphql_block
-
-### testql.generators.generators.APIGeneratorMixin
-> Mixin for generating API-focused test scenarios.
-- **Methods**: 11
-- **Key Methods**: testql.generators.generators.APIGeneratorMixin._generate_api_tests, testql.generators.generators.APIGeneratorMixin._validate_endpoints, testql.generators.generators.APIGeneratorMixin._build_api_test_header, testql.generators.generators.APIGeneratorMixin._build_api_test_config, testql.generators.generators.APIGeneratorMixin._build_rest_section, testql.generators.generators.APIGeneratorMixin._build_graphql_section, testql.generators.generators.APIGeneratorMixin._build_websocket_section, testql.generators.generators.APIGeneratorMixin._build_api_test_endpoints, testql.generators.generators.APIGeneratorMixin._deduplicate_rest_routes, testql.generators.generators.APIGeneratorMixin._build_api_test_assertions
-
-### testql.interpreter._gui.GuiMixin
-> Mixin providing desktop GUI test commands using Playwright.
-
-Commands:
-  - GUI_START "app_path" [arg
-- **Methods**: 10
-- **Key Methods**: testql.interpreter._gui.GuiMixin._init_gui_driver, testql.interpreter._gui.GuiMixin._cmd_gui_start, testql.interpreter._gui.GuiMixin._start_playwright, testql.interpreter._gui.GuiMixin._start_selenium, testql.interpreter._gui.GuiMixin._cmd_gui_click, testql.interpreter._gui.GuiMixin._cmd_gui_input, testql.interpreter._gui.GuiMixin._cmd_gui_assert_visible, testql.interpreter._gui.GuiMixin._cmd_gui_assert_text, testql.interpreter._gui.GuiMixin._cmd_gui_capture, testql.interpreter._gui.GuiMixin._cmd_gui_stop
 
 ### testql.interpreter._unit.UnitMixin
 > Mixin providing unit test execution: UNIT_PYTEST, UNIT_IMPORT, UNIT_ASSERT.
@@ -393,91 +405,162 @@ Commands:
 - **Methods**: 9
 - **Key Methods**: testql.commands.templates.content.TestContentBuilder.build, testql.commands.templates.content.TestContentBuilder._build_meta_header, testql.commands.templates.content.TestContentBuilder._build_standard_vars, testql.commands.templates.content.TestContentBuilder._build_gui, testql.commands.templates.content.TestContentBuilder._build_api, testql.commands.templates.content.TestContentBuilder._build_mixed, testql.commands.templates.content.TestContentBuilder._build_performance, testql.commands.templates.content.TestContentBuilder._build_workflow, testql.commands.templates.content.TestContentBuilder._build_encoder
 
-### testql.interpreter._assertions.AssertionsMixin
-> Mixin providing ASSERT_STATUS, ASSERT_OK, ASSERT_CONTAINS, ASSERT_JSON.
-- **Methods**: 9
-- **Key Methods**: testql.interpreter._assertions.AssertionsMixin._cmd_assert_status, testql.interpreter._assertions.AssertionsMixin._cmd_assert_ok, testql.interpreter._assertions.AssertionsMixin._cmd_assert_contains, testql.interpreter._assertions.AssertionsMixin._cmd_assert_json, testql.interpreter._assertions.AssertionsMixin._cmd_assert_schema, testql.interpreter._assertions.AssertionsMixin._cmd_assert_headers, testql.interpreter._assertions.AssertionsMixin._cmd_assert_cookies, testql.interpreter._assertions.AssertionsMixin._cmd_assert_visible, testql.interpreter._assertions.AssertionsMixin._cmd_assert_text
-
 ### testql.detectors.flask_detector.FlaskDetector
 > Detect Flask endpoints including Blueprints.
 - **Methods**: 9
 - **Key Methods**: testql.detectors.flask_detector.FlaskDetector.detect, testql.detectors.flask_detector.FlaskDetector._analyze_flask_file, testql.detectors.flask_detector.FlaskDetector._detect_blueprint, testql.detectors.flask_detector.FlaskDetector._extract_blueprint_prefix, testql.detectors.flask_detector.FlaskDetector._analyze_flask_route, testql.detectors.flask_detector.FlaskDetector._extract_flask_route_info, testql.detectors.flask_detector.FlaskDetector._extract_route_path, testql.detectors.flask_detector.FlaskDetector._extract_route_methods, testql.detectors.flask_detector.FlaskDetector._apply_blueprint_prefix
 - **Inherits**: BaseEndpointDetector
 
+### testql.generators.pytest_generator.PythonTestGeneratorMixin
+> Mixin for generating tests from existing Python tests.
+- **Methods**: 9
+- **Key Methods**: testql.generators.pytest_generator.PythonTestGeneratorMixin._generate_from_python_tests, testql.generators.pytest_generator.PythonTestGeneratorMixin._build_test_header, testql.generators.pytest_generator.PythonTestGeneratorMixin._extract_api_commands, testql.generators.pytest_generator.PythonTestGeneratorMixin._build_api_section, testql.generators.pytest_generator.PythonTestGeneratorMixin._extract_assertions, testql.generators.pytest_generator.PythonTestGeneratorMixin._parse_assertion_expression, testql.generators.pytest_generator.PythonTestGeneratorMixin._build_assertions_section, testql.generators.pytest_generator.PythonTestGeneratorMixin._build_no_conversions_note, testql.generators.pytest_generator.PythonTestGeneratorMixin._normalize_assertion_field
+
+### testql.interpreter.dom_scan_mixin.DomScanMixin
+> Mixin for DOM Scan commands.
+- **Methods**: 9
+- **Key Methods**: testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_dom_scan, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_dom_audit_buttons, testql.interpreter.dom_scan_mixin.DomScanMixin._parse_audit_args, testql.interpreter.dom_scan_mixin.DomScanMixin._ensure_gui_session, testql.interpreter.dom_scan_mixin.DomScanMixin._handle_audit_report, testql.interpreter.dom_scan_mixin.DomScanMixin._save_report_to_file, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_taborder, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_aria, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_focusable
+
 ### testql.doql_parser.DoqlParser
 > Parser for doql LESS files.
 - **Methods**: 8
 - **Key Methods**: testql.doql_parser.DoqlParser.__init__, testql.doql_parser.DoqlParser.parse_file, testql.doql_parser.DoqlParser.parse, testql.doql_parser.DoqlParser._parse_app_block, testql.doql_parser.DoqlParser._parse_entity_block, testql.doql_parser.DoqlParser._parse_workflow_block, testql.doql_parser.DoqlParser._parse_interface_block, testql.doql_parser.DoqlParser._parse_deploy_block
 
-### testql._base_fallback.InterpreterOutput
-> Collects interpreter output lines for display or testing.
-- **Methods**: 8
-- **Key Methods**: testql._base_fallback.InterpreterOutput.__init__, testql._base_fallback.InterpreterOutput.emit, testql._base_fallback.InterpreterOutput.info, testql._base_fallback.InterpreterOutput.ok, testql._base_fallback.InterpreterOutput.fail, testql._base_fallback.InterpreterOutput.warn, testql._base_fallback.InterpreterOutput.error, testql._base_fallback.InterpreterOutput.step
-
-### testql.interpreter._api_runner.ApiRunnerMixin
-> Mixin providing HTTP API execution commands: API, CAPTURE.
-- **Methods**: 8
-- **Key Methods**: testql.interpreter._api_runner.ApiRunnerMixin._do_http_request, testql.interpreter._api_runner.ApiRunnerMixin._do_http_request_with_retry, testql.interpreter._api_runner.ApiRunnerMixin._store_api_response, testql.interpreter._api_runner.ApiRunnerMixin._record_api_success, testql.interpreter._api_runner.ApiRunnerMixin._record_api_http_error, testql.interpreter._api_runner.ApiRunnerMixin._record_api_error, testql.interpreter._api_runner.ApiRunnerMixin._cmd_api, testql.interpreter._api_runner.ApiRunnerMixin._cmd_capture
-
-### testql.interpreter._websockets.WebSocketMixin
-> Mixin for WebSocket testing support.
-- **Methods**: 8
-- **Key Methods**: testql.interpreter._websockets.WebSocketMixin.__init_subclass__, testql.interpreter._websockets.WebSocketMixin._get_ws_context, testql.interpreter._websockets.WebSocketMixin._cmd_ws_connect, testql.interpreter._websockets.WebSocketMixin._cmd_ws_send, testql.interpreter._websockets.WebSocketMixin._ws_do_receive, testql.interpreter._websockets.WebSocketMixin._cmd_ws_receive, testql.interpreter._websockets.WebSocketMixin._cmd_ws_assert_msg, testql.interpreter._websockets.WebSocketMixin._cmd_ws_close
-
 ## Data Transformation Functions
 
 Key functions that process and transform data:
 
-### code2llm_output.map.toon._parse_api_args
-
-### code2llm_output.map.toon._parse_meta_from_args
-
-### code2llm_output.map.toon._parse_target_from_args
-
-### code2llm_output.map.toon.convert_iql_to_testtoon
-
-### code2llm_output.map.toon.convert_file
-
-### code2llm_output.map.toon.convert_directory
-
-### code2llm_output.map.toon.parse_doql_less
-
-### code2llm_output.map.toon.parse_toon_scenarios
-
-### code2llm_output.map.toon.format_text_output
-
-### code2llm_output.map.toon.parse_value
-
-### code2llm_output.map.toon.parse_testtoon
-
-### code2llm_output.map.toon.validate
-
-### code2llm_output.map.toon.print_parsed
-
-### code2llm_output.map.toon.parse_line
-
-### code2llm_output.map.toon.parse_script
-
-### code2llm_output.map.toon.parse_sumd_file
-
-### code2llm_output.map.toon._parse_value
-
-### code2llm_output.map.toon.validate_testtoon
-
-### code2llm_output.map.toon._expand_encoder
-
-### code2llm_output.map.toon._format_log_detail
-
-### code2llm_output.map.toon._exec_encoder_cmd
-
-### code2llm_output.map.toon.parse_doql_file
-
-### code2llm_output.map.toon.parse_iql
-
-### code2llm_output.map.toon.parse_toon_file
-
 ### TODO.testtoon_parser.Section.validate
 - **Output to**: errors.append, len, len
+
+### TODO.testtoon_parser.parse_value
+> Parsuj wartości: -, liczby, {json}, tablice [1,2], stringi
+- **Output to**: v.strip, v.strip, v.startswith, v.endswith, v.startswith
+
+### TODO.testtoon_parser.parse_testtoon
+- **Output to**: text.splitlines, META_RE.match, None.startswith, HEADER_RE.match, raw.strip
+
+### TODO.testtoon_parser.validate
+- **Output to**: errors.extend, s.validate
+
+### TODO.testtoon_parser.print_parsed
+- **Output to**: examples.browser-inspection.run.print, examples.browser-inspection.run.print, examples.browser-inspection.run.print, TODO.testtoon_parser.validate, examples.browser-inspection.run.print
+
+### testql.toon_parser.ToonParser.parse_file
+> Parse a toon test file.
+
+Args:
+    path: Path to the toon test file
+    
+Returns:
+    APIContract: E
+- **Output to**: path.read_text, self.parse
+
+### testql.toon_parser.ToonParser.parse
+> Parse toon test content.
+
+Args:
+    content: Toon test content
+    
+Returns:
+    APIContract: Extrac
+- **Output to**: APIContract, re.finditer, re.finditer, re.finditer, None.strip
+
+### testql.toon_parser.ToonParser._parse_api_block
+> Parse API block content.
+- **Output to**: re.search, method_match.group, method_match.group, re.search, self.contract.endpoints.append
+
+### testql.toon_parser.ToonParser._parse_assert_block
+> Parse ASSERT block content.
+- **Output to**: re.search, assert_match.group, assert_match.group, None.strip, self.contract.asserts.append
+
+### testql.toon_parser.ToonParser._parse_log_block
+> Parse LOG block content for base_url.
+- **Output to**: re.search, url_match.group
+
+### testql.toon_parser.parse_toon_file
+> Parse a toon test file.
+
+Args:
+    path: Path to the toon test file
+    
+Returns:
+    APIContract: E
+- **Output to**: ToonParser, parser.parse_file
+
+### testql.doql_parser.DoqlParser.parse_file
+> Parse a doql LESS file.
+
+Args:
+    path: Path to the doql LESS file
+    
+Returns:
+    SystemModel: E
+- **Output to**: path.read_text, self.parse
+
+### testql.doql_parser.DoqlParser.parse
+> Parse doql LESS content.
+
+Args:
+    content: Doql LESS content
+    
+Returns:
+    SystemModel: Extrac
+- **Output to**: SystemModel, re.search, re.finditer, re.finditer, re.finditer
+
+### testql.doql_parser.DoqlParser._parse_app_block
+> Parse app block for project metadata.
+- **Output to**: re.search, re.search, None.strip, None.strip, name_match.group
+
+### testql.doql_parser.DoqlParser._parse_entity_block
+> Parse entity block.
+- **Output to**: Entity, re.finditer, re.search, re.search, re.search
+
+### testql.doql_parser.DoqlParser._parse_workflow_block
+> Parse workflow block.
+- **Output to**: Workflow, re.search, re.search, re.search, re.search
+
+### testql.doql_parser.DoqlParser._parse_interface_block
+> Parse interface block.
+- **Output to**: Interface, re.search, self.system_model.interfaces.append, None.strip, framework_match.group
+
+### testql.doql_parser.DoqlParser._parse_deploy_block
+> Parse deploy block.
+- **Output to**: re.search, re.search, None.strip, None.strip, target_match.group
+
+### testql.doql_parser.parse_doql_file
+> Parse a doql LESS file.
+
+Args:
+    path: Path to the doql LESS file
+    
+Returns:
+    SystemModel: E
+- **Output to**: DoqlParser, parser.parse_file
+
+### testql.report_generator.ReportDataParser.parse_testql_results
+> Parse testql run results from log/json file.
+- **Output to**: TestSuiteReport
+
+### testql.runner.parse_line
+> Parse a single DSL line
+- **Output to**: line.strip, re.match, re.match, re.match, re.match
+
+### testql.runner.parse_script
+> Parse DSL script into commands
+- **Output to**: content.split, testql.runner.parse_line
+
+### testql.runner.DslCliExecutor._format_cmd
+> Format command for display
+- **Output to**: json.dumps
+
+### testql.openapi_generator.ContractTestGenerator.validate_response
+> Validate a response against the spec.
+- **Output to**: self.spec.get, None.get, str, operation.get, response.get
+
+### testql.sumd_parser._parse_block_interfaces
+> Parse ``interface[type=...]{ ... }`` blocks from SUMD content.
+- **Output to**: re.finditer, SumdInterface, re.search, interfaces.append, match.group
 
 ## Behavioral Patterns
 
@@ -486,15 +569,20 @@ Key functions that process and transform data:
 - **Confidence**: 0.90
 - **Functions**: TODO.testtoon_parser.parse_value
 
-### recursion__assertions_from_expect
-- **Type**: recursion
-- **Confidence**: 0.90
-- **Functions**: testql.adapters.scenario_yaml._assertions_from_expect
-
 ### recursion_interp_value
 - **Type**: recursion
 - **Confidence**: 0.90
 - **Functions**: testql.ir_runner.interpolation.interp_value
+
+### recursion__flatten_aom
+- **Type**: recursion
+- **Confidence**: 0.90
+- **Functions**: testql.interpreter.dom_scanner._flatten_aom
+
+### recursion__assertions_from_expect
+- **Type**: recursion
+- **Confidence**: 0.90
+- **Functions**: testql.adapters.scenario_yaml._assertions_from_expect
 
 ### state_machine_EventBridge
 - **Type**: state_machine
@@ -506,19 +594,22 @@ Key functions that process and transform data:
 Functions exposed as public API (no underscore prefix):
 
 - `testql.commands.auto_cmd.auto` - 75 calls
-- `testql.generators.sources.oql_source.OqlSource.to_iql` - 38 calls
 - `testql.commands.suite.cli.suite` - 36 calls
-- `testql.generators.sources.pytest_source.PytestSource.to_iql` - 36 calls
+- `testql.generators.sources.pytest_source.PytestSource.to_oql` - 36 calls
 - `testql.commands.misc_cmds.watch` - 35 calls
 - `TODO.testtoon_parser.parse_testtoon` - 31 calls
+- `testql.commands.heal_scenario_cmd.heal_scenario` - 30 calls
 - `testql.results.artifacts.write_inspection_artifacts` - 28 calls
 - `testql.discovery.probes.browser.playwright_page.PlaywrightPageProbe.probe` - 27 calls
+- `testql.commands.run_cmd.run` - 27 calls
+- `testql.commands.generate_from_page_cmd.generate_from_page` - 26 calls
 - `testql.interpreter.main` - 26 calls
 - `testql.runner.main` - 24 calls
 - `testql.commands.generate_topology_cmd.generate_topology` - 24 calls
 - `testql.commands.inspect_cmd.inspect` - 24 calls
 - `testql.commands.misc_cmds.from_sumd` - 23 calls
 - `testql.commands.endpoints_cmd.openapi` - 23 calls
+- `testql.cli.check_and_upgrade` - 23 calls
 - `testql.openapi_generator.ContractTestGenerator.generate_contract_tests` - 22 calls
 - `testql.sumd_parser.SumdParser.generate_testql_scenarios` - 22 calls
 - `testql.commands.generate_cmd.analyze` - 22 calls
@@ -531,7 +622,6 @@ Functions exposed as public API (no underscore prefix):
 - `testql.echo_schemas.ProjectEcho.to_text` - 20 calls
 - `testql.commands.misc_cmds.init` - 20 calls
 - `testql.commands.misc_cmds.echo` - 20 calls
-- `testql.commands.run_cmd.run` - 20 calls
 - `testql.commands.endpoints_cmd.endpoints` - 20 calls
 - `testql.adapters.sql.fixtures.schema_fixture_from_rows` - 20 calls
 - `testql.doql_parser.DoqlParser.parse` - 19 calls
@@ -542,9 +632,7 @@ Functions exposed as public API (no underscore prefix):
 - `testql.commands.discover_cmd.discover` - 17 calls
 - `testql.commands.echo.cli.echo` - 17 calls
 - `testql.runner.DslCliExecutor.cmd_assert_json` - 16 calls
-- `testql.interpreter.interpreter.IqlInterpreter.execute` - 16 calls
-- `testql.commands.encoder_routes.iql_run_file` - 15 calls
-- `testql.interpreter._testtoon_parser.parse_testtoon` - 15 calls
+- `testql.integrations.planfile_hook.create_individual_button_tickets` - 16 calls
 
 ## System Interactions
 
@@ -555,33 +643,33 @@ graph TD
     auto --> command
     auto --> argument
     auto --> option
-    _parse_command --> items
-    _parse_command --> split
-    _parse_command --> match
-    _parse_command --> OqlCommand
-    _parse_command --> groups
-    to_iql --> get
-    to_iql --> append
+    _cmd_dom_scan --> split
+    _cmd_dom_scan --> lower
+    _cmd_dom_scan --> fail
+    _cmd_dom_scan --> append
+    _cmd_dom_scan --> len
     suite --> command
     suite --> argument
     suite --> option
+    to_oql --> get
+    to_oql --> append
     watch --> command
     watch --> option
     parse_testtoon --> splitlines
     parse_testtoon --> match
     parse_testtoon --> startswith
     parse_testtoon --> strip
-    _generate_from_pytho --> join
-    _generate_from_pytho --> write_text
-    _generate_from_pytho --> append
+    heal_scenario --> command
+    heal_scenario --> argument
+    heal_scenario --> option
+    _cmd_assert_json --> split
+    _cmd_assert_json --> startswith
+    _cmd_assert_json --> strip
+    _cmd_assert_json --> lower
+    _cmd_assert_json --> get
     _cmd_shell --> strip
     _cmd_shell --> fail
     _cmd_shell --> startswith
-    _cmd_shell --> find
-    _cmd_assert_schema --> strip
-    _cmd_assert_schema --> warn
-    _cmd_assert_schema --> validate
-    _cmd_assert_schema --> step
 ```
 
 ## Reverse Engineering Guidelines

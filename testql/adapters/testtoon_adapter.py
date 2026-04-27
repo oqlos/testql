@@ -15,7 +15,7 @@ from testql.interpreter._testtoon_parser import (
     ToonScript,
     ToonSection,
     parse_testtoon as _parse_testtoon,
-    testtoon_to_iql,
+    testtoon_to_oql,
 )
 from testql.ir import (
     ApiStep,
@@ -484,5 +484,5 @@ __all__ = [
     # that imported them from this module after the migration.
     "ToonScript",
     "ToonSection",
-    "testtoon_to_iql",
+    "testtoon_to_oql",
 ]

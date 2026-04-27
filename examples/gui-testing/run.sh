@@ -12,11 +12,11 @@ if [ "${1:-}" = "--dry-run" ]; then
 fi
 
 echo "=== Login Form Test ==="
-"$TESTQL" run "$ROOT_DIR/examples/gui-testing/login-form.iql" $DRY_RUN
+"$TESTQL" run "$ROOT_DIR/examples/gui-testing/login-form.oql" $DRY_RUN
 
 echo ""
 echo "=== Search Workflow ==="
-"$TESTQL" run "$ROOT_DIR/examples/gui-testing/search-workflow.iql" $DRY_RUN
+"$TESTQL" run "$ROOT_DIR/examples/gui-testing/search-workflow.oql" $DRY_RUN
 
 echo ""
 echo "All GUI tests completed."

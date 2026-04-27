@@ -1,0 +1,44 @@
+# SCENARIO: Multi-Step Encoder Workflow
+# TYPE: encoder
+
+LOG "Navigate through settings menu"
+ENCODER_ON
+
+LOG "Focus settings column"
+ENCODER_FOCUS settings
+WAIT 300
+
+LOG "Scroll to find option"
+ENCODER_SCROLL 5
+WAIT 100
+
+LOG "Enter submenu"
+ENCODER_CLICK
+WAIT 200
+
+LOG "Scroll within submenu"
+ENCODER_SCROLL 2
+WAIT 100
+
+LOG "Confirm setting"
+ENCODER_CLICK
+WAIT 100
+
+LOG "Go back to main menu"
+ENCODER_PAGE_PREV
+WAIT 200
+
+LOG "Focus device column"
+ENCODER_FOCUS device_list
+WAIT 100
+
+LOG "Select first device"
+ENCODER_SCROLL -3
+ENCODER_CLICK
+WAIT 100
+
+LOG "Double-click to cancel"
+ENCODER_DBLCLICK
+WAIT 100
+
+ENCODER_OFF

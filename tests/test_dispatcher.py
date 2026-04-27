@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from testql.interpreter import IqlInterpreter
+from testql.interpreter import OqlInterpreter
 from testql.interpreter.dispatcher import CommandDispatcher
 
 
@@ -13,8 +13,8 @@ class TestCommandDispatcher:
 
     @pytest.fixture
     def interpreter(self):
-        """Create IqlInterpreter instance."""
-        return IqlInterpreter(api_url="http://localhost:8101", quiet=True)
+        """Create OqlInterpreter instance."""
+        return OqlInterpreter(api_url="http://localhost:8101", quiet=True)
 
     @pytest.fixture
     def dispatcher(self, interpreter):
@@ -40,9 +40,9 @@ class TestCommandDispatcher:
 
     def test_dispatch_known_command(self, dispatcher, interpreter):
         """Test dispatching a known command."""
-        from testql.interpreter._parser import IqlLine
+        from testql.interpreter._parser import OqlLine
 
-        line = IqlLine(number=1, command="SET", args="key value", raw="SET key value")
+        line = OqlLine(number=1, command="SET", args="key value", raw="SET key value")
         result = dispatcher.dispatch("SET", "key value", line)
 
         assert result is True
@@ -50,9 +50,9 @@ class TestCommandDispatcher:
 
     def test_dispatch_unknown_command(self, dispatcher, interpreter):
         """Test dispatching an unknown command."""
-        from testql.interpreter._parser import IqlLine
+        from testql.interpreter._parser import OqlLine
 
-        line = IqlLine(number=1, command="UNKNOWN", args="", raw="UNKNOWN")
+        line = OqlLine(number=1, command="UNKNOWN", args="", raw="UNKNOWN")
         result = dispatcher.dispatch("UNKNOWN", "", line)
 
         assert result is False
@@ -61,9 +61,9 @@ class TestCommandDispatcher:
 
     def test_dispatch_with_suggestion(self, dispatcher, interpreter):
         """Test dispatching unknown command with suggestion."""
-        from testql.interpreter._parser import IqlLine
+        from testql.interpreter._parser import OqlLine
 
-        line = IqlLine(number=1, command="SIT", args="", raw="SIT")
+        line = OqlLine(number=1, command="SIT", args="", raw="SIT")
         result = dispatcher.dispatch("SIT", "", line)
 
         assert result is False
@@ -78,8 +78,8 @@ class TestCommandDispatcher:
         dispatcher.register("custom", custom_handler)
         assert dispatcher.has_command("custom")
 
-        from testql.interpreter._parser import IqlLine
-        line = IqlLine(number=1, command="CUSTOM", args="test", raw="CUSTOM test")
+        from testql.interpreter._parser import OqlLine
+        line = OqlLine(number=1, command="CUSTOM", args="test", raw="CUSTOM test")
         result = dispatcher.dispatch("CUSTOM", "test", line)
 
         assert result is True
@@ -93,23 +93,23 @@ class TestCommandDispatcher:
 
 
 class TestDispatcherIntegration:
-    """Test CommandDispatcher integration with IqlInterpreter."""
+    """Test CommandDispatcher integration with OqlInterpreter."""
 
     @pytest.fixture
     def interpreter(self):
-        """Create IqlInterpreter with dispatcher."""
-        return IqlInterpreter(api_url="http://localhost:8101", quiet=True)
+        """Create OqlInterpreter with dispatcher."""
+        return OqlInterpreter(api_url="http://localhost:8101", quiet=True)
 
     def test_interpreter_uses_dispatcher(self, interpreter):
-        """Test that IqlInterpreter uses CommandDispatcher."""
+        """Test that OqlInterpreter uses CommandDispatcher."""
         assert hasattr(interpreter, "dispatcher")
         assert isinstance(interpreter.dispatcher, CommandDispatcher)
 
     def test_dispatch_through_interpreter(self, interpreter):
         """Test dispatching through interpreter's _dispatch method."""
-        from testql.interpreter._parser import IqlLine
+        from testql.interpreter._parser import OqlLine
 
-        line = IqlLine(number=1, command="SET", args="test_key test_value", raw="SET test_key test_value")
+        line = OqlLine(number=1, command="SET", args="test_key test_value", raw="SET test_key test_value")
         interpreter._dispatch("SET", "test_key test_value", line)
 
         assert interpreter.vars.get("test_key") == "test_value"

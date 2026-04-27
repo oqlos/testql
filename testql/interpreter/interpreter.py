@@ -1,8 +1,8 @@
 """
 testql.interpreter.interpreter
-— IQL / TestQL interpreter (refactored into subpackage).
+— OQL / TestQL interpreter (refactored into subpackage).
 
-Import path unchanged: `from testql.interpreter import IqlInterpreter`
+Import path unchanged: `from testql.interpreter import OqlInterpreter`
 """
 
 from __future__ import annotations
@@ -12,8 +12,8 @@ from typing import Any
 
 from testql.base import BaseInterpreter, ScriptResult, StepResult, StepStatus
 
-from ._parser import IqlLine, IqlScript, parse_iql
-from ._testtoon_parser import testtoon_to_iql
+from ._parser import OqlLine, OqlScript, parse_oql
+from ._testtoon_parser import testtoon_to_oql
 from ._api_runner import ApiRunnerMixin
 from ._assertions import AssertionsMixin
 from ._encoder import EncoderMixin
@@ -27,12 +27,12 @@ from ._websockets import WebSocketMixin
 from .dispatcher import CommandDispatcher
 
 
-class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, GuiMixin, DomScanMixin, HardwareMixin, ShellMixin, UnitMixin, WebSocketMixin, BaseInterpreter):
+class OqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, GuiMixin, DomScanMixin, HardwareMixin, ShellMixin, UnitMixin, WebSocketMixin, BaseInterpreter):
     """
-    IQL interpreter — runs .testql.toon.yaml / .iql / .tql scripts.
+    OQL interpreter — runs .testql.toon.yaml / .oql / .tql scripts.
 
-    Supports both legacy IQL format and the new TestTOON tabular format.
-    TestTOON files are automatically detected and expanded to IQL commands.
+    Supports both legacy OQL format and the new TestTOON tabular format.
+    TestTOON files are automatically detected and expanded to OQL commands.
 
     Features:
       - SET/GET variables with ${var} interpolation
@@ -71,11 +71,11 @@ class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, G
         self._included: set[str] = set()  # prevent circular includes
         self.dispatcher = CommandDispatcher(self)  # Central command dispatcher
 
-    def parse(self, source: str, filename: str = "<string>") -> IqlScript:
-        """Auto-detect format: TestTOON (.testql.toon.yaml) vs legacy IQL."""
+    def parse(self, source: str, filename: str = "<string>") -> OqlScript:
+        """Auto-detect format: TestTOON (.testql.toon.yaml) vs legacy OQL."""
         if self._is_testtoon(source, filename):
-            return testtoon_to_iql(source, filename)
-        return parse_iql(source, filename)
+            return testtoon_to_oql(source, filename)
+        return parse_oql(source, filename)
 
     @staticmethod
     def _is_testtoon(source: str, filename: str) -> bool:
@@ -86,9 +86,9 @@ class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, G
         import re
         return bool(re.search(r'^[A-Z_]+(?:\[\d+\])?\{[^}]+\}:', source, re.MULTILINE))
 
-    def execute(self, parsed: IqlScript) -> ScriptResult:
+    def execute(self, parsed: OqlScript) -> ScriptResult:
         t0 = time.monotonic()
-        self.out.step("📜", f"IQL: {parsed.filename}")
+        self.out.step("📜", f"OQL: {parsed.filename}")
 
         for line in parsed.lines:
             args = self.vars.interpolate(line.args)
@@ -114,7 +114,7 @@ class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, G
 
     # ── Command dispatch ──────────────────────────────────────────────────────
 
-    def _dispatch(self, cmd: str, args: str, line: IqlLine) -> None:
+    def _dispatch(self, cmd: str, args: str, line: OqlLine) -> None:
         """Dispatch command using central dispatcher with auto-discovery."""
         # Try dispatcher first (for registered _cmd_* handlers)
         if self.dispatcher.dispatch(cmd, args, line):
@@ -125,7 +125,7 @@ class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, G
 
     # ── Variables ─────────────────────────────────────────────────────────────
 
-    def _cmd_set(self, args: str, line: IqlLine) -> None:
+    def _cmd_set(self, args: str, line: OqlLine) -> None:
         # Handle quoted keys with spaces: SET "key with spaces" "value"
         import shlex
         try:
@@ -151,7 +151,7 @@ class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, G
             self.vars.set(key, val)
             self.out.step("📝", f"SET {key} = {val}")
 
-    def _cmd_get(self, args: str, line: IqlLine) -> None:
+    def _cmd_get(self, args: str, line: OqlLine) -> None:
         key = args.strip()
         val = self.vars.get(key, "<undefined>")
         self.out.step("📖", f"GET {key} = {val}")

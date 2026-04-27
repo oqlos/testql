@@ -1,28 +1,28 @@
-"""Basic tests for TestQL interpreter — IQL and TestTOON formats."""
+"""Basic tests for TestQL interpreter — OQL and TestTOON formats."""
 
 from __future__ import annotations
 
 from testql.interpreter import (
-    IqlInterpreter,
-    parse_iql,
+    OqlInterpreter,
+    parse_oql,
     parse_testtoon,
     validate_testtoon,
 )
-from testql.interpreter._testtoon_parser import testtoon_to_iql as _testtoon_to_iql
+from testql.interpreter._testtoon_parser import testtoon_to_oql as _testtoon_to_oql
 
 
-class TestParseIql:
+class TestParseOql:
     def test_empty(self):
-        script = parse_iql("")
+        script = parse_oql("")
         assert script.lines == []
 
     def test_comments_ignored(self):
-        script = parse_iql("# comment\n\n# another")
+        script = parse_oql("# comment\n\n# another")
         assert script.lines == []
 
     def test_basic_commands(self):
         source = 'SET api_url "http://localhost"\nLOG "hello"\nWAIT 500'
-        script = parse_iql(source)
+        script = parse_oql(source)
         assert len(script.lines) == 3
         assert script.lines[0].command == "SET"
         assert script.lines[1].command == "LOG"
@@ -94,7 +94,7 @@ class TestTestTOONExpansion:
             "  GET,  /health,  200\n"
             "  POST, /devices, 201\n"
         )
-        script = _testtoon_to_iql(source, "test.testql.toon.yaml")
+        script = _testtoon_to_oql(source, "test.testql.toon.yaml")
         assert len(script.lines) == 4  # 2 API + 2 ASSERT_STATUS
         assert script.lines[0].command == "API"
         assert script.lines[1].command == "ASSERT_STATUS"
@@ -109,7 +109,7 @@ class TestTestTOONExpansion:
             "  on,  -,  -,  300\n"
             "  scroll,  -,  1,  150\n"
         )
-        script = _testtoon_to_iql(source, "test.testql.toon.yaml")
+        script = _testtoon_to_oql(source, "test.testql.toon.yaml")
         assert script.lines[0].command == "ENCODER_ON"
         assert script.lines[1].command == "WAIT"
         assert script.lines[1].args == "300"
@@ -123,7 +123,7 @@ class TestTestTOONExpansion:
             "CONFIG[1]{key, value}:\n"
             "  api_url,  http://localhost:8101\n"
         )
-        script = _testtoon_to_iql(source, "test.testql.toon.yaml")
+        script = _testtoon_to_oql(source, "test.testql.toon.yaml")
         assert len(script.lines) == 1
         assert script.lines[0].command == "SET"
 
@@ -133,7 +133,7 @@ class TestTestTOONExpansion:
             "  api_url: http://localhost:8101\n"
             "  encoder_url: http://localhost:8100\n"
         )
-        script = _testtoon_to_iql(source, "test.testql.toon.yaml")
+        script = _testtoon_to_oql(source, "test.testql.toon.yaml")
         assert [(line.command, line.args) for line in script.lines] == [
             ("SET", 'api_url "http://localhost:8101"'),
             ("SET", 'encoder_url "http://localhost:8100"'),
@@ -147,7 +147,7 @@ class TestTestTOONExpansion:
             "ENCODER[1]{action, target, value, wait_ms}:\n"
             "  status, -, -, -\n"
         )
-        script = _testtoon_to_iql(source, "test.testql.toon.yaml")
+        script = _testtoon_to_oql(source, "test.testql.toon.yaml")
         assert script.lines[0].command == "SET"
         assert script.lines[0].args == 'encoder_url "http://localhost:8100"'
         assert script.lines[1].command == "SET"
@@ -160,28 +160,28 @@ class TestTestTOONExpansion:
             "  /connect-test,  500\n"
             "  /connect-id,    300\n"
         )
-        script = _testtoon_to_iql(source, "test.testql.toon.yaml")
+        script = _testtoon_to_oql(source, "test.testql.toon.yaml")
         assert len(script.lines) == 4  # 2 NAVIGATE + 2 WAIT
         assert script.lines[0].command == "NAVIGATE"
         assert script.lines[1].command == "WAIT"
         assert script.lines[1].args == "500"
 
 
-class TestIqlInterpreter:
+class TestOqlInterpreter:
     def test_dry_run_api(self):
         source = (
             'SET api_url "http://localhost:8101"\n'
             'API GET "/health"\n'
             "ASSERT_STATUS 200\n"
         )
-        interp = IqlInterpreter(dry_run=True, quiet=True)
+        interp = OqlInterpreter(dry_run=True, quiet=True)
         result = interp.run(source, "test.tql")
         assert result.ok
         assert result.passed >= 1
 
     def test_set_get(self):
         source = 'SET foo "bar"\nGET foo'
-        interp = IqlInterpreter(dry_run=True, quiet=True)
+        interp = OqlInterpreter(dry_run=True, quiet=True)
         result = interp.run(source, "test.tql")
         assert result.ok
         assert result.variables.get("foo") == "bar"
@@ -193,13 +193,13 @@ class TestIqlInterpreter:
             "API[1]{method, endpoint, status}:\n"
             '  GET,  /health,  200\n'
         )
-        interp = IqlInterpreter(dry_run=True, quiet=True)
+        interp = OqlInterpreter(dry_run=True, quiet=True)
         result = interp.run(source, "test.testql.toon.yaml")
         assert result.ok
         assert result.passed >= 1
 
     def test_assert_json_nested_virtual_encoder_status_path(self):
-        interp = IqlInterpreter(dry_run=True, quiet=True)
+        interp = OqlInterpreter(dry_run=True, quiet=True)
         interp.vars.set("_encoder_status", {"active": False, "error": "no_response"})
 
         result = interp.run(
@@ -211,7 +211,7 @@ class TestIqlInterpreter:
         assert result.failed == 0
 
     def test_assert_json_nested_virtual_encoder_status_bool(self):
-        interp = IqlInterpreter(dry_run=True, quiet=True)
+        interp = OqlInterpreter(dry_run=True, quiet=True)
         interp.vars.set("_encoder_status", {"active": True, "error": None})
 
         result = interp.run(

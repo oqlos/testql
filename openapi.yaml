@@ -28,9 +28,9 @@ info:
   version: 1.0.0
 openapi: 3.0.3
 paths:
-  /iql/file:
+  /oql/file:
     get:
-      operationId: iql_read_file
+      operationId: oql_read_file
       parameters:
       - in: query
         name: path
@@ -50,25 +50,25 @@ paths:
           description: Not Found
         '500': &id004
           description: Internal Server Error
-      summary: Read a TestQL file content (.testql.toon.yaml / .iql / .tql).
+      summary: Read a TestQL file content (.testql.toon.yaml / .oql / .tql).
       tags:
       - fastapi
-      - iql
-  /iql/files:
+      - oql
+  /oql/files:
     get:
-      operationId: iql_list_files
+      operationId: oql_list_files
       responses:
         '200': *id001
         '401': *id002
         '404': *id003
         '500': *id004
-      summary: List all .testql.toon.yaml files in the project (with .iql/.tql fallback).
+      summary: List all .testql.toon.yaml files in the project (with .oql/.tql fallback).
       tags:
       - fastapi
-      - iql
-  /iql/log:
+      - oql
+  /oql/log:
     get:
-      operationId: iql_read_log
+      operationId: oql_read_log
       parameters:
       - in: query
         name: name
@@ -83,10 +83,10 @@ paths:
       summary: Read a specific log file.
       tags:
       - fastapi
-      - iql
-  /iql/logs:
+      - oql
+  /oql/logs:
     get:
-      operationId: iql_list_logs
+      operationId: oql_list_logs
       responses:
         '200': *id001
         '401': *id002
@@ -95,10 +95,10 @@ paths:
       summary: List available log files.
       tags:
       - fastapi
-      - iql
-  /iql/run-file:
+      - oql
+  /oql/run-file:
     post:
-      operationId: iql_run_file
+      operationId: oql_run_file
       requestBody:
         content:
           application/json:
@@ -126,14 +126,14 @@ paths:
         '401': *id002
         '404': *id003
         '500': *id004
-      summary: Run an entire IQL file with validation. Returns structured results
+      summary: Run an entire OQL file with validation. Returns structured results
         + saves log.
       tags:
       - fastapi
-      - iql
-  /iql/run-line:
+      - oql
+  /oql/run-line:
     post:
-      operationId: iql_run_line
+      operationId: oql_run_line
       requestBody:
         content:
           application/json:
@@ -146,13 +146,13 @@ paths:
         '401': *id002
         '404': *id003
         '500': *id004
-      summary: Execute a single IQL command line via the encoder bridge.
+      summary: Execute a single OQL command line via the encoder bridge.
       tags:
       - fastapi
-      - iql
-  /iql/tables:
+      - oql
+  /oql/tables:
     get:
-      operationId: iql_list_tables
+      operationId: oql_list_tables
       parameters:
       - in: query
         name: path
@@ -164,10 +164,10 @@ paths:
         '401': *id002
         '404': *id003
         '500': *id004
-      summary: Extract table names from an IQL file.
+      summary: Extract table names from an OQL file.
       tags:
       - fastapi
-      - iql
+      - oql
 servers:
 - description: Local development
   url: http://localhost:8101

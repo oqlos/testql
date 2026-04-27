@@ -1,0 +1,24 @@
+# SCENARIO: File System Operations Test
+# TYPE: shell
+
+SET temp_dir "/tmp/testql-shell-test"
+
+# Create temp directory
+SHELL "mkdir -p ${temp_dir}"
+ASSERT_EXIT_CODE 0
+
+# Create a test file
+SHELL "echo test content > ${temp_dir}/test.txt"
+ASSERT_EXIT_CODE 0
+
+# Verify file exists (real execution needed for stdout checks)
+RUN ls "${temp_dir}/test.txt"
+ASSERT_EXIT_CODE 0
+
+# Verify file content (real execution needed for stdout checks)
+RUN cat "${temp_dir}/test.txt"
+ASSERT_EXIT_CODE 0
+
+# Clean up
+RUN rm -rf "${temp_dir}"
+ASSERT_EXIT_CODE 0

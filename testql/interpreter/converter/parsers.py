@@ -1,4 +1,4 @@
-"""Parsing utilities for IQL/TQL converter."""
+"""Parsing utilities for OQL/TQL converter."""
 
 from __future__ import annotations
 

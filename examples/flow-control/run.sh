@@ -11,7 +11,7 @@ if [ "${1:-}" = "--live" ]; then
 fi
 
 echo "=== Variables Test ($([ -n "$DRY_RUN" ] && echo dry-run || echo live)) ==="
-"$TESTQL" run "$ROOT_DIR/examples/flow-control/variables.iql" $DRY_RUN
+"$TESTQL" run "$ROOT_DIR/examples/flow-control/variables.oql" $DRY_RUN
 
 echo ""
 echo "All flow control examples completed."

@@ -11,20 +11,20 @@ CONFIG[4]{key, value}:
 
 # REST API Endpoints (14 unique)
 API[14]{method, endpoint, expected_status}:
-  GET, /iql/files, 200
-  GET, /iql/file, 200
-  GET, /iql/tables, 200
-  POST, /iql/run-line, 201
-  POST, /iql/run-file, 201
-  GET, /iql/logs, 200
-  GET, /iql/log, 200
-  GET, http://localhost:8101/iql/file, 200
-  GET, http://localhost:8101/iql/files, 200
-  GET, http://localhost:8101/iql/log, 200
-  GET, http://localhost:8101/iql/logs, 200
-  POST, http://localhost:8101/iql/run-file, 201
-  POST, http://localhost:8101/iql/run-line, 201
-  GET, http://localhost:8101/iql/tables, 200
+  GET, /oql/files, 200
+  GET, /oql/file, 200
+  GET, /oql/tables, 200
+  POST, /oql/run-line, 201
+  POST, /oql/run-file, 201
+  GET, /oql/logs, 200
+  GET, /oql/log, 200
+  GET, http://localhost:8101/oql/file, 200
+  GET, http://localhost:8101/oql/files, 200
+  GET, http://localhost:8101/oql/log, 200
+  GET, http://localhost:8101/oql/logs, 200
+  POST, http://localhost:8101/oql/run-file, 201
+  POST, http://localhost:8101/oql/run-line, 201
+  GET, http://localhost:8101/oql/tables, 200
 
 ASSERT[2]{field, operator, expected}:
   status, <, 500

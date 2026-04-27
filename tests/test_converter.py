@@ -10,7 +10,7 @@ from testql.interpreter._converter import (
     Section,
     convert_directory,
     convert_file,
-    convert_iql_to_testtoon,
+    convert_oql_to_testtoon,
 )
 
 
@@ -46,54 +46,54 @@ class TestSection:
         assert s.comment == "UI nav"
 
 
-class TestConvertIqlToTesttoon:
+class TestConvertOqlToTesttoon:
     def test_navigate_command(self):
         src = "NAVIGATE http://localhost"
-        result = convert_iql_to_testtoon(src, "test.tql")
+        result = convert_oql_to_testtoon(src, "test.tql")
         assert "NAVIGATE" in result
         assert "http://localhost" in result
 
     def test_scenario_name_from_filename(self):
         src = "NAVIGATE http://example.com"
-        result = convert_iql_to_testtoon(src, "my_scenario.tql")
+        result = convert_oql_to_testtoon(src, "my_scenario.tql")
         assert "My_Scenario" in result or "my_scenario" in result.lower() or "SCENARIO" in result
 
     def test_header_present(self):
-        result = convert_iql_to_testtoon("NAVIGATE http://x.com")
+        result = convert_oql_to_testtoon("NAVIGATE http://x.com")
         assert "# SCENARIO:" in result
         assert "# TYPE:" in result
         assert "# VERSION:" in result
 
     def test_click_converts_to_flow(self):
         src = "CLICK #btn"
-        result = convert_iql_to_testtoon(src)
+        result = convert_oql_to_testtoon(src)
         assert "FLOW" in result or "click" in result
 
     def test_assert_text_converts(self):
         src = "ASSERT_TEXT .title Hello"
-        result = convert_iql_to_testtoon(src)
+        result = convert_oql_to_testtoon(src)
         assert "assert_text" in result or "ASSERT" in result
 
     def test_empty_source(self):
-        result = convert_iql_to_testtoon("", "empty.tql")
+        result = convert_oql_to_testtoon("", "empty.tql")
         assert "# SCENARIO:" in result
 
     def test_get_request(self):
         src = "GET /api/v1/users"
-        result = convert_iql_to_testtoon(src, "api.tql")
+        result = convert_oql_to_testtoon(src, "api.tql")
         assert "# TYPE: api" in result
 
     def test_default_filename(self):
-        result = convert_iql_to_testtoon("NAVIGATE http://x.com")
+        result = convert_oql_to_testtoon("NAVIGATE http://x.com")
         assert "SCENARIO" in result
 
     def test_returns_string(self):
-        result = convert_iql_to_testtoon("NAVIGATE http://x.com")
+        result = convert_oql_to_testtoon("NAVIGATE http://x.com")
         assert isinstance(result, str)
 
     def test_multiline_script(self):
         src = "NAVIGATE http://localhost\nCLICK button\nASSERT_TEXT .title Hello"
-        result = convert_iql_to_testtoon(src, "multi.tql")
+        result = convert_oql_to_testtoon(src, "multi.tql")
         assert "NAVIGATE" in result
         assert isinstance(result, str)
 
@@ -111,8 +111,8 @@ class TestConvertFile:
         out = convert_file(src)
         assert out.name == "my_test.testql.toon.yaml"
 
-    def test_iql_extension(self, tmp_path):
-        src = tmp_path / "api.iql"
+    def test_oql_extension(self, tmp_path):
+        src = tmp_path / "api.oql"
         src.write_text("GET /api/users")
         out = convert_file(src)
         assert out.name == "api.testql.toon.yaml"
@@ -146,14 +146,14 @@ class TestConvertDirectory:
         result = convert_directory(tmp_path)
         assert len(result) == 1
 
-    def test_converts_iql_files(self, tmp_path):
-        (tmp_path / "b.iql").write_text("GET /api/v1")
+    def test_converts_oql_files(self, tmp_path):
+        (tmp_path / "b.oql").write_text("GET /api/v1")
         result = convert_directory(tmp_path)
         assert len(result) == 1
 
     def test_converts_multiple_files(self, tmp_path):
         (tmp_path / "a.tql").write_text("NAVIGATE http://a.com")
-        (tmp_path / "b.iql").write_text("GET /b")
+        (tmp_path / "b.oql").write_text("GET /b")
         result = convert_directory(tmp_path)
         assert len(result) == 2
 

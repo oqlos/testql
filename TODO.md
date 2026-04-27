@@ -173,7 +173,7 @@
 - [ ] testql/commands/suite/cli.py:13 - Relative import (level=1): '.reports'
 - [ ] testql/commands/suite/cli.py:3 - Unused import: 'annotations'
 - [ ] testql/commands/suite/execution.py:3 - Unused import: 'annotations'
-- [ ] testql/commands/suite/execution.py:50 - Duplicate import: 'IqlInterpreter' (first at line 11)
+- [ ] testql/commands/suite/execution.py:50 - Duplicate import: 'OqlInterpreter' (first at line 11)
 - [ ] testql/commands/suite/reports.py:60 - String concatenation can be converted to f-string
 - [ ] testql/commands/suite/reports.py:3 - Unused import: 'annotations'
 - [ ] testql/commands/suite/reports.py:86 - Magic number: 50 - use named constant

@@ -1,7 +1,7 @@
 """testql.ir_runner — Execute Unified IR `TestPlan`s.
 
 Sits next to the legacy `testql.interpreter` package without replacing it.
-Where the legacy interpreter consumes line-based `IqlScript` and emits events,
+Where the legacy interpreter consumes line-based `OqlScript` and emits events,
 this runner walks typed `TestPlan` steps and dispatches them to per-kind
 executors with no mixin chains.
 

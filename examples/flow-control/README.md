@@ -4,8 +4,8 @@ This example demonstrates variable management, logging, and script composition.
 
 ## Files
 
-- `variables.iql` — SET, GET, interpolation
-- `include-demo.iql` — INCLUDE other scripts
+- `variables.oql` — SET, GET, interpolation
+- `include-demo.oql` — INCLUDE other scripts
 - `run.sh` — Execute the scenarios
 
 ## Usage

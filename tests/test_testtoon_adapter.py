@@ -166,8 +166,8 @@ class TestFlowExpansion:
     """FLOW section third-column handling (regression for GUI_INPUT empty-arg bug)."""
 
     def _expand(self, source: str):
-        from testql.interpreter._testtoon_parser import testtoon_to_iql
-        return testtoon_to_iql(source).lines
+        from testql.interpreter._testtoon_parser import testtoon_to_oql
+        return testtoon_to_oql(source).lines
 
     def test_flow_value_column_quoted_for_input(self):
         # The third column is `value`: text must be forwarded as a quoted positional arg
@@ -247,7 +247,7 @@ class TestBackwardCompatibility:
             ToonScript,
             ToonSection,
             parse_testtoon,
-            testtoon_to_iql,
+            testtoon_to_oql,
             validate_testtoon,
         )
         toon = parse_testtoon(SAMPLE)
@@ -259,9 +259,9 @@ class TestBackwardCompatibility:
             ToonScript,
             ToonSection,
             parse_testtoon,
-            testtoon_to_iql,
+            testtoon_to_oql,
             validate_testtoon,
         )
         toon = parse_testtoon(SAMPLE)
-        script = testtoon_to_iql(SAMPLE)
+        script = testtoon_to_oql(SAMPLE)
         assert script.lines  # non-empty

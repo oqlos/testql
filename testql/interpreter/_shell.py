@@ -1,4 +1,4 @@
-"""Shell execution mixin for IqlInterpreter — CLI/Shell test commands."""
+"""Shell execution mixin for OqlInterpreter — CLI/Shell test commands."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from typing import Any
 
 from testql.base import StepResult, StepStatus
 
-from ._parser import IqlLine
+from ._parser import OqlLine
 
 
 class ShellMixin:
@@ -18,7 +18,7 @@ class ShellMixin:
     # Store last shell execution result
     _last_shell_result: dict[str, Any] | None = None
 
-    def _cmd_shell(self, args: str, line: IqlLine) -> None:
+    def _cmd_shell(self, args: str, line: OqlLine) -> None:
         """SHELL "command" [timeout_ms] — Execute arbitrary shell command.
 
         Examples:
@@ -116,7 +116,7 @@ class ShellMixin:
                 message=str(e),
             ))
 
-    def _cmd_exec(self, args: str, line: IqlLine) -> None:
+    def _cmd_exec(self, args: str, line: OqlLine) -> None:
         """EXEC "path/to/script" [args] [timeout_ms] — Execute script file.
 
         Examples:
@@ -143,7 +143,7 @@ class ShellMixin:
         # Reuse SHELL logic
         self._cmd_shell(f'"{command}" {timeout_ms}', line)
 
-    def _cmd_run(self, args: str, line: IqlLine) -> None:
+    def _cmd_run(self, args: str, line: OqlLine) -> None:
         """RUN "python -m module" [args] [timeout_ms] — Run Python module.
 
         Examples:
@@ -163,7 +163,7 @@ class ShellMixin:
         # Reuse SHELL logic
         self._cmd_shell(f'"{full_command}" {timeout_ms}', line)
 
-    def _cmd_assert_exit_code(self, args: str, line: IqlLine) -> None:
+    def _cmd_assert_exit_code(self, args: str, line: OqlLine) -> None:
         """ASSERT_EXIT_CODE <code> — Assert last shell command exit code.
 
         Examples:
@@ -191,7 +191,7 @@ class ShellMixin:
                 message=f"Expected {expected}, got {actual}",
             ))
 
-    def _cmd_assert_stdout_contains(self, args: str, line: IqlLine) -> None:
+    def _cmd_assert_stdout_contains(self, args: str, line: OqlLine) -> None:
         """ASSERT_STDOUT_CONTAINS "pattern" — Assert stdout contains pattern.
 
         Examples:
@@ -219,7 +219,7 @@ class ShellMixin:
                 message=f'Pattern "{pattern}" not found',
             ))
 
-    def _cmd_assert_stderr_contains(self, args: str, line: IqlLine) -> None:
+    def _cmd_assert_stderr_contains(self, args: str, line: OqlLine) -> None:
         """ASSERT_STDERR_CONTAINS "pattern" — Assert stderr contains pattern."""
         if self._last_shell_result is None:
             self.out.warn(f"L{line.number}: ASSERT_STDERR_CONTAINS: No previous SHELL command")

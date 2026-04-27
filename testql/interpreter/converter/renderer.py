@@ -1,4 +1,4 @@
-"""Rendering utilities for IQL/TQL converter."""
+"""Rendering utilities for OQL/TQL converter."""
 
 from .models import Section
 

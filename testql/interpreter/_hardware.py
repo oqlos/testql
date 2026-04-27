@@ -1,4 +1,4 @@
-"""Hardware commands mixin for IqlInterpreter — HARDWARE peripheral checks."""
+"""Hardware commands mixin for OqlInterpreter — HARDWARE peripheral checks."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from typing import Any
 
 from testql.base import StepResult, StepStatus
 
-from ._parser import IqlLine
+from ._parser import OqlLine
 
 
 class HardwareMixin:
@@ -36,7 +36,7 @@ class HardwareMixin:
             return status, data
 
     def _hardware_call(
-        self, method: str, endpoint: str, body: dict | None, line: IqlLine, label: str
+        self, method: str, endpoint: str, body: dict | None, line: OqlLine, label: str
     ) -> None:
         url = f"{self._hardware_url()}{endpoint}"
         if self.dry_run:
@@ -64,7 +64,7 @@ class HardwareMixin:
                 name=label, status=StepStatus.ERROR, message=str(e)
             ))
 
-    def _cmd_hardware(self, args: str, line: IqlLine) -> None:
+    def _cmd_hardware(self, args: str, line: OqlLine) -> None:
         """HARDWARE <command> <peripheral> — Execute hardware command.
 
         Examples:

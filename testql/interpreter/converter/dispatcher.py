@@ -1,4 +1,4 @@
-"""Command dispatcher for IQL/TQL converter.
+"""Command dispatcher for OQL/TQL converter.
 
 Uses a registry pattern to dispatch commands to their handlers.
 """

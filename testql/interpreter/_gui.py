@@ -1,4 +1,4 @@
-"""Desktop GUI test execution mixin for IqlInterpreter — Playwright/Selenium support."""
+"""Desktop GUI test execution mixin for OqlInterpreter — Playwright/Selenium support."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from typing import Any
 
 from testql.base import StepResult, StepStatus
 
-from ._parser import IqlLine
+from ._parser import OqlLine
 
 
 class GuiMixin:
@@ -43,65 +43,93 @@ class GuiMixin:
         if not self._gui_page:
             return None
             
-        selectors_to_try = [selector]
-        
-        # Strategy 1: Class to data-testid conversion
-        if selector.startswith('.'):
-            class_name = selector[1:]
-            selectors_to_try.append(f'[data-testid="{class_name}"]')
-            selectors_to_try.append(f'[data-testid="{class_name.replace("-", "_")}"]')
-            # Try ID variant
-            selectors_to_try.append(f'#{class_name}')
-            # Try without hyphens
-            selectors_to_try.append(f'.{class_name.replace("-", "")}')
-        
-        # Strategy 2: ID to class conversion
-        if selector.startswith('#'):
-            id_name = selector[1:]
-            selectors_to_try.append(f'.{id_name}')
-        
-        # Strategy 3: Role-based fallback for common patterns
-        if 'qr' in selector.lower() or 'scanner' in selector.lower():
-            selectors_to_try.append('[role="img"]')  # QR is often an image
-            selectors_to_try.append('canvas')  # Or canvas element
-        
-        if 'user' in selector.lower() and 'list' in selector.lower():
-            selectors_to_try.append('[role="list"]')
-            selectors_to_try.append('ul')
-            selectors_to_try.append('table tbody')
-        
-        # Strategy 4: Button text partial match
-        if 'btn' in selector.lower() or 'button' in selector.lower():
-            # Extract button purpose from selector name
-            if 'collect' in selector.lower():
-                selectors_to_try.append('button:has-text("Collect")')
-                selectors_to_try.append('button:has-text("Logs")')
-            if 'copy' in selector.lower():
-                selectors_to_try.append('button:has-text("Copy")')
-                selectors_to_try.append('button:has-text("clipboard")')
-        
-        # Apply timeout from interpreter settings
+        selectors_to_try = self._generate_fallback_selectors(selector)
         timeout = self.timeout_ms if self.timeout_ms else 100
         
-        # Try each selector
-        for try_selector in selectors_to_try:
-            try:
-                if self._gui_driver == "playwright":
-                    if self._gui_page.is_visible(try_selector, timeout=timeout):
-                        return try_selector
-                elif self._gui_driver == "selenium":
-                    from selenium.webdriver.common.by import By
-                    from selenium.common.exceptions import NoSuchElementException
-                    try:
-                        elem = self._gui_page.find_element(By.CSS_SELECTOR, try_selector)
-                        if elem.is_displayed():
-                            return try_selector
-                    except NoSuchElementException:
-                        continue
-            except Exception:
-                continue
+        return self._try_selectors(selectors_to_try, timeout)
+
+    def _generate_fallback_selectors(self, selector: str) -> list[str]:
+        """Generate list of fallback selectors to try."""
+        selectors_to_try = [selector]
         
-        return None  # No working selector found
+        selectors_to_try.extend(self._get_class_fallbacks(selector))
+        selectors_to_try.extend(self._get_id_fallbacks(selector))
+        selectors_to_try.extend(self._get_role_based_fallbacks(selector))
+        selectors_to_try.extend(self._get_button_text_fallbacks(selector))
+        
+        return selectors_to_try
+
+    def _get_class_fallbacks(self, selector: str) -> list[str]:
+        """Generate fallback selectors for class-based selectors."""
+        if not selector.startswith('.'):
+            return []
+        
+        class_name = selector[1:]
+        return [
+            f'[data-testid="{class_name}"]',
+            f'[data-testid="{class_name.replace("-", "_")}"]',
+            f'#{class_name}',
+            f'.{class_name.replace("-", "")}',
+        ]
+
+    def _get_id_fallbacks(self, selector: str) -> list[str]:
+        """Generate fallback selectors for ID-based selectors."""
+        if not selector.startswith('#'):
+            return []
+        
+        id_name = selector[1:]
+        return [f'.{id_name}']
+
+    def _get_role_based_fallbacks(self, selector: str) -> list[str]:
+        """Generate role-based fallback selectors for common patterns."""
+        selector_lower = selector.lower()
+        fallbacks = []
+        
+        if 'qr' in selector_lower or 'scanner' in selector_lower:
+            fallbacks.extend(['[role="img"]', 'canvas'])
+        
+        if 'user' in selector_lower and 'list' in selector_lower:
+            fallbacks.extend(['[role="list"]', 'ul', 'table tbody'])
+        
+        return fallbacks
+
+    def _get_button_text_fallbacks(self, selector: str) -> list[str]:
+        """Generate text-based fallback selectors for buttons."""
+        selector_lower = selector.lower()
+        if 'btn' not in selector_lower and 'button' not in selector_lower:
+            return []
+        
+        fallbacks = []
+        if 'collect' in selector_lower:
+            fallbacks.extend(['button:has-text("Collect")', 'button:has-text("Logs")'])
+        if 'copy' in selector_lower:
+            fallbacks.extend(['button:has-text("Copy")', 'button:has-text("clipboard")'])
+        
+        return fallbacks
+
+    def _try_selectors(self, selectors: list[str], timeout: int) -> str | None:
+        """Try each selector and return the first one that works."""
+        for try_selector in selectors:
+            if self._try_single_selector(try_selector, timeout):
+                return try_selector
+        return None
+
+    def _try_single_selector(self, selector: str, timeout: int) -> bool:
+        """Try a single selector and return True if it works."""
+        try:
+            if self._gui_driver == "playwright":
+                return self._gui_page.is_visible(selector, timeout=timeout)
+            elif self._gui_driver == "selenium":
+                from selenium.webdriver.common.by import By
+                from selenium.common.exceptions import NoSuchElementException
+                try:
+                    elem = self._gui_page.find_element(By.CSS_SELECTOR, selector)
+                    return elem.is_displayed()
+                except NoSuchElementException:
+                    return False
+        except Exception:
+            return False
+        return False
 
     def _find_element_with_logging(self, selector: str, action: str) -> tuple[str, Any] | tuple[None, None]:
         """Find element with smart fallback and logging.
@@ -150,7 +178,7 @@ class GuiMixin:
                 return False
         return False
 
-    def _cmd_gui_start(self, args: str, line: IqlLine) -> None:
+    def _cmd_gui_start(self, args: str, line: OqlLine) -> None:
         """GUI_START "app_path" [args] — Launch desktop application.
 
         For web apps, use base_url instead.
@@ -241,7 +269,7 @@ class GuiMixin:
             name=f'GUI_START "{app_path[:40]}"', status=StepStatus.PASSED
         ))
 
-    def _cmd_gui_navigate(self, args: str, line: IqlLine) -> None:
+    def _cmd_gui_navigate(self, args: str, line: OqlLine) -> None:
         """GUI_NAVIGATE "path_or_url" — Navigate to another page.
 
         Examples:
@@ -299,11 +327,11 @@ class GuiMixin:
                 message=str(e),
             ))
 
-    def _cmd_navigate(self, args: str, line: IqlLine) -> None:
+    def _cmd_navigate(self, args: str, line: OqlLine) -> None:
         """Alias for GUI_NAVIGATE."""
         self._cmd_gui_navigate(args, line)
 
-    def _cmd_gui_click(self, args: str, line: IqlLine) -> None:
+    def _cmd_gui_click(self, args: str, line: OqlLine) -> None:
         """GUI_CLICK "selector" — Click element.
 
         Examples:
@@ -361,7 +389,7 @@ class GuiMixin:
                 message=str(e),
             ))
 
-    def _cmd_gui_input(self, args: str, line: IqlLine) -> None:
+    def _cmd_gui_input(self, args: str, line: OqlLine) -> None:
         """GUI_INPUT "selector" "text" — Type text into element.
 
         Examples:
@@ -413,7 +441,7 @@ class GuiMixin:
                 message=str(e),
             ))
 
-    def _cmd_gui_assert_visible(self, args: str, line: IqlLine) -> None:
+    def _cmd_gui_assert_visible(self, args: str, line: OqlLine) -> None:
         """GUI_ASSERT_VISIBLE "selector" — Assert element is visible."""
         selector = args.strip().strip('"\'')
         if not selector:
@@ -475,7 +503,7 @@ class GuiMixin:
                 message=str(e),
             ))
 
-    def _cmd_gui_assert_text(self, args: str, line: IqlLine) -> None:
+    def _cmd_gui_assert_text(self, args: str, line: OqlLine) -> None:
         """GUI_ASSERT_TEXT "selector" "expected" — Assert element contains text."""
         parts = args.strip().split(None, 1)
         if len(parts) < 2:
@@ -531,7 +559,7 @@ class GuiMixin:
                 message=str(e),
             ))
 
-    def _cmd_gui_capture(self, args: str, line: IqlLine) -> None:
+    def _cmd_gui_capture(self, args: str, line: OqlLine) -> None:
         """GUI_CAPTURE "selector" "screenshot.png" — Take screenshot of element or full page.
 
         Examples:
@@ -579,7 +607,7 @@ class GuiMixin:
                 message=str(e),
             ))
 
-    def _cmd_gui_stop(self, args: str, line: IqlLine) -> None:
+    def _cmd_gui_stop(self, args: str, line: OqlLine) -> None:
         """GUI_STOP — Close application/browser."""
         if self.dry_run:
             self.out.step("🖥️", "GUI_STOP (dry-run)")
@@ -613,54 +641,54 @@ class GuiMixin:
 
     # --- Unified Command Aliases ---
 
-    def _cmd_start(self, args: str, line: IqlLine) -> None:
+    def _cmd_start(self, args: str, line: OqlLine) -> None:
         """Alias for GUI_START."""
         self._cmd_gui_start(args, line)
 
-    def _cmd_stop(self, args: str, line: IqlLine) -> None:
+    def _cmd_stop(self, args: str, line: OqlLine) -> None:
         """Alias for GUI_STOP."""
         self._cmd_gui_stop(args, line)
 
-    def _cmd_close(self, args: str, line: IqlLine) -> None:
+    def _cmd_close(self, args: str, line: OqlLine) -> None:
         """Alias for GUI_STOP."""
         self._cmd_gui_stop(args, line)
 
-    def _cmd_goto(self, args: str, line: IqlLine) -> None:
+    def _cmd_goto(self, args: str, line: OqlLine) -> None:
         """Alias for GUI_NAVIGATE."""
         self._cmd_gui_navigate(args, line)
 
-    def _cmd_click(self, args: str, line: IqlLine) -> None:
+    def _cmd_click(self, args: str, line: OqlLine) -> None:
         """Alias for GUI_CLICK."""
         self._cmd_gui_click(args, line)
 
-    def _cmd_input(self, args: str, line: IqlLine) -> None:
+    def _cmd_input(self, args: str, line: OqlLine) -> None:
         """Alias for GUI_INPUT."""
         self._cmd_gui_input(args, line)
 
-    def _cmd_type(self, args: str, line: IqlLine) -> None:
+    def _cmd_type(self, args: str, line: OqlLine) -> None:
         """Alias for GUI_INPUT."""
         self._cmd_gui_input(args, line)
 
-    def _cmd_assert_visible(self, args: str, line: IqlLine) -> None:
+    def _cmd_assert_visible(self, args: str, line: OqlLine) -> None:
         """Alias for GUI_ASSERT_VISIBLE."""
         self._cmd_gui_assert_visible(args, line)
 
-    def _cmd_visible(self, args: str, line: IqlLine) -> None:
+    def _cmd_visible(self, args: str, line: OqlLine) -> None:
         """Alias for GUI_ASSERT_VISIBLE."""
         self._cmd_gui_assert_visible(args, line)
 
-    def _cmd_assert_text(self, args: str, line: IqlLine) -> None:
+    def _cmd_assert_text(self, args: str, line: OqlLine) -> None:
         """Alias for GUI_ASSERT_TEXT."""
         self._cmd_gui_assert_text(args, line)
 
-    def _cmd_text(self, args: str, line: IqlLine) -> None:
+    def _cmd_text(self, args: str, line: OqlLine) -> None:
         """Alias for GUI_ASSERT_TEXT."""
         self._cmd_gui_assert_text(args, line)
 
-    def _cmd_capture(self, args: str, line: IqlLine) -> None:
+    def _cmd_capture(self, args: str, line: OqlLine) -> None:
         """Alias for GUI_CAPTURE."""
         self._cmd_gui_capture(args, line)
 
-    def _cmd_screenshot(self, args: str, line: IqlLine) -> None:
+    def _cmd_screenshot(self, args: str, line: OqlLine) -> None:
         """Alias for GUI_CAPTURE."""
         self._cmd_gui_capture(args, line)

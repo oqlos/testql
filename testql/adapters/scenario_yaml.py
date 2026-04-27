@@ -218,27 +218,91 @@ def _typed_step(item: Any) -> Step:
     if isinstance(item, str):
         return NlStep(text=item, name=item[:80])
     data = _as_dict(item)
+    
+    step_type = _detect_step_type(data)
+    return _create_step_by_type(step_type, data)
+
+
+def _detect_step_type(data: dict[str, Any]) -> str:
+    """Detect the type of step from data keys."""
     if "request" in data:
-        return _api_step(data)
-    if any(key in data for key in ("open", "input", "select", "screenshot")):
-        return _gui_step(data)
-    if "click" in data and data.get("using") != "encoder":
-        return _gui_step(data)
+        return "api"
+    if _is_gui_step(data):
+        return "gui"
     if "run" in data or "shell" in data:
-        return _shell_step(data)
-    if any(key in data for key in ("encoder", "power", "focus", "scroll", "status")) or data.get("using") == "encoder":
-        return _encoder_step(data)
-    if any(key in data for key in ("unit", "test", "call", "import", "eval")):
-        return _unit_step(data)
+        return "shell"
+    if _is_encoder_step(data):
+        return "encoder"
+    if _is_unit_step(data):
+        return "unit"
     if "sql" in data or "query" in data:
-        return _step_common(SqlStep(query=str(data.get("sql") or data.get("query") or ""), dialect=data.get("dialect")), data)
+        return "sql"
     if "graphql" in data:
-        graphql = _as_dict(data.get("graphql"))
-        return _step_common(GraphqlStep(operation=str(graphql.get("operation", "query")), body=str(graphql.get("body", "")), variables=graphql.get("variables") or {}, endpoint=graphql.get("endpoint")), data)
-    if "expect" in data:
-        return _gui_step(data)
+        return "graphql"
     if "log" in data:
-        return NlStep(text=str(data["log"]), name=str(data["log"])[:80])
+        return "nl"
+    if "expect" in data:
+        return "gui"
+    return "generic"
+
+
+def _is_gui_step(data: dict[str, Any]) -> bool:
+    """Check if data represents a GUI step."""
+    gui_keys = ("open", "input", "select", "screenshot")
+    if any(key in data for key in gui_keys):
+        return True
+    if "click" in data and data.get("using") != "encoder":
+        return True
+    return False
+
+
+def _is_encoder_step(data: dict[str, Any]) -> bool:
+    """Check if data represents an encoder step."""
+    encoder_keys = ("encoder", "power", "focus", "scroll", "status")
+    if any(key in data for key in encoder_keys):
+        return True
+    if data.get("using") == "encoder":
+        return True
+    return False
+
+
+def _is_unit_step(data: dict[str, Any]) -> bool:
+    """Check if data represents a unit step."""
+    unit_keys = ("unit", "test", "call", "import", "eval")
+    return any(key in data for key in unit_keys)
+
+
+def _create_step_by_type(step_type: str, data: dict[str, Any]) -> Step:
+    """Create a Step object based on detected type."""
+    creators = {
+        "api": _api_step,
+        "gui": _gui_step,
+        "shell": _shell_step,
+        "encoder": _encoder_step,
+        "unit": _unit_step,
+        "sql": _create_sql_step,
+        "graphql": _create_graphql_step,
+        "nl": _create_nl_step,
+        "generic": _create_generic_step,
+    }
+    creator = creators.get(step_type, _create_generic_step)
+    return creator(data)
+
+
+def _create_sql_step(data: dict[str, Any]) -> SqlStep:
+    return _step_common(SqlStep(query=str(data.get("sql") or data.get("query") or ""), dialect=data.get("dialect")), data)
+
+
+def _create_graphql_step(data: dict[str, Any]) -> GraphqlStep:
+    graphql = _as_dict(data.get("graphql"))
+    return _step_common(GraphqlStep(operation=str(graphql.get("operation", "query")), body=str(graphql.get("body", "")), variables=graphql.get("variables") or {}, endpoint=graphql.get("endpoint")), data)
+
+
+def _create_nl_step(data: dict[str, Any]) -> NlStep:
+    return NlStep(text=str(data["log"]), name=str(data["log"])[:80])
+
+
+def _create_generic_step(data: dict[str, Any]) -> Step:
     return Step(kind="generic", name=str(data.get("name", "step")), extra=dict(data))
 
 
@@ -285,52 +349,97 @@ def _render_step(step: Step) -> dict[str, Any]:
     data: dict[str, Any] = {}
     if step.name:
         data["name"] = step.name
+    
+    # Type-specific rendering
     if isinstance(step, ApiStep):
-        data["request"] = {"method": step.method, "path": step.path}
-        if step.body is not None:
-            data["request"]["body"] = step.body
-        if step.headers:
-            data["request"]["headers"] = step.headers
-        if step.expect_status is not None:
-            data["expect"] = {"status": step.expect_status}
+        data.update(_render_api_step(step))
     elif isinstance(step, GuiStep):
-        if step.action == "navigate":
-            data["open"] = step.path
-        elif step.action in {"click", "input", "select"}:
-            data[step.action] = step.selector
-            if step.value is not None:
-                data["value"] = step.value
-        else:
-            data["gui"] = {"action": step.action, "selector": step.selector, "path": step.path, "value": step.value}
+        data.update(_render_gui_step(step))
     elif isinstance(step, ShellStep):
-        data["run"] = step.command
-        if step.cwd:
-            data["cwd"] = step.cwd
-        if step.expect_exit_code is not None:
-            data["expect"] = {"exit_code": step.expect_exit_code}
+        data.update(_render_shell_step(step))
     elif isinstance(step, EncoderStep):
-        data["encoder"] = {"action": step.action}
-        if step.target is not None:
-            data["encoder"]["target"] = step.target
-        if step.value is not None:
-            data["encoder"]["value"] = step.value
+        data.update(_render_encoder_step(step))
     elif isinstance(step, UnitStep):
-        data["unit"] = step.target
+        data.update(_render_unit_step(step))
     elif isinstance(step, SqlStep):
-        data["sql"] = step.query
+        data.update(_render_sql_step(step))
     elif isinstance(step, GraphqlStep):
-        data["graphql"] = {"operation": step.operation, "body": step.body}
+        data.update(_render_graphql_step(step))
     elif isinstance(step, NlStep):
-        data["log"] = step.text
+        data.update(_render_nl_step(step))
     else:
         data.update(step.extra)
+    
+    # Common step attributes
+    _add_common_step_attributes(data, step)
+    return data
+
+
+def _render_api_step(step: ApiStep) -> dict[str, Any]:
+    data = {"request": {"method": step.method, "path": step.path}}
+    if step.body is not None:
+        data["request"]["body"] = step.body
+    if step.headers:
+        data["request"]["headers"] = step.headers
+    if step.expect_status is not None:
+        data["expect"] = {"status": step.expect_status}
+    return data
+
+
+def _render_gui_step(step: GuiStep) -> dict[str, Any]:
+    if step.action == "navigate":
+        return {"open": step.path}
+    elif step.action in {"click", "input", "select"}:
+        data = {step.action: step.selector}
+        if step.value is not None:
+            data["value"] = step.value
+        return data
+    else:
+        return {"gui": {"action": step.action, "selector": step.selector, "path": step.path, "value": step.value}}
+
+
+def _render_shell_step(step: ShellStep) -> dict[str, Any]:
+    data = {"run": step.command}
+    if step.cwd:
+        data["cwd"] = step.cwd
+    if step.expect_exit_code is not None:
+        data["expect"] = {"exit_code": step.expect_exit_code}
+    return data
+
+
+def _render_encoder_step(step: EncoderStep) -> dict[str, Any]:
+    data = {"encoder": {"action": step.action}}
+    if step.target is not None:
+        data["encoder"]["target"] = step.target
+    if step.value is not None:
+        data["encoder"]["value"] = step.value
+    return data
+
+
+def _render_unit_step(step: UnitStep) -> dict[str, Any]:
+    return {"unit": step.target}
+
+
+def _render_sql_step(step: SqlStep) -> dict[str, Any]:
+    return {"sql": step.query}
+
+
+def _render_graphql_step(step: GraphqlStep) -> dict[str, Any]:
+    return {"graphql": {"operation": step.operation, "body": step.body}}
+
+
+def _render_nl_step(step: NlStep) -> dict[str, Any]:
+    return {"log": step.text}
+
+
+def _add_common_step_attributes(data: dict[str, Any], step: Step) -> None:
+    """Add common step attributes like assertions, captures, wait."""
     if step.asserts and "expect" not in data:
         data["expect"] = {a.field: {_reverse_operator(a.op): a.expected} for a in step.asserts}
     if step.captures:
         data["capture"] = {c.var_name: c.from_path for c in step.captures}
     if step.wait_ms is not None:
         data["wait"] = f"{step.wait_ms}ms"
-    return data
 
 
 def _reverse_operator(op: str) -> str:

@@ -1,6 +1,6 @@
 """Convert Python/pytest test files into Unified IR for TestQL.
 
-Parses Python test files using AST and converts them to IQL commands.
+Parses Python test files using AST and converts them to OQL commands.
 """
 
 from __future__ import annotations
@@ -337,8 +337,8 @@ class PytestSource(BaseSource):
             return 'unit'
         return 'integration'  # Default
 
-    def to_iql(self, ir: dict) -> list[str]:
-        """Convert Unified IR to IQL commands."""
+    def to_oql(self, ir: dict) -> list[str]:
+        """Convert Unified IR to OQL commands."""
         lines = []
 
         # Header

@@ -117,7 +117,7 @@ DSL v2 ma jeden model (`TestPlan`) i wiele zapisów. Każdy zapis = jeden adapte
 | `*.proto.testql.yaml` | `proto` | istnieje |
 | `*.graphql.testql.yaml` | `graphql` | istnieje |
 | Naturalny język (PL/EN) | `nl` | istnieje |
-| `*.iql` (legacy imperative) | TODO: nowy adapter `iql` jako wrapper na obecny parser | **planowane** |
+| `*.oql` (legacy imperative) | TODO: nowy adapter `oql` jako wrapper na obecny parser | **planowane** |
 | `*.testql.json` | TODO: drobny adapter (json.loads + ten sam mapper co `scenario_yaml`) | **planowane** |
 | `*.testql.toml` | TODO: opcjonalny plugin | **planowane** |
 | Markdown z blokami ` ```testql ` | TODO: plugin (np. dla artykułów/dokumentacji) | **planowane** |
@@ -129,7 +129,7 @@ Praktyczne wnioski:
 - Dla TOML to samo z `tomllib`.
 - Dla Markdown wystarczy wyciągnąć bloki kodu `testql` i przekazać do
   `scenario_yaml`.
-- `*.iql` powinno żyć jako adapter używający istniejącego
+- `*.oql` powinno żyć jako adapter używający istniejącego
   `testql.interpreter` — bez przepisywania logiki.
 
 ## 5. Plan wdrożenia
@@ -143,7 +143,7 @@ Praktyczne wnioski:
 
 ### Etap 2 — pełna parytetowość formatów
 
-- Adapter `iql` (wrapper na `testql.interpreter`) → `TestPlan`.
+- Adapter `oql` (wrapper na `testql.interpreter`) → `TestPlan`.
 - Adaptery `scenario_json`, `scenario_toml` (delegacja do mappera YAML).
 - `testql migrate <plik> --to testql.yaml` — konwerter w obie strony.
 - Schemat JSON Schema dla `*.testql.yaml` + komenda `testql validate`.
@@ -158,7 +158,7 @@ Praktyczne wnioski:
 
 ### Etap 4 — meta-platforma
 
-- LLM generator generuje od razu `*.testql.yaml`, nie `*.iql`.
+- LLM generator generuje od razu `*.testql.yaml`, nie `*.oql`.
 - MCP resources/tools używają tego samego DSL-a.
 - Pluginy zewnętrzne (Kafka, gRPC, MQTT, ...) ładowane przez entry points.
 

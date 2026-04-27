@@ -1,4 +1,4 @@
-"""Data models for IQL/TQL to TestTOON converter."""
+"""Data models for OQL/TQL to TestTOON converter."""
 
 from __future__ import annotations
 

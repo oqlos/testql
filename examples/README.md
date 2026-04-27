@@ -7,8 +7,8 @@ This directory contains runnable examples demonstrating TestQL's core features.
 | Example | What it demonstrates | Key command |
 |---------|---------------------|-------------|
 | [api-testing](api-testing/) | REST API testing with assertions | `make run` or `testql run *.testql.toon.yaml` |
-| [gui-testing](gui-testing/) | Playwright-based GUI automation | `testql run *.iql` |
-| [shell-testing](shell-testing/) | Shell command testing | `testql run *.iql` |
+| [gui-testing](gui-testing/) | Playwright-based GUI automation | `testql run *.oql` |
+| [shell-testing](shell-testing/) | Shell command testing | `testql run *.oql` |
 | [testtoon-basics](testtoon-basics/) | TestTOON tabular format syntax | `testql run *.testql.toon.yaml` |
 | [project-echo](project-echo/) | AI-friendly project metadata + DOQL app generation | `make help` |
 | [browser-inspection](browser-inspection/) | Playwright page rendering | `testql inspect --browser` |
@@ -78,7 +78,7 @@ done
 TestQL supports three file formats:
 
 - **`.testql.toon.yaml`** — TestTOON tabular format (recommended for API tests)
-- **`.iql`** — Legacy imperative commands (recommended for GUI/shell tests)
+- **`.oql`** — Legacy imperative commands (recommended for GUI/shell tests)
 - **`.tql`** — Compact single-line commands (legacy)
 
 See [testtoon-basics](testtoon-basics/) for TestTOON syntax examples.

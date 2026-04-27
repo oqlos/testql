@@ -114,7 +114,7 @@ class TestTestPattern:
 
 class TestOqlScenarioConversion:
     def test_oql_scenario_conversion(self, tmp_path):
-        """Test conversion of OQL scenarios to IQL."""
+        """Test conversion of OQL scenarios to OQL."""
         class TestGenerator(ScenarioGeneratorMixin):
             def __init__(self):
                 self.profile = MagicMock()
@@ -140,7 +140,7 @@ class TestOqlScenarioConversion:
         
         mock_scenario.test_commands = [mock_cmd1, mock_cmd2, mock_cmd3]
         
-        with patch('testql.generators.generators.OqlParser') as mock_parser_class:
+        with patch('testql.generators.scenario_generator.OqlParser') as mock_parser_class:
             mock_parser = MagicMock()
             mock_parser.parse_file.return_value = mock_scenario
             mock_parser_class.return_value = mock_parser

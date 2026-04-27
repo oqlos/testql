@@ -50,7 +50,7 @@ class TestRunSuiteFiles:
         assert results == [] and all_passed is True
 
     def test_all_pass(self):
-        with patch("testql.interpreter.IqlInterpreter") as MockInterp:
+        with patch("testql.interpreter.OqlInterpreter") as MockInterp:
             mock_interp = MagicMock()
             MockInterp.return_value = mock_interp
             mock_interp.run_file.return_value = FakeResult(ok=True, passed=2, failed=0)
@@ -60,7 +60,7 @@ class TestRunSuiteFiles:
         assert len(results) == 2
 
     def test_one_fail_continues(self):
-        with patch("testql.interpreter.IqlInterpreter") as MockInterp:
+        with patch("testql.interpreter.OqlInterpreter") as MockInterp:
             mock_interp = MagicMock()
             MockInterp.return_value = mock_interp
             mock_interp.run_file.side_effect = [
@@ -73,7 +73,7 @@ class TestRunSuiteFiles:
         assert len(results) == 2
 
     def test_fail_fast_stops(self):
-        with patch("testql.interpreter.IqlInterpreter") as MockInterp:
+        with patch("testql.interpreter.OqlInterpreter") as MockInterp:
             mock_interp = MagicMock()
             MockInterp.return_value = mock_interp
             mock_interp.run_file.return_value = FakeResult(ok=False, passed=0, failed=1)
@@ -82,7 +82,7 @@ class TestRunSuiteFiles:
         assert len(results) == 1 and all_passed is False
 
     def test_uses_config_default_url(self):
-        with patch("testql.interpreter.IqlInterpreter") as MockInterp:
+        with patch("testql.interpreter.OqlInterpreter") as MockInterp:
             mock_interp = MagicMock()
             MockInterp.return_value = mock_interp
             mock_interp.run_file.return_value = FakeResult()

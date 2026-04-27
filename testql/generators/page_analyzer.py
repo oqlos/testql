@@ -84,34 +84,74 @@ def pick_selector(elem: dict[str, Any]) -> Optional[str]:
         5. ``tag[type='X']``  (e.g. ``input[type='email']``) — only when distinctive
         6. ``tag.classname``  (only for class names not in :data:`_GENERIC_CLASSES`)
     """
+    strategies = [
+        _try_testid_selector,
+        _try_id_selector,
+        _try_name_selector,
+        _try_role_aria_selector,
+        _try_input_type_selector,
+        _try_class_selector,
+    ]
+    
+    for strategy in strategies:
+        selector = strategy(elem)
+        if selector:
+            return selector
+    
+    return None
+
+
+def _try_testid_selector(elem: dict[str, Any]) -> Optional[str]:
+    """Try to build a data-testid/data-test selector."""
     testid = elem.get("data_testid") or elem.get("data_test")
     if testid:
         attr = "data-testid" if elem.get("data_testid") else "data-test"
         return f"[{attr}='{_css_escape(str(testid))}']"
+    return None
 
+
+def _try_id_selector(elem: dict[str, Any]) -> Optional[str]:
+    """Try to build an ID selector."""
     el_id = elem.get("id")
     if el_id and not _is_unstable(str(el_id)):
         return f"#{el_id}"
+    return None
 
+
+def _try_name_selector(elem: dict[str, Any]) -> Optional[str]:
+    """Try to build a name attribute selector."""
     tag = (elem.get("tag") or "").lower() or "*"
     name_attr = elem.get("name_attr")
     if name_attr:
         return f"{tag}[name='{_css_escape(str(name_attr))}']"
+    return None
 
+
+def _try_role_aria_selector(elem: dict[str, Any]) -> Optional[str]:
+    """Try to build a role + aria-label selector."""
     role = elem.get("role")
     aria = elem.get("aria_label")
     if role and aria:
         return f"[role='{_css_escape(str(role))}'][aria-label='{_css_escape(str(aria))}']"
+    return None
 
+
+def _try_input_type_selector(elem: dict[str, Any]) -> Optional[str]:
+    """Try to build an input type selector for distinctive types."""
+    tag = (elem.get("tag") or "").lower()
     input_type = elem.get("input_type")
     if tag == "input" and input_type and input_type not in ("text", "submit", "button"):
         return f"input[type='{_css_escape(str(input_type))}']"
+    return None
 
+
+def _try_class_selector(elem: dict[str, Any]) -> Optional[str]:
+    """Try to build a class selector using non-generic, stable classes."""
+    tag = (elem.get("tag") or "").lower() or "*"
     classes = [c for c in (elem.get("classes") or []) if c and c not in _GENERIC_CLASSES]
     classes = [c for c in classes if not _is_unstable(c)]
     if classes:
         return f"{tag}.{classes[0]}"
-
     return None
 
 
@@ -254,6 +294,19 @@ def snapshot_to_plan(
     :func:`default_input_value`. Buttons / links receive a click step. An
     ``ASSERT_VISIBLE`` step is added per selector when ``include_assert_visible``.
     """
+    plan = _create_base_plan(snap, base_url)
+    _add_navigate_step(plan, snap.path)
+    
+    seen_selectors = _process_elements(plan, snap.elements, include_inputs, include_clicks, include_assert_visible, max_steps)
+    
+    if include_assert_visible:
+        _add_body_assertion(plan)
+    
+    return plan
+
+
+def _create_base_plan(snap: PageSnapshot, base_url: Optional[str]) -> TestPlan:
+    """Create the base test plan with metadata."""
     plan = TestPlan(metadata=ScenarioMetadata(
         name=f"Auto-generated for {snap.title or snap.url}",
         type="gui",
@@ -261,66 +314,108 @@ def snapshot_to_plan(
     ))
     if base_url:
         plan.config["base_url"] = base_url
+    return plan
 
-    # 1) Navigate first
+
+def _add_navigate_step(plan: TestPlan, path: str) -> None:
+    """Add the initial navigate step."""
     plan.steps.append(GuiStep(
         action="navigate",
-        path=snap.path or "/",
+        path=path or "/",
         wait_ms=300,
         name="navigate",
     ))
 
-    # 2) Walk elements; honour max_steps
+
+def _process_elements(
+    plan: TestPlan,
+    elements: list[dict[str, Any]] | None,
+    include_inputs: bool,
+    include_clicks: bool,
+    include_assert_visible: bool,
+    max_steps: int,
+) -> set[str]:
+    """Process elements and add appropriate steps to the plan."""
     seen_selectors: set[str] = set()
-    for elem in snap.elements or []:
+    
+    for elem in elements or []:
         if len(plan.steps) >= max_steps:
             break
         if not elem.get("visible", True):
             continue
+        
         sel = pick_selector(elem)
         if not sel or sel in seen_selectors:
             continue
-
-        if is_typed_input(elem) and include_inputs:
-            value = default_input_value(elem)
-            plan.steps.append(GuiStep(
-                action="input",
-                selector=sel,
-                value=value,
-                name=f"input_{_name_or_selector(elem, sel)}",
-            ))
+        
+        if _should_add_input_step(elem, include_inputs):
+            _add_input_step(plan, elem, sel)
             seen_selectors.add(sel)
-        elif is_clickable(elem) and include_clicks:
-            plan.steps.append(GuiStep(
-                action="click",
-                selector=sel,
-                name=f"click_{_name_or_selector(elem, sel)}",
-            ))
+        elif _should_add_click_step(elem, include_clicks):
+            _add_click_step(plan, elem, sel)
             seen_selectors.add(sel)
-        elif include_assert_visible:
-            # Landmark / heading — at least assert it's visible
-            tag = (elem.get("tag") or "").lower()
-            if tag in {"h1", "h2", "h3", "main", "header", "nav"}:
-                plan.steps.append(GuiStep(
-                    action="assert_visible",
-                    selector=sel,
-                    name=f"visible_{_name_or_selector(elem, sel)}",
-                    asserts=[Assertion(field=sel, op="==", expected="visible")],
-                ))
-                seen_selectors.add(sel)
+        elif _should_add_assert_visible(elem, include_assert_visible):
+            _add_assert_visible_step(plan, elem, sel)
+            seen_selectors.add(sel)
+    
+    return seen_selectors
 
-    # 3) Final body-visibility sentinel so the scenario always ends with an assert.
-    # Use a GuiStep (rendered as `FLOW: GUI_ASSERT_VISIBLE, body, -`) — a generic
-    # `Step(kind='assert', field='body', op='!=')` would render as
-    # `ASSERT_JSON body != None` and fail in pure-GUI scenarios that have no
-    # JSON response to query.
-    if include_assert_visible:
-        plan.steps.append(GuiStep(
-            action="assert_visible",
-            selector="body",
-            name="visible_body",
-        ))
-    return plan
+
+def _should_add_input_step(elem: dict[str, Any], include_inputs: bool) -> bool:
+    """Check if an input step should be added for this element."""
+    return is_typed_input(elem) and include_inputs
+
+
+def _add_input_step(plan: TestPlan, elem: dict[str, Any], selector: str) -> None:
+    """Add an input step to the plan."""
+    value = default_input_value(elem)
+    plan.steps.append(GuiStep(
+        action="input",
+        selector=selector,
+        value=value,
+        name=f"input_{_name_or_selector(elem, selector)}",
+    ))
+
+
+def _should_add_click_step(elem: dict[str, Any], include_clicks: bool) -> bool:
+    """Check if a click step should be added for this element."""
+    return is_clickable(elem) and include_clicks
+
+
+def _add_click_step(plan: TestPlan, elem: dict[str, Any], selector: str) -> None:
+    """Add a click step to the plan."""
+    plan.steps.append(GuiStep(
+        action="click",
+        selector=selector,
+        name=f"click_{_name_or_selector(elem, selector)}",
+    ))
+
+
+def _should_add_assert_visible(elem: dict[str, Any], include_assert_visible: bool) -> bool:
+    """Check if an assert_visible step should be added for this element."""
+    if not include_assert_visible:
+        return False
+    tag = (elem.get("tag") or "").lower()
+    return tag in {"h1", "h2", "h3", "main", "header", "nav"}
+
+
+def _add_assert_visible_step(plan: TestPlan, elem: dict[str, Any], selector: str) -> None:
+    """Add an assert_visible step to the plan."""
+    plan.steps.append(GuiStep(
+        action="assert_visible",
+        selector=selector,
+        name=f"visible_{_name_or_selector(elem, selector)}",
+        asserts=[Assertion(field=selector, op="==", expected="visible")],
+    ))
+
+
+def _add_body_assertion(plan: TestPlan) -> None:
+    """Add final body-visibility sentinel step."""
+    plan.steps.append(GuiStep(
+        action="assert_visible",
+        selector="body",
+        name="visible_body",
+    ))
 
 
 # ---------------------------------------------------------------------------
@@ -346,10 +441,21 @@ def find_replacement(
     hint = _hint_from_selector(broken_selector)
     if not hint:
         return None
+    
     normalised_hint = _normalise(hint)
     candidates = list(elements)
+    
+    # Try exact accessible-name match first
+    exact_match = _find_exact_match(candidates, normalised_hint)
+    if exact_match:
+        return exact_match
+    
+    # Fallback to substring match
+    return _find_fuzzy_match(candidates, normalised_hint)
 
-    # exact accessible-name match wins
+
+def _find_exact_match(candidates: list[dict[str, Any]], normalised_hint: str) -> Optional[str]:
+    """Find element with exact accessible-name match."""
     for elem in candidates:
         for key in ("name", "aria_label", "text"):
             v = elem.get(key)
@@ -357,32 +463,37 @@ def find_replacement(
                 sel = pick_selector(elem)
                 if sel:
                     return sel
+    return None
 
-    # substring match on every signal we have for the element
+
+def _find_fuzzy_match(candidates: list[dict[str, Any]], normalised_hint: str) -> Optional[str]:
+    """Find element with best substring match score."""
     tokens = [t for t in re.split(r"[\s\-_]+", normalised_hint) if t]
     if not tokens:
         return None
+    
     best: tuple[int, Optional[str]] = (0, None)
     for elem in candidates:
-        # Include data-* attributes and visible text — without them, an element
-        # like {data_testid: 'login-submit'} would never match a hint like
-        # `#login-submit`, since data attributes are typically the *most* stable
-        # signal we have.
-        haystack_parts = [
-            str(elem.get(k) or "")
-            for k in (
-                "name", "aria_label", "id", "name_attr",
-                "data_testid", "data_test", "text", "placeholder",
-            )
-        ]
-        haystack_parts.extend(elem.get("classes") or [])
-        haystack_norm = _normalise(" ".join(haystack_parts))
+        haystack_norm = _build_element_haystack(elem)
         score = sum(1 for t in tokens if t in haystack_norm)
         if score > best[0]:
             sel = pick_selector(elem)
             if sel:
                 best = (score, sel)
     return best[1]
+
+
+def _build_element_haystack(elem: dict[str, Any]) -> str:
+    """Build a normalized search string from element attributes."""
+    haystack_parts = [
+        str(elem.get(k) or "")
+        for k in (
+            "name", "aria_label", "id", "name_attr",
+            "data_testid", "data_test", "text", "placeholder",
+        )
+    ]
+    haystack_parts.extend(elem.get("classes") or [])
+    return _normalise(" ".join(haystack_parts))
 
 
 _HINT_RE = re.compile(

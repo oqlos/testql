@@ -7,13 +7,13 @@ from pathlib import Path
 
 from testql.base import StepResult, StepStatus
 
-from ._parser import IqlLine, IqlScript, parse_iql
+from ._parser import OqlLine, OqlScript, parse_oql
 
 
 class FlowMixin:
     """Mixin providing: WAIT, LOG, PRINT, INCLUDE and _emit_event."""
 
-    def _cmd_wait_for(self, args: str, line: IqlLine) -> None:
+    def _cmd_wait_for(self, args: str, line: OqlLine) -> None:
         """
         WAIT_FOR "selector" VISIBLE 5000
         WAIT_FOR NETWORK_IDLE 10000
@@ -62,7 +62,7 @@ class FlowMixin:
             name=f"WAIT_FOR {selector} {state}", status=StepStatus.PASSED,
         ))
 
-    def _cmd_wait(self, args: str, line: IqlLine) -> None:
+    def _cmd_wait(self, args: str, line: OqlLine) -> None:
         import re
         # Parse various time formats: 500, "500", '500', "10 s", "500ms", "10s"
         args_clean = args.strip().strip("\"'")
@@ -99,7 +99,7 @@ class FlowMixin:
             time.sleep(ms / 1000)
             self.out.step("⏳", f"WAIT {ms}ms")
 
-    def _cmd_log(self, args: str, line: IqlLine) -> None:
+    def _cmd_log(self, args: str, line: OqlLine) -> None:
         msg = args.strip()
         if msg.startswith('"'):
             end = msg.find('"', 1)
@@ -107,10 +107,10 @@ class FlowMixin:
                 msg = msg[1:end]
         self.out.info(msg)
 
-    def _cmd_print(self, args: str, line: IqlLine) -> None:
+    def _cmd_print(self, args: str, line: OqlLine) -> None:
         self.out.emit(args)
 
-    def _cmd_include(self, args: str, line: IqlLine) -> None:
+    def _cmd_include(self, args: str, line: OqlLine) -> None:
         """INCLUDE "relative/path.testql.toon.yaml" — inline and execute another script."""
         rel_path = args.strip().strip("\"'")
         resolved: Path | None = None
@@ -133,7 +133,7 @@ class FlowMixin:
         self._included.add(abs_path)
         self.out.step("📎", f"INCLUDE {rel_path}")
         source = resolved.read_text(encoding="utf-8")
-        sub_script: IqlScript = parse_iql(source, filename=rel_path)
+        sub_script: OqlScript = parse_oql(source, filename=rel_path)
         for sub_line in sub_script.lines:
             sub_args = self.vars.interpolate(sub_line.args)
             try:
@@ -154,7 +154,7 @@ class FlowMixin:
         "create_protocol": "📋",
     }
 
-    def _emit_event(self, cmd: str, args: str, line: IqlLine) -> None:
+    def _emit_event(self, cmd: str, args: str, line: OqlLine) -> None:
         """Emit a navigation/UI event (for commands with no explicit handler)."""
         event = {"type": cmd, "args": args, "line": line.number}
         self.events.append(event)

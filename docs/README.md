@@ -360,8 +360,8 @@ testql/
 - **`TestContentBuilder`** — Builds test content for different test types.
 - **`ToonSection`** — —
 - **`ToonScript`** — —
-- **`IqlLine`** — —
-- **`IqlScript`** — —
+- **`OqlLine`** — —
+- **`OqlScript`** — —
 - **`ApiRunnerMixin`** — Mixin providing HTTP API execution commands: API, CAPTURE.
 - **`GuiMixin`** — Mixin providing desktop GUI test commands using Playwright.
 - **`ShellMixin`** — Mixin providing shell command execution: SHELL, EXEC, RUN, ASSERT_EXIT_CODE, etc.
@@ -369,7 +369,7 @@ testql/
 - **`FlowMixin`** — Mixin providing: WAIT, LOG, PRINT, INCLUDE and _emit_event.
 - **`EncoderMixin`** — Mixin providing all ENCODER_* hardware control commands.
 - **`AssertionsMixin`** — Mixin providing ASSERT_STATUS, ASSERT_OK, ASSERT_CONTAINS, ASSERT_JSON.
-- **`IqlInterpreter`** — IQL interpreter — runs .testql.toon.yaml / .iql / .tql scripts.
+- **`OqlInterpreter`** — OQL interpreter — runs .testql.toon.yaml / .oql / .tql scripts.
 - **`WebSocketMixin`** — Mixin for WebSocket testing support.
 - **`CommandDispatcher`** — Central command dispatcher with auto-discovery and better error messages.
 - **`Row`** — A row of values in a section.
@@ -467,13 +467,13 @@ testql/
 - `collect_toon_data()` — —
 - `collect_doql_data()` — —
 - `render_echo()` — —
-- `iql_list_files()` — —
-- `iql_read_file()` — —
-- `iql_list_tables()` — —
-- `iql_run_line()` — —
-- `iql_run_file()` — —
-- `iql_list_logs()` — —
-- `iql_read_log()` — —
+- `oql_list_files()` — —
+- `oql_read_file()` — —
+- `oql_list_tables()` — —
+- `oql_run_line()` — —
+- `oql_run_file()` — —
+- `oql_list_logs()` — —
+- `oql_read_log()` — —
 - `endpoints()` — —
 - `openapi()` — —
 - `generate()` — —
@@ -500,10 +500,10 @@ testql/
 - `parse_doql_file()` — —
 - `generate_for_project()` — —
 - `generate_for_workspace()` — —
-- `parse_iql()` — —
+- `parse_oql()` — —
 - `validate_testtoon()` — —
-- `testtoon_to_iql()` — —
-- `convert_iql_to_testtoon()` — —
+- `testtoon_to_oql()` — —
+- `convert_oql_to_testtoon()` — —
 - `convert_file()` — —
 - `convert_directory()` — —
 - `dispatch()` — —
@@ -592,7 +592,7 @@ testql/
 - `parse_file()` — —
 - `generate_testql_scenarios()` — —
 - `generate_readme()` — —
-- `convert_iql_to_testtoon()` — —
+- `convert_oql_to_testtoon()` — —
 - `convert_file()` — —
 - `convert_directory()` — —
 - `cli()` — —
@@ -628,21 +628,21 @@ testql/
 - `parse_script()` — —
 - `parse_sumd_file()` — —
 - `validate_testtoon()` — —
-- `testtoon_to_iql()` — —
-- `iql_list_files()` — —
-- `iql_read_file()` — —
-- `iql_list_tables()` — —
-- `iql_run_line()` — —
-- `iql_run_file()` — —
-- `iql_list_logs()` — —
-- `iql_read_log()` — —
+- `testtoon_to_oql()` — —
+- `oql_list_files()` — —
+- `oql_read_file()` — —
+- `oql_list_tables()` — —
+- `oql_run_line()` — —
+- `oql_run_file()` — —
+- `oql_list_logs()` — —
+- `oql_read_log()` — —
 - `generate_openapi_spec()` — —
 - `generate_contract_tests_from_spec()` — —
 - `report_junit()` — —
 - `parse_doql_file()` — —
 - `report_console()` — —
 - `generate_report()` — —
-- `parse_iql()` — —
+- `parse_oql()` — —
 - `parse_toon_file()` — —
 - `report_json()` — —
 - `parse_testtoon()` — —
@@ -674,13 +674,13 @@ testql/
 - `from_sumd(sumd_file, output, dry_run)` — Generate TestQL scenarios from SUMD.md documentation.
 - `report(data_json, output, example)` — Generate HTML report from test data.json.
 - `echo(toon_path, doql_path, fmt, output)` — Generate AI-friendly project metadata echo from toon tests and doql model.
-- `iql_list_files()` — List all .testql.toon.yaml files in the project (with .iql/.tql fallback).
-- `iql_read_file(path)` — Read a TestQL file content (.testql.toon.yaml / .iql / .tql).
-- `iql_list_tables(path)` — Extract table names from an IQL file.
-- `iql_run_line(req)` — Execute a single IQL command line via the encoder bridge.
-- `iql_run_file(req)` — Run an entire IQL file with validation. Returns structured results + saves log.
-- `iql_list_logs()` — List available log files.
-- `iql_read_log(name)` — Read a specific log file.
+- `oql_list_files()` — List all .testql.toon.yaml files in the project (with .oql/.tql fallback).
+- `oql_read_file(path)` — Read a TestQL file content (.testql.toon.yaml / .oql / .tql).
+- `oql_list_tables(path)` — Extract table names from an OQL file.
+- `oql_run_line(req)` — Execute a single OQL command line via the encoder bridge.
+- `oql_run_file(req)` — Run an entire OQL file with validation. Returns structured results + saves log.
+- `oql_list_logs()` — List available log files.
+- `oql_read_log(name)` — Read a specific log file.
 - `run(file, url, dry_run, output)` — Run a TestQL (.testql.toon.yaml) scenario.
 - `collect_toon_data(toon_path, project_echo)` — Collect data from toon test files.
 - `collect_doql_data(doql_path, project_echo)` — Collect data from doql LESS file.
@@ -706,8 +706,8 @@ testql/
 - `parse_doql_less(filepath)` — Parse .doql.less file into structured system model.
 - `parse_testtoon(text, filename)` — Parse TestTOON source into structured ToonScript.
 - `validate_testtoon(script)` — Validate row counts against declared counts.
-- `testtoon_to_iql(text, filename)` — Parse TestTOON source and expand to IqlScript for execution.
-- `parse_iql(source, filename)` — Parse IQL source into a flat command list, stripping comments.
+- `testtoon_to_oql(text, filename)` — Parse TestTOON source and expand to OqlScript for execution.
+- `parse_oql(source, filename)` — Parse OQL source into a flat command list, stripping comments.
 - `main()` — CLI entry point — unchanged from original.
 - `parse_api_args(args)` — Parse 'GET "/url"' or 'GET /url' → (method, endpoint).
 - `parse_meta_from_args(args)` — Extract JSON-like metadata from command args.
@@ -715,9 +715,9 @@ testql/
 - `parse_commands(source)` — Phase 1: tokenise source into (cmd, args) tuples and collect comments.
 - `detect_scenario_type(commands)` — Heuristic to detect test type from commands.
 - `extract_scenario_name(comments, filename)` — Extract scenario name from first meaningful comment or filename.
-- `convert_iql_to_testtoon(source, filename)` — Convert IQL/TQL source text to TestTOON format.
-- `convert_file(src)` — Convert a single .tql/.iql file to .testql.toon.yaml.
-- `convert_directory(dir_path)` — Recursively convert all .tql and .iql files in a directory.
+- `convert_oql_to_testtoon(source, filename)` — Convert OQL/TQL source text to TestTOON format.
+- `convert_file(src)` — Convert a single .tql/.oql file to .testql.toon.yaml.
+- `convert_directory(dir_path)` — Recursively convert all .tql and .oql files in a directory.
 - `build_config_section(commands)` — Collect SET commands into a CONFIG section (or None if empty).
 - `render_sections(sections)` — Phase 4: render collected sections to TestTOON text.
 - `build_header(scenario_name, scenario_type)` — Build scenario header.
@@ -760,13 +760,13 @@ testql/
 - `extract_scenario_name()` — —
 - `generate()` — —
 - `analyze()` — —
-- `iql_list_files()` — —
-- `iql_read_file()` — —
-- `iql_list_tables()` — —
-- `iql_run_line()` — —
-- `iql_run_file()` — —
-- `iql_list_logs()` — —
-- `iql_read_log()` — —
+- `oql_list_files()` — —
+- `oql_read_file()` — —
+- `oql_list_tables()` — —
+- `oql_run_line()` — —
+- `oql_run_file()` — —
+- `oql_list_logs()` — —
+- `oql_read_log()` — —
 - `endpoints()` — —
 - `openapi()` — —
 - `collect_assert()` — —
@@ -775,7 +775,7 @@ testql/
 - `collect_doql_data()` — —
 - `render_echo()` — —
 - `validate_testtoon()` — —
-- `testtoon_to_iql()` — —
+- `testtoon_to_oql()` — —
 - `report_junit()` — —
 - `generate_sumd()` — —
 - `save_sumd()` — —
@@ -806,8 +806,8 @@ testql/
 - `run_single_file()` — —
 - `run_suite_files()` — —
 - `parse_toon_scenarios()` — —
-- `parse_iql()` — —
-- `convert_iql_to_testtoon()` — —
+- `parse_oql()` — —
+- `convert_oql_to_testtoon()` — —
 - `convert_file()` — —
 - `convert_directory()` — —
 - `handle_encoder()` — —

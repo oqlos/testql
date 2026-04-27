@@ -35,8 +35,8 @@ Dane z `project/map.toon.yaml`:
 
 - 132 moduły, 195 klas, 204 funkcje, 15.6k linii Pythona
 - CC̄ = 3.9 (dobre), 8 pozycji krytycznych
-- Hotspoty CC: `parse_testtoon=14`, `suite=13`, `parse_value=11`, `detect_scenario_type=11`, `_execute_iql_line=10`
-- Hotspoty fan-out: `generate=19`, `watch=19`, `suite=19`, `main=18`, `_run_iql_lines=15`
+- Hotspoty CC: `parse_testtoon=14`, `suite=13`, `parse_value=11`, `detect_scenario_type=11`, `_execute_oql_line=10`
+- Hotspoty fan-out: `generate=19`, `watch=19`, `suite=19`, `main=18`, `_run_oql_lines=15`
 - Test coverage: 65% (vallm 64.6%)
 - Zero cykli importów
 
@@ -587,7 +587,7 @@ Lista zadań do wykonania (każde to ~1 sesja LLM):
 **Faza 1:**
 6. Stwórz `adapters/nl/` z deterministyczną gramatyką + leksykonem PL.
 7. Implementuj `intent_recognizer` + `entity_extractor`.
-8. Dodaj `_execute_iql_line` reuse dla NL steps (kompatybilność z runner).
+8. Dodaj `_execute_oql_line` reuse dla NL steps (kompatybilność z runner).
 9. Stwórz 5 scenariuszy E2E `.nl.md`.
 10. Toon artifacts + bump gate'ów.
 

@@ -1,4 +1,4 @@
-"""API runner mixin — HTTP calls and response capture for IqlInterpreter."""
+"""API runner mixin — HTTP calls and response capture for OqlInterpreter."""
 
 from __future__ import annotations
 
@@ -10,13 +10,13 @@ from typing import Any
 
 from testql.base import StepResult, StepStatus
 
-from ._parser import IqlLine
+from ._parser import OqlLine
 
 
 class ApiRunnerMixin:
     """Mixin providing HTTP API execution commands: API, CAPTURE."""
 
-    # These attributes are provided by the host IqlInterpreter
+    # These attributes are provided by the host OqlInterpreter
     api_url: str
     dry_run: bool
     last_response: dict[str, Any] | None
@@ -120,7 +120,7 @@ class ApiRunnerMixin:
             name=label, status=StepStatus.ERROR, message=str(e),
         ))
 
-    def _cmd_api(self, args: str, line: IqlLine) -> None:
+    def _cmd_api(self, args: str, line: OqlLine) -> None:
         """API METHOD /path [json-body]"""
         parts = args.strip().split(None, 2)
         if len(parts) < 2:
@@ -159,7 +159,7 @@ class ApiRunnerMixin:
         except Exception as e:
             self._record_api_error(label, e)
 
-    def _cmd_capture(self, args: str, line: IqlLine) -> None:
+    def _cmd_capture(self, args: str, line: OqlLine) -> None:
         """CAPTURE var_name FROM "json.path"
 
         Extracts a value from the last API response via dotted JSON path
@@ -229,46 +229,60 @@ def _navigate_json_path(root: Any, path: str) -> Any:
     if root is None:
         return None
         
-    obj = root
-    
-    # Handle pure bracket notation: ['transport']['http']['method']
     if path.startswith('[') and path.endswith(']'):
-        # Parse ['key1']['key2'][0]['key3'] format
-        # Remove outer brackets and split
-        inner = path[1:-1]  # Remove outer [ and ]
-        # Split by '][' to get individual keys
-        parts = inner.split('][')
-        for part in parts:
-            part = part.strip('"\'')  # Remove quotes
-            if part.isdigit():
-                obj = _navigate_step(obj, part)
-            else:
-                obj = _navigate_step(obj, part)
-            if obj is None:
-                return None
+        return _navigate_bracket_notation(root, path)
     else:
-        # Handle dot notation and mixed notation
-        for part in path.split("."):
-            if part == "length":
-                # Handle .length special case
-                if isinstance(obj, (list, dict)):
-                    return len(obj)
-                return None
-            elif '[' in part and part.endswith(']'):
-                # Mixed notation: devices[0]
-                key, index_part = part.split('[', 1)
-                index = index_part[:-1]  # Remove trailing ]
-                if key:
-                    obj = _navigate_step(obj, key)
-                if index.isdigit():
-                    obj = _navigate_step(obj, index)
-                else:
-                    obj = _navigate_step(obj, index.strip('"\''))
-            else:
-                # Simple dot notation: transport
-                obj = _navigate_step(obj, part)
-            
-            if obj is None:
-                return None
+        return _navigate_dot_notation(root, path)
+
+def _navigate_bracket_notation(root: Any, path: str) -> Any:
+    """Navigate pure bracket notation: ['key1']['key2'][0]['key3']"""
+    obj = root
+    inner = path[1:-1]  # Remove outer [ and ]
+    parts = inner.split('][')
+    
+    for part in parts:
+        part = part.strip('"\'')  # Remove quotes
+        obj = _navigate_step(obj, part)
+        if obj is None:
+            return None
     
     return obj
+
+def _navigate_dot_notation(root: Any, path: str) -> Any:
+    """Navigate dot notation and mixed notation."""
+    obj = root
+    
+    for part in path.split("."):
+        obj = _navigate_dot_part(obj, part)
+        if obj is None:
+            return None
+    
+    return obj
+
+def _navigate_dot_part(obj: Any, part: str) -> Any:
+    """Navigate a single part of a dot-notation path."""
+    if part == "length":
+        return _handle_length_virtual(obj)
+    elif '[' in part and part.endswith(']'):
+        return _handle_mixed_notation(obj, part)
+    else:
+        return _navigate_step(obj, part)
+
+def _handle_length_virtual(obj: Any) -> Any:
+    """Handle .length virtual field."""
+    if isinstance(obj, (list, dict)):
+        return len(obj)
+    return None
+
+def _handle_mixed_notation(obj: Any, part: str) -> Any:
+    """Handle mixed notation: devices[0]"""
+    key, index_part = part.split('[', 1)
+    index = index_part[:-1]  # Remove trailing ]
+    
+    if key:
+        obj = _navigate_step(obj, key)
+    
+    if index.isdigit():
+        return _navigate_step(obj, index)
+    else:
+        return _navigate_step(obj, index.strip('"\''))

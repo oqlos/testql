@@ -4,8 +4,8 @@ This example demonstrates testing shell commands and CLI tools using TestQL.
 
 ## Files
 
-- `basic-commands.iql` — Run shell commands and assert exit codes
-- `file-operations.iql` — File system operations with assertions
+- `basic-commands.oql` — Run shell commands and assert exit codes
+- `file-operations.oql` — File system operations with assertions
 - `run.sh` — Execute the scenarios
 
 ## Usage

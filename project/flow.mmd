@@ -5,26 +5,27 @@ flowchart TD
 
     subgraph CLI
         testql__cli__cli["cli"]
+        testql__cli__check_and_upgrade["check_and_upgrade"]
         testql__cli__main["main"]
     end
 
     subgraph Core
-        code2llm_output__map__toon___parse_api_args["_parse_api_args"]
-        code2llm_output__map__toon___parse_meta_from_args["_parse_meta_from_args"]
-        code2llm_output__map__toon___parse_target_from_args["_parse_target_from_args"]
-        code2llm_output__map__toon___detect_scenario_type["_detect_scenario_type"]
-        code2llm_output__map__toon___extract_scenario_name["_extract_scenario_name"]
-        code2llm_output__map__toon__convert_iql_to_testtoon["convert_iql_to_testtoon"]
-        code2llm_output__map__toon__convert_file["convert_file"]
-        code2llm_output__map__toon__convert_directory["convert_directory"]
-        code2llm_output__map__toon__cli["cli"]
-        code2llm_output__map__toon__run["run"]
-        code2llm_output__map__toon__generate["generate"]
-        code2llm_output__map__toon__analyze["analyze"]
-        code2llm_output__map__toon__endpoints["endpoints"]
-        code2llm_output__map__toon__openapi["openapi"]
-        code2llm_output__map__toon__init["init"]
-        ...["+1344 more"]
+        TODO__testtoon_parser__Section__to_dicts["to_dicts"]
+        TODO__testtoon_parser__Section__validate["validate"]
+        TODO__testtoon_parser__parse_testtoon["parse_testtoon"]
+        TODO__testtoon_parser__print_parsed["print_parsed"]
+        testql__toon_parser__ToonParser__parse_file["parse_file"]
+        testql__toon_parser__ToonParser__parse["parse"]
+        testql__toon_parser__ToonParser___parse_api_block["_parse_api_block"]
+        testql__toon_parser__ToonParser___parse_assert_block["_parse_assert_block"]
+        testql__toon_parser__ToonParser___parse_log_block["_parse_log_block"]
+        testql__doql_parser__DoqlParser__parse_file["parse_file"]
+        testql__doql_parser__DoqlParser__parse["parse"]
+        testql__doql_parser__DoqlParser___parse_app_block["_parse_app_block"]
+        testql__doql_parser__DoqlParser___parse_entity_block["_parse_entity_block"]
+        testql__doql_parser__DoqlParser___parse_workflow_block["_parse_workflow_block"]
+        testql__doql_parser__DoqlParser___parse_interface_block["_parse_interface_block"]
+        ...["+1502 more"]
     end
 
-    class code2llm_output__map__toon___parse_api_args,code2llm_output__map__toon___parse_meta_from_args,code2llm_output__map__toon___parse_target_from_args,code2llm_output__map__toon___detect_scenario_type,code2llm_output__map__toon___extract_scenario_name,code2llm_output__map__toon__convert_iql_to_testtoon,code2llm_output__map__toon__convert_file,code2llm_output__map__toon__convert_directory,code2llm_output__map__toon__cli,code2llm_output__map__toon__run entry
+    class TODO__testtoon_parser__Section__to_dicts,TODO__testtoon_parser__Section__validate,TODO__testtoon_parser__parse_testtoon,TODO__testtoon_parser__print_parsed,testql__toon_parser__ToonParser__parse_file,testql__toon_parser__ToonParser__parse,testql__toon_parser__ToonParser___parse_api_block,testql__toon_parser__ToonParser___parse_assert_block,testql__toon_parser__ToonParser___parse_log_block,testql__doql_parser__DoqlParser__parse_file entry

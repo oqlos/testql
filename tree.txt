@@ -50,10 +50,10 @@
 │   │   ├── README.md
 │   │   └── topology.sh
 │   ├── encoder-testing
-│   │   ├── basic-encoder.iql
+│   │   ├── basic-encoder.oql
 │   │   ├── basic-encoder.testql.toon.yaml
 │   │   ├── basic-encoder.testql.yaml
-│   │   ├── complex-sequence.iql
+│   │   ├── complex-sequence.oql
 │   │   ├── Makefile
 │   │   ├── README.md
 │   │   └── run.sh
@@ -63,15 +63,15 @@
 │   │   ├── mixed-smoke.testql.yaml
 │   │   ├── README.md
 │   │   ├── run.sh
-│   │   └── variables.iql
+│   │   └── variables.oql
 │   ├── gui-testing
-│   │   ├── login-form.iql
+│   │   ├── login-form.oql
 │   │   ├── login-form.testql.toon.yaml
 │   │   ├── login-form.testql.yaml
 │   │   ├── Makefile
 │   │   ├── README.md
 │   │   ├── run.sh
-│   │   └── search-workflow.iql
+│   │   └── search-workflow.oql
 │   ├── Makefile
 │   ├── project-echo
 │   │   ├── api-contract.testql.toon.yaml
@@ -106,10 +106,10 @@
 │   ├── README.md
 │   ├── run-all.sh
 │   ├── shell-testing
-│   │   ├── basic-commands.iql
+│   │   ├── basic-commands.oql
 │   │   ├── basic-commands.testql.toon.yaml
 │   │   ├── basic-commands.testql.yaml
-│   │   ├── file-operations.iql
+│   │   ├── file-operations.oql
 │   │   ├── Makefile
 │   │   ├── README.md
 │   │   └── run.sh
@@ -128,8 +128,8 @@
 │   │   ├── Makefile
 │   │   ├── README.md
 │   │   ├── run.sh
-│   │   ├── test-math.iql
-│   │   └── test-pytest.iql
+│   │   ├── test-math.oql
+│   │   └── test-pytest.oql
 │   ├── web-inspection
 │   │   ├── c2004-localhost
 │   │   │   ├── Makefile
@@ -146,6 +146,7 @@
 │       └── run.sh
 ├── goal.yaml
 ├── LICENSE
+├── Makefile
 ├── openapi.yaml
 ├── planfile.yaml
 ├── prefact.yaml
@@ -173,6 +174,14 @@
 ├── pyproject.toml
 ├── pyqual.yaml
 ├── README.md
+├── scenarios
+│   ├── c2004-all-modules-api.testql.toon.yaml
+│   ├── encoder-cli-hardware-sim.testql.toon.yaml
+│   ├── encoder-connect-test-devices-admin-pl.testql.toon.yaml
+│   ├── encoder-gui-full-flow.testql.toon.yaml
+│   ├── encoder-gui-terminal.testql.toon.yaml
+│   ├── encoder-navigation.testql.toon.yaml
+│   └── encoder-terminal-cli.testql.toon.yaml
 ├── sumd.json
 ├── SUMD.md
 ├── SUMR.md
@@ -237,8 +246,10 @@
 │   │   ├── encoder_routes.py
 │   │   ├── endpoints_cmd.py
 │   │   ├── generate_cmd.py
+│   │   ├── generate_from_page_cmd.py
 │   │   ├── generate_ir_cmd.py
 │   │   ├── generate_topology_cmd.py
+│   │   ├── heal_scenario_cmd.py
 │   │   ├── __init__.py
 │   │   ├── inspect_cmd.py
 │   │   ├── misc_cmds.py
@@ -299,6 +310,7 @@
 │   ├── generator.py
 │   ├── generators
 │   │   ├── analyzers.py
+│   │   ├── api_generator.py
 │   │   ├── base.py
 │   │   ├── convenience.py
 │   │   ├── generators.py
@@ -308,7 +320,10 @@
 │   │   │   ├── edge_case_generator.py
 │   │   │   └── __init__.py
 │   │   ├── multi.py
+│   │   ├── page_analyzer.py
 │   │   ├── pipeline.py
+│   │   ├── pytest_generator.py
+│   │   ├── scenario_generator.py
 │   │   ├── sources
 │   │   │   ├── base.py
 │   │   │   ├── graphql_source.py
@@ -316,10 +331,12 @@
 │   │   │   ├── nl_source.py
 │   │   │   ├── openapi_source.py
 │   │   │   ├── oql_source.py
+│   │   │   ├── page_source.py
 │   │   │   ├── proto_source.py
 │   │   │   ├── pytest_source.py
 │   │   │   ├── sql_source.py
 │   │   │   └── ui_source.py
+│   │   ├── specialized_generator.py
 │   │   ├── targets
 │   │   │   ├── base.py
 │   │   │   ├── __init__.py
@@ -328,6 +345,8 @@
 │   │   │   └── testtoon_target.py
 │   │   └── test_generator.py
 │   ├── __init__.py
+│   ├── integrations
+│   │   └── planfile_hook.py
 │   ├── interpreter
 │   │   ├── _api_runner.py
 │   │   ├── _assertions.py
@@ -352,6 +371,11 @@
 │   │   │   └── renderer.py
 │   │   ├── _converter.py
 │   │   ├── dispatcher.py
+│   │   ├── dom_scan_formatters.py
+│   │   ├── dom_scan_mixin.py
+│   │   ├── dom_scan_models.py
+│   │   ├── dom_scanner.py
+│   │   ├── _dom_scan.py
 │   │   ├── _encoder.py
 │   │   ├── _flow.py
 │   │   ├── _gui.py
@@ -705,6 +729,7 @@
 │   ├── test_echo_schemas_helpers.py
 │   ├── test_encoder_routes.py
 │   ├── test_generate_cmd.py
+│   ├── test_generate_from_page_cli.py
 │   ├── test_generate_ir_cli.py
 │   ├── test_generators.py
 │   ├── test_graphql_adapter.py
@@ -722,6 +747,7 @@
 │   ├── test_meta_mutator.py
 │   ├── test_meta_self_test.py
 │   ├── test_misc_cmds.py
+│   ├── test_navigate_json_path.py
 │   ├── test_network_discovery.py
 │   ├── test_nl_adapter.py
 │   ├── test_nl_entity_extractor.py
@@ -729,6 +755,7 @@
 │   ├── test_nl_intent_recognizer.py
 │   ├── test_nl_scenarios_e2e.py
 │   ├── test_openapi_generator.py
+│   ├── test_page_analyzer.py
 │   ├── test_pipeline.py
 │   ├── test_plugin_registry.py
 │   ├── test_proto_adapter.py
@@ -771,6 +798,7 @@
 ├── topology.toon.yaml
 ├── tree.sh
 ├── tree.txt
+├── uv.lock
 └── VERSION
 
-94 directories, 680 files
+96 directories, 706 files

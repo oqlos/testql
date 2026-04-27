@@ -84,16 +84,16 @@ tasks:
       - task: quality
 
   # ─────────────────────────────────────────────────────────────────────────────
-  # IQL / Test Execution
+  # OQL / Test Execution
   # ─────────────────────────────────────────────────────────────────────────────
 
-  iql:run:
-    desc: Run IQL scenario file
+  oql:run:
+    desc: Run OQL scenario file
     cmds:
       - testql run {{.CLI_ARGS}}
 
-  iql:shell:
-    desc: Start IQL interactive shell
+  oql:shell:
+    desc: Start OQL interactive shell
     cmds:
       - testql shell
 

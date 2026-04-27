@@ -2,35 +2,35 @@
 testql.interpreter — package re-export for backward compatibility.
 
 All original public symbols remain importable from `testql.interpreter`:
-  from testql.interpreter import IqlInterpreter
-  from testql.interpreter import IqlLine, IqlScript, parse_iql
+  from testql.interpreter import OqlInterpreter
+  from testql.interpreter import OqlLine, OqlScript, parse_oql
   from testql.interpreter import main
 """
 
 from __future__ import annotations
 
-from .interpreter import IqlInterpreter
-from ._parser import IqlLine, IqlScript, parse_iql
+from .interpreter import OqlInterpreter
+from ._parser import OqlLine, OqlScript, parse_oql
 from ._testtoon_parser import (
     ToonScript,
     ToonSection,
     parse_testtoon,
-    testtoon_to_iql,
+    testtoon_to_oql,
     validate_testtoon,
 )
-from ._converter import convert_iql_to_testtoon
+from ._converter import convert_oql_to_testtoon
 
 __all__ = [
-    "IqlInterpreter",
-    "IqlLine",
-    "IqlScript",
-    "parse_iql",
+    "OqlInterpreter",
+    "OqlLine",
+    "OqlScript",
+    "parse_oql",
     "ToonScript",
     "ToonSection",
     "parse_testtoon",
-    "testtoon_to_iql",
+    "testtoon_to_oql",
     "validate_testtoon",
-    "convert_iql_to_testtoon",
+    "convert_oql_to_testtoon",
     "main",
 ]
 
@@ -43,7 +43,7 @@ def main() -> None:
     from typing import Any
 
     parser = argparse.ArgumentParser(description="TestQL Interpreter — runs .testql.toon.yaml scenarios")
-    parser.add_argument("file", nargs="?", help="TestQL scenario file (.testql.toon.yaml / .iql / .tql)")
+    parser.add_argument("file", nargs="?", help="TestQL scenario file (.testql.toon.yaml / .oql / .tql)")
     parser.add_argument("-u", "--url", default="http://localhost:8101")
     parser.add_argument("-q", "--quiet", action="store_true")
     parser.add_argument("-n", "--dry-run", action="store_true")
@@ -58,7 +58,7 @@ def main() -> None:
             k, val = v.split("=", 1)
             variables[k.strip()] = val.strip()
 
-    interp = IqlInterpreter(
+    interp = OqlInterpreter(
         api_url=args.url, variables=variables,
         quiet=args.quiet, dry_run=args.dry_run,
     )

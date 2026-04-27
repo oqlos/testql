@@ -5,8 +5,8 @@ stats:
   total_edges: 39
   modules_count: 18
 nodes:
-  testql.interpreter._parser.parse_iql:
-    name: parse_iql
+  testql.interpreter._parser.parse_oql:
+    name: parse_oql
     module: testql.interpreter._parser
     line: 22
     cyclomatic_complexity: 5
@@ -61,8 +61,8 @@ nodes:
     cyclomatic_complexity: 1
     calls_out: 1
     calls_in: 2
-  testql.commands.encoder_routes.iql_run_line:
-    name: iql_run_line
+  testql.commands.encoder_routes.oql_run_line:
+    name: oql_run_line
     module: testql.commands.encoder_routes
     line: 299
     cyclomatic_complexity: 1
@@ -110,14 +110,14 @@ nodes:
     cyclomatic_complexity: 1
     calls_out: 3
     calls_in: 1
-  testql.interpreter._converter.convert_iql_to_testtoon:
-    name: convert_iql_to_testtoon
+  testql.interpreter._converter.convert_oql_to_testtoon:
+    name: convert_oql_to_testtoon
     module: testql.interpreter._converter
     line: 100
     cyclomatic_complexity: 66
     calls_out: 116
     calls_in: 1
-  testql.interpreter.interpreter.IqlInterpreter.parse:
+  testql.interpreter.interpreter.OqlInterpreter.parse:
     name: parse
     module: testql.interpreter.interpreter
     line: 61
@@ -159,7 +159,7 @@ nodes:
     cyclomatic_complexity: 6
     calls_out: 8
     calls_in: 1
-  testql.interpreter.interpreter.IqlInterpreter.execute:
+  testql.interpreter.interpreter.OqlInterpreter.execute:
     name: execute
     module: testql.interpreter.interpreter
     line: 76
@@ -173,8 +173,8 @@ nodes:
     cyclomatic_complexity: 1
     calls_out: 2
     calls_in: 1
-  testql.commands.encoder_routes._execute_iql_line:
-    name: _execute_iql_line
+  testql.commands.encoder_routes._execute_oql_line:
+    name: _execute_oql_line
     module: testql.commands.encoder_routes
     line: 195
     cyclomatic_complexity: 10
@@ -187,8 +187,8 @@ nodes:
     cyclomatic_complexity: 8
     calls_out: 21
     calls_in: 1
-  testql.commands.encoder_routes._normalize_iql_path:
-    name: _normalize_iql_path
+  testql.commands.encoder_routes._normalize_oql_path:
+    name: _normalize_oql_path
     module: testql.commands.encoder_routes
     line: 52
     cyclomatic_complexity: 10
@@ -222,15 +222,15 @@ nodes:
     cyclomatic_complexity: 9
     calls_out: 20
     calls_in: 2
-  testql.interpreter.interpreter.IqlInterpreter.__init__:
+  testql.interpreter.interpreter.OqlInterpreter.__init__:
     name: __init__
     module: testql.interpreter.interpreter
     line: 43
     cyclomatic_complexity: 2
     calls_out: 3
     calls_in: 0
-  testql.interpreter._testtoon_parser.testtoon_to_iql:
-    name: testtoon_to_iql
+  testql.interpreter._testtoon_parser.testtoon_to_oql:
+    name: testtoon_to_oql
     module: testql.interpreter._testtoon_parser
     line: 383
     cyclomatic_complexity: 2
@@ -243,8 +243,8 @@ nodes:
     cyclomatic_complexity: 4
     calls_out: 7
     calls_in: 0
-  testql.commands.encoder_routes.iql_read_file:
-    name: iql_read_file
+  testql.commands.encoder_routes.oql_read_file:
+    name: oql_read_file
     module: testql.commands.encoder_routes
     line: 251
     cyclomatic_complexity: 3
@@ -271,8 +271,8 @@ nodes:
     cyclomatic_complexity: 7
     calls_out: 17
     calls_in: 0
-  testql.commands.encoder_routes.iql_list_files:
-    name: iql_list_files
+  testql.commands.encoder_routes.oql_list_files:
+    name: oql_list_files
     module: testql.commands.encoder_routes
     line: 227
     cyclomatic_complexity: 7
@@ -292,8 +292,8 @@ nodes:
     cyclomatic_complexity: 12
     calls_out: 31
     calls_in: 1
-  testql.commands.encoder_routes.iql_run_file:
-    name: iql_run_file
+  testql.commands.encoder_routes.oql_run_file:
+    name: oql_run_file
     module: testql.commands.encoder_routes
     line: 305
     cyclomatic_complexity: 12
@@ -320,8 +320,8 @@ nodes:
     cyclomatic_complexity: 3
     calls_out: 4
     calls_in: 0
-  testql.commands.encoder_routes.iql_list_tables:
-    name: iql_list_tables
+  testql.commands.encoder_routes.oql_list_tables:
+    name: oql_list_tables
     module: testql.commands.encoder_routes
     line: 268
     cyclomatic_complexity: 4
@@ -348,8 +348,8 @@ nodes:
     cyclomatic_complexity: 2
     calls_out: 2
     calls_in: 0
-  testql.commands.encoder_routes._resolve_iql_path:
-    name: _resolve_iql_path
+  testql.commands.encoder_routes._resolve_oql_path:
+    name: _resolve_oql_path
     module: testql.commands.encoder_routes
     line: 85
     cyclomatic_complexity: 1
@@ -417,23 +417,23 @@ edges:
 - caller: testql.interpreter._api_runner.ApiRunnerMixin._cmd_capture
   callee: testql.interpreter._api_runner._navigate_json_path
   call_type: resolved
-- caller: testql.interpreter._testtoon_parser.testtoon_to_iql
+- caller: testql.interpreter._testtoon_parser.testtoon_to_oql
   callee: testql.interpreter._testtoon_parser.parse_testtoon
   call_type: resolved
 - caller: testql.endpoint_detector.UnifiedEndpointDetector._deduplicate_endpoints
   callee: testql._base_fallback.VariableStore.set
   call_type: resolved
 - caller: testql.interpreter._flow.FlowMixin._cmd_include
-  callee: testql.interpreter._parser.parse_iql
+  callee: testql.interpreter._parser.parse_oql
   call_type: resolved
-- caller: testql.interpreter._converter.convert_iql_to_testtoon
+- caller: testql.interpreter._converter.convert_oql_to_testtoon
   callee: testql.interpreter._converter._extract_scenario_name
   call_type: resolved
-- caller: testql.interpreter._converter.convert_iql_to_testtoon
+- caller: testql.interpreter._converter.convert_oql_to_testtoon
   callee: testql.interpreter._converter._detect_scenario_type
   call_type: resolved
 - caller: testql.interpreter._converter.convert_file
-  callee: testql.interpreter._converter.convert_iql_to_testtoon
+  callee: testql.interpreter._converter.convert_oql_to_testtoon
   call_type: resolved
 - caller: testql.interpreter._converter.convert_directory
   callee: testql.interpreter._converter.convert_file
@@ -441,44 +441,44 @@ edges:
 - caller: testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
   callee: testql.interpreter._api_runner._navigate_json_path
   call_type: resolved
-- caller: testql.interpreter.interpreter.IqlInterpreter.__init__
+- caller: testql.interpreter.interpreter.OqlInterpreter.__init__
   callee: testql._base_fallback.VariableStore.set
   call_type: resolved
-- caller: testql.interpreter.interpreter.IqlInterpreter.parse
-  callee: testql.interpreter._parser.parse_iql
+- caller: testql.interpreter.interpreter.OqlInterpreter.parse
+  callee: testql.interpreter._parser.parse_oql
   call_type: resolved
-- caller: testql.interpreter.interpreter.IqlInterpreter.parse
-  callee: testql.interpreter._testtoon_parser.testtoon_to_iql
+- caller: testql.interpreter.interpreter.OqlInterpreter.parse
+  callee: testql.interpreter._testtoon_parser.testtoon_to_oql
   call_type: resolved
-- caller: testql.interpreter.interpreter.IqlInterpreter.execute
+- caller: testql.interpreter.interpreter.OqlInterpreter.execute
   callee: testql._base_fallback.VariableStore.all
   call_type: resolved
-- caller: testql.commands.encoder_routes._resolve_iql_path
-  callee: testql.commands.encoder_routes._normalize_iql_path
+- caller: testql.commands.encoder_routes._resolve_oql_path
+  callee: testql.commands.encoder_routes._normalize_oql_path
   call_type: resolved
 - caller: testql.commands.encoder_routes._exec_assert_cmd
   callee: testql.commands.encoder_routes._evaluate_assertion
   call_type: resolved
-- caller: testql.commands.encoder_routes._execute_iql_line
+- caller: testql.commands.encoder_routes._execute_oql_line
   callee: testql.commands.encoder_routes._exec_encoder_cmd
   call_type: resolved
-- caller: testql.commands.encoder_routes._execute_iql_line
+- caller: testql.commands.encoder_routes._execute_oql_line
   callee: testql.commands.encoder_routes._exec_browser_cmd
   call_type: resolved
-- caller: testql.commands.encoder_routes.iql_list_files
+- caller: testql.commands.encoder_routes.oql_list_files
   callee: testql._base_fallback.VariableStore.set
   call_type: resolved
-- caller: testql.commands.encoder_routes.iql_read_file
-  callee: testql.commands.encoder_routes._resolve_iql_path
+- caller: testql.commands.encoder_routes.oql_read_file
+  callee: testql.commands.encoder_routes._resolve_oql_path
   call_type: resolved
-- caller: testql.commands.encoder_routes.iql_list_tables
-  callee: testql.commands.encoder_routes._resolve_iql_path
+- caller: testql.commands.encoder_routes.oql_list_tables
+  callee: testql.commands.encoder_routes._resolve_oql_path
   call_type: resolved
-- caller: testql.commands.encoder_routes.iql_run_line
-  callee: testql.commands.encoder_routes._execute_iql_line
+- caller: testql.commands.encoder_routes.oql_run_line
+  callee: testql.commands.encoder_routes._execute_oql_line
   call_type: resolved
-- caller: testql.commands.encoder_routes.iql_run_file
-  callee: testql.commands.encoder_routes._resolve_iql_path
+- caller: testql.commands.encoder_routes.oql_run_file
+  callee: testql.commands.encoder_routes._resolve_oql_path
   call_type: resolved
 modules:
   TODO.testtoon_parser:
@@ -503,14 +503,14 @@ modules:
   - testql.commands.encoder_routes._exec_assert_cmd
   - testql.commands.encoder_routes._exec_browser_cmd
   - testql.commands.encoder_routes._exec_encoder_cmd
-  - testql.commands.encoder_routes._execute_iql_line
-  - testql.commands.encoder_routes._normalize_iql_path
-  - testql.commands.encoder_routes._resolve_iql_path
-  - testql.commands.encoder_routes.iql_list_files
-  - testql.commands.encoder_routes.iql_list_tables
-  - testql.commands.encoder_routes.iql_read_file
-  - testql.commands.encoder_routes.iql_run_file
-  - testql.commands.encoder_routes.iql_run_line
+  - testql.commands.encoder_routes._execute_oql_line
+  - testql.commands.encoder_routes._normalize_oql_path
+  - testql.commands.encoder_routes._resolve_oql_path
+  - testql.commands.encoder_routes.oql_list_files
+  - testql.commands.encoder_routes.oql_list_tables
+  - testql.commands.encoder_routes.oql_read_file
+  - testql.commands.encoder_routes.oql_run_file
+  - testql.commands.encoder_routes.oql_run_line
   testql.endpoint_detector:
   - testql.endpoint_detector.UnifiedEndpointDetector._deduplicate_endpoints
   testql.generator:
@@ -527,18 +527,18 @@ modules:
   - testql.interpreter._converter._extract_scenario_name
   - testql.interpreter._converter.convert_directory
   - testql.interpreter._converter.convert_file
-  - testql.interpreter._converter.convert_iql_to_testtoon
+  - testql.interpreter._converter.convert_oql_to_testtoon
   testql.interpreter._flow:
   - testql.interpreter._flow.FlowMixin._cmd_include
   testql.interpreter._parser:
-  - testql.interpreter._parser.parse_iql
+  - testql.interpreter._parser.parse_oql
   testql.interpreter._testtoon_parser:
   - testql.interpreter._testtoon_parser.parse_testtoon
-  - testql.interpreter._testtoon_parser.testtoon_to_iql
+  - testql.interpreter._testtoon_parser.testtoon_to_oql
   testql.interpreter.interpreter:
-  - testql.interpreter.interpreter.IqlInterpreter.__init__
-  - testql.interpreter.interpreter.IqlInterpreter.execute
-  - testql.interpreter.interpreter.IqlInterpreter.parse
+  - testql.interpreter.interpreter.OqlInterpreter.__init__
+  - testql.interpreter.interpreter.OqlInterpreter.execute
+  - testql.interpreter.interpreter.OqlInterpreter.parse
   testql.openapi_generator:
   - testql.openapi_generator.OpenAPIGenerator._infer_tags
   testql.report_generator:
@@ -592,13 +592,13 @@ entry_points:
 - testql.cli.suite
 - testql.cli.watch
 - testql.commands.echo.echo
-- testql.commands.encoder_routes.iql_list_files
-- testql.commands.encoder_routes.iql_list_logs
-- testql.commands.encoder_routes.iql_list_tables
-- testql.commands.encoder_routes.iql_read_file
-- testql.commands.encoder_routes.iql_read_log
-- testql.commands.encoder_routes.iql_run_file
-- testql.commands.encoder_routes.iql_run_line
+- testql.commands.encoder_routes.oql_list_files
+- testql.commands.encoder_routes.oql_list_logs
+- testql.commands.encoder_routes.oql_list_tables
+- testql.commands.encoder_routes.oql_read_file
+- testql.commands.encoder_routes.oql_read_log
+- testql.commands.encoder_routes.oql_run_file
+- testql.commands.encoder_routes.oql_run_line
 - testql.doql_parser.DoqlParser.__init__
 - testql.doql_parser.DoqlParser._parse_app_block
 - testql.doql_parser.DoqlParser._parse_deploy_block
@@ -726,13 +726,13 @@ entry_points:
 - testql.interpreter._websockets.WebSocketMixin._cmd_ws_receive
 - testql.interpreter._websockets.WebSocketMixin._cmd_ws_send
 - testql.interpreter._websockets.WebSocketMixin._get_ws_context
-- testql.interpreter.interpreter.IqlInterpreter.__init__
-- testql.interpreter.interpreter.IqlInterpreter._cmd_get
-- testql.interpreter.interpreter.IqlInterpreter._cmd_set
-- testql.interpreter.interpreter.IqlInterpreter._dispatch
-- testql.interpreter.interpreter.IqlInterpreter._is_testtoon
-- testql.interpreter.interpreter.IqlInterpreter.execute
-- testql.interpreter.interpreter.IqlInterpreter.parse
+- testql.interpreter.interpreter.OqlInterpreter.__init__
+- testql.interpreter.interpreter.OqlInterpreter._cmd_get
+- testql.interpreter.interpreter.OqlInterpreter._cmd_set
+- testql.interpreter.interpreter.OqlInterpreter._dispatch
+- testql.interpreter.interpreter.OqlInterpreter._is_testtoon
+- testql.interpreter.interpreter.OqlInterpreter.execute
+- testql.interpreter.interpreter.OqlInterpreter.parse
 - testql.interpreter.main
 - testql.openapi_generator.ContractTestGenerator.__init__
 - testql.openapi_generator.ContractTestGenerator._get_expected_status

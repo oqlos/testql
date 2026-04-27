@@ -23,12 +23,12 @@ import click
 @click.option("--timeout", type=int, default=None, help="Global timeout in milliseconds for operations")
 def run(file: str, url: str, dry_run: bool, output: str, quiet: bool, planfile: bool, timeout: int | None) -> None:
     """Run a TestQL (.testql.toon.yaml) scenario."""
-    from testql.interpreter import IqlInterpreter
+    from testql.interpreter import OqlInterpreter
 
     source = Path(file).read_text(encoding="utf-8")
     filename = Path(file).name
 
-    interp = IqlInterpreter(
+    interp = OqlInterpreter(
         api_url=url,
         dry_run=dry_run,
         quiet=quiet,

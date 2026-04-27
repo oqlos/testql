@@ -4,8 +4,8 @@ This example demonstrates running Python unit tests using TestQL's unit test exe
 
 ## Files
 
-- `test-math.iql` — Basic UNIT_ASSERT and UNIT_IMPORT examples
-- `test-pytest.iql` — Run pytest suites and check results
+- `test-math.oql` — Basic UNIT_ASSERT and UNIT_IMPORT examples
+- `test-pytest.oql` — Run pytest suites and check results
 - `run.sh` — Execute the scenarios
 
 ## Usage

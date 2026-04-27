@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Convert IQL/TQL scripts to TestTOON format (*.testql.toon.yaml).
+Convert OQL/TQL scripts to TestTOON format (*.testql.toon.yaml).
 
 This is a backward-compatible re-export. New code should use:
-    from testql.interpreter.converter import convert_iql_to_testtoon
+    from testql.interpreter.converter import convert_oql_to_testtoon
 
 Usage:
     python -m testql.interpreter._converter path/to/file.tql
@@ -17,7 +17,7 @@ from pathlib import Path
 
 # Re-export from new structured package
 from .converter import (
-    convert_iql_to_testtoon,
+    convert_oql_to_testtoon,
     convert_file,
     convert_directory,
     Row,
@@ -25,7 +25,7 @@ from .converter import (
 )
 
 __all__ = [
-    "convert_iql_to_testtoon",
+    "convert_oql_to_testtoon",
     "convert_file",
     "convert_directory",
     "Row",
@@ -36,10 +36,10 @@ __all__ = [
 if __name__ == '__main__':
     import argparse
 
-    parser = argparse.ArgumentParser(description='Convert IQL/TQL to TestTOON format')
+    parser = argparse.ArgumentParser(description='Convert OQL/TQL to TestTOON format')
     parser.add_argument('path', help='File or directory to convert')
     parser.add_argument('--batch', action='store_true', help='Recursively convert directory')
-    parser.add_argument('--delete-originals', action='store_true', help='Delete .tql/.iql after conversion')
+    parser.add_argument('--delete-originals', action='store_true', help='Delete .tql/.oql after conversion')
     args = parser.parse_args()
 
     target = Path(args.path)
@@ -53,7 +53,7 @@ if __name__ == '__main__':
         if args.delete_originals:
             count = 0
             for f in target.rglob('*'):
-                if f.suffix in ('.tql', '.iql'):
+                if f.suffix in ('.tql', '.oql'):
                     f.unlink()
                     count += 1
             print(f'Deleted {count} original files')

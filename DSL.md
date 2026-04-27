@@ -3,16 +3,16 @@ Rozumiem: chcesz propozycję uniwersalnego, prostego DSL-a na podstawie obecnych
 Widzę, że aktywne pliki są w [/home/tom/github/oqlos/testql/examples](cci:9://file:///home/tom/github/oqlos/testql/examples:0:0-0:0), a zarejestrowany workspace to [/home/tom/github/oqlos/sumd](cci:9://file:///home/tom/github/oqlos/sumd:0:0-0:0). Sprawdzę jeszcze bezpośrednio katalog `testql/examples`, żeby oprzeć propozycję na faktycznych przykładach, nie tylko na scenariuszach z `sumd`.
 
 
-Mam listę plików przykładów. Teraz przeczytam reprezentatywne scenariusze `.iql`, `.testql.toon.yaml`, `README` i skrypty uruchomieniowe, żeby wyciągnąć wspólne operacje DSL-a.
+Mam listę plików przykładów. Teraz przeczytam reprezentatywne scenariusze `.oql`, `.testql.toon.yaml`, `README` i skrypty uruchomieniowe, żeby wyciągnąć wspólne operacje DSL-a.
 
-Widać już główne problemy: dziś są trzy style (`.iql`, `.testql.toon.yaml`, `.tql`) i komendy są silnie prefiksowane typem środowiska (`GUI_*`, `API`, `SHELL`, `ENCODER_*`). Doczytam jeszcze przykłady TestTOON, topologii i discovery, żeby propozycja objęła też introspekcję/projekt.
+Widać już główne problemy: dziś są trzy style (`.oql`, `.testql.toon.yaml`, `.tql`) i komendy są silnie prefiksowane typem środowiska (`GUI_*`, `API`, `SHELL`, `ENCODER_*`). Doczytam jeszcze przykłady TestTOON, topologii i discovery, żeby propozycja objęła też introspekcję/projekt.
 
 Na podstawie przykładów mam już obraz składni i środowisk. Zapiszę krótki kontekst projektu, żeby kolejne rozmowy mogły kontynuować ten kierunek spójnie.
 # Propozycja: jeden DSL `TestQL Scenario`
 
 Na podstawie `examples/*/*` proponuję odejść od rozdziału:
 
-- `.iql` dla imperatywnych komend
+- `.oql` dla imperatywnych komend
 - `.testql.toon.yaml` dla tabel API
 - `.tql` jako legacy
 - komend typu `GUI_*`, `ENCODER_*`, `SHELL`, `UNIT_*`
@@ -34,7 +34,7 @@ Format powinien być łatwy dla człowieka, ale też bardzo łatwy do parsowania
 
 ## Zamiast obecnie
 
-```iql
+```oql
 GUI_START "${base_url}/login"
 GUI_INPUT "#username" "${username}"
 GUI_INPUT "#password" "${password}"
@@ -157,7 +157,7 @@ Przykłady:
 
 Zamiast:
 
-```iql
+```oql
 GUI_CLICK
 ENCODER_CLICK
 SHELL
@@ -189,7 +189,7 @@ Albo krócej, gdy `type` wskazuje domyślny driver.
 
 Zamiast wielu osobnych:
 
-```iql
+```oql
 ASSERT_STATUS 200
 ASSERT_EXIT_CODE 0
 GUI_ASSERT_VISIBLE "#x"
@@ -369,7 +369,7 @@ steps:
 
 Obecnie:
 
-```iql
+```oql
 SHELL "echo Hello TestQL"
 ASSERT_EXIT_CODE 0
 ```
@@ -399,7 +399,7 @@ steps:
 
 Obecnie:
 
-```iql
+```oql
 UNIT_IMPORT "math"
 UNIT_ASSERT "math.sqrt(16) == 4"
 ```
@@ -434,7 +434,7 @@ steps:
 
 Obecnie:
 
-```iql
+```oql
 ENCODER_ON
 ENCODER_STATUS
 ENCODER_FOCUS column1
@@ -594,7 +594,7 @@ jako **główny format v2**.
 
 ## Pozostawić kompatybilność
 
-- **`.iql`** jako legacy imperative
+- **`.oql`** jako legacy imperative
 - **`.testql.toon.yaml`** jako format tabelaryczny/kompaktowy
 - **`.tql`** jako deprecated legacy
 
@@ -603,7 +603,7 @@ jako **główny format v2**.
 ```text
 scenario.testql.yaml       # podstawowy format dla ludzi
 scenario.testql.toon.yaml  # format zwarty/AI-friendly/tabelaryczny
-scenario.iql               # legacy
+scenario.oql               # legacy
 ```
 
 ---
@@ -656,7 +656,7 @@ Step:
 Dzięki temu można potem kompilować:
 
 ```text
-.iql                -> Scenario AST
+.oql                -> Scenario AST
 .testql.toon.yaml   -> Scenario AST
 .testql.yaml        -> Scenario AST
 LLM-generated text  -> Scenario AST
@@ -784,7 +784,7 @@ Dodać parser `*.testql.yaml` v2 i mapowanie do obecnego runnera.
 Zrobić migrator:
 
 ```bash
-testql migrate examples/gui-testing/login-form.iql --to testql.yaml
+testql migrate examples/gui-testing/login-form.oql --to testql.yaml
 testql migrate examples/api-testing/health-check.testql.toon.yaml --to testql.yaml
 ```
 
@@ -802,7 +802,7 @@ Runner wykonuje już tylko wspólny AST.
 
 ## Etap 5
 
-LLM generator generuje DSL v2, nie legacy `.iql`.
+LLM generator generuje DSL v2, nie legacy `.oql`.
 
 ---
 
@@ -822,7 +822,7 @@ Czyli:
 - **`targets`** jako opis środowisk
 - **`using`** jako wybór runtime/drivera
 - **`discover` / `inspect` / [topology](cci:9://file:///home/tom/github/oqlos/testql/examples/topology:0:0-0:0)** jako normalne akcje DSL-a
-- **legacy `.iql` i `.testql.toon.yaml`** konwertowane do tego samego AST
+- **legacy `.oql` i `.testql.toon.yaml`** konwertowane do tego samego AST
 
 Status: przeanalizowałem reprezentatywne przykłady z `examples/*/*` i proponuję DSL v2 oparty o jeden model scenariusza, zamiast kilku równoległych składni.
 

@@ -1,7 +1,7 @@
 # testql | 36f 7765L | shell:2,python:34 | 2026-04-19
 # stats: 286 func | 0 cls | 36 mod | CC̄=4.9 | critical:11 | cycles:0
-# alerts[5]: CC convert_iql_to_testtoon=66; CC suite=47; fan-out suite=41; fan-out convert_iql_to_testtoon=40; CC generate_sumd=29
-# hotspots[5]: suite fan=41; convert_iql_to_testtoon fan=40; iql_run_file fan=28; list fan=24; echo fan=24
+# alerts[5]: CC convert_oql_to_testtoon=66; CC suite=47; fan-out suite=41; fan-out convert_oql_to_testtoon=40; CC generate_sumd=29
+# hotspots[5]: suite fan=41; convert_oql_to_testtoon fan=40; oql_run_file fan=28; list fan=24; echo fan=24
 # evolution: CC̄ 4.9→4.9 (flat 0.0)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
 M[36]:
@@ -43,7 +43,7 @@ M[36]:
   tree.sh,1
 D:
   testql/interpreter/_converter.py:
-    e: Row,Section,_parse_api_args,_parse_meta_from_args,_parse_target_from_args,_detect_scenario_type,_extract_scenario_name,convert_iql_to_testtoon,convert_file,convert_directory
+    e: Row,Section,_parse_api_args,_parse_meta_from_args,_parse_target_from_args,_detect_scenario_type,_extract_scenario_name,convert_oql_to_testtoon,convert_file,convert_directory
     Row:
     Section:
     _parse_api_args(args)
@@ -51,7 +51,7 @@ D:
     _parse_target_from_args(args)
     _detect_scenario_type(commands)
     _extract_scenario_name(comments;filename)
-    convert_iql_to_testtoon(source;filename)
+    convert_oql_to_testtoon(source;filename)
     convert_file(src)
     convert_directory(dir_path)
   testql/cli.py:
@@ -131,7 +131,7 @@ D:
     SumdParser: parse_file(1),parse(1),_parse_metadata(1),_parse_interfaces(1),_parse_workflows(1),_parse_testql_scenarios(1),_parse_architecture(1),_extract_section(2),generate_testql_scenarios(1)  # Parser for SUMD markdown files...
     parse_sumd_file(path)
   testql/interpreter/_testtoon_parser.py:
-    e: ToonSection,ToonScript,_detect_separator,_parse_value,parse_testtoon,validate_testtoon,_expand_config,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_generic,testtoon_to_iql
+    e: ToonSection,ToonScript,_detect_separator,_parse_value,parse_testtoon,validate_testtoon,_expand_config,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_generic,testtoon_to_oql
     ToonSection: validate(0)
     ToonScript:
     _detect_separator(line)
@@ -151,24 +151,24 @@ D:
     _expand_include(section;lines;line_num)
     _expand_record(section;lines;line_num)
     _expand_generic(section;lines;line_num)
-    testtoon_to_iql(text;filename)
+    testtoon_to_oql(text;filename)
   testql/commands/encoder_routes.py:
-    e: _normalize_iql_path,_resolve_iql_path,_evaluate_assertion,_format_log_detail,_exec_encoder_cmd,_exec_browser_cmd,_exec_assert_cmd,_execute_iql_line,iql_list_files,iql_read_file,iql_list_tables,iql_run_line,iql_run_file,iql_list_logs,iql_read_log
-    _normalize_iql_path(path)
-    _resolve_iql_path(path)
+    e: _normalize_oql_path,_resolve_oql_path,_evaluate_assertion,_format_log_detail,_exec_encoder_cmd,_exec_browser_cmd,_exec_assert_cmd,_execute_oql_line,oql_list_files,oql_read_file,oql_list_tables,oql_run_line,oql_run_file,oql_list_logs,oql_read_log
+    _normalize_oql_path(path)
+    _resolve_oql_path(path)
     _evaluate_assertion(result;prop;expected)
     _format_log_detail(cmd;result)
     _exec_encoder_cmd(cmd;arg)
     _exec_browser_cmd(cmd;arg;raw_arg)
     _exec_assert_cmd(raw_arg)
-    _execute_iql_line(line)
-    iql_list_files()
-    iql_read_file(path)
-    iql_list_tables(path)
-    iql_run_line(req)
-    iql_run_file(req)
-    iql_list_logs()
-    iql_read_log(name)
+    _execute_oql_line(line)
+    oql_list_files()
+    oql_read_file(path)
+    oql_list_tables(path)
+    oql_run_line(req)
+    oql_run_file(req)
+    oql_list_logs()
+    oql_read_log(name)
   testql/openapi_generator.py:
     e: OpenAPISpec,OpenAPIGenerator,ContractTestGenerator,generate_openapi_spec,generate_contract_tests_from_spec
     OpenAPISpec: to_dict(0),to_json(1),to_yaml(0)  # OpenAPI specification container...
@@ -223,10 +223,10 @@ D:
     _adapt_test_entry(t)
     generate_report(data_json;output_html)
   testql/interpreter/_parser.py:
-    e: IqlLine,IqlScript,parse_iql
-    IqlLine:
-    IqlScript:
-    parse_iql(source;filename)
+    e: OqlLine,OqlScript,parse_oql
+    OqlLine:
+    OqlScript:
+    parse_oql(source;filename)
   testql/toon_parser.py:
     e: ToonParser,parse_toon_file
     ToonParser: __init__(0),parse_file(1),parse(1),_parse_api_block(1),_parse_assert_block(1),_parse_log_block(1)  # Parser for toon test files...
@@ -243,8 +243,8 @@ D:
 
 ...
   testql/interpreter/interpreter.py:
-    e: IqlInterpreter
-    IqlInterpreter(ApiRunnerMixin,AssertionsMixin,EncoderMixin,FlowMixin,WebSocketMixin,BaseInterpreter): __init__(6),parse(2),_is_testtoon(1),execute(1),_dispatch(3),_cmd_set(2),_cmd_get(2)  # IQL interpreter — runs .testql.toon.yaml / .iql / .tql scrip...
+    e: OqlInterpreter
+    OqlInterpreter(ApiRunnerMixin,AssertionsMixin,EncoderMixin,FlowMixin,WebSocketMixin,BaseInterpreter): __init__(6),parse(2),_is_testtoon(1),execute(1),_dispatch(3),_cmd_set(2),_cmd_get(2)  # OQL interpreter — runs .testql.toon.yaml / .oql / .tql scrip...
   testql/reporters/json_reporter.py:
     e: report_json
     report_json(result)

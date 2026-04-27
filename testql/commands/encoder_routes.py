@@ -1,4 +1,4 @@
-"""REST API routes for IQL file operations (list, read, run, logs)."""
+"""REST API routes for OQL file operations (list, read, run, logs)."""
 
 from __future__ import annotations
 
@@ -31,13 +31,13 @@ except ImportError:
     class RunFileRequest(BaseModel):  # type: ignore[no-redef]
         path: str = ""
 
-router = APIRouter(prefix="/iql", tags=["iql"])
+router = APIRouter(prefix="/oql", tags=["oql"])
 
 # ── Paths ─────────────────────────────────────────────────────────
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-IQL_DIR = PROJECT_ROOT / "testql" / "scenarios"
-LOG_DIR = IQL_DIR / "logs"
+OQL_DIR = PROJECT_ROOT / "testql" / "scenarios"
+LOG_DIR = OQL_DIR / "logs"
 
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -45,7 +45,7 @@ DEFAULT_WAIT_MS = 100
 HTTP_BAD_REQUEST = 400
 HTTP_NOT_FOUND = 404
 
-LEGACY_C2004_ROOT_SEGMENT = "db/dsl/iql/"
+LEGACY_C2004_ROOT_SEGMENT = "db/dsl/oql/"
 TESTQL_SCENARIOS_SEGMENT = "testql/scenarios/"
 
 
@@ -60,11 +60,11 @@ def _strip_path_segments(candidate: str) -> str:
 
 
 def _migrate_legacy_extension(candidate: str) -> str:
-    """Replace .iql/.tql with .testql.toon.yaml when the target file exists."""
-    for old_ext in ('.iql', '.tql'):
+    """Replace .oql/.tql with .testql.toon.yaml when the target file exists."""
+    for old_ext in ('.oql', '.tql'):
         if candidate.endswith(old_ext):
             new_candidate = candidate[:-len(old_ext)] + '.testql.toon.yaml'
-            if (IQL_DIR / new_candidate).is_file():
+            if (OQL_DIR / new_candidate).is_file():
                 return new_candidate
     return candidate
 
@@ -78,10 +78,10 @@ def _remap_tests_prefix(candidate: str) -> str:
     return candidate
 
 
-def _normalize_iql_path(path: str) -> str:
-    """Map legacy c2004 IQL paths to the canonical testql scenario layout.
+def _normalize_oql_path(path: str) -> str:
+    """Map legacy c2004 OQL paths to the canonical testql scenario layout.
 
-    Supports .testql.toon.yaml, .iql, and .tql extensions.
+    Supports .testql.toon.yaml, .oql, and .tql extensions.
     """
     candidate = (path or "").strip().replace("\\", "/")
     if not candidate:
@@ -91,12 +91,12 @@ def _normalize_iql_path(path: str) -> str:
     return _remap_tests_prefix(candidate)
 
 
-def _resolve_iql_path(path: str) -> tuple[str, Path]:
-    normalized_path = _normalize_iql_path(path)
-    return normalized_path, (IQL_DIR / normalized_path).resolve()
+def _resolve_oql_path(path: str) -> tuple[str, Path]:
+    normalized_path = _normalize_oql_path(path)
+    return normalized_path, (OQL_DIR / normalized_path).resolve()
 
 
-# ── IQL command executor ──────────────────────────────────────────
+# ── OQL command executor ──────────────────────────────────────────
 
 _ENCODER_SIMPLE_CMDS = {
     "ENCODER_ON": "activate",
@@ -182,17 +182,17 @@ async def _exec_browser_cmd(cmd: str, arg: str, raw_arg: str) -> dict[str, Any]:
     """Handle NAVIGATE, CLICK, QUERY commands."""
     if cmd == "NAVIGATE":
         url = arg or "/"
-        result = await hub.send_iql_command("navigate", url=url)
+        result = await hub.send_oql_command("navigate", url=url)
         return {"ok": result.get("ok", False), "command": cmd, "url": url, "result": result}
     if cmd == "CLICK":
         if not arg:
             return {"ok": False, "command": cmd, "error": "missing selector"}
-        result = await hub.send_iql_command("click", selector=arg)
+        result = await hub.send_oql_command("click", selector=arg)
         return {"ok": result.get("ok", False), "command": cmd, "selector": arg, "result": result}
     if cmd == "QUERY":
         m = re.match(r'"([^"]+)"\s*(.*)', raw_arg) if raw_arg else None
         selector, prop = (m.group(1), m.group(2).strip() or "exists") if m else (arg, "exists")
-        result = await hub.send_iql_command("query", selector=selector, prop=prop)
+        result = await hub.send_oql_command("query", selector=selector, prop=prop)
         return {"ok": result.get("ok", False), "command": cmd, "selector": selector, "result": result}
     return None  # type: ignore[return-value]
 
@@ -207,7 +207,7 @@ async def _exec_assert_cmd(raw_arg: str) -> dict[str, Any]:
     prop = rest[0] if rest else "exists"
     expected = rest[1].strip('"\'') if len(rest) > 1 else None
 
-    result = await hub.send_iql_command("query", selector=selector, prop=prop)
+    result = await hub.send_oql_command("query", selector=selector, prop=prop)
     if not result.get("ok"):
         return {"ok": False, "command": "ASSERT", "selector": selector, "error": result.get("error", "query_failed"), "result": result}
 
@@ -220,8 +220,8 @@ async def _exec_assert_cmd(raw_arg: str) -> dict[str, Any]:
     }
 
 
-async def _execute_iql_line(line: str) -> dict[str, Any]:
-    """Execute a single IQL command line. Returns structured result dict."""
+async def _execute_oql_line(line: str) -> dict[str, Any]:
+    """Execute a single OQL command line. Returns structured result dict."""
     line = line.strip()
     if not line or line.startswith("#"):
         return {"ok": True, "skipped": True}
@@ -254,13 +254,13 @@ async def _execute_iql_line(line: str) -> dict[str, Any]:
 # ── Route handlers ────────────────────────────────────────────────
 
 @router.get("/files")
-async def iql_list_files():
-    """List all .testql.toon.yaml files in the project (with .iql/.tql fallback)."""
+async def oql_list_files():
+    """List all .testql.toon.yaml files in the project (with .oql/.tql fallback)."""
     files = []
-    if IQL_DIR.is_dir():
-        for pattern in ("*.testql.toon.yaml", "*.iql", "*.tql"):
-            for f in sorted(IQL_DIR.rglob(pattern)):
-                rel = f.relative_to(IQL_DIR)
+    if OQL_DIR.is_dir():
+        for pattern in ("*.testql.toon.yaml", "*.oql", "*.tql"):
+            for f in sorted(OQL_DIR.rglob(pattern)):
+                rel = f.relative_to(OQL_DIR)
                 files.append({
                     "path": str(rel),
                     "name": f.name,
@@ -274,14 +274,14 @@ async def iql_list_files():
         if f["path"] not in seen:
             seen.add(f["path"])
             unique.append(f)
-    return {"files": unique, "base_dir": str(IQL_DIR)}
+    return {"files": unique, "base_dir": str(OQL_DIR)}
 
 
 @router.get("/file")
-async def iql_read_file(path: str = Query(...)):
-    """Read a TestQL file content (.testql.toon.yaml / .iql / .tql)."""
-    normalized_path, target = _resolve_iql_path(path)
-    if not str(target).startswith(str(IQL_DIR)):
+async def oql_read_file(path: str = Query(...)):
+    """Read a TestQL file content (.testql.toon.yaml / .oql / .tql)."""
+    normalized_path, target = _resolve_oql_path(path)
+    if not str(target).startswith(str(OQL_DIR)):
         return JSONResponse({"error": "path_traversal"}, status_code=HTTP_BAD_REQUEST)
     if not target.is_file():
         return JSONResponse({"error": "not_found"}, status_code=HTTP_NOT_FOUND)
@@ -295,10 +295,10 @@ async def iql_read_file(path: str = Query(...)):
 
 
 @router.get("/tables")
-async def iql_list_tables(path: str = Query(...)):
-    """Extract table names from an IQL file."""
-    normalized_path, target = _resolve_iql_path(path)
-    if not str(target).startswith(str(IQL_DIR)):
+async def oql_list_tables(path: str = Query(...)):
+    """Extract table names from an OQL file."""
+    normalized_path, target = _resolve_oql_path(path)
+    if not str(target).startswith(str(OQL_DIR)):
         return JSONResponse({"error": "path_traversal"}, status_code=HTTP_BAD_REQUEST)
     if not target.is_file():
         return JSONResponse({"error": "not_found"}, status_code=HTTP_NOT_FOUND)
@@ -309,7 +309,7 @@ async def iql_list_tables(path: str = Query(...)):
 
 
 def _extract_table_names(content: str) -> list[str]:
-    """Return sorted unique table names referenced in IQL content."""
+    """Return sorted unique table names referenced in OQL content."""
     table_patterns = [
         r'TABLE\s+["\']?(\w+)["\']?',
         r'FROM\s+["\']?(\w+)["\']?',
@@ -323,36 +323,36 @@ def _extract_table_names(content: str) -> list[str]:
 
 
 @router.post("/run-line")
-async def iql_run_line(req: RunLineRequest):
-    """Execute a single IQL command line via the encoder bridge."""
-    return await _execute_iql_line(req.line)
+async def oql_run_line(req: RunLineRequest):
+    """Execute a single OQL command line via the encoder bridge."""
+    return await _execute_oql_line(req.line)
 
 
 @router.post("/run-file")
-async def iql_run_file(req: RunFileRequest):
-    """Run an entire IQL file with validation. Returns structured results + saves log."""
-    normalized_path, target = _resolve_iql_path(req.path)
-    if not str(target).startswith(str(IQL_DIR)):
+async def oql_run_file(req: RunFileRequest):
+    """Run an entire OQL file with validation. Returns structured results + saves log."""
+    normalized_path, target = _resolve_oql_path(req.path)
+    if not str(target).startswith(str(OQL_DIR)):
         return JSONResponse({"error": "path_traversal"}, status_code=HTTP_BAD_REQUEST)
     if not target.is_file():
         return JSONResponse({"error": "not_found", "path": normalized_path}, status_code=HTTP_NOT_FOUND)
 
     lines = target.read_text(encoding="utf-8").splitlines()
-    results, counters, log_lines = await _run_iql_lines(lines, normalized_path)
+    results, counters, log_lines = await _run_oql_lines(lines, normalized_path)
     summary = _build_run_summary(normalized_path, req.path, lines, results, counters)
 
     log_file = _write_run_log(normalized_path, lines, log_lines, summary)
-    summary["log_file"] = str(log_file.relative_to(IQL_DIR))
+    summary["log_file"] = str(log_file.relative_to(OQL_DIR))
 
     return {"summary": summary, "results": results}
 
 
-async def _run_iql_lines(
+async def _run_oql_lines(
     lines: list[str], label: str
 ) -> tuple[list[dict], dict[str, int], list[str]]:
-    """Execute lines of IQL, returning (results, counters, log_lines)."""
+    """Execute lines of OQL, returning (results, counters, log_lines)."""
     log_lines: list[str] = [
-        f"# IQL Test Log: {label}",
+        f"# OQL Test Log: {label}",
         f"# Started: {datetime.now().isoformat()}",
         f"# Lines: {len(lines)}",
         "",
@@ -371,7 +371,7 @@ async def _run_iql_lines(
 
         t0 = time.monotonic()
         try:
-            result = await _execute_iql_line(line)
+            result = await _execute_oql_line(line)
         except Exception as exc:
             result = {"ok": False, "command": line.split()[0], "error": str(exc)}
         elapsed_ms = round((time.monotonic() - t0) * 1000)
@@ -452,7 +452,7 @@ def _write_run_log(
 
 
 @router.get("/logs")
-async def iql_list_logs():
+async def oql_list_logs():
     """List available log files."""
     logs = []
     if LOG_DIR.is_dir():
@@ -466,7 +466,7 @@ async def iql_list_logs():
 
 
 @router.get("/log")
-async def iql_read_log(name: str = Query(...)):
+async def oql_read_log(name: str = Query(...)):
     """Read a specific log file."""
     target = (LOG_DIR / name).resolve()
     if not str(target).startswith(str(LOG_DIR)):

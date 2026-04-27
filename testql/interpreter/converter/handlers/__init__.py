@@ -1,4 +1,4 @@
-"""Command handlers for IQL/TQL converter.
+"""Command handlers for OQL/TQL converter.
 
 Each handler takes (filtered_commands, index) and returns (new_index, section).
 """

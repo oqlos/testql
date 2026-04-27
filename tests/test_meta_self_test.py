@@ -17,8 +17,8 @@ openapi: "3.0.0"
 info: { title: testql, version: "1.0.0" }
 servers: [ { url: http://localhost:8101 } ]
 paths:
-  /iql/files: { get: { responses: { "200": { description: OK } } } }
-  /iql/run-line: { post: { responses: { "201": { description: Created } } } }
+  /oql/files: { get: { responses: { "200": { description: OK } } } }
+  /oql/run-line: { post: { responses: { "201": { description: Created } } } }
 """
 
 

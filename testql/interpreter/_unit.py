@@ -1,4 +1,4 @@
-"""Unit test execution mixin for IqlInterpreter — pytest integration."""
+"""Unit test execution mixin for OqlInterpreter — pytest integration."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from typing import Any
 
 from testql.base import StepResult, StepStatus
 
-from ._parser import IqlLine
+from ._parser import OqlLine
 
 
 class UnitMixin:
@@ -110,7 +110,7 @@ class UnitMixin:
             message=message,
         ))
 
-    def _cmd_unit_pytest(self, args: str, line: IqlLine) -> None:
+    def _cmd_unit_pytest(self, args: str, line: OqlLine) -> None:
         """UNIT_PYTEST "path/to/test.py" [timeout_ms] — Run pytest on specific file.
 
         Examples:
@@ -133,7 +133,7 @@ class UnitMixin:
         except Exception as e:
             self._handle_pytest_error(test_path, e, timeout_ms)
 
-    def _cmd_unit_pytest_discover(self, args: str, line: IqlLine) -> None:
+    def _cmd_unit_pytest_discover(self, args: str, line: OqlLine) -> None:
         """UNIT_PYTEST_DISCOVER "tests/" [timeout_ms] — Discover and run all tests.
 
         Examples:
@@ -158,7 +158,7 @@ class UnitMixin:
         # Reuse UNIT_PYTEST with directory
         self._cmd_unit_pytest(f'"{test_dir}" {timeout_ms}', line)
 
-    def _cmd_unit_import(self, args: str, line: IqlLine) -> None:
+    def _cmd_unit_import(self, args: str, line: OqlLine) -> None:
         """UNIT_IMPORT "module" — Verify module can be imported.
 
         Examples:
@@ -198,7 +198,7 @@ class UnitMixin:
                 message=str(e),
             ))
 
-    def _cmd_unit_assert(self, args: str, line: IqlLine) -> None:
+    def _cmd_unit_assert(self, args: str, line: OqlLine) -> None:
         """UNIT_ASSERT "module.function" "args_json" "expected" — Assert function returns expected value.
 
         Examples:

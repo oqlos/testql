@@ -14,7 +14,7 @@ HEALTH[13]:
   🟡 CC    parse_doql_less CC=29 (limit:15)
   🟡 CC    format_text_output CC=19 (limit:15)
   🟡 CC    generate_testql_scenario CC=16 (limit:15)
-  🟡 CC    convert_iql_to_testtoon CC=66 (limit:15)
+  🟡 CC    convert_oql_to_testtoon CC=66 (limit:15)
 
 REFACTOR[4]:
   1. split testql/generator.py  (god module)

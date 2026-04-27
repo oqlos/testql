@@ -2,11 +2,11 @@
 
 app {
   name: testql;
-  version: 1.2.11;
+  version: 1.2.29;
 }
 
 dependencies {
-  runtime: "httpx>=0.27, click>=8.0, rich>=13.0, pyyaml>=6.0, goal>=2.1.0, costs>=0.1.20, pfix>=0.1.60, websockets>=13.0";
+  runtime: "httpx>=0.27, click>=8.0, rich>=13.0, pyyaml>=6.0, goal>=2.1.0, costs>=0.1.20, pfix>=0.1.60, websockets>=13.0, pytest-cov>=7.0, fastapi>=0.100";
   dev: "pytest, pytest-asyncio, pytest-cov, fastapi, goal>=2.1.0, costs>=0.1.20, pfix>=0.1.60, sqlglot>=20.0, protobuf>=4.21, graphql-core>=3.2";
 }
 
@@ -24,7 +24,92 @@ interface[type="cli"] page[name="testql"] {
 
 workflow[name="install"] {
   trigger: manual;
-  step-1: run cmd=pip install -e .[dev];
+  step-1: run cmd=echo "📦 Installing testql...";
+  step-2: run cmd=if command -v uv > /dev/null 2>&1; then \;
+  step-3: run cmd=uv pip install -e .; \;
+  step-4: run cmd=else \;
+  step-5: run cmd=pip install -e .; \;
+  step-6: run cmd=fi;
+  step-7: run cmd=echo "✅ Installation completed!";
+}
+
+workflow[name="install-dev"] {
+  trigger: manual;
+  step-1: run cmd=echo "📦 Installing testql with dev dependencies...";
+  step-2: run cmd=if command -v uv > /dev/null 2>&1; then \;
+  step-3: run cmd=uv pip install -e ".[dev]"; \;
+  step-4: run cmd=else \;
+  step-5: run cmd=pip install -e ".[dev]"; \;
+  step-6: run cmd=fi;
+  step-7: run cmd=echo "✅ Dev installation completed!";
+}
+
+workflow[name="test"] {
+  trigger: manual;
+  step-1: run cmd=echo "🧪 Running tests...";
+  step-2: run cmd=.venv/bin/python -m pytest tests/ -v --tb=short;
+}
+
+workflow[name="test-cov"] {
+  trigger: manual;
+  step-1: run cmd=echo "🧪 Running tests with coverage...";
+  step-2: run cmd=.venv/bin/python -m pytest tests/ -v --cov=testql --cov-report=term-missing --cov-report=json;
+}
+
+workflow[name="lint"] {
+  trigger: manual;
+  step-1: run cmd=echo "🔍 Running linting with ruff...";
+  step-2: run cmd=.venv/bin/python -m ruff check testql/;
+  step-3: run cmd=.venv/bin/python -m ruff check tests/;
+}
+
+workflow[name="format"] {
+  trigger: manual;
+  step-1: run cmd=echo "📝 Formatting code with ruff...";
+  step-2: run cmd=.venv/bin/python -m ruff format testql/;
+  step-3: run cmd=.venv/bin/python -m ruff format tests/;
+}
+
+workflow[name="clean"] {
+  trigger: manual;
+  step-1: run cmd=echo "🧹 Cleaning temporary files...";
+  step-2: run cmd=find . -type f -name "*.pyc" -delete;
+  step-3: run cmd=find . -type d -name "__pycache__" -delete;
+  step-4: run cmd=find . -type d -name "*.egg-info" -exec rm -rf {} + 2>/dev/null || true;
+  step-5: run cmd=rm -rf build/ dist/ .coverage htmlcov/ coverage.json;
+  step-6: run cmd=echo "✅ Clean completed!";
+}
+
+workflow[name="publish"] {
+  trigger: manual;
+  step-1: run cmd=echo "📦 Publishing to PyPI...";
+  step-2: run cmd=command -v .venv/bin/twine > /dev/null 2>&1 || (.venv/bin/pip install --upgrade twine build);
+  step-3: run cmd=rm -rf dist/ build/ *.egg-info/;
+  step-4: run cmd=.venv/bin/python -m build;
+  step-5: run cmd=.venv/bin/twine check dist/*;
+  step-6: run cmd=echo "⚡ Ready to upload. Run: make publish-confirm to upload to PyPI";
+}
+
+workflow[name="publish-confirm"] {
+  trigger: manual;
+  step-1: run cmd=echo "🚀 Uploading to PyPI...";
+  step-2: run cmd=.venv/bin/twine upload dist/*;
+}
+
+workflow[name="publish-test"] {
+  trigger: manual;
+  step-1: run cmd=echo "📦 Publishing to TestPyPI...";
+  step-2: run cmd=command -v .venv/bin/twine > /dev/null 2>&1 || (.venv/bin/pip install --upgrade twine build);
+  step-3: run cmd=rm -rf dist/ build/ *.egg-info/;
+  step-4: run cmd=.venv/bin/python -m build;
+  step-5: run cmd=.venv/bin/twine upload --repository testpypi dist/*;
+}
+
+workflow[name="version"] {
+  trigger: manual;
+  step-1: run cmd=echo "📦 Version information...";
+  step-2: run cmd=cat VERSION;
+  step-3: run cmd=.venv/bin/python -c "from importlib.metadata import version; print(f'Installed version: {version(\"testql\")}')";
 }
 
 workflow[name="deps:update"] {
@@ -57,16 +142,6 @@ workflow[name="quality:report"] {
   step-1: run cmd=pyqual report;
 }
 
-workflow[name="test"] {
-  trigger: manual;
-  step-1: run cmd=pytest -q;
-}
-
-workflow[name="lint"] {
-  trigger: manual;
-  step-1: run cmd=ruff check .;
-}
-
 workflow[name="fmt"] {
   trigger: manual;
   step-1: run cmd=ruff format .;
@@ -77,17 +152,12 @@ workflow[name="build"] {
   step-1: run cmd=python -m build;
 }
 
-workflow[name="clean"] {
-  trigger: manual;
-  step-1: run cmd=rm -rf build/ dist/ *.egg-info;
-}
-
-workflow[name="iql:run"] {
+workflow[name="oql:run"] {
   trigger: manual;
   step-1: run cmd=testql run {{.CLI_ARGS}};
 }
 
-workflow[name="iql:shell"] {
+workflow[name="oql:shell"] {
   trigger: manual;
   step-1: run cmd=testql shell;
 }
@@ -143,11 +213,6 @@ workflow[name="docker:up"] {
 workflow[name="docker:down"] {
   trigger: manual;
   step-1: run cmd=docker-compose down;
-}
-
-workflow[name="publish"] {
-  trigger: manual;
-  step-1: run cmd=twine upload dist/*;
 }
 
 workflow[name="help"] {

@@ -13,11 +13,11 @@ if [ "${1:-}" = "--dry-run" ]; then
 fi
 
 echo "=== Test Math Module ==="
-$TESTQL run "$ROOT_DIR/examples/unit-testing/test-math.iql" $DRY_RUN
+$TESTQL run "$ROOT_DIR/examples/unit-testing/test-math.oql" $DRY_RUN
 
 echo ""
 echo "=== Pytest Suite ==="
-$TESTQL run "$ROOT_DIR/examples/unit-testing/test-pytest.iql" $DRY_RUN
+$TESTQL run "$ROOT_DIR/examples/unit-testing/test-pytest.oql" $DRY_RUN
 
 echo ""
 echo "All unit test examples completed."

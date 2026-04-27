@@ -1,56 +1,56 @@
-# testql | 1857 func | 176f | 169228L | python | 2026-04-25
+# testql | 2084 func | 187f | 174694L | python | 2026-04-27
 
 HEALTH:
-  CC̄=2.3  critical=43 (limit:10)  dup=4  cycles=0
+  CC̄=2.3  critical=50 (limit:10)  dup=4  cycles=0
 
 ALERTS[20]:
-  !!! cc_exceeded      OqlParser._parse_command = 31 (limit:15)
-  !!! cc_exceeded      _render_step = 26 (limit:15)
   !!! high_fan_out     auto = 24 (limit:10)
   !!! high_fan_out     parse_testtoon = 21 (limit:10)
+  !!! high_fan_out     heal_scenario = 21 (limit:10)
   !!! high_fan_out     AssertionsMixin._cmd_assert_cookies = 21 (limit:10)
   !!! high_fan_out     watch = 20 (limit:10)
   !!! high_fan_out     suite = 20 (limit:10)
-  !!  cc_exceeded      _typed_step = 22 (limit:15)
+  !!! high_fan_out     AssertionsMixin._cmd_assert_json = 20 (limit:10)
+  !!  high_fan_out     generate_from_page = 19 (limit:10)
   !!  high_fan_out     main = 19 (limit:10)
-  !!  high_fan_out     generate_topology = 17 (limit:10)
+  !!  high_fan_out     run = 18 (limit:10)
 
-MODULES[373] (top by size):
+MODULES[395] (top by size):
   M[project/calls.yaml] 7226L C:0 F:0 CC↑0 D:0 (yaml)
-  M[project/map.toon.yaml] 2058L C:0 F:619 CC↑0 D:6 (yaml)
+  M[project/map.toon.yaml] 2146L C:0 F:657 CC↑0 D:20 (yaml)
   M[planfile.yaml] 1319L C:0 F:0 CC↑0 D:0 (yaml)
   M[code2llm_output/calls.yaml] 799L C:0 F:0 CC↑0 D:0 (yaml)
-  M[tree.txt] 776L C:0 F:0 CC↑0 D:0 (txt)
-  M[project/calls.toon.yaml] 626L C:0 F:0 CC↑0 D:0 (yaml)
+  M[tree.txt] 796L C:0 F:0 CC↑0 D:0 (txt)
+  M[testql/interpreter/_gui.py] 694L C:1 F:34 CC↑12 D:0 (python)
+  M[testql/interpreter/_testtoon_parser.py] 672L C:2 F:38 CC↑14 D:0 (python)
+  M[project/calls.toon.yaml] 623L C:0 F:0 CC↑0 D:0 (yaml)
+  M[testql/generators/sources/oql_source.py] 566L C:4 F:37 CC↑17 D:0 (python)
+  M[testql/generators/page_analyzer.py] 526L C:1 F:31 CC↑10 D:0 (python)
   M[goal.yaml] 511L C:0 F:0 CC↑0 D:0 (yaml)
+  M[testql/adapters/scenario_yaml.py] 506L C:1 F:43 CC↑13 D:0 (python)
   M[testql/results/analyzer.py] 504L C:0 F:38 CC↑14 D:3 (python)
-  M[testql/generators/generators.py] 498L C:4 F:19 CC↑19 D:0 (python)
-  M[testql/commands/encoder_routes.py] 477L C:0 F:27 CC↑10 D:0 (python)
-  M[project/analysis.toon.yaml] 472L C:0 F:0 CC↑0 D:0 (yaml)
-  M[testql/generators/sources/oql_source.py] 464L C:4 F:16 CC↑31 D:0 (python)
-  M[testql/adapters/testtoon_adapter.py] 451L C:1 F:31 CC↑10 D:3 (python)
-  M[testql/openapi_generator.py] 444L C:3 F:21 CC↑11 D:1 (python)
-  M[testql/interpreter/_testtoon_parser.py] 440L C:2 F:24 CC↑8 D:0 (python)
-  LANGS: python:207/yaml:120/shell:20/other:16/txt:4/yml:2/json:2/doql:1/toml:1
+  M[project/analysis.toon.yaml] 504L C:0 F:0 CC↑0 D:0 (yaml)
+  M[testql/adapters/testtoon_adapter.py] 488L C:1 F:32 CC↑10 D:0 (python)
+  LANGS: python:221/yaml:127/shell:20/other:17/txt:4/yml:2/json:2/doql:1/toml:1
 
 HOTSPOTS[10]:
   ★ auto fan=24  // One-liner: generate tests from service, run them, and create report.
 
 SOURCE is 
   ★ parse_testtoon fan=21  // Orchestrates 21 calls
+  ★ heal_scenario fan=21  // Validate and heal selectors in an existing TestTOON scenario.
   ★ AssertionsMixin._cmd_assert_cookies fan=21  // ASSERT_COOKIES <cookie_name> <op> <expected> — Assert cookie value.
 
 Examples:
  
   ★ watch fan=20  // Watch for file changes and re-run tests automatically.
-  ★ suite fan=20  // Run test suite(s) — predefined or custom pattern.
 
 REFACTOR[15]:
-  [1] H/L Split _render_step (CC=26)
-  [2] H/L Split OqlParser._parse_command (CC=31)
+  [1] H/H Split god module testql/generators/sources/oql_source.py (566L, 4 classes)
+  [2] H/H Split god module testql/interpreter/_testtoon_parser.py (672L, 2 classes)
   [3] H/H Split god module testql/results/analyzer.py (504L, 0 classes)
-  [4] H/H Split god module code2llm_output/calls.yaml (799L, 0 classes)
-  [5] H/H Split god module goal.yaml (511L, 0 classes)
+  [4] H/H Split god module testql/adapters/scenario_yaml.py (506L, 1 classes)
+  [5] H/H Split god module testql/interpreter/_gui.py (694L, 1 classes)
 
 EVOLUTION:
-  2026-04-25 CC̄=2.3 crit=43 169228L // Automated analysis
+  2026-04-27 CC̄=2.3 crit=50 174694L // Automated analysis

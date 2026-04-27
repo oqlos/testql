@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 # Default test file extensions
-DEFAULT_TEST_EXTENSIONS = ("*.testql.toon.yaml", "*.testtoon", "*.iql")
+DEFAULT_TEST_EXTENSIONS = ("*.testql.toon.yaml", "*.testtoon", "*.oql")
 
 # Default directories to search for tests
 DEFAULT_TEST_DIRS = ("testql", "testql/scenarios/tests", "tests", ".")

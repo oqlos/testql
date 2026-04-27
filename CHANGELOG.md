@@ -130,6 +130,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Remaining
 - Add Playwright-backed browser execution, JavaScript-rendered DOM capture, screenshots, console errors, network logs, link-by-link validation, accessibility/performance checks, MCP service integration, and runtime-vs-code delta reports.
 
+## [1.2.30] - 2026-04-27
+
+### Docs
+- Update CHANGELOG.md
+- Update DSL.md
+- Update README.md
+- Update SUMD.md
+- Update SUMR.md
+- Update TODO.md
+- Update articles/testql-multi-dsl-refactor-plan.md
+- Update articles/testql-plugins-and-formats.md
+- Update code2llm_output/context.md
+- Update docs/README.md
+- ... and 9 more files
+
+### Test
+- Update testql-scenarios/generated-api-smoke.testql.toon.yaml
+- Update testql-scenarios/generated-from-pytests.testql.toon.yaml
+- Update testql/_base_fallback.py
+- Update testql/adapters/scenario_yaml.py
+- Update testql/adapters/testtoon_adapter.py
+- Update testql/cli.py
+- Update testql/commands/encoder_routes.py
+- Update testql/commands/run_cmd.py
+- Update testql/commands/suite/collection.py
+- Update testql/commands/suite/execution.py
+- ... and 53 more files
+
+### Other
+- Update Taskfile.yml
+- Update app.doql.less
+- Update code2llm_output/analysis.toon.yaml
+- Update code2llm_output/calls.yaml
+- Update code2llm_output/evolution.toon.yaml
+- Update code2llm_output/map.toon.yaml
+- Update coverage.json
+- Update examples/encoder-testing/basic-encoder.oql
+- Update examples/encoder-testing/complex-sequence.oql
+- Update examples/encoder-testing/run.sh
+- ... and 30 more files
+
 ## [1.2.29] - 2026-04-27
 
 ### Docs
@@ -951,7 +992,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.6.6] - 2026-04-19
 
 ### Refactored
-- `convert_iql_to_testtoon` (CC 66 → ≤12): extracted `_handle_api`, `_handle_navigate`,
+- `convert_oql_to_testtoon` (CC 66 → ≤12): extracted `_handle_api`, `_handle_navigate`,
   `_handle_encoder`, `_handle_select`, `_handle_flow`, `_handle_record_*`, `_handle_wait`,
   `_handle_include`, `_dispatch`, `_parse_commands`, `_build_config_section`, `_render_sections`
 - `parse_doql_less` (CC 29 → ≤8): split into `_parse_app_block`, `_parse_entities`,

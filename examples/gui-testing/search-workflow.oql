@@ -1,0 +1,16 @@
+# SCENARIO: Search Workflow Test
+# TYPE: gui
+
+SET base_url "https://example.com"
+SET search_term "playwright"
+
+GUI_START "${base_url}/search"
+WAIT 300
+
+GUI_INPUT "#search-input" "${search_term}"
+GUI_CLICK "button[type='submit']"
+WAIT 800
+
+GUI_ASSERT_VISIBLE "[data-testid='results']"
+
+GUI_STOP

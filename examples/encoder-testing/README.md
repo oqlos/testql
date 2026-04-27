@@ -4,8 +4,8 @@ This example demonstrates testing hardware encoder interfaces using TestQL comma
 
 ## Files
 
-- `basic-encoder.iql` — Basic encoder lifecycle
-- `complex-sequence.iql` — Multi-step encoder workflow
+- `basic-encoder.oql` — Basic encoder lifecycle
+- `complex-sequence.oql` — Multi-step encoder workflow
 - `run.sh` — Execute the scenarios
 
 ## Usage

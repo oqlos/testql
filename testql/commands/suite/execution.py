@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 import click
 
 if TYPE_CHECKING:
-    from testql.interpreter import IqlInterpreter
+    from testql.interpreter import OqlInterpreter
 
 
 def run_single_file(test_file: Path, interp) -> dict:
@@ -47,7 +47,7 @@ def run_suite_files(
     config: dict,
 ) -> tuple[list[dict], bool]:
     """Run suite of test files and return results."""
-    from testql.interpreter import IqlInterpreter
+    from testql.interpreter import OqlInterpreter
 
     results: list[dict] = []
     all_passed = True
@@ -55,7 +55,7 @@ def run_suite_files(
     for i, test_file in enumerate(test_files, 1):
         click.echo(f"[{i}/{len(test_files)}] {test_file.name}")
 
-        interp = IqlInterpreter(
+        interp = OqlInterpreter(
             api_url=url or config.get("defaults", {}).get("api_url", "http://localhost:8101"),
             quiet=(output != "console"),
             include_paths=[str(test_file.parent), "."],

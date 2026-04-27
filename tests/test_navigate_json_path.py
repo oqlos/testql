@@ -5,12 +5,12 @@ indexed paths like ``results[0].id`` must descend into the list at
 ``results`` and then read the ``id`` field of element 0.
 
 Covers both the pure helper ``_navigate_json_path`` and the behavioural
-contract on ``IqlInterpreter`` for ``ASSERT_JSON`` and ``CAPTURE``.
+contract on ``OqlInterpreter`` for ``ASSERT_JSON`` and ``CAPTURE``.
 """
 
 from __future__ import annotations
 
-from testql.interpreter import IqlInterpreter
+from testql.interpreter import OqlInterpreter
 from testql.interpreter._api_runner import _navigate_json_path
 
 
@@ -50,8 +50,8 @@ class TestNavigateJsonPath:
 class TestAssertJsonAndCaptureWithIndexedPath:
     """Behavioural regression: ASSERT_JSON / CAPTURE must support results[0].id."""
 
-    def _make_interp(self) -> IqlInterpreter:
-        interp = IqlInterpreter(dry_run=True, quiet=True)
+    def _make_interp(self) -> OqlInterpreter:
+        interp = OqlInterpreter(dry_run=True, quiet=True)
         # Simulate a previous API response without doing real HTTP.
         interp.last_response = SAMPLE_RESPONSE
         interp.last_status = 200
@@ -93,7 +93,7 @@ class TestAssertJsonAndCaptureWithIndexedPath:
 
 
 class TestToonBareImperativeIndexedPath:
-    """End-to-end: TestTOON parser -> COMMANDS -> IqlScript -> ASSERT_JSON / CAPTURE.
+    """End-to-end: TestTOON parser -> COMMANDS -> OqlScript -> ASSERT_JSON / CAPTURE.
 
     Note: We invoke commands directly because dry-run API responses would
     override last_response. This still tests the full path through the
@@ -115,9 +115,9 @@ ASSERT_JSON results.length >= 1
 """
 
     def _make_interp(self):
-        from testql.interpreter import IqlInterpreter
+        from testql.interpreter import OqlInterpreter
 
-        interp = IqlInterpreter(dry_run=True, quiet=True)
+        interp = OqlInterpreter(dry_run=True, quiet=True)
         interp.last_response = {
             "results": [
                 {"id": "abc-1", "title": "Identification: JAN_TEST_42"},
@@ -128,9 +128,9 @@ ASSERT_JSON results.length >= 1
         return interp
 
     def test_toon_parser_parses_bare_commands(self):
-        from testql.interpreter._testtoon_parser import testtoon_to_iql
+        from testql.interpreter._testtoon_parser import testtoon_to_oql
 
-        script = testtoon_to_iql(self.TOON_SOURCE, "regress.testql.toon.yaml")
+        script = testtoon_to_oql(self.TOON_SOURCE, "regress.testql.toon.yaml")
         # Verify the parser collected bare commands into COMMANDS section
         assert any(cmd.command == "API" for cmd in script.lines)
         assert any(cmd.command == "ASSERT_STATUS" for cmd in script.lines)
@@ -139,10 +139,10 @@ ASSERT_JSON results.length >= 1
 
     def test_toon_assert_json_indexed_passes(self):
         interp = self._make_interp()
-        from testql.interpreter._parser import IqlLine
+        from testql.interpreter._parser import OqlLine
 
         # Simulate the ASSERT_JSON command that would come from parsed TOON
-        line = IqlLine(number=4, command="ASSERT_JSON", args='results[0].id == "abc-1"', raw='ASSERT_JSON results[0].id == "abc-1"')
+        line = OqlLine(number=4, command="ASSERT_JSON", args='results[0].id == "abc-1"', raw='ASSERT_JSON results[0].id == "abc-1"')
         interp._cmd_assert_json(line.args, line)
 
         assert interp.results[-1].status.value == "passed"
@@ -150,10 +150,10 @@ ASSERT_JSON results.length >= 1
 
     def test_toon_capture_stores_value(self):
         interp = self._make_interp()
-        from testql.interpreter._parser import IqlLine
+        from testql.interpreter._parser import OqlLine
 
         # Simulate the CAPTURE command that would come from parsed TOON
-        line = IqlLine(number=5, command="CAPTURE", args='captured_id FROM "results[0].id"', raw='CAPTURE captured_id FROM "results[0].id"')
+        line = OqlLine(number=5, command="CAPTURE", args='captured_id FROM "results[0].id"', raw='CAPTURE captured_id FROM "results[0].id"')
         interp._cmd_capture(line.args, line)
 
         assert interp.vars.get("captured_id") == "abc-1"

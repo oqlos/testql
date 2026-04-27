@@ -1,4 +1,4 @@
-"""Encoder hardware commands mixin for IqlInterpreter."""
+"""Encoder hardware commands mixin for OqlInterpreter."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ import urllib.request
 
 from testql.base import StepResult, StepStatus
 
-from ._parser import IqlLine
+from ._parser import OqlLine
 
 
 class EncoderMixin:
@@ -41,7 +41,7 @@ class EncoderMixin:
             self.results.append(StepResult(name=label, status=StepStatus.PASSED, details=data))
 
     def _encoder_call(
-        self, method: str, endpoint: str, body: dict | None, line: IqlLine, label: str
+        self, method: str, endpoint: str, body: dict | None, line: OqlLine, label: str
     ) -> None:
         url = f"{self._encoder_url()}{endpoint}"
         if self.dry_run:
@@ -70,31 +70,31 @@ class EncoderMixin:
             self.out.fail(f"{label} => {e}")
             self.results.append(StepResult(name=label, status=StepStatus.FAILED, message=str(e)))
 
-    def _cmd_encoder_on(self, args: str, line: IqlLine) -> None:
+    def _cmd_encoder_on(self, args: str, line: OqlLine) -> None:
         self._encoder_call("POST", f"{self._encoder_prefix()}/activate", None, line, "ENCODER_ON")
 
-    def _cmd_encoder_off(self, args: str, line: IqlLine) -> None:
+    def _cmd_encoder_off(self, args: str, line: OqlLine) -> None:
         self._encoder_call("POST", f"{self._encoder_prefix()}/deactivate", None, line, "ENCODER_OFF")
 
-    def _cmd_encoder_scroll(self, args: str, line: IqlLine) -> None:
+    def _cmd_encoder_scroll(self, args: str, line: OqlLine) -> None:
         delta = int(args.strip()) if args.strip() else 1
         self._encoder_call("POST", f"{self._encoder_prefix()}/scroll", {"delta": delta}, line, f"ENCODER_SCROLL {delta}")
 
-    def _cmd_encoder_click(self, args: str, line: IqlLine) -> None:
+    def _cmd_encoder_click(self, args: str, line: OqlLine) -> None:
         self._encoder_call("POST", f"{self._encoder_prefix()}/click", None, line, "ENCODER_CLICK")
 
-    def _cmd_encoder_dblclick(self, args: str, line: IqlLine) -> None:
+    def _cmd_encoder_dblclick(self, args: str, line: OqlLine) -> None:
         self._encoder_call("POST", f"{self._encoder_prefix()}/cancel", None, line, "ENCODER_DBLCLICK")
 
-    def _cmd_encoder_focus(self, args: str, line: IqlLine) -> None:
+    def _cmd_encoder_focus(self, args: str, line: OqlLine) -> None:
         zone = args.strip().strip("\"'") or "col3"
         self._encoder_call("POST", f"{self._encoder_prefix()}/focus", {"zone": zone}, line, f"ENCODER_FOCUS {zone}")
 
-    def _cmd_encoder_status(self, args: str, line: IqlLine) -> None:
+    def _cmd_encoder_status(self, args: str, line: OqlLine) -> None:
         self._encoder_call("GET", f"{self._encoder_prefix()}/status", None, line, "ENCODER_STATUS")
 
-    def _cmd_encoder_page_next(self, args: str, line: IqlLine) -> None:
+    def _cmd_encoder_page_next(self, args: str, line: OqlLine) -> None:
         self._encoder_call("POST", f"{self._encoder_prefix()}/page-next", None, line, "ENCODER_PAGE_NEXT")
 
-    def _cmd_encoder_page_prev(self, args: str, line: IqlLine) -> None:
+    def _cmd_encoder_page_prev(self, args: str, line: OqlLine) -> None:
         self._encoder_call("POST", f"{self._encoder_prefix()}/page-prev", None, line, "ENCODER_PAGE_PREV")

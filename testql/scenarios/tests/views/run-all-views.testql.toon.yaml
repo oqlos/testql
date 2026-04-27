@@ -1,4 +1,4 @@
-# SCENARIO: run-all-views.testql.toon.yaml — Master runner for all per-view IQL tests
+# SCENARIO: run-all-views.testql.toon.yaml — Master runner for all per-view OQL tests
 # TYPE: api
 # VERSION: 1.0
 

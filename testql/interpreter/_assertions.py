@@ -1,4 +1,4 @@
-"""Assertions mixin for IqlInterpreter."""
+"""Assertions mixin for OqlInterpreter."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ import json
 
 from testql.base import StepResult, StepStatus
 
-from ._parser import IqlLine
+from ._parser import OqlLine
 from ._api_runner import _navigate_json_path
 
 
@@ -26,7 +26,7 @@ _COMPARE_OPS: dict[str, Any] = {
 class AssertionsMixin:
     """Mixin providing ASSERT_STATUS, ASSERT_OK, ASSERT_CONTAINS, ASSERT_JSON."""
 
-    def _cmd_assert_status(self, args: str, line: IqlLine) -> None:
+    def _cmd_assert_status(self, args: str, line: OqlLine) -> None:
         """ASSERT_STATUS <code> — check last HTTP status code."""
         expected = int(args.strip())
         ok = self.last_status == expected
@@ -42,7 +42,7 @@ class AssertionsMixin:
                 message=f"expected {expected}, got {self.last_status}",
             ))
 
-    def _cmd_assert_ok(self, args: str, line: IqlLine) -> None:
+    def _cmd_assert_ok(self, args: str, line: OqlLine) -> None:
         """ASSERT_OK — check last status was 2xx."""
         ok = 200 <= self.last_status < 300
         name = "ASSERT_OK"
@@ -57,7 +57,7 @@ class AssertionsMixin:
                 message=f"status {self.last_status}",
             ))
 
-    def _cmd_assert_contains(self, args: str, line: IqlLine) -> None:
+    def _cmd_assert_contains(self, args: str, line: OqlLine) -> None:
         """ASSERT_CONTAINS "needle" — check needle present in JSON-serialised response."""
         import json as _json
         needle = args.strip().strip("\"'")
@@ -75,7 +75,7 @@ class AssertionsMixin:
                 message=f'"{needle}" not found',
             ))
 
-    def _cmd_assert_json(self, args: str, line: IqlLine) -> None:
+    def _cmd_assert_json(self, args: str, line: OqlLine) -> None:
         """ASSERT_JSON path op value — e.g. ASSERT_JSON data.length > 0"""
         import re
 
@@ -138,7 +138,7 @@ class AssertionsMixin:
                 name=desc, status=StepStatus.FAILED, message=f"actual: {obj}",
             ))
 
-    def _cmd_assert_schema(self, args: str, line: IqlLine) -> None:
+    def _cmd_assert_schema(self, args: str, line: OqlLine) -> None:
         """ASSERT_SCHEMA <schema_file_or_json> — Validate response against JSON schema.
 
         Examples:
@@ -194,7 +194,7 @@ class AssertionsMixin:
                 name="ASSERT_SCHEMA", status=StepStatus.FAILED, message=str(e.message)
             ))
 
-    def _cmd_assert_headers(self, args: str, line: IqlLine) -> None:
+    def _cmd_assert_headers(self, args: str, line: OqlLine) -> None:
         """ASSERT_HEADERS <header_name> <op> <expected> — Assert HTTP header value.
 
         Examples:
@@ -238,7 +238,7 @@ class AssertionsMixin:
                 name=desc, status=StepStatus.FAILED, message=f"actual: {header_value}",
             ))
 
-    def _cmd_assert_cookies(self, args: str, line: IqlLine) -> None:
+    def _cmd_assert_cookies(self, args: str, line: OqlLine) -> None:
         """ASSERT_COOKIES <cookie_name> <op> <expected> — Assert cookie value.
 
         Examples:

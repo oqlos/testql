@@ -77,6 +77,10 @@ def check_and_upgrade():
             print(f"TestQL v{current_version} ✓")
         else:
             print(f"TestQL v{current_version} (latest: v{latest_version})")
+            if not sys.stdin.isatty():
+                print("Non-interactive mode — skipping auto-update. Run manually to update.")
+                return
+
             response = input("Auto-update to latest version? [Y/n] ").strip().lower()
 
             if response in ('', 'y', 'yes'):

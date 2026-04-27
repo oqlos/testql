@@ -1,8 +1,8 @@
 """
 TestTOON Parser — tabular test format inspired by TOON.
 
-Parses *.testql.toon.yaml files into IqlScript (flat command list)
-so the existing IqlInterpreter can execute them without changes.
+Parses *.testql.toon.yaml files into OqlScript (flat command list)
+so the existing OqlInterpreter can execute them without changes.
 
 Format spec:
     # SCENARIO: Name
@@ -20,7 +20,7 @@ import json
 from dataclasses import dataclass, field
 from typing import Optional
 
-from ._parser import IqlLine, IqlScript
+from ._parser import OqlLine, OqlScript
 
 HEADER_RE = re.compile(r'^([A-Z_]+)(?:\[(\d+)\])?\{([^}]*)\}:\s*$')
 META_RE = re.compile(r'^#\s*([A-Z_]+):\s*(.+)$')
@@ -147,78 +147,121 @@ def parse_testtoon(text: str, filename: str = "<string>") -> ToonScript:
     """Parse TestTOON source into structured ToonScript."""
     script = ToonScript()
     current: ToonSection | None = None
-    bare_commands: list[str] = []  # Store bare imperative commands
+    bare_commands: list[str] = []
 
     for raw in text.splitlines():
-        stripped = raw.strip()
-        if not stripped:
-            # Blank line ends current section
-            current = None
-            continue
+        current = _process_line(raw, current, script, bare_commands)
 
-        m = META_RE.match(stripped)
-        if m:
-            current = None  # Meta line ends current section
-            script.meta[m.group(1).lower()] = m.group(2).strip()
-            continue
-
-        if stripped.startswith('#'):
-            current = None  # Comment ends current section
-            continue
-
-        # Try tabular format first: SECTION[count]{columns}:
-        m = HEADER_RE.match(stripped)
-        if m:
-            current = _make_section(m)
-            script.sections.append(current)
-            continue
-
-        # Try mapping format: SECTION: (but only if not matching tabular format)
-        # Don't match if line contains {columns} pattern
-        m = MAPPING_HEADER_RE.match(stripped)
-        if m and '{' not in stripped:
-            current = _make_mapping_section(m)
-            script.sections.append(current)
-            continue
-
-        # If we have a non-indented line and we're in a section, the section ended
-        if current and not raw.startswith('  '):
-            current = None
-
-        # Handle bare imperative commands (not indented, not a section)
-        if not raw.startswith('  ') and not current:
-            # This is a bare imperative command like GUI_START, WAIT, NAVIGATE
-            bare_commands.append(raw)
-            continue
-
-        if current and raw.startswith('  '):
-            if current.is_mapping:
-                # Merge mapping rows into a single dict
-                mapping_row = _make_mapping_row(raw)
-                if mapping_row and current.rows:
-                    current.rows[0].update(mapping_row)
-                elif mapping_row:
-                    current.rows.append(mapping_row)
-            else:
-                current.rows.append(_make_data_row(raw, current))
-
-    # Add bare commands as a special COMMANDS section after CONFIG (if exists)
-    if bare_commands:
-        cmd_section = ToonSection(
-            type='COMMANDS',
-            columns=['command'],
-            rows=[{'command': cmd} for cmd in bare_commands],
-            expected_count=len(bare_commands),
-        )
-        # Insert after CONFIG section if it exists, otherwise at beginning
-        insert_pos = 0
-        for i, section in enumerate(script.sections):
-            if section.type == 'CONFIG':
-                insert_pos = i + 1
-                break
-        script.sections.insert(insert_pos, cmd_section)
-
+    _add_bare_commands_section(script, bare_commands)
     return script
+
+
+def _process_line(raw: str, current: ToonSection | None, script: ToonScript, bare_commands: list[str]) -> ToonSection | None:
+    """Process a single line of TestTOON source."""
+    stripped = raw.strip()
+    
+    if not stripped:
+        return None
+    
+    if _is_meta_line(stripped):
+        return _process_meta_line(stripped, script)
+    
+    if _is_comment(stripped):
+        return None
+    
+    section = _try_parse_section_header(stripped)
+    if section:
+        script.sections.append(section)
+        return section
+    
+    if _should_end_section(raw, current):
+        current = None
+    
+    if _is_bare_command(raw, current):
+        bare_commands.append(raw)
+        return None
+    
+    if current and raw.startswith('  '):
+        _add_row_to_section(raw, current)
+    
+    return current
+
+
+def _is_meta_line(line: str) -> bool:
+    """Check if line is a meta line."""
+    return META_RE.match(line) is not None
+
+
+def _process_meta_line(line: str, script: ToonScript) -> None:
+    """Process a meta line and add to script metadata."""
+    m = META_RE.match(line)
+    if m:
+        script.meta[m.group(1).lower()] = m.group(2).strip()
+    return None
+
+
+def _is_comment(line: str) -> bool:
+    """Check if line is a comment."""
+    return line.startswith('#')
+
+
+def _try_parse_section_header(line: str) -> ToonSection | None:
+    """Try to parse a section header from line."""
+    m = HEADER_RE.match(line)
+    if m:
+        return _make_section(m)
+    
+    m = MAPPING_HEADER_RE.match(line)
+    if m and '{' not in line:
+        return _make_mapping_section(m)
+    
+    return None
+
+
+def _should_end_section(raw: str, current: ToonSection | None) -> bool:
+    """Check if current section should end."""
+    return current is not None and not raw.startswith('  ')
+
+
+def _is_bare_command(raw: str, current: ToonSection | None) -> bool:
+    """Check if line is a bare imperative command."""
+    return not raw.startswith('  ') and current is None
+
+
+def _add_row_to_section(raw: str, current: ToonSection) -> None:
+    """Add a data row to current section."""
+    if current.is_mapping:
+        mapping_row = _make_mapping_row(raw)
+        if mapping_row and current.rows:
+            current.rows[0].update(mapping_row)
+        elif mapping_row:
+            current.rows.append(mapping_row)
+    else:
+        current.rows.append(_make_data_row(raw, current))
+
+
+def _add_bare_commands_section(script: ToonScript, bare_commands: list[str]) -> None:
+    """Add bare commands as a special COMMANDS section."""
+    if not bare_commands:
+        return
+    
+    cmd_section = ToonSection(
+        type='COMMANDS',
+        columns=['command'],
+        rows=[{'command': cmd} for cmd in bare_commands],
+        expected_count=len(bare_commands),
+    )
+    
+    insert_pos = _find_commands_insert_position(script.sections)
+    script.sections.insert(insert_pos, cmd_section)
+
+
+def _find_commands_insert_position(sections: list[ToonSection]) -> int:
+    """Find position to insert COMMANDS section (after CONFIG if exists)."""
+    for i, section in enumerate(sections):
+        if section.type == 'CONFIG':
+            return i + 1
+    return 0
 
 
 def validate_testtoon(script: ToonScript) -> list[str]:
@@ -229,7 +272,7 @@ def validate_testtoon(script: ToonScript) -> list[str]:
     return errors
 
 
-# ── Expansion to IqlScript ────────────────────────────────────────────────────
+# ── Expansion to OqlScript ────────────────────────────────────────────────────
 
 _ENCODER_ACTION_MAP = {
     'on': 'ENCODER_ON',
@@ -244,7 +287,7 @@ _ENCODER_ACTION_MAP = {
 }
 
 
-def _expand_config(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
+def _expand_config(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand CONFIG section → SET commands."""
 
     def _append_set(key: str, value: object, current_line: int) -> int:
@@ -253,10 +296,10 @@ def _expand_config(section: ToonSection, lines: list[IqlLine], line_num: int) ->
         key_quoted = f'"{key}"' if ' ' in str(key) else key
         if '${' in str(value) and '}' in str(value):
             raw = f'SET {key_quoted} {value}'
-            lines.append(IqlLine(number=current_line, command='SET', args=f'{key_quoted} {value}', raw=raw))
+            lines.append(OqlLine(number=current_line, command='SET', args=f'{key_quoted} {value}', raw=raw))
         else:
             raw = f'SET {key_quoted} "{value}"'
-            lines.append(IqlLine(number=current_line, command='SET', args=f'{key_quoted} "{value}"', raw=raw))
+            lines.append(OqlLine(number=current_line, command='SET', args=f'{key_quoted} "{value}"', raw=raw))
         return current_line + 1
 
     for row in section.rows:
@@ -273,19 +316,19 @@ def _expand_config(section: ToonSection, lines: list[IqlLine], line_num: int) ->
     return line_num
 
 
-def _append_api_asserts(row: dict, lines: list[IqlLine], line_num: int) -> int:
+def _append_api_asserts(row: dict, lines: list[OqlLine], line_num: int) -> int:
     """Append optional ASSERT_STATUS and ASSERT_JSON lines for an API row."""
     status = row.get('status') or row.get('expect_status') or row.get('expected_status')
     if status is not None:
         raw_a = f'ASSERT_STATUS {status}'
-        lines.append(IqlLine(number=line_num, command='ASSERT_STATUS', args=str(status), raw=raw_a))
+        lines.append(OqlLine(number=line_num, command='ASSERT_STATUS', args=str(status), raw=raw_a))
         line_num += 1
 
     assert_key = row.get('assert_key')
     assert_value = row.get('assert_value') or row.get('assert_val')
     if assert_key and assert_key is not None and assert_value and assert_value is not None:
         raw_j = f'ASSERT_JSON {assert_key} == "{assert_value}"'
-        lines.append(IqlLine(
+        lines.append(OqlLine(
             number=line_num, command='ASSERT_JSON',
             args=f'{assert_key} == "{assert_value}"', raw=raw_j,
         ))
@@ -293,7 +336,7 @@ def _append_api_asserts(row: dict, lines: list[IqlLine], line_num: int) -> int:
     return line_num
 
 
-def _expand_api(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
+def _expand_api(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand API section → API + ASSERT_STATUS commands."""
     for row in section.rows:
         method = row.get('method', 'GET')
@@ -302,34 +345,34 @@ def _expand_api(section: ToonSection, lines: list[IqlLine], line_num: int) -> in
         
         body_str = ''
         if isinstance(body, dict):
-            # Encode dict to JSON string for the IQL command
+            # Encode dict to JSON string for the OQL command
             body_str = ' ' + json.dumps(body)
         elif body:
             body_str = ' ' + str(body)
 
         raw = f'API {method} "{endpoint}"{body_str}'
-        lines.append(IqlLine(number=line_num, command='API', args=f'{method} "{endpoint}"{body_str}', raw=raw))
+        lines.append(OqlLine(number=line_num, command='API', args=f'{method} "{endpoint}"{body_str}', raw=raw))
         line_num = _append_api_asserts(row, lines, line_num + 1)
     return line_num
 
 
-def _expand_navigate(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
+def _expand_navigate(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand NAVIGATE section → NAVIGATE + WAIT commands."""
     for row in section.rows:
         path = row.get('path', '/')
         raw = f'NAVIGATE "{path}"'
-        lines.append(IqlLine(number=line_num, command='NAVIGATE', args=f'"{path}"', raw=raw))
+        lines.append(OqlLine(number=line_num, command='NAVIGATE', args=f'"{path}"', raw=raw))
         line_num += 1
 
         wait_ms = row.get('wait_ms')
         if wait_ms is not None:
             raw_w = f'WAIT {wait_ms}'
-            lines.append(IqlLine(number=line_num, command='WAIT', args=str(wait_ms), raw=raw_w))
+            lines.append(OqlLine(number=line_num, command='WAIT', args=str(wait_ms), raw=raw_w))
             line_num += 1
     return line_num
 
 
-def _expand_encoder(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
+def _expand_encoder(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand ENCODER section → ENCODER_* + WAIT commands."""
     for row in section.rows:
         action = str(row.get('action', '')).lower()
@@ -337,7 +380,7 @@ def _expand_encoder(section: ToonSection, lines: list[IqlLine], line_num: int) -
         value = row.get('value')
         wait_ms = row.get('wait_ms')
 
-        iql_cmd = _ENCODER_ACTION_MAP.get(action, f'ENCODER_{action.upper()}')
+        oql_cmd = _ENCODER_ACTION_MAP.get(action, f'ENCODER_{action.upper()}')
 
         if action == 'scroll' and value is not None:
             args = str(value)
@@ -346,18 +389,18 @@ def _expand_encoder(section: ToonSection, lines: list[IqlLine], line_num: int) -
         else:
             args = ''
 
-        raw = f'{iql_cmd} {args}'.strip()
-        lines.append(IqlLine(number=line_num, command=iql_cmd, args=args, raw=raw))
+        raw = f'{oql_cmd} {args}'.strip()
+        lines.append(OqlLine(number=line_num, command=oql_cmd, args=args, raw=raw))
         line_num += 1
 
         if wait_ms is not None:
             raw_w = f'WAIT {wait_ms}'
-            lines.append(IqlLine(number=line_num, command='WAIT', args=str(wait_ms), raw=raw_w))
+            lines.append(OqlLine(number=line_num, command='WAIT', args=str(wait_ms), raw=raw_w))
             line_num += 1
     return line_num
 
 
-def _expand_select(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
+def _expand_select(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand SELECT section → SELECT_DEVICE / SELECT_INTERVAL commands."""
     for row in section.rows:
         action = str(row.get('action', '')).upper()
@@ -374,12 +417,12 @@ def _expand_select(section: ToonSection, lines: list[IqlLine], line_num: int) ->
 
         args = f'"{target_id}"{meta_str}'
         raw = f'{cmd} {args}'
-        lines.append(IqlLine(number=line_num, command=cmd, args=args, raw=raw))
+        lines.append(OqlLine(number=line_num, command=cmd, args=args, raw=raw))
         line_num += 1
     return line_num
 
 
-def _expand_assert(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
+def _expand_assert(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand ASSERT section → ASSERT_* commands.
 
     Supports two formats:
@@ -393,13 +436,13 @@ def _expand_assert(section: ToonSection, lines: list[IqlLine], line_num: int) ->
             expected = row.get('expected', '')
             if expected == 'visible':
                 raw = f'ASSERT_VISIBLE "{selector}"'
-                lines.append(IqlLine(
+                lines.append(OqlLine(
                     number=line_num, command='ASSERT_VISIBLE',
                     args=f'"{selector}"', raw=raw,
                 ))
             else:
                 raw = f'ASSERT_TEXT "{selector}" "{expected}"'
-                lines.append(IqlLine(
+                lines.append(OqlLine(
                     number=line_num, command='ASSERT_TEXT',
                     args=f'"{selector}" "{expected}"', raw=raw,
                 ))
@@ -417,13 +460,13 @@ def _expand_assert(section: ToonSection, lines: list[IqlLine], line_num: int) ->
         if field_name in ('_status', 'status', 'status_code') and op in ('==', '=', '!='):
             cmd = 'ASSERT_STATUS'
             raw = f'{cmd} {expected}'
-            lines.append(IqlLine(
+            lines.append(OqlLine(
                 number=line_num, command=cmd,
                 args=str(expected), raw=raw,
             ))
         else:
             raw = f'ASSERT_JSON {field_name} {op} {expected}'
-            lines.append(IqlLine(
+            lines.append(OqlLine(
                 number=line_num, command='ASSERT_JSON',
                 args=f'{field_name} {op} {expected}', raw=raw,
             ))
@@ -431,7 +474,7 @@ def _expand_assert(section: ToonSection, lines: list[IqlLine], line_num: int) ->
     return line_num
 
 
-def _expand_steps(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
+def _expand_steps(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand STEPS section → STEP_COMPLETE commands."""
     for i, row in enumerate(section.rows, 1):
         name = row.get('name', f'step-{i}')
@@ -446,12 +489,12 @@ def _expand_steps(section: ToonSection, lines: list[IqlLine], line_num: int) -> 
         cmd = 'STEP_COMPLETE'
         args = f'"step-{i}" {meta_str}'
         raw = f'{cmd} {args}'
-        lines.append(IqlLine(number=line_num, command=cmd, args=args, raw=raw))
+        lines.append(OqlLine(number=line_num, command=cmd, args=args, raw=raw))
         line_num += 1
     return line_num
 
 
-def _expand_flow(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
+def _expand_flow(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand FLOW section → semantic commands (CLICK, INPUT, START_TEST, …).
 
     Supported third columns (any one):
@@ -484,12 +527,12 @@ def _expand_flow(section: ToonSection, lines: list[IqlLine], line_num: int) -> i
 
         args = f'"{target}"{extra}'
         raw = f'{command} {args}'
-        lines.append(IqlLine(number=line_num, command=command, args=args, raw=raw))
+        lines.append(OqlLine(number=line_num, command=command, args=args, raw=raw))
         line_num += 1
     return line_num
 
 
-def _expand_oql(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
+def _expand_oql(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand OQL section → OQL_RUN commands."""
     for row in section.rows:
         file_path = row.get('file', '')
@@ -497,46 +540,46 @@ def _expand_oql(section: ToonSection, lines: list[IqlLine], line_num: int) -> in
         mode = row.get('mode', 'execute')
         args = f'"{file_path}" device="{device}" mode="{mode}"'
         raw = f'OQL_RUN {args}'
-        lines.append(IqlLine(number=line_num, command='OQL_RUN', args=args, raw=raw))
+        lines.append(OqlLine(number=line_num, command='OQL_RUN', args=args, raw=raw))
         line_num += 1
     return line_num
 
 
-def _expand_wait(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
+def _expand_wait(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand WAIT section → WAIT commands."""
     for row in section.rows:
         ms = row.get('ms', 100)
         raw = f'WAIT {ms}'
-        lines.append(IqlLine(number=line_num, command='WAIT', args=str(ms), raw=raw))
+        lines.append(OqlLine(number=line_num, command='WAIT', args=str(ms), raw=raw))
         line_num += 1
     return line_num
 
 
-def _expand_include(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
+def _expand_include(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand INCLUDE section → INCLUDE commands."""
     for row in section.rows:
         file_path = row.get('file', '')
         raw = f'INCLUDE "{file_path}"'
-        lines.append(IqlLine(number=line_num, command='INCLUDE', args=f'"{file_path}"', raw=raw))
+        lines.append(OqlLine(number=line_num, command='INCLUDE', args=f'"{file_path}"', raw=raw))
         line_num += 1
     return line_num
 
 
-def _expand_record(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
+def _expand_record(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand RECORD_START / RECORD_STOP sections."""
     for row in section.rows:
         session_id = row.get('session_id', '')
         if session_id:
             raw = f'RECORD_START "{session_id}"'
-            lines.append(IqlLine(number=line_num, command='RECORD_START', args=f'"{session_id}"', raw=raw))
+            lines.append(OqlLine(number=line_num, command='RECORD_START', args=f'"{session_id}"', raw=raw))
         else:
             raw = 'RECORD_STOP'
-            lines.append(IqlLine(number=line_num, command='RECORD_STOP', args='', raw=raw))
+            lines.append(OqlLine(number=line_num, command='RECORD_STOP', args='', raw=raw))
         line_num += 1
     return line_num
 
 
-def _expand_commands(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
+def _expand_commands(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand COMMANDS section (bare imperative commands) → emit as-is."""
     for row in section.rows:
         cmd = row.get('command', '').strip()
@@ -549,18 +592,18 @@ def _expand_commands(section: ToonSection, lines: list[IqlLine], line_num: int) 
         args = parts[1] if len(parts) > 1 else ''
         
         if command_name:
-            lines.append(IqlLine(number=line_num, command=command_name, args=args, raw=cmd))
+            lines.append(OqlLine(number=line_num, command=command_name, args=args, raw=cmd))
             line_num += 1
     
     return line_num
 
 
-def _expand_dom_audit_buttons(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
+def _expand_dom_audit_buttons(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand DOM_AUDIT_BUTTONS section (mapping format) → DOM_AUDIT_BUTTONS command."""
     if not section.rows:
         # No arguments, just emit the command
         raw = 'DOM_AUDIT_BUTTONS'
-        lines.append(IqlLine(number=line_num, command='DOM_AUDIT_BUTTONS', args='', raw=raw))
+        lines.append(OqlLine(number=line_num, command='DOM_AUDIT_BUTTONS', args='', raw=raw))
         return line_num + 1
 
     # Extract mapping data
@@ -581,18 +624,18 @@ def _expand_dom_audit_buttons(section: ToonSection, lines: list[IqlLine], line_n
     args = ' '.join(args_parts)
     raw = f'DOM_AUDIT_BUTTONS {args}'.strip()
 
-    lines.append(IqlLine(number=line_num, command='DOM_AUDIT_BUTTONS', args=args, raw=raw))
+    lines.append(OqlLine(number=line_num, command='DOM_AUDIT_BUTTONS', args=args, raw=raw))
     return line_num + 1
 
 
-def _expand_generic(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
+def _expand_generic(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand unknown section types as generic commands."""
     for row in section.rows:
         values = [str(v) if v is not None else '-' for v in row.values()]
         cmd = section.type
         args = ' '.join(values)
         raw = f'{cmd} {args}'
-        lines.append(IqlLine(number=line_num, command=cmd, args=args, raw=raw))
+        lines.append(OqlLine(number=line_num, command=cmd, args=args, raw=raw))
         line_num += 1
     return line_num
 
@@ -616,14 +659,14 @@ _SECTION_EXPANDERS = {
 }
 
 
-def testtoon_to_iql(text: str, filename: str = "<string>") -> IqlScript:
-    """Parse TestTOON source and expand to IqlScript for execution."""
+def testtoon_to_oql(text: str, filename: str = "<string>") -> OqlScript:
+    """Parse TestTOON source and expand to OqlScript for execution."""
     toon = parse_testtoon(text, filename)
-    lines: list[IqlLine] = []
+    lines: list[OqlLine] = []
     line_num = 1
 
     for section in toon.sections:
         expander = _SECTION_EXPANDERS.get(section.type, _expand_generic)
         line_num = expander(section, lines, line_num)
 
-    return IqlScript(filename=filename, lines=lines)
+    return OqlScript(filename=filename, lines=lines)

@@ -1,11 +1,11 @@
 # GUI Testing with TestQL
 
-This example demonstrates Playwright-based GUI testing using TestQL's IQL syntax.
+This example demonstrates Playwright-based GUI testing using TestQL's OQL syntax.
 
 ## Files
 
-- `login-form.iql` — Navigate and interact with a login form
-- `search-workflow.iql` — Search and assertion workflow
+- `login-form.oql` — Navigate and interact with a login form
+- `search-workflow.oql` — Search and assertion workflow
 - `run.sh` — Execute the scenarios in dry-run mode
 
 ## Usage

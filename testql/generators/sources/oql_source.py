@@ -1,7 +1,7 @@
 """Convert OQL/CQL scenario files into Unified IR for TestQL.
 
 Parses OQL (Object Query Language) and CQL (Command Query Language) scenario files
-to IQL commands for hardware/firmware testing.
+to OQL commands for hardware/firmware testing.
 """
 
 from __future__ import annotations
@@ -137,91 +137,137 @@ class OqlParser:
         for cmd_type, pattern in self.COMMAND_PATTERNS.items():
             match = re.match(pattern, line, re.IGNORECASE)
             if match:
-                groups = match.groups()
-                if cmd_type == 'SET' and len(groups) >= 2:
-                    return OqlCommand(
-                        command='SET',
-                        target=groups[0],
-                        args={'value': groups[1]},
-                        raw_line=raw_line.strip(),
-                        line_number=line_num
-                    )
-                elif cmd_type in ('READ',) and len(groups) >= 1:
-                    return OqlCommand(
-                        command='READ',
-                        target=groups[0] if len(groups) == 1 else groups[1],
-                        raw_line=raw_line.strip(),
-                        line_number=line_num
-                    )
-                elif cmd_type == 'WRITE' and len(groups) >= 2:
-                    return OqlCommand(
-                        command='WRITE',
-                        target=groups[0],
-                        args={'value': groups[1] if len(groups) > 1 else ''},
-                        raw_line=raw_line.strip(),
-                        line_number=line_num
-                    )
-                elif cmd_type == 'CHECK' and len(groups) >= 1:
-                    return OqlCommand(
-                        command='CHECK',
-                        target=groups[0] if len(groups) == 1 else groups[1],
-                        args={'expected': groups[2] if len(groups) > 2 else ''},
-                        raw_line=raw_line.strip(),
-                        line_number=line_num
-                    )
-                elif cmd_type == 'WAIT' and len(groups) >= 1:
-                    return OqlCommand(
-                        command='WAIT',
-                        target=groups[0],
-                        raw_line=raw_line.strip(),
-                        line_number=line_num
-                    )
-                elif cmd_type == 'POLL' and len(groups) >= 2:
-                    return OqlCommand(
-                        command='POLL',
-                        target=groups[0],
-                        args={'timeout': groups[1]},
-                        raw_line=raw_line.strip(),
-                        line_number=line_num
-                    )
-                elif cmd_type == 'EXEC' and len(groups) >= 1:
-                    return OqlCommand(
-                        command='EXEC',
-                        target=groups[0],
-                        raw_line=raw_line.strip(),
-                        line_number=line_num
-                    )
-                elif cmd_type == 'LOG' and len(groups) >= 1:
-                    return OqlCommand(
-                        command='LOG',
-                        target=groups[0],
-                        raw_line=raw_line.strip(),
-                        line_number=line_num
-                    )
-                elif cmd_type == 'CALL' and len(groups) >= 1:
-                    return OqlCommand(
-                        command='CALL',
-                        target=groups[0],
-                        args={'params': groups[1] if len(groups) > 1 else ''},
-                        raw_line=raw_line.strip(),
-                        line_number=line_num
-                    )
-                elif cmd_type == 'SEQUENCE' and len(groups) >= 1:
-                    return OqlCommand(
-                        command='SEQUENCE',
-                        target=groups[0],
-                        raw_line=raw_line.strip(),
-                        line_number=line_num
-                    )
-                elif cmd_type == 'END':
-                    return OqlCommand(
-                        command='END',
-                        target='',
-                        raw_line=raw_line.strip(),
-                        line_number=line_num
-                    )
+                return self._create_command_from_match(cmd_type, match.groups(), line_num, raw_line)
 
-        # Unknown command - treat as generic
+        return self._parse_generic_command(line, line_num, raw_line)
+
+    def _create_command_from_match(self, cmd_type: str, groups: tuple, line_num: int, raw_line: str) -> OqlCommand | None:
+        """Create OqlCommand from regex match groups."""
+        handlers = {
+            'SET': self._parse_set_command,
+            'READ': self._parse_read_command,
+            'WRITE': self._parse_write_command,
+            'CHECK': self._parse_check_command,
+            'WAIT': self._parse_wait_command,
+            'POLL': self._parse_poll_command,
+            'EXEC': self._parse_exec_command,
+            'LOG': self._parse_log_command,
+            'CALL': self._parse_call_command,
+            'SEQUENCE': self._parse_sequence_command,
+            'END': self._parse_end_command,
+        }
+        
+        handler = handlers.get(cmd_type)
+        if handler:
+            return handler(groups, line_num, raw_line)
+        return None
+
+    def _parse_set_command(self, groups: tuple, line_num: int, raw_line: str) -> OqlCommand:
+        """Parse SET command."""
+        return OqlCommand(
+            command='SET',
+            target=groups[0],
+            args={'value': groups[1]},
+            raw_line=raw_line.strip(),
+            line_number=line_num
+        )
+
+    def _parse_read_command(self, groups: tuple, line_num: int, raw_line: str) -> OqlCommand:
+        """Parse READ command."""
+        return OqlCommand(
+            command='READ',
+            target=groups[0] if len(groups) == 1 else groups[1],
+            raw_line=raw_line.strip(),
+            line_number=line_num
+        )
+
+    def _parse_write_command(self, groups: tuple, line_num: int, raw_line: str) -> OqlCommand:
+        """Parse WRITE command."""
+        return OqlCommand(
+            command='WRITE',
+            target=groups[0],
+            args={'value': groups[1] if len(groups) > 1 else ''},
+            raw_line=raw_line.strip(),
+            line_number=line_num
+        )
+
+    def _parse_check_command(self, groups: tuple, line_num: int, raw_line: str) -> OqlCommand:
+        """Parse CHECK command."""
+        return OqlCommand(
+            command='CHECK',
+            target=groups[0] if len(groups) == 1 else groups[1],
+            args={'expected': groups[2] if len(groups) > 2 else ''},
+            raw_line=raw_line.strip(),
+            line_number=line_num
+        )
+
+    def _parse_wait_command(self, groups: tuple, line_num: int, raw_line: str) -> OqlCommand:
+        """Parse WAIT command."""
+        return OqlCommand(
+            command='WAIT',
+            target=groups[0],
+            raw_line=raw_line.strip(),
+            line_number=line_num
+        )
+
+    def _parse_poll_command(self, groups: tuple, line_num: int, raw_line: str) -> OqlCommand:
+        """Parse POLL command."""
+        return OqlCommand(
+            command='POLL',
+            target=groups[0],
+            args={'timeout': groups[1]},
+            raw_line=raw_line.strip(),
+            line_number=line_num
+        )
+
+    def _parse_exec_command(self, groups: tuple, line_num: int, raw_line: str) -> OqlCommand:
+        """Parse EXEC command."""
+        return OqlCommand(
+            command='EXEC',
+            target=groups[0],
+            raw_line=raw_line.strip(),
+            line_number=line_num
+        )
+
+    def _parse_log_command(self, groups: tuple, line_num: int, raw_line: str) -> OqlCommand:
+        """Parse LOG command."""
+        return OqlCommand(
+            command='LOG',
+            target=groups[0],
+            raw_line=raw_line.strip(),
+            line_number=line_num
+        )
+
+    def _parse_call_command(self, groups: tuple, line_num: int, raw_line: str) -> OqlCommand:
+        """Parse CALL command."""
+        return OqlCommand(
+            command='CALL',
+            target=groups[0],
+            args={'params': groups[1] if len(groups) > 1 else ''},
+            raw_line=raw_line.strip(),
+            line_number=line_num
+        )
+
+    def _parse_sequence_command(self, groups: tuple, line_num: int, raw_line: str) -> OqlCommand:
+        """Parse SEQUENCE command."""
+        return OqlCommand(
+            command='SEQUENCE',
+            target=groups[0],
+            raw_line=raw_line.strip(),
+            line_number=line_num
+        )
+
+    def _parse_end_command(self, groups: tuple, line_num: int, raw_line: str) -> OqlCommand:
+        """Parse END command."""
+        return OqlCommand(
+            command='END',
+            target='',
+            raw_line=raw_line.strip(),
+            line_number=line_num
+        )
+
+    def _parse_generic_command(self, line: str, line_num: int, raw_line: str) -> OqlCommand | None:
+        """Parse unknown/generic command."""
         parts = line.split(None, 1)
         if parts:
             return OqlCommand(
@@ -230,7 +276,6 @@ class OqlParser:
                 raw_line=raw_line.strip(),
                 line_number=line_num
             )
-
         return None
 
 
@@ -300,21 +345,21 @@ class OqlSource(BaseSource):
 
         # Convert test commands
         for cmd in scenario.test_commands:
-            iql_cmd = self._convert_command(cmd)
-            if iql_cmd:
-                ir['steps'].append(iql_cmd)
+            oql_cmd = self._convert_command(cmd)
+            if oql_cmd:
+                ir['steps'].append(oql_cmd)
 
         # Convert assertions
         for cmd in scenario.assertions:
-            iql_cmd = self._convert_command(cmd)
-            if iql_cmd:
-                ir['assertions'].append(iql_cmd)
+            oql_cmd = self._convert_command(cmd)
+            if oql_cmd:
+                ir['assertions'].append(oql_cmd)
 
         # Convert cleanup
         for cmd in scenario.cleanup_commands:
-            iql_cmd = self._convert_command(cmd)
-            if iql_cmd:
-                ir['teardown'].append(iql_cmd)
+            oql_cmd = self._convert_command(cmd)
+            if oql_cmd:
+                ir['teardown'].append(oql_cmd)
 
         return ir
 
@@ -339,7 +384,7 @@ class OqlSource(BaseSource):
         return 'integration'
 
     def _convert_command(self, cmd: OqlCommand) -> dict | None:
-        """Convert OQL command to IQL format."""
+        """Convert OQL command to OQL format."""
         command_map = {
             'SET': self._convert_set,
             'READ': self._convert_read,
@@ -372,7 +417,7 @@ class OqlSource(BaseSource):
         }
 
     def _convert_read(self, cmd: OqlCommand) -> dict:
-        """Convert READ command to appropriate IQL command."""
+        """Convert READ command to appropriate OQL command."""
         target = cmd.target.lower()
         if 'encoder' in target:
             return {'command': 'ENCODER_STATUS', 'target': target}
@@ -382,7 +427,7 @@ class OqlSource(BaseSource):
             return {'command': 'GET', 'target': cmd.target}
 
     def _convert_write(self, cmd: OqlCommand) -> dict:
-        """Convert WRITE command to appropriate IQL command."""
+        """Convert WRITE command to appropriate OQL command."""
         target = cmd.target.lower()
         value = cmd.args.get('value', '')
 
@@ -430,60 +475,92 @@ class OqlSource(BaseSource):
         """Convert CALL command to API or function call."""
         return {'command': 'CALL', 'function': cmd.target, 'params': cmd.args.get('params', '')}
 
-    def to_iql(self, ir: dict) -> list[str]:
-        """Convert Unified IR to IQL commands."""
+    def to_oql(self, ir: dict) -> list[str]:
+        """Convert Unified IR to OQL commands."""
         lines = []
+        
+        lines.extend(self._build_oql_header(ir))
+        lines.extend(self._build_oql_config(ir))
+        lines.extend(self._build_oql_steps(ir))
+        lines.extend(self._build_oql_assertions(ir))
+        
+        return lines
 
-        # Header
+    def _build_oql_header(self, ir: dict) -> list[str]:
+        """Build OQL header section."""
         meta = ir.get('metadata', {})
-        lines.append(f"# SCENARIO: {meta.get('name', 'Unnamed')}")
-        lines.append(f"# TYPE: {meta.get('type', 'integration')}")
-        lines.append("# GENERATED: true (from OQL/CQL)")
-        lines.append("")
+        return [
+            f"# SCENARIO: {meta.get('name', 'Unnamed')}",
+            f"# TYPE: {meta.get('type', 'integration')}",
+            "# GENERATED: true (from OQL/CQL)",
+            "",
+        ]
 
-        # Config
+    def _build_oql_config(self, ir: dict) -> list[str]:
+        """Build OQL config section."""
         config = ir.get('config', {})
-        if config:
-            lines.append(f"CONFIG[{len(config)}]{{key, value}}:")
-            for k, v in config.items():
-                lines.append(f"  {k}, {v}")
-            lines.append("")
+        if not config:
+            return []
+        
+        lines = [f"CONFIG[{len(config)}]{{key, value}}:"]
+        for k, v in config.items():
+            lines.append(f"  {k}, {v}")
+        lines.append("")
+        return lines
 
-        # Steps
+    def _build_oql_steps(self, ir: dict) -> list[str]:
+        """Build OQL steps section."""
+        lines = []
         for step in ir.get('steps', []):
             cmd = step.get('command', '')
-            if cmd == 'ENCODER_STATUS':
-                lines.append("ENCODER_STATUS")
-            elif cmd == 'ENCODER_ON':
-                lines.append("ENCODER_ON")
-            elif cmd == 'ENCODER_OFF':
-                lines.append("ENCODER_OFF")
-            elif cmd == 'ENCODER_SCROLL':
-                lines.append(f"ENCODER_SCROLL {step.get('delta', 1)}")
-            elif cmd == 'ENCODER_CLICK':
-                lines.append("ENCODER_CLICK")
-            elif cmd == 'HARDWARE':
-                action = step.get('action', 'check')
-                peripheral = step.get('peripheral', '')
-                lines.append(f"HARDWARE {action} {peripheral}")
-            elif cmd == 'WAIT':
-                lines.append(f"WAIT {step.get('ms', 100)}")
-            elif cmd == 'SHELL':
-                lines.append(f'SHELL "{step.get("command_line", "")}"')
-            elif cmd == 'LOG':
-                lines.append(f'LOG "{step.get("message", "")}"')
-
-        # Assertions
-        assertions = ir.get('assertions', [])
-        if assertions:
-            lines.append("")
-            for assertion in assertions:
-                cmd = assertion.get('command', '')
-                if cmd == 'ASSERT_STATUS':
-                    lines.append(f"ASSERT_STATUS {assertion.get('expected', 200)}")
-                elif cmd == 'ASSERT_JSON':
-                    path = assertion.get('path', '')
-                    expected = assertion.get('expected', '')
-                    lines.append(f'ASSERT_JSON {path} == "{expected}"')
-
+            line = self._render_step_to_oql(cmd, step)
+            if line:
+                lines.append(line)
         return lines
+
+    def _render_step_to_oql(self, cmd: str, step: dict) -> str | None:
+        """Render a single step to OQL command."""
+        renderers = {
+            'ENCODER_STATUS': lambda s: "ENCODER_STATUS",
+            'ENCODER_ON': lambda s: "ENCODER_ON",
+            'ENCODER_OFF': lambda s: "ENCODER_OFF",
+            'ENCODER_SCROLL': lambda s: f"ENCODER_SCROLL {s.get('delta', 1)}",
+            'ENCODER_CLICK': lambda s: "ENCODER_CLICK",
+            'HARDWARE': self._render_hardware_step,
+            'WAIT': lambda s: f"WAIT {s.get('ms', 100)}",
+            'SHELL': lambda s: f'SHELL "{s.get("command_line", "")}"',
+            'LOG': lambda s: f'LOG "{s.get("message", "")}"',
+        }
+        
+        renderer = renderers.get(cmd)
+        return renderer(step) if renderer else None
+
+    def _render_hardware_step(self, step: dict) -> str:
+        """Render HARDWARE step to OQL."""
+        action = step.get('action', 'check')
+        peripheral = step.get('peripheral', '')
+        return f"HARDWARE {action} {peripheral}"
+
+    def _build_oql_assertions(self, ir: dict) -> list[str]:
+        """Build OQL assertions section."""
+        assertions = ir.get('assertions', [])
+        if not assertions:
+            return []
+        
+        lines = [""]
+        for assertion in assertions:
+            cmd = assertion.get('command', '')
+            line = self._render_assertion_to_oql(cmd, assertion)
+            if line:
+                lines.append(line)
+        return lines
+
+    def _render_assertion_to_oql(self, cmd: str, assertion: dict) -> str | None:
+        """Render a single assertion to OQL."""
+        if cmd == 'ASSERT_STATUS':
+            return f"ASSERT_STATUS {assertion.get('expected', 200)}"
+        elif cmd == 'ASSERT_JSON':
+            path = assertion.get('path', '')
+            expected = assertion.get('expected', '')
+            return f'ASSERT_JSON {path} == "{expected}"'
+        return None

@@ -11,11 +11,11 @@ if [ "${1:-}" = "--live" ]; then
 fi
 
 echo "=== Basic Encoder Lifecycle ($([ -n "$DRY_RUN" ] && echo dry-run || echo live)) ==="
-"$TESTQL" run "$ROOT_DIR/examples/encoder-testing/basic-encoder.iql" $DRY_RUN
+"$TESTQL" run "$ROOT_DIR/examples/encoder-testing/basic-encoder.oql" $DRY_RUN
 
 echo ""
 echo "=== Complex Sequence ($([ -n "$DRY_RUN" ] && echo dry-run || echo live)) ==="
-"$TESTQL" run "$ROOT_DIR/examples/encoder-testing/complex-sequence.iql" $DRY_RUN
+"$TESTQL" run "$ROOT_DIR/examples/encoder-testing/complex-sequence.oql" $DRY_RUN
 
 echo ""
 echo "All encoder test examples completed."

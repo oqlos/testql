@@ -130,9 +130,9 @@ Main execution flows into the system:
 > Generate TestQL scenarios from project structure.
 - **Calls**: cli.command, click.argument, click.option, click.option, click.option, Path, any, sys.exit
 
-### testql.commands.encoder_routes.iql_run_file
-> Run an entire IQL file with validation. Returns structured results + saves log.
-- **Calls**: router.post, testql.commands.encoder_routes._resolve_iql_path, target.read_text, content.splitlines, None.strftime, time.monotonic, enumerate, round
+### testql.commands.encoder_routes.oql_run_file
+> Run an entire OQL file with validation. Returns structured results + saves log.
+- **Calls**: router.post, testql.commands.encoder_routes._resolve_oql_path, target.read_text, content.splitlines, None.strftime, time.monotonic, enumerate, round
 
 ### testql.cli.echo
 > Generate AI-friendly project metadata echo from toon tests and doql model.
@@ -210,7 +210,7 @@ Main execution flows into the system:
 
 ### testql.cli.run
 > Run a TestQL (.testql.toon.yaml) scenario.
-- **Calls**: cli.command, click.argument, click.option, click.option, click.option, click.option, None.read_text, IqlInterpreter
+- **Calls**: cli.command, click.argument, click.option, click.option, click.option, click.option, None.read_text, OqlInterpreter
 
 ### testql.interpreter._encoder.EncoderMixin._encoder_call
 - **Calls**: self.out.step, self.results.append, urllib.request.Request, self._encoder_url, StepResult, None.encode, urllib.request.urlopen, None.decode
@@ -262,11 +262,11 @@ analyze [testql.cli]
 generate [testql.cli]
 ```
 
-### Flow 5: iql_run_file
+### Flow 5: oql_run_file
 ```
-iql_run_file [testql.commands.encoder_routes]
-  └─> _resolve_iql_path
-      └─> _normalize_iql_path
+oql_run_file [testql.commands.encoder_routes]
+  └─> _resolve_oql_path
+      └─> _normalize_oql_path
 ```
 
 ### Flow 6: echo
@@ -346,12 +346,12 @@ init [testql.cli]
 - **Methods**: 7
 - **Key Methods**: testql.interpreter._websockets.WebSocketMixin.__init_subclass__, testql.interpreter._websockets.WebSocketMixin._get_ws_context, testql.interpreter._websockets.WebSocketMixin._cmd_ws_connect, testql.interpreter._websockets.WebSocketMixin._cmd_ws_send, testql.interpreter._websockets.WebSocketMixin._cmd_ws_receive, testql.interpreter._websockets.WebSocketMixin._cmd_ws_assert_msg, testql.interpreter._websockets.WebSocketMixin._cmd_ws_close
 
-### testql.interpreter.interpreter.IqlInterpreter
-> IQL interpreter — runs .testql.toon.yaml / .iql / .tql scripts.
+### testql.interpreter.interpreter.OqlInterpreter
+> OQL interpreter — runs .testql.toon.yaml / .oql / .tql scripts.
 
-Supports both legacy IQL format and
+Supports both legacy OQL format and
 - **Methods**: 7
-- **Key Methods**: testql.interpreter.interpreter.IqlInterpreter.__init__, testql.interpreter.interpreter.IqlInterpreter.parse, testql.interpreter.interpreter.IqlInterpreter._is_testtoon, testql.interpreter.interpreter.IqlInterpreter.execute, testql.interpreter.interpreter.IqlInterpreter._dispatch, testql.interpreter.interpreter.IqlInterpreter._cmd_set, testql.interpreter.interpreter.IqlInterpreter._cmd_get
+- **Key Methods**: testql.interpreter.interpreter.OqlInterpreter.__init__, testql.interpreter.interpreter.OqlInterpreter.parse, testql.interpreter.interpreter.OqlInterpreter._is_testtoon, testql.interpreter.interpreter.OqlInterpreter.execute, testql.interpreter.interpreter.OqlInterpreter._dispatch, testql.interpreter.interpreter.OqlInterpreter._cmd_set, testql.interpreter.interpreter.OqlInterpreter._cmd_get
 - **Inherits**: ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, WebSocketMixin, BaseInterpreter
 
 ### testql.toon_parser.ToonParser
@@ -560,14 +560,14 @@ Returns:
 
 Functions exposed as public API (no underscore prefix):
 
-- `testql.interpreter._converter.convert_iql_to_testtoon` - 116 calls
+- `testql.interpreter._converter.convert_oql_to_testtoon` - 116 calls
 - `testql.sumd_generator.generate_sumd` - 108 calls
 - `testql.cli.suite` - 108 calls
 - `testql.commands.echo.parse_doql_less` - 85 calls
 - `testql.cli.analyze` - 50 calls
 - `testql.commands.echo.format_text_output` - 46 calls
 - `testql.cli.generate` - 45 calls
-- `testql.commands.encoder_routes.iql_run_file` - 43 calls
+- `testql.commands.encoder_routes.oql_run_file` - 43 calls
 - `testql.cli.echo` - 42 calls
 - `testql.cli.endpoints` - 39 calls
 - `testql.cli.list` - 36 calls
@@ -595,9 +595,9 @@ Functions exposed as public API (no underscore prefix):
 - `testql.openapi_generator.ContractTestGenerator.validate_response` - 17 calls
 - `testql.commands.echo.echo` - 17 calls
 - `testql.runner.DslCliExecutor.cmd_assert_json` - 16 calls
-- `testql.interpreter.interpreter.IqlInterpreter.execute` - 16 calls
+- `testql.interpreter.interpreter.OqlInterpreter.execute` - 16 calls
 - `testql.reporters.junit.JUnitReporter.generate` - 15 calls
-- `testql.commands.encoder_routes.iql_list_tables` - 15 calls
+- `testql.commands.encoder_routes.oql_list_tables` - 15 calls
 - `TODO.testtoon_parser.parse_value` - 14 calls
 - `testql.generator.TestGenerator.generate_tests` - 14 calls
 
@@ -620,11 +620,11 @@ graph TD
     generate --> command
     generate --> argument
     generate --> option
-    iql_run_file --> post
-    iql_run_file --> _resolve_iql_path
-    iql_run_file --> read_text
-    iql_run_file --> splitlines
-    iql_run_file --> strftime
+    oql_run_file --> post
+    oql_run_file --> _resolve_oql_path
+    oql_run_file --> read_text
+    oql_run_file --> splitlines
+    oql_run_file --> strftime
     echo --> command
     echo --> option
     endpoints --> command

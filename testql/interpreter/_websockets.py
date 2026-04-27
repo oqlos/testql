@@ -6,7 +6,7 @@ import asyncio
 from typing import Any
 
 from testql.base import StepResult, StepStatus
-from ._parser import IqlLine
+from ._parser import OqlLine
 
 
 class WebSocketMixin:
@@ -26,7 +26,7 @@ class WebSocketMixin:
             self._ws_messages = {}
         return self._ws_connections, self._ws_messages
 
-    def _cmd_ws_connect(self, args: str, line: IqlLine) -> None:
+    def _cmd_ws_connect(self, args: str, line: OqlLine) -> None:
         """WS_CONNECT url [alias]"""
         parts = args.strip().split()
         if not parts:
@@ -56,7 +56,7 @@ class WebSocketMixin:
             self.out.error(f"WS_CONNECT failed: {e}")
             self.results.append(StepResult(name=f"WS_CONNECT {alias}", status=StepStatus.ERROR, message=str(e)))
 
-    def _cmd_ws_send(self, args: str, line: IqlLine) -> None:
+    def _cmd_ws_send(self, args: str, line: OqlLine) -> None:
         """WS_SEND alias message"""
         parts = args.strip().split(None, 1)
         if len(parts) < 2:
@@ -98,7 +98,7 @@ class WebSocketMixin:
             name=f"WS_RECEIVE {alias}", status=StepStatus.PASSED, value=msg
         ))
 
-    def _cmd_ws_receive(self, args: str, line: IqlLine) -> None:
+    def _cmd_ws_receive(self, args: str, line: OqlLine) -> None:
         """WS_RECEIVE alias [timeout_ms]"""
         parts = args.strip().split()
         alias = parts[0] if parts else "default"
@@ -123,7 +123,7 @@ class WebSocketMixin:
             self.out.error(f"WS_RECEIVE failed: {e}")
             self.results.append(StepResult(name=f"WS_RECEIVE {alias}", status=StepStatus.ERROR, message=str(e)))
 
-    def _cmd_ws_assert_msg(self, args: str, line: IqlLine) -> None:
+    def _cmd_ws_assert_msg(self, args: str, line: OqlLine) -> None:
         """WS_ASSERT_MSG alias expected_pattern"""
         parts = args.strip().split(None, 1)
         if len(parts) < 2:
@@ -152,7 +152,7 @@ class WebSocketMixin:
             self.out.fail(f"WS message MISMATCH. Expected '{expected}', got '{last_msg[:60]}'")
             self.results.append(StepResult(name=f"ASSERT WS {alias}", status=StepStatus.FAILED))
 
-    def _cmd_ws_close(self, args: str, line: IqlLine) -> None:
+    def _cmd_ws_close(self, args: str, line: OqlLine) -> None:
         """WS_CLOSE [alias]"""
         alias = args.strip() or "default"
         connections, _ = self._get_ws_context()

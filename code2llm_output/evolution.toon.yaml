@@ -13,7 +13,7 @@ NEXT[10] (ranked by impact):
       WHY: 827L, 13 classes, max CC=16
       EFFORT: ~4h  IMPACT: 13232
 
-  [4] !! SPLIT-FUNC      convert_iql_to_testtoon  CC=66  fan=40
+  [4] !! SPLIT-FUNC      convert_oql_to_testtoon  CC=66  fan=40
       WHY: CC=66 exceeds 15
       EFFORT: ~1h  IMPACT: 2640
 

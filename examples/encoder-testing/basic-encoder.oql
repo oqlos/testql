@@ -1,0 +1,24 @@
+# SCENARIO: Basic Encoder Lifecycle
+# TYPE: encoder
+
+LOG "Starting encoder test"
+ENCODER_ON
+WAIT 200
+
+LOG "Check initial status"
+ENCODER_STATUS
+
+LOG "Focus column 1"
+ENCODER_FOCUS column1
+WAIT 100
+
+LOG "Scroll 3 steps down"
+ENCODER_SCROLL 3
+WAIT 100
+
+LOG "Confirm selection"
+ENCODER_CLICK
+WAIT 100
+
+LOG "Deactivate encoder"
+ENCODER_OFF
