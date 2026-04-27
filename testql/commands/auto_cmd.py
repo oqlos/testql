@@ -41,7 +41,27 @@ def auto(ctx, source, url, api_url, output_dir, output_format, fail_fast, keep_g
     out_dir = Path(output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    # Phase 1: Generate
+    # Run phases
+    topology, envelope, plan, written = _run_generation_phase(source, out_dir)
+    testable_nodes = _run_analysis_phase(topology)
+    report_data = _build_report_data(source, url, api_url, topology, envelope, testable_nodes, written, out_dir)
+    _run_report_phase(report_data, out_dir, output_format)
+    _print_summary(envelope, report_data, out_dir)
+
+    # Exit with appropriate code
+    if envelope.status == "failed":
+        sys.exit(1)
+    elif envelope.status == "partial":
+        sys.exit(2)  # Partial success
+    sys.exit(0)
+
+
+def _status_color(status: str) -> str:
+    return {"passed": "green", "failed": "red", "partial": "yellow"}.get(status, "white")
+
+
+def _run_generation_phase(source: str, out_dir: Path):
+    """Phase 1: Generate inspection artifacts."""
     click.echo(click.style("▶ Phase 1: Generating test scenarios...", fg="blue", bold=True))
     generated_dir = out_dir / "generated"
     generated_dir.mkdir(exist_ok=True)
@@ -50,21 +70,25 @@ def auto(ctx, source, url, api_url, output_dir, output_format, fail_fast, keep_g
         topology, envelope, plan = inspect_source(source)
         written = write_inspection_artifacts(topology, envelope, plan, out_dir)
         click.echo(f"  {click.style('✓', fg='green')} Generated inspection artifacts in {out_dir}")
+        return topology, envelope, plan, written
     except Exception as e:
         click.echo(f"  {click.style('✗', fg='red')} Generation failed: {e}", err=True)
         sys.exit(1)
 
-    # Phase 2: Analyze (what can we test?)
+
+def _run_analysis_phase(topology):
+    """Phase 2: Analyze testability."""
     click.echo(click.style("\n▶ Phase 2: Analyzing testability...", fg="blue", bold=True))
     testable_nodes = [n for n in topology.nodes if n.kind in ("api", "web", "service")]
     click.echo(f"  {click.style('•', fg='yellow')} Found {len(testable_nodes)} testable service(s)")
     for node in testable_nodes:
         click.echo(f"    - {node.kind}: {node.id}")
+    return testable_nodes
 
-    # Phase 3: Report
-    click.echo(click.style("\n▶ Phase 3: Generating report...", fg="blue", bold=True))
 
-    report_data = {
+def _build_report_data(source, url, api_url, topology, envelope, testable_nodes, written, out_dir):
+    """Build report data dictionary."""
+    return {
         "version": TESTQL_VERSION,
         "source": str(source),
         "url": url,
@@ -88,6 +112,11 @@ def auto(ctx, source, url, api_url, output_dir, output_format, fail_fast, keep_g
         "artifacts": [str(p.relative_to(out_dir)) for p in written],
     }
 
+
+def _run_report_phase(report_data: dict, out_dir: Path, output_format: str):
+    """Phase 3: Generate and output report."""
+    click.echo(click.style("\n▶ Phase 3: Generating report...", fg="blue", bold=True))
+
     # Save JSON report
     report_json = out_dir / "auto-report.json"
     report_json.write_text(json.dumps(report_data, indent=2))
@@ -103,7 +132,9 @@ def auto(ctx, source, url, api_url, output_dir, output_format, fail_fast, keep_g
     else:
         _render_console_report(report_data, out_dir)
 
-    # Summary
+
+def _print_summary(envelope, report_data: dict, out_dir: Path):
+    """Print summary section."""
     click.echo(click.style("\n═══════════════════════════════════════════════════════════", fg="blue"))
     click.echo(click.style("  AUTO TEST COMPLETE", fg="blue", bold=True))
     click.echo(click.style("═══════════════════════════════════════════════════════════", fg="blue"))
@@ -114,17 +145,6 @@ def auto(ctx, source, url, api_url, output_dir, output_format, fail_fast, keep_g
     click.echo(f"    {click.style('⚠', fg='yellow')} Warnings: {report_data['checks']['warnings']}")
     click.echo(f"\n  Output directory: {click.style(str(out_dir.absolute()), fg='cyan', underline=True)}")
     click.echo(click.style("═══════════════════════════════════════════════════════════", fg="blue"))
-
-    # Exit with appropriate code
-    if envelope.status == "failed":
-        sys.exit(1)
-    elif envelope.status == "partial":
-        sys.exit(2)  # Partial success
-    sys.exit(0)
-
-
-def _status_color(status: str) -> str:
-    return {"passed": "green", "failed": "red", "partial": "yellow"}.get(status, "white")
 
 
 def _render_console_report(data: dict, out_dir: Path) -> None:

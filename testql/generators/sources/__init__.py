@@ -13,6 +13,8 @@ from .graphql_source import GraphQLSource
 from .nl_source import NLSource
 from .openapi_source import OpenAPISource
 from .oql_source import OqlSource
+from .oql_models import OqlCommand, ParsedScenario
+from .oql_parser import OqlParser
 from .proto_source import ProtoSource
 from .pytest_source import PytestSource
 from .sql_source import SqlSource
@@ -55,6 +57,9 @@ __all__ = [
     "PageSource",
     "PytestSource",
     "OqlSource",
+    "OqlCommand",
+    "ParsedScenario",
+    "OqlParser",
     "get_source",
     "available_sources",
 ]
