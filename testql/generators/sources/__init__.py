@@ -35,9 +35,26 @@ _BUILTIN: dict[str, type[BaseSource]] = {
 }
 
 
+def _get_config_source() -> type[BaseSource]:
+    """Lazy import to avoid circular dependency."""
+    from .config_source import ConfigSource
+    return ConfigSource
+
+
 def get_source(name: str) -> Optional[BaseSource]:
     """Instantiate a registered source by name (e.g. "openapi")."""
     cls = _BUILTIN.get(name.lower())
+    if cls is None and name.lower() in ("config", "makefile", "taskfile", "docker-compose", "buf"):
+        cls = _get_config_source()
+    return cls() if cls else None
+
+
+def get_source(name: str) -> Optional[BaseSource]:
+    """Instantiate a registered source by name (e.g. "openapi")."""
+    cls = _BUILTIN.get(name.lower())
+    if cls is None and name.lower() in ("config", "makefile", "taskfile", "docker-compose", "buf"):
+        from .config_source import ConfigSource
+        cls = ConfigSource
     return cls() if cls else None
 
 
