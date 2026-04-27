@@ -1,0 +1,51 @@
+# SCENARIO: Encoder CLI Test — Encoder Command Testing
+# TYPE: encoder
+# DESCRIPTION: Tests encoder commands via hardware simulation
+# VERSION: 1.0
+# REQUIRES: encoder-control service on port 8105
+
+# ── Configuration ──────────────────────────────────────
+CONFIG[3]{key, value}:
+  base_url, http://localhost:8105
+  encoder_url, http://localhost:8105
+  timeout_ms, 5000
+
+# ── Initialize Encoder ────────────────────────────────
+ENCODER[1]{action, target, value, wait_ms}:
+  on, -, -, 500
+
+# ── Test Status Check ─────────────────────────────────
+ENCODER[1]{action, target, value, wait_ms}:
+  status, -, -, 300
+
+# ── Test Focus to Column 3 ────────────────────────────
+ENCODER[1]{action, target, value, wait_ms}:
+  focus, col3, -, 300
+
+# ── Test Scroll Down ─────────────────────────────────
+ENCODER[1]{action, target, value, wait_ms}:
+  scroll, -, 1, 200
+
+# ── Test Click Action ─────────────────────────────────
+ENCODER[1]{action, target, value, wait_ms}:
+  click, -, -, 300
+
+# ── Test Scroll Up ───────────────────────────────────
+ENCODER[1]{action, target, value, wait_ms}:
+  scroll, -, -1, 200
+
+# ── Test Focus to Column 1 ────────────────────────────
+ENCODER[1]{action, target, value, wait_ms}:
+  focus, col1, -, 300
+
+# ── Test Double Click ─────────────────────────────────
+ENCODER[1]{action, target, value, wait_ms}:
+  dblclick, -, -, 400
+
+# ── Test Cancel (2x Click) ────────────────────────────
+ENCODER[1]{action, target, value, wait_ms}:
+  dblclick, -, -, 400
+
+# ── Deactivate Encoder ────────────────────────────────
+ENCODER[1]{action, target, value, wait_ms}:
+  off, -, -, 300

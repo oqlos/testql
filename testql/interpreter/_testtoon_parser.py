@@ -246,21 +246,30 @@ _ENCODER_ACTION_MAP = {
 
 def _expand_config(section: ToonSection, lines: list[IqlLine], line_num: int) -> int:
     """Expand CONFIG section → SET commands."""
+
+    def _append_set(key: str, value: object, current_line: int) -> int:
+        if not key or value is None:
+            return current_line
+        key_quoted = f'"{key}"' if ' ' in str(key) else key
+        if '${' in str(value) and '}' in str(value):
+            raw = f'SET {key_quoted} {value}'
+            lines.append(IqlLine(number=current_line, command='SET', args=f'{key_quoted} {value}', raw=raw))
+        else:
+            raw = f'SET {key_quoted} "{value}"'
+            lines.append(IqlLine(number=current_line, command='SET', args=f'{key_quoted} "{value}"', raw=raw))
+        return current_line + 1
+
     for row in section.rows:
-        key = row.get('key', '')
-        value = row.get('value', '')
-        if key and value is not None:
-            # Quote key if it contains spaces
-            key_quoted = f'"{key}"' if ' ' in str(key) else key
-            
-            # Check if value contains variable substitution syntax - don't quote it
-            if '${' in str(value) and '}' in str(value):
-                raw = f'SET {key_quoted} {value}'
-                lines.append(IqlLine(number=line_num, command='SET', args=f'{key_quoted} {value}', raw=raw))
-            else:
-                raw = f'SET {key_quoted} "{value}"'
-                lines.append(IqlLine(number=line_num, command='SET', args=f'{key_quoted} "{value}"', raw=raw))
-            line_num += 1
+        # Tabular format: CONFIG[n]{key, value} rows.
+        if 'key' in row:
+            key = str(row.get('key', '')).strip()
+            value = row.get('value')
+            line_num = _append_set(key, value, line_num)
+            continue
+
+        # Mapping format: CONFIG: key: value
+        for key, value in row.items():
+            line_num = _append_set(str(key).strip(), value, line_num)
     return line_num
 
 

@@ -130,6 +130,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Remaining
 - Add Playwright-backed browser execution, JavaScript-rendered DOM capture, screenshots, console errors, network logs, link-by-link validation, accessibility/performance checks, MCP service integration, and runtime-vs-code delta reports.
 
+## [1.2.27] - 2026-04-27
+
+### Docs
+- Update README.md
+
+### Test
+- Update testql/interpreter/_assertions.py
+- Update testql/interpreter/_encoder.py
+- Update testql/interpreter/_testtoon_parser.py
+- Update tests/test_interpreter.py
+
+### Other
+- Update coverage.json
+- Update scenarios/c2004-all-modules-api.testql.toon.yaml
+- Update scenarios/encoder-cli-hardware-sim.testql.toon.yaml
+- Update scenarios/encoder-connect-test-devices-admin-pl.testql.toon.yaml
+- Update scenarios/encoder-gui-full-flow.testql.toon.yaml
+- Update scenarios/encoder-gui-terminal.testql.toon.yaml
+- Update scenarios/encoder-navigation.testql.toon.yaml
+- Update scenarios/encoder-terminal-cli.testql.toon.yaml
+
 ## [1.2.26] - 2026-04-27
 
 ### Docs

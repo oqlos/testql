@@ -127,6 +127,33 @@ class TestTestTOONExpansion:
         assert len(script.lines) == 1
         assert script.lines[0].command == "SET"
 
+    def test_config_mapping_expansion(self):
+        source = (
+            "CONFIG:\n"
+            "  api_url: http://localhost:8101\n"
+            "  encoder_url: http://localhost:8100\n"
+        )
+        script = _testtoon_to_iql(source, "test.testql.toon.yaml")
+        assert [(line.command, line.args) for line in script.lines] == [
+            ("SET", 'api_url "http://localhost:8101"'),
+            ("SET", 'encoder_url "http://localhost:8100"'),
+        ]
+
+    def test_config_mapping_applies_to_encoder_flow(self):
+        source = (
+            "CONFIG:\n"
+            "  encoder_url: http://localhost:8100\n"
+            "  encoder_endpoint_prefix: /dashboard/action\n"
+            "ENCODER[1]{action, target, value, wait_ms}:\n"
+            "  status, -, -, -\n"
+        )
+        script = _testtoon_to_iql(source, "test.testql.toon.yaml")
+        assert script.lines[0].command == "SET"
+        assert script.lines[0].args == 'encoder_url "http://localhost:8100"'
+        assert script.lines[1].command == "SET"
+        assert script.lines[1].args == 'encoder_endpoint_prefix "/dashboard/action"'
+        assert script.lines[2].command == "ENCODER_STATUS"
+
     def test_navigate_expansion(self):
         source = (
             "NAVIGATE[2]{path, wait_ms}:\n"
@@ -170,3 +197,15 @@ class TestIqlInterpreter:
         result = interp.run(source, "test.testql.toon.yaml")
         assert result.ok
         assert result.passed >= 1
+
+    def test_assert_json_nested_virtual_encoder_status_path(self):
+        interp = IqlInterpreter(dry_run=True, quiet=True)
+        interp.vars.set("_encoder_status", {"active": False, "error": "no_response"})
+
+        result = interp.run(
+            'ASSERT_JSON _encoder_status.error == "no_response"',
+            "encoder-assert.tql",
+        )
+
+        assert result.ok, result.errors
+        assert result.failed == 0

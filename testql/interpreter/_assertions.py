@@ -77,6 +77,8 @@ class AssertionsMixin:
 
     def _cmd_assert_json(self, args: str, line: IqlLine) -> None:
         """ASSERT_JSON path op value — e.g. ASSERT_JSON data.length > 0"""
+        import re
+
         parts = args.strip().split(None, 2)
         if len(parts) < 3:
             self.out.warn(f"L{line.number}: ASSERT_JSON requires <path> <op> <value>")
@@ -84,9 +86,17 @@ class AssertionsMixin:
 
         path, op, expected_str = parts[0], parts[1], parts[2]
         
-        # Support virtual fields like _status by checking variables first
+        # Support virtual fields like _status and nested virtual paths
+        # like _encoder_status.error.
         if path.startswith("_"):
-            obj = self.vars.get(path)
+            match = re.match(r"^(_[A-Za-z0-9_]+)(?:\.(.+))?$", path)
+            if match:
+                root_name = match.group(1)
+                remainder = match.group(2)
+                root_obj = self.vars.get(root_name)
+                obj = _navigate_json_path(root_obj, remainder) if remainder else root_obj
+            else:
+                obj = self.vars.get(path)
         else:
             obj = _navigate_json_path(self.last_response, path)
         
