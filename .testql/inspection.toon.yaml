@@ -1,0 +1,34 @@
+INSPECTION{key, value}:
+  topology_id, topology.https___tom_sapletta_com
+  topology_nodes, 114
+  topology_edges, 120
+  run_id, inspect.https___tom_sapletta_com
+  status, failed
+  checks, 15
+  failures, 2
+  actions, 2
+
+CHECKS[15]{id, status, summary}:
+  check.topology.confidence, passed, Manifest confidence is full.
+  check.topology.nodes, passed, Topology contains 114 nodes.
+  check.topology.edges, passed, Topology contains 120 edges.
+  check.topology.interfaces, passed, Topology exposes 1 interface nodes.
+  check.topology.evidence, passed, Topology has 1 evidence nodes.
+  check.web.status, passed, Page returned HTTP 200.
+  check.web.title, passed, Page title was extracted.
+  check.web.links, passed, Extracted 100 links (98 internal, 0 external).
+  check.web.assets, passed, Extracted 61 page assets.
+  check.web.forms, skipped, No forms detected; form submission checks were skipped.
+  check.web.link_status, passed, All 98 checked internal links returned successful status.
+  check.web.asset_status, failed, 4 of 61 assets returned error status.
+  check.sitemap.crawl, passed, Crawled 7 subpage(s).
+  check.sitemap.broken, passed, All 7 crawled subpages returned successful status.
+  check.sitemap.duplicates, warning, 2 duplicate title(s) found across 7 subpages.
+
+FINDINGS[2]{id, severity, node_id, summary}:
+  finding.web.asset_status, high, page.root, 4 of 61 assets returned error status.
+  finding.sitemap.duplicates, medium, sitemap.root, 2 duplicate title(s) found across 7 subpages.
+
+ACTIONS[2]{id, type, target, summary}:
+  action.web.asset_status, investigate_broken_resources, page.root, Resolve finding.web.asset_status: 4 of 61 assets returned error status.
+  action.sitemap.duplicates, fix_duplicate_titles, sitemap.root, Resolve finding.sitemap.duplicates: 2 duplicate title(s) found across 7 subpages.

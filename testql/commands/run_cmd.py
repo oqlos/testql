@@ -126,7 +126,7 @@ def _maybe_planfile(result, filename: str, planfile: bool) -> None:
 
 
 @click.command()
-@click.argument("file", type=str)
+@click.argument("files", nargs=-1, required=True, type=str)
 @click.option("--url", default="http://localhost:8101", help="Base API URL")
 @click.option("--dry-run", is_flag=True, help="Parse and validate without executing")
 @click.option(
@@ -138,9 +138,13 @@ def _maybe_planfile(result, filename: str, planfile: bool) -> None:
 @click.option("--quiet", is_flag=True, help="Suppress step-by-step output")
 @click.option("--planfile", is_flag=True, help="Auto-create tickets for failures via planfile")
 @click.option("--timeout", type=int, default=None, help="Global timeout in milliseconds for operations")
-def run(file: str, url: str, dry_run: bool, output: str, quiet: bool, planfile: bool, timeout: int | None) -> None:
-    """Run TestQL scenario(s): single file, directory, or glob pattern."""
-    paths = _resolve_input_paths(file)
+def run(files: tuple[str, ...], url: str, dry_run: bool, output: str, quiet: bool, planfile: bool, timeout: int | None) -> None:
+    """Run TestQL scenario(s): file(s), directory(ies), or glob pattern(s)."""
+    paths_by_key: dict[str, Path] = {}
+    for spec in files:
+        for path in _resolve_input_paths(spec):
+            paths_by_key[str(path.resolve())] = path
+    paths = [paths_by_key[k] for k in sorted(paths_by_key.keys())]
     results = [(path, _run_single(path, url, dry_run, quiet, timeout)) for path in paths]
 
     for path, result in results:

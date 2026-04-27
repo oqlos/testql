@@ -1,0 +1,534 @@
+{
+  "result": {
+    "checks": [
+      {
+        "evidence_refs": [],
+        "id": "check.topology.confidence",
+        "metadata": {
+          "confidence": "full"
+        },
+        "node_id": "artifact.root",
+        "status": "passed",
+        "summary": "Manifest confidence is full."
+      },
+      {
+        "evidence_refs": [],
+        "id": "check.topology.nodes",
+        "metadata": {
+          "node_count": 114
+        },
+        "status": "passed",
+        "summary": "Topology contains 114 nodes."
+      },
+      {
+        "evidence_refs": [],
+        "id": "check.topology.edges",
+        "metadata": {
+          "edge_count": 120
+        },
+        "status": "passed",
+        "summary": "Topology contains 120 edges."
+      },
+      {
+        "evidence_refs": [],
+        "id": "check.topology.interfaces",
+        "metadata": {
+          "interface_count": 1
+        },
+        "status": "passed",
+        "summary": "Topology exposes 1 interface nodes."
+      },
+      {
+        "evidence_refs": [],
+        "id": "check.topology.evidence",
+        "metadata": {
+          "evidence_count": 1
+        },
+        "status": "passed",
+        "summary": "Topology has 1 evidence nodes."
+      },
+      {
+        "evidence_refs": [],
+        "id": "check.web.status",
+        "metadata": {
+          "status_code": 200
+        },
+        "node_id": "page.root",
+        "status": "passed",
+        "summary": "Page returned HTTP 200."
+      },
+      {
+        "evidence_refs": [],
+        "id": "check.web.title",
+        "metadata": {
+          "title": "Tom Sapletta 'Blog | Platform & DevOps Engineer & Hardware Developer, Expat in Germany"
+        },
+        "node_id": "page.root",
+        "status": "passed",
+        "summary": "Page title was extracted."
+      },
+      {
+        "evidence_refs": [],
+        "id": "check.web.links",
+        "metadata": {
+          "external": 0,
+          "internal": 98,
+          "links": 100
+        },
+        "node_id": "page.root",
+        "status": "passed",
+        "summary": "Extracted 100 links (98 internal, 0 external)."
+      },
+      {
+        "evidence_refs": [],
+        "id": "check.web.assets",
+        "metadata": {
+          "assets": 61
+        },
+        "node_id": "page.root",
+        "status": "passed",
+        "summary": "Extracted 61 page assets."
+      },
+      {
+        "evidence_refs": [],
+        "id": "check.web.forms",
+        "metadata": {
+          "forms": 0
+        },
+        "node_id": "page.root",
+        "status": "skipped",
+        "summary": "No forms detected; form submission checks were skipped."
+      },
+      {
+        "evidence_refs": [],
+        "id": "check.web.link_status",
+        "metadata": {
+          "checked": 98
+        },
+        "node_id": "page.root",
+        "status": "passed",
+        "summary": "All 98 checked internal links returned successful status."
+      },
+      {
+        "evidence_refs": [],
+        "id": "check.web.asset_status",
+        "metadata": {
+          "broken": 4,
+          "checked": 61,
+          "details": [
+            {
+              "status": 403,
+              "url": "https://tom.sapletta.com/xmlrpc.php"
+            },
+            {
+              "status": 403,
+              "url": "https://ws.sharethis.com"
+            },
+            {
+              "status": 404,
+              "url": "https://fonts.googleapis.com"
+            },
+            {
+              "status": 403,
+              "url": "https://tom.sapletta.com/xmlrpc.php?rsd"
+            }
+          ]
+        },
+        "node_id": "page.root",
+        "status": "failed",
+        "summary": "4 of 61 assets returned error status."
+      },
+      {
+        "evidence_refs": [],
+        "id": "check.sitemap.crawl",
+        "metadata": {
+          "subpages": 7
+        },
+        "node_id": "sitemap.root",
+        "status": "passed",
+        "summary": "Crawled 7 subpage(s)."
+      },
+      {
+        "evidence_refs": [],
+        "id": "check.sitemap.broken",
+        "metadata": {
+          "subpages": 7
+        },
+        "node_id": "sitemap.root",
+        "status": "passed",
+        "summary": "All 7 crawled subpages returned successful status."
+      },
+      {
+        "evidence_refs": [],
+        "id": "check.sitemap.duplicates",
+        "metadata": {
+          "duplicate_titles": 2,
+          "examples": [
+            {
+              "title": "Tom Sapletta 'Blog | Platform & DevOps Engineer & Hardware Developer, Expat in Germany",
+              "urls": [
+                "https://tom.sapletta.com/pl/",
+                "https://tom.sapletta.com/de/",
+                "https://tom.sapletta.com/ru/"
+              ]
+            },
+            {
+              "title": "Data Streaming: An Insight into NDOF: Newline Delimited Objects Format - 10 | Tom Sapletta 'Blog",
+              "urls": [
+                "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/",
+                "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/",
+                "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/"
+              ]
+            }
+          ]
+        },
+        "node_id": "sitemap.root",
+        "status": "warning",
+        "summary": "2 duplicate title(s) found across 7 subpages."
+      }
+    ],
+    "failures": [
+      {
+        "evidence_refs": [],
+        "id": "finding.web.asset_status",
+        "likely_cause": "One or more page assets returned an error or were unreachable during HEAD validation.",
+        "metadata": {
+          "broken": 4,
+          "checked": 61,
+          "details": [
+            {
+              "status": 403,
+              "url": "https://tom.sapletta.com/xmlrpc.php"
+            },
+            {
+              "status": 403,
+              "url": "https://ws.sharethis.com"
+            },
+            {
+              "status": 404,
+              "url": "https://fonts.googleapis.com"
+            },
+            {
+              "status": 403,
+              "url": "https://tom.sapletta.com/xmlrpc.php?rsd"
+            }
+          ],
+          "source_check": "check.web.asset_status"
+        },
+        "node_id": "page.root",
+        "severity": "high",
+        "summary": "4 of 61 assets returned error status."
+      },
+      {
+        "evidence_refs": [],
+        "id": "finding.sitemap.duplicates",
+        "likely_cause": "Multiple subpages share the same title, which may indicate poor SEO or navigation structure.",
+        "metadata": {
+          "duplicate_titles": 2,
+          "examples": [
+            {
+              "title": "Tom Sapletta 'Blog | Platform & DevOps Engineer & Hardware Developer, Expat in Germany",
+              "urls": [
+                "https://tom.sapletta.com/pl/",
+                "https://tom.sapletta.com/de/",
+                "https://tom.sapletta.com/ru/"
+              ]
+            },
+            {
+              "title": "Data Streaming: An Insight into NDOF: Newline Delimited Objects Format - 10 | Tom Sapletta 'Blog",
+              "urls": [
+                "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/",
+                "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/",
+                "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/"
+              ]
+            }
+          ],
+          "source_check": "check.sitemap.duplicates"
+        },
+        "node_id": "sitemap.root",
+        "severity": "medium",
+        "summary": "2 duplicate title(s) found across 7 subpages."
+      }
+    ],
+    "metadata": {
+      "confidence": "full",
+      "edge_count": 120,
+      "node_count": 114,
+      "source": "https://tom.sapletta.com/"
+    },
+    "run_id": "inspect.https___tom_sapletta_com",
+    "status": "failed",
+    "suggested_actions": [
+      {
+        "evidence_refs": [],
+        "id": "action.web.asset_status",
+        "metadata": {
+          "finding": "finding.web.asset_status"
+        },
+        "priority": "high",
+        "summary": "Resolve finding.web.asset_status: 4 of 61 assets returned error status.",
+        "target": "page.root",
+        "type": "investigate_broken_resources"
+      },
+      {
+        "evidence_refs": [],
+        "id": "action.sitemap.duplicates",
+        "metadata": {
+          "finding": "finding.sitemap.duplicates"
+        },
+        "priority": "medium",
+        "summary": "Resolve finding.sitemap.duplicates: 2 duplicate title(s) found across 7 subpages.",
+        "target": "sitemap.root",
+        "type": "fix_duplicate_titles"
+      }
+    ],
+    "topology_id": "topology.https___tom_sapletta_com",
+    "traces": [
+      {
+        "edge_ids": [
+          "artifact.root->type.web_page:classified_as",
+          "artifact.root->type.http_endpoint:classified_as",
+          "artifact.root->interface.web_page.1:exposes",
+          "artifact.root->evidence.1:supported_by",
+          "artifact.root->page.root:renders",
+          "page.root->link.1:links_to",
+          "page.root->link.2:links_to",
+          "page.root->link.3:links_to",
+          "page.root->link.4:links_to",
+          "page.root->link.5:links_to",
+          "page.root->link.6:links_to",
+          "page.root->link.7:links_to",
+          "page.root->link.8:links_to",
+          "page.root->link.9:links_to",
+          "page.root->link.10:links_to",
+          "page.root->link.11:links_to",
+          "page.root->link.12:links_to",
+          "page.root->link.13:links_to",
+          "page.root->link.14:links_to",
+          "page.root->link.15:links_to",
+          "page.root->link.16:links_to",
+          "page.root->link.17:links_to",
+          "page.root->link.18:links_to",
+          "page.root->link.19:links_to",
+          "page.root->link.20:links_to",
+          "page.root->link.21:links_to",
+          "page.root->link.22:links_to",
+          "page.root->link.23:links_to",
+          "page.root->link.24:links_to",
+          "page.root->link.25:links_to",
+          "page.root->link.26:links_to",
+          "page.root->link.27:links_to",
+          "page.root->link.28:links_to",
+          "page.root->link.29:links_to",
+          "page.root->link.30:links_to",
+          "page.root->link.31:links_to",
+          "page.root->link.32:links_to",
+          "page.root->link.33:links_to",
+          "page.root->link.34:links_to",
+          "page.root->link.35:links_to",
+          "page.root->link.36:links_to",
+          "page.root->link.37:links_to",
+          "page.root->link.38:links_to",
+          "page.root->link.39:links_to",
+          "page.root->link.40:links_to",
+          "page.root->link.41:links_to",
+          "page.root->link.42:links_to",
+          "page.root->link.43:links_to",
+          "page.root->link.44:links_to",
+          "page.root->link.45:links_to",
+          "page.root->link.46:links_to",
+          "page.root->link.47:links_to",
+          "page.root->link.48:links_to",
+          "page.root->link.49:links_to",
+          "page.root->link.50:links_to",
+          "page.root->asset.1:loads",
+          "page.root->asset.2:loads",
+          "page.root->asset.3:loads",
+          "page.root->asset.4:loads",
+          "page.root->asset.5:loads",
+          "page.root->asset.6:loads",
+          "page.root->asset.7:loads",
+          "page.root->asset.8:loads",
+          "page.root->asset.9:loads",
+          "page.root->asset.10:loads",
+          "page.root->asset.11:loads",
+          "page.root->asset.12:loads",
+          "page.root->asset.13:loads",
+          "page.root->asset.14:loads",
+          "page.root->asset.15:loads",
+          "page.root->asset.16:loads",
+          "page.root->asset.17:loads",
+          "page.root->asset.18:loads",
+          "page.root->asset.19:loads",
+          "page.root->asset.20:loads",
+          "page.root->asset.21:loads",
+          "page.root->asset.22:loads",
+          "page.root->asset.23:loads",
+          "page.root->asset.24:loads",
+          "page.root->asset.25:loads",
+          "page.root->asset.26:loads",
+          "page.root->asset.27:loads",
+          "page.root->asset.28:loads",
+          "page.root->asset.29:loads",
+          "page.root->asset.30:loads",
+          "page.root->asset.31:loads",
+          "page.root->asset.32:loads",
+          "page.root->asset.33:loads",
+          "page.root->asset.34:loads",
+          "page.root->asset.35:loads",
+          "page.root->asset.36:loads",
+          "page.root->asset.37:loads",
+          "page.root->asset.38:loads",
+          "page.root->asset.39:loads",
+          "page.root->asset.40:loads",
+          "page.root->asset.41:loads",
+          "page.root->asset.42:loads",
+          "page.root->asset.43:loads",
+          "page.root->asset.44:loads",
+          "page.root->asset.45:loads",
+          "page.root->asset.46:loads",
+          "page.root->asset.47:loads",
+          "page.root->asset.48:loads",
+          "page.root->asset.49:loads",
+          "page.root->asset.50:loads",
+          "page.root->sitemap.root:has_sitemap",
+          "sitemap.root->subpage.1:contains",
+          "page.root->subpage.1:navigates_to",
+          "sitemap.root->subpage.2:contains",
+          "page.root->subpage.2:navigates_to",
+          "sitemap.root->subpage.3:contains",
+          "page.root->subpage.3:navigates_to",
+          "sitemap.root->subpage.4:contains",
+          "page.root->subpage.4:navigates_to",
+          "sitemap.root->subpage.5:contains",
+          "page.root->subpage.5:navigates_to",
+          "sitemap.root->subpage.6:contains",
+          "page.root->subpage.6:navigates_to",
+          "sitemap.root->subpage.7:contains",
+          "page.root->subpage.7:navigates_to"
+        ],
+        "id": "trace.discovery.topology",
+        "metadata": {
+          "purpose": "discovery-derived traversal plan"
+        },
+        "node_ids": [
+          "artifact.root",
+          "type.web_page",
+          "type.http_endpoint",
+          "interface.web_page.1",
+          "evidence.1",
+          "page.root",
+          "link.1",
+          "link.2",
+          "link.3",
+          "link.4",
+          "link.5",
+          "link.6",
+          "link.7",
+          "link.8",
+          "link.9",
+          "link.10",
+          "link.11",
+          "link.12",
+          "link.13",
+          "link.14",
+          "link.15",
+          "link.16",
+          "link.17",
+          "link.18",
+          "link.19",
+          "link.20",
+          "link.21",
+          "link.22",
+          "link.23",
+          "link.24",
+          "link.25",
+          "link.26",
+          "link.27",
+          "link.28",
+          "link.29",
+          "link.30",
+          "link.31",
+          "link.32",
+          "link.33",
+          "link.34",
+          "link.35",
+          "link.36",
+          "link.37",
+          "link.38",
+          "link.39",
+          "link.40",
+          "link.41",
+          "link.42",
+          "link.43",
+          "link.44",
+          "link.45",
+          "link.46",
+          "link.47",
+          "link.48",
+          "link.49",
+          "link.50",
+          "asset.1",
+          "asset.2",
+          "asset.3",
+          "asset.4",
+          "asset.5",
+          "asset.6",
+          "asset.7",
+          "asset.8",
+          "asset.9",
+          "asset.10",
+          "asset.11",
+          "asset.12",
+          "asset.13",
+          "asset.14",
+          "asset.15",
+          "asset.16",
+          "asset.17",
+          "asset.18",
+          "asset.19",
+          "asset.20",
+          "asset.21",
+          "asset.22",
+          "asset.23",
+          "asset.24",
+          "asset.25",
+          "asset.26",
+          "asset.27",
+          "asset.28",
+          "asset.29",
+          "asset.30",
+          "asset.31",
+          "asset.32",
+          "asset.33",
+          "asset.34",
+          "asset.35",
+          "asset.36",
+          "asset.37",
+          "asset.38",
+          "asset.39",
+          "asset.40",
+          "asset.41",
+          "asset.42",
+          "asset.43",
+          "asset.44",
+          "asset.45",
+          "asset.46",
+          "asset.47",
+          "asset.48",
+          "asset.49",
+          "asset.50",
+          "sitemap.root",
+          "subpage.1",
+          "subpage.2",
+          "subpage.3",
+          "subpage.4",
+          "subpage.5",
+          "subpage.6",
+          "subpage.7"
+        ],
+        "status": "planned"
+      }
+    ]
+  }
+}

@@ -1,0 +1,672 @@
+{
+  "confidence": "full",
+  "edges": [
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "python package marker",
+          "kind": "file",
+          "location": "pyproject.toml",
+          "probe": "filesystem.package_python"
+        },
+        {
+          "detail": "OpenAPI/Swagger 3.0.3",
+          "kind": "file",
+          "location": "openapi.yaml",
+          "probe": "filesystem.api_openapi"
+        }
+      ],
+      "protocol": "manifest",
+      "relation": "classified_as",
+      "source_id": "artifact.root",
+      "target_id": "type.python_pkg"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "python package marker",
+          "kind": "file",
+          "location": "pyproject.toml",
+          "probe": "filesystem.package_python"
+        },
+        {
+          "detail": "OpenAPI/Swagger 3.0.3",
+          "kind": "file",
+          "location": "openapi.yaml",
+          "probe": "filesystem.api_openapi"
+        }
+      ],
+      "protocol": "manifest",
+      "relation": "classified_as",
+      "source_id": "artifact.root",
+      "target_id": "type.fastapi"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "python package marker",
+          "kind": "file",
+          "location": "pyproject.toml",
+          "probe": "filesystem.package_python"
+        },
+        {
+          "detail": "OpenAPI/Swagger 3.0.3",
+          "kind": "file",
+          "location": "openapi.yaml",
+          "probe": "filesystem.api_openapi"
+        }
+      ],
+      "protocol": "manifest",
+      "relation": "classified_as",
+      "source_id": "artifact.root",
+      "target_id": "type.openapi3"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "python package marker",
+          "kind": "file",
+          "location": "pyproject.toml",
+          "probe": "filesystem.package_python"
+        },
+        {
+          "detail": "OpenAPI/Swagger 3.0.3",
+          "kind": "file",
+          "location": "openapi.yaml",
+          "probe": "filesystem.api_openapi"
+        }
+      ],
+      "protocol": "http",
+      "relation": "exposes",
+      "source_id": "artifact.root",
+      "target_id": "interface.rest.1"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "scope",
+          "value": "runtime"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "python package marker",
+          "kind": "file",
+          "location": "pyproject.toml",
+          "probe": "filesystem.package_python"
+        },
+        {
+          "detail": "OpenAPI/Swagger 3.0.3",
+          "kind": "file",
+          "location": "openapi.yaml",
+          "probe": "filesystem.api_openapi"
+        }
+      ],
+      "protocol": "package",
+      "relation": "depends_on",
+      "source_id": "artifact.root",
+      "target_id": "dependency.httpx"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "scope",
+          "value": "runtime"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "python package marker",
+          "kind": "file",
+          "location": "pyproject.toml",
+          "probe": "filesystem.package_python"
+        },
+        {
+          "detail": "OpenAPI/Swagger 3.0.3",
+          "kind": "file",
+          "location": "openapi.yaml",
+          "probe": "filesystem.api_openapi"
+        }
+      ],
+      "protocol": "package",
+      "relation": "depends_on",
+      "source_id": "artifact.root",
+      "target_id": "dependency.click"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "scope",
+          "value": "runtime"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "python package marker",
+          "kind": "file",
+          "location": "pyproject.toml",
+          "probe": "filesystem.package_python"
+        },
+        {
+          "detail": "OpenAPI/Swagger 3.0.3",
+          "kind": "file",
+          "location": "openapi.yaml",
+          "probe": "filesystem.api_openapi"
+        }
+      ],
+      "protocol": "package",
+      "relation": "depends_on",
+      "source_id": "artifact.root",
+      "target_id": "dependency.rich"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "scope",
+          "value": "runtime"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "python package marker",
+          "kind": "file",
+          "location": "pyproject.toml",
+          "probe": "filesystem.package_python"
+        },
+        {
+          "detail": "OpenAPI/Swagger 3.0.3",
+          "kind": "file",
+          "location": "openapi.yaml",
+          "probe": "filesystem.api_openapi"
+        }
+      ],
+      "protocol": "package",
+      "relation": "depends_on",
+      "source_id": "artifact.root",
+      "target_id": "dependency.pyyaml"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "scope",
+          "value": "runtime"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "python package marker",
+          "kind": "file",
+          "location": "pyproject.toml",
+          "probe": "filesystem.package_python"
+        },
+        {
+          "detail": "OpenAPI/Swagger 3.0.3",
+          "kind": "file",
+          "location": "openapi.yaml",
+          "probe": "filesystem.api_openapi"
+        }
+      ],
+      "protocol": "package",
+      "relation": "depends_on",
+      "source_id": "artifact.root",
+      "target_id": "dependency.goal"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "scope",
+          "value": "runtime"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "python package marker",
+          "kind": "file",
+          "location": "pyproject.toml",
+          "probe": "filesystem.package_python"
+        },
+        {
+          "detail": "OpenAPI/Swagger 3.0.3",
+          "kind": "file",
+          "location": "openapi.yaml",
+          "probe": "filesystem.api_openapi"
+        }
+      ],
+      "protocol": "package",
+      "relation": "depends_on",
+      "source_id": "artifact.root",
+      "target_id": "dependency.costs"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "scope",
+          "value": "runtime"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "python package marker",
+          "kind": "file",
+          "location": "pyproject.toml",
+          "probe": "filesystem.package_python"
+        },
+        {
+          "detail": "OpenAPI/Swagger 3.0.3",
+          "kind": "file",
+          "location": "openapi.yaml",
+          "probe": "filesystem.api_openapi"
+        }
+      ],
+      "protocol": "package",
+      "relation": "depends_on",
+      "source_id": "artifact.root",
+      "target_id": "dependency.pfix"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "scope",
+          "value": "runtime"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "python package marker",
+          "kind": "file",
+          "location": "pyproject.toml",
+          "probe": "filesystem.package_python"
+        },
+        {
+          "detail": "OpenAPI/Swagger 3.0.3",
+          "kind": "file",
+          "location": "openapi.yaml",
+          "probe": "filesystem.api_openapi"
+        }
+      ],
+      "protocol": "package",
+      "relation": "depends_on",
+      "source_id": "artifact.root",
+      "target_id": "dependency.websockets"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "scope",
+          "value": "runtime"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "python package marker",
+          "kind": "file",
+          "location": "pyproject.toml",
+          "probe": "filesystem.package_python"
+        },
+        {
+          "detail": "OpenAPI/Swagger 3.0.3",
+          "kind": "file",
+          "location": "openapi.yaml",
+          "probe": "filesystem.api_openapi"
+        }
+      ],
+      "protocol": "package",
+      "relation": "depends_on",
+      "source_id": "artifact.root",
+      "target_id": "dependency.pytest_cov"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "scope",
+          "value": "runtime"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "python package marker",
+          "kind": "file",
+          "location": "pyproject.toml",
+          "probe": "filesystem.package_python"
+        },
+        {
+          "detail": "OpenAPI/Swagger 3.0.3",
+          "kind": "file",
+          "location": "openapi.yaml",
+          "probe": "filesystem.api_openapi"
+        }
+      ],
+      "protocol": "package",
+      "relation": "depends_on",
+      "source_id": "artifact.root",
+      "target_id": "dependency.fastapi"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "python package marker",
+          "kind": "file",
+          "location": "pyproject.toml",
+          "probe": "filesystem.package_python"
+        }
+      ],
+      "protocol": "file",
+      "relation": "supported_by",
+      "source_id": "artifact.root",
+      "target_id": "evidence.1"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "OpenAPI/Swagger 3.0.3",
+          "kind": "file",
+          "location": "openapi.yaml",
+          "probe": "filesystem.api_openapi"
+        }
+      ],
+      "protocol": "file",
+      "relation": "supported_by",
+      "source_id": "artifact.root",
+      "target_id": "evidence.2"
+    }
+  ],
+  "metadata": {
+    "generator": "testql.topology",
+    "source_types": [
+      "python_pkg",
+      "fastapi",
+      "openapi3"
+    ]
+  },
+  "nodes": [
+    {
+      "evidence": [
+        {
+          "detail": "python package marker",
+          "kind": "file",
+          "location": "pyproject.toml",
+          "probe": "filesystem.package_python"
+        },
+        {
+          "detail": "OpenAPI/Swagger 3.0.3",
+          "kind": "file",
+          "location": "openapi.yaml",
+          "probe": "filesystem.api_openapi"
+        }
+      ],
+      "id": "artifact.root",
+      "kind": "artifact",
+      "metadata": {
+        "confidence": "full",
+        "dependency_count": 10,
+        "description": "Auto-generated OpenAPI spec for testql",
+        "evidence_count": 2,
+        "interface_count": 1,
+        "name": "testql API",
+        "types": [
+          "python_pkg",
+          "fastapi",
+          "openapi3"
+        ],
+        "version": "1.0.0"
+      },
+      "source": {
+        "kind": "path",
+        "location": "."
+      }
+    },
+    {
+      "evidence": [],
+      "id": "type.python_pkg",
+      "kind": "artifact_type",
+      "metadata": {
+        "type": "python_pkg"
+      },
+      "source": {
+        "kind": "path",
+        "location": "."
+      }
+    },
+    {
+      "evidence": [],
+      "id": "type.fastapi",
+      "kind": "artifact_type",
+      "metadata": {
+        "type": "fastapi"
+      },
+      "source": {
+        "kind": "path",
+        "location": "."
+      }
+    },
+    {
+      "evidence": [],
+      "id": "type.openapi3",
+      "kind": "artifact_type",
+      "metadata": {
+        "type": "openapi3"
+      },
+      "source": {
+        "kind": "path",
+        "location": "."
+      }
+    },
+    {
+      "evidence": [],
+      "id": "interface.rest.1",
+      "kind": "interface",
+      "metadata": {
+        "location": "openapi.yaml",
+        "metadata": {
+          "paths": 7
+        },
+        "type": "rest"
+      },
+      "source": "openapi.yaml"
+    },
+    {
+      "evidence": [],
+      "id": "dependency.httpx",
+      "kind": "dependency",
+      "metadata": {
+        "name": "httpx",
+        "scope": "runtime",
+        "version": ">=0.27"
+      },
+      "source": "httpx"
+    },
+    {
+      "evidence": [],
+      "id": "dependency.click",
+      "kind": "dependency",
+      "metadata": {
+        "name": "click",
+        "scope": "runtime",
+        "version": ">=8.0"
+      },
+      "source": "click"
+    },
+    {
+      "evidence": [],
+      "id": "dependency.rich",
+      "kind": "dependency",
+      "metadata": {
+        "name": "rich",
+        "scope": "runtime",
+        "version": ">=13.0"
+      },
+      "source": "rich"
+    },
+    {
+      "evidence": [],
+      "id": "dependency.pyyaml",
+      "kind": "dependency",
+      "metadata": {
+        "name": "pyyaml",
+        "scope": "runtime",
+        "version": ">=6.0"
+      },
+      "source": "pyyaml"
+    },
+    {
+      "evidence": [],
+      "id": "dependency.goal",
+      "kind": "dependency",
+      "metadata": {
+        "name": "goal",
+        "scope": "runtime",
+        "version": ">=2.1.0"
+      },
+      "source": "goal"
+    },
+    {
+      "evidence": [],
+      "id": "dependency.costs",
+      "kind": "dependency",
+      "metadata": {
+        "name": "costs",
+        "scope": "runtime",
+        "version": ">=0.1.20"
+      },
+      "source": "costs"
+    },
+    {
+      "evidence": [],
+      "id": "dependency.pfix",
+      "kind": "dependency",
+      "metadata": {
+        "name": "pfix",
+        "scope": "runtime",
+        "version": ">=0.1.60"
+      },
+      "source": "pfix"
+    },
+    {
+      "evidence": [],
+      "id": "dependency.websockets",
+      "kind": "dependency",
+      "metadata": {
+        "name": "websockets",
+        "scope": "runtime",
+        "version": ">=13.0"
+      },
+      "source": "websockets"
+    },
+    {
+      "evidence": [],
+      "id": "dependency.pytest_cov",
+      "kind": "dependency",
+      "metadata": {
+        "name": "pytest-cov",
+        "scope": "runtime",
+        "version": ">=7.0"
+      },
+      "source": "pytest-cov"
+    },
+    {
+      "evidence": [],
+      "id": "dependency.fastapi",
+      "kind": "dependency",
+      "metadata": {
+        "name": "fastapi",
+        "scope": "runtime",
+        "version": ">=0.100"
+      },
+      "source": "fastapi"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "python package marker",
+          "kind": "file",
+          "location": "pyproject.toml",
+          "probe": "filesystem.package_python"
+        }
+      ],
+      "id": "evidence.1",
+      "kind": "evidence",
+      "metadata": {
+        "detail": "python package marker",
+        "kind": "file",
+        "location": "pyproject.toml",
+        "probe": "filesystem.package_python"
+      },
+      "source": "pyproject.toml"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "OpenAPI/Swagger 3.0.3",
+          "kind": "file",
+          "location": "openapi.yaml",
+          "probe": "filesystem.api_openapi"
+        }
+      ],
+      "id": "evidence.2",
+      "kind": "evidence",
+      "metadata": {
+        "detail": "OpenAPI/Swagger 3.0.3",
+        "kind": "file",
+        "location": "openapi.yaml",
+        "probe": "filesystem.api_openapi"
+      },
+      "source": "openapi.yaml"
+    }
+  ],
+  "root": {
+    "kind": "path",
+    "location": "."
+  },
+  "traces": [
+    {
+      "edge_ids": [
+        "artifact.root->type.python_pkg:classified_as",
+        "artifact.root->type.fastapi:classified_as",
+        "artifact.root->type.openapi3:classified_as",
+        "artifact.root->interface.rest.1:exposes",
+        "artifact.root->dependency.httpx:depends_on",
+        "artifact.root->dependency.click:depends_on",
+        "artifact.root->dependency.rich:depends_on",
+        "artifact.root->dependency.pyyaml:depends_on",
+        "artifact.root->dependency.goal:depends_on",
+        "artifact.root->dependency.costs:depends_on",
+        "artifact.root->dependency.pfix:depends_on",
+        "artifact.root->dependency.websockets:depends_on",
+        "artifact.root->dependency.pytest_cov:depends_on",
+        "artifact.root->dependency.fastapi:depends_on",
+        "artifact.root->evidence.1:supported_by",
+        "artifact.root->evidence.2:supported_by"
+      ],
+      "id": "trace.discovery.topology",
+      "metadata": {
+        "purpose": "discovery-derived traversal plan"
+      },
+      "node_ids": [
+        "artifact.root",
+        "type.python_pkg",
+        "type.fastapi",
+        "type.openapi3",
+        "interface.rest.1",
+        "dependency.httpx",
+        "dependency.click",
+        "dependency.rich",
+        "dependency.pyyaml",
+        "dependency.goal",
+        "dependency.costs",
+        "dependency.pfix",
+        "dependency.websockets",
+        "dependency.pytest_cov",
+        "dependency.fastapi",
+        "evidence.1",
+        "evidence.2"
+      ],
+      "status": "planned"
+    }
+  ]
+}

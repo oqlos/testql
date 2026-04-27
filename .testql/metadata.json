@@ -1,0 +1,36 @@
+{
+  "counts": {
+    "actions": 2,
+    "checks": 15,
+    "edges": 120,
+    "findings": 2,
+    "nodes": 114
+  },
+  "created_at": "2026-04-27T14:39:57.629791+00:00",
+  "files": [
+    "topology.json",
+    "topology.yaml",
+    "topology.toon.yaml",
+    "result.json",
+    "result.yaml",
+    "result.toon.yaml",
+    "refactor-plan.json",
+    "refactor-plan.yaml",
+    "refactor-plan.toon.yaml",
+    "inspection.json",
+    "inspection.yaml",
+    "inspection.toon.yaml",
+    "summary.md",
+    "metadata.json"
+  ],
+  "generator": "testql.inspect",
+  "refactor_plan_id": "refactor.inspect.https___tom_sapletta_com",
+  "root": {
+    "kind": "url",
+    "location": "https://tom.sapletta.com/"
+  },
+  "run_id": "inspect.https___tom_sapletta_com",
+  "status": "failed",
+  "testql_version": "1.2.30",
+  "topology_id": "topology.https___tom_sapletta_com"
+}

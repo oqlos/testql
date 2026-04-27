@@ -1,0 +1,40 @@
+# SCENARIO: Auto-generated from OQL/CQL Scenarios
+# TYPE: hardware
+# GENERATED: true
+
+CONFIG[8]{key, value}:
+  generated_from, oql_scenarios
+  timeout_ms, 5000
+  temp_dir, /tmp/testql-shell-test
+  base_url, https://example.com
+  device_id, dev-001
+  search_term, playwright
+  username, testuser
+  password, testpass123
+
+# Converted 50 commands
+LOG "Testing basic shell commands""
+LOG "Starting test for device: ${device_id}""
+LOG "Base URL is: $base_url""
+WAIT 100
+LOG "Test completed successfully""
+WAIT 300
+WAIT 800
+WAIT 500
+WAIT 1000
+LOG "Navigate through settings menu""
+ENCODER_ON
+LOG "Focus settings column""
+WAIT 300
+LOG "Scroll to find option""
+WAIT 100
+LOG "Enter submenu""
+WAIT 200
+LOG "Scroll within submenu""
+WAIT 100
+LOG "Confirm setting""
+WAIT 100
+LOG "Go back to main menu""
+WAIT 200
+LOG "Focus device column""
+WAIT 100

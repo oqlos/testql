@@ -130,6 +130,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Remaining
 - Add Playwright-backed browser execution, JavaScript-rendered DOM capture, screenshots, console errors, network logs, link-by-link validation, accessibility/performance checks, MCP service integration, and runtime-vs-code delta reports.
 
+## [1.2.33] - 2026-04-27
+
+### Docs
+- Update .testql/summary.md
+- Update README.md
+
+### Test
+- Update testql/commands/run_cmd.py
+- Update tests/test_run_cmd.py
+
+### Other
+- Update .testql/autoloop-state.json
+- Update .testql/generated/generated-api-integration.testql.toon.yaml
+- Update .testql/generated/generated-api-smoke.testql.toon.yaml
+- Update .testql/generated/generated-from-pytests.testql.toon.yaml
+- Update .testql/generated/generated-from-scenarios.testql.toon.yaml
+- Update .testql/inspection.json
+- Update .testql/inspection.toon.yaml
+- Update .testql/inspection.yaml
+- Update .testql/metadata.json
+- Update .testql/refactor-plan.json
+- ... and 11 more files
+
 ## [1.2.32] - 2026-04-27
 
 ### Docs

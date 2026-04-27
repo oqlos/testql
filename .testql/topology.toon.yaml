@@ -1,0 +1,246 @@
+TOPOLOGY{key, value}:
+  root, https://tom.sapletta.com/
+  confidence, full
+  nodes, 114
+  edges, 120
+
+NODES[114]{id, kind, source}:
+  artifact.root, artifact, https://tom.sapletta.com/
+  type.web_page, artifact_type, https://tom.sapletta.com/
+  type.http_endpoint, artifact_type, https://tom.sapletta.com/
+  interface.web_page.1, interface, https://tom.sapletta.com/
+  evidence.1, evidence, https://tom.sapletta.com/
+  page.root, page, https://tom.sapletta.com/
+  link.1, link, https://tom.sapletta.com/
+  link.2, link, https://tom.sapletta.com/
+  link.3, link, https://tom.sapletta.com/#main-navigation-responsive
+  link.4, link, https://tom.sapletta.com/#content
+  link.5, link, https://tom.sapletta.com/pl/
+  link.6, link, https://tom.sapletta.com/
+  link.7, link, https://tom.sapletta.com/de/
+  link.8, link, https://tom.sapletta.com/ru/
+  link.9, link, https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+  link.10, link, https://tom.sapletta.com/category/idea/
+  link.11, link, https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+  link.12, link, https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+  link.13, link, https://tom.sapletta.com/author/admin/
+  link.14, link, https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+  link.15, link, https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/
+  link.16, link, https://tom.sapletta.com/category/how-to/
+  link.17, link, https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/
+  link.18, link, https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/
+  link.19, link, https://tom.sapletta.com/author/admin/
+  link.20, link, https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/
+  link.21, link, https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/
+  link.22, link, https://tom.sapletta.com/category/idea-en/
+  link.23, link, https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/
+  link.24, link, https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/
+  link.25, link, https://tom.sapletta.com/author/admin/
+  link.26, link, https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/
+  link.27, link, https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/
+  link.28, link, https://tom.sapletta.com/category/idea/
+  link.29, link, https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/
+  link.30, link, https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/
+  link.31, link, https://tom.sapletta.com/author/admin/
+  link.32, link, https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/
+  link.33, link, https://tom.sapletta.com/domains/tools-for-a-domainers/
+  link.34, link, https://tom.sapletta.com/category/domains/
+  link.35, link, https://tom.sapletta.com/domains/tools-for-a-domainers/
+  link.36, link, https://tom.sapletta.com/domains/tools-for-a-domainers/
+  link.37, link, https://tom.sapletta.com/author/admin/
+  link.38, link, https://tom.sapletta.com/domains/tools-for-a-domainers/
+  link.39, link, https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/
+  link.40, link, https://tom.sapletta.com/category/how-to-en/
+  link.41, link, https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/
+  link.42, link, https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/
+  link.43, link, https://tom.sapletta.com/author/admin/
+  link.44, link, https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/
+  link.45, link, https://tom.sapletta.com/category/domains/
+  link.46, link, https://tom.sapletta.com/how-to/domains-trends-the-best-name/
+  link.47, link, https://tom.sapletta.com/how-to/domains-trends-the-best-name/
+  link.48, link, https://tom.sapletta.com/author/admin/
+  link.49, link, https://tom.sapletta.com/how-to/domains-trends-the-best-name/
+  link.50, link, https://tom.sapletta.com/category/software-en/
+  asset.1, asset, https://tom.sapletta.com/
+  asset.2, asset, https://tom.sapletta.com/sitemap.xml
+  asset.3, asset, https://tom.sapletta.com/favicon.ico
+  asset.4, asset, https://www.google-analytics.com/analytics.js
+  asset.5, asset, http://gmpg.org/xfn/11
+  asset.6, asset, https://tom.sapletta.com/xmlrpc.php
+  asset.7, asset, https://tom.sapletta.com/pl/
+  asset.8, asset, https://tom.sapletta.com/
+  asset.9, asset, https://tom.sapletta.com/de/
+  asset.10, asset, https://tom.sapletta.com/ru/
+  asset.11, asset, https://ws.sharethis.com
+  asset.12, asset, https://fonts.googleapis.com
+  asset.13, asset, https://tom.sapletta.com/feed/
+  asset.14, asset, https://tom.sapletta.com/wp-content/plugins/squirrly-seo/view/assets/css/frontend.min.css?ver=12.4.16
+  asset.15, asset, https://tom.sapletta.com/wp-content/plugins/github-embed/css/github-embed.css?ver=6.9.4
+  asset.16, asset, https://tom.sapletta.com/wp-content/plugins/table-of-contents-plus/screen.min.css?ver=2411.1
+  asset.17, asset, https://tom.sapletta.com/wp-content/themes/bezel/css/bootstrap-grid.css?ver=6.9.4
+  asset.18, asset, https://tom.sapletta.com/wp-content/themes/bezel/css/font-awesome.css?ver=6.9.4
+  asset.19, asset, https://fonts.googleapis.com/css?family=Montserrat%3A400%2C700%7COpen+Sans%3A400%2C400i%2C700%2C700i&subset=latin%2Clatin-ext
+  asset.20, asset, https://tom.sapletta.com/wp-content/themes/bezel/style.css?ver=6.9.4
+  asset.21, asset, https://tom.sapletta.com/wp-content/plugins/heateor-social-comments/css/front.css?ver=1.6.3
+  asset.22, asset, https://tom.sapletta.com/wp-content/plugins/gdpr-cookie-compliance/dist/styles/gdpr-main.css?ver=5.0.11
+  asset.23, asset, https://tom.sapletta.com/wp-includes/js/jquery/jquery.min.js?ver=3.7.1
+  asset.24, asset, https://tom.sapletta.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1
+  asset.25, asset, https://ws.sharethis.com/button/st_insights.js?publisher=eba0f3ba-f9ab-408c-bc68-c28af5afe749&product=feather&ver=1772717413
+  asset.26, asset, https://tom.sapletta.com/wp-json/
+  asset.27, asset, https://tom.sapletta.com/xmlrpc.php?rsd
+  asset.28, asset, https://tom.sapletta.com/wp-content/uploads/2016/10/cropped-ts_2013_300x270-180x180.jpg
+  asset.29, asset, https://tom.sapletta.com/wp-content/uploads/2017/07/cropped-fig-28-07-2017_19-06-49-1.jpg
+  asset.30, asset, data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAPFBMVEX/8fH67Ozz5ubt4OD+/v77+/v39/fo2Nj5AAD+jo79bW36X1/4T0/5QUHhAAD3MzP0Kir2ICDzERHtAACO5h0ZAAAAQUlEQVR4AQXBsRHDMAwAMTzNwvuvm5MVIECIZIEQZ4EQ7AAIGBABegsR+Z7VxChx7hCjhIwYJcTydcgQ1gv8Lhd/58kJTU6WtnIAAAAASUVORK5CYII=
+  asset.31, asset, data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAt1BMVEWSmb66z+18msdig8La3u+tYX9IaLc7W7BagbmcUW+kqMr/q6n+//+hsNv/lIr/jIGMnNLJyOP9/fyQttT/wb3/////aWn+YWF5kNT0oqz0i4ueqtIZNJjhvt/8gn//WVr/6+rN1+o9RKZwgcMPJpX/VFT9UEn+RUX8Ozv2Ly+FGzdYZrfU1e/8LS/lQkG/mbVUX60AE231hHtcdMb0mp3qYFTFwNu3w9prcqSURGNDaaIUMX5FNW5wYt7AAAAAjklEQVR4AR3HNUJEMQCGwf+L8RR36ajR+1+CEuvRdd8kK9MNAiRQNgJmVDAt1yM6kSzYVJUsPNssAk5N7ZFKjVNFAY4co6TAOI+kyQm+LFUEBEKKzuWUNB7rSH/rSnvOulOGk+QlXTBqMIrfYX4tSe2nP3iRa/KNK7uTmWJ5a9+erZ3d+18od4ytiZdvZyuKWy8o3UpTVAAAAABJRU5ErkJggg==
+  asset.32, asset, data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAABLElEQVR4AY2QgUZEQRSGz9ydmzbYkBWABBJYABHEFhJ6m0WP0DMEQNIr9AKrN8ne2Tt3Zs7MOdOZmRBEv+v34Tvub9R6fdNlAzU+snSME/wdjbjbbJ6EiEg6BA8102QbjKNpoMzw8v6qD/sOALbbT2MC1NgaAWOKOgxf5czY+4dbAX2G/THzcozLrvPV85IQyqVz0rvg2p9Pei4HjzSsiFbV4JgyhhxCjpGdZ0RhdikLB9/b8Qig7MkpSovR7Cp59q6CazaNFiTt4J82o6uvdMVwTsztKTXZod4jgOJJuqNAjFyGrBR8gM6XwKfIC4KanBSTZ0rClKh08D9DFh3egW7ebH7NcRDQWrz9rM2Ne+mDOXB2mZJ8agL19nwxR2iZXGm1gDbQKhDjd4yHb2oW/KR8xHicAAAAAElFTkSuQmCC
+  asset.33, asset, data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAdVBMVEX19f/u7vjm5/H+/v75+fng4Ove3ulFRfyysv6cnP6QkPmIiPh/f/YAAOYAAP1ycv5QUP06OvkxMfcoKPcgIPYUFPS0AADdaYzTRG/RPGnOM2LKLFzIIVPCEUZ7AAD0AQH7YGH3ODj0JyfzERDgAAD4TU3pAABIfLuPAAAAT0lEQVR4AQXBAQqDMAAAsZytyHzA/v9LYRS7JIAQMkBb0ATsgLoKInnHvIrHrdRaBzxupTDxuFUifUsp4R3zU4iwzmOyT1ibBtP2u3C+wB+SHBB5JNY7DAAAAABJRU5ErkJggg==
+  asset.34, asset, https://tom.sapletta.com/wp-content/uploads/2017/10/photo-1484480974693-6ca0a78fb36b3Fixlib3Drb-0.3-1.526q3d8026fm3djpg26crop3dentropy26cs3dtinysrgb26w3d20026fit3dmax26s3d455970be79f030880a003ec7629c2284
+  asset.35, asset, https://tom.sapletta.com/wp-content/uploads/2021/08/lenovo-wifi-scaled.jpg
+  asset.36, asset, https://tom.sapletta.com/wp-content/uploads/2021/08/github-754x566.jpg
+  asset.37, asset, https://tom.sapletta.com/wp-content/uploads/2018/04/fig-27-04-2018_17-45-55-754x400.jpg
+  asset.38, asset, https://tom.sapletta.com/wp-content/uploads/2018/04/dreamstime_xxl_95899032-1-754x566.jpg
+  asset.39, asset, https://tom.sapletta.com/wp-content/uploads/2018/04/photo-1505218795627-2b9746a5343f3Fixlib3Drb-0.3-754x566.526q3d8026fm3djpg26crop3dentropy26cs3dtinysrgb26w3d108026fit3dmax26ixid3deyjhchbfawqiojmwodh926s3d1361bc4cc54b9105eb78ce7e05e3dfa6
+  asset.40, asset, https://tom.sapletta.com/wp-content/uploads/2017/07/fig-29-07-2017_15-16-08-754x566.jpg
+  asset.41, asset, https://tom.sapletta.com/wp-content/uploads/2017/07/docker_1501186240.jpg
+  asset.42, asset, https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500842539157-754x566.jpg
+  asset.43, asset, https://tom.sapletta.com/wp-content/uploads/2017/07/armbian-cubieboard-on-marsboard5-754x566.jpg
+  asset.44, asset, https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500751461249-e1500754843810-754x566.jpg
+  asset.45, asset, https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500658298112-754x566.jpg
+  asset.46, asset, https://tom.sapletta.com/wp-content/uploads/2017/07/ExternalLink_chrome_2017-07-18_18-46-11.png
+  asset.47, asset, https://tom.sapletta.com/wp-content/uploads/2017/05/e837b50c28fd003ed95c4518b7454191eb73ebc818b5184494f1c77ea6e4_640.jpg
+  asset.48, asset, https://tom.sapletta.com/wp-content/uploads/2017/05/ec31b20d2cf71c2ad65a5854ef4b419ee77effd41db8154693f5c271a6_640.jpg
+  asset.49, asset, https://tom.sapletta.com/wp-content/uploads/2017/05/wp-1493786544612.jpg
+  asset.50, asset, https://tom.sapletta.com/wp-content/uploads/2017/04/chrome_2017-04-21_21-30-19.png
+  sitemap.root, sitemap, https://tom.sapletta.com/
+  subpage.1, subpage, https://tom.sapletta.com/pl/
+  subpage.2, subpage, https://tom.sapletta.com/de/
+  subpage.3, subpage, https://tom.sapletta.com/ru/
+  subpage.4, subpage, https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+  subpage.5, subpage, https://tom.sapletta.com/category/idea/
+  subpage.6, subpage, https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+  subpage.7, subpage, https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+
+EDGES[120]{source_id, relation, target_id, protocol}:
+  artifact.root, classified_as, type.web_page, manifest
+  artifact.root, classified_as, type.http_endpoint, manifest
+  artifact.root, exposes, interface.web_page.1, browser
+  artifact.root, supported_by, evidence.1, http
+  artifact.root, renders, page.root, browser
+  page.root, links_to, link.1, http
+  page.root, links_to, link.2, http
+  page.root, links_to, link.3, http
+  page.root, links_to, link.4, http
+  page.root, links_to, link.5, http
+  page.root, links_to, link.6, http
+  page.root, links_to, link.7, http
+  page.root, links_to, link.8, http
+  page.root, links_to, link.9, http
+  page.root, links_to, link.10, http
+  page.root, links_to, link.11, http
+  page.root, links_to, link.12, http
+  page.root, links_to, link.13, http
+  page.root, links_to, link.14, http
+  page.root, links_to, link.15, http
+  page.root, links_to, link.16, http
+  page.root, links_to, link.17, http
+  page.root, links_to, link.18, http
+  page.root, links_to, link.19, http
+  page.root, links_to, link.20, http
+  page.root, links_to, link.21, http
+  page.root, links_to, link.22, http
+  page.root, links_to, link.23, http
+  page.root, links_to, link.24, http
+  page.root, links_to, link.25, http
+  page.root, links_to, link.26, http
+  page.root, links_to, link.27, http
+  page.root, links_to, link.28, http
+  page.root, links_to, link.29, http
+  page.root, links_to, link.30, http
+  page.root, links_to, link.31, http
+  page.root, links_to, link.32, http
+  page.root, links_to, link.33, http
+  page.root, links_to, link.34, http
+  page.root, links_to, link.35, http
+  page.root, links_to, link.36, http
+  page.root, links_to, link.37, http
+  page.root, links_to, link.38, http
+  page.root, links_to, link.39, http
+  page.root, links_to, link.40, http
+  page.root, links_to, link.41, http
+  page.root, links_to, link.42, http
+  page.root, links_to, link.43, http
+  page.root, links_to, link.44, http
+  page.root, links_to, link.45, http
+  page.root, links_to, link.46, http
+  page.root, links_to, link.47, http
+  page.root, links_to, link.48, http
+  page.root, links_to, link.49, http
+  page.root, links_to, link.50, http
+  page.root, loads, asset.1, http
+  page.root, loads, asset.2, http
+  page.root, loads, asset.3, http
+  page.root, loads, asset.4, http
+  page.root, loads, asset.5, http
+  page.root, loads, asset.6, http
+  page.root, loads, asset.7, http
+  page.root, loads, asset.8, http
+  page.root, loads, asset.9, http
+  page.root, loads, asset.10, http
+  page.root, loads, asset.11, http
+  page.root, loads, asset.12, http
+  page.root, loads, asset.13, http
+  page.root, loads, asset.14, http
+  page.root, loads, asset.15, http
+  page.root, loads, asset.16, http
+  page.root, loads, asset.17, http
+  page.root, loads, asset.18, http
+  page.root, loads, asset.19, http
+  page.root, loads, asset.20, http
+  page.root, loads, asset.21, http
+  page.root, loads, asset.22, http
+  page.root, loads, asset.23, http
+  page.root, loads, asset.24, http
+  page.root, loads, asset.25, http
+  page.root, loads, asset.26, http
+  page.root, loads, asset.27, http
+  page.root, loads, asset.28, http
+  page.root, loads, asset.29, http
+  page.root, loads, asset.30, http
+  page.root, loads, asset.31, http
+  page.root, loads, asset.32, http
+  page.root, loads, asset.33, http
+  page.root, loads, asset.34, http
+  page.root, loads, asset.35, http
+  page.root, loads, asset.36, http
+  page.root, loads, asset.37, http
+  page.root, loads, asset.38, http
+  page.root, loads, asset.39, http
+  page.root, loads, asset.40, http
+  page.root, loads, asset.41, http
+  page.root, loads, asset.42, http
+  page.root, loads, asset.43, http
+  page.root, loads, asset.44, http
+  page.root, loads, asset.45, http
+  page.root, loads, asset.46, http
+  page.root, loads, asset.47, http
+  page.root, loads, asset.48, http
+  page.root, loads, asset.49, http
+  page.root, loads, asset.50, http
+  page.root, has_sitemap, sitemap.root, crawl
+  sitemap.root, contains, subpage.1, http
+  page.root, navigates_to, subpage.1, http
+  sitemap.root, contains, subpage.2, http
+  page.root, navigates_to, subpage.2, http
+  sitemap.root, contains, subpage.3, http
+  page.root, navigates_to, subpage.3, http
+  sitemap.root, contains, subpage.4, http
+  page.root, navigates_to, subpage.4, http
+  sitemap.root, contains, subpage.5, http
+  page.root, navigates_to, subpage.5, http
+  sitemap.root, contains, subpage.6, http
+  page.root, navigates_to, subpage.6, http
+  sitemap.root, contains, subpage.7, http
+  page.root, navigates_to, subpage.7, http
+
+TRACES[1]{id, status, nodes, edges}:
+  trace.discovery.topology, planned, 114, 120

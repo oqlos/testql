@@ -1,0 +1,626 @@
+# SCENARIO: Auto-generated from Python Tests
+# TYPE: integration
+# GENERATED: true
+
+CONFIG[2]{key, value}:
+  base_url, ${api_url:-http://localhost:8101}
+  timeout_ms, 10000
+
+# Converted 616 assertions from pytest
+ASSERT[616]{field, operator, expected}:
+  _api_contract_section(pe), ==, []
+  m, ==, "GET" and e
+  m, ==, "POST" and e
+  m, ==, "GET" and e
+  m, ==, "DELETE"
+  parse_target_from_args("http://localhost:8000 extra"), ==, "http://localhost:8000"
+  parse_meta_from_args("http://example.com"), ==, "-"
+  detect_scenario_type(cmds), ==, "api"
+  detect_scenario_type(cmds), ==, "gui"
+  detect_scenario_type(cmds), ==, "e2e"
+  i, ==, 1 and len(section.rows)
+  i, ==, 1
+  section.type, ==, "NAVIGATE"
+  section.rows[0].path, ==, "http://localhost"
+  section.rows[0].wait_ms, ==, "300"
+  i, ==, 2
+  section.rows[0].wait_ms, ==, "1000"
+  i, ==, 2 and len(section.rows)
+  i, ==, 1 and len(section.rows)
+  i, ==, 1
+  section.type, ==, "NAVIGATE"
+  parse_target_from_args("http://localhost:8000 extra"), ==, "http://localhost:8000"
+  parse_meta_from_args("http://example.com"), ==, "-"
+  detect_scenario_type(cmds), ==, "api"
+  detect_scenario_type(cmds), ==, "gui"
+  detect_scenario_type(cmds), ==, "e2e"
+  i, ==, 1 and len(section.rows)
+  i, ==, 1
+  section.type, ==, "NAVIGATE"
+  section.rows[0].path, ==, "http://localhost"
+  section.rows[0].wait_ms, ==, "300"
+  i, ==, 2
+  section.rows[0].wait_ms, ==, "1000"
+  i, ==, 2 and len(section.rows)
+  i, ==, 1 and len(section.rows)
+  i, ==, 1
+  section.type, ==, "NAVIGATE"
+  s.kind, ==, "api"
+  d.method, ==, "POST"
+  d.path, ==, "/api/x"
+  d.expect_status, ==, 201
+  d.metadata.name, ==, "x"
+  d.steps[0].method, ==, "GET"
+  d.fixtures[0].name, ==, "db"
+  d.config.base_url, ==, "http://x"
+  s.kind, ==, "api"
+  d.method, ==, "POST"
+  d.path, ==, "/api/x"
+  d.expect_status, ==, 201
+  d.metadata.name, ==, "x"
+  d.steps[0].method, ==, "GET"
+  d.fixtures[0].name, ==, "db"
+  d.config.base_url, ==, "http://x"
+  len(script.lines), ==, 3
+  script.lines[0].command, ==, "SET"
+  script.lines[1].command, ==, "LOG"
+  script.lines[2].command, ==, "WAIT"
+  len(result.sections), ==, 1
+  result.sections[0].type, ==, "API"
+  len(result.sections[0].rows), ==, 2
+  result.sections[0].rows[0].method, ==, "GET"
+  result.sections[0].rows[0].endpoint, ==, "/api/v3/health"
+  result.sections[0].rows[0].status, ==, 200
+  len(script.lines), ==, 4  # 2 API + 2 ASSERT_STATUS
+  script.lines[0].command, ==, "API"
+  script.lines[1].command, ==, "ASSERT_STATUS"
+  script.lines[2].command, ==, "API"
+  script.lines[3].command, ==, "ASSERT_STATUS"
+  len(script.lines), ==, 1
+  script.lines[0].command, ==, "SET"
+  [(line.command, line.args) for line in script.lines], ==, [
+  script.lines[0].command, ==, "SET"
+  script.lines[0].args, ==, 'encoder_url "http://localhost:8100"'
+  script.lines[1].command, ==, "SET"
+  script.lines[1].args, ==, 'encoder_endpoint_prefix "/dashboard/action"'
+  script.lines[2].command, ==, "ENCODER_STATUS"
+  len(script.lines), ==, 3
+  script.lines[0].command, ==, "SET"
+  script.lines[1].command, ==, "LOG"
+  script.lines[2].command, ==, "WAIT"
+  len(result.sections), ==, 1
+  result.sections[0].type, ==, "API"
+  len(result.sections[0].rows), ==, 2
+  result.sections[0].rows[0].method, ==, "GET"
+  result.sections[0].rows[0].endpoint, ==, "/api/v3/health"
+  result.sections[0].rows[0].status, ==, 200
+  len(script.lines), ==, 4  # 2 API + 2 ASSERT_STATUS
+  script.lines[0].command, ==, "API"
+  script.lines[1].command, ==, "ASSERT_STATUS"
+  script.lines[2].command, ==, "API"
+  script.lines[3].command, ==, "ASSERT_STATUS"
+  len(script.lines), ==, 1
+  script.lines[0].command, ==, "SET"
+  [(line.command, line.args) for line in script.lines], ==, [
+  script.lines[0].command, ==, "SET"
+  script.lines[0].args, ==, 'encoder_url "http://localhost:8100"'
+  script.lines[1].command, ==, "SET"
+  script.lines[1].args, ==, 'encoder_endpoint_prefix "/dashboard/action"'
+  script.lines[2].command, ==, "ENCODER_STATUS"
+  interpreter.results[-1].status.value, ==, "passed"
+  interpreter.results[-1].status.value, ==, "passed"
+  result.details.url, ==, "http://example.com/foo"
+  result.details.url, ==, "http://example.com/foo"
+  interpreter.vars.test_key, ==, "test_value"
+  j, ==, 0 and status
+  j, ==, 1
+  i, ==, 1
+  section.type, ==, "API"
+  section.rows[0].method, ==, "GET"
+  section.rows[0].endpoint, ==, "/users"
+  section.rows[0].status, ==, "200"
+  i, ==, 2
+  section.rows[0].status, ==, "201"
+  section.rows[0].assert_key, ==, "data.id"
+  i, ==, 2 and len(section.rows)
+  i, ==, 1 and len(section.rows)
+  j, ==, 0 and status
+  j, ==, 1
+  i, ==, 2 and len(section.rows)
+  i, ==, 1 and len(section.rows)
+  without_network.types, ==, []
+  with_network.metadata.title, ==, "Example Site"
+  len(with_network.metadata.links), ==, 2
+  with_network.metadata.links[0].text, ==, "About"
+  any(edge.relation, ==, "links_to" for edge in topology.edges)
+  any(edge.relation, ==, "submits_to" for edge in topology.edges)
+  envelope.status, ==, "passed"
+  result.exit_code, ==, 0
+  inspection.result.status, ==, "passed"
+  any(node.kind, ==, "page" for node in data["inspection"]["topology"]["nodes"])
+  envelope.status, ==, "failed"
+  any(check.id, ==, "check.web.status" and check.status
+  any(finding.id, ==, "finding.web.status" for finding in envelope.failures)
+  any(action.type, ==, "investigate_http_status" for action in plan.actions)
+  any(node.kind, ==, "subpage" for node in topology.nodes)
+  links_check.status, ==, "skipped"
+  envelope.status, ==, "passed"
+  not any(finding.id, ==, "finding.web.links" for finding in envelope.failures)
+  len(steps), ==, 2
+  methods, ==, {"GET"
+  post.expect_status, ==, 201
+  s.expect_status, ==, 200
+  plan.config.base_url, ==, "http://localhost:8000"
+  plan.metadata.name, ==, "Test API"
+  plan.metadata.version, ==, "1.0"
+  plan.metadata.type, ==, "api"
+  len(plan.steps), ==, 2
+  len(plan.steps), ==, 2
+  plan.config.endpoint, ==, "https://api/graphql"
+  len(steps), ==, 2
+  methods, ==, {"GET"
+  plan.config.base_url, ==, "http://localhost:8000"
+  plan.config.endpoint, ==, "https://api/graphql"
+  plan.config.endpoint, ==, "http://localhost:8000/graphql"
+  len(queries), ==, 1
+  queries[0].name, ==, "getUser"
+  queries[0].endpoint, ==, "http://localhost:8000/graphql"
+  queries[0].variables, ==, {"id": "42"}
+  plan.config.endpoint, ==, "http://localhost:8000/graphql"
+  len(queries), ==, 1
+  queries[0].name, ==, "getUser"
+  queries[0].endpoint, ==, "http://localhost:8000/graphql"
+  queries[0].variables, ==, {"id": "42"}
+  len(contract.endpoints), ==, 1
+  ep.method, ==, 'GET'
+  ep.path, ==, '/api/users'
+  ep.status, ==, '200'
+  len(contract.endpoints), ==, 1
+  contract.endpoints[0].method, ==, 'POST'
+  len(contract.endpoints), ==, 1
+  contract.endpoints[0].status, ==, '200'
+  contract.base_url, ==, 'http://localhost:8000'
+  len(contract.endpoints), ==, 2
+  len(contract.endpoints), ==, 1
+  ep.method, ==, 'GET'
+  ep.path, ==, '/api/users'
+  ep.status, ==, '200'
+  len(contract.endpoints), ==, 1
+  contract.endpoints[0].method, ==, 'POST'
+  len(contract.endpoints), ==, 1
+  contract.endpoints[0].status, ==, '200'
+  contract.base_url, ==, 'http://localhost:8000'
+  len(contract.endpoints), ==, 2
+  base_url, ==, ""
+  endpoints, ==, []
+  asserts, ==, []
+  len(d.api_contract.endpoints), ==, 1
+  d.api_contract.endpoints[0].path, ==, "/health"
+  len(d.api_contract.endpoints), ==, 1
+  d.api_contract.endpoints[0].path, ==, "/health"
+  call.method, ==, "GET"
+  det.detect(), ==, []
+  any(ep.path, ==, "/status" for ep in eps)
+  det.detect(), ==, []
+  any(ep.path, ==, "/items" for ep in eps)
+  eps[0].framework, ==, "openapi"
+  eps[0].path, ==, "/api/v1/health"
+  eps[0].path, ==, "/v2/users"
+  all(ep.method, !=, "X-CUSTOM" for ep in eps)
+  det.detect(), ==, []
+  call.method, ==, "GET"
+  any(ep.path, ==, "/status" for ep in eps)
+  eps[0].framework, ==, "openapi"
+  first_http_method("Send GET /api/x"), ==, "GET"
+  first_http_method("send post /api/x"), ==, "POST"
+  first_http_method("Send GET /api/x"), ==, "GET"
+  first_http_method("send post /api/x"), ==, "POST"
+  result.exit_code, ==, 0
+  result.exit_code, ==, 0
+  m.intent, ==, "api"
+  m.intent, ==, "api"
+  m.intent, ==, "api"
+  m.intent, ==, "api"
+  any(node.kind, ==, "interface" for node in topology.nodes)
+  any(edge.relation, ==, "exposes" and edge.protocol
+  any(node.kind, ==, "interface" for node in topology.nodes)
+  any(edge.relation, ==, "exposes" and edge.protocol
+  report.total, ==, 3
+  report.covered, ==, 3
+  report.percent, ==, 100.0
+  report.missing, ==, []
+  report.total, ==, 3
+  report.covered, ==, 1
+  report.covered, ==, 0
+  report.percent, ==, 0.0
+  report.total, ==, 0
+  report.percent, ==, 100.0
+  report.covered, ==, 1
+  report.contract, ==, "openapi"
+  report.contract, ==, "openapi"
+  step.method, ==, "GET"
+  step.path, ==, "http://localhost:8000/api"
+  step.expect_status, ==, 200
+  step.action, ==, "navigate"
+  step.path, ==, "http://localhost:8000/"
+  step.method, ==, "GET"
+  step.method, ==, "POST"
+  step.path, ==, "/contact"
+  step.expect_status, ==, 200
+  step.method, ==, "POST"
+  step.method, ==, "GET"
+  step.path, ==, "http://localhost:8000/api"
+  step.expect_status, ==, 200
+  step.action, ==, "navigate"
+  step.path, ==, "http://localhost:8000/"
+  step.method, ==, "GET"
+  step.method, ==, "POST"
+  step.path, ==, "/contact"
+  step.expect_status, ==, 200
+  step.method, ==, "POST"
+  len(muts), ==, 2
+  mutations_tweak_status(plan), ==, []
+  len(muts), ==, 2
+  mutations_tweak_status(plan), ==, []
+  results, ==, [] and all_passed is True
+  len(results), ==, 2
+  len(results), ==, 2
+  len(results), ==, 1 and all_passed is False
+  results, ==, [] and all_passed is True
+  len(results), ==, 2
+  len(results), ==, 2
+  len(results), ==, 1 and all_passed is False
+  plan.metadata.type, ==, "api"
+  plan.metadata.version, ==, "1.0"
+  plan.config.base_url, ==, "http://localhost:8101"
+  len(api), ==, 2
+  api[0].method, ==, "GET"
+  api[0].path, ==, "/health"
+  api[0].expect_status, ==, 200
+  api[1].method, ==, "POST"
+  any(a.field, ==, "status" and a.expected
+  plan.metadata.type, ==, "api"
+  plan.metadata.version, ==, "1.0"
+  plan.config.base_url, ==, "http://localhost:8101"
+  len(api), ==, 2
+  api[0].method, ==, "GET"
+  api[0].path, ==, "/health"
+  api[0].expect_status, ==, 200
+  api[1].method, ==, "POST"
+  any(a.field, ==, "status" and a.expected
+  meta.title, ==, "Test Page"
+  _status, ==, 200
+  len(meta.console_errors), ==, 1
+  meta.console_errors[0], ==, "Test console error"
+  len(meta.network_calls), ==, 1
+  meta.network_calls[0].url, ==, "https://example.test/api"
+  report.coverage.percent, ==, 100.0
+  report.coverage.percent, ==, 100.0
+  len(step.captures), ==, 1
+  step.captures[0].var_name, ==, "id"
+  len(step.captures), ==, 1
+  step.captures[0].var_name, ==, "id"
+  envelope.status, ==, "passed"
+  envelope.failures, ==, []
+  envelope.status, ==, "passed"
+  envelope.failures, ==, []
+  len(result[0].endpoints), ==, 3
+  len(result[0].endpoints), ==, 3
+  analyzer.detect_project_type(), ==, 'python-api'
+  analyzer.detect_project_type(), ==, 'python-api'
+  analyzer.detect_project_type(), ==, 'python-api'
+  analyzer.detect_project_type(), ==, 'python-api'
+  result.exit_code, ==, 0
+  result.exit_code, ==, 0
+  result.exit_code, ==, 0
+  result.exit_code, ==, 0
+  result.exit_code, ==, 0
+  result.exit_code, ==, 0
+  result.exit_code, ==, 0
+  result.exit_code, ==, 0
+  report.healed, ==, 0
+  result.exit_code, ==, 0
+  result.exit_code, ==, 0
+  result.exit_code, ==, 0
+  result.exit_code, ==, 0
+  result.exit_code, ==, 0
+  result.exit_code, ==, 0
+  result.exit_code, ==, 0
+  result.exit_code, ==, 0
+  report.healed, ==, 0
+  len(result), ==, 1
+  result[0].name, ==, "stripe"
+  set(result[0].types), ==, {"payment"
+  _parse_integrations("app {}"), ==, []
+  _parse_integrations("app {}"), ==, []
+  pick_selector(elem), ==, "[data-testid='it's me']"
+  pick_selector(elem), ==, "[data-testid='it's me']"
+  out.name, ==, "my_test.testql.toon.yaml"
+  out.parent, ==, tmp_path
+  len(result), ==, 1
+  len(result), ==, 2
+  len(result), ==, 1
+  result[0].name, ==, "c.testql.toon.yaml"
+  out.name, ==, "my_test.testql.toon.yaml"
+  out.parent, ==, tmp_path
+  len(result), ==, 1
+  len(result), ==, 2
+  len(result), ==, 1
+  result[0].name, ==, "c.testql.toon.yaml"
+  cmd.type, ==, "API"
+  cmd.target, ==, "/users"
+  cmd.params.method, ==, "GET"
+  cmd.params.method, ==, "POST"
+  cmd.params.name, ==, "alice"
+  cmd.expected, ==, "success"
+  cmd.comment, ==, "health check"
+  cmd.params.method, ==, "PATCH"
+  cmd.params.method, ==, "DELETE"
+  ex.base_url, ==, "http://localhost:8000"
+  ex.base_url, ==, "http://myserver:9000"  # trailing slash stripped
+  cmd.type, ==, "API"
+  cmd.target, ==, "/users"
+  cmd.params.method, ==, "GET"
+  cmd.params.method, ==, "POST"
+  cmd.params.name, ==, "alice"
+  cmd.expected, ==, "success"
+  cmd.comment, ==, "health check"
+  cmd.params.method, ==, "PATCH"
+  cmd.params.method, ==, "DELETE"
+  ex.base_url, ==, "http://localhost:8000"
+  ex.base_url, ==, "http://myserver:9000"  # trailing slash stripped
+  g.profile.project_type, ==, "python-api"
+  g.profile.project_type, ==, "python-api"
+  len(api_steps), ==, 3
+  len(api_steps), ==, 3
+  manifest.metadata.name, ==, "sample-python-api"
+  any(dep.name, ==, "fastapi" for dep in manifest.dependencies)
+  manifest.types, ==, ["openapi3"]
+  manifest.interfaces[0].type, ==, "rest"
+  manifest.metadata.path_count, ==, 1
+  manifest.metadata.name, ==, "sample-python-api"
+  any(dep.name, ==, "fastapi" for dep in manifest.dependencies)
+  manifest.types, ==, ["openapi3"]
+  manifest.interfaces[0].type, ==, "rest"
+  manifest.metadata.path_count, ==, 1
+  plan.metadata.name, ==, "API Health Check"
+  plan.metadata.type, ==, "api"
+  plan.metadata.version, ==, "2"
+  plan.config.api.base_url, ==, "http://localhost:8101"
+  plan.config.base_url, ==, "http://localhost:8101"
+  len(api), ==, 2
+  api[0].method, ==, "GET"
+  api[0].path, ==, "/api/health"
+  api[0].expect_status, ==, 200
+  api[1].method, ==, "POST"
+  api[1].path, ==, "/api/v3/scenarios"
+  api[1].expect_status, ==, 201
+  capture.var_name, ==, "scenario_id"
+  capture.from_path, ==, "data.id"
+  plan.config.api.base_url, ==, "http://localhost:8101"
+  plan.config.base_url, ==, "http://localhost:8101"
+  vs.interpolate("http://$host:8000"), ==, "http://localhost:8000"
+  vs.interpolate("http://$host:8000"), ==, "http://localhost:8000"
+  len(plan.steps), ==, 4
+  s.method, ==, "GET"
+  s.path, ==, "/api/health"
+  s.kind, ==, "assert"
+  a.field, ==, "status"
+  a.op, ==, "
+  a.expected, ==, 200
+  s.method, ==, "POST"
+  s.kind, ==, "wait"
+  s.wait_ms, ==, 500
+  result.steps[0].status, ==, StepStatus.PASSED
+  result.steps[0].status, ==, StepStatus.PASSED
+  spec.openapi, ==, "3.0.3"
+  spec.paths, ==, {}
+  info.title, ==, "Test"
+  info.title, ==, "Test"
+  gen.project_path, ==, tmp_path
+  spec.paths, ==, {}
+  spec.info.title, ==, "My API"
+  spec.info.version, ==, "2.5.0"
+  gen._normalize_path("users"), ==, "/users"
+  gen._normalize_path("/users"), ==, "/users"
+  op.summary, ==, "List users"
+  op.description, ==, "Returns paginated list"
+  op.operationId, ==, "listUsers"
+  all(p.in, ==, "path" for p in params if p["name"]
+  item_id.schema.type, ==, "string"
+  any(p.name, ==, "limit" for p in query)
+  output.name, ==, "openapi.yaml"
+  result.suffix, ==, ".yaml"
+  result.suffix, ==, ".json"
+  result.suffix, ==, ".yaml"
+  result.suffix, ==, ".json"
+  _api_contract_section(pe), ==, []
+  m, ==, "GET" and e
+  m, ==, "POST" and e
+  m, ==, "GET" and e
+  m, ==, "DELETE"
+  parse_target_from_args("http://localhost:8000 extra"), ==, "http://localhost:8000"
+  parse_meta_from_args("http://example.com"), ==, "-"
+  detect_scenario_type(cmds), ==, "api"
+  detect_scenario_type(cmds), ==, "gui"
+  detect_scenario_type(cmds), ==, "e2e"
+  i, ==, 1 and len(section.rows)
+  i, ==, 1
+  section.type, ==, "NAVIGATE"
+  section.rows[0].path, ==, "http://localhost"
+  section.rows[0].wait_ms, ==, "300"
+  i, ==, 2
+  section.rows[0].wait_ms, ==, "1000"
+  i, ==, 2 and len(section.rows)
+  i, ==, 1 and len(section.rows)
+  i, ==, 1
+  section.type, ==, "NAVIGATE"
+  parse_target_from_args("http://localhost:8000 extra"), ==, "http://localhost:8000"
+  parse_meta_from_args("http://example.com"), ==, "-"
+  detect_scenario_type(cmds), ==, "api"
+  detect_scenario_type(cmds), ==, "gui"
+  detect_scenario_type(cmds), ==, "e2e"
+  i, ==, 1 and len(section.rows)
+  i, ==, 1
+  section.type, ==, "NAVIGATE"
+  section.rows[0].path, ==, "http://localhost"
+  section.rows[0].wait_ms, ==, "300"
+  i, ==, 2
+  section.rows[0].wait_ms, ==, "1000"
+  i, ==, 2 and len(section.rows)
+  i, ==, 1 and len(section.rows)
+  i, ==, 1
+  section.type, ==, "NAVIGATE"
+  s.kind, ==, "api"
+  d.method, ==, "POST"
+  d.path, ==, "/api/x"
+  d.expect_status, ==, 201
+  d.metadata.name, ==, "x"
+  d.steps[0].method, ==, "GET"
+  d.fixtures[0].name, ==, "db"
+  d.config.base_url, ==, "http://x"
+  s.kind, ==, "api"
+  d.method, ==, "POST"
+  d.path, ==, "/api/x"
+  d.expect_status, ==, 201
+  d.metadata.name, ==, "x"
+  d.steps[0].method, ==, "GET"
+  d.fixtures[0].name, ==, "db"
+  d.config.base_url, ==, "http://x"
+  len(script.lines), ==, 3
+  script.lines[0].command, ==, "SET"
+  script.lines[1].command, ==, "LOG"
+  script.lines[2].command, ==, "WAIT"
+  len(result.sections), ==, 1
+  result.sections[0].type, ==, "API"
+  len(result.sections[0].rows), ==, 2
+  result.sections[0].rows[0].method, ==, "GET"
+  result.sections[0].rows[0].endpoint, ==, "/api/v3/health"
+  result.sections[0].rows[0].status, ==, 200
+  len(script.lines), ==, 4  # 2 API + 2 ASSERT_STATUS
+  script.lines[0].command, ==, "API"
+  script.lines[1].command, ==, "ASSERT_STATUS"
+  script.lines[2].command, ==, "API"
+  script.lines[3].command, ==, "ASSERT_STATUS"
+  len(script.lines), ==, 1
+  script.lines[0].command, ==, "SET"
+  [(line.command, line.args) for line in script.lines], ==, [
+  script.lines[0].command, ==, "SET"
+  script.lines[0].args, ==, 'encoder_url "http://localhost:8100"'
+  script.lines[1].command, ==, "SET"
+  script.lines[1].args, ==, 'encoder_endpoint_prefix "/dashboard/action"'
+  script.lines[2].command, ==, "ENCODER_STATUS"
+  len(script.lines), ==, 3
+  script.lines[0].command, ==, "SET"
+  script.lines[1].command, ==, "LOG"
+  script.lines[2].command, ==, "WAIT"
+  len(result.sections), ==, 1
+  result.sections[0].type, ==, "API"
+  len(result.sections[0].rows), ==, 2
+  result.sections[0].rows[0].method, ==, "GET"
+  result.sections[0].rows[0].endpoint, ==, "/api/v3/health"
+  result.sections[0].rows[0].status, ==, 200
+  len(script.lines), ==, 4  # 2 API + 2 ASSERT_STATUS
+  script.lines[0].command, ==, "API"
+  script.lines[1].command, ==, "ASSERT_STATUS"
+  script.lines[2].command, ==, "API"
+  script.lines[3].command, ==, "ASSERT_STATUS"
+  len(script.lines), ==, 1
+  script.lines[0].command, ==, "SET"
+  [(line.command, line.args) for line in script.lines], ==, [
+  script.lines[0].command, ==, "SET"
+  script.lines[0].args, ==, 'encoder_url "http://localhost:8100"'
+  script.lines[1].command, ==, "SET"
+  script.lines[1].args, ==, 'encoder_endpoint_prefix "/dashboard/action"'
+  script.lines[2].command, ==, "ENCODER_STATUS"
+  interpreter.results[-1].status.value, ==, "passed"
+  interpreter.results[-1].status.value, ==, "passed"
+  result.details.url, ==, "http://example.com/foo"
+  result.details.url, ==, "http://example.com/foo"
+  interpreter.vars.test_key, ==, "test_value"
+  j, ==, 0 and status
+  j, ==, 1
+  i, ==, 1
+  section.type, ==, "API"
+  section.rows[0].method, ==, "GET"
+  section.rows[0].endpoint, ==, "/users"
+  section.rows[0].status, ==, "200"
+  i, ==, 2
+  section.rows[0].status, ==, "201"
+  section.rows[0].assert_key, ==, "data.id"
+  i, ==, 2 and len(section.rows)
+  i, ==, 1 and len(section.rows)
+  j, ==, 0 and status
+  j, ==, 1
+  i, ==, 2 and len(section.rows)
+  i, ==, 1 and len(section.rows)
+  without_network.types, ==, []
+  with_network.metadata.title, ==, "Example Site"
+  len(with_network.metadata.links), ==, 2
+  with_network.metadata.links[0].text, ==, "About"
+  any(edge.relation, ==, "links_to" for edge in topology.edges)
+  any(edge.relation, ==, "submits_to" for edge in topology.edges)
+  envelope.status, ==, "passed"
+  result.exit_code, ==, 0
+  inspection.result.status, ==, "passed"
+  any(node.kind, ==, "page" for node in data["inspection"]["topology"]["nodes"])
+  envelope.status, ==, "failed"
+  any(check.id, ==, "check.web.status" and check.status
+  any(finding.id, ==, "finding.web.status" for finding in envelope.failures)
+  any(action.type, ==, "investigate_http_status" for action in plan.actions)
+  any(node.kind, ==, "subpage" for node in topology.nodes)
+  links_check.status, ==, "skipped"
+  envelope.status, ==, "passed"
+  not any(finding.id, ==, "finding.web.links" for finding in envelope.failures)
+  len(steps), ==, 2
+  methods, ==, {"GET"
+  post.expect_status, ==, 201
+  s.expect_status, ==, 200
+  plan.config.base_url, ==, "http://localhost:8000"
+  plan.metadata.name, ==, "Test API"
+  plan.metadata.version, ==, "1.0"
+  plan.metadata.type, ==, "api"
+  len(plan.steps), ==, 2
+  len(plan.steps), ==, 2
+  plan.config.endpoint, ==, "https://api/graphql"
+  len(steps), ==, 2
+  methods, ==, {"GET"
+  plan.config.base_url, ==, "http://localhost:8000"
+  plan.config.endpoint, ==, "https://api/graphql"
+  plan.config.endpoint, ==, "http://localhost:8000/graphql"
+  len(queries), ==, 1
+  queries[0].name, ==, "getUser"
+  queries[0].endpoint, ==, "http://localhost:8000/graphql"
+  queries[0].variables, ==, {"id": "42"}
+  plan.config.endpoint, ==, "http://localhost:8000/graphql"
+  len(queries), ==, 1
+  queries[0].name, ==, "getUser"
+  queries[0].endpoint, ==, "http://localhost:8000/graphql"
+  queries[0].variables, ==, {"id": "42"}
+  len(contract.endpoints), ==, 1
+  ep.method, ==, 'GET'
+  ep.path, ==, '/api/users'
+  ep.status, ==, '200'
+  len(contract.endpoints), ==, 1
+  contract.endpoints[0].method, ==, 'POST'
+  len(contract.endpoints), ==, 1
+  contract.endpoints[0].status, ==, '200'
+  contract.base_url, ==, 'http://localhost:8000'
+  len(contract.endpoints), ==, 2
+  len(contract.endpoints), ==, 1
+  ep.method, ==, 'GET'
+  ep.path, ==, '/api/users'
+  ep.status, ==, '200'
+  len(contract.endpoints), ==, 1
+  contract.endpoints[0].method, ==, 'POST'
+  len(contract.endpoints), ==, 1
+  contract.endpoints[0].status, ==, '200'
+  contract.base_url, ==, 'http://localhost:8000'
+  len(contract.endpoints), ==, 2
+  base_url, ==, ""
+  endpoints, ==, []
+  asserts, ==, []
+  len(d.api_contract.endpoints), ==, 1
+  d.api_contract.endpoints[0].path, ==, "/health"
+  len(d.api_contract.endpoints), ==, 1
+  d.api_contract.endpoints[0].path, ==, "/health"

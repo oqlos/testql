@@ -1,0 +1,14 @@
+INSPECTION{key, value}:
+  run_id, 
+  status, 
+  checks, 0
+  failures, 0
+  actions, 0
+
+CHECKS[0]{id, status, summary}:
+
+FINDINGS[0]{id, severity, node_id, summary}:
+
+ACTIONS[2]{id, type, target, summary}:
+  action.web.asset_status, investigate_broken_resources, page.root, Resolve finding.web.asset_status: 4 of 61 assets returned error status.
+  action.sitemap.duplicates, fix_duplicate_titles, sitemap.root, Resolve finding.sitemap.duplicates: 2 duplicate title(s) found across 7 subpages.

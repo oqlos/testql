@@ -1,0 +1,3324 @@
+root:
+  kind: url
+  location: https://tom.sapletta.com/
+confidence: full
+metadata:
+  generator: testql.topology
+  source_types:
+  - web_page
+  - http_endpoint
+nodes:
+- id: artifact.root
+  kind: artifact
+  source:
+    kind: url
+    location: https://tom.sapletta.com/
+  metadata:
+    types:
+    - web_page
+    - http_endpoint
+    confidence: full
+    dependency_count: 0
+    interface_count: 1
+    evidence_count: 1
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: type.web_page
+  kind: artifact_type
+  source:
+    kind: url
+    location: https://tom.sapletta.com/
+  metadata:
+    type: web_page
+  evidence: []
+- id: type.http_endpoint
+  kind: artifact_type
+  source:
+    kind: url
+    location: https://tom.sapletta.com/
+  metadata:
+    type: http_endpoint
+  evidence: []
+- id: interface.web_page.1
+  kind: interface
+  source: https://tom.sapletta.com/
+  metadata:
+    type: web_page
+    location: https://tom.sapletta.com/
+    metadata:
+      status_code: 200
+      title: Tom Sapletta 'Blog | Platform & DevOps Engineer & Hardware Developer,
+        Expat in Germany
+  evidence: []
+- id: evidence.1
+  kind: evidence
+  source: https://tom.sapletta.com/
+  metadata:
+    probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: page.root
+  kind: page
+  source: https://tom.sapletta.com/
+  metadata:
+    url: https://tom.sapletta.com/
+    status_code: 200
+    content_type: text/html; charset=UTF-8
+    title: Tom Sapletta 'Blog | Platform & DevOps Engineer & Hardware Developer, Expat
+      in Germany
+    links:
+    - url: https://tom.sapletta.com/
+      text: ''
+      kind: internal
+    - url: https://tom.sapletta.com/
+      text: Tom Sapletta 'Blog
+      kind: internal
+    - url: https://tom.sapletta.com/#main-navigation-responsive
+      text: Menu
+      kind: anchor
+    - url: https://tom.sapletta.com/#content
+      text: Skip to content
+      kind: anchor
+    - url: https://tom.sapletta.com/pl/
+      text: Polski
+      kind: internal
+    - url: https://tom.sapletta.com/
+      text: English
+      kind: internal
+    - url: https://tom.sapletta.com/de/
+      text: Deutsch
+      kind: internal
+    - url: https://tom.sapletta.com/ru/
+      text: Русский
+      kind: internal
+    - url: https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+      text: ''
+      kind: internal
+    - url: https://tom.sapletta.com/category/idea/
+      text: Idea
+      kind: internal
+    - url: https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+      text: 'Data Streaming: An Insight into NDOF: Newline Delimited Objects Format
+        – 10 Things I Wish I’d Known Earlier'
+      kind: internal
+    - url: https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+      text: 07/10/2023 07/10/2023
+      kind: internal
+    - url: https://tom.sapletta.com/author/admin/
+      text: Tom Sapletta
+      kind: internal
+    - url: https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+      text: Read More
+      kind: internal
+    - url: https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/
+      text: ''
+      kind: internal
+    - url: https://tom.sapletta.com/category/how-to/
+      text: how-to
+      kind: internal
+    - url: https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/
+      text: Lenovo Yoga 7 Ryzen 9 and wifi problem on linux
+      kind: internal
+    - url: https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/
+      text: 13/08/2021 13/08/2021
+      kind: internal
+    - url: https://tom.sapletta.com/author/admin/
+      text: Tom Sapletta
+      kind: internal
+    - url: https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/
+      text: Read More
+      kind: internal
+    - url: https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/
+      text: ''
+      kind: internal
+    - url: https://tom.sapletta.com/category/idea-en/
+      text: Idea
+      kind: internal
+    - url: https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/
+      text: Git Synchronisation on any Operation System
+      kind: internal
+    - url: https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/
+      text: 08/08/2021 09/08/2021
+      kind: internal
+    - url: https://tom.sapletta.com/author/admin/
+      text: Tom Sapletta
+      kind: internal
+    - url: https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/
+      text: Read More
+      kind: internal
+    - url: https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/
+      text: ''
+      kind: internal
+    - url: https://tom.sapletta.com/category/idea/
+      text: Idea
+      kind: internal
+    - url: https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/
+      text: Podcasting and marketing library services
+      kind: internal
+    - url: https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/
+      text: 27/04/2018 27/04/2018
+      kind: internal
+    - url: https://tom.sapletta.com/author/admin/
+      text: Tom Sapletta
+      kind: internal
+    - url: https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/
+      text: Read More
+      kind: internal
+    - url: https://tom.sapletta.com/domains/tools-for-a-domainers/
+      text: ''
+      kind: internal
+    - url: https://tom.sapletta.com/category/domains/
+      text: domains
+      kind: internal
+    - url: https://tom.sapletta.com/domains/tools-for-a-domainers/
+      text: Tools for a Domainers
+      kind: internal
+    - url: https://tom.sapletta.com/domains/tools-for-a-domainers/
+      text: 21/04/2018 21/04/2018
+      kind: internal
+    - url: https://tom.sapletta.com/author/admin/
+      text: Tom Sapletta
+      kind: internal
+    - url: https://tom.sapletta.com/domains/tools-for-a-domainers/
+      text: Read More
+      kind: internal
+    - url: https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/
+      text: ''
+      kind: internal
+    - url: https://tom.sapletta.com/category/how-to-en/
+      text: How-to
+      kind: internal
+    - url: https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/
+      text: The Wave of Efficient, be more focused as Developer
+      kind: internal
+    - url: https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/
+      text: 19/04/2018 20/04/2018
+      kind: internal
+    - url: https://tom.sapletta.com/author/admin/
+      text: Tom Sapletta
+      kind: internal
+    - url: https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/
+      text: Read More
+      kind: internal
+    - url: https://tom.sapletta.com/category/domains/
+      text: domains
+      kind: internal
+    - url: https://tom.sapletta.com/how-to/domains-trends-the-best-name/
+      text: domains, trends, the best NAME!
+      kind: internal
+    - url: https://tom.sapletta.com/how-to/domains-trends-the-best-name/
+      text: 31/08/2017
+      kind: internal
+    - url: https://tom.sapletta.com/author/admin/
+      text: Tom Sapletta
+      kind: internal
+    - url: https://tom.sapletta.com/how-to/domains-trends-the-best-name/
+      text: Read More
+      kind: internal
+    - url: https://tom.sapletta.com/category/software-en/
+      text: Software
+      kind: internal
+    - url: https://tom.sapletta.com/software-en/wordpress-blog-optimisation-with-nginx-and-cacheing/
+      text: WordPress blog optimisation with NGINX and Cacheing
+      kind: internal
+    - url: https://tom.sapletta.com/software-en/wordpress-blog-optimisation-with-nginx-and-cacheing/
+      text: 30/08/2017 30/08/2017
+      kind: internal
+    - url: https://tom.sapletta.com/author/admin/
+      text: Tom Sapletta
+      kind: internal
+    - url: https://tom.sapletta.com/software-en/wordpress-blog-optimisation-with-nginx-and-cacheing/
+      text: Read More
+      kind: internal
+    - url: https://tom.sapletta.com/project-en/iot-city-com-the-right-domain-name-for-industry-internet-of-things-iot/
+      text: ''
+      kind: internal
+    - url: https://tom.sapletta.com/category/offer/
+      text: Offer
+      kind: internal
+    - url: https://tom.sapletta.com/project-en/iot-city-com-the-right-domain-name-for-industry-internet-of-things-iot/
+      text: 'iot-city.com the right domain name for Industry: Internet of Things (IOT)'
+      kind: internal
+    - url: https://tom.sapletta.com/project-en/iot-city-com-the-right-domain-name-for-industry-internet-of-things-iot/
+      text: 29/07/2017 03/08/2017
+      kind: internal
+    - url: https://tom.sapletta.com/author/admin/
+      text: Tom Sapletta
+      kind: internal
+    - url: https://tom.sapletta.com/project-en/iot-city-com-the-right-domain-name-for-industry-internet-of-things-iot/
+      text: Read More
+      kind: internal
+    - url: https://tom.sapletta.com/tools-en/set-up-and-install-docker-ce-for-debian-jessie/
+      text: ''
+      kind: internal
+    - url: https://tom.sapletta.com/category/software-en/
+      text: Software
+      kind: internal
+    - url: https://tom.sapletta.com/tools-en/set-up-and-install-docker-ce-for-debian-jessie/
+      text: Set up and install Docker CE for Debian Jessie
+      kind: internal
+    - url: https://tom.sapletta.com/tools-en/set-up-and-install-docker-ce-for-debian-jessie/
+      text: 24/07/2017 27/07/2017
+      kind: internal
+    - url: https://tom.sapletta.com/author/admin/
+      text: Tom Sapletta
+      kind: internal
+    - url: https://tom.sapletta.com/tools-en/set-up-and-install-docker-ce-for-debian-jessie/
+      text: Read More
+      kind: internal
+    - url: https://tom.sapletta.com/test/backup-cloning-resizing-for-partitions-on-disc-review-test/
+      text: ''
+      kind: internal
+    - url: https://tom.sapletta.com/category/hardware/
+      text: Hardware
+      kind: internal
+    - url: https://tom.sapletta.com/test/backup-cloning-resizing-for-partitions-on-disc-review-test/
+      text: Backup, Cloning, Resizing for Partitions on Disc, Review & Test
+      kind: internal
+    - url: https://tom.sapletta.com/test/backup-cloning-resizing-for-partitions-on-disc-review-test/
+      text: 23/07/2017 23/07/2017
+      kind: internal
+    - url: https://tom.sapletta.com/author/admin/
+      text: Tom Sapletta
+      kind: internal
+    - url: https://tom.sapletta.com/test/backup-cloning-resizing-for-partitions-on-disc-review-test/
+      text: Read More
+      kind: internal
+    - url: https://tom.sapletta.com/hardware/armbian-cubieboard-on-marsboard/
+      text: ''
+      kind: internal
+    - url: https://tom.sapletta.com/category/hardware/
+      text: Hardware
+      kind: internal
+    - url: https://tom.sapletta.com/hardware/armbian-cubieboard-on-marsboard/
+      text: Armbian Cubieboard on Marsboard
+      kind: internal
+    - url: https://tom.sapletta.com/hardware/armbian-cubieboard-on-marsboard/
+      text: 22/07/2017 29/07/2017
+      kind: internal
+    - url: https://tom.sapletta.com/author/admin/
+      text: Tom Sapletta
+      kind: internal
+    - url: https://tom.sapletta.com/hardware/armbian-cubieboard-on-marsboard/
+      text: Read More
+      kind: internal
+    - url: https://tom.sapletta.com/how-to-en/printer-server-on-marsboard/
+      text: ''
+      kind: internal
+    - url: https://tom.sapletta.com/category/hardware/
+      text: Hardware
+      kind: internal
+    - url: https://tom.sapletta.com/how-to-en/printer-server-on-marsboard/
+      text: Printer Server on Marsboard
+      kind: internal
+    - url: https://tom.sapletta.com/how-to-en/printer-server-on-marsboard/
+      text: 22/07/2017 27/07/2017
+      kind: internal
+    - url: https://tom.sapletta.com/author/admin/
+      text: Tom Sapletta
+      kind: internal
+    - url: https://tom.sapletta.com/how-to-en/printer-server-on-marsboard/
+      text: Read More
+      kind: internal
+    - url: https://tom.sapletta.com/how-to/fastest-memory-with-nvm-technology-in-turbo-mode/
+      text: ''
+      kind: internal
+    - url: https://tom.sapletta.com/category/hardware/
+      text: Hardware
+      kind: internal
+    - url: https://tom.sapletta.com/how-to/fastest-memory-with-nvm-technology-in-turbo-mode/
+      text: Fastest Memory with NVM Technology in Turbo Mode
+      kind: internal
+    - url: https://tom.sapletta.com/how-to/fastest-memory-with-nvm-technology-in-turbo-mode/
+      text: 21/07/2017 23/07/2017
+      kind: internal
+    - url: https://tom.sapletta.com/author/admin/
+      text: Tom Sapletta
+      kind: internal
+    - url: https://tom.sapletta.com/how-to/fastest-memory-with-nvm-technology-in-turbo-mode/
+      text: Read More
+      kind: internal
+    - url: https://tom.sapletta.com/project-en/how-to-fast-learn-git-by-examples/
+      text: ''
+      kind: internal
+    - url: https://tom.sapletta.com/category/project-en/
+      text: Project
+      kind: internal
+    - url: https://tom.sapletta.com/project-en/how-to-fast-learn-git-by-examples/
+      text: how to fast learn GIT version control system (VCS)?
+      kind: internal
+    - url: https://tom.sapletta.com/project-en/how-to-fast-learn-git-by-examples/
+      text: 18/07/2017 18/07/2017
+      kind: internal
+    - url: https://tom.sapletta.com/author/admin/
+      text: Tom Sapletta
+      kind: internal
+    - url: https://tom.sapletta.com/project-en/how-to-fast-learn-git-by-examples/
+      text: Read More
+      kind: internal
+    - url: https://tom.sapletta.com/tools-en/how-to-start-image-processing-with-python-libraries/
+      text: ''
+      kind: internal
+    - url: https://tom.sapletta.com/category/project-en/
+      text: Project
+      kind: internal
+    - url: https://tom.sapletta.com/tools-en/how-to-start-image-processing-with-python-libraries/
+      text: how to start Image Processing with Python libraries
+      kind: internal
+    - url: https://tom.sapletta.com/tools-en/how-to-start-image-processing-with-python-libraries/
+      text: 21/05/2017 23/05/2017
+      kind: internal
+    assets:
+    - url: https://tom.sapletta.com/
+      tag: link
+      kind: link
+    - url: https://tom.sapletta.com/sitemap.xml
+      tag: link
+      kind: link
+    - url: https://tom.sapletta.com/favicon.ico
+      tag: link
+      kind: icon
+    - url: https://www.google-analytics.com/analytics.js
+      tag: script
+      kind: script
+    - url: http://gmpg.org/xfn/11
+      tag: link
+      kind: link
+    - url: https://tom.sapletta.com/xmlrpc.php
+      tag: link
+      kind: link
+    - url: https://tom.sapletta.com/pl/
+      tag: link
+      kind: link
+    - url: https://tom.sapletta.com/
+      tag: link
+      kind: link
+    - url: https://tom.sapletta.com/de/
+      tag: link
+      kind: link
+    - url: https://tom.sapletta.com/ru/
+      tag: link
+      kind: link
+    - url: https://ws.sharethis.com
+      tag: link
+      kind: link
+    - url: https://fonts.googleapis.com
+      tag: link
+      kind: link
+    - url: https://tom.sapletta.com/feed/
+      tag: link
+      kind: link
+    - url: https://tom.sapletta.com/wp-content/plugins/squirrly-seo/view/assets/css/frontend.min.css?ver=12.4.16
+      tag: link
+      kind: stylesheet
+    - url: https://tom.sapletta.com/wp-content/plugins/github-embed/css/github-embed.css?ver=6.9.4
+      tag: link
+      kind: stylesheet
+    - url: https://tom.sapletta.com/wp-content/plugins/table-of-contents-plus/screen.min.css?ver=2411.1
+      tag: link
+      kind: stylesheet
+    - url: https://tom.sapletta.com/wp-content/themes/bezel/css/bootstrap-grid.css?ver=6.9.4
+      tag: link
+      kind: stylesheet
+    - url: https://tom.sapletta.com/wp-content/themes/bezel/css/font-awesome.css?ver=6.9.4
+      tag: link
+      kind: stylesheet
+    - url: https://fonts.googleapis.com/css?family=Montserrat%3A400%2C700%7COpen+Sans%3A400%2C400i%2C700%2C700i&subset=latin%2Clatin-ext
+      tag: link
+      kind: stylesheet
+    - url: https://tom.sapletta.com/wp-content/themes/bezel/style.css?ver=6.9.4
+      tag: link
+      kind: stylesheet
+    - url: https://tom.sapletta.com/wp-content/plugins/heateor-social-comments/css/front.css?ver=1.6.3
+      tag: link
+      kind: stylesheet
+    - url: https://tom.sapletta.com/wp-content/plugins/gdpr-cookie-compliance/dist/styles/gdpr-main.css?ver=5.0.11
+      tag: link
+      kind: stylesheet
+    - url: https://tom.sapletta.com/wp-includes/js/jquery/jquery.min.js?ver=3.7.1
+      tag: script
+      kind: script
+    - url: https://tom.sapletta.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1
+      tag: script
+      kind: script
+    - url: https://ws.sharethis.com/button/st_insights.js?publisher=eba0f3ba-f9ab-408c-bc68-c28af5afe749&product=feather&ver=1772717413
+      tag: script
+      kind: script
+    - url: https://tom.sapletta.com/wp-json/
+      tag: link
+      kind: link
+    - url: https://tom.sapletta.com/xmlrpc.php?rsd
+      tag: link
+      kind: link
+    - url: https://tom.sapletta.com/wp-content/uploads/2016/10/cropped-ts_2013_300x270-180x180.jpg
+      tag: link
+      kind: icon
+    - url: https://tom.sapletta.com/wp-content/uploads/2017/07/cropped-fig-28-07-2017_19-06-49-1.jpg
+      tag: img
+      kind: image
+    - url: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAPFBMVEX/8fH67Ozz5ubt4OD+/v77+/v39/fo2Nj5AAD+jo79bW36X1/4T0/5QUHhAAD3MzP0Kir2ICDzERHtAACO5h0ZAAAAQUlEQVR4AQXBsRHDMAwAMTzNwvuvm5MVIECIZIEQZ4EQ7AAIGBABegsR+Z7VxChx7hCjhIwYJcTydcgQ1gv8Lhd/58kJTU6WtnIAAAAASUVORK5CYII=
+      tag: img
+      kind: image
+    - url: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAt1BMVEWSmb66z+18msdig8La3u+tYX9IaLc7W7BagbmcUW+kqMr/q6n+//+hsNv/lIr/jIGMnNLJyOP9/fyQttT/wb3/////aWn+YWF5kNT0oqz0i4ueqtIZNJjhvt/8gn//WVr/6+rN1+o9RKZwgcMPJpX/VFT9UEn+RUX8Ozv2Ly+FGzdYZrfU1e/8LS/lQkG/mbVUX60AE231hHtcdMb0mp3qYFTFwNu3w9prcqSURGNDaaIUMX5FNW5wYt7AAAAAjklEQVR4AR3HNUJEMQCGwf+L8RR36ajR+1+CEuvRdd8kK9MNAiRQNgJmVDAt1yM6kSzYVJUsPNssAk5N7ZFKjVNFAY4co6TAOI+kyQm+LFUEBEKKzuWUNB7rSH/rSnvOulOGk+QlXTBqMIrfYX4tSe2nP3iRa/KNK7uTmWJ5a9+erZ3d+18od4ytiZdvZyuKWy8o3UpTVAAAAABJRU5ErkJggg==
+      tag: img
+      kind: image
+    - url: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAABLElEQVR4AY2QgUZEQRSGz9ydmzbYkBWABBJYABHEFhJ6m0WP0DMEQNIr9AKrN8ne2Tt3Zs7MOdOZmRBEv+v34Tvub9R6fdNlAzU+snSME/wdjbjbbJ6EiEg6BA8102QbjKNpoMzw8v6qD/sOALbbT2MC1NgaAWOKOgxf5czY+4dbAX2G/THzcozLrvPV85IQyqVz0rvg2p9Pei4HjzSsiFbV4JgyhhxCjpGdZ0RhdikLB9/b8Qig7MkpSovR7Cp59q6CazaNFiTt4J82o6uvdMVwTsztKTXZod4jgOJJuqNAjFyGrBR8gM6XwKfIC4KanBSTZ0rClKh08D9DFh3egW7ebH7NcRDQWrz9rM2Ne+mDOXB2mZJ8agL19nwxR2iZXGm1gDbQKhDjd4yHb2oW/KR8xHicAAAAAElFTkSuQmCC
+      tag: img
+      kind: image
+    - url: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAdVBMVEX19f/u7vjm5/H+/v75+fng4Ove3ulFRfyysv6cnP6QkPmIiPh/f/YAAOYAAP1ycv5QUP06OvkxMfcoKPcgIPYUFPS0AADdaYzTRG/RPGnOM2LKLFzIIVPCEUZ7AAD0AQH7YGH3ODj0JyfzERDgAAD4TU3pAABIfLuPAAAAT0lEQVR4AQXBAQqDMAAAsZytyHzA/v9LYRS7JIAQMkBb0ATsgLoKInnHvIrHrdRaBzxupTDxuFUifUsp4R3zU4iwzmOyT1ibBtP2u3C+wB+SHBB5JNY7DAAAAABJRU5ErkJggg==
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2017/10/photo-1484480974693-6ca0a78fb36b3Fixlib3Drb-0.3-1.526q3d8026fm3djpg26crop3dentropy26cs3dtinysrgb26w3d20026fit3dmax26s3d455970be79f030880a003ec7629c2284
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2021/08/lenovo-wifi-scaled.jpg
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2021/08/github-754x566.jpg
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2018/04/fig-27-04-2018_17-45-55-754x400.jpg
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2018/04/dreamstime_xxl_95899032-1-754x566.jpg
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2018/04/photo-1505218795627-2b9746a5343f3Fixlib3Drb-0.3-754x566.526q3d8026fm3djpg26crop3dentropy26cs3dtinysrgb26w3d108026fit3dmax26ixid3deyjhchbfawqiojmwodh926s3d1361bc4cc54b9105eb78ce7e05e3dfa6
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2017/07/fig-29-07-2017_15-16-08-754x566.jpg
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2017/07/docker_1501186240.jpg
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500842539157-754x566.jpg
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2017/07/armbian-cubieboard-on-marsboard5-754x566.jpg
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500751461249-e1500754843810-754x566.jpg
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500658298112-754x566.jpg
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2017/07/ExternalLink_chrome_2017-07-18_18-46-11.png
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2017/05/e837b50c28fd003ed95c4518b7454191eb73ebc818b5184494f1c77ea6e4_640.jpg
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2017/05/ec31b20d2cf71c2ad65a5854ef4b419ee77effd41db8154693f5c271a6_640.jpg
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2017/05/wp-1493786544612.jpg
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2017/04/chrome_2017-04-21_21-30-19.png
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2017/04/ea33b40f2bf31c2ad65a5854ef4b419ee77effd41db8104390f0c170a5_640.jpg
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2017/05/froxlor_hero.png
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2017/08/fig-21-08-2017_19-22-17-754x400.jpg
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/uploads/2016/09/12590004-e1475275366174.jpg
+      tag: img
+      kind: image
+    - url: https://tom.sapletta.com/wp-content/plugins/table-of-contents-plus/front.min.js?ver=2411.1
+      tag: script
+      kind: script
+    - url: https://tom.sapletta.com/wp-content/themes/bezel/js/enquire.js?ver=2.1.2
+      tag: script
+      kind: script
+    - url: https://tom.sapletta.com/wp-content/themes/bezel/js/hover-intent.js?ver=r7
+      tag: script
+      kind: script
+    - url: https://tom.sapletta.com/wp-content/themes/bezel/js/superfish.js?ver=1.7.7
+      tag: script
+      kind: script
+    - url: https://tom.sapletta.com/wp-content/themes/bezel/js/custom.js?ver=1.0
+      tag: script
+      kind: script
+    - url: https://tom.sapletta.com/wp-content/plugins/gdpr-cookie-compliance/dist/scripts/main.js?ver=5.0.11
+      tag: script
+      kind: script
+    - url: https://tom.sapletta.com/wp-content/plugins/gdpr-cookie-compliance/dist/images/gdpr-logo.png
+      tag: img
+      kind: image
+    forms: []
+    network_calls: []
+    console_errors: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.1
+  kind: link
+  source: https://tom.sapletta.com/
+  metadata:
+    url: https://tom.sapletta.com/
+    text: ''
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.2
+  kind: link
+  source: https://tom.sapletta.com/
+  metadata:
+    url: https://tom.sapletta.com/
+    text: Tom Sapletta 'Blog
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.3
+  kind: link
+  source: https://tom.sapletta.com/#main-navigation-responsive
+  metadata:
+    url: https://tom.sapletta.com/#main-navigation-responsive
+    text: Menu
+    kind: anchor
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.4
+  kind: link
+  source: https://tom.sapletta.com/#content
+  metadata:
+    url: https://tom.sapletta.com/#content
+    text: Skip to content
+    kind: anchor
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.5
+  kind: link
+  source: https://tom.sapletta.com/pl/
+  metadata:
+    url: https://tom.sapletta.com/pl/
+    text: Polski
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.6
+  kind: link
+  source: https://tom.sapletta.com/
+  metadata:
+    url: https://tom.sapletta.com/
+    text: English
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.7
+  kind: link
+  source: https://tom.sapletta.com/de/
+  metadata:
+    url: https://tom.sapletta.com/de/
+    text: Deutsch
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.8
+  kind: link
+  source: https://tom.sapletta.com/ru/
+  metadata:
+    url: https://tom.sapletta.com/ru/
+    text: Русский
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.9
+  kind: link
+  source: https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+  metadata:
+    url: https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+    text: ''
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.10
+  kind: link
+  source: https://tom.sapletta.com/category/idea/
+  metadata:
+    url: https://tom.sapletta.com/category/idea/
+    text: Idea
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.11
+  kind: link
+  source: https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+  metadata:
+    url: https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+    text: 'Data Streaming: An Insight into NDOF: Newline Delimited Objects Format
+      – 10 Things I Wish I’d Known Earlier'
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.12
+  kind: link
+  source: https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+  metadata:
+    url: https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+    text: 07/10/2023 07/10/2023
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.13
+  kind: link
+  source: https://tom.sapletta.com/author/admin/
+  metadata:
+    url: https://tom.sapletta.com/author/admin/
+    text: Tom Sapletta
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.14
+  kind: link
+  source: https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+  metadata:
+    url: https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+    text: Read More
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.15
+  kind: link
+  source: https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/
+  metadata:
+    url: https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/
+    text: ''
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.16
+  kind: link
+  source: https://tom.sapletta.com/category/how-to/
+  metadata:
+    url: https://tom.sapletta.com/category/how-to/
+    text: how-to
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.17
+  kind: link
+  source: https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/
+  metadata:
+    url: https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/
+    text: Lenovo Yoga 7 Ryzen 9 and wifi problem on linux
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.18
+  kind: link
+  source: https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/
+  metadata:
+    url: https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/
+    text: 13/08/2021 13/08/2021
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.19
+  kind: link
+  source: https://tom.sapletta.com/author/admin/
+  metadata:
+    url: https://tom.sapletta.com/author/admin/
+    text: Tom Sapletta
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.20
+  kind: link
+  source: https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/
+  metadata:
+    url: https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/
+    text: Read More
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.21
+  kind: link
+  source: https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/
+  metadata:
+    url: https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/
+    text: ''
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.22
+  kind: link
+  source: https://tom.sapletta.com/category/idea-en/
+  metadata:
+    url: https://tom.sapletta.com/category/idea-en/
+    text: Idea
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.23
+  kind: link
+  source: https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/
+  metadata:
+    url: https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/
+    text: Git Synchronisation on any Operation System
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.24
+  kind: link
+  source: https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/
+  metadata:
+    url: https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/
+    text: 08/08/2021 09/08/2021
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.25
+  kind: link
+  source: https://tom.sapletta.com/author/admin/
+  metadata:
+    url: https://tom.sapletta.com/author/admin/
+    text: Tom Sapletta
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.26
+  kind: link
+  source: https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/
+  metadata:
+    url: https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/
+    text: Read More
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.27
+  kind: link
+  source: https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/
+  metadata:
+    url: https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/
+    text: ''
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.28
+  kind: link
+  source: https://tom.sapletta.com/category/idea/
+  metadata:
+    url: https://tom.sapletta.com/category/idea/
+    text: Idea
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.29
+  kind: link
+  source: https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/
+  metadata:
+    url: https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/
+    text: Podcasting and marketing library services
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.30
+  kind: link
+  source: https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/
+  metadata:
+    url: https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/
+    text: 27/04/2018 27/04/2018
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.31
+  kind: link
+  source: https://tom.sapletta.com/author/admin/
+  metadata:
+    url: https://tom.sapletta.com/author/admin/
+    text: Tom Sapletta
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.32
+  kind: link
+  source: https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/
+  metadata:
+    url: https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/
+    text: Read More
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.33
+  kind: link
+  source: https://tom.sapletta.com/domains/tools-for-a-domainers/
+  metadata:
+    url: https://tom.sapletta.com/domains/tools-for-a-domainers/
+    text: ''
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.34
+  kind: link
+  source: https://tom.sapletta.com/category/domains/
+  metadata:
+    url: https://tom.sapletta.com/category/domains/
+    text: domains
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.35
+  kind: link
+  source: https://tom.sapletta.com/domains/tools-for-a-domainers/
+  metadata:
+    url: https://tom.sapletta.com/domains/tools-for-a-domainers/
+    text: Tools for a Domainers
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.36
+  kind: link
+  source: https://tom.sapletta.com/domains/tools-for-a-domainers/
+  metadata:
+    url: https://tom.sapletta.com/domains/tools-for-a-domainers/
+    text: 21/04/2018 21/04/2018
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.37
+  kind: link
+  source: https://tom.sapletta.com/author/admin/
+  metadata:
+    url: https://tom.sapletta.com/author/admin/
+    text: Tom Sapletta
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.38
+  kind: link
+  source: https://tom.sapletta.com/domains/tools-for-a-domainers/
+  metadata:
+    url: https://tom.sapletta.com/domains/tools-for-a-domainers/
+    text: Read More
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.39
+  kind: link
+  source: https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/
+  metadata:
+    url: https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/
+    text: ''
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.40
+  kind: link
+  source: https://tom.sapletta.com/category/how-to-en/
+  metadata:
+    url: https://tom.sapletta.com/category/how-to-en/
+    text: How-to
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.41
+  kind: link
+  source: https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/
+  metadata:
+    url: https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/
+    text: The Wave of Efficient, be more focused as Developer
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.42
+  kind: link
+  source: https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/
+  metadata:
+    url: https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/
+    text: 19/04/2018 20/04/2018
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.43
+  kind: link
+  source: https://tom.sapletta.com/author/admin/
+  metadata:
+    url: https://tom.sapletta.com/author/admin/
+    text: Tom Sapletta
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.44
+  kind: link
+  source: https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/
+  metadata:
+    url: https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/
+    text: Read More
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.45
+  kind: link
+  source: https://tom.sapletta.com/category/domains/
+  metadata:
+    url: https://tom.sapletta.com/category/domains/
+    text: domains
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.46
+  kind: link
+  source: https://tom.sapletta.com/how-to/domains-trends-the-best-name/
+  metadata:
+    url: https://tom.sapletta.com/how-to/domains-trends-the-best-name/
+    text: domains, trends, the best NAME!
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.47
+  kind: link
+  source: https://tom.sapletta.com/how-to/domains-trends-the-best-name/
+  metadata:
+    url: https://tom.sapletta.com/how-to/domains-trends-the-best-name/
+    text: 31/08/2017
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.48
+  kind: link
+  source: https://tom.sapletta.com/author/admin/
+  metadata:
+    url: https://tom.sapletta.com/author/admin/
+    text: Tom Sapletta
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.49
+  kind: link
+  source: https://tom.sapletta.com/how-to/domains-trends-the-best-name/
+  metadata:
+    url: https://tom.sapletta.com/how-to/domains-trends-the-best-name/
+    text: Read More
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: link.50
+  kind: link
+  source: https://tom.sapletta.com/category/software-en/
+  metadata:
+    url: https://tom.sapletta.com/category/software-en/
+    text: Software
+    kind: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.1
+  kind: asset
+  source: https://tom.sapletta.com/
+  metadata:
+    url: https://tom.sapletta.com/
+    tag: link
+    kind: link
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.2
+  kind: asset
+  source: https://tom.sapletta.com/sitemap.xml
+  metadata:
+    url: https://tom.sapletta.com/sitemap.xml
+    tag: link
+    kind: link
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.3
+  kind: asset
+  source: https://tom.sapletta.com/favicon.ico
+  metadata:
+    url: https://tom.sapletta.com/favicon.ico
+    tag: link
+    kind: icon
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.4
+  kind: asset
+  source: https://www.google-analytics.com/analytics.js
+  metadata:
+    url: https://www.google-analytics.com/analytics.js
+    tag: script
+    kind: script
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.5
+  kind: asset
+  source: http://gmpg.org/xfn/11
+  metadata:
+    url: http://gmpg.org/xfn/11
+    tag: link
+    kind: link
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.6
+  kind: asset
+  source: https://tom.sapletta.com/xmlrpc.php
+  metadata:
+    url: https://tom.sapletta.com/xmlrpc.php
+    tag: link
+    kind: link
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.7
+  kind: asset
+  source: https://tom.sapletta.com/pl/
+  metadata:
+    url: https://tom.sapletta.com/pl/
+    tag: link
+    kind: link
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.8
+  kind: asset
+  source: https://tom.sapletta.com/
+  metadata:
+    url: https://tom.sapletta.com/
+    tag: link
+    kind: link
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.9
+  kind: asset
+  source: https://tom.sapletta.com/de/
+  metadata:
+    url: https://tom.sapletta.com/de/
+    tag: link
+    kind: link
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.10
+  kind: asset
+  source: https://tom.sapletta.com/ru/
+  metadata:
+    url: https://tom.sapletta.com/ru/
+    tag: link
+    kind: link
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.11
+  kind: asset
+  source: https://ws.sharethis.com
+  metadata:
+    url: https://ws.sharethis.com
+    tag: link
+    kind: link
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.12
+  kind: asset
+  source: https://fonts.googleapis.com
+  metadata:
+    url: https://fonts.googleapis.com
+    tag: link
+    kind: link
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.13
+  kind: asset
+  source: https://tom.sapletta.com/feed/
+  metadata:
+    url: https://tom.sapletta.com/feed/
+    tag: link
+    kind: link
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.14
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/plugins/squirrly-seo/view/assets/css/frontend.min.css?ver=12.4.16
+  metadata:
+    url: https://tom.sapletta.com/wp-content/plugins/squirrly-seo/view/assets/css/frontend.min.css?ver=12.4.16
+    tag: link
+    kind: stylesheet
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.15
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/plugins/github-embed/css/github-embed.css?ver=6.9.4
+  metadata:
+    url: https://tom.sapletta.com/wp-content/plugins/github-embed/css/github-embed.css?ver=6.9.4
+    tag: link
+    kind: stylesheet
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.16
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/plugins/table-of-contents-plus/screen.min.css?ver=2411.1
+  metadata:
+    url: https://tom.sapletta.com/wp-content/plugins/table-of-contents-plus/screen.min.css?ver=2411.1
+    tag: link
+    kind: stylesheet
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.17
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/themes/bezel/css/bootstrap-grid.css?ver=6.9.4
+  metadata:
+    url: https://tom.sapletta.com/wp-content/themes/bezel/css/bootstrap-grid.css?ver=6.9.4
+    tag: link
+    kind: stylesheet
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.18
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/themes/bezel/css/font-awesome.css?ver=6.9.4
+  metadata:
+    url: https://tom.sapletta.com/wp-content/themes/bezel/css/font-awesome.css?ver=6.9.4
+    tag: link
+    kind: stylesheet
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.19
+  kind: asset
+  source: https://fonts.googleapis.com/css?family=Montserrat%3A400%2C700%7COpen+Sans%3A400%2C400i%2C700%2C700i&subset=latin%2Clatin-ext
+  metadata:
+    url: https://fonts.googleapis.com/css?family=Montserrat%3A400%2C700%7COpen+Sans%3A400%2C400i%2C700%2C700i&subset=latin%2Clatin-ext
+    tag: link
+    kind: stylesheet
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.20
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/themes/bezel/style.css?ver=6.9.4
+  metadata:
+    url: https://tom.sapletta.com/wp-content/themes/bezel/style.css?ver=6.9.4
+    tag: link
+    kind: stylesheet
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.21
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/plugins/heateor-social-comments/css/front.css?ver=1.6.3
+  metadata:
+    url: https://tom.sapletta.com/wp-content/plugins/heateor-social-comments/css/front.css?ver=1.6.3
+    tag: link
+    kind: stylesheet
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.22
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/plugins/gdpr-cookie-compliance/dist/styles/gdpr-main.css?ver=5.0.11
+  metadata:
+    url: https://tom.sapletta.com/wp-content/plugins/gdpr-cookie-compliance/dist/styles/gdpr-main.css?ver=5.0.11
+    tag: link
+    kind: stylesheet
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.23
+  kind: asset
+  source: https://tom.sapletta.com/wp-includes/js/jquery/jquery.min.js?ver=3.7.1
+  metadata:
+    url: https://tom.sapletta.com/wp-includes/js/jquery/jquery.min.js?ver=3.7.1
+    tag: script
+    kind: script
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.24
+  kind: asset
+  source: https://tom.sapletta.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1
+  metadata:
+    url: https://tom.sapletta.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1
+    tag: script
+    kind: script
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.25
+  kind: asset
+  source: https://ws.sharethis.com/button/st_insights.js?publisher=eba0f3ba-f9ab-408c-bc68-c28af5afe749&product=feather&ver=1772717413
+  metadata:
+    url: https://ws.sharethis.com/button/st_insights.js?publisher=eba0f3ba-f9ab-408c-bc68-c28af5afe749&product=feather&ver=1772717413
+    tag: script
+    kind: script
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.26
+  kind: asset
+  source: https://tom.sapletta.com/wp-json/
+  metadata:
+    url: https://tom.sapletta.com/wp-json/
+    tag: link
+    kind: link
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.27
+  kind: asset
+  source: https://tom.sapletta.com/xmlrpc.php?rsd
+  metadata:
+    url: https://tom.sapletta.com/xmlrpc.php?rsd
+    tag: link
+    kind: link
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.28
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2016/10/cropped-ts_2013_300x270-180x180.jpg
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2016/10/cropped-ts_2013_300x270-180x180.jpg
+    tag: link
+    kind: icon
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.29
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2017/07/cropped-fig-28-07-2017_19-06-49-1.jpg
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2017/07/cropped-fig-28-07-2017_19-06-49-1.jpg
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.30
+  kind: asset
+  source: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAPFBMVEX/8fH67Ozz5ubt4OD+/v77+/v39/fo2Nj5AAD+jo79bW36X1/4T0/5QUHhAAD3MzP0Kir2ICDzERHtAACO5h0ZAAAAQUlEQVR4AQXBsRHDMAwAMTzNwvuvm5MVIECIZIEQZ4EQ7AAIGBABegsR+Z7VxChx7hCjhIwYJcTydcgQ1gv8Lhd/58kJTU6WtnIAAAAASUVORK5CYII=
+  metadata:
+    url: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAPFBMVEX/8fH67Ozz5ubt4OD+/v77+/v39/fo2Nj5AAD+jo79bW36X1/4T0/5QUHhAAD3MzP0Kir2ICDzERHtAACO5h0ZAAAAQUlEQVR4AQXBsRHDMAwAMTzNwvuvm5MVIECIZIEQZ4EQ7AAIGBABegsR+Z7VxChx7hCjhIwYJcTydcgQ1gv8Lhd/58kJTU6WtnIAAAAASUVORK5CYII=
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.31
+  kind: asset
+  source: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAt1BMVEWSmb66z+18msdig8La3u+tYX9IaLc7W7BagbmcUW+kqMr/q6n+//+hsNv/lIr/jIGMnNLJyOP9/fyQttT/wb3/////aWn+YWF5kNT0oqz0i4ueqtIZNJjhvt/8gn//WVr/6+rN1+o9RKZwgcMPJpX/VFT9UEn+RUX8Ozv2Ly+FGzdYZrfU1e/8LS/lQkG/mbVUX60AE231hHtcdMb0mp3qYFTFwNu3w9prcqSURGNDaaIUMX5FNW5wYt7AAAAAjklEQVR4AR3HNUJEMQCGwf+L8RR36ajR+1+CEuvRdd8kK9MNAiRQNgJmVDAt1yM6kSzYVJUsPNssAk5N7ZFKjVNFAY4co6TAOI+kyQm+LFUEBEKKzuWUNB7rSH/rSnvOulOGk+QlXTBqMIrfYX4tSe2nP3iRa/KNK7uTmWJ5a9+erZ3d+18od4ytiZdvZyuKWy8o3UpTVAAAAABJRU5ErkJggg==
+  metadata:
+    url: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAt1BMVEWSmb66z+18msdig8La3u+tYX9IaLc7W7BagbmcUW+kqMr/q6n+//+hsNv/lIr/jIGMnNLJyOP9/fyQttT/wb3/////aWn+YWF5kNT0oqz0i4ueqtIZNJjhvt/8gn//WVr/6+rN1+o9RKZwgcMPJpX/VFT9UEn+RUX8Ozv2Ly+FGzdYZrfU1e/8LS/lQkG/mbVUX60AE231hHtcdMb0mp3qYFTFwNu3w9prcqSURGNDaaIUMX5FNW5wYt7AAAAAjklEQVR4AR3HNUJEMQCGwf+L8RR36ajR+1+CEuvRdd8kK9MNAiRQNgJmVDAt1yM6kSzYVJUsPNssAk5N7ZFKjVNFAY4co6TAOI+kyQm+LFUEBEKKzuWUNB7rSH/rSnvOulOGk+QlXTBqMIrfYX4tSe2nP3iRa/KNK7uTmWJ5a9+erZ3d+18od4ytiZdvZyuKWy8o3UpTVAAAAABJRU5ErkJggg==
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.32
+  kind: asset
+  source: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAABLElEQVR4AY2QgUZEQRSGz9ydmzbYkBWABBJYABHEFhJ6m0WP0DMEQNIr9AKrN8ne2Tt3Zs7MOdOZmRBEv+v34Tvub9R6fdNlAzU+snSME/wdjbjbbJ6EiEg6BA8102QbjKNpoMzw8v6qD/sOALbbT2MC1NgaAWOKOgxf5czY+4dbAX2G/THzcozLrvPV85IQyqVz0rvg2p9Pei4HjzSsiFbV4JgyhhxCjpGdZ0RhdikLB9/b8Qig7MkpSovR7Cp59q6CazaNFiTt4J82o6uvdMVwTsztKTXZod4jgOJJuqNAjFyGrBR8gM6XwKfIC4KanBSTZ0rClKh08D9DFh3egW7ebH7NcRDQWrz9rM2Ne+mDOXB2mZJ8agL19nwxR2iZXGm1gDbQKhDjd4yHb2oW/KR8xHicAAAAAElFTkSuQmCC
+  metadata:
+    url: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAABLElEQVR4AY2QgUZEQRSGz9ydmzbYkBWABBJYABHEFhJ6m0WP0DMEQNIr9AKrN8ne2Tt3Zs7MOdOZmRBEv+v34Tvub9R6fdNlAzU+snSME/wdjbjbbJ6EiEg6BA8102QbjKNpoMzw8v6qD/sOALbbT2MC1NgaAWOKOgxf5czY+4dbAX2G/THzcozLrvPV85IQyqVz0rvg2p9Pei4HjzSsiFbV4JgyhhxCjpGdZ0RhdikLB9/b8Qig7MkpSovR7Cp59q6CazaNFiTt4J82o6uvdMVwTsztKTXZod4jgOJJuqNAjFyGrBR8gM6XwKfIC4KanBSTZ0rClKh08D9DFh3egW7ebH7NcRDQWrz9rM2Ne+mDOXB2mZJ8agL19nwxR2iZXGm1gDbQKhDjd4yHb2oW/KR8xHicAAAAAElFTkSuQmCC
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.33
+  kind: asset
+  source: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAdVBMVEX19f/u7vjm5/H+/v75+fng4Ove3ulFRfyysv6cnP6QkPmIiPh/f/YAAOYAAP1ycv5QUP06OvkxMfcoKPcgIPYUFPS0AADdaYzTRG/RPGnOM2LKLFzIIVPCEUZ7AAD0AQH7YGH3ODj0JyfzERDgAAD4TU3pAABIfLuPAAAAT0lEQVR4AQXBAQqDMAAAsZytyHzA/v9LYRS7JIAQMkBb0ATsgLoKInnHvIrHrdRaBzxupTDxuFUifUsp4R3zU4iwzmOyT1ibBtP2u3C+wB+SHBB5JNY7DAAAAABJRU5ErkJggg==
+  metadata:
+    url: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAdVBMVEX19f/u7vjm5/H+/v75+fng4Ove3ulFRfyysv6cnP6QkPmIiPh/f/YAAOYAAP1ycv5QUP06OvkxMfcoKPcgIPYUFPS0AADdaYzTRG/RPGnOM2LKLFzIIVPCEUZ7AAD0AQH7YGH3ODj0JyfzERDgAAD4TU3pAABIfLuPAAAAT0lEQVR4AQXBAQqDMAAAsZytyHzA/v9LYRS7JIAQMkBb0ATsgLoKInnHvIrHrdRaBzxupTDxuFUifUsp4R3zU4iwzmOyT1ibBtP2u3C+wB+SHBB5JNY7DAAAAABJRU5ErkJggg==
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.34
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2017/10/photo-1484480974693-6ca0a78fb36b3Fixlib3Drb-0.3-1.526q3d8026fm3djpg26crop3dentropy26cs3dtinysrgb26w3d20026fit3dmax26s3d455970be79f030880a003ec7629c2284
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2017/10/photo-1484480974693-6ca0a78fb36b3Fixlib3Drb-0.3-1.526q3d8026fm3djpg26crop3dentropy26cs3dtinysrgb26w3d20026fit3dmax26s3d455970be79f030880a003ec7629c2284
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.35
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2021/08/lenovo-wifi-scaled.jpg
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2021/08/lenovo-wifi-scaled.jpg
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.36
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2021/08/github-754x566.jpg
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2021/08/github-754x566.jpg
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.37
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2018/04/fig-27-04-2018_17-45-55-754x400.jpg
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2018/04/fig-27-04-2018_17-45-55-754x400.jpg
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.38
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2018/04/dreamstime_xxl_95899032-1-754x566.jpg
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2018/04/dreamstime_xxl_95899032-1-754x566.jpg
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.39
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2018/04/photo-1505218795627-2b9746a5343f3Fixlib3Drb-0.3-754x566.526q3d8026fm3djpg26crop3dentropy26cs3dtinysrgb26w3d108026fit3dmax26ixid3deyjhchbfawqiojmwodh926s3d1361bc4cc54b9105eb78ce7e05e3dfa6
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2018/04/photo-1505218795627-2b9746a5343f3Fixlib3Drb-0.3-754x566.526q3d8026fm3djpg26crop3dentropy26cs3dtinysrgb26w3d108026fit3dmax26ixid3deyjhchbfawqiojmwodh926s3d1361bc4cc54b9105eb78ce7e05e3dfa6
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.40
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2017/07/fig-29-07-2017_15-16-08-754x566.jpg
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2017/07/fig-29-07-2017_15-16-08-754x566.jpg
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.41
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2017/07/docker_1501186240.jpg
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2017/07/docker_1501186240.jpg
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.42
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500842539157-754x566.jpg
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500842539157-754x566.jpg
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.43
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2017/07/armbian-cubieboard-on-marsboard5-754x566.jpg
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2017/07/armbian-cubieboard-on-marsboard5-754x566.jpg
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.44
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500751461249-e1500754843810-754x566.jpg
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500751461249-e1500754843810-754x566.jpg
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.45
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500658298112-754x566.jpg
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500658298112-754x566.jpg
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.46
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2017/07/ExternalLink_chrome_2017-07-18_18-46-11.png
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2017/07/ExternalLink_chrome_2017-07-18_18-46-11.png
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.47
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2017/05/e837b50c28fd003ed95c4518b7454191eb73ebc818b5184494f1c77ea6e4_640.jpg
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2017/05/e837b50c28fd003ed95c4518b7454191eb73ebc818b5184494f1c77ea6e4_640.jpg
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.48
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2017/05/ec31b20d2cf71c2ad65a5854ef4b419ee77effd41db8154693f5c271a6_640.jpg
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2017/05/ec31b20d2cf71c2ad65a5854ef4b419ee77effd41db8154693f5c271a6_640.jpg
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.49
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2017/05/wp-1493786544612.jpg
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2017/05/wp-1493786544612.jpg
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: asset.50
+  kind: asset
+  source: https://tom.sapletta.com/wp-content/uploads/2017/04/chrome_2017-04-21_21-30-19.png
+  metadata:
+    url: https://tom.sapletta.com/wp-content/uploads/2017/04/chrome_2017-04-21_21-30-19.png
+    tag: img
+    kind: image
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+- id: sitemap.root
+  kind: sitemap
+  source: https://tom.sapletta.com/
+  metadata:
+    crawled: 7
+    max_pages: 10
+    base_url: https://tom.sapletta.com/
+  evidence: []
+- id: subpage.1
+  kind: subpage
+  source: https://tom.sapletta.com/pl/
+  metadata:
+    status_code: 200
+    title: Tom Sapletta 'Blog | Platform & DevOps Engineer & Hardware Developer, Expat
+      in Germany
+    links: 172
+  evidence: []
+- id: subpage.2
+  kind: subpage
+  source: https://tom.sapletta.com/de/
+  metadata:
+    status_code: 200
+    title: Tom Sapletta 'Blog | Platform & DevOps Engineer & Hardware Developer, Expat
+      in Germany
+    links: 50
+  evidence: []
+- id: subpage.3
+  kind: subpage
+  source: https://tom.sapletta.com/ru/
+  metadata:
+    status_code: 200
+    title: Tom Sapletta 'Blog | Platform & DevOps Engineer & Hardware Developer, Expat
+      in Germany
+    links: 20
+  evidence: []
+- id: subpage.4
+  kind: subpage
+  source: https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+  metadata:
+    status_code: 200
+    title: 'Data Streaming: An Insight into NDOF: Newline Delimited Objects Format
+      - 10 | Tom Sapletta ''Blog'
+    links: 76
+  evidence: []
+- id: subpage.5
+  kind: subpage
+  source: https://tom.sapletta.com/category/idea/
+  metadata:
+    status_code: 200
+    title: Idea | Tom Sapletta 'Blog
+    links: 52
+  evidence: []
+- id: subpage.6
+  kind: subpage
+  source: https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+  metadata:
+    status_code: 200
+    title: 'Data Streaming: An Insight into NDOF: Newline Delimited Objects Format
+      - 10 | Tom Sapletta ''Blog'
+    links: 76
+  evidence: []
+- id: subpage.7
+  kind: subpage
+  source: https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+  metadata:
+    status_code: 200
+    title: 'Data Streaming: An Insight into NDOF: Newline Delimited Objects Format
+      - 10 | Tom Sapletta ''Blog'
+    links: 76
+  evidence: []
+edges:
+- source_id: artifact.root
+  target_id: type.web_page
+  relation: classified_as
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: manifest
+- source_id: artifact.root
+  target_id: type.http_endpoint
+  relation: classified_as
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: manifest
+- source_id: artifact.root
+  target_id: interface.web_page.1
+  relation: exposes
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: browser
+- source_id: artifact.root
+  target_id: evidence.1
+  relation: supported_by
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: artifact.root
+  target_id: page.root
+  relation: renders
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: browser
+- source_id: page.root
+  target_id: link.1
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.2
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.3
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: anchor
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.4
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: anchor
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.5
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.6
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.7
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.8
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.9
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.10
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.11
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.12
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.13
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.14
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.15
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.16
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.17
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.18
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.19
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.20
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.21
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.22
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.23
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.24
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.25
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.26
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.27
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.28
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.29
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.30
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.31
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.32
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.33
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.34
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.35
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.36
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.37
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.38
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.39
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.40
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.41
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.42
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.43
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.44
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.45
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.46
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.47
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.48
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.49
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: link.50
+  relation: links_to
+  conditions:
+  - kind: kind
+    value: internal
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.1
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.2
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.3
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.4
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.5
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.6
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.7
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.8
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.9
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.10
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.11
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.12
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.13
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.14
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.15
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.16
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.17
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.18
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.19
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.20
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.21
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.22
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.23
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.24
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.25
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.26
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.27
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.28
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.29
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.30
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.31
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.32
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.33
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.34
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.35
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.36
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.37
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.38
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.39
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.40
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.41
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.42
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.43
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.44
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.45
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.46
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.47
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.48
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.49
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: asset.50
+  relation: loads
+  conditions: []
+  evidence:
+  - probe: network.http_endpoint
+    kind: http
+    location: https://tom.sapletta.com/
+    detail: HTTP 200
+  protocol: http
+- source_id: page.root
+  target_id: sitemap.root
+  relation: has_sitemap
+  conditions: []
+  evidence: []
+  protocol: crawl
+- source_id: sitemap.root
+  target_id: subpage.1
+  relation: contains
+  conditions: []
+  evidence: []
+  protocol: http
+- source_id: page.root
+  target_id: subpage.1
+  relation: navigates_to
+  conditions: []
+  evidence: []
+  protocol: http
+- source_id: sitemap.root
+  target_id: subpage.2
+  relation: contains
+  conditions: []
+  evidence: []
+  protocol: http
+- source_id: page.root
+  target_id: subpage.2
+  relation: navigates_to
+  conditions: []
+  evidence: []
+  protocol: http
+- source_id: sitemap.root
+  target_id: subpage.3
+  relation: contains
+  conditions: []
+  evidence: []
+  protocol: http
+- source_id: page.root
+  target_id: subpage.3
+  relation: navigates_to
+  conditions: []
+  evidence: []
+  protocol: http
+- source_id: sitemap.root
+  target_id: subpage.4
+  relation: contains
+  conditions: []
+  evidence: []
+  protocol: http
+- source_id: page.root
+  target_id: subpage.4
+  relation: navigates_to
+  conditions: []
+  evidence: []
+  protocol: http
+- source_id: sitemap.root
+  target_id: subpage.5
+  relation: contains
+  conditions: []
+  evidence: []
+  protocol: http
+- source_id: page.root
+  target_id: subpage.5
+  relation: navigates_to
+  conditions: []
+  evidence: []
+  protocol: http
+- source_id: sitemap.root
+  target_id: subpage.6
+  relation: contains
+  conditions: []
+  evidence: []
+  protocol: http
+- source_id: page.root
+  target_id: subpage.6
+  relation: navigates_to
+  conditions: []
+  evidence: []
+  protocol: http
+- source_id: sitemap.root
+  target_id: subpage.7
+  relation: contains
+  conditions: []
+  evidence: []
+  protocol: http
+- source_id: page.root
+  target_id: subpage.7
+  relation: navigates_to
+  conditions: []
+  evidence: []
+  protocol: http
+traces:
+- id: trace.discovery.topology
+  node_ids:
+  - artifact.root
+  - type.web_page
+  - type.http_endpoint
+  - interface.web_page.1
+  - evidence.1
+  - page.root
+  - link.1
+  - link.2
+  - link.3
+  - link.4
+  - link.5
+  - link.6
+  - link.7
+  - link.8
+  - link.9
+  - link.10
+  - link.11
+  - link.12
+  - link.13
+  - link.14
+  - link.15
+  - link.16
+  - link.17
+  - link.18
+  - link.19
+  - link.20
+  - link.21
+  - link.22
+  - link.23
+  - link.24
+  - link.25
+  - link.26
+  - link.27
+  - link.28
+  - link.29
+  - link.30
+  - link.31
+  - link.32
+  - link.33
+  - link.34
+  - link.35
+  - link.36
+  - link.37
+  - link.38
+  - link.39
+  - link.40
+  - link.41
+  - link.42
+  - link.43
+  - link.44
+  - link.45
+  - link.46
+  - link.47
+  - link.48
+  - link.49
+  - link.50
+  - asset.1
+  - asset.2
+  - asset.3
+  - asset.4
+  - asset.5
+  - asset.6
+  - asset.7
+  - asset.8
+  - asset.9
+  - asset.10
+  - asset.11
+  - asset.12
+  - asset.13
+  - asset.14
+  - asset.15
+  - asset.16
+  - asset.17
+  - asset.18
+  - asset.19
+  - asset.20
+  - asset.21
+  - asset.22
+  - asset.23
+  - asset.24
+  - asset.25
+  - asset.26
+  - asset.27
+  - asset.28
+  - asset.29
+  - asset.30
+  - asset.31
+  - asset.32
+  - asset.33
+  - asset.34
+  - asset.35
+  - asset.36
+  - asset.37
+  - asset.38
+  - asset.39
+  - asset.40
+  - asset.41
+  - asset.42
+  - asset.43
+  - asset.44
+  - asset.45
+  - asset.46
+  - asset.47
+  - asset.48
+  - asset.49
+  - asset.50
+  - sitemap.root
+  - subpage.1
+  - subpage.2
+  - subpage.3
+  - subpage.4
+  - subpage.5
+  - subpage.6
+  - subpage.7
+  edge_ids:
+  - artifact.root->type.web_page:classified_as
+  - artifact.root->type.http_endpoint:classified_as
+  - artifact.root->interface.web_page.1:exposes
+  - artifact.root->evidence.1:supported_by
+  - artifact.root->page.root:renders
+  - page.root->link.1:links_to
+  - page.root->link.2:links_to
+  - page.root->link.3:links_to
+  - page.root->link.4:links_to
+  - page.root->link.5:links_to
+  - page.root->link.6:links_to
+  - page.root->link.7:links_to
+  - page.root->link.8:links_to
+  - page.root->link.9:links_to
+  - page.root->link.10:links_to
+  - page.root->link.11:links_to
+  - page.root->link.12:links_to
+  - page.root->link.13:links_to
+  - page.root->link.14:links_to
+  - page.root->link.15:links_to
+  - page.root->link.16:links_to
+  - page.root->link.17:links_to
+  - page.root->link.18:links_to
+  - page.root->link.19:links_to
+  - page.root->link.20:links_to
+  - page.root->link.21:links_to
+  - page.root->link.22:links_to
+  - page.root->link.23:links_to
+  - page.root->link.24:links_to
+  - page.root->link.25:links_to
+  - page.root->link.26:links_to
+  - page.root->link.27:links_to
+  - page.root->link.28:links_to
+  - page.root->link.29:links_to
+  - page.root->link.30:links_to
+  - page.root->link.31:links_to
+  - page.root->link.32:links_to
+  - page.root->link.33:links_to
+  - page.root->link.34:links_to
+  - page.root->link.35:links_to
+  - page.root->link.36:links_to
+  - page.root->link.37:links_to
+  - page.root->link.38:links_to
+  - page.root->link.39:links_to
+  - page.root->link.40:links_to
+  - page.root->link.41:links_to
+  - page.root->link.42:links_to
+  - page.root->link.43:links_to
+  - page.root->link.44:links_to
+  - page.root->link.45:links_to
+  - page.root->link.46:links_to
+  - page.root->link.47:links_to
+  - page.root->link.48:links_to
+  - page.root->link.49:links_to
+  - page.root->link.50:links_to
+  - page.root->asset.1:loads
+  - page.root->asset.2:loads
+  - page.root->asset.3:loads
+  - page.root->asset.4:loads
+  - page.root->asset.5:loads
+  - page.root->asset.6:loads
+  - page.root->asset.7:loads
+  - page.root->asset.8:loads
+  - page.root->asset.9:loads
+  - page.root->asset.10:loads
+  - page.root->asset.11:loads
+  - page.root->asset.12:loads
+  - page.root->asset.13:loads
+  - page.root->asset.14:loads
+  - page.root->asset.15:loads
+  - page.root->asset.16:loads
+  - page.root->asset.17:loads
+  - page.root->asset.18:loads
+  - page.root->asset.19:loads
+  - page.root->asset.20:loads
+  - page.root->asset.21:loads
+  - page.root->asset.22:loads
+  - page.root->asset.23:loads
+  - page.root->asset.24:loads
+  - page.root->asset.25:loads
+  - page.root->asset.26:loads
+  - page.root->asset.27:loads
+  - page.root->asset.28:loads
+  - page.root->asset.29:loads
+  - page.root->asset.30:loads
+  - page.root->asset.31:loads
+  - page.root->asset.32:loads
+  - page.root->asset.33:loads
+  - page.root->asset.34:loads
+  - page.root->asset.35:loads
+  - page.root->asset.36:loads
+  - page.root->asset.37:loads
+  - page.root->asset.38:loads
+  - page.root->asset.39:loads
+  - page.root->asset.40:loads
+  - page.root->asset.41:loads
+  - page.root->asset.42:loads
+  - page.root->asset.43:loads
+  - page.root->asset.44:loads
+  - page.root->asset.45:loads
+  - page.root->asset.46:loads
+  - page.root->asset.47:loads
+  - page.root->asset.48:loads
+  - page.root->asset.49:loads
+  - page.root->asset.50:loads
+  - page.root->sitemap.root:has_sitemap
+  - sitemap.root->subpage.1:contains
+  - page.root->subpage.1:navigates_to
+  - sitemap.root->subpage.2:contains
+  - page.root->subpage.2:navigates_to
+  - sitemap.root->subpage.3:contains
+  - page.root->subpage.3:navigates_to
+  - sitemap.root->subpage.4:contains
+  - page.root->subpage.4:navigates_to
+  - sitemap.root->subpage.5:contains
+  - page.root->subpage.5:navigates_to
+  - sitemap.root->subpage.6:contains
+  - page.root->subpage.6:navigates_to
+  - sitemap.root->subpage.7:contains
+  - page.root->subpage.7:navigates_to
+  status: planned
+  metadata:
+    purpose: discovery-derived traversal plan

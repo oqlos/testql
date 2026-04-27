@@ -1,0 +1,35 @@
+{
+  "iteration": 1,
+  "decision": "generate_more_tests",
+  "reason_code": "bootstrap_iteration_completed",
+  "summary": "Autoloop iteration executed successfully (topology+generate+dry-run); continue with expanded generated suites.",
+  "next_actions": [
+    {
+      "tool": "testql",
+      "args": {
+        "command": "run",
+        "file": ".testql/generated/generated-api-smoke.testql.toon.yaml",
+        "dry_run": true,
+        "output": "json"
+      }
+    },
+    {
+      "tool": "pyqual",
+      "args": {
+        "command": "run"
+      }
+    }
+  ],
+  "topology_focus": [
+    "/health"
+  ],
+  "metrics": {
+    "coverage": 65,
+    "vallm": 60,
+    "cc_max": 10,
+    "fail_rate": 0,
+    "flaky_rate": 0
+  },
+  "risk_score": 0.2,
+  "confidence": 0.88
+}

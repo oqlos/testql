@@ -1,0 +1,28 @@
+{
+  "status": "running",
+  "iteration": 1,
+  "max_iterations": 8,
+  "last_decision": "generate_more_tests",
+  "current_focus": {
+    "kind": "route",
+    "id": "/health",
+    "reason": "bootstrap"
+  },
+  "open_failures": [],
+  "blocked_by": [],
+  "topology_frontier": [],
+  "metrics_history": [],
+  "stabilization": {
+    "critical_free_streak": 0,
+    "last_two_iterations_no_critical": false,
+    "quality_gates": {
+      "coverage_min": 65,
+      "vallm_pass_min": 60,
+      "cc_max": 10
+    }
+  },
+  "timestamps": {
+    "started_at": null,
+    "updated_at": null
+  }
+}

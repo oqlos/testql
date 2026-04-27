@@ -1,0 +1,69 @@
+refactor_plan:
+  id: refactor.inspect.https___tom_sapletta_com
+  source_run_id: inspect.https___tom_sapletta_com
+  status: ready
+  metadata:
+    topology_id: topology.https___tom_sapletta_com
+    source_status: failed
+  findings:
+  - id: finding.web.asset_status
+    severity: high
+    summary: 4 of 61 assets returned error status.
+    likely_cause: One or more page assets returned an error or were unreachable during
+      HEAD validation.
+    evidence_refs: []
+    metadata:
+      source_check: check.web.asset_status
+      checked: 61
+      broken: 4
+      details:
+      - url: https://tom.sapletta.com/xmlrpc.php
+        status: 403
+      - url: https://ws.sharethis.com
+        status: 403
+      - url: https://fonts.googleapis.com
+        status: 404
+      - url: https://tom.sapletta.com/xmlrpc.php?rsd
+        status: 403
+    node_id: page.root
+  - id: finding.sitemap.duplicates
+    severity: medium
+    summary: 2 duplicate title(s) found across 7 subpages.
+    likely_cause: Multiple subpages share the same title, which may indicate poor
+      SEO or navigation structure.
+    evidence_refs: []
+    metadata:
+      source_check: check.sitemap.duplicates
+      duplicate_titles: 2
+      examples:
+      - title: Tom Sapletta 'Blog | Platform & DevOps Engineer & Hardware Developer,
+          Expat in Germany
+        urls:
+        - https://tom.sapletta.com/pl/
+        - https://tom.sapletta.com/de/
+        - https://tom.sapletta.com/ru/
+      - title: 'Data Streaming: An Insight into NDOF: Newline Delimited Objects Format
+          - 10 | Tom Sapletta ''Blog'
+        urls:
+        - https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+        - https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+        - https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
+    node_id: sitemap.root
+  actions:
+  - id: action.web.asset_status
+    type: investigate_broken_resources
+    summary: 'Resolve finding.web.asset_status: 4 of 61 assets returned error status.'
+    priority: high
+    evidence_refs: []
+    metadata:
+      finding: finding.web.asset_status
+    target: page.root
+  - id: action.sitemap.duplicates
+    type: fix_duplicate_titles
+    summary: 'Resolve finding.sitemap.duplicates: 2 duplicate title(s) found across
+      7 subpages.'
+    priority: medium
+    evidence_refs: []
+    metadata:
+      finding: finding.sitemap.duplicates
+    target: sitemap.root

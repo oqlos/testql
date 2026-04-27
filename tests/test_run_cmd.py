@@ -85,3 +85,29 @@ class TestRunCommandInputs:
 
         assert result.exit_code != 0
         assert "expected an existing file, directory, or glob pattern" in result.output
+
+    def test_run_accepts_shell_expanded_multiple_files(self, tmp_path: Path, monkeypatch) -> None:
+        _install_fake_interpreter(monkeypatch)
+        a = tmp_path / "a.testql.toon.yaml"
+        b = tmp_path / "b.testql.toon.yaml"
+        _mk_scenario(a)
+        _mk_scenario(b)
+
+        runner = CliRunner()
+        result = runner.invoke(
+            cli,
+            [
+                "run",
+                str(a),
+                str(b),
+                "--output",
+                "json",
+                "--quiet",
+                "--dry-run",
+            ],
+        )
+
+        assert result.exit_code == 0
+        data = json.loads(result.output)
+        assert data["files"] == 2
+        assert len(data["runs"]) == 2
