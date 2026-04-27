@@ -8,10 +8,21 @@ OUT_DIR="${PROJECT_DIR}/.testql-manifest-smoke"
 GEN_DIR="${OUT_DIR}/generated"
 REP_DIR="${OUT_DIR}/reports"
 
+if [[ -n "${TESTQL_BIN:-}" ]]; then
+  TQL="$TESTQL_BIN"
+elif [[ -x "$PROJECT_DIR/.venv/bin/testql" ]]; then
+  TQL="$PROJECT_DIR/.venv/bin/testql"
+elif [[ -x "/home/tom/github/oqlos/testql/.venv/bin/testql" ]]; then
+  TQL="/home/tom/github/oqlos/testql/.venv/bin/testql"
+else
+  TQL="testql"
+fi
+
 mkdir -p "$GEN_DIR" "$REP_DIR"
 
 echo "== testql manifest smoke =="
 echo "project: $PROJECT_DIR"
+echo "testql: $TQL"
 
 gen_from() {
   local src="$1"
@@ -20,7 +31,7 @@ gen_from() {
 
   if [[ -f "$file" ]]; then
     echo "[generate-ir] ${src}:${file}"
-    testql generate-ir --from "${src}:${file}" --to testtoon --out "$out"
+    "$TQL" generate-ir --from "${src}:${file}" --to testtoon --out "$out"
   else
     echo "[skip] file not found: $file"
   fi
@@ -45,15 +56,15 @@ gen_from config "$BUF_PATH" "$GEN_DIR/config-buf.testql.toon.yaml"
 
 if compgen -G "$GEN_DIR/*.testql.toon.yaml" > /dev/null; then
   echo "[run] dry-run all generated scenarios"
-  testql run "$GEN_DIR" --dry-run --quiet --output json > "$REP_DIR/manifest-run.json"
+  "$TQL" run "$GEN_DIR" --dry-run --quiet --output json > "$REP_DIR/manifest-run.json"
   echo "[ok] report: $REP_DIR/manifest-run.json"
 else
   echo "[warn] no generated scenarios found"
 fi
 
-if command -v testql >/dev/null 2>&1; then
+if command -v "$TQL" >/dev/null 2>&1 || [[ -x "$TQL" ]]; then
   echo "[topology]"
-  testql topology "$PROJECT_DIR" --format json > "$REP_DIR/topology.json" || true
+  "$TQL" topology "$PROJECT_DIR" --format json > "$REP_DIR/topology.json" || true
 fi
 
 echo "done"

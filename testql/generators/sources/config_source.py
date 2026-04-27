@@ -119,6 +119,8 @@ def _parse_docker_compose(content: str) -> list[dict[str, Any]]:
     """Parse docker-compose.yml and extract services."""
     data = yaml.safe_load(content) or {}
     services = data.get('services', {})
+    if not services:
+        return []
     return [
         {
             'name': name,
@@ -178,6 +180,11 @@ def _filter_commands(commands: list[str], target_name: str) -> list[str]:
     """Filter and clean commands for testing."""
     filtered = []
     for cmd in commands:
+        # Handle dict commands (from Taskfile.yml)
+        if isinstance(cmd, dict):
+            cmd = cmd.get('cmd', '')
+        # Convert to string
+        cmd = str(cmd)
         # Skip multi-line commands (contain newlines)
         if '\n' in cmd or ';' in cmd:
             continue
@@ -187,6 +194,14 @@ def _filter_commands(commands: list[str], target_name: str) -> list[str]:
         cmd = cmd.replace('${COMPOSE_CMD}', 'docker-compose')
         # Skip empty commands after cleaning
         if not cmd.strip() or len(cmd.strip()) < 3:
+            continue
+        # Skip shell control flow fragments (whole words only)
+        cmd_lower = cmd.strip().lower()
+        words = re.findall(r'\b\w+\b', cmd_lower)
+        if any(kw in words for kw in ['else', 'fi', 'then', 'do', 'done', 'elif', 'case', 'esac']):
+            continue
+        # Skip commands with Makefile variables that need expansion
+        if '$(' in cmd or '${' in cmd:
             continue
         # Skip commands that are just echo statements (unless validation related)
         if cmd.strip().startswith('echo') and not any(k in target_name for k in ['validate', 'check', 'test']):

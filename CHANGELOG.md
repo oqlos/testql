@@ -130,6 +130,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Remaining
 - Add Playwright-backed browser execution, JavaScript-rendered DOM capture, screenshots, console errors, network logs, link-by-link validation, accessibility/performance checks, MCP service integration, and runtime-vs-code delta reports.
 
+## [1.2.35] - 2026-04-27
+
+### Docs
+- Update README.md
+- Update docs/MANIFEST_TESTING_AND_REFACTOR_FLOW.md
+
+### Test
+- Update testql/generators/sources/config_source.py
+- Update testql/mcp/server.py
+
+### Other
+- Update coverage.json
+- Update debug_makefile.py
+- Update scripts/smoke_manifest_flow.sh
+
 ## [1.2.34] - 2026-04-27
 
 ### Docs

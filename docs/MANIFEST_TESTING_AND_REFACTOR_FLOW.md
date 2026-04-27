@@ -86,13 +86,26 @@ Suggested metrics per iteration:
 
 Current repository state:
 
-- `testql.mcp_server` module is not present.
-- `testql` can still be orchestrated from Windsurf workflows by running CLI commands.
+- `testql.mcp.server` module is available as MCP entrypoint.
+- Tools exposed: source/target listing, IR generation, scenario run, topology build.
 
 Meaning:
 
-- Native TestQL MCP server is **not available yet** in this repo.
-- For MCP-based orchestration today, use external MCP server(s) plus `testql` CLI execution.
+- TestQL can be used as an MCP stdio server in Windsurf.
+- CLI workflows remain valid and can run alongside MCP tools.
+
+### Quick verification
+
+```bash
+.venv/bin/python -c "import testql.mcp; print('ok')"
+.venv/bin/python -m testql.mcp.server
+```
+
+If `mcp` package is missing:
+
+```bash
+pip install mcp
+```
 
 ## Windsurf setup snippets
 
@@ -101,9 +114,10 @@ Meaning:
 ```json
 {
   "mcpServers": {
-    "sumd": {
+    "testql": {
       "command": "python",
-      "args": ["-m", "sumd.mcp_server"]
+      "args": ["-m", "testql.mcp.server"],
+      "cwd": "/path/to/your/project"
     }
   }
 }
@@ -114,7 +128,7 @@ Meaning:
 Configure an MCP server with stdio transport:
 
 - command: `python`
-- args: `-m sumd.mcp_server`
+- args: `-m testql.mcp.server`
 - working directory: your project root
 
 Then execute TestQL loop commands from tasks/workflows/terminal:
@@ -123,13 +137,8 @@ Then execute TestQL loop commands from tasks/workflows/terminal:
 - `testql run ... --output json`
 - `testql topology ... --format json`
 
-## Recommended next refactor step in codebase
+## Next refactor steps in codebase
 
-Implement dedicated `testql.mcp_server` exposing minimal tools:
-
-- `generate_manifest_tests`
-- `run_manifest_tests`
-- `build_topology`
-- `summarize_report`
-
-That will allow true MCP-native control in both JetBrains and VSCode Windsurf.
+1. Add report summarization tool (`summarize_report`) returning compact NLP + metrics.
+2. Add guarded refactor proposal tool (`propose_refactor`) based on report deltas.
+3. Add MCP integration tests for stdio handshake and tool contract validation.
