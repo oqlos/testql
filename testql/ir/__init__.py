@@ -25,6 +25,7 @@ from .steps import (
     SqlStep,
     Step,
     UnitStep,
+    ValidateStep,
 )
 
 __all__ = [
@@ -43,4 +44,5 @@ __all__ = [
     "SqlStep",
     "ProtoStep",
     "GraphqlStep",
+    "ValidateStep",
 ]

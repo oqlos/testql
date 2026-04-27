@@ -229,3 +229,23 @@ class GraphqlStep(Step):
         if self.endpoint is not None:
             out["endpoint"] = self.endpoint
         return out
+
+
+@dataclass
+class ValidateStep(Step):
+    """NL/text validation step with type, target, and criteria."""
+    validate_type: str = "contains"  # contains, not_contains, regex, semantic
+    target: str = "output"  # output, stderr, stdout
+    criteria: str = ""
+
+    def __post_init__(self) -> None:
+        self.kind = "validate"
+
+    def to_dict(self) -> dict:
+        out = super().to_dict()
+        out.update({
+            "validate_type": self.validate_type,
+            "target": self.target,
+            "criteria": self.criteria,
+        })
+        return out

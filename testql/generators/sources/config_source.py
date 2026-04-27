@@ -16,6 +16,7 @@ from testql.ir import (
     ScenarioMetadata,
     ShellStep,
     TestPlan,
+    ValidateStep,
 )
 
 from .base import BaseSource, SourceLike
@@ -265,6 +266,14 @@ class ConfigSource(BaseSource):
                 command=f"cd {source_path.parent} && {command}",
                 expect_exit_code=0,
                 name=f"{target['name']}: {target['comment']}",
+            ))
+            
+            # Add VALIDATE step for output validation
+            plan.steps.append(ValidateStep(
+                validate_type="not_contains",
+                target="output",
+                criteria="Error",
+                name=f"{target['name']} validation",
             ))
         
         # Add assertions

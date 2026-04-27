@@ -29,6 +29,7 @@ from testql.ir import (
     Step,
     TestPlan,
     UnitStep,
+    ValidateStep,
 )
 
 from .base import BaseDSLAdapter, DSLDetectionResult, SourceLike, read_source
@@ -402,6 +403,17 @@ def _render_captures(steps: list[Step]) -> list[str]:
     return lines
 
 
+def _render_validate_steps(steps: list[Step]) -> list[str]:
+    """Emit a `VALIDATE[N]{type, target, criteria}` section for ValidateStep objects."""
+    validates = [s for s in steps if isinstance(s, ValidateStep)]
+    if not validates:
+        return []
+    lines = [f"VALIDATE[{len(validates)}]" + "{type, target, criteria}:"]
+    for s in validates:
+        lines.append(f"  {s.validate_type}, {s.target}, {s.criteria}")
+    return lines
+
+
 def _render_plan(plan: TestPlan) -> str:
     """Lossy renderer covering CONFIG / API / NAVIGATE / ENCODER / ASSERT.
 
@@ -425,6 +437,7 @@ def _render_plan(plan: TestPlan) -> str:
     parts.extend(_render_unit_steps(plan.steps))
     parts.extend(_render_log_steps(plan.steps))
     parts.extend(_render_assertions(plan.steps))
+    parts.extend(_render_validate_steps(plan.steps))
     parts.extend(_render_captures(plan.steps))
     return "\n".join(parts) + ("\n" if parts else "")
 
