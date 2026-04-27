@@ -53,6 +53,7 @@ class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, G
         dry_run: bool = False,
         include_paths: list[str] | None = None,
         bridge_url: str | None = None,
+        timeout_ms: int | None = None,
     ):
         # Handle bridge_url safely (BaseInterpreter in oqlos might not support it yet)
         try:
@@ -63,6 +64,7 @@ class IqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, G
         self.api_url = api_url
         self.dry_run = dry_run
         self.include_paths = include_paths or ["."]
+        self.timeout_ms = timeout_ms
         self.last_response: dict[str, Any] | None = None
         self.last_status: int = 0
         self.events: list[dict[str, Any]] = []

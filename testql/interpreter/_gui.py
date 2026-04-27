@@ -80,11 +80,14 @@ class GuiMixin:
                 selectors_to_try.append('button:has-text("Copy")')
                 selectors_to_try.append('button:has-text("clipboard")')
         
+        # Apply timeout from interpreter settings
+        timeout = self.timeout_ms if self.timeout_ms else 100
+        
         # Try each selector
         for try_selector in selectors_to_try:
             try:
                 if self._gui_driver == "playwright":
-                    if self._gui_page.is_visible(try_selector, timeout=100):
+                    if self._gui_page.is_visible(try_selector, timeout=timeout):
                         return try_selector
                 elif self._gui_driver == "selenium":
                     from selenium.webdriver.common.by import By
@@ -278,7 +281,8 @@ class GuiMixin:
                     base_url = self.vars.get("base_url", "http://localhost:8100")
                     target = f"{base_url.rstrip('/')}/{path.lstrip('/')}"
                 
-                self._gui_page.goto(target)
+                timeout = self.timeout_ms if self.timeout_ms else 30000
+                self._gui_page.goto(target, timeout=timeout)
             elif self._gui_driver == "selenium":
                 target = path
                 if not (path.startswith("http://") or path.startswith("https://")):
@@ -344,7 +348,8 @@ class GuiMixin:
 
         try:
             if self._gui_driver == "playwright":
-                element.click()
+                timeout = self.timeout_ms if self.timeout_ms else 30000
+                element.click(timeout=timeout)
             elif self._gui_driver == "selenium":
                 element.click()
 

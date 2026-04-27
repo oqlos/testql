@@ -20,7 +20,8 @@ import click
 )
 @click.option("--quiet", is_flag=True, help="Suppress step-by-step output")
 @click.option("--planfile", is_flag=True, help="Auto-create tickets for failures via planfile")
-def run(file: str, url: str, dry_run: bool, output: str, quiet: bool, planfile: bool) -> None:
+@click.option("--timeout", type=int, default=None, help="Global timeout in milliseconds for operations")
+def run(file: str, url: str, dry_run: bool, output: str, quiet: bool, planfile: bool, timeout: int | None) -> None:
     """Run a TestQL (.testql.toon.yaml) scenario."""
     from testql.interpreter import IqlInterpreter
 
@@ -32,6 +33,7 @@ def run(file: str, url: str, dry_run: bool, output: str, quiet: bool, planfile: 
         dry_run=dry_run,
         quiet=quiet,
         include_paths=[str(Path(file).parent), "."],
+        timeout_ms=timeout,
     )
     result = interp.run(source, filename)
 
