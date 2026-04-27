@@ -34,6 +34,8 @@ _BUILTIN: dict[str, type[BaseSource]] = {
     "oql": OqlSource,
 }
 
+_CONFIG_ALIASES = ("config", "makefile", "taskfile", "docker-compose", "buf")
+
 
 def _get_config_source() -> type[BaseSource]:
     """Lazy import to avoid circular dependency."""
@@ -44,22 +46,13 @@ def _get_config_source() -> type[BaseSource]:
 def get_source(name: str) -> Optional[BaseSource]:
     """Instantiate a registered source by name (e.g. "openapi")."""
     cls = _BUILTIN.get(name.lower())
-    if cls is None and name.lower() in ("config", "makefile", "taskfile", "docker-compose", "buf"):
+    if cls is None and name.lower() in _CONFIG_ALIASES:
         cls = _get_config_source()
     return cls() if cls else None
 
 
-def get_source(name: str) -> Optional[BaseSource]:
-    """Instantiate a registered source by name (e.g. "openapi")."""
-    cls = _BUILTIN.get(name.lower())
-    if cls is None and name.lower() in ("config", "makefile", "taskfile", "docker-compose", "buf"):
-        from .config_source import ConfigSource
-        cls = ConfigSource
-    return cls() if cls else None
-
-
 def available_sources() -> list[str]:
-    return sorted(_BUILTIN.keys())
+    return sorted(set(_BUILTIN.keys()) | set(_CONFIG_ALIASES))
 
 
 __all__ = [

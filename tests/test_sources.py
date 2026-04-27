@@ -109,10 +109,12 @@ _BUILTIN_SOURCE_NAMES = {
     "openapi", "sql", "proto", "graphql", "nl", "ui", "page", "pytest", "oql",
 }
 
+_CONFIG_SOURCE_ALIASES = {"config", "makefile", "taskfile", "docker-compose", "buf"}
+
 
 class TestRegistry:
     def test_builtin_sources(self):
-        assert set(available_sources()) == _BUILTIN_SOURCE_NAMES
+        assert set(available_sources()) == (_BUILTIN_SOURCE_NAMES | _CONFIG_SOURCE_ALIASES)
 
     @pytest.mark.parametrize("name", sorted(_BUILTIN_SOURCE_NAMES))
     def test_get_source(self, name):
@@ -123,6 +125,13 @@ class TestRegistry:
 
     def test_get_unknown(self):
         assert get_source("nope") is None
+
+    @pytest.mark.parametrize("name", sorted(_CONFIG_SOURCE_ALIASES))
+    def test_get_config_aliases(self, name):
+        s = get_source(name)
+        assert s is not None
+        assert isinstance(s, BaseSource)
+        assert s.name == "config"
 
 
 # ── OpenAPI ────────────────────────────────────────────────────────────────
