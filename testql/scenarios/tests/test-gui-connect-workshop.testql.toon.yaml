@@ -31,7 +31,7 @@ NAVIGATE[4]{path, wait_ms}:
   /connect-workshop/dispositions-search,  300
   /connect-workshop/requests-new-request,  300
 
-# ── Encoder HW ────────────────────────────────────────
+# ── Encoder Hardware ────────────────────────────────────────
 ENCODER[26]{action, target, value, wait_ms}:
   on,  -,  -,  300
   focus,  col1,  -,  200
@@ -60,6 +60,6 @@ ENCODER[26]{action, target, value, wait_ms}:
   status,  -,  -,  -
   off,  -,  -,  200
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[1]{method, endpoint, status}:
   GET,  /api/v3/data/customers?limit=5,  200

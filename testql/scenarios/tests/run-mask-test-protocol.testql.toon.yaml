@@ -2,7 +2,7 @@
 # TYPE: api
 # VERSION: 1.0
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[2]{method, endpoint, status}:
   GET,  /api/v3/scenarios/scn-drager-fps-7000-maska-nadcisnieniowa?include_content=true,  200
   POST,  /api/v3/protocols",  200

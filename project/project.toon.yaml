@@ -1,4 +1,4 @@
-# testql | 2146 func | 187f | 174964L | python | 2026-04-27
+# testql | 2150 func | 188f | 174943L | python | 2026-04-27
 
 HEALTH:
   CC̄=2.3  critical=48 (limit:10)  dup=4  cycles=0
@@ -15,23 +15,23 @@ ALERTS[20]:
   !!  high_fan_out     run = 18 (limit:10)
   !!  high_fan_out     generate_topology = 17 (limit:10)
 
-MODULES[395] (top by size):
-  M[project/calls.yaml] 7185L C:0 F:0 CC↑0 D:0 (yaml)
-  M[project/map.toon.yaml] 2221L C:0 F:709 CC↑0 D:4 (yaml)
+MODULES[397] (top by size):
+  M[project/calls.yaml] 7388L C:0 F:0 CC↑0 D:0 (yaml)
+  M[project/map.toon.yaml] 2226L C:0 F:713 CC↑0 D:6 (yaml)
   M[planfile.yaml] 1319L C:0 F:0 CC↑0 D:0 (yaml)
   M[tree.txt] 804L C:0 F:0 CC↑0 D:0 (txt)
   M[code2llm_output/calls.yaml] 799L C:0 F:0 CC↑0 D:0 (yaml)
   M[testql/interpreter/_gui.py] 694L C:1 F:34 CC↑12 D:0 (python)
   M[testql/interpreter/_testtoon_parser.py] 672L C:2 F:38 CC↑14 D:0 (python)
-  M[project/calls.toon.yaml] 640L C:0 F:0 CC↑0 D:0 (yaml)
-  M[testql/generators/sources/oql_source.py] 585L C:4 F:42 CC↑10 D:0 (python)
+  M[project/calls.toon.yaml] 597L C:0 F:0 CC↑0 D:0 (yaml)
   M[testql/generators/page_analyzer.py] 526L C:1 F:31 CC↑10 D:3 (python)
   M[goal.yaml] 511L C:0 F:0 CC↑0 D:0 (yaml)
   M[testql/adapters/scenario_yaml.py] 506L C:1 F:43 CC↑13 D:1 (python)
   M[testql/results/analyzer.py] 504L C:0 F:38 CC↑14 D:3 (python)
-  M[project/analysis.toon.yaml] 496L C:0 F:0 CC↑0 D:0 (yaml)
+  M[project/analysis.toon.yaml] 492L C:0 F:0 CC↑0 D:0 (yaml)
   M[testql/adapters/testtoon_adapter.py] 488L C:1 F:32 CC↑10 D:4 (python)
-  LANGS: python:221/yaml:127/shell:20/other:17/txt:4/yml:2/json:2/doql:1/toml:1
+  M[testql/commands/encoder_routes.py] 477L C:0 F:27 CC↑10 D:0 (python)
+  LANGS: python:223/yaml:127/shell:20/other:17/txt:4/yml:2/json:2/doql:1/toml:1
 
 HOTSPOTS[10]:
   ★ parse_testtoon fan=21  // Orchestrates 21 calls
@@ -51,4 +51,4 @@ REFACTOR[15]:
   [5] H/H Split god module testql/generators/page_analyzer.py (526L, 1 classes)
 
 EVOLUTION:
-  2026-04-27 CC̄=2.3 crit=48 174964L // Automated analysis
+  2026-04-27 CC̄=2.3 crit=48 174943L // Automated analysis

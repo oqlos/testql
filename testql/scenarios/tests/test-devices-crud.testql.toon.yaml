@@ -2,7 +2,7 @@
 # TYPE: api
 # VERSION: 1.0
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[4]{method, endpoint, status}:
   GET,  /api/v3/data/devices?limit=10,  200
   GET,  /api/v3/data/customers?limit=5,  200

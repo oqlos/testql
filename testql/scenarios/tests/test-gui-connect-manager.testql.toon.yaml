@@ -40,7 +40,7 @@ ENCODER[20]{action, target, value, wait_ms}:
   dblclick,  -,  -,  200
   off,  -,  -,  200
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[3]{method, endpoint, status}:
   GET,  /api/v3/data/test_scenarios?limit=5,  200
   GET,  /api/v3/data/intervals?limit=5,  200

@@ -25,7 +25,7 @@ TestQL — Multi-DSL Test Platform: TestTOON / NL / SQL / Proto / GraphQL adapte
 ## Metadata
 
 - **name**: `testql`
-- **version**: `1.2.30`
+- **version**: `1.2.31`
 - **python_requires**: `>=3.10`
 - **license**: {'text': 'Apache-2.0'}
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -46,7 +46,7 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 1.2.30;
+  version: 1.2.31;
 }
 
 dependencies {
@@ -3435,7 +3435,7 @@ pipeline:
 ```yaml
 project:
   name: testql
-  version: 1.2.30
+  version: 1.2.31
   env: local
 ```
 
@@ -3524,13 +3524,13 @@ pip install -e .[dev]
 ### `project/map.toon.yaml`
 
 ```toon markpact:analysis path=project/map.toon.yaml
-# testql | 329f 38888L | python:304,shell:21,less:4 | 2026-04-27
-# stats: 783 func | 538 cls | 329 mod | CC̄=3.7 | critical:23 | cycles:0
+# testql | 331f 38913L | python:306,shell:21,less:4 | 2026-04-27
+# stats: 783 func | 538 cls | 331 mod | CC̄=3.7 | critical:23 | cycles:0
 # alerts[5]: CC parse_testtoon=14; CC _expand_flow=14; CC _check_link_statuses=14; CC _action_type=14; CC _encoder_step=13
 # hotspots[5]: generate_from_page fan=19; heal_scenario fan=19; watch fan=19; suite fan=19; main fan=18
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[329]:
+M[331]:
   TODO/testtoon_parser.py,142
   app.doql.less,232
   examples/api-testing/mock_server.py,51
@@ -3672,12 +3672,14 @@ M[329]:
   testql/generators/pipeline.py,96
   testql/generators/pytest_generator.py,148
   testql/generators/scenario_generator.py,88
-  testql/generators/sources/__init__.py,61
+  testql/generators/sources/__init__.py,66
   testql/generators/sources/base.py,33
   testql/generators/sources/graphql_source.py,67
   testql/generators/sources/nl_source.py,28
   testql/generators/sources/openapi_source.py,94
-  testql/generators/sources/oql_source.py,586
+  testql/generators/sources/oql_models.py,31
+  testql/generators/sources/oql_parser.py,268
+  testql/generators/sources/oql_source.py,307
   testql/generators/sources/page_source.py,173
   testql/generators/sources/proto_source.py,91
   testql/generators/sources/pytest_source.py,390
@@ -4651,11 +4653,15 @@ D:
     _pick_success_status(responses)
     _operation_to_step(method;path;op_spec)
     _iter_operations(paths)
-  testql/generators/sources/oql_source.py:
-    e: OqlCommand,ParsedScenario,OqlParser,OqlSource
+  testql/generators/sources/oql_models.py:
+    e: OqlCommand,ParsedScenario
     OqlCommand:  # Represents a single OQL/CQL command.
     ParsedScenario:  # Represents a parsed OQL/CQL scenario file.
+  testql/generators/sources/oql_parser.py:
+    e: OqlParser
     OqlParser: parse_file(1),_read_file_content(1),_should_skip_line(1),_extract_metadata_from_comment(2),_handle_sequence_block(3),_categorize_command(2),_parse_command(3),_create_command_from_match(4),_parse_set_command(3),_parse_read_command(3),_parse_write_command(3),_parse_check_command(3),_parse_wait_command(3),_parse_poll_command(3),_parse_exec_command(3),_parse_log_command(3),_parse_call_command(3),_parse_sequence_command(3),_parse_end_command(3),_parse_generic_command(3)  # Parse OQL/CQL scenario files.
+  testql/generators/sources/oql_source.py:
+    e: OqlSource
     OqlSource: load(1),ingest(1),_to_unified_ir(1),_detect_scenario_type(1),_convert_command(1),_convert_set(1),_convert_read(1),_convert_write(1),_convert_check(1),_convert_wait(1),_convert_poll(1),_convert_exec(1),_convert_log(1),_convert_call(1),to_oql(1),_build_oql_header(1),_build_oql_config(1),_build_oql_steps(1),_render_step_to_oql(2),_render_hardware_step(1),_build_oql_assertions(1),_render_assertion_to_oql(2)  # Source adapter for OQL/CQL scenario files.
   testql/generators/sources/page_source.py:
     e: extract_elements_from_page,_path_of,_origin,PageSource
@@ -5929,26 +5935,26 @@ HUBS[20]:
     CC=13  in:0  out:30  total:30
   testql.adapters.scenario_yaml._render_step
     CC=10  in:2  out:26  total:28
-  testql.commands.generate_topology_cmd.generate_topology
-    CC=5  in:0  out:24  total:24
-  testql._base_fallback.VariableStore.set
-    CC=1  in:24  out:0  total:24
-  testql.commands.inspect_cmd.inspect
-    CC=6  in:0  out:24  total:24
-  testql.commands.generate_cmd._print_routes_section
-    CC=10  in:1  out:23  total:24
   testql.cli.check_and_upgrade
     CC=9  in:1  out:23  total:24
+  testql._base_fallback.VariableStore.set
+    CC=1  in:24  out:0  total:24
+  testql.commands.generate_cmd._print_routes_section
+    CC=10  in:1  out:23  total:24
+  testql.commands.inspect_cmd.inspect
+    CC=6  in:0  out:24  total:24
+  testql.commands.generate_topology_cmd.generate_topology
+    CC=5  in:0  out:24  total:24
   testql.commands.encoder_routes._run_oql_lines
     CC=6  in:1  out:22  total:23
-  testql.commands.echo.parsers.doql._parse_workflows
-    CC=7  in:1  out:22  total:23
   testql.adapters.scenario_yaml._gui_step
     CC=9  in:0  out:23  total:23
-  testql.commands.misc_cmds.report
-    CC=4  in:0  out:22  total:22
+  testql.commands.echo.parsers.doql._parse_workflows
+    CC=7  in:1  out:22  total:23
   testql.adapters.base.read_source
     CC=5  in:13  out:9  total:22
+  testql.commands.misc_cmds.report
+    CC=4  in:0  out:22  total:22
   testql.runner.parse_line
     CC=9  in:2  out:20  total:22
   testql.adapters.sql.fixtures.schema_fixture_from_rows
@@ -5975,8 +5981,10 @@ MODULES:
     main  CC=2  out:10
   examples.browser-inspection.run  [1 funcs]
     print  CC=0  out:0
-  project.map.toon  [2 funcs]
+  project.map.toon  [4 funcs]
+    available_sources  CC=0  out:0
     build_topology  CC=0  out:0
+    get_source  CC=0  out:0
     run_self_test  CC=0  out:0
   testql._base_fallback  [4 funcs]
     emit  CC=2  out:2
@@ -6019,14 +6027,11 @@ MODULES:
     _build_api  CC=6  out:8
     _build_assert  CC=2  out:5
     _build_encoder  CC=2  out:5
-  testql.adapters.proto.compatibility  [7 funcs]
+  testql.adapters.proto.compatibility  [4 funcs]
     _compare_field  CC=5  out:8
     _compare_message  CC=2  out:3
     _find_candidate_field  CC=6  out:2
-    _scan_new_messages  CC=4  out:2
-    _scan_old_messages  CC=3  out:5
     _wire_compatible  CC=4  out:1
-    compare_schemas  CC=2  out:3
   testql.adapters.proto.descriptor_loader  [7 funcs]
     _iter_messages  CC=3  out:4
     _parse_field  CC=3  out:9
@@ -6035,9 +6040,6 @@ MODULES:
     _strip_comments  CC=1  out:2
     load_proto_file  CC=1  out:3
     parse_proto  CC=4  out:9
-  testql.adapters.proto.message_validator  [2 funcs]
-    _validate_field_value  CC=3  out:2
-    coerce_scalar  CC=5  out:6
   testql.adapters.registry  [2 funcs]
     all  CC=1  out:2
     detect  CC=9  out:8
@@ -6102,6 +6104,11 @@ MODULES:
     check_and_upgrade  CC=9  out:23
     cli  CC=1  out:3
     main  CC=1  out:2
+  testql.commands.auto_cmd  [4 funcs]
+    _render_console_report  CC=4  out:13
+    _render_markdown_report  CC=4  out:8
+    _run_generation_phase  CC=2  out:10
+    _run_report_phase  CC=3  out:11
   testql.commands.discover_cmd  [1 funcs]
     discover  CC=5  out:17
   testql.commands.echo.cli  [1 funcs]
@@ -6247,6 +6254,8 @@ MODULES:
     __init__  CC=2  out:1
     default_probes  CC=3  out:9
     discover_path  CC=1  out:2
+  testql.generators.api_generator  [1 funcs]
+    _deduplicate_rest_routes  CC=4  out:3
   testql.generators.base  [1 funcs]
     _should_exclude_path  CC=1  out:3
   testql.generators.multi  [1 funcs]
@@ -6269,9 +6278,6 @@ MODULES:
     sorted_sources  CC=1  out:1
     sorted_targets  CC=1  out:1
     write  CC=5  out:9
-  testql.generators.sources  [2 funcs]
-    available_sources  CC=1  out:2
-    get_source  CC=2  out:3
   testql.generators.sources.graphql_source  [4 funcs]
     load  CC=3  out:7
     _is_smoke_target  CC=3  out:2

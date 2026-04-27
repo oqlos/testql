@@ -34,7 +34,7 @@ SELECT[2]{action, id, meta}:
 FLOW[1]{command, target, meta}:
   start_test,  ts-c20,  {scenario:C20 standard}
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[2]{method, endpoint, status}:
   GET,  /api/v3/data/protocols?limit=3,  200
   GET,  /api/v3/data/test_scenarios?limit=3,  200

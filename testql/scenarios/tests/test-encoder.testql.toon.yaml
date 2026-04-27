@@ -2,11 +2,11 @@
 # TYPE: gui
 # VERSION: 1.0
 
-# ── Konfiguracja ──────────────────────────────────────
+# ── Configuration ──────────────────────────────────────
 CONFIG[1]{key, value}:
-  encoder_url,  http://localhost:8105
+  encoder_url,  ${ENCODER_URL:-http://localhost:8105}
 
-# ── Encoder HW ────────────────────────────────────────
+# ── Encoder Hardware ────────────────────────────────────────
 ENCODER[31]{action, target, value, wait_ms}:
   on,  -,  -,  300
   status,  -,  -,  -

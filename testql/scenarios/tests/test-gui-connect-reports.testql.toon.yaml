@@ -43,6 +43,6 @@ ENCODER[22]{action, target, value, wait_ms}:
   dblclick,  -,  -,  200
   off,  -,  -,  200
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[1]{method, endpoint, status}:
   GET,  /api/v3/data/protocols?limit=5,  200

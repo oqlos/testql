@@ -16,7 +16,7 @@ SELECT[2]{action, id, meta}:
   device,  d-001,  {type:MSA_G1, serial:AO73138}
   interval,  36m,  {code:periodic_36m}
 
-# ── Kroki semantyczne ─────────────────────────────────
+# ── Semantic Steps ─────────────────────────────────
 FLOW[4]{command, target, meta}:
   start_test,  ts-c20,  {scenario:C20 standard}
   protocol_created,  pro-example,  {via:cqrs}

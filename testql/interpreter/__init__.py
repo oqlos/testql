@@ -18,6 +18,8 @@ from ._testtoon_parser import (
     testtoon_to_oql,
     validate_testtoon,
 )
+from .testtoon_models import ToonScript, ToonSection
+from .testtoon_parser import parse_testtoon
 from ._converter import convert_oql_to_testtoon
 
 __all__ = [

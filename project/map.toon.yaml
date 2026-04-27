@@ -1,10 +1,10 @@
-# testql | 329f 38888L | python:304,shell:21,less:4 | 2026-04-27
-# stats: 783 func | 538 cls | 329 mod | CC̄=3.7 | critical:23 | cycles:0
+# testql | 331f 38913L | python:306,shell:21,less:4 | 2026-04-27
+# stats: 783 func | 538 cls | 331 mod | CC̄=3.7 | critical:23 | cycles:0
 # alerts[5]: CC parse_testtoon=14; CC _expand_flow=14; CC _check_link_statuses=14; CC _action_type=14; CC _encoder_step=13
 # hotspots[5]: generate_from_page fan=19; heal_scenario fan=19; watch fan=19; suite fan=19; main fan=18
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[329]:
+M[331]:
   TODO/testtoon_parser.py,142
   app.doql.less,232
   examples/api-testing/mock_server.py,51
@@ -146,12 +146,14 @@ M[329]:
   testql/generators/pipeline.py,96
   testql/generators/pytest_generator.py,148
   testql/generators/scenario_generator.py,88
-  testql/generators/sources/__init__.py,61
+  testql/generators/sources/__init__.py,66
   testql/generators/sources/base.py,33
   testql/generators/sources/graphql_source.py,67
   testql/generators/sources/nl_source.py,28
   testql/generators/sources/openapi_source.py,94
-  testql/generators/sources/oql_source.py,586
+  testql/generators/sources/oql_models.py,31
+  testql/generators/sources/oql_parser.py,268
+  testql/generators/sources/oql_source.py,307
   testql/generators/sources/page_source.py,173
   testql/generators/sources/proto_source.py,91
   testql/generators/sources/pytest_source.py,390
@@ -1125,11 +1127,15 @@ D:
     _pick_success_status(responses)
     _operation_to_step(method;path;op_spec)
     _iter_operations(paths)
-  testql/generators/sources/oql_source.py:
-    e: OqlCommand,ParsedScenario,OqlParser,OqlSource
+  testql/generators/sources/oql_models.py:
+    e: OqlCommand,ParsedScenario
     OqlCommand:  # Represents a single OQL/CQL command.
     ParsedScenario:  # Represents a parsed OQL/CQL scenario file.
+  testql/generators/sources/oql_parser.py:
+    e: OqlParser
     OqlParser: parse_file(1),_read_file_content(1),_should_skip_line(1),_extract_metadata_from_comment(2),_handle_sequence_block(3),_categorize_command(2),_parse_command(3),_create_command_from_match(4),_parse_set_command(3),_parse_read_command(3),_parse_write_command(3),_parse_check_command(3),_parse_wait_command(3),_parse_poll_command(3),_parse_exec_command(3),_parse_log_command(3),_parse_call_command(3),_parse_sequence_command(3),_parse_end_command(3),_parse_generic_command(3)  # Parse OQL/CQL scenario files.
+  testql/generators/sources/oql_source.py:
+    e: OqlSource
     OqlSource: load(1),ingest(1),_to_unified_ir(1),_detect_scenario_type(1),_convert_command(1),_convert_set(1),_convert_read(1),_convert_write(1),_convert_check(1),_convert_wait(1),_convert_poll(1),_convert_exec(1),_convert_log(1),_convert_call(1),to_oql(1),_build_oql_header(1),_build_oql_config(1),_build_oql_steps(1),_render_step_to_oql(2),_render_hardware_step(1),_build_oql_assertions(1),_render_assertion_to_oql(2)  # Source adapter for OQL/CQL scenario files.
   testql/generators/sources/page_source.py:
     e: extract_elements_from_page,_path_of,_origin,PageSource

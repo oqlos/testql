@@ -4,7 +4,7 @@ flowchart TD
     examples__api_testing["examples.api-testing<br/>8 funcs"]
     examples__artifact_bundle["examples.artifact-bundle<br/>1 funcs"]
     examples__browser_inspection["examples.browser-inspection<br/>1 funcs"]
-    project__map["project.map<br/>709 funcs"]
+    project__map["project.map<br/>713 funcs"]
     testql___base_fallback["testql._base_fallback<br/>26 funcs"]
     testql__adapters["testql.adapters<br/>296 funcs"]
     testql__cli["testql.cli<br/>3 funcs"]
@@ -28,17 +28,17 @@ flowchart TD
     testql__results ==>|8| code2llm_output__map
     testql__adapters ==>|8| code2llm_output__map
     testql__integrations ==>|8| examples__browser_inspection
-    testql__commands ==>|7| testql__generators
     testql__commands ==>|7| testql__results
     testql__commands ==>|6| testql___base_fallback
+    testql__commands ==>|6| testql__generators
     testql__interpreter ==>|6| code2llm_output__map
     testql__discovery ==>|6| testql___base_fallback
     testql__ir_runner ==>|6| testql__adapters
     testql__generators ==>|5| code2llm_output__map
     testql__adapters ==>|5| testql___base_fallback
     examples__artifact_bundle ==>|4| examples__browser_inspection
+    testql__commands ==>|4| project__map
     testql__meta ==>|4| testql___base_fallback
-    testql__commands -->|3| project__map
     testql__interpreter -->|3| testql___base_fallback
     testql__results -->|3| testql__topology
     testql__generators -->|3| testql___base_fallback
@@ -49,6 +49,7 @@ flowchart TD
     testql__interpreter -->|2| examples__browser_inspection
     testql__ir -->|2| code2llm_output__map
     testql__discovery -->|2| code2llm_output__map
+    testql__generators -->|2| project__map
     testql__meta -->|2| code2llm_output__map
     testql__meta -->|2| testql__adapters
     testql__detectors -->|2| examples__browser_inspection

@@ -44,7 +44,7 @@ ENCODER[21]{action, target, value, wait_ms}:
   dblclick,  -,  -,  200
   off,  -,  -,  200
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[2]{method, endpoint, status}:
   GET,  /api/v3/config/settings,  200
   GET,  /api/v3/feature-flags,  200

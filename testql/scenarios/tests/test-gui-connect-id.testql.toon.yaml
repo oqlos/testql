@@ -18,7 +18,7 @@ FLOW[1]{command, target, meta}:
 WAIT[1]{ms}:
   200
 
-# ── Nawigacja UI ──────────────────────────────────────
+# ── UI Navigation ──────────────────────────────────────
 NAVIGATE[3]{path, wait_ms}:
   /connect-id/qr,  300
   /connect-id/manual,  300
@@ -65,6 +65,6 @@ ENCODER[25]{action, target, value, wait_ms}:
   status,  -,  -,  -
   off,  -,  -,  200
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[1]{method, endpoint, status}:
   GET,  /api/v3/auth/users,  200

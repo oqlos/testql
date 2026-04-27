@@ -2,7 +2,7 @@
 # TYPE: gui
 # VERSION: 1.0
 
-# ── Nawigacja UI ──────────────────────────────────────
+# ── UI Navigation ──────────────────────────────────────
 NAVIGATE[1]{path, wait_ms}:
   /connect-manager,  300
 

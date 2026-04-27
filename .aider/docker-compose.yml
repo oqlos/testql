@@ -1,0 +1,18 @@
+services:
+  aider:
+    build:
+      context: ..
+      dockerfile: .aider/Dockerfile
+    working_dir: /workspace
+    volumes:
+      - ../:/workspace
+    environment:
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      AIDER_MODEL: ${AIDER_MODEL:-openrouter/deepseek/deepseek-chat-v3-0324:free}
+    command: >
+      aider
+      --model ${AIDER_MODEL:-openrouter/deepseek/deepseek-chat-v3-0324:free}
+      --yes
+      .windsurf/workflows/testql-autoloop.md
+      .testql/autoloop-state.json
+      .testql/schemas/llm-decision.schema.json

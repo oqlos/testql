@@ -4,17 +4,17 @@
 
 - **Project**: /home/tom/github/oqlos/testql
 - **Primary Language**: python
-- **Languages**: python: 221, yaml: 127, shell: 20, txt: 4, json: 2
+- **Languages**: python: 223, yaml: 127, shell: 20, txt: 4, json: 2
 - **Analysis Mode**: static
-- **Total Functions**: 2146
+- **Total Functions**: 2150
 - **Total Classes**: 195
-- **Modules**: 395
-- **Entry Points**: 1607
+- **Modules**: 397
+- **Entry Points**: 1611
 
 ## Architecture by Module
 
 ### project.map.toon
-- **Functions**: 778
+- **Functions**: 783
 - **File**: `map.toon.yaml`
 
 ### code2llm_output.map.toon
@@ -25,11 +25,6 @@
 - **Functions**: 43
 - **Classes**: 1
 - **File**: `scenario_yaml.py`
-
-### testql.generators.sources.oql_source
-- **Functions**: 42
-- **Classes**: 4
-- **File**: `oql_source.py`
 
 ### testql.interpreter._testtoon_parser
 - **Functions**: 38
@@ -84,10 +79,20 @@
 - **Classes**: 1
 - **File**: `graphql_adapter.py`
 
+### testql.generators.sources.oql_source
+- **Functions**: 22
+- **Classes**: 1
+- **File**: `oql_source.py`
+
 ### testql.openapi_generator
 - **Functions**: 21
 - **Classes**: 3
 - **File**: `openapi_generator.py`
+
+### testql.generators.sources.oql_parser
+- **Functions**: 20
+- **Classes**: 1
+- **File**: `oql_parser.py`
 
 ### testql.ir.steps
 - **Functions**: 19
@@ -103,11 +108,6 @@
 - **Functions**: 19
 - **Classes**: 2
 - **File**: `api_generator.py`
-
-### testql.runner
-- **Functions**: 18
-- **Classes**: 3
-- **File**: `runner.py`
 
 ## Key Entry Points
 
@@ -217,12 +217,12 @@ Examples:
 ### testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_taborder
 - **Calls**: shlex.split, DomScanner, scanner.assert_taborder, len, self.out.fail, self.results.append, int, getattr
 
-### testql.adapters.testtoon_adapter._api_section_to_steps
-- **Calls**: steps.append, row.get, row.get, asserts.append, row.get, asserts.append, None.strip, ApiStep
-
 ### testql.generators.api_generator.APIGeneratorMixin._generate_api_tests
 > Generate comprehensive API tests from discovered routes.
 - **Calls**: self.profile.config.get, self.profile.config.get, self._validate_endpoints, self._build_api_test_header, sections.extend, sections.extend, sections.extend, sections.extend
+
+### testql.adapters.testtoon_adapter._api_section_to_steps
+- **Calls**: steps.append, row.get, row.get, asserts.append, row.get, asserts.append, None.strip, ApiStep
 
 ### testql.commands.misc_cmds.from_sumd
 > Generate TestQL scenarios from SUMD.md documentation.
@@ -325,12 +325,12 @@ Commands:
 - **Key Methods**: testql.generators.sources.oql_source.OqlSource.load, testql.generators.sources.oql_source.OqlSource.ingest, testql.generators.sources.oql_source.OqlSource._to_unified_ir, testql.generators.sources.oql_source.OqlSource._detect_scenario_type, testql.generators.sources.oql_source.OqlSource._convert_command, testql.generators.sources.oql_source.OqlSource._convert_set, testql.generators.sources.oql_source.OqlSource._convert_read, testql.generators.sources.oql_source.OqlSource._convert_write, testql.generators.sources.oql_source.OqlSource._convert_check, testql.generators.sources.oql_source.OqlSource._convert_wait
 - **Inherits**: BaseSource
 
-### testql.generators.sources.oql_source.OqlParser
+### testql.generators.sources.oql_parser.OqlParser
 > Parse OQL/CQL scenario files.
 
 OQL (Object Query Language) and CQL (Command Query Language) are comm
 - **Methods**: 20
-- **Key Methods**: testql.generators.sources.oql_source.OqlParser.parse_file, testql.generators.sources.oql_source.OqlParser._read_file_content, testql.generators.sources.oql_source.OqlParser._should_skip_line, testql.generators.sources.oql_source.OqlParser._extract_metadata_from_comment, testql.generators.sources.oql_source.OqlParser._handle_sequence_block, testql.generators.sources.oql_source.OqlParser._categorize_command, testql.generators.sources.oql_source.OqlParser._parse_command, testql.generators.sources.oql_source.OqlParser._create_command_from_match, testql.generators.sources.oql_source.OqlParser._parse_set_command, testql.generators.sources.oql_source.OqlParser._parse_read_command
+- **Key Methods**: testql.generators.sources.oql_parser.OqlParser.parse_file, testql.generators.sources.oql_parser.OqlParser._read_file_content, testql.generators.sources.oql_parser.OqlParser._should_skip_line, testql.generators.sources.oql_parser.OqlParser._extract_metadata_from_comment, testql.generators.sources.oql_parser.OqlParser._handle_sequence_block, testql.generators.sources.oql_parser.OqlParser._categorize_command, testql.generators.sources.oql_parser.OqlParser._parse_command, testql.generators.sources.oql_parser.OqlParser._create_command_from_match, testql.generators.sources.oql_parser.OqlParser._parse_set_command, testql.generators.sources.oql_parser.OqlParser._parse_read_command
 
 ### testql.generators.api_generator.APIGeneratorMixin
 > Mixin for generating API-focused test scenarios.
@@ -529,9 +529,9 @@ Functions exposed as public API (no underscore prefix):
 - `testql.echo_schemas.ProjectEcho.to_text` - 20 calls
 - `testql.commands.misc_cmds.init` - 20 calls
 - `testql.commands.misc_cmds.echo` - 20 calls
+- `testql.commands.auto_cmd.auto` - 20 calls
 - `testql.commands.endpoints_cmd.endpoints` - 20 calls
 - `testql.adapters.sql.fixtures.schema_fixture_from_rows` - 20 calls
-- `testql.commands.auto_cmd.auto` - 20 calls
 - `testql.doql_parser.DoqlParser.parse` - 19 calls
 - `testql.commands.generate_cmd.generate` - 18 calls
 - `testql.discovery.probes.filesystem.package_python.PythonPackageProbe.probe` - 18 calls

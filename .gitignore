@@ -1,4 +1,10 @@
 .testql
+!.testql/
+!.testql/autoloop-state.json
+!.testql/schemas/
+!.testql/schemas/llm-decision.schema.json
+!.testql/reports/
+!.testql/reports/llm-decision.json
 uv.lock
 .testql-c2004
 .testql-connect-id
@@ -230,3 +236,8 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+.aider*
+.aider*
+.aider*
+.aider*
+.aider*

@@ -2,7 +2,7 @@
 # TYPE: api
 # VERSION: 1.0
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[6]{method, endpoint, status}:
   GET,  /api/v3/data/dsl_objects?limit=100,  200
   GET,  /api/v3/data/dsl_functions?limit=100,  200

@@ -23,7 +23,7 @@ FLOW[18]{command, target, meta}:
   report_open,  pro-123456,  {action:modal}
   report_print,  pro-123456,  {template:c10, format:pdf}
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[2]{method, endpoint, status}:
   GET,  /api/v3/data/protocols?limit=3,  200
   GET,  /api/v3/data/test_scenarios?limit=3,  200
