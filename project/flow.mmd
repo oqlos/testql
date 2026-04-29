@@ -4,7 +4,9 @@ flowchart TD
     classDef entry fill:#4dabf7,stroke:#1971c2,color:#fff
 
     subgraph CLI
+        testql__cli__mcp_serve["mcp_serve"]
         testql__cli__cli["cli"]
+        testql__cli___fetch_latest_version["_fetch_latest_version"]
         testql__cli__check_and_upgrade["check_and_upgrade"]
         testql__cli__main["main"]
     end
@@ -25,7 +27,7 @@ flowchart TD
         code2llm_output__map__toon__endpoints["endpoints"]
         code2llm_output__map__toon__openapi["openapi"]
         code2llm_output__map__toon__init["init"]
-        ...["+1566 more"]
+        ...["+1577 more"]
     end
 
     class code2llm_output__map__toon___parse_api_args,code2llm_output__map__toon___parse_meta_from_args,code2llm_output__map__toon___parse_target_from_args,code2llm_output__map__toon___detect_scenario_type,code2llm_output__map__toon___extract_scenario_name,code2llm_output__map__toon__convert_oql_to_testtoon,code2llm_output__map__toon__convert_file,code2llm_output__map__toon__convert_directory,code2llm_output__map__toon__cli,code2llm_output__map__toon__run entry

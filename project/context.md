@@ -4,12 +4,12 @@
 
 - **Project**: /home/tom/github/oqlos/testql
 - **Primary Language**: python
-- **Languages**: python: 223, yaml: 127, shell: 20, txt: 4, json: 2
+- **Languages**: python: 230, yaml: 152, shell: 23, json: 18, txt: 4
 - **Analysis Mode**: static
-- **Total Functions**: 2150
-- **Total Classes**: 195
-- **Modules**: 397
-- **Entry Points**: 1611
+- **Total Functions**: 2190
+- **Total Classes**: 199
+- **Modules**: 448
+- **Entry Points**: 1626
 
 ## Architecture by Module
 
@@ -26,11 +26,6 @@
 - **Classes**: 1
 - **File**: `scenario_yaml.py`
 
-### testql.interpreter._testtoon_parser
-- **Functions**: 38
-- **Classes**: 2
-- **File**: `_testtoon_parser.py`
-
 ### testql.results.analyzer
 - **Functions**: 38
 - **File**: `analyzer.py`
@@ -41,7 +36,7 @@
 - **File**: `_gui.py`
 
 ### testql.adapters.testtoon_adapter
-- **Functions**: 32
+- **Functions**: 33
 - **Classes**: 1
 - **File**: `testtoon_adapter.py`
 
@@ -89,25 +84,28 @@
 - **Classes**: 3
 - **File**: `openapi_generator.py`
 
+### .testql.generated.generated-from-pytests.testql.toon
+- **Functions**: 21
+- **File**: `generated-from-pytests.testql.toon.yaml`
+
+### testql.interpreter.testtoon_parser
+- **Functions**: 21
+- **File**: `testtoon_parser.py`
+
+### testql.ir.steps
+- **Functions**: 21
+- **Classes**: 11
+- **File**: `steps.py`
+
 ### testql.generators.sources.oql_parser
 - **Functions**: 20
 - **Classes**: 1
 - **File**: `oql_parser.py`
 
-### testql.ir.steps
-- **Functions**: 19
-- **Classes**: 10
-- **File**: `steps.py`
-
 ### testql.discovery.probes.filesystem.package_python
 - **Functions**: 19
 - **Classes**: 1
 - **File**: `package_python.py`
-
-### testql.generators.api_generator
-- **Functions**: 19
-- **Classes**: 2
-- **File**: `api_generator.py`
 
 ## Key Entry Points
 
@@ -140,6 +138,15 @@ Main execution flows into the system:
 > ASSERT_JSON path op value — e.g. ASSERT_JSON data.length > 0
 - **Calls**: None.split, path.startswith, None.strip, literal.lower, _COMPARE_OPS.get, len, self.out.warn, re.match
 
+### testql.interpreter._validation.ValidationMixin._cmd_validate
+> VALIDATE <type> <target> "<criteria>"
+
+Types:
+  - regex          → re.search(criteria, target_text)
+  - contains       → criteria in target_text
+  - n
+- **Calls**: None.split, None.strip, testql.generators.pipeline._resolve_target, self.out.warn, self.results.append, len, self.out.warn, None.lower
+
 ### testql.interpreter._shell.ShellMixin._cmd_shell
 > SHELL "command" [timeout_ms] — Execute arbitrary shell command.
 
@@ -157,13 +164,12 @@ Examples:
     ASSERT_SCHEMA '{"typ
 - **Calls**: None.strip, self.out.warn, jsonschema.validate, self.out.step, self.results.append, args.strip, schema_input.startswith, schema_input.startswith
 
-### testql.interpreter._gui.GuiMixin._cmd_gui_navigate
-> GUI_NAVIGATE "path_or_url" — Navigate to another page.
+### testql.adapters.testtoon_adapter._render_plan
+> Lossy renderer covering CONFIG / API / NAVIGATE / ENCODER / ASSERT.
 
-Examples:
-    GUI_NAVIGATE "/connect-id"
-    GUI_NAVIGATE "http://google.com"
-- **Calls**: None.strip, self.out.fail, self.out.step, self.results.append, self.out.fail, self.results.append, self.out.step, self.results.append
+Phase 0 keeps this minimal — adapters that need richer round-trip can
+extend late
+- **Calls**: parts.extend, parts.extend, parts.extend, parts.extend, parts.extend, parts.extend, parts.extend, parts.extend
 
 ### testql.interpreter._assertions.AssertionsMixin._cmd_assert_cookies
 > ASSERT_COOKIES <cookie_name> <op> <expected> — Assert cookie value.
@@ -173,9 +179,13 @@ Examples:
     ASSERT_COOKIES session_id == "
 - **Calls**: None.split, self.vars.get, headers.get, isinstance, cookie_header.split, cookies.get, len, self.out.warn
 
-### testql.commands.run_cmd.run
-> Run a TestQL (.testql.toon.yaml) scenario.
-- **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, click.option, click.option
+### testql.interpreter._gui.GuiMixin._cmd_gui_navigate
+> GUI_NAVIGATE "path_or_url" — Navigate to another page.
+
+Examples:
+    GUI_NAVIGATE "/connect-id"
+    GUI_NAVIGATE "http://google.com"
+- **Calls**: None.strip, self.out.fail, self.out.step, self.results.append, self.out.fail, self.results.append, self.out.step, self.results.append
 
 ### testql.discovery.probes.browser.playwright_page.PlaywrightPageProbe.probe
 - **Calls**: self.result, ImportError, self.result, sync_playwright, p.chromium.launch, browser.new_page, page.on, page.on
@@ -184,10 +194,6 @@ Examples:
 > Auto-generate a TestTOON GUI scenario from a live URL.
 - **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, click.option, None.render
 
-### testql.interpreter.main
-> CLI entry point — unchanged from original.
-- **Calls**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument
-
 ### testql.interpreter._unit.UnitMixin._cmd_unit_assert
 > UNIT_ASSERT "module.function" "args_json" "expected" — Assert function returns expected value.
 
@@ -195,6 +201,10 @@ Examples:
     UNIT_ASSERT "math.sqrt" "[4]" "2.0"
     
 - **Calls**: None.split, None.strip, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append
+
+### testql.interpreter.main
+> CLI entry point — unchanged from original.
+- **Calls**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument
 
 ### testql.interpreter._gui.GuiMixin._cmd_gui_assert_visible
 > GUI_ASSERT_VISIBLE "selector" — Assert element is visible.
@@ -210,16 +220,16 @@ Examples:
 ### testql.commands.inspect_cmd.inspect
 - **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, click.option, Path
 
-### testql.interpreter._gui.GuiMixin._cmd_gui_assert_text
-> GUI_ASSERT_TEXT "selector" "expected" — Assert element contains text.
-- **Calls**: None.split, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append, self.out.fail
-
 ### testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_taborder
 - **Calls**: shlex.split, DomScanner, scanner.assert_taborder, len, self.out.fail, self.results.append, int, getattr
 
 ### testql.generators.api_generator.APIGeneratorMixin._generate_api_tests
 > Generate comprehensive API tests from discovered routes.
 - **Calls**: self.profile.config.get, self.profile.config.get, self._validate_endpoints, self._build_api_test_header, sections.extend, sections.extend, sections.extend, sections.extend
+
+### testql.interpreter._gui.GuiMixin._cmd_gui_assert_text
+> GUI_ASSERT_TEXT "selector" "expected" — Assert element contains text.
+- **Calls**: None.split, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append, self.out.fail
 
 ### testql.adapters.testtoon_adapter._api_section_to_steps
 - **Calls**: steps.append, row.get, row.get, asserts.append, row.get, asserts.append, None.strip, ApiStep
@@ -232,6 +242,9 @@ Examples:
 > Generate OpenAPI spec from detected endpoints.
 - **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, click.option, Path
 
+### testql.adapters.scenario_yaml._gui_step
+- **Calls**: testql.adapters.scenario_yaml._step_common, GuiStep, GuiStep, str, GuiStep, str, GuiStep, str
+
 ### testql.interpreter._gui.GuiMixin._cmd_gui_input
 > GUI_INPUT "selector" "text" — Type text into element.
 
@@ -240,16 +253,9 @@ Examples:
     GUI_INPUT "input#username" "te
 - **Calls**: None.split, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append, self.out.fail
 
-### testql.adapters.scenario_yaml._gui_step
-- **Calls**: testql.adapters.scenario_yaml._step_common, GuiStep, GuiStep, str, GuiStep, str, GuiStep, str
-
 ### testql.openapi_generator.ContractTestGenerator.generate_contract_tests
 > Generate TestQL contract tests from OpenAPI spec.
 - **Calls**: self.spec.get, paths.items, lines.append, lines.append, lines.append, lines.append, lines.append, lines.append
-
-### testql.sumd_parser.SumdParser.generate_testql_scenarios
-> Generate testql scenario content from SUMD document.
-- **Calls**: lines.append, lines.append, lines.append, lines.append, lines.append, lines.append, lines.append, lines.append
 
 ## Process Flows
 
@@ -290,19 +296,23 @@ heal_scenario [testql.commands.heal_scenario_cmd]
 _cmd_assert_json [testql.interpreter._assertions.AssertionsMixin]
 ```
 
-### Flow 8: _cmd_shell
+### Flow 8: _cmd_validate
+```
+_cmd_validate [testql.interpreter._validation.ValidationMixin]
+  └─ →> _resolve_target
+      └─> sorted_targets
+          └─ →> available_targets
+      └─ →> get_target
+```
+
+### Flow 9: _cmd_shell
 ```
 _cmd_shell [testql.interpreter._shell.ShellMixin]
 ```
 
-### Flow 9: _cmd_assert_schema
+### Flow 10: _cmd_assert_schema
 ```
 _cmd_assert_schema [testql.interpreter._assertions.AssertionsMixin]
-```
-
-### Flow 10: _cmd_gui_navigate
-```
-_cmd_gui_navigate [testql.interpreter._gui.GuiMixin]
 ```
 
 ## Key Classes
@@ -508,14 +518,12 @@ Functions exposed as public API (no underscore prefix):
 - `TODO.testtoon_parser.parse_testtoon` - 31 calls
 - `testql.commands.heal_scenario_cmd.heal_scenario` - 30 calls
 - `testql.results.artifacts.write_inspection_artifacts` - 28 calls
-- `testql.commands.run_cmd.run` - 27 calls
 - `testql.discovery.probes.browser.playwright_page.PlaywrightPageProbe.probe` - 27 calls
 - `testql.commands.generate_from_page_cmd.generate_from_page` - 26 calls
 - `testql.interpreter.main` - 26 calls
 - `testql.runner.main` - 24 calls
 - `testql.commands.generate_topology_cmd.generate_topology` - 24 calls
 - `testql.commands.inspect_cmd.inspect` - 24 calls
-- `testql.cli.check_and_upgrade` - 23 calls
 - `testql.commands.misc_cmds.from_sumd` - 23 calls
 - `testql.commands.endpoints_cmd.openapi` - 23 calls
 - `testql.openapi_generator.ContractTestGenerator.generate_contract_tests` - 22 calls
@@ -523,6 +531,7 @@ Functions exposed as public API (no underscore prefix):
 - `testql.commands.generate_cmd.analyze` - 22 calls
 - `testql.commands.misc_cmds.report` - 22 calls
 - `testql.commands.misc_cmds.create` - 21 calls
+- `testql.commands.run_cmd.run` - 21 calls
 - `testql.report_generator.generate_report` - 20 calls
 - `testql.runner.parse_line` - 20 calls
 - `testql.runner.DslCliExecutor.run_script` - 20 calls
@@ -540,8 +549,9 @@ Functions exposed as public API (no underscore prefix):
 - `testql.commands.discover_cmd.discover` - 17 calls
 - `testql.commands.echo.cli.echo` - 17 calls
 - `testql.runner.DslCliExecutor.cmd_assert_json` - 16 calls
-- `testql.interpreter.interpreter.OqlInterpreter.execute` - 16 calls
 - `testql.integrations.planfile_hook.create_individual_button_tickets` - 16 calls
+- `testql.interpreter.interpreter.OqlInterpreter.execute` - 16 calls
+- `testql.commands.encoder_routes.oql_run_file` - 15 calls
 
 ## System Interactions
 
@@ -573,12 +583,12 @@ graph TD
     _cmd_assert_json --> strip
     _cmd_assert_json --> lower
     _cmd_assert_json --> get
+    _cmd_validate --> split
+    _cmd_validate --> strip
+    _cmd_validate --> _resolve_target
+    _cmd_validate --> warn
+    _cmd_validate --> append
     _cmd_shell --> strip
-    _cmd_shell --> fail
-    _cmd_shell --> startswith
-    _cmd_shell --> find
-    _cmd_assert_schema --> strip
-    _cmd_assert_schema --> warn
 ```
 
 ## Reverse Engineering Guidelines

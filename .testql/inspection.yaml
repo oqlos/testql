@@ -105,7 +105,7 @@ inspection:
         - url: https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
           text: ''
           kind: internal
-        - url: https://tom.sapletta.com/category/idea/
+        - url: https://tom.sapletta.com/category/idea-en/
           text: Idea
           kind: internal
         - url: https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/
@@ -142,7 +142,7 @@ inspection:
         - url: https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/
           text: ''
           kind: internal
-        - url: https://tom.sapletta.com/category/idea-en/
+        - url: https://tom.sapletta.com/category/idea/
           text: Idea
           kind: internal
         - url: https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/
@@ -682,9 +682,9 @@ inspection:
         detail: HTTP 200
     - id: link.10
       kind: link
-      source: https://tom.sapletta.com/category/idea/
+      source: https://tom.sapletta.com/category/idea-en/
       metadata:
-        url: https://tom.sapletta.com/category/idea/
+        url: https://tom.sapletta.com/category/idea-en/
         text: Idea
         kind: internal
       evidence:
@@ -827,9 +827,9 @@ inspection:
         detail: HTTP 200
     - id: link.22
       kind: link
-      source: https://tom.sapletta.com/category/idea-en/
+      source: https://tom.sapletta.com/category/idea/
       metadata:
-        url: https://tom.sapletta.com/category/idea-en/
+        url: https://tom.sapletta.com/category/idea/
         text: Idea
         kind: internal
       evidence:
@@ -1819,11 +1819,11 @@ inspection:
       evidence: []
     - id: subpage.5
       kind: subpage
-      source: https://tom.sapletta.com/category/idea/
+      source: https://tom.sapletta.com/category/idea-en/
       metadata:
         status_code: 200
         title: Idea | Tom Sapletta 'Blog
-        links: 52
+        links: 82
       evidence: []
     - id: subpage.6
       kind: subpage

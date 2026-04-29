@@ -174,6 +174,7 @@
 ├── pyproject.toml
 ├── pyqual.yaml
 ├── README.md
+├── REFACTORING_PLAN.md
 ├── scenarios
 │   ├── c2004-all-modules-api.testql.toon.yaml
 │   ├── encoder-cli-hardware-sim.testql.toon.yaml
@@ -182,11 +183,18 @@
 │   ├── encoder-gui-terminal.testql.toon.yaml
 │   ├── encoder-navigation.testql.toon.yaml
 │   └── encoder-terminal-cli.testql.toon.yaml
+├── scripts
+│   ├── install_testql_autoloop.sh
+│   ├── setup_mcp_windsurf.sh
+│   └── smoke_manifest_flow.sh
 ├── sumd.json
 ├── SUMD.md
 ├── SUMR.md
 ├── Taskfile.testql.yml
 ├── Taskfile.yml
+├── test_autoloop_api.py
+├── test_autoloop_mcp.py
+├── test_manifest_and_generators.py
 ├── testql
 │   ├── adapters
 │   │   ├── base.py
@@ -224,6 +232,7 @@
 │   │   │   ├── query_parser.py
 │   │   │   └── sql_adapter.py
 │   │   └── testtoon_adapter.py
+│   ├── autoloop_runner.py
 │   ├── _base_fallback.py
 │   ├── base.py
 │   ├── cli.py
@@ -326,10 +335,13 @@
 │   │   ├── scenario_generator.py
 │   │   ├── sources
 │   │   │   ├── base.py
+│   │   │   ├── config_source.py
 │   │   │   ├── graphql_source.py
 │   │   │   ├── __init__.py
 │   │   │   ├── nl_source.py
 │   │   │   ├── openapi_source.py
+│   │   │   ├── oql_models.py
+│   │   │   ├── oql_parser.py
 │   │   │   ├── oql_source.py
 │   │   │   ├── page_source.py
 │   │   │   ├── proto_source.py
@@ -384,8 +396,11 @@
 │   │   ├── interpreter.py
 │   │   ├── _parser.py
 │   │   ├── _shell.py
+│   │   ├── testtoon_models.py
 │   │   ├── _testtoon_parser.py
+│   │   ├── testtoon_parser.py
 │   │   ├── _unit.py
+│   │   ├── _validation.py
 │   │   └── _websockets.py
 │   ├── interpreter.py
 │   ├── ir
@@ -415,6 +430,9 @@
 │   │   ├── __init__.py
 │   │   └── interpolation.py
 │   ├── __main__.py
+│   ├── mcp
+│   │   ├── __init__.py
+│   │   └── server.py
 │   ├── meta
 │   │   ├── confidence_scorer.py
 │   │   ├── coverage_analyzer.py
@@ -679,8 +697,11 @@
 ├── testql-scenarios
 │   ├── generated-api-integration.testql.toon.yaml
 │   ├── generated-api-smoke.testql.toon.yaml
+│   ├── generated-asset-assert.testql.toon.yaml
+│   ├── generated-cli-extended.testql.toon.yaml
 │   ├── generated-cli-tests.testql.toon.yaml
 │   ├── generated-from-pytests.testql.toon.yaml
+│   ├── generated-sitemap-assert.testql.toon.yaml
 │   ├── graphql
 │   │   ├── orders-mutations.graphql.testql.yaml
 │   │   └── user-contract.graphql.testql.yaml
@@ -717,6 +738,7 @@
 │   ├── test_adapters_base.py
 │   ├── test_api_handler.py
 │   ├── test_browser_discovery.py
+│   ├── test_cli_no_block.py
 │   ├── test_cli.py
 │   ├── test_converter_handlers.py
 │   ├── test_converter.py
@@ -742,6 +764,7 @@
 │   ├── test_ir_runner_engine.py
 │   ├── test_ir_runner_executors.py
 │   ├── test_ir_runner_interpolation.py
+│   ├── test_mcp_autoloop.py
 │   ├── test_meta_confidence.py
 │   ├── test_meta_coverage.py
 │   ├── test_meta_mutator.py
@@ -766,10 +789,12 @@
 │   ├── test_reporters.py
 │   ├── test_report_generator.py
 │   ├── test_results.py
+│   ├── test_run_cmd.py
 │   ├── test_run_ir_cli.py
 │   ├── test_runner.py
 │   ├── test_scenario_yaml_adapter.py
 │   ├── test_shell_execution.py
+│   ├── test_smoke_decisions.py
 │   ├── test_sources.py
 │   ├── test_sql_adapter.py
 │   ├── test_sql_ddl_parser.py
@@ -787,7 +812,8 @@
 │   ├── test_toon_parser.py
 │   ├── test_topology_generator.py
 │   ├── test_topology.py
-│   └── test_unit_execution.py
+│   ├── test_unit_execution.py
+│   └── test_validation.py
 ├── TODO
 │   ├── backend-diagnostic.testtoon
 │   ├── pss7000-full-flow.testtoon
@@ -801,4 +827,4 @@
 ├── uv.lock
 └── VERSION
 
-96 directories, 706 files
+98 directories, 730 files

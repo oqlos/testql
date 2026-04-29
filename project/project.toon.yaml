@@ -1,37 +1,37 @@
-# testql | 2150 func | 188f | 174943L | python | 2026-04-27
+# testql | 2190 func | 197f | 181971L | python | 2026-04-29
 
 HEALTH:
-  CC̄=2.3  critical=48 (limit:10)  dup=4  cycles=0
+  CC̄=2.3  critical=53 (limit:10)  dup=4  cycles=0
 
 ALERTS[20]:
   !!! high_fan_out     parse_testtoon = 21 (limit:10)
   !!! high_fan_out     heal_scenario = 21 (limit:10)
   !!! high_fan_out     AssertionsMixin._cmd_assert_cookies = 21 (limit:10)
+  !!! high_fan_out     ValidationMixin._cmd_validate = 21 (limit:10)
   !!! high_fan_out     watch = 20 (limit:10)
   !!! high_fan_out     suite = 20 (limit:10)
   !!! high_fan_out     AssertionsMixin._cmd_assert_json = 20 (limit:10)
+  !!  cc_exceeded      _parse_makefile = 23 (limit:15)
   !!  high_fan_out     generate_from_page = 19 (limit:10)
   !!  high_fan_out     main = 19 (limit:10)
-  !!  high_fan_out     run = 18 (limit:10)
-  !!  high_fan_out     generate_topology = 17 (limit:10)
 
-MODULES[397] (top by size):
-  M[project/calls.yaml] 7388L C:0 F:0 CC↑0 D:0 (yaml)
-  M[project/map.toon.yaml] 2226L C:0 F:713 CC↑0 D:6 (yaml)
+MODULES[448] (top by size):
+  M[project/calls.yaml] 7392L C:0 F:0 CC↑0 D:0 (yaml)
+  M[.testql/inspection.json] 5644L C:0 F:0 CC↑0 D:0 (json)
+  M[examples/artifact-bundle/.testql/topology.json] 5012L C:0 F:0 CC↑0 D:0 (json)
+  M[examples/artifact-bundle/.testql/inspection.yaml] 3796L C:0 F:0 CC↑0 D:0 (yaml)
+  M[examples/web-inspection-dot-testql/.testql/inspection.yaml] 3796L C:0 F:0 CC↑0 D:0 (yaml)
+  M[examples/web-inspection-dot-testql/.testql/topology.yaml] 3324L C:0 F:0 CC↑0 D:0 (yaml)
+  M[project/map.toon.yaml] 2232L C:0 F:713 CC↑0 D:8 (yaml)
   M[planfile.yaml] 1319L C:0 F:0 CC↑0 D:0 (yaml)
   M[tree.txt] 804L C:0 F:0 CC↑0 D:0 (txt)
   M[code2llm_output/calls.yaml] 799L C:0 F:0 CC↑0 D:0 (yaml)
-  M[testql/interpreter/_gui.py] 694L C:1 F:34 CC↑12 D:0 (python)
-  M[testql/interpreter/_testtoon_parser.py] 672L C:2 F:38 CC↑14 D:0 (python)
+  M[testql/interpreter/_gui.py] 708L C:1 F:34 CC↑12 D:0 (python)
+  M[.testql/topology.json] 672L C:0 F:0 CC↑0 D:0 (json)
+  M[.testql/generated/generated-from-pytests.testql.toon.yaml] 626L C:0 F:2 CC↑0 D:20 (yaml)
   M[project/calls.toon.yaml] 597L C:0 F:0 CC↑0 D:0 (yaml)
-  M[testql/generators/page_analyzer.py] 526L C:1 F:31 CC↑10 D:3 (python)
-  M[goal.yaml] 511L C:0 F:0 CC↑0 D:0 (yaml)
-  M[testql/adapters/scenario_yaml.py] 506L C:1 F:43 CC↑13 D:1 (python)
-  M[testql/results/analyzer.py] 504L C:0 F:38 CC↑14 D:3 (python)
-  M[project/analysis.toon.yaml] 492L C:0 F:0 CC↑0 D:0 (yaml)
-  M[testql/adapters/testtoon_adapter.py] 488L C:1 F:32 CC↑10 D:4 (python)
-  M[testql/commands/encoder_routes.py] 477L C:0 F:27 CC↑10 D:0 (python)
-  LANGS: python:223/yaml:127/shell:20/other:17/txt:4/yml:2/json:2/doql:1/toml:1
+  M[.testql/result.json] 534L C:0 F:0 CC↑0 D:0 (json)
+  LANGS: python:230/yaml:152/shell:23/json:18/other:17/txt:4/yml:2/doql:1/toml:1
 
 HOTSPOTS[10]:
   ★ parse_testtoon fan=21  // Orchestrates 21 calls
@@ -40,15 +40,18 @@ HOTSPOTS[10]:
 
 Examples:
  
+  ★ ValidationMixin._cmd_validate fan=21  // VALIDATE <type> <target> "<criteria>"
+
+Types:
+  - regex          → re.search(cri
   ★ watch fan=20  // Watch for file changes and re-run tests automatically.
-  ★ suite fan=20  // Run test suite(s) — predefined or custom pattern.
 
 REFACTOR[15]:
-  [1] H/H Split god module testql/interpreter/_testtoon_parser.py (672L, 2 classes)
-  [2] H/H Split god module testql/results/analyzer.py (504L, 0 classes)
-  [3] H/H Split god module testql/adapters/scenario_yaml.py (506L, 1 classes)
-  [4] H/H Split god module testql/interpreter/_gui.py (694L, 1 classes)
+  [1] H/H Split god module testql/results/analyzer.py (504L, 0 classes)
+  [2] H/H Split god module testql/adapters/scenario_yaml.py (506L, 1 classes)
+  [3] H/H Split god module testql/interpreter/_gui.py (708L, 1 classes)
+  [4] H/H Split god module testql/adapters/testtoon_adapter.py (501L, 1 classes)
   [5] H/H Split god module testql/generators/page_analyzer.py (526L, 1 classes)
 
 EVOLUTION:
-  2026-04-27 CC̄=2.3 crit=48 174943L // Automated analysis
+  2026-04-29 CC̄=2.3 crit=53 181971L // Automated analysis

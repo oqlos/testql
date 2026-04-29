@@ -1,12 +1,12 @@
-# testql | 331f 38913L | python:306,shell:21,less:4 | 2026-04-27
-# stats: 783 func | 538 cls | 331 mod | CC̄=3.7 | critical:23 | cycles:0
-# alerts[5]: CC parse_testtoon=14; CC _expand_flow=14; CC _check_link_statuses=14; CC _action_type=14; CC _encoder_step=13
+# testql | 349f 42469L | python:321,shell:24,less:4 | 2026-04-29
+# stats: 857 func | 568 cls | 349 mod | CC̄=3.7 | critical:29 | cycles:0
+# alerts[5]: CC _parse_makefile=23; CC main=15; CC parse_testtoon=14; CC _filter_commands=14; CC _expand_flow=14
 # hotspots[5]: generate_from_page fan=19; heal_scenario fan=19; watch fan=19; suite fan=19; main fan=18
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[331]:
+M[349]:
   TODO/testtoon_parser.py,142
-  app.doql.less,232
+  app.doql.less,237
   examples/api-testing/mock_server.py,51
   examples/api-testing/run.sh,28
   examples/artifact-bundle/generate_bundle.py,37
@@ -30,6 +30,12 @@ M[331]:
   examples/web-inspection/run.sh,43
   examples/web-inspection-dot-testql/run.sh,14
   project.sh,50
+  scripts/install_testql_autoloop.sh,157
+  scripts/setup_mcp_windsurf.sh,92
+  scripts/smoke_manifest_flow.sh,71
+  test_autoloop_api.py,453
+  test_autoloop_mcp.py,519
+  test_manifest_and_generators.py,526
   testql/__init__.py,10
   testql/__main__.py,7
   testql/_base_fallback.py,233
@@ -60,9 +66,10 @@ M[331]:
   testql/adapters/sql/fixtures.py,106
   testql/adapters/sql/query_parser.py,96
   testql/adapters/sql/sql_adapter.py,334
-  testql/adapters/testtoon_adapter.py,489
+  testql/adapters/testtoon_adapter.py,502
+  testql/autoloop_runner.py,1
   testql/base.py,38
-  testql/cli.py,126
+  testql/cli.py,103
   testql/commands/__init__.py,36
   testql/commands/auto_cmd.py,203
   testql/commands/discover_cmd.py,47
@@ -85,7 +92,7 @@ M[331]:
   testql/commands/heal_scenario_cmd.py,308
   testql/commands/inspect_cmd.py,35
   testql/commands/misc_cmds.py,293
-  testql/commands/run_cmd.py,80
+  testql/commands/run_cmd.py,161
   testql/commands/run_ir_cmd.py,66
   testql/commands/self_test_cmd.py,46
   testql/commands/suite/__init__.py,9
@@ -146,8 +153,9 @@ M[331]:
   testql/generators/pipeline.py,96
   testql/generators/pytest_generator.py,148
   testql/generators/scenario_generator.py,88
-  testql/generators/sources/__init__.py,66
+  testql/generators/sources/__init__.py,76
   testql/generators/sources/base.py,33
+  testql/generators/sources/config_source.py,289
   testql/generators/sources/graphql_source.py,67
   testql/generators/sources/nl_source.py,28
   testql/generators/sources/openapi_source.py,94
@@ -167,19 +175,20 @@ M[331]:
   testql/generators/targets/testtoon_target.py,24
   testql/generators/test_generator.py,107
   testql/integrations/planfile_hook.py,116
-  testql/interpreter/__init__.py,90
+  testql/interpreter/__init__.py,92
   testql/interpreter/_api_runner.py,289
   testql/interpreter/_assertions.py,305
   testql/interpreter/_converter.py,63
   testql/interpreter/_dom_scan.py,41
   testql/interpreter/_encoder.py,101
   testql/interpreter/_flow.py,166
-  testql/interpreter/_gui.py,695
+  testql/interpreter/_gui.py,709
   testql/interpreter/_hardware.py,111
   testql/interpreter/_parser.py,34
   testql/interpreter/_shell.py,244
-  testql/interpreter/_testtoon_parser.py,673
+  testql/interpreter/_testtoon_parser.py,469
   testql/interpreter/_unit.py,268
+  testql/interpreter/_validation.py,154
   testql/interpreter/_websockets.py,173
   testql/interpreter/converter/__init__.py,20
   testql/interpreter/converter/core.py,59
@@ -203,15 +212,17 @@ M[331]:
   testql/interpreter/dom_scan_mixin.py,303
   testql/interpreter/dom_scan_models.py,54
   testql/interpreter/dom_scanner.py,419
-  testql/interpreter/interpreter.py,158
+  testql/interpreter/interpreter.py,159
+  testql/interpreter/testtoon_models.py,34
+  testql/interpreter/testtoon_parser.py,290
   testql/interpreter.py,28
-  testql/ir/__init__.py,47
+  testql/ir/__init__.py,49
   testql/ir/assertions.py,34
   testql/ir/captures.py,38
   testql/ir/fixtures.py,34
   testql/ir/metadata.py,32
   testql/ir/plan.py,43
-  testql/ir/steps.py,232
+  testql/ir/steps.py,252
   testql/ir_runner/__init__.py,35
   testql/ir_runner/assertion_eval.py,125
   testql/ir_runner/context.py,43
@@ -228,6 +239,8 @@ M[331]:
   testql/ir_runner/executors/sql.py,66
   testql/ir_runner/executors/unit.py,43
   testql/ir_runner/interpolation.py,30
+  testql/mcp/__init__.py,34
+  testql/mcp/server.py,160
   testql/meta/__init__.py,42
   testql/meta/confidence_scorer.py,95
   testql/meta/coverage_analyzer.py,174
@@ -265,6 +278,7 @@ M[331]:
   tests/test_api_handler.py,90
   tests/test_browser_discovery.py,111
   tests/test_cli.py,98
+  tests/test_cli_no_block.py,104
   tests/test_converter.py,178
   tests/test_converter_handlers.py,352
   tests/test_detectors.py,389
@@ -277,7 +291,7 @@ M[331]:
   tests/test_encoder_routes.py,42
   tests/test_generate_cmd.py,95
   tests/test_generate_from_page_cli.py,280
-  tests/test_generate_ir_cli.py,70
+  tests/test_generate_ir_cli.py,151
   tests/test_generators.py,238
   tests/test_graphql_adapter.py,197
   tests/test_gui_execution.py,130
@@ -289,6 +303,7 @@ M[331]:
   tests/test_ir_runner_engine.py,143
   tests/test_ir_runner_executors.py,174
   tests/test_ir_runner_interpolation.py,41
+  tests/test_mcp_autoloop.py,202
   tests/test_meta_confidence.py,97
   tests/test_meta_coverage.py,137
   tests/test_meta_mutator.py,190
@@ -313,11 +328,13 @@ M[331]:
   tests/test_report_generator.py,169
   tests/test_reporters.py,317
   tests/test_results.py,124
+  tests/test_run_cmd.py,114
   tests/test_run_ir_cli.py,66
   tests/test_runner.py,188
   tests/test_scenario_yaml_adapter.py,208
   tests/test_shell_execution.py,134
-  tests/test_sources.py,291
+  tests/test_smoke_decisions.py,160
+  tests/test_sources.py,300
   tests/test_sql_adapter.py,191
   tests/test_sql_ddl_parser.py,108
   tests/test_sql_dialect_resolver.py,75
@@ -335,6 +352,7 @@ M[331]:
   tests/test_topology.py,88
   tests/test_topology_generator.py,162
   tests/test_unit_execution.py,113
+  tests/test_validation.py,185
   tree.sh,2
 D:
   TODO/testtoon_parser.py:
@@ -357,6 +375,53 @@ D:
     users()
   examples/artifact-bundle/generate_bundle.py:
     e: main
+    main()
+  test_autoloop_api.py:
+    e: add_colors,ok,fail,warn,info,header,step_import_testql,step_mcp_check,step_discovery,step_topology,step_inspect,step_generate_tests,step_run_scenario,step_run_tests,step_generate_llm_decision,step_save_artifacts,run_iteration,main
+    add_colors()
+    ok(msg)
+    fail(msg)
+    warn(msg)
+    info(msg)
+    header(msg)
+    step_import_testql()
+    step_mcp_check()
+    step_discovery(project_path)
+    step_topology(project_path)
+    step_inspect(project_path)
+    step_generate_tests(project_path)
+    step_run_scenario(scenario_path)
+    step_run_tests(scenarios)
+    step_generate_llm_decision(iteration;discovery;topology;inspection;test_results)
+    step_save_artifacts(output_dir;discovery;topology;inspection;test_results;llm_decision)
+    run_iteration(project_path;iteration;output_dir)
+    main()
+  test_autoloop_mcp.py:
+    e: ok,fail,warn,info,header,step_generate_topology,step_generate_tests,step_run_tests,step_generate_llm_prompt,step_check_mcp_windsurf,run_autoloop,main,C
+    C:
+    ok(msg)
+    fail(msg)
+    warn(msg)
+    info(msg)
+    header(msg)
+    step_generate_topology(project_path;output_dir)
+    step_generate_tests(project_path;output_dir)
+    step_run_tests(scenarios;output_dir)
+    step_generate_llm_prompt(topology;test_results;iteration;output_dir;simulate_llm)
+    step_check_mcp_windsurf(output_dir)
+    run_autoloop(project_path;max_iterations;simulate_llm)
+    main()
+  test_manifest_and_generators.py:
+    e: log_ok,log_fail,log_warn,log_info,generate_report,main,Colors,ManifestProbeTester,GeneratorTester,MCPWindsurfChecker
+    Colors:
+    ManifestProbeTester: run_all(0),_test_probe(2)  # Test all discovery probe types.
+    GeneratorTester: run_all(0),_test_api_generator(0),_test_python_test_generator(0),_test_scenario_generator(0),_test_round_trip(0)  # Test all test generation capabilities.
+    MCPWindsurfChecker: run_all(0),_check_cli(0),_check_json_output(0),_check_discover_command(0),_check_generate_command(0)  # Check MCP Windsurf integration compatibility.
+    log_ok(msg)
+    log_fail(msg)
+    log_warn(msg)
+    log_info(msg)
+    generate_report(all_results;output_path)
     main()
   testql/__init__.py:
   testql/__main__.py:
@@ -659,7 +724,7 @@ D:
     parse(source)
     render(plan)
   testql/adapters/testtoon_adapter.py:
-    e: _config_to_dict,_api_section_to_steps,_navigate_section_to_steps,_gui_section_to_steps,_encoder_section_to_steps,_assert_section_to_steps,_capture_section_apply,_resolve_capture_target,_generic_section_to_steps,_shell_section_to_steps,_unit_section_to_steps,_log_section_to_steps,_translate_section,_toon_to_plan,_render_meta,_render_config,_render_api_steps,_render_navigate_steps,_render_encoder_steps,_toon_safe_selector,_render_gui_action_steps,_render_shell_steps,_render_unit_steps,_render_log_steps,_render_assertions,_render_captures,_render_plan,parse,render,TestToonAdapter
+    e: _config_to_dict,_api_section_to_steps,_navigate_section_to_steps,_gui_section_to_steps,_encoder_section_to_steps,_assert_section_to_steps,_capture_section_apply,_resolve_capture_target,_generic_section_to_steps,_shell_section_to_steps,_unit_section_to_steps,_log_section_to_steps,_translate_section,_toon_to_plan,_render_meta,_render_config,_render_api_steps,_render_navigate_steps,_render_encoder_steps,_toon_safe_selector,_render_gui_action_steps,_render_shell_steps,_render_unit_steps,_render_log_steps,_render_assertions,_render_captures,_render_validate_steps,_render_plan,parse,render,TestToonAdapter
     TestToonAdapter: detect(1),parse(1),render(1)  # Adapter for the legacy `*.testql.toon.yaml` format (TestTOON
     _config_to_dict(section)
     _api_section_to_steps(section)
@@ -687,13 +752,17 @@ D:
     _render_log_steps(steps)
     _render_assertions(steps)
     _render_captures(steps)
+    _render_validate_steps(steps)
     _render_plan(plan)
     parse(source)
     render(plan)
+  testql/autoloop_runner.py:
   testql/base.py:
   testql/cli.py:
-    e: cli,check_and_upgrade,main
+    e: mcp_serve,cli,_fetch_latest_version,check_and_upgrade,main
+    mcp_serve()
     cli()
+    _fetch_latest_version()
     check_and_upgrade()
     main()
   testql/commands/__init__.py:
@@ -840,8 +909,13 @@ D:
     report(data_json;output;example)
     echo(toon_path;doql_path;fmt;output;project_path)
   testql/commands/run_cmd.py:
-    e: run
-    run(file;url;dry_run;output;quiet;planfile;timeout)
+    e: _resolve_input_paths,_run_single,_emit_single_json,_emit_multi_json,_maybe_planfile,run
+    _resolve_input_paths(spec)
+    _run_single(path;url;dry_run;quiet;timeout)
+    _emit_single_json(result)
+    _emit_multi_json(results)
+    _maybe_planfile(result;filename;planfile)
+    run(files;url;dry_run;output;quiet;planfile;timeout)
   testql/commands/run_ir_cmd.py:
     e: _emit_json,_emit_console,run_ir
     _emit_json(result)
@@ -1105,12 +1179,25 @@ D:
     e: ScenarioGeneratorMixin
     ScenarioGeneratorMixin: _generate_from_scenarios(1),_convert_oql_command(1)  # Mixin for generating tests from OQL/CQL scenarios.
   testql/generators/sources/__init__.py:
-    e: get_source,available_sources
+    e: _get_config_source,get_source,available_sources
+    _get_config_source()
     get_source(name)
     available_sources()
   testql/generators/sources/base.py:
     e: BaseSource
     BaseSource: load(1)  # Convert an external artifact (OpenAPI / SQL DDL / .proto / S
+  testql/generators/sources/config_source.py:
+    e: _load_file,_parse_makefile,_parse_taskfile,_parse_docker_compose,_select_parser_for_file,_auto_detect_parser,_parse_targets,_parse_buf_yaml,_filter_commands,ConfigSource
+    ConfigSource: load(1)  # Makefile, Taskfile.yml, docker-compose.yml, buf.yaml → TestP
+    _load_file(source)
+    _parse_makefile(content;file_path)
+    _parse_taskfile(content)
+    _parse_docker_compose(content)
+    _select_parser_for_file(file_name)
+    _auto_detect_parser(content)
+    _parse_targets(content;source_path)
+    _parse_buf_yaml(content)
+    _filter_commands(commands;target_name)
   testql/generators/sources/graphql_source.py:
     e: _load_sdl,_type_to_query,_is_smoke_target,GraphQLSource
     GraphQLSource: load(1)  # GraphQL SDL → TestPlan with one smoke query per top-level ty
@@ -1237,28 +1324,7 @@ D:
     e: ShellMixin
     ShellMixin: _cmd_shell(2),_cmd_exec(2),_cmd_run(2),_cmd_assert_exit_code(2),_cmd_assert_stdout_contains(2),_cmd_assert_stderr_contains(2)  # Mixin providing shell command execution: SHELL, EXEC, RUN, A
   testql/interpreter/_testtoon_parser.py:
-    e: _detect_separator,_parse_inline_array,_parse_inline_dict,_parse_value,_make_section,_make_mapping_section,_make_data_row,_make_mapping_row,parse_testtoon,_process_line,_is_meta_line,_process_meta_line,_is_comment,_try_parse_section_header,_should_end_section,_is_bare_command,_add_row_to_section,_add_bare_commands_section,_find_commands_insert_position,validate_testtoon,_expand_config,_append_api_asserts,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_commands,_expand_dom_audit_buttons,_expand_generic,testtoon_to_oql,ToonSection,ToonScript
-    ToonSection: validate(0)
-    ToonScript:
-    _detect_separator(line)
-    _parse_inline_array(v)
-    _parse_inline_dict(v)
-    _parse_value(v)
-    _make_section(m)
-    _make_mapping_section(m)
-    _make_data_row(raw;section)
-    _make_mapping_row(raw)
-    parse_testtoon(text;filename)
-    _process_line(raw;current;script;bare_commands)
-    _is_meta_line(line)
-    _process_meta_line(line;script)
-    _is_comment(line)
-    _try_parse_section_header(line)
-    _should_end_section(raw;current)
-    _is_bare_command(raw;current)
-    _add_row_to_section(raw;current)
-    _add_bare_commands_section(script;bare_commands)
-    _find_commands_insert_position(sections)
+    e: validate_testtoon,_expand_config,_append_api_asserts,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_validate,_expand_commands,_expand_dom_audit_buttons,_expand_generic,testtoon_to_oql
     validate_testtoon(script)
     _expand_config(section;lines;line_num)
     _append_api_asserts(row;lines;line_num)
@@ -1273,6 +1339,7 @@ D:
     _expand_wait(section;lines;line_num)
     _expand_include(section;lines;line_num)
     _expand_record(section;lines;line_num)
+    _expand_validate(section;lines;line_num)
     _expand_commands(section;lines;line_num)
     _expand_dom_audit_buttons(section;lines;line_num)
     _expand_generic(section;lines;line_num)
@@ -1280,6 +1347,10 @@ D:
   testql/interpreter/_unit.py:
     e: UnitMixin
     UnitMixin: _parse_pytest_args(1),_extract_pytest_summary(1),_run_pytest_subprocess(3),_handle_pytest_dry_run(2),_handle_pytest_success(2),_handle_pytest_error(3),_cmd_unit_pytest(2),_cmd_unit_pytest_discover(2),_cmd_unit_import(2),_cmd_unit_assert(2)  # Mixin providing unit test execution: UNIT_PYTEST, UNIT_IMPOR
+  testql/interpreter/_validation.py:
+    e: _resolve_target,ValidationMixin
+    ValidationMixin: _cmd_validate(2),_record_validate(5)  # Mixin providing the VALIDATE command for textual / NL assert
+    _resolve_target(interpreter;target)
   testql/interpreter/_websockets.py:
     e: WebSocketMixin
     WebSocketMixin: __init_subclass__(1),_get_ws_context(0),_cmd_ws_connect(2),_cmd_ws_send(2),_ws_do_receive(4),_cmd_ws_receive(2),_cmd_ws_assert_msg(2),_cmd_ws_close(2)  # Mixin for WebSocket testing support.
@@ -1370,6 +1441,33 @@ D:
   testql/interpreter/interpreter.py:
     e: OqlInterpreter
     OqlInterpreter: __init__(7),parse(2),_is_testtoon(2),execute(1),_dispatch(3),_cmd_set(2),_cmd_get(2)  # OQL interpreter — runs .testql.toon.yaml / .oql / .tql scrip
+  testql/interpreter/testtoon_models.py:
+    e: ToonSection,ToonScript
+    ToonSection: validate(0)  # Represents a section in TestTOON format.
+    ToonScript:  # Represents a parsed TestTOON script.
+  testql/interpreter/testtoon_parser.py:
+    e: _strip_quoted_regions,_detect_separator,_split_quoted,_parse_inline_array,_parse_inline_dict,_parse_value,_make_section,_make_mapping_section,_make_data_row,_make_mapping_row,parse_testtoon,_process_line,_is_meta_line,_process_meta_line,_is_comment,_try_parse_section_header,_should_end_section,_is_bare_command,_add_row_to_section,_add_bare_commands_section,_find_commands_insert_position
+    _strip_quoted_regions(line)
+    _detect_separator(line)
+    _split_quoted(line;sep;maxsplit)
+    _parse_inline_array(v)
+    _parse_inline_dict(v)
+    _parse_value(v)
+    _make_section(m)
+    _make_mapping_section(m)
+    _make_data_row(raw;section)
+    _make_mapping_row(raw)
+    parse_testtoon(text;filename)
+    _process_line(raw;current;script;bare_commands)
+    _is_meta_line(line)
+    _process_meta_line(line;script)
+    _is_comment(line)
+    _try_parse_section_header(line)
+    _should_end_section(raw;current)
+    _is_bare_command(raw;current)
+    _add_row_to_section(raw;current)
+    _add_bare_commands_section(script;bare_commands)
+    _find_commands_insert_position(sections)
   testql/interpreter.py:
   testql/ir/__init__.py:
   testql/ir/assertions.py:
@@ -1388,7 +1486,7 @@ D:
     e: TestPlan
     TestPlan: to_dict(0),name(0),type(0)  # Adapter-neutral representation of a single test scenario.
   testql/ir/steps.py:
-    e: Step,ApiStep,GuiStep,EncoderStep,ShellStep,UnitStep,NlStep,SqlStep,ProtoStep,GraphqlStep
+    e: Step,ApiStep,GuiStep,EncoderStep,ShellStep,UnitStep,NlStep,SqlStep,ProtoStep,GraphqlStep,ValidateStep
     Step: to_dict(0)  # Base step. Subclasses add typed fields; `kind` discriminator
     ApiStep: __post_init__(0),to_dict(0)
     GuiStep: __post_init__(0),to_dict(0)
@@ -1399,6 +1497,7 @@ D:
     SqlStep: __post_init__(0),to_dict(0)
     ProtoStep: __post_init__(0),to_dict(0)
     GraphqlStep: __post_init__(0),to_dict(0)
+    ValidateStep: __post_init__(0),to_dict(0)  # NL/text validation step with type, target, and criteria.
   testql/ir_runner/__init__.py:
   testql/ir_runner/assertion_eval.py:
     e: _next_segment,navigate,_op_contains,_op_matches,evaluate,evaluate_all,AssertionResult
@@ -1480,6 +1579,14 @@ D:
   testql/ir_runner/interpolation.py:
     e: interp_value
     interp_value(value;store)
+  testql/mcp/__init__.py:
+  testql/mcp/server.py:
+    e: _require_fastmcp,_normalize_run_payload,create_server,run_server,TestQLMCPServer
+    TestQLMCPServer: __post_init__(0),_register_tools(0),run(0)  # Thin wrapper exposing selected TestQL actions as FastMCP too
+    _require_fastmcp()
+    _normalize_run_payload(results)
+    create_server(name)
+    run_server()
   testql/meta/__init__.py:
   testql/meta/confidence_scorer.py:
     e: _is_llm_resolved,_score_assertions,_score_typed,_score_step,score_plan,StepConfidence,PlanConfidence
@@ -1733,6 +1840,11 @@ D:
     e: TestCliHelp,TestSuiteCommand
     TestCliHelp: test_help(0),test_version(0),test_subcommands_listed(0),test_run_help(0),test_suite_help(0),test_list_help(0),test_generate_help(0),test_endpoints_help(0),test_init_help(0),test_echo_help(0)
     TestSuiteCommand: test_suite_no_files_exits_1(1),test_list_no_files(1),test_list_with_toon_file(1),test_list_format_simple(1),test_list_format_json(1)
+  tests/test_cli_no_block.py:
+    e: TestNoInputCall,TestCheckAndUpgradeNeverBlocks,TestMainNeverBlocks
+    TestNoInputCall: test_no_input_in_source(0),test_no_subprocess_in_check_and_upgrade(0)  # Static guarantee: input() must not appear in cli.py.
+    TestCheckAndUpgradeNeverBlocks: test_runs_when_up_to_date(0),test_runs_when_outdated(1),test_runs_when_pypi_unreachable(0),test_runs_when_version_unavailable(0),test_is_tty_agnostic(0)  # check_and_upgrade must return quickly regardless of TTY or v
+    TestMainNeverBlocks: test_main_via_runner(0),test_main_does_not_call_input(0)  # main() entry point must not block in any environment.
   tests/test_converter.py:
     e: TestRow,TestSection,TestConvertOqlToTesttoon,TestConvertFile,TestConvertDirectory
     TestRow: test_row_creation(0),test_row_empty(0),test_row_multiple_fields(0)
@@ -1840,7 +1952,7 @@ D:
     _write_elements(tmp_path)
   tests/test_generate_ir_cli.py:
     e: TestGenerateIRCLI
-    TestGenerateIRCLI: test_command_exists(0),test_round_trip_to_stdout(1),test_writes_to_file(1),test_bad_from_arg_errors(0),test_legacy_generate_still_works(0)
+    TestGenerateIRCLI: test_command_exists(0),test_round_trip_to_stdout(1),test_writes_to_file(1),test_bad_from_arg_errors(0),test_legacy_generate_still_works(0),test_generate_ir_makefile_alias(1),test_generate_ir_taskfile_alias(1),test_generate_ir_docker_compose_alias(1),test_generate_ir_buf_alias(1)
   tests/test_generators.py:
     e: TestBaseAnalyzer,TestProjectAnalyzerDetectType,TestTestPattern,TestOqlScenarioConversion,TestGeneratorConfig
     TestBaseAnalyzer: test_init(1),test_get_exclude_dirs(1),test_should_exclude_path_venv(1),test_should_exclude_path_src(1)
@@ -1915,6 +2027,15 @@ D:
     e: _store,TestInterpValue
     TestInterpValue: test_string_brace_form(0),test_string_dollar_form(0),test_unset_passthrough(0),test_dict_recursion(0),test_list_recursion(0),test_nested(0),test_non_string_passthrough(0)
     _store()
+  tests/test_mcp_autoloop.py:
+    e: TestCLIAvailability,TestMCPModule,TestDiscoveryPipeline,TestTopologyPipeline,TestScenarioRoundTrip,TestAutoloopSchema,TestMCPConfig
+    TestCLIAvailability: test_cli_help_exits_cleanly(0),test_mcp_subcommand_registered(0),test_discover_subcommand_exists(0),test_topology_subcommand_exists(0),test_run_subcommand_exists(0)  # CLI must work without hanging in non-TTY context.
+    TestMCPModule: test_mcp_server_module_importable(0),test_mcp_init_importable(0),test_mcp_server_raises_on_missing_package(0)  # MCP server module must import without requiring mcp package 
+    TestDiscoveryPipeline: test_self_discovery_returns_manifest(0),test_self_discovery_json_serializable(0),test_discover_cli_json_output(0)  # Discovery must work on this project itself (self-discovery).
+    TestTopologyPipeline: test_topology_cli_json_output(0)  # Topology generation must produce valid structure.
+    TestScenarioRoundTrip: test_scenario_parses(1),test_scenario_round_trips(1),test_api_smoke_has_api_steps(0)  # Scenarios in testql-scenarios/ must parse cleanly.
+    TestAutoloopSchema: test_autoloop_state_valid_json(0),test_llm_decision_schema_exists(0),test_llm_decision_schema_valid_decision_values(0)  # Autoloop state and schema must be valid.
+    TestMCPConfig: test_mcp_config_structure(0),test_mcp_server_module_path(0)  # MCP config structure must be correct for IDE integration.
   tests/test_meta_confidence.py:
     e: TestPlanConfidence,TestStepReasons
     TestPlanConfidence: test_empty_plan_zero(0),test_strong_step_high_score(0),test_step_without_asserts_lower(0),test_nl_unresolved_lower(0),test_nl_llm_resolved_lowest(0),test_multi_assert_bonus(0),test_per_step_scores_recorded(0),test_clamping(0),test_to_dict(0)
@@ -2099,6 +2220,13 @@ D:
     TestResultSerializers: test_render_result_json(0),test_render_refactor_yaml(1),test_render_inspection_toon(1),test_render_inspection_nlp(1)
     TestInspectCli: test_inspect_default_toon_output(0),test_inspect_json_result_artifact(0),test_inspect_refactor_plan_nlp_for_empty_dir(1),test_inspect_missing_path_exits_nonzero(0)
     TestDotTestqlArtifacts: test_write_inspection_artifacts_creates_dot_testql_bundle(1),test_inspect_cli_out_dir_writes_bundle(1)
+  tests/test_run_cmd.py:
+    e: _install_fake_interpreter,_mk_scenario,_FakeResult,_FakeInterpreter,TestRunCommandInputs
+    _FakeResult: __post_init__(0)
+    _FakeInterpreter: __init__(0),run(2)
+    TestRunCommandInputs: test_run_accepts_directory(2),test_run_accepts_glob_pattern(2),test_run_errors_for_missing_input(1),test_run_accepts_shell_expanded_multiple_files(2)
+    _install_fake_interpreter(monkeypatch)
+    _mk_scenario(path)
   tests/test_run_ir_cli.py:
     e: _write,TestRunIrCLI
     TestRunIrCLI: test_help(0),test_dry_run_console(1),test_json_output(1),test_actual_sqlite_run(1)
@@ -2123,9 +2251,22 @@ D:
     e: TestShellExecution,TestShellDryRun
     TestShellExecution: interpreter(1),test_shell_echo_command(2),test_shell_with_exit_code(1),test_assert_exit_code_success(1),test_assert_exit_code_failure(1),test_assert_stdout_contains_success(1),test_assert_stdout_contains_failure(1),test_shell_timeout(1),test_shell_no_previous_command_warning(1)  # Test SHELL, EXEC, RUN commands and assertions.
     TestShellDryRun: interpreter(0),test_shell_dry_run(1)  # Test shell commands in dry-run mode.
+  tests/test_smoke_decisions.py:
+    e: _load,_schema,_check_required,_check_decision,_check_metrics,_check_numerics,_check_next_actions,_validate,TestKimiDecision,TestSWEDecision,TestModelComparison
+    TestKimiDecision: test_file_exists(0),test_valid_json(0),test_schema_valid(0),test_decision_value(0),test_confidence_high(0),test_has_topology_focus(0)
+    TestSWEDecision: test_file_exists(0),test_valid_json(0),test_schema_valid(0),test_decision_value(0),test_conservative_risk(0),test_has_multiple_next_actions(0)
+    TestModelComparison: test_both_same_iteration(0),test_both_valid_decisions(0),test_kimi_higher_confidence_than_swe(0),test_swe_higher_risk_than_kimi(0),test_summary(0)
+    _load(name)
+    _schema()
+    _check_required(data;schema)
+    _check_decision(data;schema)
+    _check_metrics(data;schema)
+    _check_numerics(data)
+    _check_next_actions(data)
+    _validate(data;schema)
   tests/test_sources.py:
     e: TestRegistry,TestOpenAPISource,TestSqlSource,TestProtoSource,TestGraphQLSource,TestNLSource,TestUISource
-    TestRegistry: test_builtin_sources(0),test_get_source(1),test_get_unknown(0)
+    TestRegistry: test_builtin_sources(0),test_get_source(1),test_get_unknown(0),test_get_config_aliases(1)
     TestOpenAPISource: test_paths_become_api_steps(0),test_status_picks_lowest_2xx(0),test_default_status_when_unspecified(0),test_base_url_from_servers(0),test_metadata_from_info(0),test_load_from_path(1),test_load_from_dict(0)
     TestSqlSource: test_two_tables_yield_four_steps(0),test_count_step_has_assert(0),test_schema_fixture_emitted(0),test_dialect_propagates(0),test_load_from_path(1)
     TestProtoSource: test_one_step_per_message(0),test_sample_fields_blob(0),test_round_trip_assertion(0),test_schema_fixture(0)
@@ -2230,3 +2371,12 @@ D:
     e: TestUnitExecution,TestUnitDryRun
     TestUnitExecution: interpreter(0),test_unit_import_success(1),test_unit_import_failure(1),test_unit_assert_success(1),test_unit_assert_failure(1),test_unit_assert_builtin_function(1),test_unit_pytest_no_args(1),test_unit_pytest_dry_run(1)  # Test UNIT_PYTEST, UNIT_IMPORT, UNIT_ASSERT commands.
     TestUnitDryRun: interpreter(0),test_unit_import_dry_run(1),test_unit_pytest_discover_dry_run(1)  # Test unit commands in dry-run mode.
+  tests/test_validation.py:
+    e: interp,_seed_shell,TestValidateExpansion,TestValidateContains,TestValidateRegex,TestValidateTemplate,TestValidateSemantic
+    TestValidateExpansion: test_validate_row_emits_validate_oql_line(0),test_validate_quotes_regex_metachars(0),test_validate_pipe_inside_quoted_criteria_is_literal(0),test_validate_comma_inside_quoted_criteria_is_literal(0),test_validate_skips_rows_without_type_or_target(0)
+    TestValidateContains: test_contains_pass(1),test_contains_fail(1),test_not_contains_pass(1),test_not_contains_fail(1)
+    TestValidateRegex: test_regex_pass(1),test_regex_fail(1)
+    TestValidateTemplate: test_template_pass(2),test_template_missing_file(2)
+    TestValidateSemantic: test_semantic_emits_event_and_passes(1)
+    interp()
+    _seed_shell(interp;stdout;stderr;rc)

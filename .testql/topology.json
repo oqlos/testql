@@ -5,357 +5,58 @@
       "conditions": [],
       "evidence": [
         {
-          "detail": "python package marker",
-          "kind": "file",
-          "location": "pyproject.toml",
-          "probe": "filesystem.package_python"
-        },
-        {
-          "detail": "OpenAPI/Swagger 3.0.3",
-          "kind": "file",
-          "location": "openapi.yaml",
-          "probe": "filesystem.api_openapi"
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
         }
       ],
       "protocol": "manifest",
       "relation": "classified_as",
       "source_id": "artifact.root",
-      "target_id": "type.python_pkg"
+      "target_id": "type.web_page"
     },
     {
       "conditions": [],
       "evidence": [
         {
-          "detail": "python package marker",
-          "kind": "file",
-          "location": "pyproject.toml",
-          "probe": "filesystem.package_python"
-        },
-        {
-          "detail": "OpenAPI/Swagger 3.0.3",
-          "kind": "file",
-          "location": "openapi.yaml",
-          "probe": "filesystem.api_openapi"
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
         }
       ],
       "protocol": "manifest",
       "relation": "classified_as",
       "source_id": "artifact.root",
-      "target_id": "type.fastapi"
+      "target_id": "type.http_endpoint"
     },
     {
       "conditions": [],
       "evidence": [
         {
-          "detail": "python package marker",
-          "kind": "file",
-          "location": "pyproject.toml",
-          "probe": "filesystem.package_python"
-        },
-        {
-          "detail": "OpenAPI/Swagger 3.0.3",
-          "kind": "file",
-          "location": "openapi.yaml",
-          "probe": "filesystem.api_openapi"
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
         }
       ],
-      "protocol": "manifest",
-      "relation": "classified_as",
+      "protocol": "browser",
+      "relation": "exposes",
       "source_id": "artifact.root",
-      "target_id": "type.openapi3"
+      "target_id": "interface.web_page.1"
     },
     {
       "conditions": [],
       "evidence": [
         {
-          "detail": "python package marker",
-          "kind": "file",
-          "location": "pyproject.toml",
-          "probe": "filesystem.package_python"
-        },
-        {
-          "detail": "OpenAPI/Swagger 3.0.3",
-          "kind": "file",
-          "location": "openapi.yaml",
-          "probe": "filesystem.api_openapi"
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
         }
       ],
       "protocol": "http",
-      "relation": "exposes",
-      "source_id": "artifact.root",
-      "target_id": "interface.rest.1"
-    },
-    {
-      "conditions": [
-        {
-          "kind": "scope",
-          "value": "runtime"
-        }
-      ],
-      "evidence": [
-        {
-          "detail": "python package marker",
-          "kind": "file",
-          "location": "pyproject.toml",
-          "probe": "filesystem.package_python"
-        },
-        {
-          "detail": "OpenAPI/Swagger 3.0.3",
-          "kind": "file",
-          "location": "openapi.yaml",
-          "probe": "filesystem.api_openapi"
-        }
-      ],
-      "protocol": "package",
-      "relation": "depends_on",
-      "source_id": "artifact.root",
-      "target_id": "dependency.httpx"
-    },
-    {
-      "conditions": [
-        {
-          "kind": "scope",
-          "value": "runtime"
-        }
-      ],
-      "evidence": [
-        {
-          "detail": "python package marker",
-          "kind": "file",
-          "location": "pyproject.toml",
-          "probe": "filesystem.package_python"
-        },
-        {
-          "detail": "OpenAPI/Swagger 3.0.3",
-          "kind": "file",
-          "location": "openapi.yaml",
-          "probe": "filesystem.api_openapi"
-        }
-      ],
-      "protocol": "package",
-      "relation": "depends_on",
-      "source_id": "artifact.root",
-      "target_id": "dependency.click"
-    },
-    {
-      "conditions": [
-        {
-          "kind": "scope",
-          "value": "runtime"
-        }
-      ],
-      "evidence": [
-        {
-          "detail": "python package marker",
-          "kind": "file",
-          "location": "pyproject.toml",
-          "probe": "filesystem.package_python"
-        },
-        {
-          "detail": "OpenAPI/Swagger 3.0.3",
-          "kind": "file",
-          "location": "openapi.yaml",
-          "probe": "filesystem.api_openapi"
-        }
-      ],
-      "protocol": "package",
-      "relation": "depends_on",
-      "source_id": "artifact.root",
-      "target_id": "dependency.rich"
-    },
-    {
-      "conditions": [
-        {
-          "kind": "scope",
-          "value": "runtime"
-        }
-      ],
-      "evidence": [
-        {
-          "detail": "python package marker",
-          "kind": "file",
-          "location": "pyproject.toml",
-          "probe": "filesystem.package_python"
-        },
-        {
-          "detail": "OpenAPI/Swagger 3.0.3",
-          "kind": "file",
-          "location": "openapi.yaml",
-          "probe": "filesystem.api_openapi"
-        }
-      ],
-      "protocol": "package",
-      "relation": "depends_on",
-      "source_id": "artifact.root",
-      "target_id": "dependency.pyyaml"
-    },
-    {
-      "conditions": [
-        {
-          "kind": "scope",
-          "value": "runtime"
-        }
-      ],
-      "evidence": [
-        {
-          "detail": "python package marker",
-          "kind": "file",
-          "location": "pyproject.toml",
-          "probe": "filesystem.package_python"
-        },
-        {
-          "detail": "OpenAPI/Swagger 3.0.3",
-          "kind": "file",
-          "location": "openapi.yaml",
-          "probe": "filesystem.api_openapi"
-        }
-      ],
-      "protocol": "package",
-      "relation": "depends_on",
-      "source_id": "artifact.root",
-      "target_id": "dependency.goal"
-    },
-    {
-      "conditions": [
-        {
-          "kind": "scope",
-          "value": "runtime"
-        }
-      ],
-      "evidence": [
-        {
-          "detail": "python package marker",
-          "kind": "file",
-          "location": "pyproject.toml",
-          "probe": "filesystem.package_python"
-        },
-        {
-          "detail": "OpenAPI/Swagger 3.0.3",
-          "kind": "file",
-          "location": "openapi.yaml",
-          "probe": "filesystem.api_openapi"
-        }
-      ],
-      "protocol": "package",
-      "relation": "depends_on",
-      "source_id": "artifact.root",
-      "target_id": "dependency.costs"
-    },
-    {
-      "conditions": [
-        {
-          "kind": "scope",
-          "value": "runtime"
-        }
-      ],
-      "evidence": [
-        {
-          "detail": "python package marker",
-          "kind": "file",
-          "location": "pyproject.toml",
-          "probe": "filesystem.package_python"
-        },
-        {
-          "detail": "OpenAPI/Swagger 3.0.3",
-          "kind": "file",
-          "location": "openapi.yaml",
-          "probe": "filesystem.api_openapi"
-        }
-      ],
-      "protocol": "package",
-      "relation": "depends_on",
-      "source_id": "artifact.root",
-      "target_id": "dependency.pfix"
-    },
-    {
-      "conditions": [
-        {
-          "kind": "scope",
-          "value": "runtime"
-        }
-      ],
-      "evidence": [
-        {
-          "detail": "python package marker",
-          "kind": "file",
-          "location": "pyproject.toml",
-          "probe": "filesystem.package_python"
-        },
-        {
-          "detail": "OpenAPI/Swagger 3.0.3",
-          "kind": "file",
-          "location": "openapi.yaml",
-          "probe": "filesystem.api_openapi"
-        }
-      ],
-      "protocol": "package",
-      "relation": "depends_on",
-      "source_id": "artifact.root",
-      "target_id": "dependency.websockets"
-    },
-    {
-      "conditions": [
-        {
-          "kind": "scope",
-          "value": "runtime"
-        }
-      ],
-      "evidence": [
-        {
-          "detail": "python package marker",
-          "kind": "file",
-          "location": "pyproject.toml",
-          "probe": "filesystem.package_python"
-        },
-        {
-          "detail": "OpenAPI/Swagger 3.0.3",
-          "kind": "file",
-          "location": "openapi.yaml",
-          "probe": "filesystem.api_openapi"
-        }
-      ],
-      "protocol": "package",
-      "relation": "depends_on",
-      "source_id": "artifact.root",
-      "target_id": "dependency.pytest_cov"
-    },
-    {
-      "conditions": [
-        {
-          "kind": "scope",
-          "value": "runtime"
-        }
-      ],
-      "evidence": [
-        {
-          "detail": "python package marker",
-          "kind": "file",
-          "location": "pyproject.toml",
-          "probe": "filesystem.package_python"
-        },
-        {
-          "detail": "OpenAPI/Swagger 3.0.3",
-          "kind": "file",
-          "location": "openapi.yaml",
-          "probe": "filesystem.api_openapi"
-        }
-      ],
-      "protocol": "package",
-      "relation": "depends_on",
-      "source_id": "artifact.root",
-      "target_id": "dependency.fastapi"
-    },
-    {
-      "conditions": [],
-      "evidence": [
-        {
-          "detail": "python package marker",
-          "kind": "file",
-          "location": "pyproject.toml",
-          "probe": "filesystem.package_python"
-        }
-      ],
-      "protocol": "file",
       "relation": "supported_by",
       "source_id": "artifact.root",
       "target_id": "evidence.1"
@@ -364,284 +65,4826 @@
       "conditions": [],
       "evidence": [
         {
-          "detail": "OpenAPI/Swagger 3.0.3",
-          "kind": "file",
-          "location": "openapi.yaml",
-          "probe": "filesystem.api_openapi"
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
         }
       ],
-      "protocol": "file",
-      "relation": "supported_by",
+      "protocol": "browser",
+      "relation": "renders",
       "source_id": "artifact.root",
-      "target_id": "evidence.2"
+      "target_id": "page.root"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.1"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.2"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "anchor"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.3"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "anchor"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.4"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.5"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.6"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.7"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.8"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.9"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.10"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.11"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.12"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.13"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.14"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.15"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.16"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.17"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.18"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.19"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.20"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.21"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.22"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.23"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.24"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.25"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.26"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.27"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.28"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.29"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.30"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.31"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.32"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.33"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.34"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.35"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.36"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.37"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.38"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.39"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.40"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.41"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.42"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.43"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.44"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.45"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.46"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.47"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.48"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.49"
+    },
+    {
+      "conditions": [
+        {
+          "kind": "kind",
+          "value": "internal"
+        }
+      ],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "links_to",
+      "source_id": "page.root",
+      "target_id": "link.50"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.1"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.2"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.3"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.4"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.5"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.6"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.7"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.8"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.9"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.10"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.11"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.12"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.13"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.14"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.15"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.16"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.17"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.18"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.19"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.20"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.21"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.22"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.23"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.24"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.25"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.26"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.27"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.28"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.29"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.30"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.31"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.32"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.33"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.34"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.35"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.36"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.37"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.38"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.39"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.40"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.41"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.42"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.43"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.44"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.45"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.46"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.47"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.48"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.49"
+    },
+    {
+      "conditions": [],
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "protocol": "http",
+      "relation": "loads",
+      "source_id": "page.root",
+      "target_id": "asset.50"
+    },
+    {
+      "conditions": [],
+      "evidence": [],
+      "protocol": "crawl",
+      "relation": "has_sitemap",
+      "source_id": "page.root",
+      "target_id": "sitemap.root"
+    },
+    {
+      "conditions": [],
+      "evidence": [],
+      "protocol": "http",
+      "relation": "contains",
+      "source_id": "sitemap.root",
+      "target_id": "subpage.1"
+    },
+    {
+      "conditions": [],
+      "evidence": [],
+      "protocol": "http",
+      "relation": "navigates_to",
+      "source_id": "page.root",
+      "target_id": "subpage.1"
+    },
+    {
+      "conditions": [],
+      "evidence": [],
+      "protocol": "http",
+      "relation": "contains",
+      "source_id": "sitemap.root",
+      "target_id": "subpage.2"
+    },
+    {
+      "conditions": [],
+      "evidence": [],
+      "protocol": "http",
+      "relation": "navigates_to",
+      "source_id": "page.root",
+      "target_id": "subpage.2"
+    },
+    {
+      "conditions": [],
+      "evidence": [],
+      "protocol": "http",
+      "relation": "contains",
+      "source_id": "sitemap.root",
+      "target_id": "subpage.3"
+    },
+    {
+      "conditions": [],
+      "evidence": [],
+      "protocol": "http",
+      "relation": "navigates_to",
+      "source_id": "page.root",
+      "target_id": "subpage.3"
+    },
+    {
+      "conditions": [],
+      "evidence": [],
+      "protocol": "http",
+      "relation": "contains",
+      "source_id": "sitemap.root",
+      "target_id": "subpage.4"
+    },
+    {
+      "conditions": [],
+      "evidence": [],
+      "protocol": "http",
+      "relation": "navigates_to",
+      "source_id": "page.root",
+      "target_id": "subpage.4"
+    },
+    {
+      "conditions": [],
+      "evidence": [],
+      "protocol": "http",
+      "relation": "contains",
+      "source_id": "sitemap.root",
+      "target_id": "subpage.5"
+    },
+    {
+      "conditions": [],
+      "evidence": [],
+      "protocol": "http",
+      "relation": "navigates_to",
+      "source_id": "page.root",
+      "target_id": "subpage.5"
+    },
+    {
+      "conditions": [],
+      "evidence": [],
+      "protocol": "http",
+      "relation": "contains",
+      "source_id": "sitemap.root",
+      "target_id": "subpage.6"
+    },
+    {
+      "conditions": [],
+      "evidence": [],
+      "protocol": "http",
+      "relation": "navigates_to",
+      "source_id": "page.root",
+      "target_id": "subpage.6"
+    },
+    {
+      "conditions": [],
+      "evidence": [],
+      "protocol": "http",
+      "relation": "contains",
+      "source_id": "sitemap.root",
+      "target_id": "subpage.7"
+    },
+    {
+      "conditions": [],
+      "evidence": [],
+      "protocol": "http",
+      "relation": "navigates_to",
+      "source_id": "page.root",
+      "target_id": "subpage.7"
     }
   ],
   "metadata": {
     "generator": "testql.topology",
     "source_types": [
-      "python_pkg",
-      "fastapi",
-      "openapi3"
+      "web_page",
+      "http_endpoint"
     ]
   },
   "nodes": [
     {
       "evidence": [
         {
-          "detail": "python package marker",
-          "kind": "file",
-          "location": "pyproject.toml",
-          "probe": "filesystem.package_python"
-        },
-        {
-          "detail": "OpenAPI/Swagger 3.0.3",
-          "kind": "file",
-          "location": "openapi.yaml",
-          "probe": "filesystem.api_openapi"
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
         }
       ],
       "id": "artifact.root",
       "kind": "artifact",
       "metadata": {
         "confidence": "full",
-        "dependency_count": 10,
-        "description": "Auto-generated OpenAPI spec for testql",
-        "evidence_count": 2,
+        "dependency_count": 0,
+        "evidence_count": 1,
         "interface_count": 1,
-        "name": "testql API",
         "types": [
-          "python_pkg",
-          "fastapi",
-          "openapi3"
-        ],
-        "version": "1.0.0"
+          "web_page",
+          "http_endpoint"
+        ]
       },
       "source": {
-        "kind": "path",
-        "location": "."
+        "kind": "url",
+        "location": "https://tom.sapletta.com/"
       }
     },
     {
       "evidence": [],
-      "id": "type.python_pkg",
+      "id": "type.web_page",
       "kind": "artifact_type",
       "metadata": {
-        "type": "python_pkg"
+        "type": "web_page"
       },
       "source": {
-        "kind": "path",
-        "location": "."
+        "kind": "url",
+        "location": "https://tom.sapletta.com/"
       }
     },
     {
       "evidence": [],
-      "id": "type.fastapi",
+      "id": "type.http_endpoint",
       "kind": "artifact_type",
       "metadata": {
-        "type": "fastapi"
+        "type": "http_endpoint"
       },
       "source": {
-        "kind": "path",
-        "location": "."
+        "kind": "url",
+        "location": "https://tom.sapletta.com/"
       }
     },
     {
       "evidence": [],
-      "id": "type.openapi3",
-      "kind": "artifact_type",
-      "metadata": {
-        "type": "openapi3"
-      },
-      "source": {
-        "kind": "path",
-        "location": "."
-      }
-    },
-    {
-      "evidence": [],
-      "id": "interface.rest.1",
+      "id": "interface.web_page.1",
       "kind": "interface",
       "metadata": {
-        "location": "openapi.yaml",
+        "location": "https://tom.sapletta.com/",
         "metadata": {
-          "paths": 7
+          "status_code": 200,
+          "title": "Tom Sapletta 'Blog | Platform & DevOps Engineer & Hardware Developer, Expat in Germany"
         },
-        "type": "rest"
+        "type": "web_page"
       },
-      "source": "openapi.yaml"
-    },
-    {
-      "evidence": [],
-      "id": "dependency.httpx",
-      "kind": "dependency",
-      "metadata": {
-        "name": "httpx",
-        "scope": "runtime",
-        "version": ">=0.27"
-      },
-      "source": "httpx"
-    },
-    {
-      "evidence": [],
-      "id": "dependency.click",
-      "kind": "dependency",
-      "metadata": {
-        "name": "click",
-        "scope": "runtime",
-        "version": ">=8.0"
-      },
-      "source": "click"
-    },
-    {
-      "evidence": [],
-      "id": "dependency.rich",
-      "kind": "dependency",
-      "metadata": {
-        "name": "rich",
-        "scope": "runtime",
-        "version": ">=13.0"
-      },
-      "source": "rich"
-    },
-    {
-      "evidence": [],
-      "id": "dependency.pyyaml",
-      "kind": "dependency",
-      "metadata": {
-        "name": "pyyaml",
-        "scope": "runtime",
-        "version": ">=6.0"
-      },
-      "source": "pyyaml"
-    },
-    {
-      "evidence": [],
-      "id": "dependency.goal",
-      "kind": "dependency",
-      "metadata": {
-        "name": "goal",
-        "scope": "runtime",
-        "version": ">=2.1.0"
-      },
-      "source": "goal"
-    },
-    {
-      "evidence": [],
-      "id": "dependency.costs",
-      "kind": "dependency",
-      "metadata": {
-        "name": "costs",
-        "scope": "runtime",
-        "version": ">=0.1.20"
-      },
-      "source": "costs"
-    },
-    {
-      "evidence": [],
-      "id": "dependency.pfix",
-      "kind": "dependency",
-      "metadata": {
-        "name": "pfix",
-        "scope": "runtime",
-        "version": ">=0.1.60"
-      },
-      "source": "pfix"
-    },
-    {
-      "evidence": [],
-      "id": "dependency.websockets",
-      "kind": "dependency",
-      "metadata": {
-        "name": "websockets",
-        "scope": "runtime",
-        "version": ">=13.0"
-      },
-      "source": "websockets"
-    },
-    {
-      "evidence": [],
-      "id": "dependency.pytest_cov",
-      "kind": "dependency",
-      "metadata": {
-        "name": "pytest-cov",
-        "scope": "runtime",
-        "version": ">=7.0"
-      },
-      "source": "pytest-cov"
-    },
-    {
-      "evidence": [],
-      "id": "dependency.fastapi",
-      "kind": "dependency",
-      "metadata": {
-        "name": "fastapi",
-        "scope": "runtime",
-        "version": ">=0.100"
-      },
-      "source": "fastapi"
+      "source": "https://tom.sapletta.com/"
     },
     {
       "evidence": [
         {
-          "detail": "python package marker",
-          "kind": "file",
-          "location": "pyproject.toml",
-          "probe": "filesystem.package_python"
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
         }
       ],
       "id": "evidence.1",
       "kind": "evidence",
       "metadata": {
-        "detail": "python package marker",
-        "kind": "file",
-        "location": "pyproject.toml",
-        "probe": "filesystem.package_python"
+        "detail": "HTTP 200",
+        "kind": "http",
+        "location": "https://tom.sapletta.com/",
+        "probe": "network.http_endpoint"
       },
-      "source": "pyproject.toml"
+      "source": "https://tom.sapletta.com/"
     },
     {
       "evidence": [
         {
-          "detail": "OpenAPI/Swagger 3.0.3",
-          "kind": "file",
-          "location": "openapi.yaml",
-          "probe": "filesystem.api_openapi"
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
         }
       ],
-      "id": "evidence.2",
-      "kind": "evidence",
+      "id": "page.root",
+      "kind": "page",
       "metadata": {
-        "detail": "OpenAPI/Swagger 3.0.3",
-        "kind": "file",
-        "location": "openapi.yaml",
-        "probe": "filesystem.api_openapi"
+        "assets": [
+          {
+            "kind": "link",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/"
+          },
+          {
+            "kind": "link",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/sitemap.xml"
+          },
+          {
+            "kind": "icon",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/favicon.ico"
+          },
+          {
+            "kind": "script",
+            "tag": "script",
+            "url": "https://www.google-analytics.com/analytics.js"
+          },
+          {
+            "kind": "link",
+            "tag": "link",
+            "url": "http://gmpg.org/xfn/11"
+          },
+          {
+            "kind": "link",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/xmlrpc.php"
+          },
+          {
+            "kind": "link",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/pl/"
+          },
+          {
+            "kind": "link",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/"
+          },
+          {
+            "kind": "link",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/de/"
+          },
+          {
+            "kind": "link",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/ru/"
+          },
+          {
+            "kind": "link",
+            "tag": "link",
+            "url": "https://ws.sharethis.com"
+          },
+          {
+            "kind": "link",
+            "tag": "link",
+            "url": "https://fonts.googleapis.com"
+          },
+          {
+            "kind": "link",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/feed/"
+          },
+          {
+            "kind": "stylesheet",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/wp-content/plugins/squirrly-seo/view/assets/css/frontend.min.css?ver=12.4.16"
+          },
+          {
+            "kind": "stylesheet",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/wp-content/plugins/github-embed/css/github-embed.css?ver=6.9.4"
+          },
+          {
+            "kind": "stylesheet",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/wp-content/plugins/table-of-contents-plus/screen.min.css?ver=2411.1"
+          },
+          {
+            "kind": "stylesheet",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/wp-content/themes/bezel/css/bootstrap-grid.css?ver=6.9.4"
+          },
+          {
+            "kind": "stylesheet",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/wp-content/themes/bezel/css/font-awesome.css?ver=6.9.4"
+          },
+          {
+            "kind": "stylesheet",
+            "tag": "link",
+            "url": "https://fonts.googleapis.com/css?family=Montserrat%3A400%2C700%7COpen+Sans%3A400%2C400i%2C700%2C700i&subset=latin%2Clatin-ext"
+          },
+          {
+            "kind": "stylesheet",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/wp-content/themes/bezel/style.css?ver=6.9.4"
+          },
+          {
+            "kind": "stylesheet",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/wp-content/plugins/heateor-social-comments/css/front.css?ver=1.6.3"
+          },
+          {
+            "kind": "stylesheet",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/wp-content/plugins/gdpr-cookie-compliance/dist/styles/gdpr-main.css?ver=5.0.11"
+          },
+          {
+            "kind": "script",
+            "tag": "script",
+            "url": "https://tom.sapletta.com/wp-includes/js/jquery/jquery.min.js?ver=3.7.1"
+          },
+          {
+            "kind": "script",
+            "tag": "script",
+            "url": "https://tom.sapletta.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1"
+          },
+          {
+            "kind": "script",
+            "tag": "script",
+            "url": "https://ws.sharethis.com/button/st_insights.js?publisher=eba0f3ba-f9ab-408c-bc68-c28af5afe749&product=feather&ver=1772717413"
+          },
+          {
+            "kind": "link",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/wp-json/"
+          },
+          {
+            "kind": "link",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/xmlrpc.php?rsd"
+          },
+          {
+            "kind": "icon",
+            "tag": "link",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2016/10/cropped-ts_2013_300x270-180x180.jpg"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2017/07/cropped-fig-28-07-2017_19-06-49-1.jpg"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAPFBMVEX/8fH67Ozz5ubt4OD+/v77+/v39/fo2Nj5AAD+jo79bW36X1/4T0/5QUHhAAD3MzP0Kir2ICDzERHtAACO5h0ZAAAAQUlEQVR4AQXBsRHDMAwAMTzNwvuvm5MVIECIZIEQZ4EQ7AAIGBABegsR+Z7VxChx7hCjhIwYJcTydcgQ1gv8Lhd/58kJTU6WtnIAAAAASUVORK5CYII="
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAt1BMVEWSmb66z+18msdig8La3u+tYX9IaLc7W7BagbmcUW+kqMr/q6n+//+hsNv/lIr/jIGMnNLJyOP9/fyQttT/wb3/////aWn+YWF5kNT0oqz0i4ueqtIZNJjhvt/8gn//WVr/6+rN1+o9RKZwgcMPJpX/VFT9UEn+RUX8Ozv2Ly+FGzdYZrfU1e/8LS/lQkG/mbVUX60AE231hHtcdMb0mp3qYFTFwNu3w9prcqSURGNDaaIUMX5FNW5wYt7AAAAAjklEQVR4AR3HNUJEMQCGwf+L8RR36ajR+1+CEuvRdd8kK9MNAiRQNgJmVDAt1yM6kSzYVJUsPNssAk5N7ZFKjVNFAY4co6TAOI+kyQm+LFUEBEKKzuWUNB7rSH/rSnvOulOGk+QlXTBqMIrfYX4tSe2nP3iRa/KNK7uTmWJ5a9+erZ3d+18od4ytiZdvZyuKWy8o3UpTVAAAAABJRU5ErkJggg=="
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAABLElEQVR4AY2QgUZEQRSGz9ydmzbYkBWABBJYABHEFhJ6m0WP0DMEQNIr9AKrN8ne2Tt3Zs7MOdOZmRBEv+v34Tvub9R6fdNlAzU+snSME/wdjbjbbJ6EiEg6BA8102QbjKNpoMzw8v6qD/sOALbbT2MC1NgaAWOKOgxf5czY+4dbAX2G/THzcozLrvPV85IQyqVz0rvg2p9Pei4HjzSsiFbV4JgyhhxCjpGdZ0RhdikLB9/b8Qig7MkpSovR7Cp59q6CazaNFiTt4J82o6uvdMVwTsztKTXZod4jgOJJuqNAjFyGrBR8gM6XwKfIC4KanBSTZ0rClKh08D9DFh3egW7ebH7NcRDQWrz9rM2Ne+mDOXB2mZJ8agL19nwxR2iZXGm1gDbQKhDjd4yHb2oW/KR8xHicAAAAAElFTkSuQmCC"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAdVBMVEX19f/u7vjm5/H+/v75+fng4Ove3ulFRfyysv6cnP6QkPmIiPh/f/YAAOYAAP1ycv5QUP06OvkxMfcoKPcgIPYUFPS0AADdaYzTRG/RPGnOM2LKLFzIIVPCEUZ7AAD0AQH7YGH3ODj0JyfzERDgAAD4TU3pAABIfLuPAAAAT0lEQVR4AQXBAQqDMAAAsZytyHzA/v9LYRS7JIAQMkBb0ATsgLoKInnHvIrHrdRaBzxupTDxuFUifUsp4R3zU4iwzmOyT1ibBtP2u3C+wB+SHBB5JNY7DAAAAABJRU5ErkJggg=="
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2017/10/photo-1484480974693-6ca0a78fb36b3Fixlib3Drb-0.3-1.526q3d8026fm3djpg26crop3dentropy26cs3dtinysrgb26w3d20026fit3dmax26s3d455970be79f030880a003ec7629c2284"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2021/08/lenovo-wifi-scaled.jpg"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2021/08/github-754x566.jpg"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2018/04/fig-27-04-2018_17-45-55-754x400.jpg"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2018/04/dreamstime_xxl_95899032-1-754x566.jpg"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2018/04/photo-1505218795627-2b9746a5343f3Fixlib3Drb-0.3-754x566.526q3d8026fm3djpg26crop3dentropy26cs3dtinysrgb26w3d108026fit3dmax26ixid3deyjhchbfawqiojmwodh926s3d1361bc4cc54b9105eb78ce7e05e3dfa6"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2017/07/fig-29-07-2017_15-16-08-754x566.jpg"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2017/07/docker_1501186240.jpg"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500842539157-754x566.jpg"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2017/07/armbian-cubieboard-on-marsboard5-754x566.jpg"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500751461249-e1500754843810-754x566.jpg"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500658298112-754x566.jpg"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2017/07/ExternalLink_chrome_2017-07-18_18-46-11.png"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2017/05/e837b50c28fd003ed95c4518b7454191eb73ebc818b5184494f1c77ea6e4_640.jpg"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2017/05/ec31b20d2cf71c2ad65a5854ef4b419ee77effd41db8154693f5c271a6_640.jpg"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2017/05/wp-1493786544612.jpg"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2017/04/chrome_2017-04-21_21-30-19.png"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2017/04/ea33b40f2bf31c2ad65a5854ef4b419ee77effd41db8104390f0c170a5_640.jpg"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2017/05/froxlor_hero.png"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2017/08/fig-21-08-2017_19-22-17-754x400.jpg"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/uploads/2016/09/12590004-e1475275366174.jpg"
+          },
+          {
+            "kind": "script",
+            "tag": "script",
+            "url": "https://tom.sapletta.com/wp-content/plugins/table-of-contents-plus/front.min.js?ver=2411.1"
+          },
+          {
+            "kind": "script",
+            "tag": "script",
+            "url": "https://tom.sapletta.com/wp-content/themes/bezel/js/enquire.js?ver=2.1.2"
+          },
+          {
+            "kind": "script",
+            "tag": "script",
+            "url": "https://tom.sapletta.com/wp-content/themes/bezel/js/hover-intent.js?ver=r7"
+          },
+          {
+            "kind": "script",
+            "tag": "script",
+            "url": "https://tom.sapletta.com/wp-content/themes/bezel/js/superfish.js?ver=1.7.7"
+          },
+          {
+            "kind": "script",
+            "tag": "script",
+            "url": "https://tom.sapletta.com/wp-content/themes/bezel/js/custom.js?ver=1.0"
+          },
+          {
+            "kind": "script",
+            "tag": "script",
+            "url": "https://tom.sapletta.com/wp-content/plugins/gdpr-cookie-compliance/dist/scripts/main.js?ver=5.0.11"
+          },
+          {
+            "kind": "image",
+            "tag": "img",
+            "url": "https://tom.sapletta.com/wp-content/plugins/gdpr-cookie-compliance/dist/images/gdpr-logo.png"
+          }
+        ],
+        "console_errors": [],
+        "content_type": "text/html; charset=UTF-8",
+        "forms": [],
+        "links": [
+          {
+            "kind": "internal",
+            "text": "",
+            "url": "https://tom.sapletta.com/"
+          },
+          {
+            "kind": "internal",
+            "text": "Tom Sapletta 'Blog",
+            "url": "https://tom.sapletta.com/"
+          },
+          {
+            "kind": "anchor",
+            "text": "Menu",
+            "url": "https://tom.sapletta.com/#main-navigation-responsive"
+          },
+          {
+            "kind": "anchor",
+            "text": "Skip to content",
+            "url": "https://tom.sapletta.com/#content"
+          },
+          {
+            "kind": "internal",
+            "text": "Polski",
+            "url": "https://tom.sapletta.com/pl/"
+          },
+          {
+            "kind": "internal",
+            "text": "English",
+            "url": "https://tom.sapletta.com/"
+          },
+          {
+            "kind": "internal",
+            "text": "Deutsch",
+            "url": "https://tom.sapletta.com/de/"
+          },
+          {
+            "kind": "internal",
+            "text": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+            "url": "https://tom.sapletta.com/ru/"
+          },
+          {
+            "kind": "internal",
+            "text": "",
+            "url": "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/"
+          },
+          {
+            "kind": "internal",
+            "text": "Idea",
+            "url": "https://tom.sapletta.com/category/idea-en/"
+          },
+          {
+            "kind": "internal",
+            "text": "Data Streaming: An Insight into NDOF: Newline Delimited Objects Format \u2013 10 Things I Wish I\u2019d Known Earlier",
+            "url": "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/"
+          },
+          {
+            "kind": "internal",
+            "text": "07/10/2023 07/10/2023",
+            "url": "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/"
+          },
+          {
+            "kind": "internal",
+            "text": "Tom Sapletta",
+            "url": "https://tom.sapletta.com/author/admin/"
+          },
+          {
+            "kind": "internal",
+            "text": "Read More",
+            "url": "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/"
+          },
+          {
+            "kind": "internal",
+            "text": "",
+            "url": "https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/"
+          },
+          {
+            "kind": "internal",
+            "text": "how-to",
+            "url": "https://tom.sapletta.com/category/how-to/"
+          },
+          {
+            "kind": "internal",
+            "text": "Lenovo Yoga 7 Ryzen 9 and wifi problem on linux",
+            "url": "https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/"
+          },
+          {
+            "kind": "internal",
+            "text": "13/08/2021 13/08/2021",
+            "url": "https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/"
+          },
+          {
+            "kind": "internal",
+            "text": "Tom Sapletta",
+            "url": "https://tom.sapletta.com/author/admin/"
+          },
+          {
+            "kind": "internal",
+            "text": "Read More",
+            "url": "https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/"
+          },
+          {
+            "kind": "internal",
+            "text": "",
+            "url": "https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/"
+          },
+          {
+            "kind": "internal",
+            "text": "Idea",
+            "url": "https://tom.sapletta.com/category/idea/"
+          },
+          {
+            "kind": "internal",
+            "text": "Git Synchronisation on any Operation System",
+            "url": "https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/"
+          },
+          {
+            "kind": "internal",
+            "text": "08/08/2021 09/08/2021",
+            "url": "https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/"
+          },
+          {
+            "kind": "internal",
+            "text": "Tom Sapletta",
+            "url": "https://tom.sapletta.com/author/admin/"
+          },
+          {
+            "kind": "internal",
+            "text": "Read More",
+            "url": "https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/"
+          },
+          {
+            "kind": "internal",
+            "text": "",
+            "url": "https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/"
+          },
+          {
+            "kind": "internal",
+            "text": "Idea",
+            "url": "https://tom.sapletta.com/category/idea/"
+          },
+          {
+            "kind": "internal",
+            "text": "Podcasting and marketing library services",
+            "url": "https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/"
+          },
+          {
+            "kind": "internal",
+            "text": "27/04/2018 27/04/2018",
+            "url": "https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/"
+          },
+          {
+            "kind": "internal",
+            "text": "Tom Sapletta",
+            "url": "https://tom.sapletta.com/author/admin/"
+          },
+          {
+            "kind": "internal",
+            "text": "Read More",
+            "url": "https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/"
+          },
+          {
+            "kind": "internal",
+            "text": "",
+            "url": "https://tom.sapletta.com/domains/tools-for-a-domainers/"
+          },
+          {
+            "kind": "internal",
+            "text": "domains",
+            "url": "https://tom.sapletta.com/category/domains/"
+          },
+          {
+            "kind": "internal",
+            "text": "Tools for a Domainers",
+            "url": "https://tom.sapletta.com/domains/tools-for-a-domainers/"
+          },
+          {
+            "kind": "internal",
+            "text": "21/04/2018 21/04/2018",
+            "url": "https://tom.sapletta.com/domains/tools-for-a-domainers/"
+          },
+          {
+            "kind": "internal",
+            "text": "Tom Sapletta",
+            "url": "https://tom.sapletta.com/author/admin/"
+          },
+          {
+            "kind": "internal",
+            "text": "Read More",
+            "url": "https://tom.sapletta.com/domains/tools-for-a-domainers/"
+          },
+          {
+            "kind": "internal",
+            "text": "",
+            "url": "https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/"
+          },
+          {
+            "kind": "internal",
+            "text": "How-to",
+            "url": "https://tom.sapletta.com/category/how-to-en/"
+          },
+          {
+            "kind": "internal",
+            "text": "The Wave of Efficient, be more focused as Developer",
+            "url": "https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/"
+          },
+          {
+            "kind": "internal",
+            "text": "19/04/2018 20/04/2018",
+            "url": "https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/"
+          },
+          {
+            "kind": "internal",
+            "text": "Tom Sapletta",
+            "url": "https://tom.sapletta.com/author/admin/"
+          },
+          {
+            "kind": "internal",
+            "text": "Read More",
+            "url": "https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/"
+          },
+          {
+            "kind": "internal",
+            "text": "domains",
+            "url": "https://tom.sapletta.com/category/domains/"
+          },
+          {
+            "kind": "internal",
+            "text": "domains, trends, the best NAME!",
+            "url": "https://tom.sapletta.com/how-to/domains-trends-the-best-name/"
+          },
+          {
+            "kind": "internal",
+            "text": "31/08/2017",
+            "url": "https://tom.sapletta.com/how-to/domains-trends-the-best-name/"
+          },
+          {
+            "kind": "internal",
+            "text": "Tom Sapletta",
+            "url": "https://tom.sapletta.com/author/admin/"
+          },
+          {
+            "kind": "internal",
+            "text": "Read More",
+            "url": "https://tom.sapletta.com/how-to/domains-trends-the-best-name/"
+          },
+          {
+            "kind": "internal",
+            "text": "Software",
+            "url": "https://tom.sapletta.com/category/software-en/"
+          },
+          {
+            "kind": "internal",
+            "text": "WordPress blog optimisation with NGINX and Cacheing",
+            "url": "https://tom.sapletta.com/software-en/wordpress-blog-optimisation-with-nginx-and-cacheing/"
+          },
+          {
+            "kind": "internal",
+            "text": "30/08/2017 30/08/2017",
+            "url": "https://tom.sapletta.com/software-en/wordpress-blog-optimisation-with-nginx-and-cacheing/"
+          },
+          {
+            "kind": "internal",
+            "text": "Tom Sapletta",
+            "url": "https://tom.sapletta.com/author/admin/"
+          },
+          {
+            "kind": "internal",
+            "text": "Read More",
+            "url": "https://tom.sapletta.com/software-en/wordpress-blog-optimisation-with-nginx-and-cacheing/"
+          },
+          {
+            "kind": "internal",
+            "text": "",
+            "url": "https://tom.sapletta.com/project-en/iot-city-com-the-right-domain-name-for-industry-internet-of-things-iot/"
+          },
+          {
+            "kind": "internal",
+            "text": "Offer",
+            "url": "https://tom.sapletta.com/category/offer/"
+          },
+          {
+            "kind": "internal",
+            "text": "iot-city.com the right domain name for Industry: Internet of Things (IOT)",
+            "url": "https://tom.sapletta.com/project-en/iot-city-com-the-right-domain-name-for-industry-internet-of-things-iot/"
+          },
+          {
+            "kind": "internal",
+            "text": "29/07/2017 03/08/2017",
+            "url": "https://tom.sapletta.com/project-en/iot-city-com-the-right-domain-name-for-industry-internet-of-things-iot/"
+          },
+          {
+            "kind": "internal",
+            "text": "Tom Sapletta",
+            "url": "https://tom.sapletta.com/author/admin/"
+          },
+          {
+            "kind": "internal",
+            "text": "Read More",
+            "url": "https://tom.sapletta.com/project-en/iot-city-com-the-right-domain-name-for-industry-internet-of-things-iot/"
+          },
+          {
+            "kind": "internal",
+            "text": "",
+            "url": "https://tom.sapletta.com/tools-en/set-up-and-install-docker-ce-for-debian-jessie/"
+          },
+          {
+            "kind": "internal",
+            "text": "Software",
+            "url": "https://tom.sapletta.com/category/software-en/"
+          },
+          {
+            "kind": "internal",
+            "text": "Set up and install Docker CE for Debian Jessie",
+            "url": "https://tom.sapletta.com/tools-en/set-up-and-install-docker-ce-for-debian-jessie/"
+          },
+          {
+            "kind": "internal",
+            "text": "24/07/2017 27/07/2017",
+            "url": "https://tom.sapletta.com/tools-en/set-up-and-install-docker-ce-for-debian-jessie/"
+          },
+          {
+            "kind": "internal",
+            "text": "Tom Sapletta",
+            "url": "https://tom.sapletta.com/author/admin/"
+          },
+          {
+            "kind": "internal",
+            "text": "Read More",
+            "url": "https://tom.sapletta.com/tools-en/set-up-and-install-docker-ce-for-debian-jessie/"
+          },
+          {
+            "kind": "internal",
+            "text": "",
+            "url": "https://tom.sapletta.com/test/backup-cloning-resizing-for-partitions-on-disc-review-test/"
+          },
+          {
+            "kind": "internal",
+            "text": "Hardware",
+            "url": "https://tom.sapletta.com/category/hardware/"
+          },
+          {
+            "kind": "internal",
+            "text": "Backup, Cloning, Resizing for Partitions on Disc, Review & Test",
+            "url": "https://tom.sapletta.com/test/backup-cloning-resizing-for-partitions-on-disc-review-test/"
+          },
+          {
+            "kind": "internal",
+            "text": "23/07/2017 23/07/2017",
+            "url": "https://tom.sapletta.com/test/backup-cloning-resizing-for-partitions-on-disc-review-test/"
+          },
+          {
+            "kind": "internal",
+            "text": "Tom Sapletta",
+            "url": "https://tom.sapletta.com/author/admin/"
+          },
+          {
+            "kind": "internal",
+            "text": "Read More",
+            "url": "https://tom.sapletta.com/test/backup-cloning-resizing-for-partitions-on-disc-review-test/"
+          },
+          {
+            "kind": "internal",
+            "text": "",
+            "url": "https://tom.sapletta.com/hardware/armbian-cubieboard-on-marsboard/"
+          },
+          {
+            "kind": "internal",
+            "text": "Hardware",
+            "url": "https://tom.sapletta.com/category/hardware/"
+          },
+          {
+            "kind": "internal",
+            "text": "Armbian Cubieboard on Marsboard",
+            "url": "https://tom.sapletta.com/hardware/armbian-cubieboard-on-marsboard/"
+          },
+          {
+            "kind": "internal",
+            "text": "22/07/2017 29/07/2017",
+            "url": "https://tom.sapletta.com/hardware/armbian-cubieboard-on-marsboard/"
+          },
+          {
+            "kind": "internal",
+            "text": "Tom Sapletta",
+            "url": "https://tom.sapletta.com/author/admin/"
+          },
+          {
+            "kind": "internal",
+            "text": "Read More",
+            "url": "https://tom.sapletta.com/hardware/armbian-cubieboard-on-marsboard/"
+          },
+          {
+            "kind": "internal",
+            "text": "",
+            "url": "https://tom.sapletta.com/how-to-en/printer-server-on-marsboard/"
+          },
+          {
+            "kind": "internal",
+            "text": "Hardware",
+            "url": "https://tom.sapletta.com/category/hardware/"
+          },
+          {
+            "kind": "internal",
+            "text": "Printer Server on Marsboard",
+            "url": "https://tom.sapletta.com/how-to-en/printer-server-on-marsboard/"
+          },
+          {
+            "kind": "internal",
+            "text": "22/07/2017 27/07/2017",
+            "url": "https://tom.sapletta.com/how-to-en/printer-server-on-marsboard/"
+          },
+          {
+            "kind": "internal",
+            "text": "Tom Sapletta",
+            "url": "https://tom.sapletta.com/author/admin/"
+          },
+          {
+            "kind": "internal",
+            "text": "Read More",
+            "url": "https://tom.sapletta.com/how-to-en/printer-server-on-marsboard/"
+          },
+          {
+            "kind": "internal",
+            "text": "",
+            "url": "https://tom.sapletta.com/how-to/fastest-memory-with-nvm-technology-in-turbo-mode/"
+          },
+          {
+            "kind": "internal",
+            "text": "Hardware",
+            "url": "https://tom.sapletta.com/category/hardware/"
+          },
+          {
+            "kind": "internal",
+            "text": "Fastest Memory with NVM Technology in Turbo Mode",
+            "url": "https://tom.sapletta.com/how-to/fastest-memory-with-nvm-technology-in-turbo-mode/"
+          },
+          {
+            "kind": "internal",
+            "text": "21/07/2017 23/07/2017",
+            "url": "https://tom.sapletta.com/how-to/fastest-memory-with-nvm-technology-in-turbo-mode/"
+          },
+          {
+            "kind": "internal",
+            "text": "Tom Sapletta",
+            "url": "https://tom.sapletta.com/author/admin/"
+          },
+          {
+            "kind": "internal",
+            "text": "Read More",
+            "url": "https://tom.sapletta.com/how-to/fastest-memory-with-nvm-technology-in-turbo-mode/"
+          },
+          {
+            "kind": "internal",
+            "text": "",
+            "url": "https://tom.sapletta.com/project-en/how-to-fast-learn-git-by-examples/"
+          },
+          {
+            "kind": "internal",
+            "text": "Project",
+            "url": "https://tom.sapletta.com/category/project-en/"
+          },
+          {
+            "kind": "internal",
+            "text": "how to fast learn GIT version control system (VCS)?",
+            "url": "https://tom.sapletta.com/project-en/how-to-fast-learn-git-by-examples/"
+          },
+          {
+            "kind": "internal",
+            "text": "18/07/2017 18/07/2017",
+            "url": "https://tom.sapletta.com/project-en/how-to-fast-learn-git-by-examples/"
+          },
+          {
+            "kind": "internal",
+            "text": "Tom Sapletta",
+            "url": "https://tom.sapletta.com/author/admin/"
+          },
+          {
+            "kind": "internal",
+            "text": "Read More",
+            "url": "https://tom.sapletta.com/project-en/how-to-fast-learn-git-by-examples/"
+          },
+          {
+            "kind": "internal",
+            "text": "",
+            "url": "https://tom.sapletta.com/tools-en/how-to-start-image-processing-with-python-libraries/"
+          },
+          {
+            "kind": "internal",
+            "text": "Project",
+            "url": "https://tom.sapletta.com/category/project-en/"
+          },
+          {
+            "kind": "internal",
+            "text": "how to start Image Processing with Python libraries",
+            "url": "https://tom.sapletta.com/tools-en/how-to-start-image-processing-with-python-libraries/"
+          },
+          {
+            "kind": "internal",
+            "text": "21/05/2017 23/05/2017",
+            "url": "https://tom.sapletta.com/tools-en/how-to-start-image-processing-with-python-libraries/"
+          }
+        ],
+        "network_calls": [],
+        "status_code": 200,
+        "title": "Tom Sapletta 'Blog | Platform & DevOps Engineer & Hardware Developer, Expat in Germany",
+        "url": "https://tom.sapletta.com/"
       },
-      "source": "openapi.yaml"
+      "source": "https://tom.sapletta.com/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.1",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "",
+        "url": "https://tom.sapletta.com/"
+      },
+      "source": "https://tom.sapletta.com/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.2",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Tom Sapletta 'Blog",
+        "url": "https://tom.sapletta.com/"
+      },
+      "source": "https://tom.sapletta.com/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.3",
+      "kind": "link",
+      "metadata": {
+        "kind": "anchor",
+        "text": "Menu",
+        "url": "https://tom.sapletta.com/#main-navigation-responsive"
+      },
+      "source": "https://tom.sapletta.com/#main-navigation-responsive"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.4",
+      "kind": "link",
+      "metadata": {
+        "kind": "anchor",
+        "text": "Skip to content",
+        "url": "https://tom.sapletta.com/#content"
+      },
+      "source": "https://tom.sapletta.com/#content"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.5",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Polski",
+        "url": "https://tom.sapletta.com/pl/"
+      },
+      "source": "https://tom.sapletta.com/pl/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.6",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "English",
+        "url": "https://tom.sapletta.com/"
+      },
+      "source": "https://tom.sapletta.com/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.7",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Deutsch",
+        "url": "https://tom.sapletta.com/de/"
+      },
+      "source": "https://tom.sapletta.com/de/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.8",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "url": "https://tom.sapletta.com/ru/"
+      },
+      "source": "https://tom.sapletta.com/ru/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.9",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "",
+        "url": "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/"
+      },
+      "source": "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.10",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Idea",
+        "url": "https://tom.sapletta.com/category/idea-en/"
+      },
+      "source": "https://tom.sapletta.com/category/idea-en/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.11",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Data Streaming: An Insight into NDOF: Newline Delimited Objects Format \u2013 10 Things I Wish I\u2019d Known Earlier",
+        "url": "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/"
+      },
+      "source": "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.12",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "07/10/2023 07/10/2023",
+        "url": "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/"
+      },
+      "source": "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.13",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Tom Sapletta",
+        "url": "https://tom.sapletta.com/author/admin/"
+      },
+      "source": "https://tom.sapletta.com/author/admin/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.14",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Read More",
+        "url": "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/"
+      },
+      "source": "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.15",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "",
+        "url": "https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/"
+      },
+      "source": "https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.16",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "how-to",
+        "url": "https://tom.sapletta.com/category/how-to/"
+      },
+      "source": "https://tom.sapletta.com/category/how-to/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.17",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Lenovo Yoga 7 Ryzen 9 and wifi problem on linux",
+        "url": "https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/"
+      },
+      "source": "https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.18",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "13/08/2021 13/08/2021",
+        "url": "https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/"
+      },
+      "source": "https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.19",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Tom Sapletta",
+        "url": "https://tom.sapletta.com/author/admin/"
+      },
+      "source": "https://tom.sapletta.com/author/admin/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.20",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Read More",
+        "url": "https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/"
+      },
+      "source": "https://tom.sapletta.com/how-to/lenovo-yoga-7-ryzen-9-and-wifi-problem-on-linux/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.21",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "",
+        "url": "https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/"
+      },
+      "source": "https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.22",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Idea",
+        "url": "https://tom.sapletta.com/category/idea/"
+      },
+      "source": "https://tom.sapletta.com/category/idea/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.23",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Git Synchronisation on any Operation System",
+        "url": "https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/"
+      },
+      "source": "https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.24",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "08/08/2021 09/08/2021",
+        "url": "https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/"
+      },
+      "source": "https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.25",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Tom Sapletta",
+        "url": "https://tom.sapletta.com/author/admin/"
+      },
+      "source": "https://tom.sapletta.com/author/admin/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.26",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Read More",
+        "url": "https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/"
+      },
+      "source": "https://tom.sapletta.com/idea/git-synchronisation-on-any-operation-system/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.27",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "",
+        "url": "https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/"
+      },
+      "source": "https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.28",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Idea",
+        "url": "https://tom.sapletta.com/category/idea/"
+      },
+      "source": "https://tom.sapletta.com/category/idea/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.29",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Podcasting and marketing library services",
+        "url": "https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/"
+      },
+      "source": "https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.30",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "27/04/2018 27/04/2018",
+        "url": "https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/"
+      },
+      "source": "https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.31",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Tom Sapletta",
+        "url": "https://tom.sapletta.com/author/admin/"
+      },
+      "source": "https://tom.sapletta.com/author/admin/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.32",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Read More",
+        "url": "https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/"
+      },
+      "source": "https://tom.sapletta.com/idea/podcasting-and-marketing-library-services/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.33",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "",
+        "url": "https://tom.sapletta.com/domains/tools-for-a-domainers/"
+      },
+      "source": "https://tom.sapletta.com/domains/tools-for-a-domainers/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.34",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "domains",
+        "url": "https://tom.sapletta.com/category/domains/"
+      },
+      "source": "https://tom.sapletta.com/category/domains/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.35",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Tools for a Domainers",
+        "url": "https://tom.sapletta.com/domains/tools-for-a-domainers/"
+      },
+      "source": "https://tom.sapletta.com/domains/tools-for-a-domainers/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.36",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "21/04/2018 21/04/2018",
+        "url": "https://tom.sapletta.com/domains/tools-for-a-domainers/"
+      },
+      "source": "https://tom.sapletta.com/domains/tools-for-a-domainers/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.37",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Tom Sapletta",
+        "url": "https://tom.sapletta.com/author/admin/"
+      },
+      "source": "https://tom.sapletta.com/author/admin/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.38",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Read More",
+        "url": "https://tom.sapletta.com/domains/tools-for-a-domainers/"
+      },
+      "source": "https://tom.sapletta.com/domains/tools-for-a-domainers/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.39",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "",
+        "url": "https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/"
+      },
+      "source": "https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.40",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "How-to",
+        "url": "https://tom.sapletta.com/category/how-to-en/"
+      },
+      "source": "https://tom.sapletta.com/category/how-to-en/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.41",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "The Wave of Efficient, be more focused as Developer",
+        "url": "https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/"
+      },
+      "source": "https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.42",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "19/04/2018 20/04/2018",
+        "url": "https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/"
+      },
+      "source": "https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.43",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Tom Sapletta",
+        "url": "https://tom.sapletta.com/author/admin/"
+      },
+      "source": "https://tom.sapletta.com/author/admin/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.44",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Read More",
+        "url": "https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/"
+      },
+      "source": "https://tom.sapletta.com/how-to-en/the-wave-of-efficient-be-more-focused-as-developer/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.45",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "domains",
+        "url": "https://tom.sapletta.com/category/domains/"
+      },
+      "source": "https://tom.sapletta.com/category/domains/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.46",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "domains, trends, the best NAME!",
+        "url": "https://tom.sapletta.com/how-to/domains-trends-the-best-name/"
+      },
+      "source": "https://tom.sapletta.com/how-to/domains-trends-the-best-name/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.47",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "31/08/2017",
+        "url": "https://tom.sapletta.com/how-to/domains-trends-the-best-name/"
+      },
+      "source": "https://tom.sapletta.com/how-to/domains-trends-the-best-name/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.48",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Tom Sapletta",
+        "url": "https://tom.sapletta.com/author/admin/"
+      },
+      "source": "https://tom.sapletta.com/author/admin/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.49",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Read More",
+        "url": "https://tom.sapletta.com/how-to/domains-trends-the-best-name/"
+      },
+      "source": "https://tom.sapletta.com/how-to/domains-trends-the-best-name/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "link.50",
+      "kind": "link",
+      "metadata": {
+        "kind": "internal",
+        "text": "Software",
+        "url": "https://tom.sapletta.com/category/software-en/"
+      },
+      "source": "https://tom.sapletta.com/category/software-en/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.1",
+      "kind": "asset",
+      "metadata": {
+        "kind": "link",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/"
+      },
+      "source": "https://tom.sapletta.com/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.2",
+      "kind": "asset",
+      "metadata": {
+        "kind": "link",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/sitemap.xml"
+      },
+      "source": "https://tom.sapletta.com/sitemap.xml"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.3",
+      "kind": "asset",
+      "metadata": {
+        "kind": "icon",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/favicon.ico"
+      },
+      "source": "https://tom.sapletta.com/favicon.ico"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.4",
+      "kind": "asset",
+      "metadata": {
+        "kind": "script",
+        "tag": "script",
+        "url": "https://www.google-analytics.com/analytics.js"
+      },
+      "source": "https://www.google-analytics.com/analytics.js"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.5",
+      "kind": "asset",
+      "metadata": {
+        "kind": "link",
+        "tag": "link",
+        "url": "http://gmpg.org/xfn/11"
+      },
+      "source": "http://gmpg.org/xfn/11"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.6",
+      "kind": "asset",
+      "metadata": {
+        "kind": "link",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/xmlrpc.php"
+      },
+      "source": "https://tom.sapletta.com/xmlrpc.php"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.7",
+      "kind": "asset",
+      "metadata": {
+        "kind": "link",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/pl/"
+      },
+      "source": "https://tom.sapletta.com/pl/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.8",
+      "kind": "asset",
+      "metadata": {
+        "kind": "link",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/"
+      },
+      "source": "https://tom.sapletta.com/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.9",
+      "kind": "asset",
+      "metadata": {
+        "kind": "link",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/de/"
+      },
+      "source": "https://tom.sapletta.com/de/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.10",
+      "kind": "asset",
+      "metadata": {
+        "kind": "link",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/ru/"
+      },
+      "source": "https://tom.sapletta.com/ru/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.11",
+      "kind": "asset",
+      "metadata": {
+        "kind": "link",
+        "tag": "link",
+        "url": "https://ws.sharethis.com"
+      },
+      "source": "https://ws.sharethis.com"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.12",
+      "kind": "asset",
+      "metadata": {
+        "kind": "link",
+        "tag": "link",
+        "url": "https://fonts.googleapis.com"
+      },
+      "source": "https://fonts.googleapis.com"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.13",
+      "kind": "asset",
+      "metadata": {
+        "kind": "link",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/feed/"
+      },
+      "source": "https://tom.sapletta.com/feed/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.14",
+      "kind": "asset",
+      "metadata": {
+        "kind": "stylesheet",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/wp-content/plugins/squirrly-seo/view/assets/css/frontend.min.css?ver=12.4.16"
+      },
+      "source": "https://tom.sapletta.com/wp-content/plugins/squirrly-seo/view/assets/css/frontend.min.css?ver=12.4.16"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.15",
+      "kind": "asset",
+      "metadata": {
+        "kind": "stylesheet",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/wp-content/plugins/github-embed/css/github-embed.css?ver=6.9.4"
+      },
+      "source": "https://tom.sapletta.com/wp-content/plugins/github-embed/css/github-embed.css?ver=6.9.4"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.16",
+      "kind": "asset",
+      "metadata": {
+        "kind": "stylesheet",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/wp-content/plugins/table-of-contents-plus/screen.min.css?ver=2411.1"
+      },
+      "source": "https://tom.sapletta.com/wp-content/plugins/table-of-contents-plus/screen.min.css?ver=2411.1"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.17",
+      "kind": "asset",
+      "metadata": {
+        "kind": "stylesheet",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/wp-content/themes/bezel/css/bootstrap-grid.css?ver=6.9.4"
+      },
+      "source": "https://tom.sapletta.com/wp-content/themes/bezel/css/bootstrap-grid.css?ver=6.9.4"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.18",
+      "kind": "asset",
+      "metadata": {
+        "kind": "stylesheet",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/wp-content/themes/bezel/css/font-awesome.css?ver=6.9.4"
+      },
+      "source": "https://tom.sapletta.com/wp-content/themes/bezel/css/font-awesome.css?ver=6.9.4"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.19",
+      "kind": "asset",
+      "metadata": {
+        "kind": "stylesheet",
+        "tag": "link",
+        "url": "https://fonts.googleapis.com/css?family=Montserrat%3A400%2C700%7COpen+Sans%3A400%2C400i%2C700%2C700i&subset=latin%2Clatin-ext"
+      },
+      "source": "https://fonts.googleapis.com/css?family=Montserrat%3A400%2C700%7COpen+Sans%3A400%2C400i%2C700%2C700i&subset=latin%2Clatin-ext"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.20",
+      "kind": "asset",
+      "metadata": {
+        "kind": "stylesheet",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/wp-content/themes/bezel/style.css?ver=6.9.4"
+      },
+      "source": "https://tom.sapletta.com/wp-content/themes/bezel/style.css?ver=6.9.4"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.21",
+      "kind": "asset",
+      "metadata": {
+        "kind": "stylesheet",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/wp-content/plugins/heateor-social-comments/css/front.css?ver=1.6.3"
+      },
+      "source": "https://tom.sapletta.com/wp-content/plugins/heateor-social-comments/css/front.css?ver=1.6.3"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.22",
+      "kind": "asset",
+      "metadata": {
+        "kind": "stylesheet",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/wp-content/plugins/gdpr-cookie-compliance/dist/styles/gdpr-main.css?ver=5.0.11"
+      },
+      "source": "https://tom.sapletta.com/wp-content/plugins/gdpr-cookie-compliance/dist/styles/gdpr-main.css?ver=5.0.11"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.23",
+      "kind": "asset",
+      "metadata": {
+        "kind": "script",
+        "tag": "script",
+        "url": "https://tom.sapletta.com/wp-includes/js/jquery/jquery.min.js?ver=3.7.1"
+      },
+      "source": "https://tom.sapletta.com/wp-includes/js/jquery/jquery.min.js?ver=3.7.1"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.24",
+      "kind": "asset",
+      "metadata": {
+        "kind": "script",
+        "tag": "script",
+        "url": "https://tom.sapletta.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1"
+      },
+      "source": "https://tom.sapletta.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.25",
+      "kind": "asset",
+      "metadata": {
+        "kind": "script",
+        "tag": "script",
+        "url": "https://ws.sharethis.com/button/st_insights.js?publisher=eba0f3ba-f9ab-408c-bc68-c28af5afe749&product=feather&ver=1772717413"
+      },
+      "source": "https://ws.sharethis.com/button/st_insights.js?publisher=eba0f3ba-f9ab-408c-bc68-c28af5afe749&product=feather&ver=1772717413"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.26",
+      "kind": "asset",
+      "metadata": {
+        "kind": "link",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/wp-json/"
+      },
+      "source": "https://tom.sapletta.com/wp-json/"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.27",
+      "kind": "asset",
+      "metadata": {
+        "kind": "link",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/xmlrpc.php?rsd"
+      },
+      "source": "https://tom.sapletta.com/xmlrpc.php?rsd"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.28",
+      "kind": "asset",
+      "metadata": {
+        "kind": "icon",
+        "tag": "link",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2016/10/cropped-ts_2013_300x270-180x180.jpg"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2016/10/cropped-ts_2013_300x270-180x180.jpg"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.29",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2017/07/cropped-fig-28-07-2017_19-06-49-1.jpg"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2017/07/cropped-fig-28-07-2017_19-06-49-1.jpg"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.30",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAPFBMVEX/8fH67Ozz5ubt4OD+/v77+/v39/fo2Nj5AAD+jo79bW36X1/4T0/5QUHhAAD3MzP0Kir2ICDzERHtAACO5h0ZAAAAQUlEQVR4AQXBsRHDMAwAMTzNwvuvm5MVIECIZIEQZ4EQ7AAIGBABegsR+Z7VxChx7hCjhIwYJcTydcgQ1gv8Lhd/58kJTU6WtnIAAAAASUVORK5CYII="
+      },
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAPFBMVEX/8fH67Ozz5ubt4OD+/v77+/v39/fo2Nj5AAD+jo79bW36X1/4T0/5QUHhAAD3MzP0Kir2ICDzERHtAACO5h0ZAAAAQUlEQVR4AQXBsRHDMAwAMTzNwvuvm5MVIECIZIEQZ4EQ7AAIGBABegsR+Z7VxChx7hCjhIwYJcTydcgQ1gv8Lhd/58kJTU6WtnIAAAAASUVORK5CYII="
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.31",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAt1BMVEWSmb66z+18msdig8La3u+tYX9IaLc7W7BagbmcUW+kqMr/q6n+//+hsNv/lIr/jIGMnNLJyOP9/fyQttT/wb3/////aWn+YWF5kNT0oqz0i4ueqtIZNJjhvt/8gn//WVr/6+rN1+o9RKZwgcMPJpX/VFT9UEn+RUX8Ozv2Ly+FGzdYZrfU1e/8LS/lQkG/mbVUX60AE231hHtcdMb0mp3qYFTFwNu3w9prcqSURGNDaaIUMX5FNW5wYt7AAAAAjklEQVR4AR3HNUJEMQCGwf+L8RR36ajR+1+CEuvRdd8kK9MNAiRQNgJmVDAt1yM6kSzYVJUsPNssAk5N7ZFKjVNFAY4co6TAOI+kyQm+LFUEBEKKzuWUNB7rSH/rSnvOulOGk+QlXTBqMIrfYX4tSe2nP3iRa/KNK7uTmWJ5a9+erZ3d+18od4ytiZdvZyuKWy8o3UpTVAAAAABJRU5ErkJggg=="
+      },
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAt1BMVEWSmb66z+18msdig8La3u+tYX9IaLc7W7BagbmcUW+kqMr/q6n+//+hsNv/lIr/jIGMnNLJyOP9/fyQttT/wb3/////aWn+YWF5kNT0oqz0i4ueqtIZNJjhvt/8gn//WVr/6+rN1+o9RKZwgcMPJpX/VFT9UEn+RUX8Ozv2Ly+FGzdYZrfU1e/8LS/lQkG/mbVUX60AE231hHtcdMb0mp3qYFTFwNu3w9prcqSURGNDaaIUMX5FNW5wYt7AAAAAjklEQVR4AR3HNUJEMQCGwf+L8RR36ajR+1+CEuvRdd8kK9MNAiRQNgJmVDAt1yM6kSzYVJUsPNssAk5N7ZFKjVNFAY4co6TAOI+kyQm+LFUEBEKKzuWUNB7rSH/rSnvOulOGk+QlXTBqMIrfYX4tSe2nP3iRa/KNK7uTmWJ5a9+erZ3d+18od4ytiZdvZyuKWy8o3UpTVAAAAABJRU5ErkJggg=="
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.32",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAABLElEQVR4AY2QgUZEQRSGz9ydmzbYkBWABBJYABHEFhJ6m0WP0DMEQNIr9AKrN8ne2Tt3Zs7MOdOZmRBEv+v34Tvub9R6fdNlAzU+snSME/wdjbjbbJ6EiEg6BA8102QbjKNpoMzw8v6qD/sOALbbT2MC1NgaAWOKOgxf5czY+4dbAX2G/THzcozLrvPV85IQyqVz0rvg2p9Pei4HjzSsiFbV4JgyhhxCjpGdZ0RhdikLB9/b8Qig7MkpSovR7Cp59q6CazaNFiTt4J82o6uvdMVwTsztKTXZod4jgOJJuqNAjFyGrBR8gM6XwKfIC4KanBSTZ0rClKh08D9DFh3egW7ebH7NcRDQWrz9rM2Ne+mDOXB2mZJ8agL19nwxR2iZXGm1gDbQKhDjd4yHb2oW/KR8xHicAAAAAElFTkSuQmCC"
+      },
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAABLElEQVR4AY2QgUZEQRSGz9ydmzbYkBWABBJYABHEFhJ6m0WP0DMEQNIr9AKrN8ne2Tt3Zs7MOdOZmRBEv+v34Tvub9R6fdNlAzU+snSME/wdjbjbbJ6EiEg6BA8102QbjKNpoMzw8v6qD/sOALbbT2MC1NgaAWOKOgxf5czY+4dbAX2G/THzcozLrvPV85IQyqVz0rvg2p9Pei4HjzSsiFbV4JgyhhxCjpGdZ0RhdikLB9/b8Qig7MkpSovR7Cp59q6CazaNFiTt4J82o6uvdMVwTsztKTXZod4jgOJJuqNAjFyGrBR8gM6XwKfIC4KanBSTZ0rClKh08D9DFh3egW7ebH7NcRDQWrz9rM2Ne+mDOXB2mZJ8agL19nwxR2iZXGm1gDbQKhDjd4yHb2oW/KR8xHicAAAAAElFTkSuQmCC"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.33",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAdVBMVEX19f/u7vjm5/H+/v75+fng4Ove3ulFRfyysv6cnP6QkPmIiPh/f/YAAOYAAP1ycv5QUP06OvkxMfcoKPcgIPYUFPS0AADdaYzTRG/RPGnOM2LKLFzIIVPCEUZ7AAD0AQH7YGH3ODj0JyfzERDgAAD4TU3pAABIfLuPAAAAT0lEQVR4AQXBAQqDMAAAsZytyHzA/v9LYRS7JIAQMkBb0ATsgLoKInnHvIrHrdRaBzxupTDxuFUifUsp4R3zU4iwzmOyT1ibBtP2u3C+wB+SHBB5JNY7DAAAAABJRU5ErkJggg=="
+      },
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAdVBMVEX19f/u7vjm5/H+/v75+fng4Ove3ulFRfyysv6cnP6QkPmIiPh/f/YAAOYAAP1ycv5QUP06OvkxMfcoKPcgIPYUFPS0AADdaYzTRG/RPGnOM2LKLFzIIVPCEUZ7AAD0AQH7YGH3ODj0JyfzERDgAAD4TU3pAABIfLuPAAAAT0lEQVR4AQXBAQqDMAAAsZytyHzA/v9LYRS7JIAQMkBb0ATsgLoKInnHvIrHrdRaBzxupTDxuFUifUsp4R3zU4iwzmOyT1ibBtP2u3C+wB+SHBB5JNY7DAAAAABJRU5ErkJggg=="
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.34",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2017/10/photo-1484480974693-6ca0a78fb36b3Fixlib3Drb-0.3-1.526q3d8026fm3djpg26crop3dentropy26cs3dtinysrgb26w3d20026fit3dmax26s3d455970be79f030880a003ec7629c2284"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2017/10/photo-1484480974693-6ca0a78fb36b3Fixlib3Drb-0.3-1.526q3d8026fm3djpg26crop3dentropy26cs3dtinysrgb26w3d20026fit3dmax26s3d455970be79f030880a003ec7629c2284"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.35",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2021/08/lenovo-wifi-scaled.jpg"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2021/08/lenovo-wifi-scaled.jpg"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.36",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2021/08/github-754x566.jpg"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2021/08/github-754x566.jpg"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.37",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2018/04/fig-27-04-2018_17-45-55-754x400.jpg"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2018/04/fig-27-04-2018_17-45-55-754x400.jpg"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.38",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2018/04/dreamstime_xxl_95899032-1-754x566.jpg"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2018/04/dreamstime_xxl_95899032-1-754x566.jpg"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.39",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2018/04/photo-1505218795627-2b9746a5343f3Fixlib3Drb-0.3-754x566.526q3d8026fm3djpg26crop3dentropy26cs3dtinysrgb26w3d108026fit3dmax26ixid3deyjhchbfawqiojmwodh926s3d1361bc4cc54b9105eb78ce7e05e3dfa6"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2018/04/photo-1505218795627-2b9746a5343f3Fixlib3Drb-0.3-754x566.526q3d8026fm3djpg26crop3dentropy26cs3dtinysrgb26w3d108026fit3dmax26ixid3deyjhchbfawqiojmwodh926s3d1361bc4cc54b9105eb78ce7e05e3dfa6"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.40",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2017/07/fig-29-07-2017_15-16-08-754x566.jpg"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2017/07/fig-29-07-2017_15-16-08-754x566.jpg"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.41",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2017/07/docker_1501186240.jpg"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2017/07/docker_1501186240.jpg"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.42",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500842539157-754x566.jpg"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500842539157-754x566.jpg"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.43",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2017/07/armbian-cubieboard-on-marsboard5-754x566.jpg"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2017/07/armbian-cubieboard-on-marsboard5-754x566.jpg"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.44",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500751461249-e1500754843810-754x566.jpg"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500751461249-e1500754843810-754x566.jpg"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.45",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500658298112-754x566.jpg"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2017/07/wp-1500658298112-754x566.jpg"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.46",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2017/07/ExternalLink_chrome_2017-07-18_18-46-11.png"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2017/07/ExternalLink_chrome_2017-07-18_18-46-11.png"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.47",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2017/05/e837b50c28fd003ed95c4518b7454191eb73ebc818b5184494f1c77ea6e4_640.jpg"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2017/05/e837b50c28fd003ed95c4518b7454191eb73ebc818b5184494f1c77ea6e4_640.jpg"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.48",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2017/05/ec31b20d2cf71c2ad65a5854ef4b419ee77effd41db8154693f5c271a6_640.jpg"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2017/05/ec31b20d2cf71c2ad65a5854ef4b419ee77effd41db8154693f5c271a6_640.jpg"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.49",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2017/05/wp-1493786544612.jpg"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2017/05/wp-1493786544612.jpg"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HTTP 200",
+          "kind": "http",
+          "location": "https://tom.sapletta.com/",
+          "probe": "network.http_endpoint"
+        }
+      ],
+      "id": "asset.50",
+      "kind": "asset",
+      "metadata": {
+        "kind": "image",
+        "tag": "img",
+        "url": "https://tom.sapletta.com/wp-content/uploads/2017/04/chrome_2017-04-21_21-30-19.png"
+      },
+      "source": "https://tom.sapletta.com/wp-content/uploads/2017/04/chrome_2017-04-21_21-30-19.png"
+    },
+    {
+      "evidence": [],
+      "id": "sitemap.root",
+      "kind": "sitemap",
+      "metadata": {
+        "base_url": "https://tom.sapletta.com/",
+        "crawled": 7,
+        "max_pages": 10
+      },
+      "source": "https://tom.sapletta.com/"
+    },
+    {
+      "evidence": [],
+      "id": "subpage.1",
+      "kind": "subpage",
+      "metadata": {
+        "links": 172,
+        "status_code": 200,
+        "title": "Tom Sapletta 'Blog | Platform & DevOps Engineer & Hardware Developer, Expat in Germany"
+      },
+      "source": "https://tom.sapletta.com/pl/"
+    },
+    {
+      "evidence": [],
+      "id": "subpage.2",
+      "kind": "subpage",
+      "metadata": {
+        "links": 50,
+        "status_code": 200,
+        "title": "Tom Sapletta 'Blog | Platform & DevOps Engineer & Hardware Developer, Expat in Germany"
+      },
+      "source": "https://tom.sapletta.com/de/"
+    },
+    {
+      "evidence": [],
+      "id": "subpage.3",
+      "kind": "subpage",
+      "metadata": {
+        "links": 20,
+        "status_code": 200,
+        "title": "Tom Sapletta 'Blog | Platform & DevOps Engineer & Hardware Developer, Expat in Germany"
+      },
+      "source": "https://tom.sapletta.com/ru/"
+    },
+    {
+      "evidence": [],
+      "id": "subpage.4",
+      "kind": "subpage",
+      "metadata": {
+        "links": 76,
+        "status_code": 200,
+        "title": "Data Streaming: An Insight into NDOF: Newline Delimited Objects Format - 10 | Tom Sapletta 'Blog"
+      },
+      "source": "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/"
+    },
+    {
+      "evidence": [],
+      "id": "subpage.5",
+      "kind": "subpage",
+      "metadata": {
+        "links": 82,
+        "status_code": 200,
+        "title": "Idea | Tom Sapletta 'Blog"
+      },
+      "source": "https://tom.sapletta.com/category/idea-en/"
+    },
+    {
+      "evidence": [],
+      "id": "subpage.6",
+      "kind": "subpage",
+      "metadata": {
+        "links": 76,
+        "status_code": 200,
+        "title": "Data Streaming: An Insight into NDOF: Newline Delimited Objects Format - 10 | Tom Sapletta 'Blog"
+      },
+      "source": "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/"
+    },
+    {
+      "evidence": [],
+      "id": "subpage.7",
+      "kind": "subpage",
+      "metadata": {
+        "links": 76,
+        "status_code": 200,
+        "title": "Data Streaming: An Insight into NDOF: Newline Delimited Objects Format - 10 | Tom Sapletta 'Blog"
+      },
+      "source": "https://tom.sapletta.com/idea/transforming-data-streaming-an-insight-into-ndofs-expansion-and-use-cases-10-things-i-wish-id-known-earlier/"
     }
   ],
   "root": {
-    "kind": "path",
-    "location": "."
+    "kind": "url",
+    "location": "https://tom.sapletta.com/"
   },
   "traces": [
     {
       "edge_ids": [
-        "artifact.root->type.python_pkg:classified_as",
-        "artifact.root->type.fastapi:classified_as",
-        "artifact.root->type.openapi3:classified_as",
-        "artifact.root->interface.rest.1:exposes",
-        "artifact.root->dependency.httpx:depends_on",
-        "artifact.root->dependency.click:depends_on",
-        "artifact.root->dependency.rich:depends_on",
-        "artifact.root->dependency.pyyaml:depends_on",
-        "artifact.root->dependency.goal:depends_on",
-        "artifact.root->dependency.costs:depends_on",
-        "artifact.root->dependency.pfix:depends_on",
-        "artifact.root->dependency.websockets:depends_on",
-        "artifact.root->dependency.pytest_cov:depends_on",
-        "artifact.root->dependency.fastapi:depends_on",
+        "artifact.root->type.web_page:classified_as",
+        "artifact.root->type.http_endpoint:classified_as",
+        "artifact.root->interface.web_page.1:exposes",
         "artifact.root->evidence.1:supported_by",
-        "artifact.root->evidence.2:supported_by"
+        "artifact.root->page.root:renders",
+        "page.root->link.1:links_to",
+        "page.root->link.2:links_to",
+        "page.root->link.3:links_to",
+        "page.root->link.4:links_to",
+        "page.root->link.5:links_to",
+        "page.root->link.6:links_to",
+        "page.root->link.7:links_to",
+        "page.root->link.8:links_to",
+        "page.root->link.9:links_to",
+        "page.root->link.10:links_to",
+        "page.root->link.11:links_to",
+        "page.root->link.12:links_to",
+        "page.root->link.13:links_to",
+        "page.root->link.14:links_to",
+        "page.root->link.15:links_to",
+        "page.root->link.16:links_to",
+        "page.root->link.17:links_to",
+        "page.root->link.18:links_to",
+        "page.root->link.19:links_to",
+        "page.root->link.20:links_to",
+        "page.root->link.21:links_to",
+        "page.root->link.22:links_to",
+        "page.root->link.23:links_to",
+        "page.root->link.24:links_to",
+        "page.root->link.25:links_to",
+        "page.root->link.26:links_to",
+        "page.root->link.27:links_to",
+        "page.root->link.28:links_to",
+        "page.root->link.29:links_to",
+        "page.root->link.30:links_to",
+        "page.root->link.31:links_to",
+        "page.root->link.32:links_to",
+        "page.root->link.33:links_to",
+        "page.root->link.34:links_to",
+        "page.root->link.35:links_to",
+        "page.root->link.36:links_to",
+        "page.root->link.37:links_to",
+        "page.root->link.38:links_to",
+        "page.root->link.39:links_to",
+        "page.root->link.40:links_to",
+        "page.root->link.41:links_to",
+        "page.root->link.42:links_to",
+        "page.root->link.43:links_to",
+        "page.root->link.44:links_to",
+        "page.root->link.45:links_to",
+        "page.root->link.46:links_to",
+        "page.root->link.47:links_to",
+        "page.root->link.48:links_to",
+        "page.root->link.49:links_to",
+        "page.root->link.50:links_to",
+        "page.root->asset.1:loads",
+        "page.root->asset.2:loads",
+        "page.root->asset.3:loads",
+        "page.root->asset.4:loads",
+        "page.root->asset.5:loads",
+        "page.root->asset.6:loads",
+        "page.root->asset.7:loads",
+        "page.root->asset.8:loads",
+        "page.root->asset.9:loads",
+        "page.root->asset.10:loads",
+        "page.root->asset.11:loads",
+        "page.root->asset.12:loads",
+        "page.root->asset.13:loads",
+        "page.root->asset.14:loads",
+        "page.root->asset.15:loads",
+        "page.root->asset.16:loads",
+        "page.root->asset.17:loads",
+        "page.root->asset.18:loads",
+        "page.root->asset.19:loads",
+        "page.root->asset.20:loads",
+        "page.root->asset.21:loads",
+        "page.root->asset.22:loads",
+        "page.root->asset.23:loads",
+        "page.root->asset.24:loads",
+        "page.root->asset.25:loads",
+        "page.root->asset.26:loads",
+        "page.root->asset.27:loads",
+        "page.root->asset.28:loads",
+        "page.root->asset.29:loads",
+        "page.root->asset.30:loads",
+        "page.root->asset.31:loads",
+        "page.root->asset.32:loads",
+        "page.root->asset.33:loads",
+        "page.root->asset.34:loads",
+        "page.root->asset.35:loads",
+        "page.root->asset.36:loads",
+        "page.root->asset.37:loads",
+        "page.root->asset.38:loads",
+        "page.root->asset.39:loads",
+        "page.root->asset.40:loads",
+        "page.root->asset.41:loads",
+        "page.root->asset.42:loads",
+        "page.root->asset.43:loads",
+        "page.root->asset.44:loads",
+        "page.root->asset.45:loads",
+        "page.root->asset.46:loads",
+        "page.root->asset.47:loads",
+        "page.root->asset.48:loads",
+        "page.root->asset.49:loads",
+        "page.root->asset.50:loads",
+        "page.root->sitemap.root:has_sitemap",
+        "sitemap.root->subpage.1:contains",
+        "page.root->subpage.1:navigates_to",
+        "sitemap.root->subpage.2:contains",
+        "page.root->subpage.2:navigates_to",
+        "sitemap.root->subpage.3:contains",
+        "page.root->subpage.3:navigates_to",
+        "sitemap.root->subpage.4:contains",
+        "page.root->subpage.4:navigates_to",
+        "sitemap.root->subpage.5:contains",
+        "page.root->subpage.5:navigates_to",
+        "sitemap.root->subpage.6:contains",
+        "page.root->subpage.6:navigates_to",
+        "sitemap.root->subpage.7:contains",
+        "page.root->subpage.7:navigates_to"
       ],
       "id": "trace.discovery.topology",
       "metadata": {
@@ -649,22 +4892,119 @@
       },
       "node_ids": [
         "artifact.root",
-        "type.python_pkg",
-        "type.fastapi",
-        "type.openapi3",
-        "interface.rest.1",
-        "dependency.httpx",
-        "dependency.click",
-        "dependency.rich",
-        "dependency.pyyaml",
-        "dependency.goal",
-        "dependency.costs",
-        "dependency.pfix",
-        "dependency.websockets",
-        "dependency.pytest_cov",
-        "dependency.fastapi",
+        "type.web_page",
+        "type.http_endpoint",
+        "interface.web_page.1",
         "evidence.1",
-        "evidence.2"
+        "page.root",
+        "link.1",
+        "link.2",
+        "link.3",
+        "link.4",
+        "link.5",
+        "link.6",
+        "link.7",
+        "link.8",
+        "link.9",
+        "link.10",
+        "link.11",
+        "link.12",
+        "link.13",
+        "link.14",
+        "link.15",
+        "link.16",
+        "link.17",
+        "link.18",
+        "link.19",
+        "link.20",
+        "link.21",
+        "link.22",
+        "link.23",
+        "link.24",
+        "link.25",
+        "link.26",
+        "link.27",
+        "link.28",
+        "link.29",
+        "link.30",
+        "link.31",
+        "link.32",
+        "link.33",
+        "link.34",
+        "link.35",
+        "link.36",
+        "link.37",
+        "link.38",
+        "link.39",
+        "link.40",
+        "link.41",
+        "link.42",
+        "link.43",
+        "link.44",
+        "link.45",
+        "link.46",
+        "link.47",
+        "link.48",
+        "link.49",
+        "link.50",
+        "asset.1",
+        "asset.2",
+        "asset.3",
+        "asset.4",
+        "asset.5",
+        "asset.6",
+        "asset.7",
+        "asset.8",
+        "asset.9",
+        "asset.10",
+        "asset.11",
+        "asset.12",
+        "asset.13",
+        "asset.14",
+        "asset.15",
+        "asset.16",
+        "asset.17",
+        "asset.18",
+        "asset.19",
+        "asset.20",
+        "asset.21",
+        "asset.22",
+        "asset.23",
+        "asset.24",
+        "asset.25",
+        "asset.26",
+        "asset.27",
+        "asset.28",
+        "asset.29",
+        "asset.30",
+        "asset.31",
+        "asset.32",
+        "asset.33",
+        "asset.34",
+        "asset.35",
+        "asset.36",
+        "asset.37",
+        "asset.38",
+        "asset.39",
+        "asset.40",
+        "asset.41",
+        "asset.42",
+        "asset.43",
+        "asset.44",
+        "asset.45",
+        "asset.46",
+        "asset.47",
+        "asset.48",
+        "asset.49",
+        "asset.50",
+        "sitemap.root",
+        "subpage.1",
+        "subpage.2",
+        "subpage.3",
+        "subpage.4",
+        "subpage.5",
+        "subpage.6",
+        "subpage.7"
       ],
       "status": "planned"
     }

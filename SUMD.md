@@ -25,13 +25,13 @@ TestQL — Multi-DSL Test Platform: TestTOON / NL / SQL / Proto / GraphQL adapte
 ## Metadata
 
 - **name**: `testql`
-- **version**: `1.2.31`
+- **version**: `1.2.40`
 - **python_requires**: `>=3.10`
 - **license**: {'text': 'Apache-2.0'}
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
 - **ecosystem**: SUMD + DOQL + testql + taskfile
 - **openapi_title**: testql API v1.0.0
-- **generated_from**: pyproject.toml, Taskfile.yml, Makefile, testql(74), openapi(7 ep), app.doql.less, pyqual.yaml, goal.yaml, .env.example, src(15 mod), project/(2 analysis files)
+- **generated_from**: pyproject.toml, Taskfile.yml, Makefile, testql(77), openapi(7 ep), app.doql.less, pyqual.yaml, goal.yaml, .env.example, src(16 mod), project/(2 analysis files)
 
 ## Architecture
 
@@ -46,12 +46,12 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 1.2.31;
+  version: 1.2.40;
 }
 
 dependencies {
   runtime: "httpx>=0.27, click>=8.0, rich>=13.0, pyyaml>=6.0, goal>=2.1.0, costs>=0.1.20, pfix>=0.1.60, websockets>=13.0, pytest-cov>=7.0, fastapi>=0.100";
-  dev: "pytest, pytest-asyncio, pytest-cov, fastapi, goal>=2.1.0, costs>=0.1.20, pfix>=0.1.60, sqlglot>=20.0, protobuf>=4.21, graphql-core>=3.2";
+  dev: "pytest, pytest-asyncio, pytest-cov, mcp>=1.0, fastapi, goal>=2.1.0, costs>=0.1.20, pfix>=0.1.60, sqlglot>=20.0, protobuf>=4.21, graphql-core>=3.2";
 }
 
 interface[type="api"] {
@@ -273,11 +273,17 @@ environment[name="local"] {
   env_file: .env;
   python_version: >=3.10;
 }
+
+environment[name="testql.autoloop.example"] {
+  runtime: docker-compose;
+  env_file: .env.testql.autoloop.example;
+}
 ```
 
 ### Source Modules
 
 - `testql._base_fallback`
+- `testql.autoloop_runner`
 - `testql.base`
 - `testql.cli`
 - `testql.doql_parser`
@@ -488,12 +494,12 @@ servers:
 # TYPE: api
 # VERSION: 1.0
 
-# ── Konfiguracja ──────────────────────────────────────
+# ── Configuration ──────────────────────────────────────
 CONFIG[2]{key, value}:
   entity,  items
   base_path,  /api/v3/data/items
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[3]{method, endpoint, status}:
   GET,  $,  200
   POST,  $,  200
@@ -535,11 +541,11 @@ API[5]{method, endpoint, status}:
 # TYPE: api
 # VERSION: 1.0
 
-# ── Konfiguracja ──────────────────────────────────────
+# ── Configuration ──────────────────────────────────────
 CONFIG[1]{key, value}:
   api_url,  $TARGET_URL
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[1]{method, endpoint, status, assert_key, assert_value}:
   POST,  /api/v3/auth/login",  200,  "token",  -
 ```
@@ -1777,7 +1783,7 @@ SELECT[1]{action, id, meta}:
 FLOW[1]{command, target, meta}:
   emit,  ui.device_details_shown,  {deviceId:d-msa-001, panel:device-info}
 
-# ── Nawigacja UI ──────────────────────────────────────
+# ── UI Navigation ──────────────────────────────────────
 NAVIGATE[1]{path, wait_ms}:
   /connect-test/testing,  300
 ```
@@ -2114,6 +2120,62 @@ ASSERT[2]{field, operator, expected}:
 #   openapi: 7 endpoints
 ```
 
+#### `testql-scenarios/generated-asset-assert.testql.toon.yaml`
+
+```toon markpact:testql path=testql-scenarios/generated-asset-assert.testql.toon.yaml
+# SCENARIO: Internal Asset Availability (excluding known-external 403s)
+# TYPE: web
+# GENERATED: true
+# ITERATION: 2
+# FOCUS: page.root, asset nodes
+# OPEN_FAILURES: finding.web.asset_status
+
+CONFIG[3]{key, value}:
+  base_url, https://tom.sapletta.com
+  timeout_ms, 8000
+  retry_count, 1
+
+# Internal assets only — external CDN/third-party excluded
+API[5]{method, endpoint, expected_status}:
+  GET, /, 200
+  GET, /favicon.ico, 200
+  GET, /robots.txt, 200
+  HEAD, /, 200
+  HEAD, /sitemap.xml, 200
+
+ASSERT[2]{field, operator, expected}:
+  status, <, 500
+  response_time, <, 3000
+```
+
+#### `testql-scenarios/generated-cli-extended.testql.toon.yaml`
+
+```toon markpact:testql path=testql-scenarios/generated-cli-extended.testql.toon.yaml
+# SCENARIO: Extended CLI Smoke Tests
+# TYPE: cli
+# GENERATED: true
+# ITERATION: 3
+# FOCUS: page.root CLI paths, coverage gap closure
+
+CONFIG[2]{key, value}:
+  cli_command, venv/bin/python3.13 -m testql
+  timeout_ms, 15000
+
+# Core CLI subcommands — must exit cleanly with --help
+SHELL[8]{command, exit_code}:
+  venv/bin/python3.13 -m testql --help, 0
+  venv/bin/python3.13 -m testql --version, 0
+  venv/bin/python3.13 -m testql topology --help, 0
+  venv/bin/python3.13 -m testql run --help, 0
+  venv/bin/python3.13 -m testql discover --help, 0
+  venv/bin/python3.13 -m testql generate --help, 0
+  venv/bin/python3.13 -m testql inspect --help, 0
+  venv/bin/python3.13 -m testql mcp --help, 0
+
+ASSERT[1]{field, operator, expected}:
+  exit_code, ==, 0
+```
+
 #### `testql-scenarios/generated-cli-tests.testql.toon.yaml`
 
 ```toon markpact:testql path=testql-scenarios/generated-cli-tests.testql.toon.yaml
@@ -2137,18 +2199,60 @@ LOG[3]{message}:
 # SCENARIO: Auto-generated from Python Tests
 # TYPE: integration
 # GENERATED: true
+# ITERATION: 3 (fix_test — replaced LOG stubs with UNIT steps)
 
-LOG[20]{message}:
-  "Test: TestParseOql_test_basic_commands"
-  "Test: TestParseTestTOON_test_api_section"
-  "Test: TestTestTOONExpansion_test_api_expansion"
-  "Test: TestTestTOONExpansion_test_config_expansion"
-  "Test: TestOqlInterpreter_test_dry_run_api"
-  "Test: test_basic_commands"
-  "Test: test_api_section"
-  "Test: test_api_expansion"
-  "Test: test_config_expansion"
-  "Test: test_dry_run_api"
+CONFIG[2]{key, value}:
+  runner, pytest
+  flags, --no-cov -q
+
+UNIT[10]{target}:
+  tests/test_cli.py
+  tests/test_mcp_autoloop.py
+  tests/test_cli_no_block.py
+  tests/test_smoke_decisions.py
+  tests/test_interpreter.py
+  tests/test_runner.py
+  tests/test_detectors.py
+  tests/test_generators.py
+  tests/test_discovery.py
+  tests/test_pipeline.py
+
+ASSERT[1]{field, operator, expected}:
+  exit_code, ==, 0
+```
+
+#### `testql-scenarios/generated-sitemap-assert.testql.toon.yaml`
+
+```toon markpact:testql path=testql-scenarios/generated-sitemap-assert.testql.toon.yaml
+# SCENARIO: Sitemap Uniqueness and Asset Availability
+# TYPE: web
+# GENERATED: true
+# ITERATION: 2
+# FOCUS: sitemap.root, page.root
+# OPEN_FAILURES: finding.sitemap.duplicates, finding.web.asset_status
+
+CONFIG[3]{key, value}:
+  base_url, https://tom.sapletta.com
+  timeout_ms, 10000
+  retry_count, 2
+
+# Sitemap subpages (must return 200)
+API[7]{method, endpoint, expected_status}:
+  GET, /sitemap.xml, 200
+  GET, /pl/, 200
+  GET, /de/, 200
+  GET, /ru/, 200
+  GET, /, 200
+  GET, /idea/, 200
+  GET, /about/, 200
+
+ASSERT[2]{field, operator, expected}:
+  status, <, 500
+  response_time, <, 5000
+
+# External 403s (xmlrpc.php, sharethis, fonts.googleapis.com) are infra_blocked — not asserted
+LOG[1]{message}:
+  "SKIP external 403s: xmlrpc.php, sharethis, fonts.googleapis.com — infra_blocked per iter-1"
 ```
 
 #### `testql/scenarios/generic/health-check.testql.toon.yaml`
@@ -2158,11 +2262,11 @@ LOG[20]{message}:
 # TYPE: api
 # VERSION: 1.0
 
-# ── Konfiguracja ──────────────────────────────────────
+# ── Configuration ──────────────────────────────────────
 CONFIG[1]{key, value}:
   api_url,  $TARGET_URL
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[2]{method, endpoint, status, assert_key, assert_value}:
   GET,  /health,  200,  status,  ok
   GET,  /api/v3/version,  200,  -,  -
@@ -2175,7 +2279,7 @@ API[2]{method, endpoint, status, assert_key, assert_value}:
 # TYPE: gui
 # VERSION: 1.0
 
-# ── Nawigacja UI ──────────────────────────────────────
+# ── UI Navigation ──────────────────────────────────────
 NAVIGATE[5]{path, wait_ms}:
   /,  300
   /connect-id,  300
@@ -2248,7 +2352,7 @@ NAVIGATE[1]{path, wait_ms}:
 # TYPE: gui
 # VERSION: 1.0
 
-# ── Nawigacja UI ──────────────────────────────────────
+# ── UI Navigation ──────────────────────────────────────
 NAVIGATE[1]{path, wait_ms}:
   /connect-manager,  300
 
@@ -2396,7 +2500,7 @@ INCLUDE[1]{file}:
 # TYPE: api
 # VERSION: 1.0
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[2]{method, endpoint, status}:
   GET,  /api/v3/scenarios/scn-drager-fps-7000-maska-nadcisnieniowa?include_content=true,  200
   POST,  /api/v3/protocols",  200
@@ -2461,7 +2565,7 @@ RECORD_STOP:
 # TYPE: api
 # VERSION: 1.0
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[4]{method, endpoint, status}:
   GET,  /api/v3/data/devices?limit=5,  200
   GET,  /api/v3/data/customers?limit=5,  200
@@ -2471,7 +2575,7 @@ API[4]{method, endpoint, status}:
 WAIT[1]{ms}:
   100
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[1]{method, endpoint, status}:
   GET,  /api/v3/menu/configurations?limit=10,  200
 ```
@@ -2504,7 +2608,7 @@ FLOW[18]{command, target, meta}:
   report_open,  pro-123456,  {action:modal}
   report_print,  pro-123456,  {template:c10, format:pdf}
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[2]{method, endpoint, status}:
   GET,  /api/v3/data/protocols?limit=3,  200
   GET,  /api/v3/data/test_scenarios?limit=3,  200
@@ -2517,73 +2621,73 @@ API[2]{method, endpoint, status}:
 # TYPE: interaction
 # VERSION: 1.0
 
-# ── Nagrywanie sesji ──────────────────────────────────
+# ── Session Recording ──────────────────────────────────
 RECORD_START[1]{session_id}:
   operator1
 
-# ── Nawigacja UI ──────────────────────────────────────
+# ── UI Navigation ──────────────────────────────────────
 NAVIGATE[1]{path, wait_ms}:
   /connect-id/device-rfid,  300
 
-# ── Wybory domenowe ───────────────────────────────────
+# ── Domain Selections ───────────────────────────────────
 SELECT[1]{action, id, meta}:
   device,  d-001,  {type:MSA_G1, serial:AO73138, customer:cu-001}
 
-# ── Nawigacja UI ──────────────────────────────────────
+# ── UI Navigation ──────────────────────────────────────
 NAVIGATE[1]{path, wait_ms}:
   /connect-test/testing,  300
 
-# ── Kroki semantyczne ─────────────────────────────────
+# ── Semantic Steps ─────────────────────────────────
 FLOW[1]{command, target, meta}:
   emit,  test.interval_dialog_opened,  {deviceId:d-001}
 
-# ── Wybory domenowe ───────────────────────────────────
+# ── Domain Selections ───────────────────────────────────
 SELECT[1]{action, id, meta}:
-  interval,  3m,  {code:periodic_3m, description:3 miesiące}
+  interval,  3m,  {code:periodic_3m, description:3 months}
 
-# ── Kroki semantyczne ─────────────────────────────────
+# ── Semantic Steps ─────────────────────────────────
 FLOW[2]{command, target, meta}:
   start_test,  ts-c20,  {name:C20 Standard, steps:5}
   protocol_created,  pro-example-001,  {via:cqrs, deviceId:d-001}
 
-# ── Nawigacja UI ──────────────────────────────────────
+# ── UI Navigation ──────────────────────────────────────
 NAVIGATE[1]{path, wait_ms}:
   /connect-test-protocol?protocol=pro-example-001&step=1,  300
 
-# ── Kroki semantyczne ─────────────────────────────────
+# ── Semantic Steps ─────────────────────────────────
 FLOW[1]{command, target, meta}:
-  step_complete,  step-1,  {name:Sprawdzenie ciśnienia, status:passed, value:15.2 mbar}
+  step_complete,  step-1,  {name:Pressure check, status:passed, value:15.2 mbar}
 
 WAIT[1]{ms}:
   500
 
-# ── Kroki semantyczne ─────────────────────────────────
+# ── Semantic Steps ─────────────────────────────────
 FLOW[1]{command, target, meta}:
-  step_complete,  step-2,  {name:Test szczelności, status:passed, value:OK}
+  step_complete,  step-2,  {name:Leak test, status:passed, value:OK}
 
 WAIT[1]{ms}:
   500
 
-# ── Kroki semantyczne ─────────────────────────────────
+# ── Semantic Steps ─────────────────────────────────
 FLOW[1]{command, target, meta}:
-  step_complete,  step-3,  {name:Kontrola wizualna, status:passed, note:Brak uszkodzeń}
+  step_complete,  step-3,  {name:Visual inspection, status:passed, note:No damage}
 
 WAIT[1]{ms}:
   500
 
-# ── Kroki semantyczne ─────────────────────────────────
+# ── Semantic Steps ─────────────────────────────────
 FLOW[1]{command, target, meta}:
-  step_complete,  step-4,  {name:Test funkcjonalny, status:passed}
+  step_complete,  step-4,  {name:Functional test, status:passed}
 
 WAIT[1]{ms}:
   500
 
-# ── Kroki semantyczne ─────────────────────────────────
+# ── Semantic Steps ─────────────────────────────────
 FLOW[2]{command, target, meta}:
-  step_complete,  step-5,  {name:Weryfikacja końcowa, status:passed}
+  step_complete,  step-5,  {name:Final verification, status:passed}
   protocol_finalize,  pro-example-001,  {"status": "executed", "summary": {"passed": 5, "failed": 0}
 
-# ── Nawigacja UI ──────────────────────────────────────
+# ── UI Navigation ──────────────────────────────────────
 NAVIGATE[1]{path, wait_ms}:
   /connect-test/reports?protocol=pro-example-001,  300
 
@@ -2597,7 +2701,7 @@ RECORD_STOP:
 # TYPE: api
 # VERSION: 1.0
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[4]{method, endpoint, status}:
   GET,  /api/v3/data/devices?limit=10,  200
   GET,  /api/v3/data/customers?limit=5,  200
@@ -2612,7 +2716,7 @@ API[4]{method, endpoint, status}:
 # TYPE: api
 # VERSION: 1.0
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[6]{method, endpoint, status}:
   GET,  /api/v3/data/dsl_objects?limit=100,  200
   GET,  /api/v3/data/dsl_functions?limit=100,  200
@@ -2629,11 +2733,11 @@ API[6]{method, endpoint, status}:
 # TYPE: gui
 # VERSION: 1.0
 
-# ── Konfiguracja ──────────────────────────────────────
+# ── Configuration ──────────────────────────────────────
 CONFIG[1]{key, value}:
-  encoder_url,  http://localhost:8105
+  encoder_url,  ${ENCODER_URL:-http://localhost:8105}
 
-# ── Encoder HW ────────────────────────────────────────
+# ── Encoder Hardware ────────────────────────────────────────
 ENCODER[31]{action, target, value, wait_ms}:
   on,  -,  -,  300
   status,  -,  -,  -
@@ -2675,10 +2779,10 @@ ENCODER[31]{action, target, value, wait_ms}:
 # TYPE: api
 # VERSION: 1.0
 
-# ── Konfiguracja ──────────────────────────────────────
+# ── Configuration ──────────────────────────────────────
 CONFIG[2]{key, value}:
-  encoder_url,  http://localhost:8105
-  api_url,  http://localhost:8101
+  encoder_url,  ${ENCODER_URL:-http://localhost:8105}
+  api_url,  ${API_URL:-http://localhost:8101}
 
 INCLUDE[1]{file}:
   test-gui-connect-id.testql.toon.yaml
@@ -2748,7 +2852,7 @@ ENCODER[21]{action, target, value, wait_ms}:
   dblclick,  -,  -,  200
   off,  -,  -,  200
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[2]{method, endpoint, status}:
   GET,  /api/v3/config/settings,  200
   GET,  /api/v3/feature-flags,  200
@@ -2777,7 +2881,7 @@ FLOW[1]{command, target, meta}:
 WAIT[1]{ms}:
   200
 
-# ── Nawigacja UI ──────────────────────────────────────
+# ── UI Navigation ──────────────────────────────────────
 NAVIGATE[3]{path, wait_ms}:
   /connect-id/qr,  300
   /connect-id/manual,  300
@@ -2824,7 +2928,7 @@ ENCODER[25]{action, target, value, wait_ms}:
   status,  -,  -,  -
   off,  -,  -,  200
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[1]{method, endpoint, status}:
   GET,  /api/v3/auth/users,  200
 ```
@@ -2874,7 +2978,7 @@ ENCODER[20]{action, target, value, wait_ms}:
   dblclick,  -,  -,  200
   off,  -,  -,  200
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[3]{method, endpoint, status}:
   GET,  /api/v3/data/test_scenarios?limit=5,  200
   GET,  /api/v3/data/intervals?limit=5,  200
@@ -2929,7 +3033,7 @@ ENCODER[22]{action, target, value, wait_ms}:
   dblclick,  -,  -,  200
   off,  -,  -,  200
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[1]{method, endpoint, status}:
   GET,  /api/v3/data/protocols?limit=5,  200
 ```
@@ -2941,12 +3045,12 @@ API[1]{method, endpoint, status}:
 # TYPE: gui
 # VERSION: 1.0
 
-# ── Konfiguracja ──────────────────────────────────────
+# ── Configuration ──────────────────────────────────────
 CONFIG[2]{key, value}:
-  encoder_url,  http://localhost:8105
-  api_url,  http://localhost:8101
+  encoder_url,  ${ENCODER_URL:-http://localhost:8105}
+  api_url,  ${API_URL:-http://localhost:8101}
 
-# ── Nawigacja UI ──────────────────────────────────────
+# ── UI Navigation ──────────────────────────────────────
 NAVIGATE[4]{path, wait_ms}:
   /connect-test,  500
   /connect-test/testing-rfid,  300
@@ -2967,7 +3071,7 @@ NAVIGATE[5]{path, wait_ms}:
   /connect-test/test-run,  300
   /connect-test/protocols,  300
 
-# ── Encoder HW ────────────────────────────────────────
+# ── Encoder Hardware ────────────────────────────────────────
 ENCODER[23]{action, target, value, wait_ms}:
   on,  -,  -,  300
   focus,  col1,  -,  200
@@ -2993,7 +3097,7 @@ ENCODER[23]{action, target, value, wait_ms}:
   status,  -,  -,  -
   off,  -,  -,  200
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[3]{method, endpoint, status}:
   GET,  /api/v3/data/devices?limit=5,  200
   GET,  /api/v3/data/test_scenarios?limit=5,  200
@@ -3036,7 +3140,7 @@ NAVIGATE[4]{path, wait_ms}:
   /connect-workshop/dispositions-search,  300
   /connect-workshop/requests-new-request,  300
 
-# ── Encoder HW ────────────────────────────────────────
+# ── Encoder Hardware ────────────────────────────────────────
 ENCODER[26]{action, target, value, wait_ms}:
   on,  -,  -,  300
   focus,  col1,  -,  200
@@ -3065,7 +3169,7 @@ ENCODER[26]{action, target, value, wait_ms}:
   status,  -,  -,  -
   off,  -,  -,  200
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[1]{method, endpoint, status}:
   GET,  /api/v3/data/customers?limit=5,  200
 ```
@@ -3109,7 +3213,7 @@ SELECT[2]{action, id, meta}:
 FLOW[1]{command, target, meta}:
   start_test,  ts-c20,  {scenario:C20 standard}
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[2]{method, endpoint, status}:
   GET,  /api/v3/data/protocols?limit=3,  200
   GET,  /api/v3/data/test_scenarios?limit=3,  200
@@ -3136,7 +3240,7 @@ SELECT[2]{action, id, meta}:
   device,  d-001,  {type:MSA_G1, serial:AO73138}
   interval,  36m,  {code:periodic_36m}
 
-# ── Kroki semantyczne ─────────────────────────────────
+# ── Semantic Steps ─────────────────────────────────
 FLOW[4]{command, target, meta}:
   start_test,  ts-c20,  {scenario:C20 standard}
   protocol_created,  pro-example,  {via:cqrs}
@@ -3151,7 +3255,7 @@ FLOW[4]{command, target, meta}:
 # TYPE: api
 # VERSION: 1.0
 
-# ── Wywołania API ─────────────────────────────────────
+# ── API Calls ─────────────────────────────────────
 API[7]{method, endpoint, status}:
   GET,  /api/v3/data/devices?limit=5,  200
   GET,  /api/v3/data/customers?limit=5,  200
@@ -3435,7 +3539,7 @@ pipeline:
 ```yaml
 project:
   name: testql
-  version: 1.2.31
+  version: 1.2.40
   env: local
 ```
 
@@ -3462,6 +3566,7 @@ fastapi>=0.100
 pytest
 pytest-asyncio
 pytest-cov
+mcp>=1.0
 fastapi
 goal>=2.1.0
 costs>=0.1.20
@@ -3524,15 +3629,15 @@ pip install -e .[dev]
 ### `project/map.toon.yaml`
 
 ```toon markpact:analysis path=project/map.toon.yaml
-# testql | 331f 38913L | python:306,shell:21,less:4 | 2026-04-27
-# stats: 783 func | 538 cls | 331 mod | CC̄=3.7 | critical:23 | cycles:0
-# alerts[5]: CC parse_testtoon=14; CC _expand_flow=14; CC _check_link_statuses=14; CC _action_type=14; CC _encoder_step=13
+# testql | 349f 42469L | python:321,shell:24,less:4 | 2026-04-29
+# stats: 857 func | 568 cls | 349 mod | CC̄=3.7 | critical:29 | cycles:0
+# alerts[5]: CC _parse_makefile=23; CC main=15; CC parse_testtoon=14; CC _filter_commands=14; CC _expand_flow=14
 # hotspots[5]: generate_from_page fan=19; heal_scenario fan=19; watch fan=19; suite fan=19; main fan=18
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[331]:
+M[349]:
   TODO/testtoon_parser.py,142
-  app.doql.less,232
+  app.doql.less,237
   examples/api-testing/mock_server.py,51
   examples/api-testing/run.sh,28
   examples/artifact-bundle/generate_bundle.py,37
@@ -3556,6 +3661,12 @@ M[331]:
   examples/web-inspection/run.sh,43
   examples/web-inspection-dot-testql/run.sh,14
   project.sh,50
+  scripts/install_testql_autoloop.sh,157
+  scripts/setup_mcp_windsurf.sh,92
+  scripts/smoke_manifest_flow.sh,71
+  test_autoloop_api.py,453
+  test_autoloop_mcp.py,519
+  test_manifest_and_generators.py,526
   testql/__init__.py,10
   testql/__main__.py,7
   testql/_base_fallback.py,233
@@ -3586,9 +3697,10 @@ M[331]:
   testql/adapters/sql/fixtures.py,106
   testql/adapters/sql/query_parser.py,96
   testql/adapters/sql/sql_adapter.py,334
-  testql/adapters/testtoon_adapter.py,489
+  testql/adapters/testtoon_adapter.py,502
+  testql/autoloop_runner.py,1
   testql/base.py,38
-  testql/cli.py,126
+  testql/cli.py,103
   testql/commands/__init__.py,36
   testql/commands/auto_cmd.py,203
   testql/commands/discover_cmd.py,47
@@ -3611,7 +3723,7 @@ M[331]:
   testql/commands/heal_scenario_cmd.py,308
   testql/commands/inspect_cmd.py,35
   testql/commands/misc_cmds.py,293
-  testql/commands/run_cmd.py,80
+  testql/commands/run_cmd.py,161
   testql/commands/run_ir_cmd.py,66
   testql/commands/self_test_cmd.py,46
   testql/commands/suite/__init__.py,9
@@ -3672,8 +3784,9 @@ M[331]:
   testql/generators/pipeline.py,96
   testql/generators/pytest_generator.py,148
   testql/generators/scenario_generator.py,88
-  testql/generators/sources/__init__.py,66
+  testql/generators/sources/__init__.py,76
   testql/generators/sources/base.py,33
+  testql/generators/sources/config_source.py,289
   testql/generators/sources/graphql_source.py,67
   testql/generators/sources/nl_source.py,28
   testql/generators/sources/openapi_source.py,94
@@ -3693,19 +3806,20 @@ M[331]:
   testql/generators/targets/testtoon_target.py,24
   testql/generators/test_generator.py,107
   testql/integrations/planfile_hook.py,116
-  testql/interpreter/__init__.py,90
+  testql/interpreter/__init__.py,92
   testql/interpreter/_api_runner.py,289
   testql/interpreter/_assertions.py,305
   testql/interpreter/_converter.py,63
   testql/interpreter/_dom_scan.py,41
   testql/interpreter/_encoder.py,101
   testql/interpreter/_flow.py,166
-  testql/interpreter/_gui.py,695
+  testql/interpreter/_gui.py,709
   testql/interpreter/_hardware.py,111
   testql/interpreter/_parser.py,34
   testql/interpreter/_shell.py,244
-  testql/interpreter/_testtoon_parser.py,673
+  testql/interpreter/_testtoon_parser.py,469
   testql/interpreter/_unit.py,268
+  testql/interpreter/_validation.py,154
   testql/interpreter/_websockets.py,173
   testql/interpreter/converter/__init__.py,20
   testql/interpreter/converter/core.py,59
@@ -3729,15 +3843,17 @@ M[331]:
   testql/interpreter/dom_scan_mixin.py,303
   testql/interpreter/dom_scan_models.py,54
   testql/interpreter/dom_scanner.py,419
-  testql/interpreter/interpreter.py,158
+  testql/interpreter/interpreter.py,159
+  testql/interpreter/testtoon_models.py,34
+  testql/interpreter/testtoon_parser.py,290
   testql/interpreter.py,28
-  testql/ir/__init__.py,47
+  testql/ir/__init__.py,49
   testql/ir/assertions.py,34
   testql/ir/captures.py,38
   testql/ir/fixtures.py,34
   testql/ir/metadata.py,32
   testql/ir/plan.py,43
-  testql/ir/steps.py,232
+  testql/ir/steps.py,252
   testql/ir_runner/__init__.py,35
   testql/ir_runner/assertion_eval.py,125
   testql/ir_runner/context.py,43
@@ -3754,6 +3870,8 @@ M[331]:
   testql/ir_runner/executors/sql.py,66
   testql/ir_runner/executors/unit.py,43
   testql/ir_runner/interpolation.py,30
+  testql/mcp/__init__.py,34
+  testql/mcp/server.py,160
   testql/meta/__init__.py,42
   testql/meta/confidence_scorer.py,95
   testql/meta/coverage_analyzer.py,174
@@ -3791,6 +3909,7 @@ M[331]:
   tests/test_api_handler.py,90
   tests/test_browser_discovery.py,111
   tests/test_cli.py,98
+  tests/test_cli_no_block.py,104
   tests/test_converter.py,178
   tests/test_converter_handlers.py,352
   tests/test_detectors.py,389
@@ -3803,7 +3922,7 @@ M[331]:
   tests/test_encoder_routes.py,42
   tests/test_generate_cmd.py,95
   tests/test_generate_from_page_cli.py,280
-  tests/test_generate_ir_cli.py,70
+  tests/test_generate_ir_cli.py,151
   tests/test_generators.py,238
   tests/test_graphql_adapter.py,197
   tests/test_gui_execution.py,130
@@ -3815,6 +3934,7 @@ M[331]:
   tests/test_ir_runner_engine.py,143
   tests/test_ir_runner_executors.py,174
   tests/test_ir_runner_interpolation.py,41
+  tests/test_mcp_autoloop.py,202
   tests/test_meta_confidence.py,97
   tests/test_meta_coverage.py,137
   tests/test_meta_mutator.py,190
@@ -3839,11 +3959,13 @@ M[331]:
   tests/test_report_generator.py,169
   tests/test_reporters.py,317
   tests/test_results.py,124
+  tests/test_run_cmd.py,114
   tests/test_run_ir_cli.py,66
   tests/test_runner.py,188
   tests/test_scenario_yaml_adapter.py,208
   tests/test_shell_execution.py,134
-  tests/test_sources.py,291
+  tests/test_smoke_decisions.py,160
+  tests/test_sources.py,300
   tests/test_sql_adapter.py,191
   tests/test_sql_ddl_parser.py,108
   tests/test_sql_dialect_resolver.py,75
@@ -3861,6 +3983,7 @@ M[331]:
   tests/test_topology.py,88
   tests/test_topology_generator.py,162
   tests/test_unit_execution.py,113
+  tests/test_validation.py,185
   tree.sh,2
 D:
   TODO/testtoon_parser.py:
@@ -3883,6 +4006,53 @@ D:
     users()
   examples/artifact-bundle/generate_bundle.py:
     e: main
+    main()
+  test_autoloop_api.py:
+    e: add_colors,ok,fail,warn,info,header,step_import_testql,step_mcp_check,step_discovery,step_topology,step_inspect,step_generate_tests,step_run_scenario,step_run_tests,step_generate_llm_decision,step_save_artifacts,run_iteration,main
+    add_colors()
+    ok(msg)
+    fail(msg)
+    warn(msg)
+    info(msg)
+    header(msg)
+    step_import_testql()
+    step_mcp_check()
+    step_discovery(project_path)
+    step_topology(project_path)
+    step_inspect(project_path)
+    step_generate_tests(project_path)
+    step_run_scenario(scenario_path)
+    step_run_tests(scenarios)
+    step_generate_llm_decision(iteration;discovery;topology;inspection;test_results)
+    step_save_artifacts(output_dir;discovery;topology;inspection;test_results;llm_decision)
+    run_iteration(project_path;iteration;output_dir)
+    main()
+  test_autoloop_mcp.py:
+    e: ok,fail,warn,info,header,step_generate_topology,step_generate_tests,step_run_tests,step_generate_llm_prompt,step_check_mcp_windsurf,run_autoloop,main,C
+    C:
+    ok(msg)
+    fail(msg)
+    warn(msg)
+    info(msg)
+    header(msg)
+    step_generate_topology(project_path;output_dir)
+    step_generate_tests(project_path;output_dir)
+    step_run_tests(scenarios;output_dir)
+    step_generate_llm_prompt(topology;test_results;iteration;output_dir;simulate_llm)
+    step_check_mcp_windsurf(output_dir)
+    run_autoloop(project_path;max_iterations;simulate_llm)
+    main()
+  test_manifest_and_generators.py:
+    e: log_ok,log_fail,log_warn,log_info,generate_report,main,Colors,ManifestProbeTester,GeneratorTester,MCPWindsurfChecker
+    Colors:
+    ManifestProbeTester: run_all(0),_test_probe(2)  # Test all discovery probe types.
+    GeneratorTester: run_all(0),_test_api_generator(0),_test_python_test_generator(0),_test_scenario_generator(0),_test_round_trip(0)  # Test all test generation capabilities.
+    MCPWindsurfChecker: run_all(0),_check_cli(0),_check_json_output(0),_check_discover_command(0),_check_generate_command(0)  # Check MCP Windsurf integration compatibility.
+    log_ok(msg)
+    log_fail(msg)
+    log_warn(msg)
+    log_info(msg)
+    generate_report(all_results;output_path)
     main()
   testql/__init__.py:
   testql/__main__.py:
@@ -4185,7 +4355,7 @@ D:
     parse(source)
     render(plan)
   testql/adapters/testtoon_adapter.py:
-    e: _config_to_dict,_api_section_to_steps,_navigate_section_to_steps,_gui_section_to_steps,_encoder_section_to_steps,_assert_section_to_steps,_capture_section_apply,_resolve_capture_target,_generic_section_to_steps,_shell_section_to_steps,_unit_section_to_steps,_log_section_to_steps,_translate_section,_toon_to_plan,_render_meta,_render_config,_render_api_steps,_render_navigate_steps,_render_encoder_steps,_toon_safe_selector,_render_gui_action_steps,_render_shell_steps,_render_unit_steps,_render_log_steps,_render_assertions,_render_captures,_render_plan,parse,render,TestToonAdapter
+    e: _config_to_dict,_api_section_to_steps,_navigate_section_to_steps,_gui_section_to_steps,_encoder_section_to_steps,_assert_section_to_steps,_capture_section_apply,_resolve_capture_target,_generic_section_to_steps,_shell_section_to_steps,_unit_section_to_steps,_log_section_to_steps,_translate_section,_toon_to_plan,_render_meta,_render_config,_render_api_steps,_render_navigate_steps,_render_encoder_steps,_toon_safe_selector,_render_gui_action_steps,_render_shell_steps,_render_unit_steps,_render_log_steps,_render_assertions,_render_captures,_render_validate_steps,_render_plan,parse,render,TestToonAdapter
     TestToonAdapter: detect(1),parse(1),render(1)  # Adapter for the legacy `*.testql.toon.yaml` format (TestTOON
     _config_to_dict(section)
     _api_section_to_steps(section)
@@ -4213,13 +4383,17 @@ D:
     _render_log_steps(steps)
     _render_assertions(steps)
     _render_captures(steps)
+    _render_validate_steps(steps)
     _render_plan(plan)
     parse(source)
     render(plan)
+  testql/autoloop_runner.py:
   testql/base.py:
   testql/cli.py:
-    e: cli,check_and_upgrade,main
+    e: mcp_serve,cli,_fetch_latest_version,check_and_upgrade,main
+    mcp_serve()
     cli()
+    _fetch_latest_version()
     check_and_upgrade()
     main()
   testql/commands/__init__.py:
@@ -4366,8 +4540,13 @@ D:
     report(data_json;output;example)
     echo(toon_path;doql_path;fmt;output;project_path)
   testql/commands/run_cmd.py:
-    e: run
-    run(file;url;dry_run;output;quiet;planfile;timeout)
+    e: _resolve_input_paths,_run_single,_emit_single_json,_emit_multi_json,_maybe_planfile,run
+    _resolve_input_paths(spec)
+    _run_single(path;url;dry_run;quiet;timeout)
+    _emit_single_json(result)
+    _emit_multi_json(results)
+    _maybe_planfile(result;filename;planfile)
+    run(files;url;dry_run;output;quiet;planfile;timeout)
   testql/commands/run_ir_cmd.py:
     e: _emit_json,_emit_console,run_ir
     _emit_json(result)
@@ -4631,12 +4810,25 @@ D:
     e: ScenarioGeneratorMixin
     ScenarioGeneratorMixin: _generate_from_scenarios(1),_convert_oql_command(1)  # Mixin for generating tests from OQL/CQL scenarios.
   testql/generators/sources/__init__.py:
-    e: get_source,available_sources
+    e: _get_config_source,get_source,available_sources
+    _get_config_source()
     get_source(name)
     available_sources()
   testql/generators/sources/base.py:
     e: BaseSource
     BaseSource: load(1)  # Convert an external artifact (OpenAPI / SQL DDL / .proto / S
+  testql/generators/sources/config_source.py:
+    e: _load_file,_parse_makefile,_parse_taskfile,_parse_docker_compose,_select_parser_for_file,_auto_detect_parser,_parse_targets,_parse_buf_yaml,_filter_commands,ConfigSource
+    ConfigSource: load(1)  # Makefile, Taskfile.yml, docker-compose.yml, buf.yaml → TestP
+    _load_file(source)
+    _parse_makefile(content;file_path)
+    _parse_taskfile(content)
+    _parse_docker_compose(content)
+    _select_parser_for_file(file_name)
+    _auto_detect_parser(content)
+    _parse_targets(content;source_path)
+    _parse_buf_yaml(content)
+    _filter_commands(commands;target_name)
   testql/generators/sources/graphql_source.py:
     e: _load_sdl,_type_to_query,_is_smoke_target,GraphQLSource
     GraphQLSource: load(1)  # GraphQL SDL → TestPlan with one smoke query per top-level ty
@@ -4763,28 +4955,7 @@ D:
     e: ShellMixin
     ShellMixin: _cmd_shell(2),_cmd_exec(2),_cmd_run(2),_cmd_assert_exit_code(2),_cmd_assert_stdout_contains(2),_cmd_assert_stderr_contains(2)  # Mixin providing shell command execution: SHELL, EXEC, RUN, A
   testql/interpreter/_testtoon_parser.py:
-    e: _detect_separator,_parse_inline_array,_parse_inline_dict,_parse_value,_make_section,_make_mapping_section,_make_data_row,_make_mapping_row,parse_testtoon,_process_line,_is_meta_line,_process_meta_line,_is_comment,_try_parse_section_header,_should_end_section,_is_bare_command,_add_row_to_section,_add_bare_commands_section,_find_commands_insert_position,validate_testtoon,_expand_config,_append_api_asserts,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_commands,_expand_dom_audit_buttons,_expand_generic,testtoon_to_oql,ToonSection,ToonScript
-    ToonSection: validate(0)
-    ToonScript:
-    _detect_separator(line)
-    _parse_inline_array(v)
-    _parse_inline_dict(v)
-    _parse_value(v)
-    _make_section(m)
-    _make_mapping_section(m)
-    _make_data_row(raw;section)
-    _make_mapping_row(raw)
-    parse_testtoon(text;filename)
-    _process_line(raw;current;script;bare_commands)
-    _is_meta_line(line)
-    _process_meta_line(line;script)
-    _is_comment(line)
-    _try_parse_section_header(line)
-    _should_end_section(raw;current)
-    _is_bare_command(raw;current)
-    _add_row_to_section(raw;current)
-    _add_bare_commands_section(script;bare_commands)
-    _find_commands_insert_position(sections)
+    e: validate_testtoon,_expand_config,_append_api_asserts,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_validate,_expand_commands,_expand_dom_audit_buttons,_expand_generic,testtoon_to_oql
     validate_testtoon(script)
     _expand_config(section;lines;line_num)
     _append_api_asserts(row;lines;line_num)
@@ -4799,6 +4970,7 @@ D:
     _expand_wait(section;lines;line_num)
     _expand_include(section;lines;line_num)
     _expand_record(section;lines;line_num)
+    _expand_validate(section;lines;line_num)
     _expand_commands(section;lines;line_num)
     _expand_dom_audit_buttons(section;lines;line_num)
     _expand_generic(section;lines;line_num)
@@ -4806,6 +4978,10 @@ D:
   testql/interpreter/_unit.py:
     e: UnitMixin
     UnitMixin: _parse_pytest_args(1),_extract_pytest_summary(1),_run_pytest_subprocess(3),_handle_pytest_dry_run(2),_handle_pytest_success(2),_handle_pytest_error(3),_cmd_unit_pytest(2),_cmd_unit_pytest_discover(2),_cmd_unit_import(2),_cmd_unit_assert(2)  # Mixin providing unit test execution: UNIT_PYTEST, UNIT_IMPOR
+  testql/interpreter/_validation.py:
+    e: _resolve_target,ValidationMixin
+    ValidationMixin: _cmd_validate(2),_record_validate(5)  # Mixin providing the VALIDATE command for textual / NL assert
+    _resolve_target(interpreter;target)
   testql/interpreter/_websockets.py:
     e: WebSocketMixin
     WebSocketMixin: __init_subclass__(1),_get_ws_context(0),_cmd_ws_connect(2),_cmd_ws_send(2),_ws_do_receive(4),_cmd_ws_receive(2),_cmd_ws_assert_msg(2),_cmd_ws_close(2)  # Mixin for WebSocket testing support.
@@ -4896,6 +5072,33 @@ D:
   testql/interpreter/interpreter.py:
     e: OqlInterpreter
     OqlInterpreter: __init__(7),parse(2),_is_testtoon(2),execute(1),_dispatch(3),_cmd_set(2),_cmd_get(2)  # OQL interpreter — runs .testql.toon.yaml / .oql / .tql scrip
+  testql/interpreter/testtoon_models.py:
+    e: ToonSection,ToonScript
+    ToonSection: validate(0)  # Represents a section in TestTOON format.
+    ToonScript:  # Represents a parsed TestTOON script.
+  testql/interpreter/testtoon_parser.py:
+    e: _strip_quoted_regions,_detect_separator,_split_quoted,_parse_inline_array,_parse_inline_dict,_parse_value,_make_section,_make_mapping_section,_make_data_row,_make_mapping_row,parse_testtoon,_process_line,_is_meta_line,_process_meta_line,_is_comment,_try_parse_section_header,_should_end_section,_is_bare_command,_add_row_to_section,_add_bare_commands_section,_find_commands_insert_position
+    _strip_quoted_regions(line)
+    _detect_separator(line)
+    _split_quoted(line;sep;maxsplit)
+    _parse_inline_array(v)
+    _parse_inline_dict(v)
+    _parse_value(v)
+    _make_section(m)
+    _make_mapping_section(m)
+    _make_data_row(raw;section)
+    _make_mapping_row(raw)
+    parse_testtoon(text;filename)
+    _process_line(raw;current;script;bare_commands)
+    _is_meta_line(line)
+    _process_meta_line(line;script)
+    _is_comment(line)
+    _try_parse_section_header(line)
+    _should_end_section(raw;current)
+    _is_bare_command(raw;current)
+    _add_row_to_section(raw;current)
+    _add_bare_commands_section(script;bare_commands)
+    _find_commands_insert_position(sections)
   testql/interpreter.py:
   testql/ir/__init__.py:
   testql/ir/assertions.py:
@@ -4914,7 +5117,7 @@ D:
     e: TestPlan
     TestPlan: to_dict(0),name(0),type(0)  # Adapter-neutral representation of a single test scenario.
   testql/ir/steps.py:
-    e: Step,ApiStep,GuiStep,EncoderStep,ShellStep,UnitStep,NlStep,SqlStep,ProtoStep,GraphqlStep
+    e: Step,ApiStep,GuiStep,EncoderStep,ShellStep,UnitStep,NlStep,SqlStep,ProtoStep,GraphqlStep,ValidateStep
     Step: to_dict(0)  # Base step. Subclasses add typed fields; `kind` discriminator
     ApiStep: __post_init__(0),to_dict(0)
     GuiStep: __post_init__(0),to_dict(0)
@@ -4925,6 +5128,7 @@ D:
     SqlStep: __post_init__(0),to_dict(0)
     ProtoStep: __post_init__(0),to_dict(0)
     GraphqlStep: __post_init__(0),to_dict(0)
+    ValidateStep: __post_init__(0),to_dict(0)  # NL/text validation step with type, target, and criteria.
   testql/ir_runner/__init__.py:
   testql/ir_runner/assertion_eval.py:
     e: _next_segment,navigate,_op_contains,_op_matches,evaluate,evaluate_all,AssertionResult
@@ -5006,6 +5210,14 @@ D:
   testql/ir_runner/interpolation.py:
     e: interp_value
     interp_value(value;store)
+  testql/mcp/__init__.py:
+  testql/mcp/server.py:
+    e: _require_fastmcp,_normalize_run_payload,create_server,run_server,TestQLMCPServer
+    TestQLMCPServer: __post_init__(0),_register_tools(0),run(0)  # Thin wrapper exposing selected TestQL actions as FastMCP too
+    _require_fastmcp()
+    _normalize_run_payload(results)
+    create_server(name)
+    run_server()
   testql/meta/__init__.py:
   testql/meta/confidence_scorer.py:
     e: _is_llm_resolved,_score_assertions,_score_typed,_score_step,score_plan,StepConfidence,PlanConfidence
@@ -5259,6 +5471,11 @@ D:
     e: TestCliHelp,TestSuiteCommand
     TestCliHelp: test_help(0),test_version(0),test_subcommands_listed(0),test_run_help(0),test_suite_help(0),test_list_help(0),test_generate_help(0),test_endpoints_help(0),test_init_help(0),test_echo_help(0)
     TestSuiteCommand: test_suite_no_files_exits_1(1),test_list_no_files(1),test_list_with_toon_file(1),test_list_format_simple(1),test_list_format_json(1)
+  tests/test_cli_no_block.py:
+    e: TestNoInputCall,TestCheckAndUpgradeNeverBlocks,TestMainNeverBlocks
+    TestNoInputCall: test_no_input_in_source(0),test_no_subprocess_in_check_and_upgrade(0)  # Static guarantee: input() must not appear in cli.py.
+    TestCheckAndUpgradeNeverBlocks: test_runs_when_up_to_date(0),test_runs_when_outdated(1),test_runs_when_pypi_unreachable(0),test_runs_when_version_unavailable(0),test_is_tty_agnostic(0)  # check_and_upgrade must return quickly regardless of TTY or v
+    TestMainNeverBlocks: test_main_via_runner(0),test_main_does_not_call_input(0)  # main() entry point must not block in any environment.
   tests/test_converter.py:
     e: TestRow,TestSection,TestConvertOqlToTesttoon,TestConvertFile,TestConvertDirectory
     TestRow: test_row_creation(0),test_row_empty(0),test_row_multiple_fields(0)
@@ -5366,7 +5583,7 @@ D:
     _write_elements(tmp_path)
   tests/test_generate_ir_cli.py:
     e: TestGenerateIRCLI
-    TestGenerateIRCLI: test_command_exists(0),test_round_trip_to_stdout(1),test_writes_to_file(1),test_bad_from_arg_errors(0),test_legacy_generate_still_works(0)
+    TestGenerateIRCLI: test_command_exists(0),test_round_trip_to_stdout(1),test_writes_to_file(1),test_bad_from_arg_errors(0),test_legacy_generate_still_works(0),test_generate_ir_makefile_alias(1),test_generate_ir_taskfile_alias(1),test_generate_ir_docker_compose_alias(1),test_generate_ir_buf_alias(1)
   tests/test_generators.py:
     e: TestBaseAnalyzer,TestProjectAnalyzerDetectType,TestTestPattern,TestOqlScenarioConversion,TestGeneratorConfig
     TestBaseAnalyzer: test_init(1),test_get_exclude_dirs(1),test_should_exclude_path_venv(1),test_should_exclude_path_src(1)
@@ -5441,6 +5658,15 @@ D:
     e: _store,TestInterpValue
     TestInterpValue: test_string_brace_form(0),test_string_dollar_form(0),test_unset_passthrough(0),test_dict_recursion(0),test_list_recursion(0),test_nested(0),test_non_string_passthrough(0)
     _store()
+  tests/test_mcp_autoloop.py:
+    e: TestCLIAvailability,TestMCPModule,TestDiscoveryPipeline,TestTopologyPipeline,TestScenarioRoundTrip,TestAutoloopSchema,TestMCPConfig
+    TestCLIAvailability: test_cli_help_exits_cleanly(0),test_mcp_subcommand_registered(0),test_discover_subcommand_exists(0),test_topology_subcommand_exists(0),test_run_subcommand_exists(0)  # CLI must work without hanging in non-TTY context.
+    TestMCPModule: test_mcp_server_module_importable(0),test_mcp_init_importable(0),test_mcp_server_raises_on_missing_package(0)  # MCP server module must import without requiring mcp package 
+    TestDiscoveryPipeline: test_self_discovery_returns_manifest(0),test_self_discovery_json_serializable(0),test_discover_cli_json_output(0)  # Discovery must work on this project itself (self-discovery).
+    TestTopologyPipeline: test_topology_cli_json_output(0)  # Topology generation must produce valid structure.
+    TestScenarioRoundTrip: test_scenario_parses(1),test_scenario_round_trips(1),test_api_smoke_has_api_steps(0)  # Scenarios in testql-scenarios/ must parse cleanly.
+    TestAutoloopSchema: test_autoloop_state_valid_json(0),test_llm_decision_schema_exists(0),test_llm_decision_schema_valid_decision_values(0)  # Autoloop state and schema must be valid.
+    TestMCPConfig: test_mcp_config_structure(0),test_mcp_server_module_path(0)  # MCP config structure must be correct for IDE integration.
   tests/test_meta_confidence.py:
     e: TestPlanConfidence,TestStepReasons
     TestPlanConfidence: test_empty_plan_zero(0),test_strong_step_high_score(0),test_step_without_asserts_lower(0),test_nl_unresolved_lower(0),test_nl_llm_resolved_lowest(0),test_multi_assert_bonus(0),test_per_step_scores_recorded(0),test_clamping(0),test_to_dict(0)
@@ -5625,6 +5851,13 @@ D:
     TestResultSerializers: test_render_result_json(0),test_render_refactor_yaml(1),test_render_inspection_toon(1),test_render_inspection_nlp(1)
     TestInspectCli: test_inspect_default_toon_output(0),test_inspect_json_result_artifact(0),test_inspect_refactor_plan_nlp_for_empty_dir(1),test_inspect_missing_path_exits_nonzero(0)
     TestDotTestqlArtifacts: test_write_inspection_artifacts_creates_dot_testql_bundle(1),test_inspect_cli_out_dir_writes_bundle(1)
+  tests/test_run_cmd.py:
+    e: _install_fake_interpreter,_mk_scenario,_FakeResult,_FakeInterpreter,TestRunCommandInputs
+    _FakeResult: __post_init__(0)
+    _FakeInterpreter: __init__(0),run(2)
+    TestRunCommandInputs: test_run_accepts_directory(2),test_run_accepts_glob_pattern(2),test_run_errors_for_missing_input(1),test_run_accepts_shell_expanded_multiple_files(2)
+    _install_fake_interpreter(monkeypatch)
+    _mk_scenario(path)
   tests/test_run_ir_cli.py:
     e: _write,TestRunIrCLI
     TestRunIrCLI: test_help(0),test_dry_run_console(1),test_json_output(1),test_actual_sqlite_run(1)
@@ -5649,9 +5882,22 @@ D:
     e: TestShellExecution,TestShellDryRun
     TestShellExecution: interpreter(1),test_shell_echo_command(2),test_shell_with_exit_code(1),test_assert_exit_code_success(1),test_assert_exit_code_failure(1),test_assert_stdout_contains_success(1),test_assert_stdout_contains_failure(1),test_shell_timeout(1),test_shell_no_previous_command_warning(1)  # Test SHELL, EXEC, RUN commands and assertions.
     TestShellDryRun: interpreter(0),test_shell_dry_run(1)  # Test shell commands in dry-run mode.
+  tests/test_smoke_decisions.py:
+    e: _load,_schema,_check_required,_check_decision,_check_metrics,_check_numerics,_check_next_actions,_validate,TestKimiDecision,TestSWEDecision,TestModelComparison
+    TestKimiDecision: test_file_exists(0),test_valid_json(0),test_schema_valid(0),test_decision_value(0),test_confidence_high(0),test_has_topology_focus(0)
+    TestSWEDecision: test_file_exists(0),test_valid_json(0),test_schema_valid(0),test_decision_value(0),test_conservative_risk(0),test_has_multiple_next_actions(0)
+    TestModelComparison: test_both_same_iteration(0),test_both_valid_decisions(0),test_kimi_higher_confidence_than_swe(0),test_swe_higher_risk_than_kimi(0),test_summary(0)
+    _load(name)
+    _schema()
+    _check_required(data;schema)
+    _check_decision(data;schema)
+    _check_metrics(data;schema)
+    _check_numerics(data)
+    _check_next_actions(data)
+    _validate(data;schema)
   tests/test_sources.py:
     e: TestRegistry,TestOpenAPISource,TestSqlSource,TestProtoSource,TestGraphQLSource,TestNLSource,TestUISource
-    TestRegistry: test_builtin_sources(0),test_get_source(1),test_get_unknown(0)
+    TestRegistry: test_builtin_sources(0),test_get_source(1),test_get_unknown(0),test_get_config_aliases(1)
     TestOpenAPISource: test_paths_become_api_steps(0),test_status_picks_lowest_2xx(0),test_default_status_when_unspecified(0),test_base_url_from_servers(0),test_metadata_from_info(0),test_load_from_path(1),test_load_from_dict(0)
     TestSqlSource: test_two_tables_yield_four_steps(0),test_count_step_has_assert(0),test_schema_fixture_emitted(0),test_dialect_propagates(0),test_load_from_path(1)
     TestProtoSource: test_one_step_per_message(0),test_sample_fields_blob(0),test_round_trip_assertion(0),test_schema_fixture(0)
@@ -5756,6 +6002,15 @@ D:
     e: TestUnitExecution,TestUnitDryRun
     TestUnitExecution: interpreter(0),test_unit_import_success(1),test_unit_import_failure(1),test_unit_assert_success(1),test_unit_assert_failure(1),test_unit_assert_builtin_function(1),test_unit_pytest_no_args(1),test_unit_pytest_dry_run(1)  # Test UNIT_PYTEST, UNIT_IMPORT, UNIT_ASSERT commands.
     TestUnitDryRun: interpreter(0),test_unit_import_dry_run(1),test_unit_pytest_discover_dry_run(1)  # Test unit commands in dry-run mode.
+  tests/test_validation.py:
+    e: interp,_seed_shell,TestValidateExpansion,TestValidateContains,TestValidateRegex,TestValidateTemplate,TestValidateSemantic
+    TestValidateExpansion: test_validate_row_emits_validate_oql_line(0),test_validate_quotes_regex_metachars(0),test_validate_pipe_inside_quoted_criteria_is_literal(0),test_validate_comma_inside_quoted_criteria_is_literal(0),test_validate_skips_rows_without_type_or_target(0)
+    TestValidateContains: test_contains_pass(1),test_contains_fail(1),test_not_contains_pass(1),test_not_contains_fail(1)
+    TestValidateRegex: test_regex_pass(1),test_regex_fail(1)
+    TestValidateTemplate: test_template_pass(2),test_template_missing_file(2)
+    TestValidateSemantic: test_semantic_emits_event_and_passes(1)
+    interp()
+    _seed_shell(interp;stdout;stderr;rc)
 ```
 
 ## Source Map
@@ -5898,73 +6153,75 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 
 ## Call Graph
 
-*521 nodes · 500 edges · 103 modules · CC̄=2.3*
+*505 nodes · 500 edges · 104 modules · CC̄=2.3*
 
 ### Hubs (by degree)
 
 | Function | CC | in | out | total |
 |----------|----|----|-----|-------|
-| `print` *(in examples.browser-inspection.run)* | 0 | 58 | 0 | **58** |
+| `print` *(in examples.browser-inspection.run)* | 0 | 48 | 0 | **48** |
 | `_render_toon` *(in testql.results.serializers)* | 6 | 1 | 46 | **47** |
+| `any` *(in .testql.generated.generated-from-pytests.testql.toon)* | 0 | 34 | 0 | **34** |
 | `list` *(in code2llm_output.map.toon)* | 0 | 34 | 0 | **34** |
 | `write_inspection_artifacts` *(in testql.results.artifacts)* | 1 | 3 | 28 | **31** |
-| `_render_plan` *(in testql.adapters.testtoon_adapter)* | 9 | 4 | 27 | **31** |
 | `heal_scenario` *(in testql.commands.heal_scenario_cmd)* | 8 | 0 | 30 | **30** |
 | `_cmd_assert_json` *(in testql.interpreter._assertions.AssertionsMixin)* | 13 ⚠ | 0 | 30 | **30** |
 | `_render_step` *(in testql.adapters.scenario_yaml)* | 10 ⚠ | 2 | 26 | **28** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# nodes: 521 | edges: 500 | modules: 103
+# nodes: 505 | edges: 500 | modules: 104
 # CC̄=2.3
 
 HUBS[20]:
   examples.browser-inspection.run.print
-    CC=0  in:58  out:0  total:58
+    CC=0  in:48  out:0  total:48
   testql.results.serializers._render_toon
     CC=6  in:1  out:46  total:47
+  .testql.generated.generated-from-pytests.testql.toon.any
+    CC=0  in:34  out:0  total:34
   code2llm_output.map.toon.list
     CC=0  in:34  out:0  total:34
   testql.results.artifacts.write_inspection_artifacts
     CC=1  in:3  out:28  total:31
-  testql.adapters.testtoon_adapter._render_plan
-    CC=9  in:4  out:27  total:31
   testql.commands.heal_scenario_cmd.heal_scenario
     CC=8  in:0  out:30  total:30
   testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
     CC=13  in:0  out:30  total:30
   testql.adapters.scenario_yaml._render_step
     CC=10  in:2  out:26  total:28
-  testql.cli.check_and_upgrade
-    CC=9  in:1  out:23  total:24
   testql._base_fallback.VariableStore.set
-    CC=1  in:24  out:0  total:24
+    CC=1  in:26  out:0  total:26
   testql.commands.generate_cmd._print_routes_section
     CC=10  in:1  out:23  total:24
   testql.commands.inspect_cmd.inspect
     CC=6  in:0  out:24  total:24
   testql.commands.generate_topology_cmd.generate_topology
     CC=5  in:0  out:24  total:24
-  testql.commands.encoder_routes._run_oql_lines
-    CC=6  in:1  out:22  total:23
-  testql.adapters.scenario_yaml._gui_step
-    CC=9  in:0  out:23  total:23
   testql.commands.echo.parsers.doql._parse_workflows
     CC=7  in:1  out:22  total:23
+  testql.adapters.scenario_yaml._gui_step
+    CC=9  in:0  out:23  total:23
+  testql.commands.encoder_routes._run_oql_lines
+    CC=6  in:1  out:22  total:23
   testql.adapters.base.read_source
     CC=5  in:13  out:9  total:22
-  testql.commands.misc_cmds.report
-    CC=4  in:0  out:22  total:22
   testql.runner.parse_line
     CC=9  in:2  out:20  total:22
+  testql.commands.misc_cmds.report
+    CC=4  in:0  out:22  total:22
   testql.adapters.sql.fixtures.schema_fixture_from_rows
     CC=4  in:1  out:20  total:21
+  testql.runner.DslCliExecutor.run_script
+    CC=11  in:0  out:20  total:20
 
 MODULES:
+  .testql.generated.generated-from-pytests.testql.toon  [1 funcs]
+    any  CC=0  out:0
   TODO.testtoon_parser  [2 funcs]
     print_parsed  CC=8  out:12
     validate  CC=2  out:2
-  code2llm_output.map.toon  [13 funcs]
+  code2llm_output.map.toon  [12 funcs]
     _navigate_json_path  CC=0  out:0
     format_text_output  CC=0  out:0
     generate_context  CC=0  out:0
@@ -5981,14 +6238,14 @@ MODULES:
     main  CC=2  out:10
   examples.browser-inspection.run  [1 funcs]
     print  CC=0  out:0
-  project.map.toon  [4 funcs]
+  project.map.toon  [5 funcs]
+    _toon_safe_selector  CC=0  out:0
     available_sources  CC=0  out:0
     build_topology  CC=0  out:0
     get_source  CC=0  out:0
     run_self_test  CC=0  out:0
-  testql._base_fallback  [4 funcs]
+  testql._base_fallback  [3 funcs]
     emit  CC=2  out:2
-    all  CC=1  out:1
     has  CC=1  out:0
     set  CC=1  out:0
   testql.adapters.base  [1 funcs]
@@ -6027,11 +6284,14 @@ MODULES:
     _build_api  CC=6  out:8
     _build_assert  CC=2  out:5
     _build_encoder  CC=2  out:5
-  testql.adapters.proto.compatibility  [4 funcs]
+  testql.adapters.proto.compatibility  [7 funcs]
     _compare_field  CC=5  out:8
     _compare_message  CC=2  out:3
     _find_candidate_field  CC=6  out:2
+    _scan_new_messages  CC=4  out:2
+    _scan_old_messages  CC=3  out:5
     _wire_compatible  CC=4  out:1
+    compare_schemas  CC=2  out:3
   testql.adapters.proto.descriptor_loader  [7 funcs]
     _iter_messages  CC=3  out:4
     _parse_field  CC=3  out:9
@@ -6040,6 +6300,22 @@ MODULES:
     _strip_comments  CC=1  out:2
     load_proto_file  CC=1  out:3
     parse_proto  CC=4  out:9
+  testql.adapters.proto.message_validator  [8 funcs]
+    _missing_required  CC=4  out:1
+    _row_issues  CC=3  out:4
+    _validate_field_known  CC=2  out:2
+    _validate_field_type  CC=3  out:2
+    _validate_field_value  CC=3  out:2
+    coerce_scalar  CC=5  out:6
+    round_trip_equal  CC=6  out:4
+    validate_message_instance  CC=5  out:7
+  testql.adapters.proto.proto_adapter  [6 funcs]
+    _apply_section  CC=2  out:6
+    _h_message  CC=1  out:3
+    _h_proto  CC=1  out:4
+    _message_section  CC=5  out:8
+    _proto_section  CC=3  out:7
+    _toon_to_plan  CC=4  out:7
   testql.adapters.registry  [2 funcs]
     all  CC=1  out:2
     detect  CC=9  out:8
@@ -6089,21 +6365,6 @@ MODULES:
     _h_assert  CC=3  out:2
     _h_config  CC=1  out:3
     _h_query  CC=1  out:3
-  testql.adapters.testtoon_adapter  [11 funcs]
-    detect  CC=9  out:12
-    parse  CC=1  out:3
-    render  CC=1  out:1
-    _capture_section_apply  CC=8  out:12
-    _config_to_dict  CC=3  out:3
-    _render_gui_action_steps  CC=9  out:7
-    _render_plan  CC=9  out:27
-    _resolve_capture_target  CC=4  out:3
-    _toon_safe_selector  CC=3  out:2
-    _toon_to_plan  CC=6  out:12
-  testql.cli  [3 funcs]
-    check_and_upgrade  CC=9  out:23
-    cli  CC=1  out:3
-    main  CC=1  out:2
   testql.commands.auto_cmd  [4 funcs]
     _render_console_report  CC=4  out:13
     _render_markdown_report  CC=4  out:8
@@ -6229,17 +6490,19 @@ MODULES:
   testql.discovery.probes.filesystem.api_openapi  [2 funcs]
     _find_specs  CC=9  out:11
     _excluded  CC=4  out:3
-  testql.discovery.probes.filesystem.package_python  [13 funcs]
+  testql.discovery.probes.filesystem.container_dockerfile  [1 funcs]
+    _metadata  CC=4  out:10
+  testql.discovery.probes.filesystem.package_python  [15 funcs]
+    _confidence  CC=10  out:4
     _find_python_files  CC=7  out:6
     _read_metadata  CC=8  out:13
     _call_kw  CC=2  out:3
     _dedupe_deps  CC=4  out:5
     _dep  CC=3  out:4
+    _excluded  CC=2  out:1
     _parse_pyproject  CC=7  out:12
     _parse_pyproject_dependencies  CC=6  out:15
     _parse_requirements  CC=4  out:5
-    _parse_setup_cfg  CC=3  out:6
-    _parse_setup_py  CC=3  out:4
   testql.discovery.probes.network.http_endpoint  [9 funcs]
     probe  CC=6  out:14
     handle_starttag  CC=10  out:14
@@ -6254,11 +6517,15 @@ MODULES:
     __init__  CC=2  out:1
     default_probes  CC=3  out:9
     discover_path  CC=1  out:2
+  testql.generators.analyzers  [2 funcs]
+    _detect_hardware  CC=3  out:2
+    _detect_python_type  CC=7  out:4
   testql.generators.api_generator  [1 funcs]
     _deduplicate_rest_routes  CC=4  out:3
   testql.generators.base  [1 funcs]
     _should_exclude_path  CC=1  out:3
-  testql.generators.multi  [1 funcs]
+  testql.generators.multi  [2 funcs]
+    discover_projects  CC=6  out:6
     generate_cross_project_tests  CC=3  out:11
   testql.generators.page_analyzer  [29 funcs]
     _add_assert_visible_step  CC=1  out:4
@@ -6331,17 +6598,6 @@ MODULES:
     _cmd_assert_json  CC=13  out:30
   testql.interpreter._flow  [1 funcs]
     _cmd_include  CC=7  out:17
-  testql.interpreter._testtoon_parser  [22 funcs]
-    _add_bare_commands_section  CC=3  out:4
-    _add_row_to_section  CC=5  out:5
-    _append_api_asserts  CC=9  out:11
-    _detect_separator  CC=2  out:0
-    _expand_api  CC=4  out:9
-    _find_commands_insert_position  CC=3  out:1
-    _is_bare_command  CC=2  out:1
-    _is_comment  CC=1  out:1
-    _is_meta_line  CC=1  out:1
-    _make_data_row  CC=2  out:6
   testql.interpreter.converter.core  [3 funcs]
     convert_directory  CC=4  out:7
     convert_file  CC=1  out:3
@@ -6391,14 +6647,8 @@ MODULES:
     scan_aria  CC=4  out:9
     _aom_node_to_element  CC=2  out:13
     _flatten_aom  CC=2  out:3
-  testql.interpreter.interpreter  [3 funcs]
-    __init__  CC=3  out:6
-    execute  CC=4  out:16
-    parse  CC=2  out:3
   testql.ir.metadata  [1 funcs]
     to_dict  CC=3  out:2
-  testql.ir.steps  [1 funcs]
-    to_dict  CC=3  out:4
   testql.ir_runner.engine  [1 funcs]
     run_plan  CC=1  out:2
   testql.openapi_generator  [5 funcs]
@@ -6407,6 +6657,8 @@ MODULES:
     _infer_tags  CC=7  out:9
     _extract_ep_params  CC=7  out:8
     _extract_path_params  CC=4  out:4
+  testql.pipeline  [1 funcs]
+    _is_workspace  CC=5  out:5
   testql.results.analyzer  [38 funcs]
     _action_summary  CC=1  out:0
     _action_type  CC=14  out:0
@@ -6467,9 +6719,6 @@ EDGES:
   examples.api-testing.mock_server.list_scenarios → code2llm_output.map.toon.list
   TODO.testtoon_parser.print_parsed → examples.browser-inspection.run.print
   TODO.testtoon_parser.print_parsed → TODO.testtoon_parser.validate
-  testql.cli.check_and_upgrade → examples.browser-inspection.run.print
-  testql.cli.main → testql.cli.check_and_upgrade
-  testql.cli.main → testql.cli.cli
   testql.runner.parse_line → examples.browser-inspection.run.print
   testql.runner.parse_script → testql.runner.parse_line
   testql.runner.DslCliExecutor._dispatch → examples.browser-inspection.run.print
@@ -6492,6 +6741,7 @@ EDGES:
   testql.sumd_generator.generate_sumd → testql.sumd_generator._llm_suggestions_section
   testql.sumd_generator._llm_suggestions_section → testql.sumd_generator._workflow_snippet
   testql.sumd_generator.save_sumd → testql.sumd_generator.generate_sumd
+  testql.pipeline.GenerationPipeline._is_workspace → .testql.generated.generated-from-pytests.testql.toon.any
   testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_block_interfaces
   testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_api_interfaces
   testql.commands.self_test_cmd.self_test → project.map.toon.run_self_test
@@ -6510,7 +6760,9 @@ EDGES:
   testql.commands.heal_scenario_cmd.heal_scenario → testql.commands.heal_scenario_cmd._collect_selectors
   testql.commands.heal_scenario_cmd._heal_with_elements → testql.generators.page_analyzer.pick_selector
   testql.commands.heal_scenario_cmd._heal_with_elements → testql.generators.page_analyzer.find_replacement
-  testql.commands.heal_scenario_cmd._heal_with_elements → testql.adapters.testtoon_adapter._toon_safe_selector
+  testql.commands.heal_scenario_cmd._heal_with_elements → project.map.toon._toon_safe_selector
+  testql.commands.heal_scenario_cmd._heal_with_browser → testql.generators.sources.page_source.extract_elements_from_page
+  testql.commands.heal_scenario_cmd._heal_with_browser → testql.commands.heal_scenario_cmd._selector_resolves
 ```
 
 ## API Stubs
@@ -6618,7 +6870,10 @@ def oql_list_tables() -> Response:  # Extract table names from an OQL file.
 - `GET /api/v3/data/customers?limit=5` → `200`
 - `GET /api/v3/data/protocols?limit=10` → `200`
 
-### Cli (1)
+### Cli (2)
+
+**`Extended CLI Smoke Tests`**
+- assert `exit_code == 0`
 
 **`CLI Command Tests`**
 
@@ -6750,6 +7005,7 @@ def oql_list_tables() -> Response:  # Extract table names from an OQL file.
 ### Integration (1)
 
 **`Auto-generated from Python Tests`**
+- assert `exit_code == 0`
 
 ### Interaction (3)
 
@@ -6758,6 +7014,21 @@ def oql_list_tables() -> Response:  # Extract table names from an OQL file.
 **`Session Recording Example`**
 
 **`DSL Example: Complete Device Test Flow`**
+
+### Web (2)
+
+**`Internal Asset Availability (excluding known-external 403s)`**
+- `GET /favicon.ico` → `200`
+- `GET /robots.txt` → `200`
+- assert `status < 500`
+- assert `response_time < 3000`
+
+**`Sitemap Uniqueness and Asset Availability`**
+- `GET /sitemap.xml` → `200`
+- `GET /pl/` → `200`
+- `GET /de/` → `200`
+- assert `status < 500`
+- assert `response_time < 5000`
 
 ## Intent
 

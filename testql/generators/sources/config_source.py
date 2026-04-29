@@ -31,11 +31,8 @@ def _load_file(source: SourceLike) -> str:
     return str(source)
 
 
-def _parse_makefile(content: str, file_path: Path) -> list[dict[str, Any]]:
-    """Parse Makefile and extract targets including included .mk files."""
-    targets = []
-    
-    # Find include directives and load them
+def _load_includes(content: str, file_path: Path) -> str:
+    """Load included .mk files into content."""
     include_pattern = r'^include\s+(.+)'
     for match in re.finditer(include_pattern, content, re.MULTILINE):
         include_path = match.group(1).strip()
@@ -48,11 +45,50 @@ def _parse_makefile(content: str, file_path: Path) -> list[dict[str, Any]]:
             mk_file = file_path.parent / include_path
             if mk_file.exists():
                 content += '\n' + mk_file.read_text()
-    
-    # Find .PHONY targets
+    return content
+
+
+def _extract_phony_targets(content: str) -> list[str]:
+    """Extract .PHONY target names from content."""
     phony_pattern = r'\.PHONY:\s+(.+)'
     phony_matches = re.findall(phony_pattern, content)
-    phony_targets = [t.strip() for match in phony_matches for t in match.split()]
+    return [t.strip() for match in phony_matches for t in match.split()]
+
+
+def _extract_target_commands(content: str, start_pos: int) -> list[str]:
+    """Extract commands for a target starting at position."""
+    lines_after = content[start_pos:].split('\n')
+    commands = []
+    saw_command = False
+    for line in lines_after[:10]:  # Max 10 lines
+        stripped = line.strip()
+        # Skip empty lines and comments
+        if not stripped or stripped.startswith('#'):
+            if not stripped and saw_command:
+                break
+            continue
+        # Check if it's a command (starts with tab or whitespace, or has @, -, +)
+        if line.startswith('\t') or line.startswith(' ') or stripped.startswith(('@', '-', '+')):
+            # Remove @, -, + prefixes
+            cmd = stripped.lstrip('@-+')
+            if cmd:
+                commands.append(cmd)
+                saw_command = True
+        elif ':' in stripped and not any(c in stripped for c in ['=', ':=']):
+            # Likely another target definition
+            break
+    return commands
+
+
+def _parse_makefile(content: str, file_path: Path) -> list[dict[str, Any]]:
+    """Parse Makefile and extract targets including included .mk files."""
+    targets = []
+    
+    # Load included files
+    content = _load_includes(content, file_path)
+    
+    # Extract .PHONY targets
+    phony_targets = _extract_phony_targets(content)
     
     # Find target definitions
     target_pattern = r'^([a-zA-Z0-9_-]+):[ \t]*(?:##[ \t]*(.+))?$'
@@ -60,27 +96,8 @@ def _parse_makefile(content: str, file_path: Path) -> list[dict[str, Any]]:
         target_name = match.group(1)
         comment = match.group(2) or ""
         
-        # Get target commands (next lines until next target or empty line)
-        lines_after = content[match.end():].split('\n')
-        commands = []
-        saw_command = False
-        for line in lines_after[:10]:  # Max 10 lines
-            stripped = line.strip()
-            # Skip empty lines and comments
-            if not stripped or stripped.startswith('#'):
-                if not stripped and saw_command:
-                    break
-                continue
-            # Check if it's a command (starts with tab or whitespace, or has @, -, +)
-            if line.startswith('\t') or line.startswith(' ') or stripped.startswith(('@', '-', '+')):
-                # Remove @, -, + prefixes
-                cmd = stripped.lstrip('@-+')
-                if cmd:
-                    commands.append(cmd)
-                    saw_command = True
-            elif ':' in stripped and not any(c in stripped for c in ['=', ':=']):
-                # Likely another target definition
-                break
+        # Get target commands
+        commands = _extract_target_commands(content, match.end())
         
         if target_name not in ['.PHONY', '.DEFAULT_GOAL']:
             targets.append({
