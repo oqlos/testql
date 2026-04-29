@@ -25,7 +25,14 @@ class ConfigEndpointDetector(BaseEndpointDetector):
         """Find endpoints in docker-compose, k8s configs, .env, config.py."""
         self.endpoints = []
 
-        # Detect from docker-compose
+        self._detect_from_docker_compose()
+        self._detect_from_env_files()
+        self._detect_from_config_py()
+
+        return self.endpoints
+
+    def _detect_from_docker_compose(self) -> None:
+        """Detect endpoints from docker-compose files."""
         compose_files = (
             self._find_files('**/docker-compose*.yml') +
             self._find_files('**/docker-compose*.yaml')
@@ -37,14 +44,15 @@ class ConfigEndpointDetector(BaseEndpointDetector):
             except Exception:
                 continue
 
-        # Detect from .env files in common locations
+    def _detect_from_env_files(self) -> None:
+        """Detect endpoints from .env files."""
         env_locations = [
             self.project_path / '.env',
             self.project_path / 'backend' / '.env',
             self.project_path / 'api' / '.env',
             self.project_path / 'client' / '.env',
         ]
-        
+
         for env_file in env_locations:
             if env_file.exists():
                 try:
@@ -52,7 +60,8 @@ class ConfigEndpointDetector(BaseEndpointDetector):
                 except Exception:
                     continue
 
-        # Detect from config.py files in common locations
+    def _detect_from_config_py(self) -> None:
+        """Detect endpoints from config.py files."""
         config_locations = [
             self.project_path / 'config.py',
             self.project_path / 'backend' / 'config.py',
@@ -60,15 +69,13 @@ class ConfigEndpointDetector(BaseEndpointDetector):
             self.project_path / 'backend' / 'api' / 'core' / 'config.py',
             self.project_path / 'backend' / 'app' / 'config.py',
         ]
-        
+
         for config_file in config_locations:
             if config_file.exists():
                 try:
                     self._analyze_config_py(config_file)
                 except Exception:
                     continue
-
-        return self.endpoints
 
     def _analyze_docker_compose(self, compose_file: Path) -> None:
         """Extract port mappings from docker-compose."""

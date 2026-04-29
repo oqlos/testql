@@ -18,27 +18,17 @@ class ShellMixin:
     # Store last shell execution result
     _last_shell_result: dict[str, Any] | None = None
 
-    def _cmd_shell(self, args: str, line: OqlLine) -> None:
-        """SHELL "command" [timeout_ms] — Execute arbitrary shell command.
+    def _parse_shell_command(self, args_clean: str) -> tuple[str, int]:
+        """Parse SHELL command and timeout from args.
 
-        Examples:
-            SHELL "ls -la"
-            SHELL "python --version" 5000
-            SHELL "cat file.txt | grep pattern" 10000
+        Returns (command, timeout_ms).
         """
-        args_clean = args.strip()
-        if not args_clean:
-            self.out.fail(f"L{line.number}: SHELL requires command argument")
-            return
-
-        # Parse: "command with spaces" [timeout] or command [timeout]
         if args_clean.startswith('"') or args_clean.startswith("'"):
             # Quoted command - find closing quote
             quote = args_clean[0]
             close_idx = args_clean.find(quote, 1)
             if close_idx == -1:
-                self.out.fail(f"L{line.number}: SHELL unclosed quote in command")
-                return
+                raise ValueError("Unclosed quote in command")
             command = args_clean[1:close_idx]
             rest = args_clean[close_idx + 1:].strip()
             timeout_ms = 30000
@@ -57,23 +47,24 @@ class ShellMixin:
                     timeout_ms = int(parts[1].split()[0])
                 except (ValueError, IndexError):
                     pass
+        return command, timeout_ms
 
-        timeout_sec = timeout_ms / 1000
+    def _execute_shell_dry_run(self, command: str, timeout_ms: int) -> None:
+        """Handle SHELL command in dry-run mode."""
+        self.out.step("💻", f'SHELL "{command[:60]}" [{timeout_ms}ms] (dry-run)')
+        self._last_shell_result = {
+            "command": command,
+            "returncode": 0,
+            "stdout": "",
+            "stderr": "",
+            "dry_run": True,
+        }
+        self.results.append(StepResult(
+            name=f'SHELL "{command[:40]}"', status=StepStatus.PASSED
+        ))
 
-        if self.dry_run:
-            self.out.step("💻", f'SHELL "{command[:60]}" [{timeout_ms}ms] (dry-run)')
-            self._last_shell_result = {
-                "command": command,
-                "returncode": 0,
-                "stdout": "",
-                "stderr": "",
-                "dry_run": True,
-            }
-            self.results.append(StepResult(
-                name=f'SHELL "{command[:40]}"', status=StepStatus.PASSED
-            ))
-            return
-
+    def _execute_shell_live(self, command: str, timeout_sec: float, timeout_ms: int) -> None:
+        """Execute SHELL command in live mode."""
         try:
             result = subprocess.run(
                 command,
@@ -115,6 +106,32 @@ class ShellMixin:
                 status=StepStatus.ERROR,
                 message=str(e),
             ))
+
+    def _cmd_shell(self, args: str, line: OqlLine) -> None:
+        """SHELL "command" [timeout_ms] — Execute arbitrary shell command.
+
+        Examples:
+            SHELL "ls -la"
+            SHELL "python --version" 5000
+            SHELL "cat file.txt | grep pattern" 10000
+        """
+        args_clean = args.strip()
+        if not args_clean:
+            self.out.fail(f"L{line.number}: SHELL requires command argument")
+            return
+
+        try:
+            command, timeout_ms = self._parse_shell_command(args_clean)
+        except ValueError as e:
+            self.out.fail(f"L{line.number}: SHELL {e}")
+            return
+
+        timeout_sec = timeout_ms / 1000
+
+        if self.dry_run:
+            self._execute_shell_dry_run(command, timeout_ms)
+        else:
+            self._execute_shell_live(command, timeout_sec, timeout_ms)
 
     def _cmd_exec(self, args: str, line: OqlLine) -> None:
         """EXEC "path/to/script" [args] [timeout_ms] — Execute script file.

@@ -19,6 +19,12 @@ from testql.generators.sources import (
     available_sources,
     get_source,
 )
+from testql.generators.sources.config_source import (
+    _extract_phony_targets,
+    _extract_target_commands,
+    _load_includes,
+    _parse_makefile,
+)
 from testql.ir import (
     ApiStep,
     GraphqlStep,
@@ -297,3 +303,193 @@ class TestUISource:
         plan = UISource().load(HTML)
         buttons = [s for s in plan.steps if isinstance(s, GuiStep) and s.action == "click"]
         assert buttons, "expected at least one click step"
+
+
+# ── Config Source ──────────────────────────────────────────────────────────────
+
+
+class TestConfigSourceHelpers:
+    def test_load_includes_single_file(self, tmp_path: Path):
+        """Test loading a single included .mk file."""
+        mk_file = tmp_path / "test.mk"
+        mk_file.write_text("test-target:\n\techo test")
+        content = "include test.mk"
+        result = _load_includes(content, tmp_path / "Makefile")
+        assert "test-target" in result
+        assert "echo test" in result
+
+    def test_load_includes_glob_pattern(self, tmp_path: Path):
+        """Test loading multiple .mk files via glob pattern."""
+        (tmp_path / "mk1.mk").write_text("target1:\n\techo 1")
+        (tmp_path / "mk2.mk").write_text("target2:\n\techo 2")
+        content = "include *.mk"
+        result = _load_includes(content, tmp_path / "Makefile")
+        assert "target1" in result
+        assert "target2" in result
+
+    def test_load_includes_nonexistent_file(self, tmp_path: Path):
+        """Test that non-existent includes are handled gracefully."""
+        content = "include nonexistent.mk"
+        result = _load_includes(content, tmp_path / "Makefile")
+        # Should not crash, just return original content
+        assert "include nonexistent.mk" in result
+
+    def test_extract_phony_targets(self):
+        """Test extracting .PHONY target names."""
+        content = ".PHONY: test build clean\n.PHONY: deploy"
+        result = _extract_phony_targets(content)
+        assert set(result) == {"test", "build", "clean", "deploy"}
+
+    def test_extract_phony_targets_multiline(self):
+        """Test .PHONY targets on multiple lines."""
+        content = """
+.PHONY: test build
+.PHONY: deploy clean
+"""
+        result = _extract_phony_targets(content)
+        assert set(result) == {"test", "build", "deploy", "clean"}
+
+    def test_extract_phony_targets_none(self):
+        """Test content with no .PHONY targets."""
+        content = "all:\n\techo all"
+        result = _extract_phony_targets(content)
+        assert result == []
+
+    def test_extract_target_commands_simple(self):
+        """Test extracting simple commands."""
+        content = """
+target:
+\techo hello
+\techo world
+"""
+        result = _extract_target_commands(content, content.index("target:") + len("target:"))
+        assert result == ["echo hello", "echo world"]
+
+    def test_extract_target_commands_with_prefixes(self):
+        """Test that @, -, + prefixes are removed."""
+        content = """
+target:
+\t@echo silent
+\t-echo ignore
+\t+echo plus
+"""
+        result = _extract_target_commands(content, content.index("target:") + len("target:"))
+        assert result == ["echo silent", "echo ignore", "echo plus"]
+
+    def test_extract_target_commands_stops_at_next_target(self):
+        """Test that command extraction stops at next target definition."""
+        content = """
+target1:
+\techo 1
+
+target2:
+\techo 2
+"""
+        result = _extract_target_commands(content, content.index("target1:") + len("target1:"))
+        assert result == ["echo 1"]
+        assert "echo 2" not in result
+
+    def test_extract_target_commands_ignores_comments(self):
+        """Test that comments are skipped."""
+        content = """
+target:
+\t# comment
+\techo actual
+"""
+        result = _extract_target_commands(content, content.index("target:") + len("target:"))
+        assert result == ["echo actual"]
+
+    def test_extract_target_commands_max_lines(self):
+        """Test that extraction is limited to 10 lines."""
+        content = "\n".join([f"\tcmd{i}" for i in range(15)])
+        result = _extract_target_commands(content, 0)
+        assert len(result) <= 10
+
+
+class TestConfigSourceIntegration:
+    def test_parse_makefile_simple(self, tmp_path: Path):
+        """Test parsing a simple Makefile."""
+        makefile = tmp_path / "Makefile"
+        makefile.write_text("""
+.PHONY: test build
+
+test:
+\tpython -m pytest
+
+build:
+\tpoetry build
+""")
+        result = _parse_makefile(makefile.read_text(), makefile)
+        assert len(result) == 2
+        assert any(t["name"] == "test" for t in result)
+        assert any(t["name"] == "build" for t in result)
+
+    def test_parse_makefile_with_includes(self, tmp_path: Path):
+        """Test parsing Makefile with included files."""
+        mk_file = tmp_path / "common.mk"
+        mk_file.write_text("""
+.PHONY: lint
+
+lint:
+\truff check
+""")
+        makefile = tmp_path / "Makefile"
+        makefile.write_text("""
+include common.mk
+
+test:
+\tpython -m pytest
+""")
+        result = _parse_makefile(makefile.read_text(), makefile)
+        assert len(result) == 2
+        assert any(t["name"] == "lint" for t in result)
+        assert any(t["name"] == "test" for t in result)
+
+    def test_parse_makefile_phony_flag(self, tmp_path: Path):
+        """Test that .PHONY flag is correctly set."""
+        makefile = tmp_path / "Makefile"
+        makefile.write_text("""
+.PHONY: test
+
+test:
+\tpython -m pytest
+
+all:
+\tpoetry install
+""")
+        result = _parse_makefile(makefile.read_text(), makefile)
+        test_target = next(t for t in result if t["name"] == "test")
+        all_target = next(t for t in result if t["name"] == "all")
+        assert test_target["is_phony"] is True
+        assert all_target["is_phony"] is False
+
+    def test_parse_makefile_comments(self, tmp_path: Path):
+        """Test that target comments are extracted."""
+        makefile = tmp_path / "Makefile"
+        makefile.write_text("""
+test: ## Run tests
+\tpython -m pytest
+
+build: ## Build package
+\tpoetry build
+""")
+        result = _parse_makefile(makefile.read_text(), makefile)
+        test_target = next(t for t in result if t["name"] == "test")
+        build_target = next(t for t in result if t["name"] == "build")
+        assert test_target["comment"] == "Run tests"
+        assert build_target["comment"] == "Build package"
+
+    def test_parse_makefile_excludes_special_targets(self, tmp_path: Path):
+        """Test that .PHONY and .DEFAULT_GOAL are excluded."""
+        makefile = tmp_path / "Makefile"
+        makefile.write_text("""
+.PHONY: test
+.DEFAULT_GOAL = test
+
+test:
+\tpython -m pytest
+""")
+        result = _parse_makefile(makefile.read_text(), makefile)
+        assert not any(t["name"] == ".PHONY" for t in result)
+        assert not any(t["name"] == ".DEFAULT_GOAL" for t in result)
+        assert any(t["name"] == "test" for t in result)

@@ -130,6 +130,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Remaining
 - Add Playwright-backed browser execution, JavaScript-rendered DOM capture, screenshots, console errors, network logs, link-by-link validation, accessibility/performance checks, MCP service integration, and runtime-vs-code delta reports.
 
+## [1.2.42] - 2026-04-29
+
+### Docs
+- Update README.md
+- Update SUMD.md
+- Update SUMR.md
+- Update project/README.md
+- Update project/context.md
+
+### Test
+- Update testql/detectors/config_detector.py
+- Update testql/interpreter/_shell.py
+- Update testql/interpreter/dom_scan_mixin.py
+- Update tests/test_sources.py
+
+### Other
+- Update .testql/metadata.json
+- Update app.doql.less
+- Update coverage.json
+- Update project/analysis.toon.yaml
+- Update project/calls.mmd
+- Update project/calls.png
+- Update project/calls.toon.yaml
+- Update project/calls.yaml
+- Update project/compact_flow.mmd
+- Update project/compact_flow.png
+- ... and 9 more files
+
 ## [1.2.41] - 2026-04-29
 
 ### Docs

@@ -1,6 +1,6 @@
-# testql | 349f 42469L | python:321,shell:24,less:4 | 2026-04-29
-# stats: 857 func | 568 cls | 349 mod | CC̄=3.7 | critical:29 | cycles:0
-# alerts[5]: CC _parse_makefile=23; CC main=15; CC parse_testtoon=14; CC _filter_commands=14; CC _expand_flow=14
+# testql | 349f 42722L | python:321,shell:24,less:4 | 2026-04-29
+# stats: 860 func | 570 cls | 349 mod | CC̄=3.7 | critical:29 | cycles:0
+# alerts[5]: CC main=15; CC parse_testtoon=14; CC _filter_commands=14; CC _expand_flow=14; CC _check_link_statuses=14
 # hotspots[5]: generate_from_page fan=19; heal_scenario fan=19; watch fan=19; suite fan=19; main fan=18
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
@@ -108,7 +108,7 @@ M[349]:
   testql/commands/topology_cmd.py,24
   testql/detectors/__init__.py,54
   testql/detectors/base.py,35
-  testql/detectors/config_detector.py,212
+  testql/detectors/config_detector.py,219
   testql/detectors/django_detector.py,52
   testql/detectors/express_detector.py,60
   testql/detectors/fastapi_detector.py,154
@@ -155,7 +155,7 @@ M[349]:
   testql/generators/scenario_generator.py,88
   testql/generators/sources/__init__.py,76
   testql/generators/sources/base.py,33
-  testql/generators/sources/config_source.py,289
+  testql/generators/sources/config_source.py,306
   testql/generators/sources/graphql_source.py,67
   testql/generators/sources/nl_source.py,28
   testql/generators/sources/openapi_source.py,94
@@ -185,7 +185,7 @@ M[349]:
   testql/interpreter/_gui.py,709
   testql/interpreter/_hardware.py,111
   testql/interpreter/_parser.py,34
-  testql/interpreter/_shell.py,244
+  testql/interpreter/_shell.py,261
   testql/interpreter/_testtoon_parser.py,469
   testql/interpreter/_unit.py,268
   testql/interpreter/_validation.py,154
@@ -209,7 +209,7 @@ M[349]:
   testql/interpreter/converter/renderer.py,65
   testql/interpreter/dispatcher.py,87
   testql/interpreter/dom_scan_formatters.py,85
-  testql/interpreter/dom_scan_mixin.py,303
+  testql/interpreter/dom_scan_mixin.py,319
   testql/interpreter/dom_scan_models.py,54
   testql/interpreter/dom_scanner.py,419
   testql/interpreter/interpreter.py,159
@@ -334,7 +334,7 @@ M[349]:
   tests/test_scenario_yaml_adapter.py,208
   tests/test_shell_execution.py,134
   tests/test_smoke_decisions.py,160
-  tests/test_sources.py,300
+  tests/test_sources.py,496
   tests/test_sql_adapter.py,191
   tests/test_sql_ddl_parser.py,108
   tests/test_sql_dialect_resolver.py,75
@@ -974,7 +974,7 @@ D:
     BaseEndpointDetector: __init__(1),detect(0),_find_files(2)  # Base class for endpoint detectors.
   testql/detectors/config_detector.py:
     e: ConfigEndpointDetector
-    ConfigEndpointDetector: detect(0),_analyze_docker_compose(1),_parse_port_mapping(1),_infer_protocol(1),_analyze_env_file(1),_analyze_config_py(1),_extract_port_from_url(1)  # Detect endpoints from configuration files.
+    ConfigEndpointDetector: detect(0),_detect_from_docker_compose(0),_detect_from_env_files(0),_detect_from_config_py(0),_analyze_docker_compose(1),_parse_port_mapping(1),_infer_protocol(1),_analyze_env_file(1),_analyze_config_py(1),_extract_port_from_url(1)  # Detect endpoints from configuration files.
   testql/detectors/django_detector.py:
     e: DjangoDetector
     DjangoDetector: detect(0),_analyze_urls_py(1)  # Detect Django URL patterns.
@@ -1187,9 +1187,12 @@ D:
     e: BaseSource
     BaseSource: load(1)  # Convert an external artifact (OpenAPI / SQL DDL / .proto / S
   testql/generators/sources/config_source.py:
-    e: _load_file,_parse_makefile,_parse_taskfile,_parse_docker_compose,_select_parser_for_file,_auto_detect_parser,_parse_targets,_parse_buf_yaml,_filter_commands,ConfigSource
+    e: _load_file,_load_includes,_extract_phony_targets,_extract_target_commands,_parse_makefile,_parse_taskfile,_parse_docker_compose,_select_parser_for_file,_auto_detect_parser,_parse_targets,_parse_buf_yaml,_filter_commands,ConfigSource
     ConfigSource: load(1)  # Makefile, Taskfile.yml, docker-compose.yml, buf.yaml → TestP
     _load_file(source)
+    _load_includes(content;file_path)
+    _extract_phony_targets(content)
+    _extract_target_commands(content;start_pos)
     _parse_makefile(content;file_path)
     _parse_taskfile(content)
     _parse_docker_compose(content)
@@ -1322,7 +1325,7 @@ D:
     parse_oql(source;filename)
   testql/interpreter/_shell.py:
     e: ShellMixin
-    ShellMixin: _cmd_shell(2),_cmd_exec(2),_cmd_run(2),_cmd_assert_exit_code(2),_cmd_assert_stdout_contains(2),_cmd_assert_stderr_contains(2)  # Mixin providing shell command execution: SHELL, EXEC, RUN, A
+    ShellMixin: _parse_shell_command(1),_execute_shell_dry_run(2),_execute_shell_live(3),_cmd_shell(2),_cmd_exec(2),_cmd_run(2),_cmd_assert_exit_code(2),_cmd_assert_stdout_contains(2),_cmd_assert_stderr_contains(2)  # Mixin providing shell command execution: SHELL, EXEC, RUN, A
   testql/interpreter/_testtoon_parser.py:
     e: validate_testtoon,_expand_config,_append_api_asserts,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_validate,_expand_commands,_expand_dom_audit_buttons,_expand_generic,testtoon_to_oql
     validate_testtoon(script)
@@ -1426,7 +1429,7 @@ D:
     to_text_audit(report)
   testql/interpreter/dom_scan_mixin.py:
     e: DomScanMixin
-    DomScanMixin: _cmd_dom_scan(2),_cmd_dom_audit_buttons(2),_parse_audit_args(1),_ensure_gui_session(1),_handle_audit_report(2),_save_report_to_file(2),_cmd_assert_taborder(2),_cmd_assert_aria(2),_cmd_assert_focusable(2)  # Mixin for DOM Scan commands.
+    DomScanMixin: _parse_dom_scan_args(2),_execute_dom_scan(4),_cmd_dom_scan(2),_cmd_dom_audit_buttons(2),_parse_audit_args(1),_ensure_gui_session(1),_handle_audit_report(2),_save_report_to_file(2),_cmd_assert_taborder(2),_cmd_assert_aria(2),_cmd_assert_focusable(2)  # Mixin for DOM Scan commands.
   testql/interpreter/dom_scan_models.py:
     e: FocusableElement,DomScanResult,ButtonAuditResult,ButtonAuditReport
     FocusableElement:
@@ -2265,7 +2268,7 @@ D:
     _check_next_actions(data)
     _validate(data;schema)
   tests/test_sources.py:
-    e: TestRegistry,TestOpenAPISource,TestSqlSource,TestProtoSource,TestGraphQLSource,TestNLSource,TestUISource
+    e: TestRegistry,TestOpenAPISource,TestSqlSource,TestProtoSource,TestGraphQLSource,TestNLSource,TestUISource,TestConfigSourceHelpers,TestConfigSourceIntegration
     TestRegistry: test_builtin_sources(0),test_get_source(1),test_get_unknown(0),test_get_config_aliases(1)
     TestOpenAPISource: test_paths_become_api_steps(0),test_status_picks_lowest_2xx(0),test_default_status_when_unspecified(0),test_base_url_from_servers(0),test_metadata_from_info(0),test_load_from_path(1),test_load_from_dict(0)
     TestSqlSource: test_two_tables_yield_four_steps(0),test_count_step_has_assert(0),test_schema_fixture_emitted(0),test_dialect_propagates(0),test_load_from_path(1)
@@ -2273,6 +2276,8 @@ D:
     TestGraphQLSource: test_one_step_per_object_type(0),test_endpoint_set_in_config(0),test_query_body_uses_field_list(0)
     TestNLSource: test_delegates_to_adapter(0)
     TestUISource: test_navigate_first(0),test_inputs_extracted(0),test_buttons_extracted(0)
+    TestConfigSourceHelpers: test_load_includes_single_file(1),test_load_includes_glob_pattern(1),test_load_includes_nonexistent_file(1),test_extract_phony_targets(0),test_extract_phony_targets_multiline(0),test_extract_phony_targets_none(0),test_extract_target_commands_simple(0),test_extract_target_commands_with_prefixes(0),test_extract_target_commands_stops_at_next_target(0),test_extract_target_commands_ignores_comments(0),test_extract_target_commands_max_lines(0)
+    TestConfigSourceIntegration: test_parse_makefile_simple(1),test_parse_makefile_with_includes(1),test_parse_makefile_phony_flag(1),test_parse_makefile_comments(1),test_parse_makefile_excludes_special_targets(1)
   tests/test_sql_adapter.py:
     e: TestDetect,TestParseMetadata,TestParseConfig,TestParseSchema,TestParseQueries,TestParseAsserts,TestRender,TestRegistration
     TestDetect: test_by_extension(1),test_by_header(0),test_negative(0)

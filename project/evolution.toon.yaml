@@ -1,6 +1,6 @@
-# code2llm/evolution | 2174 func | 189f | 2026-04-29
+# code2llm/evolution | 2250 func | 189f | 2026-04-29
 
-NEXT[4] (ranked by impact):
+NEXT[3] (ranked by impact):
   [1] !! SPLIT           testql/interpreter/_gui.py
       WHY: 708L, 1 classes, max CC=12
       EFFORT: ~4h  IMPACT: 8496
@@ -9,11 +9,7 @@ NEXT[4] (ranked by impact):
       WHY: 526L, 1 classes, max CC=10
       EFFORT: ~4h  IMPACT: 5260
 
-  [3] !  SPLIT-FUNC      _parse_makefile  CC=23  fan=19
-      WHY: CC=23 exceeds 15
-      EFFORT: ~1h  IMPACT: 437
-
-  [4] !! SPLIT           test_manifest_and_generators.py
+  [3] !! SPLIT           test_manifest_and_generators.py
       WHY: 525L, 0 classes, max CC=0
       EFFORT: ~4h  IMPACT: 0
 
@@ -24,10 +20,10 @@ RISKS[3]:
   ⚠ Splitting test_manifest_and_generators.py may break 0 import paths
 
 METRICS-TARGET:
-  CC̄:          2.3 → ≤1.6
-  max-CC:      23 → ≤11
+  CC̄:          2.2 → ≤1.5
+  max-CC:      14 → ≤7
   god-modules: 7 → 0
-  high-CC(≥15): 1 → ≤0
+  high-CC(≥15): 0 → ≤0
   hub-types:   0 → ≤0
 
 PATTERNS (language parser shared logic):
@@ -55,4 +51,4 @@ PATTERNS (language parser shared logic):
     - Standardized FunctionInfo/ClassInfo models
 
 HISTORY:
-  prev CC̄=2.3 → now CC̄=2.3
+  prev CC̄=2.3 → now CC̄=2.2

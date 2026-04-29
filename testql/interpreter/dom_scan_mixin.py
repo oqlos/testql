@@ -18,15 +18,18 @@ from .dom_scan_formatters import to_text, to_json, to_toon, to_text_audit
 class DomScanMixin:
     """Mixin for DOM Scan commands."""
 
-    def _cmd_dom_scan(self, args: str, line: OqlLine) -> None:
-        """DOM_SCAN <type> [--output <format>] [--out-file <path>]"""
+    def _parse_dom_scan_args(self, args: str, line: OqlLine) -> tuple[str, str, str | None] | None:
+        """Parse DOM_SCAN command arguments.
+
+        Returns (scan_type, output_format, out_file) or None on error.
+        """
         parts = args.split()
         if not parts:
             self.out.fail(f"L{line.number}: DOM_SCAN requires type (focusable|aria|interactive|taborder)")
             self.results.append(StepResult(
                 name="DOM_SCAN", status=StepStatus.ERROR, message="Missing type"
             ))
-            return
+            return None
 
         scan_type = parts[0].lower()
         output_format = "text"
@@ -43,6 +46,62 @@ class DomScanMixin:
             else:
                 i += 1
 
+        return scan_type, output_format, out_file
+
+    def _execute_dom_scan(self, scan_type: str, output_format: str, out_file: str | None, line: OqlLine) -> None:
+        """Execute DOM scan and handle output."""
+        scanner = DomScanner(self._gui_page)
+        url = self._gui_page.url
+
+        scan_methods = {
+            "focusable":   scanner.scan_focusable,
+            "aria":        scanner.scan_aria,
+            "interactive": scanner.scan_interactive,
+            "taborder":    scanner.scan_taborder,
+        }
+
+        if scan_type not in scan_methods:
+            self.out.fail(f"L{line.number}: Unknown scan type '{scan_type}'")
+            self.results.append(StepResult(
+                name=f"DOM_SCAN {scan_type}", status=StepStatus.ERROR, message=f"Unknown type: {scan_type}"
+            ))
+            return
+
+        result = scan_methods[scan_type](url)
+
+        formatters = {"text": to_text, "json": to_json, "toon": to_toon}
+        formatter = formatters.get(output_format, to_text)
+        output_str = formatter(result)
+
+        if out_file:
+            with open(out_file, "w", encoding="utf-8") as f:
+                f.write(output_str)
+            self.out.step("🔍", f"DOM_SCAN [{scan_type}] → saved to {out_file} ({result.total} elements)")
+        else:
+            self.out.emit(output_str)
+            self.out.step("🔍", f"DOM_SCAN [{scan_type}] → {result.total} elements")
+
+        self._last_dom_scan = result
+
+        if result.errors:
+            for err in result.errors:
+                self.out.fail(f"DOM_SCAN:ARIA {err}")
+            self.results.append(StepResult(
+                name=f"DOM_SCAN {scan_type}", status=StepStatus.FAILED, message=f"Found {len(result.errors)} errors"
+            ))
+        else:
+            self.results.append(StepResult(
+                name=f"DOM_SCAN {scan_type}", status=StepStatus.PASSED, details=asdict(result)
+            ))
+
+    def _cmd_dom_scan(self, args: str, line: OqlLine) -> None:
+        """DOM_SCAN <type> [--output <format>] [--out-file <path>]"""
+        parsed = self._parse_dom_scan_args(args, line)
+        if parsed is None:
+            return
+
+        scan_type, output_format, out_file = parsed
+
         if not getattr(self, "_gui_page", None):
             self.out.fail(f"L{line.number}: DOM_SCAN requires active GUI session.")
             self.out.info("Hint: Add 'GUI_START http://your-app-url' before this command")
@@ -57,50 +116,7 @@ class DomScanMixin:
             return
 
         try:
-            scanner = DomScanner(self._gui_page)
-            url = self._gui_page.url
-
-            scan_methods = {
-                "focusable":   scanner.scan_focusable,
-                "aria":        scanner.scan_aria,
-                "interactive": scanner.scan_interactive,
-                "taborder":    scanner.scan_taborder,
-            }
-
-            if scan_type not in scan_methods:
-                self.out.fail(f"L{line.number}: Unknown scan type '{scan_type}'")
-                self.results.append(StepResult(
-                    name=f"DOM_SCAN {scan_type}", status=StepStatus.ERROR, message=f"Unknown type: {scan_type}"
-                ))
-                return
-
-            result = scan_methods[scan_type](url)
-
-            formatters = {"text": to_text, "json": to_json, "toon": to_toon}
-            formatter = formatters.get(output_format, to_text)
-            output_str = formatter(result)
-
-            if out_file:
-                with open(out_file, "w", encoding="utf-8") as f:
-                    f.write(output_str)
-                self.out.step("🔍", f"DOM_SCAN [{scan_type}] → saved to {out_file} ({result.total} elements)")
-            else:
-                self.out.emit(output_str)
-                self.out.step("🔍", f"DOM_SCAN [{scan_type}] → {result.total} elements")
-
-            self._last_dom_scan = result
-
-            if result.errors:
-                for err in result.errors:
-                    self.out.fail(f"DOM_SCAN:ARIA {err}")
-                self.results.append(StepResult(
-                    name=f"DOM_SCAN {scan_type}", status=StepStatus.FAILED, message=f"Found {len(result.errors)} errors"
-                ))
-            else:
-                self.results.append(StepResult(
-                    name=f"DOM_SCAN {scan_type}", status=StepStatus.PASSED, details=asdict(result)
-                ))
-
+            self._execute_dom_scan(scan_type, output_format, out_file, line)
         except Exception as exc:
             self.out.fail(f"L{line.number}: DOM_SCAN error: {exc}")
             self.results.append(StepResult(

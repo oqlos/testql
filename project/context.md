@@ -4,17 +4,17 @@
 
 - **Project**: /home/tom/github/oqlos/testql
 - **Primary Language**: python
-- **Languages**: python: 230, yaml: 152, shell: 23, json: 18, txt: 4
+- **Languages**: python: 229, yaml: 138, shell: 23, json: 15, txt: 4
 - **Analysis Mode**: static
-- **Total Functions**: 2190
+- **Total Functions**: 2266
 - **Total Classes**: 199
-- **Modules**: 448
-- **Entry Points**: 1626
+- **Modules**: 430
+- **Entry Points**: 1699
 
 ## Architecture by Module
 
 ### project.map.toon
-- **Functions**: 783
+- **Functions**: 860
 - **File**: `map.toon.yaml`
 
 ### code2llm_output.map.toon
@@ -79,14 +79,14 @@
 - **Classes**: 1
 - **File**: `oql_source.py`
 
+### .testql.generated.generated-from-pytests.testql.toon
+- **Functions**: 21
+- **File**: `generated-from-pytests.testql.toon.yaml`
+
 ### testql.openapi_generator
 - **Functions**: 21
 - **Classes**: 3
 - **File**: `openapi_generator.py`
-
-### .testql.generated.generated-from-pytests.testql.toon
-- **Functions**: 21
-- **File**: `generated-from-pytests.testql.toon.yaml`
 
 ### testql.interpreter.testtoon_parser
 - **Functions**: 21
@@ -102,18 +102,13 @@
 - **Classes**: 1
 - **File**: `oql_parser.py`
 
-### testql.discovery.probes.filesystem.package_python
+### testql.interpreter._testtoon_parser
 - **Functions**: 19
-- **Classes**: 1
-- **File**: `package_python.py`
+- **File**: `_testtoon_parser.py`
 
 ## Key Entry Points
 
 Main execution flows into the system:
-
-### testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_dom_scan
-> DOM_SCAN <type> [--output <format>] [--out-file <path>]
-- **Calls**: args.split, None.lower, self.out.fail, self.results.append, len, getattr, self.out.fail, self.out.info
 
 ### testql.commands.suite.cli.suite
 > Run test suite(s) — predefined or custom pattern.
@@ -145,16 +140,7 @@ Types:
   - regex          → re.search(criteria, target_text)
   - contains       → criteria in target_text
   - n
-- **Calls**: None.split, None.strip, testql.generators.pipeline._resolve_target, self.out.warn, self.results.append, len, self.out.warn, None.lower
-
-### testql.interpreter._shell.ShellMixin._cmd_shell
-> SHELL "command" [timeout_ms] — Execute arbitrary shell command.
-
-Examples:
-    SHELL "ls -la"
-    SHELL "python --version" 5000
-    SHELL "cat file.tx
-- **Calls**: args.strip, self.out.fail, args_clean.startswith, args_clean.startswith, args_clean.find, None.strip, args_clean.split, self.out.step
+- **Calls**: None.split, None.strip, testql.interpreter._validation._resolve_target, self.out.warn, self.results.append, len, self.out.warn, None.lower
 
 ### testql.interpreter._assertions.AssertionsMixin._cmd_assert_schema
 > ASSERT_SCHEMA <schema_file_or_json> — Validate response against JSON schema.
@@ -164,12 +150,13 @@ Examples:
     ASSERT_SCHEMA '{"typ
 - **Calls**: None.strip, self.out.warn, jsonschema.validate, self.out.step, self.results.append, args.strip, schema_input.startswith, schema_input.startswith
 
-### testql.adapters.testtoon_adapter._render_plan
-> Lossy renderer covering CONFIG / API / NAVIGATE / ENCODER / ASSERT.
+### testql.interpreter._gui.GuiMixin._cmd_gui_navigate
+> GUI_NAVIGATE "path_or_url" — Navigate to another page.
 
-Phase 0 keeps this minimal — adapters that need richer round-trip can
-extend late
-- **Calls**: parts.extend, parts.extend, parts.extend, parts.extend, parts.extend, parts.extend, parts.extend, parts.extend
+Examples:
+    GUI_NAVIGATE "/connect-id"
+    GUI_NAVIGATE "http://google.com"
+- **Calls**: None.strip, self.out.fail, self.out.step, self.results.append, self.out.fail, self.results.append, self.out.step, self.results.append
 
 ### testql.interpreter._assertions.AssertionsMixin._cmd_assert_cookies
 > ASSERT_COOKIES <cookie_name> <op> <expected> — Assert cookie value.
@@ -179,20 +166,16 @@ Examples:
     ASSERT_COOKIES session_id == "
 - **Calls**: None.split, self.vars.get, headers.get, isinstance, cookie_header.split, cookies.get, len, self.out.warn
 
-### testql.interpreter._gui.GuiMixin._cmd_gui_navigate
-> GUI_NAVIGATE "path_or_url" — Navigate to another page.
-
-Examples:
-    GUI_NAVIGATE "/connect-id"
-    GUI_NAVIGATE "http://google.com"
-- **Calls**: None.strip, self.out.fail, self.out.step, self.results.append, self.out.fail, self.results.append, self.out.step, self.results.append
-
 ### testql.discovery.probes.browser.playwright_page.PlaywrightPageProbe.probe
 - **Calls**: self.result, ImportError, self.result, sync_playwright, p.chromium.launch, browser.new_page, page.on, page.on
 
 ### testql.commands.generate_from_page_cmd.generate_from_page
 > Auto-generate a TestTOON GUI scenario from a live URL.
 - **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, click.option, None.render
+
+### testql.interpreter.main
+> CLI entry point — unchanged from original.
+- **Calls**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument
 
 ### testql.interpreter._unit.UnitMixin._cmd_unit_assert
 > UNIT_ASSERT "module.function" "args_json" "expected" — Assert function returns expected value.
@@ -201,10 +184,6 @@ Examples:
     UNIT_ASSERT "math.sqrt" "[4]" "2.0"
     
 - **Calls**: None.split, None.strip, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append
-
-### testql.interpreter.main
-> CLI entry point — unchanged from original.
-- **Calls**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument
 
 ### testql.interpreter._gui.GuiMixin._cmd_gui_assert_visible
 > GUI_ASSERT_VISIBLE "selector" — Assert element is visible.
@@ -220,19 +199,19 @@ Examples:
 ### testql.commands.inspect_cmd.inspect
 - **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, click.option, Path
 
-### testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_taborder
-- **Calls**: shlex.split, DomScanner, scanner.assert_taborder, len, self.out.fail, self.results.append, int, getattr
+### testql.interpreter._gui.GuiMixin._cmd_gui_assert_text
+> GUI_ASSERT_TEXT "selector" "expected" — Assert element contains text.
+- **Calls**: None.split, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append, self.out.fail
 
 ### testql.generators.api_generator.APIGeneratorMixin._generate_api_tests
 > Generate comprehensive API tests from discovered routes.
 - **Calls**: self.profile.config.get, self.profile.config.get, self._validate_endpoints, self._build_api_test_header, sections.extend, sections.extend, sections.extend, sections.extend
 
-### testql.interpreter._gui.GuiMixin._cmd_gui_assert_text
-> GUI_ASSERT_TEXT "selector" "expected" — Assert element contains text.
-- **Calls**: None.split, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append, self.out.fail
-
 ### testql.adapters.testtoon_adapter._api_section_to_steps
 - **Calls**: steps.append, row.get, row.get, asserts.append, row.get, asserts.append, None.strip, ApiStep
+
+### testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_taborder
+- **Calls**: shlex.split, DomScanner, scanner.assert_taborder, len, self.out.fail, self.results.append, int, getattr
 
 ### testql.commands.misc_cmds.from_sumd
 > Generate TestQL scenarios from SUMD.md documentation.
@@ -242,9 +221,6 @@ Examples:
 > Generate OpenAPI spec from detected endpoints.
 - **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, click.option, Path
 
-### testql.adapters.scenario_yaml._gui_step
-- **Calls**: testql.adapters.scenario_yaml._step_common, GuiStep, GuiStep, str, GuiStep, str, GuiStep, str
-
 ### testql.interpreter._gui.GuiMixin._cmd_gui_input
 > GUI_INPUT "selector" "text" — Type text into element.
 
@@ -253,66 +229,78 @@ Examples:
     GUI_INPUT "input#username" "te
 - **Calls**: None.split, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append, self.out.fail
 
+### testql.adapters.scenario_yaml._gui_step
+- **Calls**: testql.adapters.scenario_yaml._step_common, GuiStep, GuiStep, str, GuiStep, str, GuiStep, str
+
 ### testql.openapi_generator.ContractTestGenerator.generate_contract_tests
 > Generate TestQL contract tests from OpenAPI spec.
 - **Calls**: self.spec.get, paths.items, lines.append, lines.append, lines.append, lines.append, lines.append, lines.append
+
+### testql.sumd_parser.SumdParser.generate_testql_scenarios
+> Generate testql scenario content from SUMD document.
+- **Calls**: lines.append, lines.append, lines.append, lines.append, lines.append, lines.append, lines.append, lines.append
+
+### testql.commands.generate_cmd.analyze
+> Analyze project structure and show testability report.
+- **Calls**: click.command, click.argument, Path, TestGenerator, gen.analyze, click.echo, click.echo, click.echo
+
+### testql.commands.misc_cmds.report
+> Generate HTML report from test data.json.
+- **Calls**: click.command, click.argument, click.option, click.option, code2llm_output.map.toon.generate_report, click.echo, click.echo, Path
 
 ## Process Flows
 
 Key execution flows identified:
 
-### Flow 1: _cmd_dom_scan
-```
-_cmd_dom_scan [testql.interpreter.dom_scan_mixin.DomScanMixin]
-```
-
-### Flow 2: suite
+### Flow 1: suite
 ```
 suite [testql.commands.suite.cli]
 ```
 
-### Flow 3: to_oql
+### Flow 2: to_oql
 ```
 to_oql [testql.generators.sources.pytest_source.PytestSource]
 ```
 
-### Flow 4: watch
+### Flow 3: watch
 ```
 watch [testql.commands.misc_cmds]
 ```
 
-### Flow 5: parse_testtoon
+### Flow 4: parse_testtoon
 ```
 parse_testtoon [TODO.testtoon_parser]
 ```
 
-### Flow 6: heal_scenario
+### Flow 5: heal_scenario
 ```
 heal_scenario [testql.commands.heal_scenario_cmd]
 ```
 
-### Flow 7: _cmd_assert_json
+### Flow 6: _cmd_assert_json
 ```
 _cmd_assert_json [testql.interpreter._assertions.AssertionsMixin]
 ```
 
-### Flow 8: _cmd_validate
+### Flow 7: _cmd_validate
 ```
 _cmd_validate [testql.interpreter._validation.ValidationMixin]
   └─ →> _resolve_target
-      └─> sorted_targets
-          └─ →> available_targets
-      └─ →> get_target
 ```
 
-### Flow 9: _cmd_shell
-```
-_cmd_shell [testql.interpreter._shell.ShellMixin]
-```
-
-### Flow 10: _cmd_assert_schema
+### Flow 8: _cmd_assert_schema
 ```
 _cmd_assert_schema [testql.interpreter._assertions.AssertionsMixin]
+```
+
+### Flow 9: _cmd_gui_navigate
+```
+_cmd_gui_navigate [testql.interpreter._gui.GuiMixin]
+```
+
+### Flow 10: _cmd_assert_cookies
+```
+_cmd_assert_cookies [testql.interpreter._assertions.AssertionsMixin]
 ```
 
 ## Key Classes
@@ -385,10 +373,21 @@ Adapters register themselves on import (or are r
 - **Methods**: 11
 - **Key Methods**: testql.detectors.unified.UnifiedEndpointDetector.__init__, testql.detectors.unified.UnifiedEndpointDetector.detect_all, testql.detectors.unified.UnifiedEndpointDetector.validate_endpoints, testql.detectors.unified.UnifiedEndpointDetector.detect_and_validate, testql.detectors.unified.UnifiedEndpointDetector._deduplicate_endpoints, testql.detectors.unified.UnifiedEndpointDetector.get_endpoints_by_type, testql.detectors.unified.UnifiedEndpointDetector.get_endpoints_by_framework, testql.detectors.unified.UnifiedEndpointDetector.generate_testql_scenario, testql.detectors.unified.UnifiedEndpointDetector._rest_block, testql.detectors.unified.UnifiedEndpointDetector._graphql_block
 
+### testql.interpreter.dom_scan_mixin.DomScanMixin
+> Mixin for DOM Scan commands.
+- **Methods**: 11
+- **Key Methods**: testql.interpreter.dom_scan_mixin.DomScanMixin._parse_dom_scan_args, testql.interpreter.dom_scan_mixin.DomScanMixin._execute_dom_scan, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_dom_scan, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_dom_audit_buttons, testql.interpreter.dom_scan_mixin.DomScanMixin._parse_audit_args, testql.interpreter.dom_scan_mixin.DomScanMixin._ensure_gui_session, testql.interpreter.dom_scan_mixin.DomScanMixin._handle_audit_report, testql.interpreter.dom_scan_mixin.DomScanMixin._save_report_to_file, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_taborder, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_aria
+
 ### testql.interpreter._unit.UnitMixin
 > Mixin providing unit test execution: UNIT_PYTEST, UNIT_IMPORT, UNIT_ASSERT.
 - **Methods**: 10
 - **Key Methods**: testql.interpreter._unit.UnitMixin._parse_pytest_args, testql.interpreter._unit.UnitMixin._extract_pytest_summary, testql.interpreter._unit.UnitMixin._run_pytest_subprocess, testql.interpreter._unit.UnitMixin._handle_pytest_dry_run, testql.interpreter._unit.UnitMixin._handle_pytest_success, testql.interpreter._unit.UnitMixin._handle_pytest_error, testql.interpreter._unit.UnitMixin._cmd_unit_pytest, testql.interpreter._unit.UnitMixin._cmd_unit_pytest_discover, testql.interpreter._unit.UnitMixin._cmd_unit_import, testql.interpreter._unit.UnitMixin._cmd_unit_assert
+
+### testql.detectors.config_detector.ConfigEndpointDetector
+> Detect endpoints from configuration files.
+- **Methods**: 10
+- **Key Methods**: testql.detectors.config_detector.ConfigEndpointDetector.detect, testql.detectors.config_detector.ConfigEndpointDetector._detect_from_docker_compose, testql.detectors.config_detector.ConfigEndpointDetector._detect_from_env_files, testql.detectors.config_detector.ConfigEndpointDetector._detect_from_config_py, testql.detectors.config_detector.ConfigEndpointDetector._analyze_docker_compose, testql.detectors.config_detector.ConfigEndpointDetector._parse_port_mapping, testql.detectors.config_detector.ConfigEndpointDetector._infer_protocol, testql.detectors.config_detector.ConfigEndpointDetector._analyze_env_file, testql.detectors.config_detector.ConfigEndpointDetector._analyze_config_py, testql.detectors.config_detector.ConfigEndpointDetector._extract_port_from_url
+- **Inherits**: BaseEndpointDetector
 
 ### testql.openapi_generator.OpenAPIGenerator
 > Generate OpenAPI specs from detected endpoints.
@@ -405,11 +404,6 @@ Adapters register themselves on import (or are r
 - **Methods**: 9
 - **Key Methods**: testql.commands.templates.content.TestContentBuilder.build, testql.commands.templates.content.TestContentBuilder._build_meta_header, testql.commands.templates.content.TestContentBuilder._build_standard_vars, testql.commands.templates.content.TestContentBuilder._build_gui, testql.commands.templates.content.TestContentBuilder._build_api, testql.commands.templates.content.TestContentBuilder._build_mixed, testql.commands.templates.content.TestContentBuilder._build_performance, testql.commands.templates.content.TestContentBuilder._build_workflow, testql.commands.templates.content.TestContentBuilder._build_encoder
 
-### testql.interpreter.dom_scan_mixin.DomScanMixin
-> Mixin for DOM Scan commands.
-- **Methods**: 9
-- **Key Methods**: testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_dom_scan, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_dom_audit_buttons, testql.interpreter.dom_scan_mixin.DomScanMixin._parse_audit_args, testql.interpreter.dom_scan_mixin.DomScanMixin._ensure_gui_session, testql.interpreter.dom_scan_mixin.DomScanMixin._handle_audit_report, testql.interpreter.dom_scan_mixin.DomScanMixin._save_report_to_file, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_taborder, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_aria, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_focusable
-
 ### testql.generators.pytest_generator.PythonTestGeneratorMixin
 > Mixin for generating tests from existing Python tests.
 - **Methods**: 9
@@ -420,11 +414,6 @@ Adapters register themselves on import (or are r
 - **Methods**: 9
 - **Key Methods**: testql.detectors.flask_detector.FlaskDetector.detect, testql.detectors.flask_detector.FlaskDetector._analyze_flask_file, testql.detectors.flask_detector.FlaskDetector._detect_blueprint, testql.detectors.flask_detector.FlaskDetector._extract_blueprint_prefix, testql.detectors.flask_detector.FlaskDetector._analyze_flask_route, testql.detectors.flask_detector.FlaskDetector._extract_flask_route_info, testql.detectors.flask_detector.FlaskDetector._extract_route_path, testql.detectors.flask_detector.FlaskDetector._extract_route_methods, testql.detectors.flask_detector.FlaskDetector._apply_blueprint_prefix
 - **Inherits**: BaseEndpointDetector
-
-### testql.doql_parser.DoqlParser
-> Parser for doql LESS files.
-- **Methods**: 8
-- **Key Methods**: testql.doql_parser.DoqlParser.__init__, testql.doql_parser.DoqlParser.parse_file, testql.doql_parser.DoqlParser.parse, testql.doql_parser.DoqlParser._parse_app_block, testql.doql_parser.DoqlParser._parse_entity_block, testql.doql_parser.DoqlParser._parse_workflow_block, testql.doql_parser.DoqlParser._parse_interface_block, testql.doql_parser.DoqlParser._parse_deploy_block
 
 ## Data Transformation Functions
 
@@ -549,8 +538,8 @@ Functions exposed as public API (no underscore prefix):
 - `testql.commands.discover_cmd.discover` - 17 calls
 - `testql.commands.echo.cli.echo` - 17 calls
 - `testql.runner.DslCliExecutor.cmd_assert_json` - 16 calls
-- `testql.integrations.planfile_hook.create_individual_button_tickets` - 16 calls
 - `testql.interpreter.interpreter.OqlInterpreter.execute` - 16 calls
+- `testql.integrations.planfile_hook.create_individual_button_tickets` - 16 calls
 - `testql.commands.encoder_routes.oql_run_file` - 15 calls
 
 ## System Interactions
@@ -559,11 +548,6 @@ How components interact:
 
 ```mermaid
 graph TD
-    _cmd_dom_scan --> split
-    _cmd_dom_scan --> lower
-    _cmd_dom_scan --> fail
-    _cmd_dom_scan --> append
-    _cmd_dom_scan --> len
     suite --> command
     suite --> argument
     suite --> option
@@ -588,7 +572,12 @@ graph TD
     _cmd_validate --> _resolve_target
     _cmd_validate --> warn
     _cmd_validate --> append
-    _cmd_shell --> strip
+    _cmd_assert_schema --> strip
+    _cmd_assert_schema --> warn
+    _cmd_assert_schema --> validate
+    _cmd_assert_schema --> step
+    _cmd_assert_schema --> append
+    _cmd_gui_navigate --> strip
 ```
 
 ## Reverse Engineering Guidelines
