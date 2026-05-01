@@ -1,4 +1,4 @@
-# testql | 349f 42722L | python:321,shell:24,less:4 | 2026-04-29
+# testql | 349f 42722L | python:321,shell:24,less:4 | 2026-05-01
 # stats: 860 func | 570 cls | 349 mod | CC̄=3.7 | critical:29 | cycles:0
 # alerts[5]: CC main=15; CC parse_testtoon=14; CC _filter_commands=14; CC _expand_flow=14; CC _check_link_statuses=14
 # hotspots[5]: generate_from_page fan=19; heal_scenario fan=19; watch fan=19; suite fan=19; main fan=18

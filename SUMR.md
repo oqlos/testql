@@ -18,7 +18,7 @@ SUMD - Structured Unified Markdown Descriptor for AI-aware project refactorizati
 ## Metadata
 
 - **name**: `testql`
-- **version**: `1.2.41`
+- **version**: `1.2.42`
 - **python_requires**: `>=3.10`
 - **license**: {'text': 'Apache-2.0'}
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -39,7 +39,7 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 1.2.41;
+  version: 1.2.42;
 }
 
 dependencies {
@@ -733,7 +733,7 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 
 ## Call Graph
 
-*504 nodes · 500 edges · 105 modules · CC̄=2.2*
+*506 nodes · 500 edges · 107 modules · CC̄=2.2*
 
 ### Hubs (by degree)
 
@@ -745,12 +745,12 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 | `any` *(in .testql.generated.generated-from-pytests.testql.toon)* | 0 | 34 | 0 | **34** |
 | `_render_plan` *(in testql.adapters.testtoon_adapter)* | 9 | 4 | 29 | **33** |
 | `write_inspection_artifacts` *(in testql.results.artifacts)* | 1 | 3 | 28 | **31** |
-| `_cmd_assert_json` *(in testql.interpreter._assertions.AssertionsMixin)* | 13 ⚠ | 0 | 30 | **30** |
+| `_cmd_validate` *(in testql.interpreter._validation.ValidationMixin)* | 10 ⚠ | 0 | 30 | **30** |
 | `heal_scenario` *(in testql.commands.heal_scenario_cmd)* | 8 | 0 | 30 | **30** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# nodes: 504 | edges: 500 | modules: 105
+# nodes: 506 | edges: 500 | modules: 107
 # CC̄=2.2
 
 HUBS[20]:
@@ -766,12 +766,12 @@ HUBS[20]:
     CC=9  in:4  out:29  total:33
   testql.results.artifacts.write_inspection_artifacts
     CC=1  in:3  out:28  total:31
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
-    CC=13  in:0  out:30  total:30
-  testql.commands.heal_scenario_cmd.heal_scenario
-    CC=8  in:0  out:30  total:30
   testql.interpreter._validation.ValidationMixin._cmd_validate
     CC=10  in:0  out:30  total:30
+  testql.commands.heal_scenario_cmd.heal_scenario
+    CC=8  in:0  out:30  total:30
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+    CC=13  in:0  out:30  total:30
   testql.adapters.scenario_yaml._render_step
     CC=10  in:2  out:26  total:28
   testql._base_fallback.VariableStore.set
@@ -784,14 +784,14 @@ HUBS[20]:
     CC=10  in:1  out:23  total:24
   testql.adapters.scenario_yaml._gui_step
     CC=9  in:0  out:23  total:23
-  testql.commands.echo.parsers.doql._parse_workflows
-    CC=7  in:1  out:22  total:23
   testql.commands.encoder_routes._run_oql_lines
     CC=6  in:1  out:22  total:23
-  testql.commands.misc_cmds.report
-    CC=4  in:0  out:22  total:22
+  testql.commands.echo.parsers.doql._parse_workflows
+    CC=7  in:1  out:22  total:23
   testql.adapters.base.read_source
     CC=5  in:13  out:9  total:22
+  testql.commands.misc_cmds.report
+    CC=4  in:0  out:22  total:22
   testql.runner.parse_line
     CC=9  in:2  out:20  total:22
 
@@ -1198,6 +1198,10 @@ MODULES:
     render_sections  CC=7  out:12
   testql.interpreter.dispatcher  [1 funcs]
     dispatch  CC=5  out:13
+  testql.interpreter.dom_scan_formatters  [1 funcs]
+    to_text_audit  CC=4  out:2
+  testql.interpreter.dom_scan_mixin  [1 funcs]
+    _handle_audit_report  CC=4  out:11
   testql.interpreter.dom_scanner  [4 funcs]
     assert_aria  CC=5  out:8
     scan_aria  CC=4  out:9
@@ -1588,7 +1592,7 @@ EDGES:
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# nodes: 504 | edges: 500 | modules: 105
+# nodes: 506 | edges: 500 | modules: 107
 # CC̄=2.2
 
 HUBS[20]:
@@ -1604,12 +1608,12 @@ HUBS[20]:
     CC=9  in:4  out:29  total:33
   testql.results.artifacts.write_inspection_artifacts
     CC=1  in:3  out:28  total:31
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
-    CC=13  in:0  out:30  total:30
-  testql.commands.heal_scenario_cmd.heal_scenario
-    CC=8  in:0  out:30  total:30
   testql.interpreter._validation.ValidationMixin._cmd_validate
     CC=10  in:0  out:30  total:30
+  testql.commands.heal_scenario_cmd.heal_scenario
+    CC=8  in:0  out:30  total:30
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+    CC=13  in:0  out:30  total:30
   testql.adapters.scenario_yaml._render_step
     CC=10  in:2  out:26  total:28
   testql._base_fallback.VariableStore.set
@@ -1622,14 +1626,14 @@ HUBS[20]:
     CC=10  in:1  out:23  total:24
   testql.adapters.scenario_yaml._gui_step
     CC=9  in:0  out:23  total:23
-  testql.commands.echo.parsers.doql._parse_workflows
-    CC=7  in:1  out:22  total:23
   testql.commands.encoder_routes._run_oql_lines
     CC=6  in:1  out:22  total:23
-  testql.commands.misc_cmds.report
-    CC=4  in:0  out:22  total:22
+  testql.commands.echo.parsers.doql._parse_workflows
+    CC=7  in:1  out:22  total:23
   testql.adapters.base.read_source
     CC=5  in:13  out:9  total:22
+  testql.commands.misc_cmds.report
+    CC=4  in:0  out:22  total:22
   testql.runner.parse_line
     CC=9  in:2  out:20  total:22
 
@@ -2036,6 +2040,10 @@ MODULES:
     render_sections  CC=7  out:12
   testql.interpreter.dispatcher  [1 funcs]
     dispatch  CC=5  out:13
+  testql.interpreter.dom_scan_formatters  [1 funcs]
+    to_text_audit  CC=4  out:2
+  testql.interpreter.dom_scan_mixin  [1 funcs]
+    _handle_audit_report  CC=4  out:11
   testql.interpreter.dom_scanner  [4 funcs]
     assert_aria  CC=5  out:8
     scan_aria  CC=4  out:9
@@ -2181,7 +2189,7 @@ EDGES:
 ### Code Analysis (`project/analysis.toon.yaml`)
 
 ```toon markpact:analysis path=project/analysis.toon.yaml
-# code2llm | 430f 59965L | python:229,yaml:138,shell:23,json:15,txt:4,yml:2,toml:1,doql:1 | 2026-04-29
+# code2llm | 438f 60445L | python:229,yaml:143,shell:23,json:18,txt:4,yml:2,toml:1,doql:1 | 2026-05-01
 # CC̄=2.2 | critical:0/2266 | dups:0 | cycles:0
 
 HEALTH[0]: ok
@@ -2590,21 +2598,29 @@ LAYERS:
   │
   .testql/                        CC̄=0.0    ←in:39  →out:0
   │ !! generated-from-pytests.testql.toon.yaml   626L  0C    2m  CC=0.0    ←24
+  │ inspection.yaml            169L  0C    0m  CC=0.0    ←0
+  │ topology.json              151L  0C    0m  CC=0.0    ←0
   │ llm-decision.schema.json   113L  0C    0m  CC=0.0    ←0
+  │ result.json                 83L  0C    0m  CC=0.0    ←0
   │ autoloop-state.json         58L  0C    0m  CC=0.0    ←0
   │ llm-decision.swe.json       49L  0C    0m  CC=0.0    ←0
   │ llm-decision.kimi.json      41L  0C    0m  CC=0.0    ←0
   │ generated-from-scenarios.testql.toon.yaml    40L  0C    0m  CC=0.0    ←0
   │ metadata.json               36L  0C    0m  CC=0.0    ←0
   │ llm-decision.json           27L  0C    0m  CC=0.0    ←0
+  │ inspection.toon.yaml        20L  0C    0m  CC=0.0    ←0
+  │ topology.toon.yaml          19L  0C    0m  CC=0.0    ←0
   │ generated-api-smoke.testql.toon.yaml    18L  0C    0m  CC=0.0    ←0
+  │ result.toon.yaml            17L  0C    0m  CC=0.0    ←0
+  │ refactor-plan.json          13L  0C    0m  CC=0.0    ←0
+  │ refactor-plan.toon.yaml     12L  0C    0m  CC=0.0    ←0
   │ iteration.json               2L  0C    0m  CC=0.0    ←0
   │
   project/                        CC̄=0.0    ←in:0  →out:0
-  │ !! calls.yaml                7363L  0C    0m  CC=0.0    ←0
+  │ !! calls.yaml                7364L  0C    0m  CC=0.0    ←0
   │ !! map.toon.yaml             2387L  0C  778m  CC=0.0    ←5
-  │ !! calls.toon.yaml            595L  0C    0m  CC=0.0    ←0
-  │ !! analysis.toon.yaml         538L  0C    0m  CC=0.0    ←0
+  │ !! calls.toon.yaml            593L  0C    0m  CC=0.0    ←0
+  │ !! analysis.toon.yaml         535L  0C    0m  CC=0.0    ←0
   │ validation.toon.yaml       421L  0C    0m  CC=0.0    ←0
   │ project.toon.yaml           57L  0C    0m  CC=0.0    ←0
   │ evolution.toon.yaml         54L  0C    0m  CC=0.0    ←0
@@ -2692,26 +2708,26 @@ COUPLING:
                          TODO                                                                                                                   8                                                                                                                                                                                                                                                                                                                             ──  !! fan-out
   CYCLES: none
   HUB: testql.adapters/ (fan-in=13)
-  HUB: testql.generators/ (fan-in=15)
-  HUB: testql.results/ (fan-in=9)
-  HUB: .testql/ (fan-in=39)
-  HUB: project.map/ (fan-in=5)
   HUB: testql.topology/ (fan-in=5)
+  HUB: testql.results/ (fan-in=9)
+  HUB: project.map/ (fan-in=5)
   HUB: code2llm_output.map/ (fan-in=52)
   HUB: examples.browser-inspection/ (fan-in=48)
   HUB: testql/ (fan-in=31)
-  SMELL: testql.discovery/ fan-out=14 → split needed
-  SMELL: testql.adapters/ fan-out=18 → split needed
-  SMELL: testql.generators/ fan-out=22 → split needed
-  SMELL: testql.results/ fan-out=16 → split needed
-  SMELL: TODO/ fan-out=8 → split needed
-  SMELL: testql.meta/ fan-out=8 → split needed
-  SMELL: testql.interpreter/ fan-out=14 → split needed
-  SMELL: testql.mcp/ fan-out=8 → split needed
-  SMELL: testql.ir_runner/ fan-out=8 → split needed
+  HUB: testql.generators/ (fan-in=15)
+  HUB: .testql/ (fan-in=39)
   SMELL: testql.commands/ fan-out=55 → split needed
+  SMELL: testql.adapters/ fan-out=18 → split needed
+  SMELL: testql.discovery/ fan-out=14 → split needed
+  SMELL: TODO/ fan-out=8 → split needed
+  SMELL: testql.results/ fan-out=16 → split needed
+  SMELL: testql.meta/ fan-out=8 → split needed
   SMELL: testql.integrations/ fan-out=8 → split needed
+  SMELL: testql.mcp/ fan-out=8 → split needed
   SMELL: testql/ fan-out=28 → split needed
+  SMELL: testql.generators/ fan-out=22 → split needed
+  SMELL: testql.interpreter/ fan-out=14 → split needed
+  SMELL: testql.ir_runner/ fan-out=8 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon
@@ -2721,7 +2737,7 @@ EXTERNAL:
 ### Duplication (`project/duplication.toon.yaml`)
 
 ```toon markpact:analysis path=project/duplication.toon.yaml
-# redup/duplication | 0 groups | 1f 36L | 2026-04-29
+# redup/duplication | 0 groups | 1f 36L | 2026-05-01
 
 SUMMARY:
   files_scanned: 1
@@ -2729,13 +2745,13 @@ SUMMARY:
   dup_groups:    0
   dup_fragments: 0
   saved_lines:   0
-  scan_ms:       4489
+  scan_ms:       4131
 ```
 
 ### Evolution / Churn (`project/evolution.toon.yaml`)
 
 ```toon markpact:analysis path=project/evolution.toon.yaml
-# code2llm/evolution | 2250 func | 189f | 2026-04-29
+# code2llm/evolution | 2250 func | 189f | 2026-05-01
 
 NEXT[3] (ranked by impact):
   [1] !! SPLIT           testql/interpreter/_gui.py
@@ -2788,7 +2804,7 @@ PATTERNS (language parser shared logic):
     - Standardized FunctionInfo/ClassInfo models
 
 HISTORY:
-  prev CC̄=2.3 → now CC̄=2.2
+  prev CC̄=2.2 → now CC̄=2.2
 ```
 
 ### Validation (`project/validation.toon.yaml`)

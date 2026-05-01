@@ -25,7 +25,7 @@ TestQL — Multi-DSL Test Platform: TestTOON / NL / SQL / Proto / GraphQL adapte
 ## Metadata
 
 - **name**: `testql`
-- **version**: `1.2.41`
+- **version**: `1.2.42`
 - **python_requires**: `>=3.10`
 - **license**: {'text': 'Apache-2.0'}
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -46,7 +46,7 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 1.2.41;
+  version: 1.2.42;
 }
 
 dependencies {
@@ -3539,7 +3539,7 @@ pipeline:
 ```yaml
 project:
   name: testql
-  version: 1.2.41
+  version: 1.2.42
   env: local
 ```
 
@@ -3629,7 +3629,7 @@ pip install -e .[dev]
 ### `project/map.toon.yaml`
 
 ```toon markpact:analysis path=project/map.toon.yaml
-# testql | 349f 42722L | python:321,shell:24,less:4 | 2026-04-29
+# testql | 349f 42722L | python:321,shell:24,less:4 | 2026-05-01
 # stats: 860 func | 570 cls | 349 mod | CC̄=3.7 | critical:29 | cycles:0
 # alerts[5]: CC main=15; CC parse_testtoon=14; CC _filter_commands=14; CC _expand_flow=14; CC _check_link_statuses=14
 # hotspots[5]: generate_from_page fan=19; heal_scenario fan=19; watch fan=19; suite fan=19; main fan=18
@@ -6158,7 +6158,7 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 
 ## Call Graph
 
-*504 nodes · 500 edges · 105 modules · CC̄=2.2*
+*506 nodes · 500 edges · 107 modules · CC̄=2.2*
 
 ### Hubs (by degree)
 
@@ -6170,12 +6170,12 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 | `any` *(in .testql.generated.generated-from-pytests.testql.toon)* | 0 | 34 | 0 | **34** |
 | `_render_plan` *(in testql.adapters.testtoon_adapter)* | 9 | 4 | 29 | **33** |
 | `write_inspection_artifacts` *(in testql.results.artifacts)* | 1 | 3 | 28 | **31** |
-| `_cmd_assert_json` *(in testql.interpreter._assertions.AssertionsMixin)* | 13 ⚠ | 0 | 30 | **30** |
+| `_cmd_validate` *(in testql.interpreter._validation.ValidationMixin)* | 10 ⚠ | 0 | 30 | **30** |
 | `heal_scenario` *(in testql.commands.heal_scenario_cmd)* | 8 | 0 | 30 | **30** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# nodes: 504 | edges: 500 | modules: 105
+# nodes: 506 | edges: 500 | modules: 107
 # CC̄=2.2
 
 HUBS[20]:
@@ -6191,12 +6191,12 @@ HUBS[20]:
     CC=9  in:4  out:29  total:33
   testql.results.artifacts.write_inspection_artifacts
     CC=1  in:3  out:28  total:31
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
-    CC=13  in:0  out:30  total:30
-  testql.commands.heal_scenario_cmd.heal_scenario
-    CC=8  in:0  out:30  total:30
   testql.interpreter._validation.ValidationMixin._cmd_validate
     CC=10  in:0  out:30  total:30
+  testql.commands.heal_scenario_cmd.heal_scenario
+    CC=8  in:0  out:30  total:30
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+    CC=13  in:0  out:30  total:30
   testql.adapters.scenario_yaml._render_step
     CC=10  in:2  out:26  total:28
   testql._base_fallback.VariableStore.set
@@ -6209,14 +6209,14 @@ HUBS[20]:
     CC=10  in:1  out:23  total:24
   testql.adapters.scenario_yaml._gui_step
     CC=9  in:0  out:23  total:23
-  testql.commands.echo.parsers.doql._parse_workflows
-    CC=7  in:1  out:22  total:23
   testql.commands.encoder_routes._run_oql_lines
     CC=6  in:1  out:22  total:23
-  testql.commands.misc_cmds.report
-    CC=4  in:0  out:22  total:22
+  testql.commands.echo.parsers.doql._parse_workflows
+    CC=7  in:1  out:22  total:23
   testql.adapters.base.read_source
     CC=5  in:13  out:9  total:22
+  testql.commands.misc_cmds.report
+    CC=4  in:0  out:22  total:22
   testql.runner.parse_line
     CC=9  in:2  out:20  total:22
 
@@ -6623,6 +6623,10 @@ MODULES:
     render_sections  CC=7  out:12
   testql.interpreter.dispatcher  [1 funcs]
     dispatch  CC=5  out:13
+  testql.interpreter.dom_scan_formatters  [1 funcs]
+    to_text_audit  CC=4  out:2
+  testql.interpreter.dom_scan_mixin  [1 funcs]
+    _handle_audit_report  CC=4  out:11
   testql.interpreter.dom_scanner  [4 funcs]
     assert_aria  CC=5  out:8
     scan_aria  CC=4  out:9

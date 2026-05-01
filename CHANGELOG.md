@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.43] - 2026-05-01
+
+### Docs
+- Update README.md — removed duplicate AI Cost Tracking sections, updated "What's new" with current features
+- Update TODO.md — refactored from 848 prefact-generated issues to structured roadmap with development phases
+- Add Code Quality Issues Summary with quick fix commands
+
+### Changed
+- Documentation structure aligned with SUMD.md architecture
+- Technical debt section reorganized by priority (High/Medium/Low)
+- Added references to DSL.md, REFACTORING_PLAN.md, and SUMD.md
+
 ## [0.1.10] - 2026-04-25
 
 ### Fixed
@@ -129,6 +141,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Remaining
 - Add Playwright-backed browser execution, JavaScript-rendered DOM capture, screenshots, console errors, network logs, link-by-link validation, accessibility/performance checks, MCP service integration, and runtime-vs-code delta reports.
+
+## [1.2.43] - 2026-05-01
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+- Update SUMD.md
+- Update SUMR.md
+- Update TODO.md
+- Update project/README.md
+- Update project/context.md
+
+### Other
+- Update .testql/inspection.json
+- Update .testql/inspection.yaml
+- Update .testql/metadata.json
+- Update .testql/topology.json
+- Update .testql/topology.toon.yaml
+- Update .testql/topology.yaml
+- Update app.doql.less
+- Update project/analysis.toon.yaml
+- Update project/calls.mmd
+- Update project/calls.png
+- ... and 8 more files
 
 ## [1.2.42] - 2026-04-29
 

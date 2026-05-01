@@ -1153,6 +1153,7 @@ flowchart TD
     testql__interpreter__interpreter__OqlInterpreter__execute --> N___testql__generated__generated_from_pytests__testql__toon__all
     testql__interpreter___websockets__WebSocketMixin___cmd_ws_connect --> testql___base_fallback__EventBridge__connect
     testql__interpreter___validation__ValidationMixin___cmd_validate --> testql__interpreter___validation___resolve_target
+    testql__interpreter__dom_scan_mixin__DomScanMixin___handle_audit_report --> testql__interpreter__dom_scan_formatters__to_text_audit
     testql__interpreter__converter__parsers__detect_scenario_type --> N___testql__generated__generated_from_pytests__testql__toon__any
     testql__interpreter__converter__core__convert_oql_to_testtoon --> testql__interpreter__converter__parsers__parse_commands
     testql__interpreter__converter__core__convert_oql_to_testtoon --> testql__interpreter__converter__parsers__extract_scenario_name
@@ -1523,7 +1524,6 @@ flowchart TD
     testql__adapters__proto__descriptor_loader___parse_message --> testql__adapters__proto__descriptor_loader___parse_field
     testql__adapters__proto__descriptor_loader___iter_messages --> testql__adapters__proto__descriptor_loader___scan_balanced_braces
     testql__adapters__proto__descriptor_loader__parse_proto --> testql__adapters__proto__descriptor_loader___strip_comments
-    testql__adapters__proto__descriptor_loader__parse_proto --> testql__adapters__proto__descriptor_loader___iter_messages
 
     classDef highCC fill:#ff6b6b,stroke:#c92a2a,color:#fff
     classDef medCC fill:#ffd43b,stroke:#f08c00,color:#000

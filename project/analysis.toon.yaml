@@ -1,4 +1,4 @@
-# code2llm | 430f 59965L | python:229,yaml:138,shell:23,json:15,txt:4,yml:2,toml:1,doql:1 | 2026-04-29
+# code2llm | 438f 60445L | python:229,yaml:143,shell:23,json:18,txt:4,yml:2,toml:1,doql:1 | 2026-05-01
 # CC̄=2.2 | critical:0/2266 | dups:0 | cycles:0
 
 HEALTH[0]: ok
@@ -407,21 +407,29 @@ LAYERS:
   │
   .testql/                        CC̄=0.0    ←in:39  →out:0
   │ !! generated-from-pytests.testql.toon.yaml   626L  0C    2m  CC=0.0    ←24
+  │ inspection.yaml            169L  0C    0m  CC=0.0    ←0
+  │ topology.json              151L  0C    0m  CC=0.0    ←0
   │ llm-decision.schema.json   113L  0C    0m  CC=0.0    ←0
+  │ result.json                 83L  0C    0m  CC=0.0    ←0
   │ autoloop-state.json         58L  0C    0m  CC=0.0    ←0
   │ llm-decision.swe.json       49L  0C    0m  CC=0.0    ←0
   │ llm-decision.kimi.json      41L  0C    0m  CC=0.0    ←0
   │ generated-from-scenarios.testql.toon.yaml    40L  0C    0m  CC=0.0    ←0
   │ metadata.json               36L  0C    0m  CC=0.0    ←0
   │ llm-decision.json           27L  0C    0m  CC=0.0    ←0
+  │ inspection.toon.yaml        20L  0C    0m  CC=0.0    ←0
+  │ topology.toon.yaml          19L  0C    0m  CC=0.0    ←0
   │ generated-api-smoke.testql.toon.yaml    18L  0C    0m  CC=0.0    ←0
+  │ result.toon.yaml            17L  0C    0m  CC=0.0    ←0
+  │ refactor-plan.json          13L  0C    0m  CC=0.0    ←0
+  │ refactor-plan.toon.yaml     12L  0C    0m  CC=0.0    ←0
   │ iteration.json               2L  0C    0m  CC=0.0    ←0
   │
   project/                        CC̄=0.0    ←in:0  →out:0
-  │ !! calls.yaml                7363L  0C    0m  CC=0.0    ←0
+  │ !! calls.yaml                7364L  0C    0m  CC=0.0    ←0
   │ !! map.toon.yaml             2387L  0C  778m  CC=0.0    ←5
-  │ !! calls.toon.yaml            595L  0C    0m  CC=0.0    ←0
-  │ !! analysis.toon.yaml         538L  0C    0m  CC=0.0    ←0
+  │ !! calls.toon.yaml            593L  0C    0m  CC=0.0    ←0
+  │ !! analysis.toon.yaml         535L  0C    0m  CC=0.0    ←0
   │ validation.toon.yaml       421L  0C    0m  CC=0.0    ←0
   │ project.toon.yaml           57L  0C    0m  CC=0.0    ←0
   │ evolution.toon.yaml         54L  0C    0m  CC=0.0    ←0
@@ -509,26 +517,26 @@ COUPLING:
                          TODO                                                                                                                   8                                                                                                                                                                                                                                                                                                                             ──  !! fan-out
   CYCLES: none
   HUB: testql.adapters/ (fan-in=13)
-  HUB: testql.generators/ (fan-in=15)
-  HUB: testql.results/ (fan-in=9)
-  HUB: .testql/ (fan-in=39)
-  HUB: project.map/ (fan-in=5)
   HUB: testql.topology/ (fan-in=5)
+  HUB: testql.results/ (fan-in=9)
+  HUB: project.map/ (fan-in=5)
   HUB: code2llm_output.map/ (fan-in=52)
   HUB: examples.browser-inspection/ (fan-in=48)
   HUB: testql/ (fan-in=31)
-  SMELL: testql.discovery/ fan-out=14 → split needed
-  SMELL: testql.adapters/ fan-out=18 → split needed
-  SMELL: testql.generators/ fan-out=22 → split needed
-  SMELL: testql.results/ fan-out=16 → split needed
-  SMELL: TODO/ fan-out=8 → split needed
-  SMELL: testql.meta/ fan-out=8 → split needed
-  SMELL: testql.interpreter/ fan-out=14 → split needed
-  SMELL: testql.mcp/ fan-out=8 → split needed
-  SMELL: testql.ir_runner/ fan-out=8 → split needed
+  HUB: testql.generators/ (fan-in=15)
+  HUB: .testql/ (fan-in=39)
   SMELL: testql.commands/ fan-out=55 → split needed
+  SMELL: testql.adapters/ fan-out=18 → split needed
+  SMELL: testql.discovery/ fan-out=14 → split needed
+  SMELL: TODO/ fan-out=8 → split needed
+  SMELL: testql.results/ fan-out=16 → split needed
+  SMELL: testql.meta/ fan-out=8 → split needed
   SMELL: testql.integrations/ fan-out=8 → split needed
+  SMELL: testql.mcp/ fan-out=8 → split needed
   SMELL: testql/ fan-out=28 → split needed
+  SMELL: testql.generators/ fan-out=22 → split needed
+  SMELL: testql.interpreter/ fan-out=14 → split needed
+  SMELL: testql.ir_runner/ fan-out=8 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon

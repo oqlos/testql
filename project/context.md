@@ -4,11 +4,11 @@
 
 - **Project**: /home/tom/github/oqlos/testql
 - **Primary Language**: python
-- **Languages**: python: 229, yaml: 138, shell: 23, json: 15, txt: 4
+- **Languages**: python: 229, yaml: 143, shell: 23, json: 18, txt: 4
 - **Analysis Mode**: static
 - **Total Functions**: 2266
 - **Total Classes**: 199
-- **Modules**: 430
+- **Modules**: 438
 - **Entry Points**: 1699
 
 ## Architecture by Module
@@ -203,15 +203,15 @@ Examples:
 > GUI_ASSERT_TEXT "selector" "expected" — Assert element contains text.
 - **Calls**: None.split, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append, self.out.fail
 
+### testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_taborder
+- **Calls**: shlex.split, DomScanner, scanner.assert_taborder, len, self.out.fail, self.results.append, int, getattr
+
 ### testql.generators.api_generator.APIGeneratorMixin._generate_api_tests
 > Generate comprehensive API tests from discovered routes.
 - **Calls**: self.profile.config.get, self.profile.config.get, self._validate_endpoints, self._build_api_test_header, sections.extend, sections.extend, sections.extend, sections.extend
 
 ### testql.adapters.testtoon_adapter._api_section_to_steps
 - **Calls**: steps.append, row.get, row.get, asserts.append, row.get, asserts.append, None.strip, ApiStep
-
-### testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_taborder
-- **Calls**: shlex.split, DomScanner, scanner.assert_taborder, len, self.out.fail, self.results.append, int, getattr
 
 ### testql.commands.misc_cmds.from_sumd
 > Generate TestQL scenarios from SUMD.md documentation.
@@ -368,15 +368,15 @@ Adapters register themselves on import (or are r
 - **Key Methods**: testql.detectors.fastapi_detector.FastAPIDetector.detect, testql.detectors.fastapi_detector.FastAPIDetector._analyze_file, testql.detectors.fastapi_detector.FastAPIDetector._detect_router_assignment, testql.detectors.fastapi_detector.FastAPIDetector._extract_router_prefix, testql.detectors.fastapi_detector.FastAPIDetector._detect_app_assignment, testql.detectors.fastapi_detector.FastAPIDetector._extract_include_router, testql.detectors.fastapi_detector.FastAPIDetector._analyze_route_handler, testql.detectors.fastapi_detector.FastAPIDetector._extract_route_info, testql.detectors.fastapi_detector.FastAPIDetector._get_router_prefix, testql.detectors.fastapi_detector.FastAPIDetector._extract_parameters
 - **Inherits**: BaseEndpointDetector
 
-### testql.detectors.unified.UnifiedEndpointDetector
-> Unified detector that runs all specialized detectors.
-- **Methods**: 11
-- **Key Methods**: testql.detectors.unified.UnifiedEndpointDetector.__init__, testql.detectors.unified.UnifiedEndpointDetector.detect_all, testql.detectors.unified.UnifiedEndpointDetector.validate_endpoints, testql.detectors.unified.UnifiedEndpointDetector.detect_and_validate, testql.detectors.unified.UnifiedEndpointDetector._deduplicate_endpoints, testql.detectors.unified.UnifiedEndpointDetector.get_endpoints_by_type, testql.detectors.unified.UnifiedEndpointDetector.get_endpoints_by_framework, testql.detectors.unified.UnifiedEndpointDetector.generate_testql_scenario, testql.detectors.unified.UnifiedEndpointDetector._rest_block, testql.detectors.unified.UnifiedEndpointDetector._graphql_block
-
 ### testql.interpreter.dom_scan_mixin.DomScanMixin
 > Mixin for DOM Scan commands.
 - **Methods**: 11
 - **Key Methods**: testql.interpreter.dom_scan_mixin.DomScanMixin._parse_dom_scan_args, testql.interpreter.dom_scan_mixin.DomScanMixin._execute_dom_scan, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_dom_scan, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_dom_audit_buttons, testql.interpreter.dom_scan_mixin.DomScanMixin._parse_audit_args, testql.interpreter.dom_scan_mixin.DomScanMixin._ensure_gui_session, testql.interpreter.dom_scan_mixin.DomScanMixin._handle_audit_report, testql.interpreter.dom_scan_mixin.DomScanMixin._save_report_to_file, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_taborder, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_aria
+
+### testql.detectors.unified.UnifiedEndpointDetector
+> Unified detector that runs all specialized detectors.
+- **Methods**: 11
+- **Key Methods**: testql.detectors.unified.UnifiedEndpointDetector.__init__, testql.detectors.unified.UnifiedEndpointDetector.detect_all, testql.detectors.unified.UnifiedEndpointDetector.validate_endpoints, testql.detectors.unified.UnifiedEndpointDetector.detect_and_validate, testql.detectors.unified.UnifiedEndpointDetector._deduplicate_endpoints, testql.detectors.unified.UnifiedEndpointDetector.get_endpoints_by_type, testql.detectors.unified.UnifiedEndpointDetector.get_endpoints_by_framework, testql.detectors.unified.UnifiedEndpointDetector.generate_testql_scenario, testql.detectors.unified.UnifiedEndpointDetector._rest_block, testql.detectors.unified.UnifiedEndpointDetector._graphql_block
 
 ### testql.interpreter._unit.UnitMixin
 > Mixin providing unit test execution: UNIT_PYTEST, UNIT_IMPORT, UNIT_ASSERT.
@@ -404,16 +404,15 @@ Adapters register themselves on import (or are r
 - **Methods**: 9
 - **Key Methods**: testql.commands.templates.content.TestContentBuilder.build, testql.commands.templates.content.TestContentBuilder._build_meta_header, testql.commands.templates.content.TestContentBuilder._build_standard_vars, testql.commands.templates.content.TestContentBuilder._build_gui, testql.commands.templates.content.TestContentBuilder._build_api, testql.commands.templates.content.TestContentBuilder._build_mixed, testql.commands.templates.content.TestContentBuilder._build_performance, testql.commands.templates.content.TestContentBuilder._build_workflow, testql.commands.templates.content.TestContentBuilder._build_encoder
 
+### testql.interpreter._shell.ShellMixin
+> Mixin providing shell command execution: SHELL, EXEC, RUN, ASSERT_EXIT_CODE, etc.
+- **Methods**: 9
+- **Key Methods**: testql.interpreter._shell.ShellMixin._parse_shell_command, testql.interpreter._shell.ShellMixin._execute_shell_dry_run, testql.interpreter._shell.ShellMixin._execute_shell_live, testql.interpreter._shell.ShellMixin._cmd_shell, testql.interpreter._shell.ShellMixin._cmd_exec, testql.interpreter._shell.ShellMixin._cmd_run, testql.interpreter._shell.ShellMixin._cmd_assert_exit_code, testql.interpreter._shell.ShellMixin._cmd_assert_stdout_contains, testql.interpreter._shell.ShellMixin._cmd_assert_stderr_contains
+
 ### testql.generators.pytest_generator.PythonTestGeneratorMixin
 > Mixin for generating tests from existing Python tests.
 - **Methods**: 9
 - **Key Methods**: testql.generators.pytest_generator.PythonTestGeneratorMixin._generate_from_python_tests, testql.generators.pytest_generator.PythonTestGeneratorMixin._build_test_header, testql.generators.pytest_generator.PythonTestGeneratorMixin._extract_api_commands, testql.generators.pytest_generator.PythonTestGeneratorMixin._build_api_section, testql.generators.pytest_generator.PythonTestGeneratorMixin._extract_assertions, testql.generators.pytest_generator.PythonTestGeneratorMixin._parse_assertion_expression, testql.generators.pytest_generator.PythonTestGeneratorMixin._build_assertions_section, testql.generators.pytest_generator.PythonTestGeneratorMixin._build_no_conversions_note, testql.generators.pytest_generator.PythonTestGeneratorMixin._normalize_assertion_field
-
-### testql.detectors.flask_detector.FlaskDetector
-> Detect Flask endpoints including Blueprints.
-- **Methods**: 9
-- **Key Methods**: testql.detectors.flask_detector.FlaskDetector.detect, testql.detectors.flask_detector.FlaskDetector._analyze_flask_file, testql.detectors.flask_detector.FlaskDetector._detect_blueprint, testql.detectors.flask_detector.FlaskDetector._extract_blueprint_prefix, testql.detectors.flask_detector.FlaskDetector._analyze_flask_route, testql.detectors.flask_detector.FlaskDetector._extract_flask_route_info, testql.detectors.flask_detector.FlaskDetector._extract_route_path, testql.detectors.flask_detector.FlaskDetector._extract_route_methods, testql.detectors.flask_detector.FlaskDetector._apply_blueprint_prefix
-- **Inherits**: BaseEndpointDetector
 
 ## Data Transformation Functions
 

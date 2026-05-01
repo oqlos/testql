@@ -3,38 +3,42 @@
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-1.2.42-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$7.50-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-49.4h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-1.2.43-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$7.50-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-50.4h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $7.5000 (91 commits)
-- 👤 **Human dev:** ~$4944 (49.4h @ $100/h, 30min dedup)
+- 🤖 **LLM usage:** $7.5000 (93 commits)
+- 👤 **Human dev:** ~$5044 (50.4h @ $100/h, 30min dedup)
 
-Generated on 2026-04-29 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
+Generated on 2026-05-01 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 
 ---
 
-## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-1.2.42-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+
+![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-1.2.43-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$7.50-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-49.4h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
 TestQL is a declarative DSL (Domain Specific Language) for testing GUI, REST API, and hardware encoder interfaces. It provides a simple, readable syntax for writing automated tests without programming overhead.
 
-### What's new in 0.6.18
+### What's new in 1.2.x
 
-- **Executor Refactoring**: Complete implementation of CLI/Shell, GUI, and Unit test execution
-- **CommandDispatcher**: New centralized command dispatcher with auto-discovery and better error messages
-- **Test Coverage**: Increased from 16% to 65% (target: ≥50% achieved)
-- **Code Quality**: All CC hotspots resolved, god modules eliminated
-- **New Test Mixins**: Shell, GUI, and Unit execution mixins with 39 new tests
+- **Artifact Discovery & Topology**: Complete codebase inspection with manifest generation
+- **Web Inspection**: Live URL scanning with Playwright browser automation
+- **Multi-DSL Platform**: TestTOON, NL, SQL, Proto, GraphQL adapters with Unified IR
+- **Autoloop Integration**: MCP-driven development with autonomous test loops
+- **Refactor Plans**: Structured refactoring plans with NLP summaries
 
-### Recent Improvements (0.6.7 - 0.6.17)
+### Recent Improvements
 
-- **CLI/Shell Execution**: `SHELL`, `EXEC`, `RUN` commands with exit code and stdout/stderr assertions
-- **GUI Execution**: Playwright/Selenium support with `GUI_START`, `GUI_CLICK`, `GUI_INPUT`, etc.
-- **Unit Test Execution**: `UNIT_PYTEST`, `UNIT_ASSERT`, `UNIT_IMPORT` for Python test integration
-- **Architecture**: Modular interpreter structure with auto-discovery of command handlers
-- **OpenAPI**: 7 endpoints auto-generated with FastAPI integration
-- **Quality Pipeline**: pyqual.yaml with 65% coverage target, vallm validation at 64.6%
+- **Artifact Discovery**: `testql discover` with topology graph generation
+- **Web Inspection**: `--scan-network` with headless browser capture, console errors, network logs
+- **Multi-Format Output**: JSON, YAML, TOON for all results and topology
+- **Browser Testing**: Playwright integration for JS-rendered DOM capture
+- **API Testing**: 7 OpenAPI endpoints with FastAPI integration
+- **CLI/Shell Execution**: `SHELL`, `EXEC`, `RUN` commands with assertions
+- **GUI Execution**: Playwright/Selenium support with `GUI_START`, `GUI_CLICK`, `GUI_INPUT`
+- **Unit Test Execution**: `UNIT_PYTEST`, `UNIT_ASSERT`, `UNIT_IMPORT` integration
+- **Test Coverage**: 65% with pyqual.yaml quality pipeline
 
 
 

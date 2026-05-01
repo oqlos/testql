@@ -1,5 +1,5 @@
 # code2llm call graph | /home/tom/github/oqlos/testql
-# nodes: 504 | edges: 500 | modules: 105
+# nodes: 506 | edges: 500 | modules: 107
 # CC̄=2.2
 
 HUBS[20]:
@@ -15,12 +15,12 @@ HUBS[20]:
     CC=9  in:4  out:29  total:33
   testql.results.artifacts.write_inspection_artifacts
     CC=1  in:3  out:28  total:31
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
-    CC=13  in:0  out:30  total:30
-  testql.commands.heal_scenario_cmd.heal_scenario
-    CC=8  in:0  out:30  total:30
   testql.interpreter._validation.ValidationMixin._cmd_validate
     CC=10  in:0  out:30  total:30
+  testql.commands.heal_scenario_cmd.heal_scenario
+    CC=8  in:0  out:30  total:30
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+    CC=13  in:0  out:30  total:30
   testql.adapters.scenario_yaml._render_step
     CC=10  in:2  out:26  total:28
   testql._base_fallback.VariableStore.set
@@ -33,14 +33,14 @@ HUBS[20]:
     CC=10  in:1  out:23  total:24
   testql.adapters.scenario_yaml._gui_step
     CC=9  in:0  out:23  total:23
-  testql.commands.echo.parsers.doql._parse_workflows
-    CC=7  in:1  out:22  total:23
   testql.commands.encoder_routes._run_oql_lines
     CC=6  in:1  out:22  total:23
-  testql.commands.misc_cmds.report
-    CC=4  in:0  out:22  total:22
+  testql.commands.echo.parsers.doql._parse_workflows
+    CC=7  in:1  out:22  total:23
   testql.adapters.base.read_source
     CC=5  in:13  out:9  total:22
+  testql.commands.misc_cmds.report
+    CC=4  in:0  out:22  total:22
   testql.runner.parse_line
     CC=9  in:2  out:20  total:22
 
@@ -447,6 +447,10 @@ MODULES:
     render_sections  CC=7  out:12
   testql.interpreter.dispatcher  [1 funcs]
     dispatch  CC=5  out:13
+  testql.interpreter.dom_scan_formatters  [1 funcs]
+    to_text_audit  CC=4  out:2
+  testql.interpreter.dom_scan_mixin  [1 funcs]
+    _handle_audit_report  CC=4  out:11
   testql.interpreter.dom_scanner  [4 funcs]
     assert_aria  CC=5  out:8
     scan_aria  CC=4  out:9
