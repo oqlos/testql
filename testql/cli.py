@@ -19,6 +19,7 @@ from testql.commands.heal_scenario_cmd import heal_scenario
 from testql.commands.inspect_cmd import inspect
 from testql.commands.misc_cmds import create, echo, from_sumd, init, report, watch
 from testql.commands.run_cmd import run
+from testql.commands.watchdog_cmd import watchdog
 from testql.commands.run_ir_cmd import run_ir
 from testql.commands.self_test_cmd import self_test
 from testql.commands.suite_cmd import list_tests, suite
@@ -65,6 +66,7 @@ cli.add_command(from_sumd)
 cli.add_command(report)
 cli.add_command(echo)
 cli.add_command(self_test)
+cli.add_command(watchdog)
 cli.add_command(mcp_serve)
 
 

@@ -43,7 +43,7 @@ Last updated: 2026-05-08
 - [x] POST probe failures to healing-webhook for LLM-ready ticket creation
 - [x] JSON output mode for machine-readable results (`--output json`)
 - [x] TOON scenario format for 30-60% token savings in LLM context
-- [ ] Multi-scenario watchdog (run N scenarios in round-robin)
+- [x] Multi-scenario watchdog (run N scenarios in round-robin)
 - [ ] Prometheus histogram for per-assertion latency
 - [ ] Auto-generate `realtime-health` scenario from OpenAPI spec
 - [ ] Integrate testql MCP server with planfile ticket feedback loop
