@@ -90,13 +90,13 @@ class TestMCPModule:
 class TestDiscoveryPipeline:
     """Discovery must work on this project itself (self-discovery)."""
 
-    def test_self_discovery_returns_manifest(self):
-        manifest = discover_path(ROOT)
+    def test_self_discovery_returns_manifest(self, project_root_manifest):
+        manifest = project_root_manifest
         assert manifest is not None
         assert manifest.confidence is not ManifestConfidence.INFERRED or manifest.types
 
-    def test_self_discovery_json_serializable(self):
-        manifest = discover_path(ROOT)
+    def test_self_discovery_json_serializable(self, project_root_manifest):
+        manifest = project_root_manifest
         data = manifest.to_dict(include_raw=True)
         serialized = json.dumps(data, default=str)
         parsed = json.loads(serialized)

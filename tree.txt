@@ -718,6 +718,7 @@
 │       ├── orders-sqlite.sql.testql.yaml
 │       └── users-contract.sql.testql.yaml
 ├── tests
+│   ├── conftest.py
 │   ├── fixtures
 │   │   └── discovery
 │   │       ├── compose
@@ -827,4 +828,4 @@
 ├── uv.lock
 └── VERSION
 
-98 directories, 730 files
+98 directories, 731 files

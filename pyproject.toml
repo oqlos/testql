@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "testql"
-version = "1.2.45"
+version = "1.2.46"
 description = "TestQL — Multi-DSL Test Platform: TestTOON / NL / SQL / Proto / GraphQL adapters with Unified IR, generator engine, and meta-testing"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -61,6 +61,7 @@ model = "openrouter/qwen/qwen3-coder-next"
 addopts = "--cov=testql --cov-report=term-missing --cov-report=json"
 testpaths = ["tests"]
 
+[tool.pfix.runtime]
 auto_apply = true
 auto_install_deps = true
 auto_restart = false

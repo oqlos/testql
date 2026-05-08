@@ -1,10 +1,10 @@
-# testql | 349f 42722L | python:321,shell:24,less:4 | 2026-05-01
-# stats: 860 func | 570 cls | 349 mod | CC̄=3.7 | critical:29 | cycles:0
+# testql | 350f 42771L | python:322,shell:24,less:4 | 2026-05-08
+# stats: 864 func | 570 cls | 350 mod | CC̄=3.7 | critical:29 | cycles:0
 # alerts[5]: CC main=15; CC parse_testtoon=14; CC _filter_commands=14; CC _expand_flow=14; CC _check_link_statuses=14
 # hotspots[5]: generate_from_page fan=19; heal_scenario fan=19; watch fan=19; suite fan=19; main fan=18
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[349]:
+M[350]:
   TODO/testtoon_parser.py,142
   app.doql.less,237
   examples/api-testing/mock_server.py,51
@@ -141,7 +141,7 @@ M[349]:
   testql/generator.py,62
   testql/generators/__init__.py,53
   testql/generators/analyzers.py,310
-  testql/generators/api_generator.py,296
+  testql/generators/api_generator.py,299
   testql/generators/base.py,60
   testql/generators/convenience.py,52
   testql/generators/generators.py,31
@@ -271,6 +271,7 @@ M[349]:
   testql/topology/models.py,106
   testql/topology/serializers.py,52
   testql/topology/sitemap.py,120
+  tests/conftest.py,45
   tests/fixtures/discovery/python_pkg/sample_api/__init__.py,2
   tests/fixtures/discovery/python_pkg/sample_api/main.py,8
   tests/test_adapter_capture_syntax.py,167
@@ -282,7 +283,7 @@ M[349]:
   tests/test_converter.py,178
   tests/test_converter_handlers.py,352
   tests/test_detectors.py,389
-  tests/test_discovery.py,106
+  tests/test_discovery.py,104
   tests/test_dispatcher.py,140
   tests/test_doql_parser_sumd_gen.py,323
   tests/test_echo.py,227
@@ -346,7 +347,7 @@ M[349]:
   tests/test_suite_listing.py,167
   tests/test_sumd_parser.py,206
   tests/test_targets.py,87
-  tests/test_test_generator.py,118
+  tests/test_test_generator.py,121
   tests/test_testtoon_adapter.py,268
   tests/test_toon_parser.py,84
   tests/test_topology.py,88
@@ -1806,6 +1807,12 @@ D:
     _add_sitemap_nodes(topology;base_url;crawled;max_pages)
     _looks_textual(content_type)
     _parse_subpage(text)
+  tests/conftest.py:
+    e: project_root,testql_pkg_dir,project_root_manifest,testql_pkg_manifest
+    project_root()
+    testql_pkg_dir()
+    project_root_manifest()
+    testql_pkg_manifest()
   tests/fixtures/discovery/python_pkg/sample_api/__init__.py:
   tests/fixtures/discovery/python_pkg/sample_api/main.py:
     e: health
@@ -1884,7 +1891,7 @@ D:
     _write(tmp_path;name;content)
   tests/test_discovery.py:
     e: TestDiscoveryCore,TestDiscoveryCli
-    TestDiscoveryCore: test_empty_directory_is_inferred(1),test_python_package_probe_detects_fastapi(0),test_node_package_probe_detects_node_and_frontend_markers(0),test_openapi_probe_detects_openapi3_interface(0),test_dockerfile_probe_detects_container_metadata(0),test_compose_probe_detects_services(0),test_registry_returns_raw_probe_results(0),test_self_discovery_detects_current_project_root(0),test_self_discovery_detects_testql_package_directory(0)
+    TestDiscoveryCore: test_empty_directory_is_inferred(1),test_python_package_probe_detects_fastapi(0),test_node_package_probe_detects_node_and_frontend_markers(0),test_openapi_probe_detects_openapi3_interface(0),test_dockerfile_probe_detects_container_metadata(0),test_compose_probe_detects_services(0),test_registry_returns_raw_probe_results(0),test_self_discovery_detects_current_project_root(1),test_self_discovery_detects_testql_package_directory(1)
     TestDiscoveryCli: test_discover_summary_output(0),test_discover_json_output(0),test_discover_manifest_output(0),test_discover_missing_path_exits_nonzero(0)
   tests/test_dispatcher.py:
     e: TestCommandDispatcher,TestDispatcherIntegration
@@ -2034,7 +2041,7 @@ D:
     e: TestCLIAvailability,TestMCPModule,TestDiscoveryPipeline,TestTopologyPipeline,TestScenarioRoundTrip,TestAutoloopSchema,TestMCPConfig
     TestCLIAvailability: test_cli_help_exits_cleanly(0),test_mcp_subcommand_registered(0),test_discover_subcommand_exists(0),test_topology_subcommand_exists(0),test_run_subcommand_exists(0)  # CLI must work without hanging in non-TTY context.
     TestMCPModule: test_mcp_server_module_importable(0),test_mcp_init_importable(0),test_mcp_server_raises_on_missing_package(0)  # MCP server module must import without requiring mcp package 
-    TestDiscoveryPipeline: test_self_discovery_returns_manifest(0),test_self_discovery_json_serializable(0),test_discover_cli_json_output(0)  # Discovery must work on this project itself (self-discovery).
+    TestDiscoveryPipeline: test_self_discovery_returns_manifest(1),test_self_discovery_json_serializable(1),test_discover_cli_json_output(0)  # Discovery must work on this project itself (self-discovery).
     TestTopologyPipeline: test_topology_cli_json_output(0)  # Topology generation must produce valid structure.
     TestScenarioRoundTrip: test_scenario_parses(1),test_scenario_round_trips(1),test_api_smoke_has_api_steps(0)  # Scenarios in testql-scenarios/ must parse cleanly.
     TestAutoloopSchema: test_autoloop_state_valid_json(0),test_llm_decision_schema_exists(0),test_llm_decision_schema_valid_decision_values(0)  # Autoloop state and schema must be valid.

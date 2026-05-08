@@ -1,25 +1,18 @@
 # System Architecture Analysis
+<!-- generated in 0.01s -->
 
 ## Overview
 
 - **Project**: /home/tom/github/oqlos/testql
 - **Primary Language**: python
-- **Languages**: python: 229, yaml: 143, shell: 23, json: 18, txt: 4
+- **Languages**: python: 229, yaml: 118, shell: 23, json: 2, txt: 2
 - **Analysis Mode**: static
-- **Total Functions**: 2266
-- **Total Classes**: 199
-- **Modules**: 438
-- **Entry Points**: 1699
+- **Total Functions**: 1417
+- **Total Classes**: 200
+- **Modules**: 395
+- **Entry Points**: 848
 
 ## Architecture by Module
-
-### project.map.toon
-- **Functions**: 860
-- **File**: `map.toon.yaml`
-
-### code2llm_output.map.toon
-- **Functions**: 87
-- **File**: `map.toon.yaml`
 
 ### testql.adapters.scenario_yaml
 - **Functions**: 43
@@ -79,10 +72,6 @@
 - **Classes**: 1
 - **File**: `oql_source.py`
 
-### .testql.generated.generated-from-pytests.testql.toon
-- **Functions**: 21
-- **File**: `generated-from-pytests.testql.toon.yaml`
-
 ### testql.openapi_generator
 - **Functions**: 21
 - **Classes**: 3
@@ -106,6 +95,21 @@
 - **Functions**: 19
 - **File**: `_testtoon_parser.py`
 
+### testql.discovery.probes.filesystem.package_python
+- **Functions**: 19
+- **Classes**: 1
+- **File**: `package_python.py`
+
+### testql.generators.api_generator
+- **Functions**: 19
+- **Classes**: 2
+- **File**: `api_generator.py`
+
+### testql.runner
+- **Functions**: 18
+- **Classes**: 3
+- **File**: `runner.py`
+
 ## Key Entry Points
 
 Main execution flows into the system:
@@ -122,8 +126,8 @@ Main execution flows into the system:
 > Watch for file changes and re-run tests automatically.
 - **Calls**: click.command, click.option, click.option, click.option, click.option, None.resolve, click.echo, click.echo
 
-### TODO.testtoon_parser.parse_testtoon
-- **Calls**: text.splitlines, META_RE.match, None.startswith, HEADER_RE.match, raw.strip, raw.strip, None.strip, raw.strip
+### testql.topology.builder.TopologyBuilder._add_page_schema_nodes
+- **Calls**: manifest.metadata.get, topology.nodes.append, topology.edges.append, enumerate, enumerate, enumerate, isinstance, TopologyNode
 
 ### testql.commands.heal_scenario_cmd.heal_scenario
 > Validate and heal selectors in an existing TestTOON scenario.
@@ -189,12 +193,16 @@ Examples:
 > GUI_ASSERT_VISIBLE "selector" — Assert element is visible.
 - **Calls**: None.strip, self._find_element_with_logging, self.out.fail, self.out.step, self.results.append, self.out.fail, self.results.append, self.out.step
 
+### testql.generators.api_generator.APIGeneratorMixin._generate_api_tests
+> Generate comprehensive API tests from discovered routes.
+- **Calls**: self.profile.config.get, self.profile.config.get, self._build_api_test_header, sections.extend, sections.extend, sections.extend, sections.extend, sections.extend
+
 ### testql.runner.main
 - **Calls**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.parse_args, DslCliExecutor
 
 ### testql.commands.generate_topology_cmd.generate_topology
 > Generate an executable scenario from a topology trace.
-- **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, project.map.toon.build_topology, testql.commands.generate_topology_cmd._pick_trace
+- **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, testql.topology.builder.build_topology, testql.commands.generate_topology_cmd._pick_trace
 
 ### testql.commands.inspect_cmd.inspect
 - **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, click.option, Path
@@ -205,10 +213,6 @@ Examples:
 
 ### testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_taborder
 - **Calls**: shlex.split, DomScanner, scanner.assert_taborder, len, self.out.fail, self.results.append, int, getattr
-
-### testql.generators.api_generator.APIGeneratorMixin._generate_api_tests
-> Generate comprehensive API tests from discovered routes.
-- **Calls**: self.profile.config.get, self.profile.config.get, self._validate_endpoints, self._build_api_test_header, sections.extend, sections.extend, sections.extend, sections.extend
 
 ### testql.adapters.testtoon_adapter._api_section_to_steps
 - **Calls**: steps.append, row.get, row.get, asserts.append, row.get, asserts.append, None.strip, ApiStep
@@ -246,7 +250,7 @@ Examples:
 
 ### testql.commands.misc_cmds.report
 > Generate HTML report from test data.json.
-- **Calls**: click.command, click.argument, click.option, click.option, code2llm_output.map.toon.generate_report, click.echo, click.echo, Path
+- **Calls**: click.command, click.argument, click.option, click.option, testql.report_generator.generate_report, click.echo, click.echo, Path
 
 ## Process Flows
 
@@ -267,9 +271,9 @@ to_oql [testql.generators.sources.pytest_source.PytestSource]
 watch [testql.commands.misc_cmds]
 ```
 
-### Flow 4: parse_testtoon
+### Flow 4: _add_page_schema_nodes
 ```
-parse_testtoon [TODO.testtoon_parser]
+_add_page_schema_nodes [testql.topology.builder.TopologyBuilder]
 ```
 
 ### Flow 5: heal_scenario
@@ -418,56 +422,136 @@ Adapters register themselves on import (or are r
 
 Key functions that process and transform data:
 
-### code2llm_output.map.toon._parse_api_args
-
-### code2llm_output.map.toon._parse_meta_from_args
-
-### code2llm_output.map.toon._parse_target_from_args
-
-### code2llm_output.map.toon.convert_oql_to_testtoon
-
-### code2llm_output.map.toon.convert_file
-
-### code2llm_output.map.toon.convert_directory
-
-### code2llm_output.map.toon.parse_doql_less
-
-### code2llm_output.map.toon.parse_toon_scenarios
-
-### code2llm_output.map.toon.format_text_output
-
-### code2llm_output.map.toon.parse_value
-
-### code2llm_output.map.toon.parse_testtoon
-
-### code2llm_output.map.toon.validate
-
-### code2llm_output.map.toon.print_parsed
-
-### code2llm_output.map.toon.parse_line
-
-### code2llm_output.map.toon.parse_script
-
-### code2llm_output.map.toon.parse_sumd_file
-
-### code2llm_output.map.toon._parse_value
-
-### code2llm_output.map.toon.validate_testtoon
-
-### code2llm_output.map.toon._expand_encoder
-
-### code2llm_output.map.toon._format_log_detail
-
-### code2llm_output.map.toon._exec_encoder_cmd
-
-### code2llm_output.map.toon.parse_doql_file
-
-### code2llm_output.map.toon.parse_oql
-
-### code2llm_output.map.toon.parse_toon_file
-
 ### TODO.testtoon_parser.Section.validate
 - **Output to**: errors.append, len, len
+
+### TODO.testtoon_parser.parse_value
+> Parsuj wartości: -, liczby, {json}, tablice [1,2], stringi
+- **Output to**: v.strip, v.strip, v.startswith, v.endswith, v.startswith
+
+### TODO.testtoon_parser.parse_testtoon
+- **Output to**: text.splitlines, META_RE.match, None.startswith, HEADER_RE.match, raw.strip
+
+### TODO.testtoon_parser.validate
+- **Output to**: errors.extend, s.validate
+
+### TODO.testtoon_parser.print_parsed
+- **Output to**: examples.browser-inspection.run.print, examples.browser-inspection.run.print, examples.browser-inspection.run.print, TODO.testtoon_parser.validate, examples.browser-inspection.run.print
+
+### testql.toon_parser.ToonParser.parse_file
+> Parse a toon test file.
+
+Args:
+    path: Path to the toon test file
+    
+Returns:
+    APIContract: E
+- **Output to**: path.read_text, self.parse
+
+### testql.toon_parser.ToonParser.parse
+> Parse toon test content.
+
+Args:
+    content: Toon test content
+    
+Returns:
+    APIContract: Extrac
+- **Output to**: APIContract, re.finditer, re.finditer, re.finditer, None.strip
+
+### testql.toon_parser.ToonParser._parse_api_block
+> Parse API block content.
+- **Output to**: re.search, method_match.group, method_match.group, re.search, self.contract.endpoints.append
+
+### testql.toon_parser.ToonParser._parse_assert_block
+> Parse ASSERT block content.
+- **Output to**: re.search, assert_match.group, assert_match.group, None.strip, self.contract.asserts.append
+
+### testql.toon_parser.ToonParser._parse_log_block
+> Parse LOG block content for base_url.
+- **Output to**: re.search, url_match.group
+
+### testql.toon_parser.parse_toon_file
+> Parse a toon test file.
+
+Args:
+    path: Path to the toon test file
+    
+Returns:
+    APIContract: E
+- **Output to**: ToonParser, parser.parse_file
+
+### testql.doql_parser.DoqlParser.parse_file
+> Parse a doql LESS file.
+
+Args:
+    path: Path to the doql LESS file
+    
+Returns:
+    SystemModel: E
+- **Output to**: path.read_text, self.parse
+
+### testql.doql_parser.DoqlParser.parse
+> Parse doql LESS content.
+
+Args:
+    content: Doql LESS content
+    
+Returns:
+    SystemModel: Extrac
+- **Output to**: SystemModel, re.search, re.finditer, re.finditer, re.finditer
+
+### testql.doql_parser.DoqlParser._parse_app_block
+> Parse app block for project metadata.
+- **Output to**: re.search, re.search, None.strip, None.strip, name_match.group
+
+### testql.doql_parser.DoqlParser._parse_entity_block
+> Parse entity block.
+- **Output to**: Entity, re.finditer, re.search, re.search, re.search
+
+### testql.doql_parser.DoqlParser._parse_workflow_block
+> Parse workflow block.
+- **Output to**: Workflow, re.search, re.search, re.search, re.search
+
+### testql.doql_parser.DoqlParser._parse_interface_block
+> Parse interface block.
+- **Output to**: Interface, re.search, self.system_model.interfaces.append, None.strip, framework_match.group
+
+### testql.doql_parser.DoqlParser._parse_deploy_block
+> Parse deploy block.
+- **Output to**: re.search, re.search, None.strip, None.strip, target_match.group
+
+### testql.doql_parser.parse_doql_file
+> Parse a doql LESS file.
+
+Args:
+    path: Path to the doql LESS file
+    
+Returns:
+    SystemModel: E
+- **Output to**: DoqlParser, parser.parse_file
+
+### testql.report_generator.ReportDataParser.parse_testql_results
+> Parse testql run results from log/json file.
+- **Output to**: TestSuiteReport
+
+### testql.runner.parse_line
+> Parse a single DSL line
+- **Output to**: line.strip, re.match, re.match, re.match, re.match
+
+### testql.runner.parse_script
+> Parse DSL script into commands
+- **Output to**: content.split, testql.runner.parse_line
+
+### testql.runner.DslCliExecutor._format_cmd
+> Format command for display
+- **Output to**: json.dumps
+
+### testql.openapi_generator.ContractTestGenerator.validate_response
+> Validate a response against the spec.
+- **Output to**: self.spec.get, None.get, str, operation.get, response.get
+
+### testql._base_fallback.BaseInterpreter.parse
+> Parse source into an AST / structure.
 
 ## Behavioral Patterns
 
@@ -530,6 +614,7 @@ Functions exposed as public API (no underscore prefix):
 - `testql.commands.endpoints_cmd.endpoints` - 20 calls
 - `testql.adapters.sql.fixtures.schema_fixture_from_rows` - 20 calls
 - `testql.doql_parser.DoqlParser.parse` - 19 calls
+- `testql.topology.builder.TopologyBuilder.build` - 19 calls
 - `testql.commands.generate_cmd.generate` - 18 calls
 - `testql.discovery.probes.filesystem.package_python.PythonPackageProbe.probe` - 18 calls
 - `testql.results.analyzer.analyze_topology` - 18 calls
@@ -539,7 +624,6 @@ Functions exposed as public API (no underscore prefix):
 - `testql.runner.DslCliExecutor.cmd_assert_json` - 16 calls
 - `testql.interpreter.interpreter.OqlInterpreter.execute` - 16 calls
 - `testql.integrations.planfile_hook.create_individual_button_tickets` - 16 calls
-- `testql.commands.encoder_routes.oql_run_file` - 15 calls
 
 ## System Interactions
 
@@ -554,10 +638,9 @@ graph TD
     to_oql --> append
     watch --> command
     watch --> option
-    parse_testtoon --> splitlines
-    parse_testtoon --> match
-    parse_testtoon --> startswith
-    parse_testtoon --> strip
+    _add_page_schema_nod --> get
+    _add_page_schema_nod --> append
+    _add_page_schema_nod --> enumerate
     heal_scenario --> command
     heal_scenario --> argument
     heal_scenario --> option
@@ -577,6 +660,7 @@ graph TD
     _cmd_assert_schema --> step
     _cmd_assert_schema --> append
     _cmd_gui_navigate --> strip
+    _cmd_gui_navigate --> fail
 ```
 
 ## Reverse Engineering Guidelines

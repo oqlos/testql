@@ -25,10 +25,13 @@ class APIGeneratorMixin:
         # Priority: validate_url > base_url from config > default localhost
         base_url = self.profile.config.get('validate_url') or self.profile.config.get('base_url', 'http://localhost:8101')
 
-        # Always validate endpoints to avoid generating 404 errors
-        routes = self._validate_endpoints(routes, base_url)
-        if not routes:
-            return None
+        # Allow callers (and tests) to skip live endpoint validation.
+        # Useful when scaffolding tests offline or when no live server is available.
+        if not self.profile.config.get('skip_endpoint_validation', False):
+            # Validate endpoints to avoid generating 404 errors
+            routes = self._validate_endpoints(routes, base_url)
+            if not routes:
+                return None
 
         # Filter to only GET endpoints for smoke tests (POST/PATCH need request bodies)
         get_routes = [r for r in routes if r.get('method', 'GET').upper() == 'GET']

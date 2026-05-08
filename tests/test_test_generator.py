@@ -113,5 +113,8 @@ class TestTestGeneratorGenerateTests:
         g.analyze()
         # Patch profile to have a discovered_routes entry to force api gen branch
         g.profile.config["discovered_routes"] = [{"method": "GET", "path": "/users"}]
+        # Skip live endpoint validation (no real server during unit test) to
+        # avoid 10s of HTTP retries with exponential backoff.
+        g.profile.config["skip_endpoint_validation"] = True
         files = g.generate_tests(tmp_path / "out")
         assert isinstance(files, list)

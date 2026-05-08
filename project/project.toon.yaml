@@ -1,7 +1,8 @@
-# testql | 2266 func | 197f | 168673L | python | 2026-05-01
+# testql | 1417 func | 195f | 35206L | python | 2026-05-08
+# generated in 0.00s
 
 HEALTH:
-  CC̄=2.2  critical=51 (limit:10)  dup=4  cycles=0
+  CC̄=3.6  critical=51 (limit:10)  dup=4  cycles=0
 
 ALERTS[20]:
   !!! high_fan_out     parse_testtoon = 21 (limit:10)
@@ -13,25 +14,25 @@ ALERTS[20]:
   !!! high_fan_out     AssertionsMixin._cmd_assert_json = 20 (limit:10)
   !!  high_fan_out     generate_from_page = 19 (limit:10)
   !!  high_fan_out     main = 19 (limit:10)
-  !!  high_fan_out     generate_topology = 17 (limit:10)
+  !!  high_fan_out     TopologyBuilder.build = 18 (limit:10)
 
-MODULES[438] (top by size):
-  M[project/calls.yaml] 7364L C:0 F:0 CC↑0 D:0 (yaml)
-  M[examples/artifact-bundle/.testql/inspection.json] 5644L C:0 F:0 CC↑0 D:0 (json)
-  M[examples/artifact-bundle/.testql/topology.json] 5012L C:0 F:0 CC↑0 D:0 (json)
-  M[project/map.toon.yaml] 2387L C:0 F:778 CC↑0 D:5 (yaml)
+MODULES[395] (top by size):
   M[planfile.yaml] 1319L C:0 F:0 CC↑0 D:0 (yaml)
-  M[tree.txt] 830L C:0 F:0 CC↑0 D:0 (txt)
-  M[code2llm_output/calls.yaml] 799L C:0 F:0 CC↑0 D:0 (yaml)
+  M[tree.txt] 831L C:0 F:0 CC↑0 D:0 (txt)
   M[testql/interpreter/_gui.py] 708L C:1 F:34 CC↑12 D:0 (python)
-  M[.testql/generated/generated-from-pytests.testql.toon.yaml] 626L C:0 F:2 CC↑0 D:24 (yaml)
-  M[project/calls.toon.yaml] 593L C:0 F:0 CC↑0 D:0 (yaml)
-  M[project/analysis.toon.yaml] 535L C:0 F:0 CC↑0 D:0 (yaml)
-  M[examples/artifact-bundle/.testql/result.json] 534L C:0 F:0 CC↑0 D:0 (json)
   M[testql/generators/page_analyzer.py] 526L C:1 F:31 CC↑10 D:3 (python)
   M[goal.yaml] 511L C:0 F:0 CC↑0 D:0 (yaml)
   M[testql/adapters/scenario_yaml.py] 506L C:1 F:43 CC↑13 D:1 (python)
-  LANGS: python:229/yaml:143/shell:23/json:18/other:17/txt:4/yml:2/doql:1/toml:1
+  M[testql/results/analyzer.py] 504L C:0 F:38 CC↑14 D:3 (python)
+  M[testql/adapters/testtoon_adapter.py] 501L C:1 F:33 CC↑10 D:4 (python)
+  M[testql/commands/encoder_routes.py] 477L C:0 F:27 CC↑10 D:0 (python)
+  M[testql/interpreter/_testtoon_parser.py] 468L C:0 F:19 CC↑14 D:1 (python)
+  M[testql/openapi_generator.py] 444L C:3 F:21 CC↑11 D:1 (python)
+  M[testql/interpreter/dom_scanner.py] 418L C:1 F:26 CC↑13 D:0 (python)
+  M[testql/generators/sources/pytest_source.py] 389L C:3 F:13 CC↑13 D:0 (python)
+  M[testql/runner.py] 371L C:3 F:18 CC↑12 D:0 (python)
+  M[testql/adapters/nl/nl_adapter.py] 353L C:1 F:30 CC↑7 D:0 (python)
+  LANGS: python:229/yaml:118/shell:23/other:17/yml:2/json:2/txt:2/doql:1/toml:1
 
 HOTSPOTS[10]:
   ★ parse_testtoon fan=21  // Orchestrates 21 calls
@@ -46,7 +47,7 @@ Types:
   - regex          → re.search(cri
   ★ watch fan=20  // Watch for file changes and re-run tests automatically.
 
-REFACTOR[15]:
+REFACTOR[11]:
   [1] H/H Split god module testql/results/analyzer.py (504L, 0 classes)
   [2] H/H Split god module testql/adapters/scenario_yaml.py (506L, 1 classes)
   [3] H/H Split god module testql/interpreter/_gui.py (708L, 1 classes)
@@ -54,4 +55,4 @@ REFACTOR[15]:
   [5] H/H Split god module testql/generators/page_analyzer.py (526L, 1 classes)
 
 EVOLUTION:
-  2026-05-01 CC̄=2.2 crit=51 168673L // Automated analysis
+  2026-05-08 CC̄=3.6 crit=51 35206L // Automated analysis

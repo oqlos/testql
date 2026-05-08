@@ -58,17 +58,15 @@ class TestDiscoveryCore:
         assert results
         assert any(result.probe_name == "filesystem.package_python" and result.matched for result in results)
 
-    def test_self_discovery_detects_current_project_root(self):
-        root = Path(__file__).parents[1]
-        manifest = discover_path(root)
+    def test_self_discovery_detects_current_project_root(self, project_root_manifest):
+        manifest = project_root_manifest
         assert "python_pkg" in manifest.types
         assert "fastapi" in manifest.types
         assert "openapi3" in manifest.types
         assert manifest.confidence is ManifestConfidence.FULL
 
-    def test_self_discovery_detects_testql_package_directory(self):
-        root = Path(__file__).parents[1]
-        manifest = discover_path(root / "testql")
+    def test_self_discovery_detects_testql_package_directory(self, testql_pkg_manifest):
+        manifest = testql_pkg_manifest
         assert "python_pkg" in manifest.types
         assert "fastapi" in manifest.types
         assert "openapi3" in manifest.types
