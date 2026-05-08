@@ -118,6 +118,26 @@ WAIT[1]{ms}:
         assert len(wait) == 1
         assert wait[0].extra == {"ms": 100}
 
+    def test_indented_row_starting_with_hash_is_not_comment(self):
+        """Regression: indented row values starting with '#' (e.g. CSS-id
+        selectors like ``#login-btn``) must not be eaten by the comment
+        stripper. The leading '#' is only a comment marker when the line is
+        not an indented row inside an active section.
+        """
+        text = """\
+# SCENARIO: hash-selector
+# TYPE: gui
+
+ASSERT_VISIBLE[2]{selector}:
+  #login-btn
+  #non-existent-element
+"""
+        plan = parse(text)
+        rows = [s for s in plan.steps if s.kind == "assert_visible"]
+        assert len(rows) == 2
+        assert rows[0].extra == {"selector": "#login-btn"}
+        assert rows[1].extra == {"selector": "#non-existent-element"}
+
 
 class TestRender:
     def test_render_round_trip_basic(self):
@@ -147,6 +167,73 @@ class TestRender:
     def test_render_empty_plan(self):
         out = render(TestPlan())
         assert out == ""
+
+    def test_round_trip_preserves_flow_steps(self):
+        """Regression: FLOW rows parsed as generic Steps must survive render.
+
+        Previously the renderer only handled `GuiStep` / `ApiStep` etc.
+        Generic `Step(kind='flow', ...)` instances produced by
+        `_generic_section_to_steps` were silently dropped during render,
+        making round-trip lossy for any FLOW-only scenario.
+        """
+        src = (
+            "# SCENARIO: gui-flow\n"
+            "# TYPE: gui\n"
+            "\n"
+            "FLOW[3]{command, target, value}:\n"
+            "  GUI_ASSERT_VISIBLE, #header, -\n"
+            "  GUI_ASSERT_VISIBLE, #content, -\n"
+            "  GUI_ASSERT_VISIBLE, #footer, -\n"
+        )
+        plan = parse(src)
+        flow_initial = [s for s in plan.steps if s.kind == "flow"]
+        assert len(flow_initial) == 3
+        rendered = render(plan)
+        assert "FLOW[3]" in rendered
+        plan2 = parse(rendered)
+        flow_again = [s for s in plan2.steps if s.kind == "flow"]
+        assert len(flow_again) == 3
+        # Column data preserved
+        assert [r.extra.get("command") for r in flow_again] == [
+            "GUI_ASSERT_VISIBLE", "GUI_ASSERT_VISIBLE", "GUI_ASSERT_VISIBLE",
+        ]
+        assert [r.extra.get("target") for r in flow_again] == [
+            "#header", "#content", "#footer",
+        ]
+
+    def test_round_trip_preserves_wait_steps(self):
+        """WAIT sections parsed as generic Steps must survive render."""
+        src = (
+            "# SCENARIO: timing\n"
+            "# TYPE: gui\n"
+            "\n"
+            "WAIT[2]{ms}:\n"
+            "  100\n"
+            "  500\n"
+        )
+        plan = parse(src)
+        rendered = render(plan)
+        assert "WAIT[2]" in rendered
+        plan2 = parse(rendered)
+        wait_again = [s for s in plan2.steps if s.kind == "wait"]
+        assert len(wait_again) == 2
+
+    def test_round_trip_preserves_include_steps(self):
+        """INCLUDE sections parsed as generic Steps must survive render."""
+        src = (
+            "# SCENARIO: with-include\n"
+            "# TYPE: gui\n"
+            "\n"
+            "INCLUDE[1]{file}:\n"
+            "  shared/login.testql.toon.yaml\n"
+        )
+        plan = parse(src)
+        rendered = render(plan)
+        assert "INCLUDE[1]" in rendered
+        assert "shared/login.testql.toon.yaml" in rendered
+        plan2 = parse(rendered)
+        inc_again = [s for s in plan2.steps if s.kind == "include"]
+        assert len(inc_again) == 1
 
 
 class TestAdapterRegistration:

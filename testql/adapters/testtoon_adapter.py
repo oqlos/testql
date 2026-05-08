@@ -414,6 +414,80 @@ def _render_validate_steps(steps: list[Step]) -> list[str]:
     return lines
 
 
+# Step.kind values that have dedicated renderers above; generic-step rendering
+# must skip these to avoid duplicating output.
+_DEDICATED_GENERIC_KINDS = {"assert", "config"}
+
+
+def _format_extra_value(value: Any) -> str:
+    """Stringify a generic-step `extra` cell for TestTOON row output."""
+    if value is None:
+        return "-"
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    if isinstance(value, (int, float)):
+        return str(value)
+    text = str(value)
+    return text if text else "-"
+
+
+def _render_generic_section_steps(steps: list[Step]) -> list[str]:
+    """Emit sections for generic ``Step`` instances produced by unknown TestTOON
+    sections (FLOW, WAIT, INCLUDE, OQL, RECORD_*, COMMANDS, ...).
+
+    The original parser drops these into ``Step(kind=section.type.lower(),
+    name=section.type, extra=row_dict)`` via ``_generic_section_to_steps``.
+    Without this renderer the round-trip ``parse → render → parse`` silently
+    loses every row, breaking files that mix typed and untyped sections.
+
+    Steps are grouped by ``Step.name`` (original section type, e.g. ``FLOW``)
+    and emitted in first-seen order to keep deterministic output. Column
+    schemas are derived from the union of ``extra`` keys per group, preserving
+    insertion order so the canonical first row dictates the column layout.
+    """
+    grouped: dict[str, list[Step]] = {}
+    order: list[str] = []
+    for s in steps:
+        # Bare Step (not a typed subclass) carrying generic-section data.
+        if type(s) is not Step:
+            continue
+        if s.kind in _DEDICATED_GENERIC_KINDS:
+            continue
+        section_name = s.name or s.kind.upper() if s.kind else None
+        if not section_name:
+            continue
+        if not s.extra:
+            # Nothing to round-trip; skip empty markers (e.g. parser placeholders).
+            continue
+        if section_name not in grouped:
+            grouped[section_name] = []
+            order.append(section_name)
+        grouped[section_name].append(s)
+
+    if not grouped:
+        return []
+
+    out: list[str] = []
+    for name in order:
+        rows = grouped[name]
+        # Union of column keys preserving first-seen order across rows.
+        columns: list[str] = []
+        seen: set[str] = set()
+        for r in rows:
+            for k in r.extra.keys():
+                if k not in seen:
+                    seen.add(k)
+                    columns.append(k)
+        if not columns:
+            continue
+        col_str = ", ".join(columns)
+        out.append(f"{name}[{len(rows)}]" + "{" + col_str + "}:")
+        for r in rows:
+            cells = [_format_extra_value(r.extra.get(c)) for c in columns]
+            out.append("  " + ", ".join(cells))
+    return out
+
+
 def _render_plan(plan: TestPlan) -> str:
     """Lossy renderer covering CONFIG / API / NAVIGATE / ENCODER / ASSERT.
 
@@ -438,6 +512,7 @@ def _render_plan(plan: TestPlan) -> str:
     parts.extend(_render_log_steps(plan.steps))
     parts.extend(_render_assertions(plan.steps))
     parts.extend(_render_validate_steps(plan.steps))
+    parts.extend(_render_generic_section_steps(plan.steps))
     parts.extend(_render_captures(plan.steps))
     return "\n".join(parts) + ("\n" if parts else "")
 

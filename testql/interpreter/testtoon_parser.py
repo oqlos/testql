@@ -184,31 +184,38 @@ def parse_testtoon(text: str, filename: str = "<string>") -> ToonScript:
 def _process_line(raw: str, current: ToonSection | None, script: ToonScript, bare_commands: list[str]) -> ToonSection | None:
     """Process a single line of TestTOON source."""
     stripped = raw.strip()
-    
+
     if not stripped:
         return None
-    
+
     if _is_meta_line(stripped):
         return _process_meta_line(stripped, script)
-    
+
+    # Indented data rows inside a section take precedence over the comment check
+    # so values that legitimately start with ``#`` (e.g. CSS-id selectors like
+    # ``#login-btn``) are not silently dropped as if they were comments.
+    if current is not None and raw.startswith('  '):
+        _add_row_to_section(raw, current)
+        return current
+
     if _is_comment(stripped):
         return None
-    
+
     section = _try_parse_section_header(stripped)
     if section:
         script.sections.append(section)
         return section
-    
+
     if _should_end_section(raw, current):
         current = None
-    
+
     if _is_bare_command(raw, current):
         bare_commands.append(raw)
         return None
-    
+
     if current and raw.startswith('  '):
         _add_row_to_section(raw, current)
-    
+
     return current
 
 
