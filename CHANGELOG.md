@@ -5,6 +5,52 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.48] - 2026-05-08
+
+### Added
+- **Production deployment in c2004 healing pipeline** — TestQL is now the active-probing layer in the c2004 monorepo's self-healing infrastructure
+- `testql-watchdog` Docker container: runs 50-assertion `realtime-health.testql.toon.yaml` scenario every 60s
+- Prometheus metrics export: `testql_scenario_pass_total`, `testql_scenario_fail_total`
+- POST probe failures to healing-webhook → auto-creates LLM-ready planfile tickets
+- MCP server (`testql/mcp/server.py`) with resources for topology access and tools for discovery/topology/run/explain
+- MCP refactor plan generation endpoint
+- Configuration management system (refactored)
+- Code analysis engine (refactored)
+- TestTOON adapter with full round-tripping (`testql/adapters/testtoon_adapter.py`)
+- Internal IR module (`testql/ir/`) with steps, assertions, captures, fixtures, metadata, plan
+- Integration tests for browser discovery (`tests/test_discovery.py`)
+- Markdown output support for test results
+
+### Changed
+- TestTOON parser refactored with validation layer (`testql/interpreter/_validation.py`)
+- DOM scan mixin improved for web inspection
+- API test generator refactored (`testql/generators/api_generator.py`)
+- Documentation updated with c2004 healing pipeline integration section in README
+- TODO.md updated: Phase 1 (Topology) completed ✅, Phase 3 (MCP) mostly done, new Phase 6 (Production Deployment)
+
+### Completed (moved from TODO)
+- [x] Build TopologyManifest with TopologyNode/TopologyEdge/TraversalTrace (Phase 1)
+- [x] Implement PageSchema with structured web page representation (Phase 1)
+- [x] Add TestResultEnvelope for standardized test results (Phase 1)
+- [x] Create RefactorPlan generator with NLP summaries (Phase 1)
+- [x] Implement JSON schemas for validation (Phase 1)
+- [x] Add JSON/YAML/TOON round-tripping support (Phase 1)
+- [x] Full Playwright integration with screenshots support (Phase 2)
+- [x] Browser network interception and mocking (Phase 2)
+- [x] MCP resources for topology access (Phase 3)
+- [x] MCP tools for discovery/topology/run/explain operations (Phase 3)
+- [x] MCP refactor plan generation endpoint (Phase 3)
+- [x] Unified scenario DSL with metadata, vars, targets, steps (Phase 4)
+- [x] Compile to internal TestStep model (Phase 4)
+- [x] Add integration tests for browser discovery (Phase 5)
+- [x] Deploy testql-watchdog container in c2004 (Phase 6)
+- [x] Expose Prometheus metrics (Phase 6)
+- [x] POST probe failures to healing-webhook (Phase 6)
+- [x] JSON output mode for machine-readable results (Phase 6)
+- [x] TOON scenario format for LLM context savings (Phase 6)
+
+---
+
 ## [1.2.43] - 2026-05-01
 
 ### Docs
@@ -141,6 +187,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Remaining
 - Add Playwright-backed browser execution, JavaScript-rendered DOM capture, screenshots, console errors, network logs, link-by-link validation, accessibility/performance checks, MCP service integration, and runtime-vs-code delta reports.
+
+## [1.2.49] - 2026-05-08
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+- Update TODO.md
+
+### Other
+- Update coverage.json
 
 ## [1.2.48] - 2026-05-08
 

@@ -1,41 +1,52 @@
 # TODO — TestQL Development Roadmap
 
-Last updated: 2026-05-01
+Last updated: 2026-05-08
 
 ## 🎯 Active Development Priorities
 
-### Phase 1: Topology-Aware Orchestration (In Progress)
-- [ ] Build TopologyManifest with TopologyNode/TopologyEdge/TraversalTrace
-- [ ] Implement PageSchema with structured web page representation
-- [ ] Add TestResultEnvelope for standardized test results
-- [ ] Create RefactorPlan generator with NLP summaries
-- [ ] Implement JSON schemas for validation
-- [ ] Add JSON/YAML/TOON round-tripping support
+### Phase 1: Topology-Aware Orchestration (Done ✅)
+- [x] Build TopologyManifest with TopologyNode/TopologyEdge/TraversalTrace
+- [x] Implement PageSchema with structured web page representation
+- [x] Add TestResultEnvelope for standardized test results
+- [x] Create RefactorPlan generator with NLP summaries
+- [x] Implement JSON schemas for validation
+- [x] Add JSON/YAML/TOON round-tripping support
 
-### Phase 2: Browser & GUI Testing Enhancement
-- [ ] Full Playwright integration with screenshots support
+### Phase 2: Browser & GUI Testing Enhancement (Partial)
+- [x] Full Playwright integration with screenshots support
 - [ ] Accessibility checks (WCAG compliance scanning)
 - [ ] Performance metrics collection (Lighthouse-like)
 - [ ] Auth flow automation (login sequences)
-- [ ] Browser network interception and mocking
+- [x] Browser network interception and mocking
 
-### Phase 3: MCP Service Integration
-- [ ] MCP resources for topology access
-- [ ] MCP tools for discovery/topology/run/explain operations
-- [ ] MCP refactor plan generation endpoint
+### Phase 3: MCP Service Integration (Partial)
+- [x] MCP resources for topology access
+- [x] MCP tools for discovery/topology/run/explain operations
+- [x] MCP refactor plan generation endpoint
 - [ ] MCP service code generation workflows
 
-### Phase 4: DSL Unification
-- [ ] Unified scenario DSL with metadata, vars, targets, steps
-- [ ] Compile to internal TestStep model
+### Phase 4: DSL Unification (Partial)
+- [x] Unified scenario DSL with metadata, vars, targets, steps
+- [x] Compile to internal TestStep model
 - [ ] YAML/TOON/Imperative syntax parity
 - [ ] Environment-prefixed command migration (GUI_*, ENCODER_*, API → unified)
 
 ### Phase 5: Quality & Test Coverage
 - [ ] Increase test coverage to 75% (from current 65%)
-- [ ] Add integration tests for browser discovery
+- [x] Add integration tests for browser discovery
 - [ ] Add E2E tests for CLI workflows
 - [ ] Performance benchmarks for large topology graphs
+
+### Phase 6: Production Deployment & Healing Pipeline (New)
+- [x] Deploy testql-watchdog container in c2004 (50-assertion scenario, 60s loop)
+- [x] Expose Prometheus metrics (`testql_scenario_pass_total` / `fail_total`)
+- [x] POST probe failures to healing-webhook for LLM-ready ticket creation
+- [x] JSON output mode for machine-readable results (`--output json`)
+- [x] TOON scenario format for 30-60% token savings in LLM context
+- [ ] Multi-scenario watchdog (run N scenarios in round-robin)
+- [ ] Prometheus histogram for per-assertion latency
+- [ ] Auto-generate `realtime-health` scenario from OpenAPI spec
+- [ ] Integrate testql MCP server with planfile ticket feedback loop
 
 ## 📋 Technical Debt & Code Quality
 
@@ -97,6 +108,7 @@ prefact -a --show-todos
 - [SUMD.md](./SUMD.md) — Complete project structure and architecture
 - [DSL.md](./DSL.md) — Language specification
 - [REFACTORING_PLAN.md](./REFACTORING_PLAN.md) — Long-term refactoring strategy
+- [c2004 planfile-llm-guide](https://github.com/maskservice/c2004/blob/main/docs/planfile-llm-guide.md) — LLM-agnostic ticket workflow (testql as probe layer)
 
 ---
 

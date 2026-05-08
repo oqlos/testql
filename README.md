@@ -3,17 +3,17 @@
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-1.2.48-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$7.50-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-53.4h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-1.2.49-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$7.50-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-53.9h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $7.5000 (98 commits)
-- 👤 **Human dev:** ~$5344 (53.4h @ $100/h, 30min dedup)
+- 🤖 **LLM usage:** $7.5000 (99 commits)
+- 👤 **Human dev:** ~$5394 (53.9h @ $100/h, 30min dedup)
 
 Generated on 2026-05-08 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 
 ---
 
-![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-1.2.48-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-1.2.49-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
 ![AI Cost](https://img.shields.io/badge/AI%20Cost-$7.50-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-49.4h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
 TestQL is a declarative DSL (Domain Specific Language) for testing GUI, REST API, and hardware encoder interfaces. It provides a simple, readable syntax for writing automated tests without programming overhead.
@@ -25,9 +25,17 @@ TestQL is a declarative DSL (Domain Specific Language) for testing GUI, REST API
 - **Multi-DSL Platform**: TestTOON, NL, SQL, Proto, GraphQL adapters with Unified IR
 - **Autoloop Integration**: MCP-driven development with autonomous test loops
 - **Refactor Plans**: Structured refactoring plans with NLP summaries
+- **Production deployment in c2004**: 50-assertion realtime-health scenario running every 60s as part of [Prometheus + planfile self-healing pipeline](#real-world-deployment--c2004-healing-pipeline)
 
-### Recent Improvements
+### Recent Improvements (1.2.48)
 
+- **c2004 Healing Pipeline**: testql-watchdog container, Prometheus metrics, LLM-ready ticket generation on failure
+- **MCP Server**: `testql/mcp/server.py` — resources for topology, tools for discover/run/explain
+- **Internal IR**: `testql/ir/` module with steps, assertions, captures, fixtures, plan
+- **TestTOON Adapter**: full round-tripping with validation layer
+- **Configuration Management**: refactored config system
+- **Code Analysis Engine**: refactored analysis pipeline
+- **Markdown Output**: `--output markdown` for human-readable reports
 - **Artifact Discovery**: `testql discover` with topology graph generation
 - **Web Inspection**: `--scan-network` with headless browser capture, console errors, network logs
 - **Multi-Format Output**: JSON, YAML, TOON for all results and topology
@@ -481,6 +489,64 @@ ASSERT[2]{field, op, expected}:
   data.length,  >,   0
   data.id,      !=,  null
 ```
+
+## Real-world deployment — c2004 healing pipeline
+
+Since May 2026 TestQL runs as the **active-probing component** of the
+[c2004 fleet management monorepo](https://github.com/maskservice/c2004)'s
+self-healing pipeline. It's the canonical, production-grade reference for
+how to wire `testql run` into Prometheus + Alertmanager + an LLM-agnostic
+ticket layer.
+
+### What c2004 uses TestQL for
+
+| Component | Role |
+|---|---|
+| `realtime-health.testql.toon.yaml` | 50-assertion scenario covering 20 endpoints across backend, frontend, connect-* services, hw-firmware, and modules |
+| `testql-watchdog` (Docker container) | Runs the scenario every 60s, exposes `/metrics` to Prometheus, POSTs failures to a healing webhook |
+| TOON output format | 30-60% smaller than JSON in LLM context — critical for fitting failures into a prompt window |
+
+### Pipeline shape
+
+```
+testql-watchdog (loop)
+    │ runs `testql run realtime-health.testql.toon.yaml --output json`
+    ▼
+50 assertions execute → exposes testql_scenario_pass_total / fail_total
+    │ on failure: POST http://healing-webhook:8810/probe-failure
+    ▼
+healing-webhook → planfile ticket create --label llm-ready
+    │
+    ▼
+LLM agent (Windsurf/Cursor/Claude Code/aider) reads
+  `planfile ticket show PLF-XXX` and proposes a fix
+```
+
+### Operator flow
+
+```bash
+# c2004 repo root
+task monitor:up                 # brings up testql-watchdog + 10 other observability containers
+task monitor:probe              # ad-hoc run of the scenario (50 assertions)
+docker logs c2004-testql-watchdog | tail
+# → cycle done exit=0 pass=50 fail=0
+```
+
+### Why TestQL was chosen for this role
+
+1. **Black-box + business-logic** — pinging `/health` is not enough; TestQL exercises real endpoints (`/api/v3/devices`, `/api/v3/menu/configurations`, etc.) with full assertion blocks.
+2. **TOON format** — the scenario file is human-editable and ~40% smaller than the equivalent JSON when sent to an LLM for diagnosis.
+3. **Single binary** — `pip install testql` and the watchdog container is ~80 MB.
+4. **JSON output mode** — `--output json` makes Prometheus metric extraction a one-liner in `watchdog.py`.
+
+### See also
+
+- c2004 master doc: [`docs/planfile-llm-guide.md`](https://github.com/maskservice/c2004/blob/main/docs/planfile-llm-guide.md)
+- c2004 README section: ["🩺 Real-time Monitoring + Planfile Self-Healing Pipeline"](https://github.com/maskservice/c2004/blob/main/README.md#-real-time-monitoring--planfile-self-healing-pipeline)
+- The actual scenario: [`testql-testing/scenarios/realtime-health.testql.toon.yaml`](https://github.com/maskservice/c2004/blob/main/testql-testing/scenarios/realtime-health.testql.toon.yaml)
+- The watchdog: [`monitoring/testql-watchdog/`](https://github.com/maskservice/c2004/blob/main/monitoring/testql-watchdog/)
+
+---
 
 ## Examples
 
