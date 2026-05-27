@@ -3,17 +3,17 @@
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-1.2.50-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$7.50-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-55.4h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-1.2.51-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$29.61-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-55.7h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $7.5000 (100 commits)
-- 👤 **Human dev:** ~$5540 (55.4h @ $100/h, 30min dedup)
+- 🤖 **LLM usage:** $29.6135 (101 commits)
+- 👤 **Human dev:** ~$5568 (55.7h @ $100/h, 30min dedup)
 
-Generated on 2026-05-08 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
+Generated on 2026-05-27 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 
 ---
 
-![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-1.2.50-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-1.2.51-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
 ![AI Cost](https://img.shields.io/badge/AI%20Cost-$7.50-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-49.4h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
 TestQL is a declarative DSL (Domain Specific Language) for testing GUI, REST API, and hardware encoder interfaces. It provides a simple, readable syntax for writing automated tests without programming overhead.
@@ -524,13 +524,29 @@ LLM agent (Windsurf/Cursor/Claude Code/aider) reads
 
 ### Operator flow
 
+> **Note:** The observability stack (including `testql-watchdog`) **does not start automatically** with `make dev` / `make run`. Those commands only start the application processes (Node.js + Python). You must launch the monitoring stack separately.
+
 ```bash
-# c2004 repo root
-task monitor:up                 # brings up testql-watchdog + 10 other observability containers
+# 1. Terminal A — start the application (no monitoring)
+make dev                        # starts frontend + backend + encoder
+
+# 2. Terminal B — start observability + self-healing (separate step)
+task monitor:up                 # brings up testql-watchdog + 10 other containers
+
+# 3. Verify watchdog is running
 task monitor:probe              # ad-hoc run of the scenario (50 assertions)
 docker logs c2004-testql-watchdog | tail
 # → cycle done exit=0 pass=50 fail=0
+
+# 4. View Prometheus metrics
+open http://localhost:9101/metrics   # testql_scenario_pass_total / fail_total
 ```
+
+**Key commands:**
+- `task monitor:up` — start full observability stack
+- `task monitor:core` — start core stack (lighter, without Loki/Blackbox)
+- `task monitor:down` — stop all observability containers
+- `task monitor:logs:watchdog` — tail testql-watchdog logs
 
 ### Why TestQL was chosen for this role
 

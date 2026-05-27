@@ -5,6 +5,252 @@
 │   ├── testql-phase-6-artifact-discovery.md
 │   └── testql-plugins-and-formats.md
 ├── bin
+├── build
+│   ├── bdist.linux-x86_64
+│   └── lib
+│       └── testql
+│           ├── adapters
+│           │   ├── base.py
+│           │   ├── graphql
+│           │   │   ├── graphql_adapter.py
+│           │   │   ├── __init__.py
+│           │   │   ├── query_executor.py
+│           │   │   ├── schema_introspection.py
+│           │   │   └── subscription_runner.py
+│           │   ├── __init__.py
+│           │   ├── nl
+│           │   │   ├── entity_extractor.py
+│           │   │   ├── grammar.py
+│           │   │   ├── __init__.py
+│           │   │   ├── intent_recognizer.py
+│           │   │   ├── lexicon
+│           │   │   ├── llm_fallback.py
+│           │   │   └── nl_adapter.py
+│           │   ├── proto
+│           │   │   ├── compatibility.py
+│           │   │   ├── descriptor_loader.py
+│           │   │   ├── __init__.py
+│           │   │   ├── message_validator.py
+│           │   │   └── proto_adapter.py
+│           │   ├── registry.py
+│           │   ├── scenario_yaml.py
+│           │   ├── sql
+│           │   │   ├── ddl_parser.py
+│           │   │   ├── dialect_resolver.py
+│           │   │   ├── fixtures.py
+│           │   │   ├── __init__.py
+│           │   │   ├── query_parser.py
+│           │   │   └── sql_adapter.py
+│           │   └── testtoon_adapter.py
+│           ├── autoloop_runner.py
+│           ├── _base_fallback.py
+│           ├── base.py
+│           ├── cli.py
+│           ├── commands
+│           │   ├── auto_cmd.py
+│           │   ├── discover_cmd.py
+│           │   ├── echo
+│           │   │   ├── cli.py
+│           │   │   ├── context.py
+│           │   │   ├── formatters
+│           │   │   ├── __init__.py
+│           │   │   └── parsers
+│           │   ├── echo_helpers.py
+│           │   ├── echo.py
+│           │   ├── encoder_routes.py
+│           │   ├── endpoints_cmd.py
+│           │   ├── generate_cmd.py
+│           │   ├── generate_from_page_cmd.py
+│           │   ├── generate_ir_cmd.py
+│           │   ├── generate_topology_cmd.py
+│           │   ├── heal_scenario_cmd.py
+│           │   ├── __init__.py
+│           │   ├── inspect_cmd.py
+│           │   ├── misc_cmds.py
+│           │   ├── run_cmd.py
+│           │   ├── run_ir_cmd.py
+│           │   ├── self_test_cmd.py
+│           │   ├── suite
+│           │   │   ├── cli.py
+│           │   │   ├── collection.py
+│           │   │   ├── execution.py
+│           │   │   ├── __init__.py
+│           │   │   ├── listing.py
+│           │   │   └── reports.py
+│           │   ├── suite_cmd.py
+│           │   ├── templates
+│           │   │   ├── content.py
+│           │   │   ├── __init__.py
+│           │   │   └── templates.py
+│           │   ├── topology_cmd.py
+│           │   └── watchdog_cmd.py
+│           ├── detectors
+│           │   ├── base.py
+│           │   ├── config_detector.py
+│           │   ├── django_detector.py
+│           │   ├── express_detector.py
+│           │   ├── fastapi_detector.py
+│           │   ├── flask_detector.py
+│           │   ├── graphql_detector.py
+│           │   ├── __init__.py
+│           │   ├── models.py
+│           │   ├── openapi_detector.py
+│           │   ├── test_detector.py
+│           │   ├── unified.py
+│           │   └── websocket_detector.py
+│           ├── discovery
+│           │   ├── __init__.py
+│           │   ├── manifest.py
+│           │   ├── probes
+│           │   │   ├── base.py
+│           │   │   ├── browser
+│           │   │   ├── filesystem
+│           │   │   ├── __init__.py
+│           │   │   └── network
+│           │   ├── registry.py
+│           │   └── source.py
+│           ├── doql_parser.py
+│           ├── echo_schemas.py
+│           ├── endpoint_detector.py
+│           ├── generator.py
+│           ├── generators
+│           │   ├── analyzers.py
+│           │   ├── api_generator.py
+│           │   ├── base.py
+│           │   ├── convenience.py
+│           │   ├── generators.py
+│           │   ├── __init__.py
+│           │   ├── llm
+│           │   │   ├── coverage_optimizer.py
+│           │   │   ├── edge_case_generator.py
+│           │   │   └── __init__.py
+│           │   ├── multi.py
+│           │   ├── page_analyzer.py
+│           │   ├── pipeline.py
+│           │   ├── pytest_generator.py
+│           │   ├── scenario_generator.py
+│           │   ├── sources
+│           │   │   ├── base.py
+│           │   │   ├── config_source.py
+│           │   │   ├── graphql_source.py
+│           │   │   ├── __init__.py
+│           │   │   ├── nl_source.py
+│           │   │   ├── openapi_source.py
+│           │   │   ├── oql_models.py
+│           │   │   ├── oql_parser.py
+│           │   │   ├── oql_source.py
+│           │   │   ├── page_source.py
+│           │   │   ├── proto_source.py
+│           │   │   ├── pytest_source.py
+│           │   │   ├── sql_source.py
+│           │   │   └── ui_source.py
+│           │   ├── specialized_generator.py
+│           │   ├── targets
+│           │   │   ├── base.py
+│           │   │   ├── __init__.py
+│           │   │   ├── nl_target.py
+│           │   │   ├── pytest_target.py
+│           │   │   └── testtoon_target.py
+│           │   └── test_generator.py
+│           ├── __init__.py
+│           ├── integrations
+│           │   └── planfile_hook.py
+│           ├── interpreter
+│           │   ├── _api_runner.py
+│           │   ├── _assertions.py
+│           │   ├── converter
+│           │   │   ├── core.py
+│           │   │   ├── dispatcher.py
+│           │   │   ├── handlers
+│           │   │   ├── __init__.py
+│           │   │   ├── models.py
+│           │   │   ├── parsers.py
+│           │   │   └── renderer.py
+│           │   ├── _converter.py
+│           │   ├── dispatcher.py
+│           │   ├── dom_scan_formatters.py
+│           │   ├── dom_scan_mixin.py
+│           │   ├── dom_scan_models.py
+│           │   ├── dom_scanner.py
+│           │   ├── _dom_scan.py
+│           │   ├── _encoder.py
+│           │   ├── _flow.py
+│           │   ├── _gui.py
+│           │   ├── _hardware.py
+│           │   ├── __init__.py
+│           │   ├── interpreter.py
+│           │   ├── _parser.py
+│           │   ├── _shell.py
+│           │   ├── testtoon_models.py
+│           │   ├── _testtoon_parser.py
+│           │   ├── testtoon_parser.py
+│           │   ├── _unit.py
+│           │   ├── _validation.py
+│           │   └── _websockets.py
+│           ├── interpreter.py
+│           ├── ir
+│           │   ├── assertions.py
+│           │   ├── captures.py
+│           │   ├── fixtures.py
+│           │   ├── __init__.py
+│           │   ├── metadata.py
+│           │   ├── plan.py
+│           │   └── steps.py
+│           ├── ir_runner
+│           │   ├── assertion_eval.py
+│           │   ├── context.py
+│           │   ├── engine.py
+│           │   ├── executors
+│           │   │   ├── api.py
+│           │   │   ├── base.py
+│           │   │   ├── encoder.py
+│           │   │   ├── graphql.py
+│           │   │   ├── gui.py
+│           │   │   ├── __init__.py
+│           │   │   ├── nl.py
+│           │   │   ├── proto.py
+│           │   │   ├── shell.py
+│           │   │   ├── sql.py
+│           │   │   └── unit.py
+│           │   ├── __init__.py
+│           │   └── interpolation.py
+│           ├── __main__.py
+│           ├── mcp
+│           │   ├── __init__.py
+│           │   └── server.py
+│           ├── meta
+│           │   ├── confidence_scorer.py
+│           │   ├── coverage_analyzer.py
+│           │   ├── __init__.py
+│           │   ├── mutator.py
+│           │   └── self_test.py
+│           ├── openapi_generator.py
+│           ├── pipeline.py
+│           ├── reporters
+│           │   ├── console.py
+│           │   ├── __init__.py
+│           │   ├── json_reporter.py
+│           │   └── junit.py
+│           ├── report_generator.py
+│           ├── results
+│           │   ├── analyzer.py
+│           │   ├── artifacts.py
+│           │   ├── __init__.py
+│           │   ├── models.py
+│           │   └── serializers.py
+│           ├── runner.py
+│           ├── runners
+│           │   └── __init__.py
+│           ├── sumd_generator.py
+│           ├── sumd_parser.py
+│           ├── toon_parser.py
+│           └── topology
+│               ├── builder.py
+│               ├── generator.py
+│               ├── __init__.py
+│               ├── models.py
+│               ├── serializers.py
+│               └── sitemap.py
 ├── CHANGELOG.md
 ├── code2llm_output
 │   ├── analysis.toon.yaml
@@ -164,8 +410,10 @@
 │   ├── flow.mmd
 │   ├── flow.png
 │   ├── index.html
+│   ├── logic.pl
 │   ├── map.toon.yaml
 │   ├── mermaid.export
+│   ├── planfile-tickets.yaml
 │   ├── project.toon.yaml
 │   ├── prompt.txt
 │   ├── README.md
@@ -277,7 +525,8 @@
 │   │   │   ├── content.py
 │   │   │   ├── __init__.py
 │   │   │   └── templates.py
-│   │   └── topology_cmd.py
+│   │   ├── topology_cmd.py
+│   │   └── watchdog_cmd.py
 │   ├── detectors
 │   │   ├── base.py
 │   │   ├── config_detector.py
@@ -828,4 +1077,4 @@
 ├── uv.lock
 └── VERSION
 
-98 directories, 731 files
+137 directories, 941 files

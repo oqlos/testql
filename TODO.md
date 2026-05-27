@@ -1,6 +1,6 @@
 # TODO — TestQL Development Roadmap
 
-Last updated: 2026-05-08
+Last updated: 2026-05-08 (1.2.50 — multi-scenario watchdog + docs update)
 
 ## 🎯 Active Development Priorities
 

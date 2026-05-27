@@ -431,6 +431,50 @@ def _format_extra_value(value: Any) -> str:
     return text if text else "-"
 
 
+def _group_generic_steps(steps: list[Step]) -> tuple[dict[str, list[Step]], list[str]]:
+    """Group bare generic Steps by section name, preserving first-seen order."""
+    grouped: dict[str, list[Step]] = {}
+    order: list[str] = []
+    for s in steps:
+        if type(s) is not Step:
+            continue
+        if s.kind in _DEDICATED_GENERIC_KINDS:
+            continue
+        section_name = s.name or s.kind.upper() if s.kind else None
+        if not section_name:
+            continue
+        if not s.extra:
+            continue
+        if section_name not in grouped:
+            grouped[section_name] = []
+            order.append(section_name)
+        grouped[section_name].append(s)
+    return grouped, order
+
+
+def _derive_columns(rows: list[Step]) -> list[str]:
+    """Union of extra keys preserving first-seen order across rows."""
+    columns: list[str] = []
+    seen: set[str] = set()
+    for r in rows:
+        for k in r.extra.keys():
+            if k not in seen:
+                seen.add(k)
+                columns.append(k)
+    return columns
+
+
+def _render_group_section(name: str, rows: list[Step], columns: list[str]) -> list[str]:
+    """Render one generic section as TestTOON text lines."""
+    out: list[str] = []
+    col_str = ", ".join(columns)
+    out.append(f"{name}[{len(rows)}]" + "{" + col_str + "}:")
+    for r in rows:
+        cells = [_format_extra_value(r.extra.get(c)) for c in columns]
+        out.append("  " + ", ".join(cells))
+    return out
+
+
 def _render_generic_section_steps(steps: list[Step]) -> list[str]:
     """Emit sections for generic ``Step`` instances produced by unknown TestTOON
     sections (FLOW, WAIT, INCLUDE, OQL, RECORD_*, COMMANDS, ...).
@@ -445,46 +489,17 @@ def _render_generic_section_steps(steps: list[Step]) -> list[str]:
     schemas are derived from the union of ``extra`` keys per group, preserving
     insertion order so the canonical first row dictates the column layout.
     """
-    grouped: dict[str, list[Step]] = {}
-    order: list[str] = []
-    for s in steps:
-        # Bare Step (not a typed subclass) carrying generic-section data.
-        if type(s) is not Step:
-            continue
-        if s.kind in _DEDICATED_GENERIC_KINDS:
-            continue
-        section_name = s.name or s.kind.upper() if s.kind else None
-        if not section_name:
-            continue
-        if not s.extra:
-            # Nothing to round-trip; skip empty markers (e.g. parser placeholders).
-            continue
-        if section_name not in grouped:
-            grouped[section_name] = []
-            order.append(section_name)
-        grouped[section_name].append(s)
-
+    grouped, order = _group_generic_steps(steps)
     if not grouped:
         return []
 
     out: list[str] = []
     for name in order:
         rows = grouped[name]
-        # Union of column keys preserving first-seen order across rows.
-        columns: list[str] = []
-        seen: set[str] = set()
-        for r in rows:
-            for k in r.extra.keys():
-                if k not in seen:
-                    seen.add(k)
-                    columns.append(k)
+        columns = _derive_columns(rows)
         if not columns:
             continue
-        col_str = ", ".join(columns)
-        out.append(f"{name}[{len(rows)}]" + "{" + col_str + "}:")
-        for r in rows:
-            cells = [_format_extra_value(r.extra.get(c)) for c in columns]
-            out.append("  " + ", ".join(cells))
+        out.extend(_render_group_section(name, rows, columns))
     return out
 
 

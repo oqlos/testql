@@ -1,30 +1,30 @@
-# testql | 1417 func | 195f | 35206L | python | 2026-05-08
-# generated in 0.00s
+# testql | 1426 func | 196f | 35550L | python | 2026-05-27
+# generated in 0.02s
 
 HEALTH:
-  CC̄=3.6  critical=51 (limit:10)  dup=4  cycles=0
+  CC̄=3.6  critical=56 (limit:10)  dup=4  cycles=0
 
 ALERTS[20]:
-  !!! high_fan_out     parse_testtoon = 21 (limit:10)
-  !!! high_fan_out     heal_scenario = 21 (limit:10)
+  !!! high_fan_out     watchdog = 25 (limit:10)
   !!! high_fan_out     AssertionsMixin._cmd_assert_cookies = 21 (limit:10)
   !!! high_fan_out     ValidationMixin._cmd_validate = 21 (limit:10)
+  !!! high_fan_out     parse_testtoon = 21 (limit:10)
+  !!! high_fan_out     heal_scenario = 21 (limit:10)
   !!! high_fan_out     watch = 20 (limit:10)
   !!! high_fan_out     suite = 20 (limit:10)
   !!! high_fan_out     AssertionsMixin._cmd_assert_json = 20 (limit:10)
+  !!  cc_exceeded      watchdog = 21 (limit:15)
   !!  high_fan_out     generate_from_page = 19 (limit:10)
-  !!  high_fan_out     main = 19 (limit:10)
-  !!  high_fan_out     TopologyBuilder.build = 18 (limit:10)
 
-MODULES[395] (top by size):
+MODULES[398] (top by size):
   M[planfile.yaml] 1319L C:0 F:0 CC↑0 D:0 (yaml)
   M[tree.txt] 831L C:0 F:0 CC↑0 D:0 (txt)
   M[testql/interpreter/_gui.py] 708L C:1 F:34 CC↑12 D:0 (python)
+  M[testql/adapters/testtoon_adapter.py] 576L C:1 F:35 CC↑17 D:1 (python)
   M[testql/generators/page_analyzer.py] 526L C:1 F:31 CC↑10 D:3 (python)
   M[goal.yaml] 511L C:0 F:0 CC↑0 D:0 (yaml)
   M[testql/adapters/scenario_yaml.py] 506L C:1 F:43 CC↑13 D:1 (python)
   M[testql/results/analyzer.py] 504L C:0 F:38 CC↑14 D:3 (python)
-  M[testql/adapters/testtoon_adapter.py] 501L C:1 F:33 CC↑10 D:4 (python)
   M[testql/commands/encoder_routes.py] 477L C:0 F:27 CC↑10 D:0 (python)
   M[testql/interpreter/_testtoon_parser.py] 468L C:0 F:19 CC↑14 D:1 (python)
   M[testql/openapi_generator.py] 444L C:3 F:21 CC↑11 D:1 (python)
@@ -32,11 +32,12 @@ MODULES[395] (top by size):
   M[testql/generators/sources/pytest_source.py] 389L C:3 F:13 CC↑13 D:0 (python)
   M[testql/runner.py] 371L C:3 F:18 CC↑12 D:0 (python)
   M[testql/adapters/nl/nl_adapter.py] 353L C:1 F:30 CC↑7 D:0 (python)
-  LANGS: python:229/yaml:118/shell:23/other:17/yml:2/json:2/txt:2/doql:1/toml:1
+  LANGS: python:232/yaml:118/shell:23/other:17/yml:2/json:2/txt:2/doql:1/toml:1
 
 HOTSPOTS[10]:
-  ★ parse_testtoon fan=21  // Orchestrates 21 calls
-  ★ heal_scenario fan=21  // Validate and heal selectors in an existing TestTOON scenario.
+  ★ watchdog fan=25  // Run TestQL scenarios in a continuous loop with Prometheus metrics.
+
+Accepts file
   ★ AssertionsMixin._cmd_assert_cookies fan=21  // ASSERT_COOKIES <cookie_name> <op> <expected> — Assert cookie value.
 
 Examples:
@@ -45,14 +46,15 @@ Examples:
 
 Types:
   - regex          → re.search(cri
-  ★ watch fan=20  // Watch for file changes and re-run tests automatically.
+  ★ parse_testtoon fan=21  // Orchestrates 21 calls
+  ★ heal_scenario fan=21  // Validate and heal selectors in an existing TestTOON scenario.
 
-REFACTOR[11]:
-  [1] H/H Split god module testql/results/analyzer.py (504L, 0 classes)
-  [2] H/H Split god module testql/adapters/scenario_yaml.py (506L, 1 classes)
-  [3] H/H Split god module testql/interpreter/_gui.py (708L, 1 classes)
-  [4] H/H Split god module testql/adapters/testtoon_adapter.py (501L, 1 classes)
+REFACTOR[13]:
+  [1] H/H Split god module testql/adapters/testtoon_adapter.py (576L, 1 classes)
+  [2] H/H Split god module testql/results/analyzer.py (504L, 0 classes)
+  [3] H/H Split god module testql/adapters/scenario_yaml.py (506L, 1 classes)
+  [4] H/H Split god module testql/interpreter/_gui.py (708L, 1 classes)
   [5] H/H Split god module testql/generators/page_analyzer.py (526L, 1 classes)
 
 EVOLUTION:
-  2026-05-08 CC̄=3.6 crit=51 35206L // Automated analysis
+  2026-05-27 CC̄=3.6 crit=56 35550L // Automated analysis

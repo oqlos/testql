@@ -1,10 +1,10 @@
-# testql | 350f 42771L | python:322,shell:24,less:4 | 2026-05-08
-# stats: 864 func | 570 cls | 350 mod | CC̄=3.7 | critical:29 | cycles:0
-# alerts[5]: CC main=15; CC parse_testtoon=14; CC _filter_commands=14; CC _expand_flow=14; CC _check_link_statuses=14
-# hotspots[5]: generate_from_page fan=19; heal_scenario fan=19; watch fan=19; suite fan=19; main fan=18
+# testql | 351f 43203L | python:323,shell:24,less:4 | 2026-05-27
+# stats: 873 func | 570 cls | 351 mod | CC̄=3.7 | critical:34 | cycles:0
+# alerts[5]: CC watchdog=21; CC _render_generic_section_steps=17; CC main=15; CC parse_testtoon=14; CC _filter_commands=14
+# hotspots[5]: watchdog fan=25; generate_from_page fan=19; heal_scenario fan=19; watch fan=19; suite fan=19
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[350]:
+M[351]:
   TODO/testtoon_parser.py,142
   app.doql.less,237
   examples/api-testing/mock_server.py,51
@@ -66,10 +66,10 @@ M[350]:
   testql/adapters/sql/fixtures.py,106
   testql/adapters/sql/query_parser.py,96
   testql/adapters/sql/sql_adapter.py,334
-  testql/adapters/testtoon_adapter.py,502
+  testql/adapters/testtoon_adapter.py,577
   testql/autoloop_runner.py,1
   testql/base.py,38
-  testql/cli.py,103
+  testql/cli.py,105
   testql/commands/__init__.py,36
   testql/commands/auto_cmd.py,203
   testql/commands/discover_cmd.py,47
@@ -106,6 +106,7 @@ M[350]:
   testql/commands/templates/content.py,167
   testql/commands/templates/templates.py,60
   testql/commands/topology_cmd.py,24
+  testql/commands/watchdog_cmd.py,261
   testql/detectors/__init__.py,54
   testql/detectors/base.py,35
   testql/detectors/config_detector.py,219
@@ -214,7 +215,7 @@ M[350]:
   testql/interpreter/dom_scanner.py,419
   testql/interpreter/interpreter.py,159
   testql/interpreter/testtoon_models.py,34
-  testql/interpreter/testtoon_parser.py,290
+  testql/interpreter/testtoon_parser.py,297
   testql/interpreter.py,28
   testql/ir/__init__.py,49
   testql/ir/assertions.py,34
@@ -348,7 +349,7 @@ M[350]:
   tests/test_sumd_parser.py,206
   tests/test_targets.py,87
   tests/test_test_generator.py,121
-  tests/test_testtoon_adapter.py,268
+  tests/test_testtoon_adapter.py,355
   tests/test_toon_parser.py,84
   tests/test_topology.py,88
   tests/test_topology_generator.py,162
@@ -725,7 +726,7 @@ D:
     parse(source)
     render(plan)
   testql/adapters/testtoon_adapter.py:
-    e: _config_to_dict,_api_section_to_steps,_navigate_section_to_steps,_gui_section_to_steps,_encoder_section_to_steps,_assert_section_to_steps,_capture_section_apply,_resolve_capture_target,_generic_section_to_steps,_shell_section_to_steps,_unit_section_to_steps,_log_section_to_steps,_translate_section,_toon_to_plan,_render_meta,_render_config,_render_api_steps,_render_navigate_steps,_render_encoder_steps,_toon_safe_selector,_render_gui_action_steps,_render_shell_steps,_render_unit_steps,_render_log_steps,_render_assertions,_render_captures,_render_validate_steps,_render_plan,parse,render,TestToonAdapter
+    e: _config_to_dict,_api_section_to_steps,_navigate_section_to_steps,_gui_section_to_steps,_encoder_section_to_steps,_assert_section_to_steps,_capture_section_apply,_resolve_capture_target,_generic_section_to_steps,_shell_section_to_steps,_unit_section_to_steps,_log_section_to_steps,_translate_section,_toon_to_plan,_render_meta,_render_config,_render_api_steps,_render_navigate_steps,_render_encoder_steps,_toon_safe_selector,_render_gui_action_steps,_render_shell_steps,_render_unit_steps,_render_log_steps,_render_assertions,_render_captures,_render_validate_steps,_format_extra_value,_render_generic_section_steps,_render_plan,parse,render,TestToonAdapter
     TestToonAdapter: detect(1),parse(1),render(1)  # Adapter for the legacy `*.testql.toon.yaml` format (TestTOON
     _config_to_dict(section)
     _api_section_to_steps(section)
@@ -754,6 +755,8 @@ D:
     _render_assertions(steps)
     _render_captures(steps)
     _render_validate_steps(steps)
+    _format_extra_value(value)
+    _render_generic_section_steps(steps)
     _render_plan(plan)
     parse(source)
     render(plan)
@@ -969,6 +972,15 @@ D:
   testql/commands/topology_cmd.py:
     e: topology
     topology(source;fmt;include_manifest;scan_network)
+  testql/commands/watchdog_cmd.py:
+    e: _discover_scenarios,_run_scenario,_post_failures,_extract_failures,_start_metrics_server,_update_metrics,watchdog
+    _discover_scenarios(specs)
+    _run_scenario(scenario;url;timeout)
+    _post_failures(webhook_url;scenario;failures)
+    _extract_failures(payload)
+    _start_metrics_server(port;scenarios)
+    _update_metrics(metrics;scenario;exit_code;payload;elapsed)
+    watchdog(scenarios;interval;webhook;port;url;timeout;once;verbose)
   testql/detectors/__init__.py:
   testql/detectors/base.py:
     e: BaseEndpointDetector
@@ -2359,8 +2371,8 @@ D:
   tests/test_testtoon_adapter.py:
     e: TestDetect,TestParse,TestRender,TestAdapterRegistration,TestFlowExpansion,TestBackwardCompatibility
     TestDetect: test_detect_by_extension(1),test_detect_by_metadata_header(0),test_detect_negative(0),test_detect_section_header(0)
-    TestParse: test_parse_string(0),test_parse_file(1),test_api_steps(0),test_api_step_has_status_assert(0),test_navigate_step(0),test_encoder_step(0),test_assert_section(0),test_unknown_section_falls_through_to_generic(0)
-    TestRender: test_render_round_trip_basic(0),test_render_includes_metadata(0),test_render_includes_config(0),test_render_empty_plan(0)
+    TestParse: test_parse_string(0),test_parse_file(1),test_api_steps(0),test_api_step_has_status_assert(0),test_navigate_step(0),test_encoder_step(0),test_assert_section(0),test_unknown_section_falls_through_to_generic(0),test_indented_row_starting_with_hash_is_not_comment(0)
+    TestRender: test_render_round_trip_basic(0),test_render_includes_metadata(0),test_render_includes_config(0),test_render_empty_plan(0),test_round_trip_preserves_flow_steps(0),test_round_trip_preserves_wait_steps(0),test_round_trip_preserves_include_steps(0)
     TestAdapterRegistration: test_adapter_registered_in_default_registry(0),test_extensions_match(0)
     TestFlowExpansion: _expand(1),test_flow_value_column_quoted_for_input(0),test_flow_text_column_alias(0),test_flow_meta_dash_emits_no_extra_arg(0),test_flow_value_dash_does_not_pollute_click(0),test_flow_value_null_treated_as_empty(0),test_flow_meta_dict_legacy_passthrough(0),test_flow_two_column_still_works(0)  # FLOW section third-column handling (regression for GUI_INPUT
     TestBackwardCompatibility: test_legacy_parser_imports(0),test_interpreter_package_reexports(0)  # The legacy parser must still work unchanged after Phase 0.

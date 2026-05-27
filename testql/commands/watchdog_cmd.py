@@ -154,6 +154,47 @@ def _update_metrics(metrics, scenario: Path, exit_code: int, payload: dict, elap
                 metrics["fail_total"].labels(scenario=name).inc()
 
 
+def _resolve_watchdog_config(
+    interval: int | None,
+    webhook: str | None,
+    port: int | None,
+    url: str | None,
+    timeout: int | None,
+) -> tuple[int, str, int, str, int]:
+    """Resolve watchdog config from CLI > env > defaults."""
+    interval_s = interval or int(os.getenv("WATCHDOG_INTERVAL", "60"))
+    webhook_url = webhook or os.getenv("WATCHDOG_WEBHOOK_URL", "http://healing-webhook:8810/probe-failure")
+    metrics_port = port or int(os.getenv("WATCHDOG_METRICS_PORT", "9101"))
+    base_url = url or os.getenv("WATCHDOG_BASE_URL", "http://localhost:8101")
+    timeout_s = timeout or int(os.getenv("WATCHDOG_TIMEOUT", str(max(interval_s - 5, 10))))
+    return interval_s, webhook_url, metrics_port, base_url, timeout_s
+
+
+def _process_one_scenario(
+    scenario: Path,
+    base_url: str,
+    timeout_s: int,
+    webhook_url: str,
+    metrics,
+) -> None:
+    """Run a single scenario, update metrics, and POST failures."""
+    start = time.time()
+    exit_code, payload = _run_scenario(scenario, base_url, timeout_s)
+    elapsed = time.time() - start
+
+    failures = _extract_failures(payload)
+    _update_metrics(metrics, scenario, exit_code, payload, elapsed)
+
+    status_icon = "✅" if exit_code == 0 else "❌"
+    log.info(
+        "%s %s exit=%d elapsed=%.1fs failures=%d",
+        status_icon, scenario.name, exit_code, elapsed, len(failures),
+    )
+
+    if failures:
+        _post_failures(webhook_url, scenario, failures)
+
+
 @click.command()
 @click.argument("scenarios", nargs=-1, required=True, type=str)
 @click.option("--interval", type=int, default=None, help="Seconds between cycles (env: WATCHDOG_INTERVAL, default 60)")
@@ -190,12 +231,9 @@ def watchdog(
         stream=sys.stdout,
     )
 
-    # Resolve config from CLI > env > defaults
-    interval_s = interval or int(os.getenv("WATCHDOG_INTERVAL", "60"))
-    webhook_url = webhook or os.getenv("WATCHDOG_WEBHOOK_URL", "http://healing-webhook:8810/probe-failure")
-    metrics_port = port or int(os.getenv("WATCHDOG_METRICS_PORT", "9101"))
-    base_url = url or os.getenv("WATCHDOG_BASE_URL", "http://localhost:8101")
-    timeout_s = timeout or int(os.getenv("WATCHDOG_TIMEOUT", str(max(interval_s - 5, 10))))
+    interval_s, webhook_url, metrics_port, base_url, timeout_s = _resolve_watchdog_config(
+        interval, webhook, port, url, timeout
+    )
 
     # Discover scenarios
     paths = _discover_scenarios(scenarios)
@@ -225,22 +263,7 @@ def watchdog(
         for scenario in scenario_iter:
             cycle_count += 1
             try:
-                start = time.time()
-                exit_code, payload = _run_scenario(scenario, base_url, timeout_s)
-                elapsed = time.time() - start
-
-                failures = _extract_failures(payload)
-                _update_metrics(metrics, scenario, exit_code, payload, elapsed)
-
-                status_icon = "✅" if exit_code == 0 else "❌"
-                log.info(
-                    "%s %s exit=%d elapsed=%.1fs failures=%d",
-                    status_icon, scenario.name, exit_code, elapsed, len(failures),
-                )
-
-                if failures:
-                    _post_failures(webhook_url, scenario, failures)
-
+                _process_one_scenario(scenario, base_url, timeout_s, webhook_url, metrics)
             except subprocess.TimeoutExpired:
                 log.error("⏰ %s timed out after %ds", scenario.name, timeout_s)
                 _update_metrics(metrics, scenario, -1, {}, float(timeout_s))
@@ -249,8 +272,7 @@ def watchdog(
 
             # Sleep between scenarios (not between cycles)
             if not once:
-                sleep_time = interval_s / scenarios_in_cycle
-                time.sleep(sleep_time)
+                time.sleep(interval_s / scenarios_in_cycle)
 
     except KeyboardInterrupt:
         log.info("watchdog stopped (Ctrl+C)")
