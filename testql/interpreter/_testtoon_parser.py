@@ -423,6 +423,70 @@ def _expand_dom_audit_buttons(section: ToonSection, lines: list[OqlLine], line_n
     return line_num + 1
 
 
+def _shell_expected_exit(row: dict) -> int | None:
+    """Read expected exit code from a SHELL section row (supports column aliases)."""
+    for key in ("exit_code", "expect_exit_code", "expected_exit"):
+        val = row.get(key)
+        if val is None or val == "-":
+            continue
+        if isinstance(val, int):
+            return val
+        if isinstance(val, str) and val.strip().lstrip("-").isdigit():
+            return int(val.strip())
+    return None
+
+
+def _shell_timeout_ms(row: dict, default_ms: int = 60000) -> int:
+    """Optional per-row timeout for SHELL execution (milliseconds)."""
+    val = row.get("timeout_ms")
+    if val is None:
+        val = row.get("timeout")
+    if isinstance(val, int):
+        return val
+    if isinstance(val, str) and val.strip().lstrip("-").isdigit():
+        return int(val.strip())
+    return default_ms
+
+
+def _quote_shell_command(command: str) -> str:
+    """Escape a shell command for OQL SHELL \"...\" parsing."""
+    escaped = command.replace("\\", "\\\\").replace('"', '\\"')
+    return f'"{escaped}"'
+
+
+def _expand_shell(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
+    """Expand SHELL table rows into quoted SHELL + optional ASSERT_EXIT_CODE lines.
+
+    TestTOON rows preserve the full command string (including ``&&`` and ``|``).
+    The OQL interpreter only accepts the first whitespace token when unquoted,
+    so we must wrap the command in quotes before execution.
+    """
+    for row in section.rows:
+        command = str(row.get("command") or row.get("cmd") or "").strip()
+        if not command:
+            continue
+        timeout_ms = _shell_timeout_ms(row)
+        quoted = _quote_shell_command(command)
+        args = f"{quoted} {timeout_ms}"
+        raw = f"SHELL {args}"
+        lines.append(OqlLine(number=line_num, command="SHELL", args=args, raw=raw))
+        line_num += 1
+
+        expected = _shell_expected_exit(row)
+        if expected is not None:
+            ec_args = str(expected)
+            lines.append(
+                OqlLine(
+                    number=line_num,
+                    command="ASSERT_EXIT_CODE",
+                    args=ec_args,
+                    raw=f"ASSERT_EXIT_CODE {ec_args}",
+                )
+            )
+            line_num += 1
+    return line_num
+
+
 def _expand_generic(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand unknown section types as generic commands."""
     for row in section.rows:
@@ -452,6 +516,7 @@ _SECTION_EXPANDERS = {
     'DOM_AUDIT_BUTTONS': _expand_dom_audit_buttons,
     'COMMANDS': _expand_commands,
     'VALIDATE': _expand_validate,
+    'SHELL': _expand_shell,
 }
 
 

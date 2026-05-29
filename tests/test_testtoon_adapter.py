@@ -326,6 +326,63 @@ class TestFlowExpansion:
         assert lines[0].args == '"#btn"'
 
 
+class TestShellExpansion:
+    """SHELL section must quote compound commands (&&, |) for OQL execution."""
+
+    def _expand(self, source: str):
+        from testql.interpreter._testtoon_parser import testtoon_to_oql
+        return testtoon_to_oql(source).lines
+
+    def test_shell_section_quotes_compound_command(self):
+        src = (
+            "SHELL[1]{command, exit_code}:\n"
+            "  cd /tmp && echo hello world, 0\n"
+        )
+        lines = self._expand(src)
+        assert [(l.command, l.args) for l in lines] == [
+            ('SHELL', '"cd /tmp && echo hello world" 60000'),
+            ('ASSERT_EXIT_CODE', '0'),
+        ]
+
+    def test_shell_expected_exit_column_alias(self):
+        src = (
+            "SHELL[1]{command, expected_exit}:\n"
+            '  "cd /repo && node scripts/check.mjs --user admin", 0\n'
+        )
+        lines = self._expand(src)
+        assert lines[0].command == "SHELL"
+        assert lines[0].args == '"cd /repo && node scripts/check.mjs --user admin" 60000'
+        assert lines[1].command == "ASSERT_EXIT_CODE"
+        assert lines[1].args == "0"
+
+    def test_shell_quoted_row_in_testtoon(self):
+        src = (
+            "SHELL[1]{command, exit_code}:\n"
+            '  "cd /repo && node run.mjs", 0\n'
+        )
+        lines = self._expand(src)
+        assert lines[0].args.startswith('"cd /repo && node run.mjs"')
+
+    def test_shell_dry_run_executes_full_command_not_first_token(self):
+        from testql.interpreter import OqlInterpreter
+        from testql.interpreter._testtoon_parser import testtoon_to_oql
+
+        src = (
+            "SHELL[1]{command, exit_code}:\n"
+            '  echo hello-from-shell-expansion, 0\n'
+        )
+        script = testtoon_to_oql(src)
+        interp = OqlInterpreter(api_url="http://localhost:8101", quiet=True, dry_run=True)
+        for line in script.lines:
+            handler = getattr(interp, f"_cmd_{line.command.lower()}", None)
+            if handler is None and line.command == "ASSERT_EXIT_CODE":
+                handler = interp._cmd_assert_exit_code
+            if handler:
+                handler(line.args, line)
+        assert interp._last_shell_result is not None
+        assert interp._last_shell_result["command"] == "echo hello-from-shell-expansion"
+
+
 class TestBackwardCompatibility:
     """The legacy parser must still work unchanged after Phase 0."""
 

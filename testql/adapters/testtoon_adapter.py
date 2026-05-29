@@ -165,6 +165,8 @@ def _shell_section_to_steps(section: ToonSection) -> list[Step]:
         exit_code = row.get("exit_code")
         if exit_code is None:
             exit_code = row.get("expect_exit_code")
+        if exit_code is None:
+            exit_code = row.get("expected_exit")
         if isinstance(exit_code, int):
             step.expect_exit_code = exit_code
         elif isinstance(exit_code, str) and exit_code.strip().lstrip("-").isdigit():

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "testql"
-version = "1.2.51"
+version = "1.2.52"
 description = "TestQL — Multi-DSL Test Platform: TestTOON / NL / SQL / Proto / GraphQL adapters with Unified IR, generator engine, and meta-testing"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -21,7 +21,9 @@ dependencies = [
     "fastapi>=0.100",
 ]
 
-license = "Apache-2.0"
+[project.license]
+text = "Apache-2.0"
+
 [project.scripts]
 testql = "testql.cli:main"
 
