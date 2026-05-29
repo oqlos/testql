@@ -21,6 +21,7 @@ from ._flow import FlowMixin
 from ._gui import GuiMixin
 from ._dom_scan import DomScanMixin
 from ._hardware import HardwareMixin
+from ._modbus import ModbusMixin
 from ._shell import ShellMixin
 from ._unit import UnitMixin
 from ._validation import ValidationMixin
@@ -28,7 +29,7 @@ from ._websockets import WebSocketMixin
 from .dispatcher import CommandDispatcher
 
 
-class OqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, GuiMixin, DomScanMixin, HardwareMixin, ShellMixin, UnitMixin, ValidationMixin, WebSocketMixin, BaseInterpreter):
+class OqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, GuiMixin, DomScanMixin, HardwareMixin, ModbusMixin, ShellMixin, UnitMixin, ValidationMixin, WebSocketMixin, BaseInterpreter):
     """
     OQL interpreter — runs .testql.toon.yaml / .oql / .tql scripts.
 

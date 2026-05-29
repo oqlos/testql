@@ -487,6 +487,36 @@ def _expand_shell(section: ToonSection, lines: list[OqlLine], line_num: int) -> 
     return line_num
 
 
+def _expand_modbus(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
+    """Expand MODBUS section → MODBUS probe / api commands."""
+    for row in section.rows:
+        action = str(row.get("action", "probe")).strip().lower()
+        if action in {"plan", "runtime-status", "runtime_status", "status"}:
+            raw = f"MODBUS api {action.replace('_', '-')}"
+            lines.append(OqlLine(number=line_num, command="MODBUS", args=f"api {action.replace('_', '-')}", raw=raw))
+            line_num += 1
+            continue
+
+        if action == "skip_if_no_port":
+            serial = str(row.get("serial", "-")).strip()
+            raw = f'MODBUS skip_if_no_port serial={serial}'
+            lines.append(OqlLine(number=line_num, command="MODBUS", args=f"skip_if_no_port serial={serial}", raw=raw))
+            line_num += 1
+            continue
+
+        kv_parts = [action]
+        for key in ("serial", "baud", "parity", "device_ids", "function", "timeout"):
+            val = row.get(key)
+            if val is None or str(val).strip() in {"", "-"}:
+                continue
+            kv_parts.append(f"{key}={val}")
+        args = " ".join(kv_parts)
+        raw = f"MODBUS {args}"
+        lines.append(OqlLine(number=line_num, command="MODBUS", args=args, raw=raw))
+        line_num += 1
+    return line_num
+
+
 def _expand_generic(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand unknown section types as generic commands."""
     for row in section.rows:
@@ -517,6 +547,7 @@ _SECTION_EXPANDERS = {
     'COMMANDS': _expand_commands,
     'VALIDATE': _expand_validate,
     'SHELL': _expand_shell,
+    'MODBUS': _expand_modbus,
 }
 
 

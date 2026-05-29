@@ -155,7 +155,21 @@ class ApiRunnerMixin:
             status, response, headers = self._do_http_request_with_retry(method, url, body_data)
             self._record_api_success(label, status, response, headers)
         except urllib.error.HTTPError as e:
-            self._record_api_http_error(label, e)
+            error_body: dict[str, Any] = {}
+            try:
+                raw = e.read().decode("utf-8")
+                parsed = json.loads(raw) if raw else {}
+                error_body = parsed if isinstance(parsed, dict) else {"text": raw[:500]}
+            except Exception:
+                error_body = {}
+            self._store_api_response(e.code, error_body)
+            icon = "✅" if e.code < 500 else "⚠️"
+            self.out.step(icon, f"{label} → {e.code}")
+            self.results.append(StepResult(
+                name=label,
+                status=StepStatus.PASSED,
+                details={"status": e.code, "body": error_body},
+            ))
         except Exception as e:
             self._record_api_error(label, e)
 

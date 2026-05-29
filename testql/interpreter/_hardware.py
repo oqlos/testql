@@ -85,11 +85,10 @@ class HardwareMixin:
         label = f"HARDWARE {command} {peripheral}"
 
         if command == "check":
-            # Check if peripheral is available
-            self._hardware_call("GET", f"/api/v1/hardware/{peripheral}", None, line, label)
+            # OqlOS exposes plugin health at /api/v1/plugins/<name>/health
+            self._hardware_call("GET", f"/api/v1/plugins/{peripheral}/health", None, line, label)
         elif command == "status":
-            # Get peripheral status
-            self._hardware_call("GET", f"/api/v1/hardware/{peripheral}/status", None, line, label)
+            self._hardware_call("GET", f"/api/v1/plugins/{peripheral}/health", None, line, label)
         elif command == "reset":
             # Reset peripheral
             self._hardware_call("POST", f"/api/v1/hardware/{peripheral}/reset", None, line, label)

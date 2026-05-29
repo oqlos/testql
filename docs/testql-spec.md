@@ -50,6 +50,19 @@ ASSERT_VISIBLE <selector>
 ASSERT_TEXT <selector> <text>
 ```
 
+## Modbus Commands (RTU probe + wizard API)
+
+```
+MODBUS probe                                    # use MODBUS_* env (see testql-modbus-probe.py)
+MODBUS probe serial=/dev/ttyACM1 baud=9600 device_ids=1,2
+MODBUS skip_if_no_port serial=/dev/ttyACM1      # sets modbus_skip_probe when port missing
+MODBUS api plan                                 # GET connect-scenario wizard plan (:8096)
+MODBUS api runtime-status                       # GET runtime status via scenario proxy
+```
+
+After `MODBUS probe`, use `ASSERT_JSON ok == true` and `ASSERT_JSON results.length > 0`.
+Set `TESTQL_MODBUS_SKIP=1` to skip failed probes (CI without bench hardware).
+
 ## Encoder Commands
 
 ```
