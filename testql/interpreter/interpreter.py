@@ -16,9 +16,11 @@ from ._parser import OqlLine, OqlScript, parse_oql
 from ._testtoon_parser import testtoon_to_oql
 from ._api_runner import ApiRunnerMixin
 from ._assertions import AssertionsMixin
+from ._context import ContextMixin
 from ._encoder import EncoderMixin
 from ._flow import FlowMixin
 from ._gui import GuiMixin
+from ._desktop import DesktopMixin
 from ._dom_scan import DomScanMixin
 from ._hardware import HardwareMixin
 from ._modbus import ModbusMixin
@@ -29,7 +31,7 @@ from ._websockets import WebSocketMixin
 from .dispatcher import CommandDispatcher
 
 
-class OqlInterpreter(ApiRunnerMixin, AssertionsMixin, EncoderMixin, FlowMixin, GuiMixin, DomScanMixin, HardwareMixin, ModbusMixin, ShellMixin, UnitMixin, ValidationMixin, WebSocketMixin, BaseInterpreter):
+class OqlInterpreter(ApiRunnerMixin, AssertionsMixin, ContextMixin, EncoderMixin, FlowMixin, GuiMixin, DesktopMixin, DomScanMixin, HardwareMixin, ModbusMixin, ShellMixin, UnitMixin, ValidationMixin, WebSocketMixin, BaseInterpreter):
     """
     OQL interpreter — runs .testql.toon.yaml / .oql / .tql scripts.
 

@@ -49,6 +49,17 @@ _ENCODER_ACTION_MAP = {
 }
 
 
+def _append_raw_command(
+    lines: list[OqlLine],
+    line_num: int,
+    command: str,
+    args: str = "",
+) -> int:
+    raw = command if not args else f"{command} {args}"
+    lines.append(OqlLine(number=line_num, command=command, args=args, raw=raw))
+    return line_num + 1
+
+
 def _expand_config(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand CONFIG section → SET commands."""
 
@@ -253,6 +264,102 @@ def _expand_steps(section: ToonSection, lines: list[OqlLine], line_num: int) -> 
         raw = f'{cmd} {args}'
         lines.append(OqlLine(number=line_num, command=cmd, args=args, raw=raw))
         line_num += 1
+    return line_num
+
+
+def _expand_environment(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
+    """Expand ENVIRONMENT → SET profile vars + CONTEXT_APPLY."""
+    payload: dict[str, object] = {}
+    for row in section.rows:
+        if "key" in row:
+            key = str(row.get("key", "")).strip()
+            value = row.get("value")
+            if key:
+                payload[key] = value
+                key_quoted = f'"{key}"' if " " in key else key
+                if "${" in str(value) and "}" in str(value):
+                    line_num = _append_raw_command(lines, line_num, "SET", f"{key_quoted} {value}")
+                else:
+                    line_num = _append_raw_command(lines, line_num, "SET", f'{key_quoted} "{value}"')
+        else:
+            for key, value in row.items():
+                key_s = str(key).strip()
+                payload[key_s] = value
+                line_num = _append_raw_command(lines, line_num, "SET", f'{key_s} "{value}"')
+    if payload:
+        line_num = _append_raw_command(lines, line_num, "CONTEXT_APPLY", json.dumps(payload, ensure_ascii=False))
+    else:
+        line_num = _append_raw_command(lines, line_num, "CONTEXT_DETECT", "")
+    return line_num
+
+
+def _expand_context(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
+    """Expand CONTEXT → SET task variables (no profile overwrite)."""
+    for row in section.rows:
+        if "key" in row:
+            key = str(row.get("key", "")).strip()
+            value = row.get("value")
+            if not key:
+                continue
+            key_quoted = f'"{key}"' if " " in key else key
+            if "${" in str(value) and "}" in str(value):
+                line_num = _append_raw_command(lines, line_num, "SET", f"{key_quoted} {value}")
+            else:
+                line_num = _append_raw_command(lines, line_num, "SET", f'{key_quoted} "{value}"')
+        else:
+            for key, value in row.items():
+                line_num = _append_raw_command(lines, line_num, "SET", f'{str(key).strip()} "{value}"')
+    return line_num
+
+
+def _expand_gui(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
+    """Expand GUI table → GUI_START / GUI_* commands."""
+    session_open = False
+    for row in section.rows:
+        action = str(row.get("action", "")).strip().lower()
+        selector = str(row.get("selector") or row.get("target") or "").strip()
+        value = row.get("value") if row.get("value") not in (None, "-") else row.get("text")
+        wait_ms = row.get("wait_ms")
+
+        if action in {"open", "start", "navigate", "goto"}:
+            target = str(value or selector or "${target_url}")
+            if not session_open:
+                if target.startswith("${"):
+                    line_num = _append_raw_command(lines, line_num, "GUI_START", target)
+                else:
+                    line_num = _append_raw_command(lines, line_num, "GUI_START", f'"{target}"')
+                session_open = True
+            else:
+                path = target if target.startswith("${") else f'"{target}"'
+                line_num = _append_raw_command(lines, line_num, "GUI_NAVIGATE", path)
+        elif action in {"input", "type", "fill"}:
+            sel = f'"{selector}"' if selector and not selector.startswith("${") else selector
+            val = f'"{value}"' if value is not None and not str(value).startswith("${") else str(value)
+            line_num = _append_raw_command(lines, line_num, "GUI_INPUT", f"{sel} {val}")
+        elif action == "click":
+            sel = f'"{selector}"' if selector and not selector.startswith("${") else selector
+            line_num = _append_raw_command(lines, line_num, "GUI_CLICK", sel)
+        elif action in {"assert_visible", "visible"}:
+            sel = f'"{selector}"' if selector and not selector.startswith("${") else selector
+            line_num = _append_raw_command(lines, line_num, "GUI_ASSERT_VISIBLE", sel)
+        elif action in {"assert_text", "text"}:
+            expected = value if value is not None else ""
+            sel = f'"{selector}"' if selector and not selector.startswith("${") else selector
+            exp = f'"{expected}"' if expected != "" and not str(expected).startswith("${") else str(expected)
+            line_num = _append_raw_command(lines, line_num, "GUI_ASSERT_TEXT", f"{sel} {exp}")
+        elif action in {"stop", "close"}:
+            line_num = _append_raw_command(lines, line_num, "GUI_STOP", "")
+            session_open = False
+        elif action:
+            sel = f'"{selector}"' if selector else '""'
+            val = f'"{value}"' if value is not None else '""'
+            line_num = _append_raw_command(lines, line_num, action.upper(), f"{sel} {val}".strip())
+
+        if wait_ms not in (None, "-", "", 0, "0"):
+            line_num = _append_raw_command(lines, line_num, "WAIT", str(wait_ms))
+
+    if session_open:
+        line_num = _append_raw_command(lines, line_num, "GUI_STOP", "")
     return line_num
 
 
@@ -517,6 +624,20 @@ def _expand_modbus(section: ToonSection, lines: list[OqlLine], line_num: int) ->
     return line_num
 
 
+def _expand_desktop(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
+    """Expand DESKTOP section → DESKTOP_* commands."""
+    for row in section.rows:
+        command = str(row.get("command") or row.get("action") or "").strip().upper()
+        args = str(row.get("args") or row.get("target") or "").strip()
+        if not command:
+            continue
+        if args and args != "-":
+            line_num = _append_raw_command(lines, line_num, command, f'"{args}"' if " " in args and not args.startswith("${") else args)
+        else:
+            line_num = _append_raw_command(lines, line_num, command, "")
+    return line_num
+
+
 def _expand_generic(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
     """Expand unknown section types as generic commands."""
     for row in section.rows:
@@ -531,6 +652,10 @@ def _expand_generic(section: ToonSection, lines: list[OqlLine], line_num: int) -
 
 _SECTION_EXPANDERS = {
     'CONFIG': _expand_config,
+    'ENVIRONMENT': _expand_environment,
+    'CONTEXT': _expand_context,
+    'GUI': _expand_gui,
+    'DESKTOP': _expand_desktop,
     'API': _expand_api,
     'NAVIGATE': _expand_navigate,
     'ENCODER': _expand_encoder,

@@ -1,0 +1,5 @@
+# Native desktop smoke test — list windows and assert a GUI session exists.
+# Run: testql run examples/desktop/list-windows.oql
+
+DESKTOP_LIST
+DESKTOP_ASSERT_WINDOW "Toolbox"

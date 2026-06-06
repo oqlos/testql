@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "testql"
-version = "1.2.55"
+version = "1.2.57"
 description = "TestQL — Multi-DSL Test Platform: TestTOON / NL / SQL / Proto / GraphQL adapters with Unified IR, generator engine, and meta-testing"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -21,7 +21,9 @@ dependencies = [
     "fastapi>=0.100",
 ]
 
-license = "Apache-2.0"
+[project.license]
+text = "Apache-2.0"
+
 [project.scripts]
 testql = "testql.cli:main"
 
@@ -33,6 +35,15 @@ testql = "testql.cli:main"
 
 [project.optional-dependencies]
 playwright = ["playwright>=1.40"]
+desktop = [
+    # Host tools (wmctrl, xdotool, wtype, ydotool, grim) are system packages.
+    # Optional Python libs for semantic / vision desktop control:
+    "pyautogui>=0.9.54",
+    "mss>=9.0",
+    "opencv-python-headless>=4.8",
+    "dogtail>=0.9.11; platform_system=='Linux'",
+    "pynput>=1.7",
+]
 sql = ["sqlglot>=20.0"]
 proto = ["protobuf>=4.21"]
 graphql = ["graphql-core>=3.2"]
@@ -60,6 +71,7 @@ addopts = "--cov=testql --cov-report=term-missing --cov-report=json"
 testpaths = ["tests"]
 markers = [
     "live_llm: optional live LLM integration (requires TESTQL_LIVE_LLM=1 and API key)",
+    "live_desktop: optional live wmctrl/desktop probe on host with GUI session",
 ]
 
 [tool.pfix.runtime]

@@ -188,6 +188,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Remaining
 - Add Playwright-backed browser execution, JavaScript-rendered DOM capture, screenshots, console errors, network logs, link-by-link validation, accessibility/performance checks, MCP service integration, and runtime-vs-code delta reports.
 
+## [1.2.57] - 2026-06-06
+
+### Docs
+- Update README.md
+
+### Test
+- Update testql/__init__.py
+- Update testql/context/__init__.py
+- Update testql/context/runtime.py
+- Update testql/desktop/__init__.py
+- Update testql/desktop/backend.py
+- Update testql/desktop/catalog.py
+- Update testql/desktop/models.py
+- Update testql/desktop/wmctrl.py
+- Update testql/export/__init__.py
+- Update testql/export/scenario_builder.py
+- ... and 9 more files
+
+### Other
+- Update VERSION
+- Update coverage.json
+- Update examples/desktop/e2e-smoke.oql
+- Update examples/desktop/e2e-smoke.png
+- Update examples/desktop/list-windows.oql
+- Update examples/environment/complex-replay.testql.toon.yaml
+- Update project/planfile-tickets.yaml
+
 ## [1.2.55] - 2026-06-06
 
 ### Docs

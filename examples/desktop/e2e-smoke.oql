@@ -1,0 +1,6 @@
+# E2E smoke: native desktop control on Linux (no side effects).
+# Verifies window enumeration + assert + screenshot.
+
+DESKTOP_LIST
+DESKTOP_ASSERT_WINDOW "Toolbox"
+DESKTOP_CAPTURE "examples/desktop/e2e-smoke.png"

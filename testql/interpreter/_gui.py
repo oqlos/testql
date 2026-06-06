@@ -252,9 +252,23 @@ class GuiMixin:
             self._gui_app = (p, browser)
             self.out.step("🖥️", f"Playwright: Opened {app_path}")
         else:
-            # Desktop app (simplified - would need playwright-electron for full support)
-            self.out.warn("Playwright desktop apps require playwright-electron. Using web mode fallback.")
-            self._start_playwright("http://localhost:5173", extra_args)
+            path = Path(app_path).expanduser()
+            if path.is_file():
+                from testql.desktop import get_desktop_backend
+
+                backend = get_desktop_backend()
+                pid = backend.launch(str(path), extra_args)
+                self._gui_driver = "desktop"
+                self._gui_app = backend
+                self.out.step("🖥️", f"Desktop: launched {path.name} pid={pid}")
+            else:
+                self.out.fail(f"GUI_START: path not found: {app_path}")
+                self.results.append(StepResult(
+                    name=f'GUI_START "{app_path[:40]}"',
+                    status=StepStatus.ERROR,
+                    message="executable not found",
+                ))
+                return
 
         self.results.append(StepResult(
             name=f'GUI_START "{app_path[:40]}"', status=StepStatus.PASSED

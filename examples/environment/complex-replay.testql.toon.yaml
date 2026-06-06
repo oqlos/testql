@@ -1,0 +1,27 @@
+# SCENARIO: complex-replay — environment-aware browser + desktop smoke
+# TYPE: e2e
+# VERSION: 1.0
+# SOURCE: testql.examples
+
+ENVIRONMENT[6]{key, value}:
+  os, linux
+  session, ${XDG_SESSION_TYPE}
+  browser.engine, chromium
+  browser.headless, true
+  app.type, hybrid
+  runtime.source, testql
+
+CONFIG[2]{key, value}:
+  target_url, https://example.com
+  api_url, http://localhost:8101
+
+CONTEXT[1]{key, value}:
+  task, environment-smoke
+
+GUI[2]{action, selector, value, wait_ms}:
+  navigate, -, ${target_url}, 1000
+  assert_text, h1, Example Domain, -
+
+DESKTOP[2]{command, args}:
+  DESKTOP_LIST, -
+  DESKTOP_CAPTURE, scenarios/env-smoke.png
