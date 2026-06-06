@@ -1,5 +1,5 @@
 % ── Project Metadata ─────────────────────────────────────
-project_metadata('testql', '1.2.50', 'python').
+project_metadata('testql', '1.2.52', 'python').
 
 % ── Project Files ────────────────────────────────────────
 project_file('TODO/testtoon_parser.py', 142, 'python').
@@ -36,7 +36,7 @@ project_file('test_manifest_and_generators.py', 526, 'python').
 project_file('testql/__init__.py', 10, 'python').
 project_file('testql/__main__.py', 7, 'python').
 project_file('testql/_base_fallback.py', 233, 'python').
-project_file('testql/adapters/__init__.py', 51, 'python').
+project_file('testql/adapters/__init__.py', 54, 'python').
 project_file('testql/adapters/base.py', 98, 'python').
 project_file('testql/adapters/graphql/__init__.py', 26, 'python').
 project_file('testql/adapters/graphql/graphql_adapter.py', 274, 'python').
@@ -50,6 +50,12 @@ project_file('testql/adapters/nl/intent_recognizer.py', 100, 'python').
 project_file('testql/adapters/nl/lexicon/__init__.py', 39, 'python').
 project_file('testql/adapters/nl/llm_fallback.py', 50, 'python').
 project_file('testql/adapters/nl/nl_adapter.py', 354, 'python').
+project_file('testql/adapters/nlp2dsl/__init__.py', 22, 'python').
+project_file('testql/adapters/nlp2dsl/client.py', 63, 'python').
+project_file('testql/adapters/nlp2dsl/live_llm.py', 91, 'python').
+project_file('testql/adapters/nlp2dsl/llm_provider.py', 43, 'python').
+project_file('testql/adapters/nlp2dsl/mock_llm.py', 47, 'python').
+project_file('testql/adapters/nlp2dsl/nlp2dsl_adapter.py', 82, 'python').
 project_file('testql/adapters/proto/__init__.py', 54, 'python').
 project_file('testql/adapters/proto/compatibility.py', 144, 'python').
 project_file('testql/adapters/proto/descriptor_loader.py', 163, 'python').
@@ -63,12 +69,18 @@ project_file('testql/adapters/sql/dialect_resolver.py', 89, 'python').
 project_file('testql/adapters/sql/fixtures.py', 106, 'python').
 project_file('testql/adapters/sql/query_parser.py', 96, 'python').
 project_file('testql/adapters/sql/sql_adapter.py', 334, 'python').
-project_file('testql/adapters/testtoon_adapter.py', 577, 'python').
+project_file('testql/adapters/testtoon_adapter.py', 743, 'python').
+project_file('testql/artifacts/__init__.py', 18, 'python').
+project_file('testql/artifacts/base.py', 25, 'python').
+project_file('testql/artifacts/email_checker.py', 45, 'python').
+project_file('testql/artifacts/file_checker.py', 43, 'python').
+project_file('testql/artifacts/registry.py', 36, 'python').
 project_file('testql/autoloop_runner.py', 1, 'python').
 project_file('testql/base.py', 38, 'python').
-project_file('testql/cli.py', 105, 'python').
+project_file('testql/cli.py', 107, 'python').
 project_file('testql/commands/__init__.py', 36, 'python').
 project_file('testql/commands/auto_cmd.py', 203, 'python').
+project_file('testql/commands/conversation_cmd.py', 71, 'python').
 project_file('testql/commands/discover_cmd.py', 47, 'python').
 project_file('testql/commands/echo/__init__.py', 23, 'python').
 project_file('testql/commands/echo/cli.py', 40, 'python').
@@ -103,7 +115,9 @@ project_file('testql/commands/templates/__init__.py', 19, 'python').
 project_file('testql/commands/templates/content.py', 167, 'python').
 project_file('testql/commands/templates/templates.py', 60, 'python').
 project_file('testql/commands/topology_cmd.py', 24, 'python').
-project_file('testql/commands/watchdog_cmd.py', 261, 'python').
+project_file('testql/commands/watchdog_cmd.py', 283, 'python').
+project_file('testql/conversation/__init__.py', 6, 'python').
+project_file('testql/conversation/runner.py', 268, 'python').
 project_file('testql/detectors/__init__.py', 54, 'python').
 project_file('testql/detectors/base.py', 35, 'python').
 project_file('testql/detectors/config_detector.py', 219, 'python').
@@ -142,6 +156,7 @@ project_file('testql/generators/analyzers.py', 310, 'python').
 project_file('testql/generators/api_generator.py', 299, 'python').
 project_file('testql/generators/base.py', 60, 'python').
 project_file('testql/generators/convenience.py', 52, 'python').
+project_file('testql/generators/conversation_generator.py', 70, 'python').
 project_file('testql/generators/generators.py', 31, 'python').
 project_file('testql/generators/llm/__init__.py', 17, 'python').
 project_file('testql/generators/llm/coverage_optimizer.py', 33, 'python').
@@ -151,9 +166,10 @@ project_file('testql/generators/page_analyzer.py', 527, 'python').
 project_file('testql/generators/pipeline.py', 96, 'python').
 project_file('testql/generators/pytest_generator.py', 148, 'python').
 project_file('testql/generators/scenario_generator.py', 88, 'python').
-project_file('testql/generators/sources/__init__.py', 76, 'python').
+project_file('testql/generators/sources/__init__.py', 81, 'python').
 project_file('testql/generators/sources/base.py', 33, 'python').
 project_file('testql/generators/sources/config_source.py', 306, 'python').
+project_file('testql/generators/sources/conversation.py', 36, 'python').
 project_file('testql/generators/sources/graphql_source.py', 67, 'python').
 project_file('testql/generators/sources/nl_source.py', 28, 'python').
 project_file('testql/generators/sources/openapi_source.py', 94, 'python').
@@ -174,17 +190,18 @@ project_file('testql/generators/targets/testtoon_target.py', 24, 'python').
 project_file('testql/generators/test_generator.py', 107, 'python').
 project_file('testql/integrations/planfile_hook.py', 116, 'python').
 project_file('testql/interpreter/__init__.py', 92, 'python').
-project_file('testql/interpreter/_api_runner.py', 289, 'python').
+project_file('testql/interpreter/_api_runner.py', 303, 'python').
 project_file('testql/interpreter/_assertions.py', 305, 'python').
 project_file('testql/interpreter/_converter.py', 63, 'python').
 project_file('testql/interpreter/_dom_scan.py', 41, 'python').
 project_file('testql/interpreter/_encoder.py', 101, 'python').
 project_file('testql/interpreter/_flow.py', 166, 'python').
 project_file('testql/interpreter/_gui.py', 709, 'python').
-project_file('testql/interpreter/_hardware.py', 111, 'python').
+project_file('testql/interpreter/_hardware.py', 110, 'python').
+project_file('testql/interpreter/_modbus.py', 209, 'python').
 project_file('testql/interpreter/_parser.py', 34, 'python').
 project_file('testql/interpreter/_shell.py', 261, 'python').
-project_file('testql/interpreter/_testtoon_parser.py', 469, 'python').
+project_file('testql/interpreter/_testtoon_parser.py', 565, 'python').
 project_file('testql/interpreter/_unit.py', 268, 'python').
 project_file('testql/interpreter/_validation.py', 154, 'python').
 project_file('testql/interpreter/_websockets.py', 173, 'python').
@@ -210,23 +227,24 @@ project_file('testql/interpreter/dom_scan_formatters.py', 85, 'python').
 project_file('testql/interpreter/dom_scan_mixin.py', 319, 'python').
 project_file('testql/interpreter/dom_scan_models.py', 54, 'python').
 project_file('testql/interpreter/dom_scanner.py', 419, 'python').
-project_file('testql/interpreter/interpreter.py', 159, 'python').
+project_file('testql/interpreter/interpreter.py', 160, 'python').
 project_file('testql/interpreter/testtoon_models.py', 34, 'python').
 project_file('testql/interpreter/testtoon_parser.py', 297, 'python').
 project_file('testql/interpreter.py', 28, 'python').
-project_file('testql/ir/__init__.py', 49, 'python').
+project_file('testql/ir/__init__.py', 55, 'python').
 project_file('testql/ir/assertions.py', 34, 'python').
 project_file('testql/ir/captures.py', 38, 'python').
 project_file('testql/ir/fixtures.py', 34, 'python').
 project_file('testql/ir/metadata.py', 32, 'python').
 project_file('testql/ir/plan.py', 43, 'python').
-project_file('testql/ir/steps.py', 252, 'python').
+project_file('testql/ir/steps.py', 319, 'python').
 project_file('testql/ir_runner/__init__.py', 35, 'python').
 project_file('testql/ir_runner/assertion_eval.py', 125, 'python').
 project_file('testql/ir_runner/context.py', 43, 'python').
 project_file('testql/ir_runner/engine.py', 137, 'python').
-project_file('testql/ir_runner/executors/__init__.py', 52, 'python').
+project_file('testql/ir_runner/executors/__init__.py', 54, 'python').
 project_file('testql/ir_runner/executors/api.py', 68, 'python').
+project_file('testql/ir_runner/executors/assert_json.py', 31, 'python').
 project_file('testql/ir_runner/executors/base.py', 69, 'python').
 project_file('testql/ir_runner/executors/encoder.py', 78, 'python').
 project_file('testql/ir_runner/executors/graphql.py', 60, 'python').
@@ -269,7 +287,7 @@ project_file('testql/topology/generator.py', 242, 'python').
 project_file('testql/topology/models.py', 106, 'python').
 project_file('testql/topology/serializers.py', 52, 'python').
 project_file('testql/topology/sitemap.py', 120, 'python').
-project_file('tests/conftest.py', 45, 'python').
+project_file('tests/conftest.py', 60, 'python').
 project_file('tests/fixtures/discovery/python_pkg/sample_api/__init__.py', 2, 'python').
 project_file('tests/fixtures/discovery/python_pkg/sample_api/main.py', 8, 'python').
 project_file('tests/test_adapter_capture_syntax.py', 167, 'python').
@@ -278,6 +296,8 @@ project_file('tests/test_api_handler.py', 90, 'python').
 project_file('tests/test_browser_discovery.py', 111, 'python').
 project_file('tests/test_cli.py', 98, 'python').
 project_file('tests/test_cli_no_block.py', 104, 'python').
+project_file('tests/test_conversation_live_llm.py', 83, 'python').
+project_file('tests/test_conversation_nlp2dsl.py', 158, 'python').
 project_file('tests/test_converter.py', 178, 'python').
 project_file('tests/test_converter_handlers.py', 352, 'python').
 project_file('tests/test_detectors.py', 389, 'python').
@@ -295,7 +315,7 @@ project_file('tests/test_generators.py', 238, 'python').
 project_file('tests/test_graphql_adapter.py', 197, 'python').
 project_file('tests/test_gui_execution.py', 130, 'python').
 project_file('tests/test_interpreter.py', 224, 'python').
-project_file('tests/test_ir.py', 194, 'python').
+project_file('tests/test_ir.py', 217, 'python').
 project_file('tests/test_ir_captures.py', 51, 'python').
 project_file('tests/test_ir_runner_assertion_eval.py', 108, 'python').
 project_file('tests/test_ir_runner_captures.py', 153, 'python').
@@ -308,6 +328,7 @@ project_file('tests/test_meta_coverage.py', 137, 'python').
 project_file('tests/test_meta_mutator.py', 190, 'python').
 project_file('tests/test_meta_self_test.py', 99, 'python').
 project_file('tests/test_misc_cmds.py', 111, 'python').
+project_file('tests/test_modbus_commands.py', 46, 'python').
 project_file('tests/test_navigate_json_path.py', 161, 'python').
 project_file('tests/test_network_discovery.py', 163, 'python').
 project_file('tests/test_nl_adapter.py', 278, 'python').
@@ -346,7 +367,7 @@ project_file('tests/test_suite_listing.py', 167, 'python').
 project_file('tests/test_sumd_parser.py', 206, 'python').
 project_file('tests/test_targets.py', 87, 'python').
 project_file('tests/test_test_generator.py', 121, 'python').
-project_file('tests/test_testtoon_adapter.py', 355, 'python').
+project_file('tests/test_testtoon_adapter.py', 412, 'python').
 project_file('tests/test_toon_parser.py', 84, 'python').
 project_file('tests/test_topology.py', 88, 'python').
 project_file('tests/test_topology_generator.py', 162, 'python').
@@ -487,6 +508,9 @@ python_function('testql/adapters/nl/nl_adapter.py', '_render_step', 2, 4, 3).
 python_function('testql/adapters/nl/nl_adapter.py', '_metadata_from_header', 2, 2, 2).
 python_function('testql/adapters/nl/nl_adapter.py', 'parse', 1, 3, 2).
 python_function('testql/adapters/nl/nl_adapter.py', 'render', 1, 5, 2).
+python_function('testql/adapters/nlp2dsl/llm_provider.py', 'live_llm_enabled', 1, 2, 3).
+python_function('testql/adapters/nlp2dsl/llm_provider.py', 'resolve_llm_provider', 0, 4, 5).
+python_function('testql/adapters/nlp2dsl/mock_llm.py', 'load_mock_replies', 1, 5, 8).
 python_function('testql/adapters/proto/__init__.py', 'has_protobuf', 0, 2, 0).
 python_function('testql/adapters/proto/compatibility.py', '_wire_compatible', 2, 4, 1).
 python_function('testql/adapters/proto/compatibility.py', '_compare_field', 3, 5, 3).
@@ -622,12 +646,20 @@ python_function('testql/adapters/testtoon_adapter.py', '_encoder_section_to_step
 python_function('testql/adapters/testtoon_adapter.py', '_assert_section_to_steps', 1, 3, 4).
 python_function('testql/adapters/testtoon_adapter.py', '_capture_section_apply', 2, 8, 6).
 python_function('testql/adapters/testtoon_adapter.py', '_resolve_capture_target', 3, 4, 3).
+python_function('testql/adapters/testtoon_adapter.py', '_coerce_assert_expected', 1, 7, 5).
+python_function('testql/adapters/testtoon_adapter.py', '_assert_json_field', 1, 3, 3).
+python_function('testql/adapters/testtoon_adapter.py', '_assert_json_section_apply', 2, 12, 9).
 python_function('testql/adapters/testtoon_adapter.py', '_generic_section_to_steps', 1, 2, 4).
-python_function('testql/adapters/testtoon_adapter.py', '_shell_section_to_steps', 1, 9, 9).
+python_function('testql/adapters/testtoon_adapter.py', '_shell_section_to_steps', 1, 10, 9).
 python_function('testql/adapters/testtoon_adapter.py', '_unit_section_to_steps', 1, 5, 5).
 python_function('testql/adapters/testtoon_adapter.py', '_log_section_to_steps', 1, 4, 4).
-python_function('testql/adapters/testtoon_adapter.py', '_translate_section', 1, 2, 3).
-python_function('testql/adapters/testtoon_adapter.py', '_toon_to_plan', 1, 6, 9).
+python_function('testql/adapters/testtoon_adapter.py', '_context_section_to_config', 1, 1, 1).
+python_function('testql/adapters/testtoon_adapter.py', '_conversation_section_to_steps', 1, 7, 6).
+python_function('testql/adapters/testtoon_adapter.py', '_nlp2dsl_section_to_steps', 1, 11, 8).
+python_function('testql/adapters/testtoon_adapter.py', '_validate_section_to_steps', 1, 9, 8).
+python_function('testql/adapters/testtoon_adapter.py', '_parse_artifact_criteria', 1, 5, 2).
+python_function('testql/adapters/testtoon_adapter.py', '_translate_section', 1, 3, 4).
+python_function('testql/adapters/testtoon_adapter.py', '_toon_to_plan', 1, 8, 10).
 python_function('testql/adapters/testtoon_adapter.py', '_render_meta', 1, 5, 1).
 python_function('testql/adapters/testtoon_adapter.py', '_render_config', 1, 3, 3).
 python_function('testql/adapters/testtoon_adapter.py', '_render_api_steps', 1, 4, 2).
@@ -642,10 +674,14 @@ python_function('testql/adapters/testtoon_adapter.py', '_render_assertions', 1, 
 python_function('testql/adapters/testtoon_adapter.py', '_render_captures', 1, 5, 4).
 python_function('testql/adapters/testtoon_adapter.py', '_render_validate_steps', 1, 5, 3).
 python_function('testql/adapters/testtoon_adapter.py', '_format_extra_value', 1, 6, 2).
-python_function('testql/adapters/testtoon_adapter.py', '_render_generic_section_steps', 1, 17, 10).
+python_function('testql/adapters/testtoon_adapter.py', '_group_generic_steps', 1, 9, 3).
+python_function('testql/adapters/testtoon_adapter.py', '_derive_columns', 1, 4, 4).
+python_function('testql/adapters/testtoon_adapter.py', '_render_group_section', 3, 3, 5).
+python_function('testql/adapters/testtoon_adapter.py', '_render_generic_section_steps', 1, 4, 4).
 python_function('testql/adapters/testtoon_adapter.py', '_render_plan', 1, 9, 17).
 python_function('testql/adapters/testtoon_adapter.py', 'parse', 1, 1, 2).
 python_function('testql/adapters/testtoon_adapter.py', 'render', 1, 1, 2).
+python_function('testql/artifacts/registry.py', 'get_artifact_registry', 0, 2, 4).
 python_function('testql/cli.py', 'mcp_serve', 0, 2, 4).
 python_function('testql/cli.py', 'cli', 0, 1, 3).
 python_function('testql/cli.py', '_fetch_latest_version', 0, 2, 3).
@@ -660,6 +696,8 @@ python_function('testql/commands/auto_cmd.py', '_run_report_phase', 3, 3, 6).
 python_function('testql/commands/auto_cmd.py', '_print_summary', 3, 1, 6).
 python_function('testql/commands/auto_cmd.py', '_render_console_report', 2, 4, 3).
 python_function('testql/commands/auto_cmd.py', '_render_markdown_report', 2, 4, 4).
+python_function('testql/commands/conversation_cmd.py', 'conversation', 0, 1, 1).
+python_function('testql/commands/conversation_cmd.py', 'conversation_run', 6, 20, 18).
 python_function('testql/commands/discover_cmd.py', 'discover', 3, 5, 14).
 python_function('testql/commands/discover_cmd.py', '_print_summary', 1, 9, 6).
 python_function('testql/commands/echo/cli.py', 'echo', 5, 3, 10).
@@ -795,7 +833,11 @@ python_function('testql/commands/watchdog_cmd.py', '_post_failures', 3, 4, 5).
 python_function('testql/commands/watchdog_cmd.py', '_extract_failures', 1, 10, 3).
 python_function('testql/commands/watchdog_cmd.py', '_start_metrics_server', 2, 2, 7).
 python_function('testql/commands/watchdog_cmd.py', '_update_metrics', 5, 11, 6).
-python_function('testql/commands/watchdog_cmd.py', 'watchdog', 8, 21, 25).
+python_function('testql/commands/watchdog_cmd.py', '_resolve_watchdog_config', 5, 6, 4).
+python_function('testql/commands/watchdog_cmd.py', '_process_one_scenario', 5, 3, 7).
+python_function('testql/commands/watchdog_cmd.py', 'watchdog', 8, 14, 19).
+python_function('testql/conversation/runner.py', '_step_status_name', 1, 4, 0).
+python_function('testql/conversation/runner.py', '_extract_path', 2, 4, 3).
 python_function('testql/detectors/unified.py', 'detect_endpoints', 3, 2, 3).
 python_function('testql/discovery/manifest.py', '_score_confidence', 1, 5, 1).
 python_function('testql/discovery/manifest.py', '_merge_metadata', 1, 10, 5).
@@ -831,6 +873,7 @@ python_function('testql/discovery/registry.py', '_cost_key', 1, 1, 1).
 python_function('testql/doql_parser.py', 'parse_doql_file', 1, 1, 2).
 python_function('testql/generators/convenience.py', 'generate_for_project', 1, 1, 2).
 python_function('testql/generators/convenience.py', 'generate_for_workspace', 1, 1, 3).
+python_function('testql/generators/conversation_generator.py', 'trace_from_export', 1, 4, 2).
 python_function('testql/generators/page_analyzer.py', '_is_unstable', 1, 2, 2).
 python_function('testql/generators/page_analyzer.py', '_css_escape', 1, 1, 1).
 python_function('testql/generators/page_analyzer.py', 'pick_selector', 1, 3, 1).
@@ -937,6 +980,11 @@ python_function('testql/interpreter/_testtoon_parser.py', '_expand_record', 3, 3
 python_function('testql/interpreter/_testtoon_parser.py', '_expand_validate', 3, 6, 8).
 python_function('testql/interpreter/_testtoon_parser.py', '_expand_commands', 3, 6, 6).
 python_function('testql/interpreter/_testtoon_parser.py', '_expand_dom_audit_buttons', 3, 6, 5).
+python_function('testql/interpreter/_testtoon_parser.py', '_shell_expected_exit', 1, 7, 6).
+python_function('testql/interpreter/_testtoon_parser.py', '_shell_timeout_ms', 2, 5, 6).
+python_function('testql/interpreter/_testtoon_parser.py', '_quote_shell_command', 1, 1, 1).
+python_function('testql/interpreter/_testtoon_parser.py', '_expand_shell', 3, 6, 8).
+python_function('testql/interpreter/_testtoon_parser.py', '_expand_modbus', 3, 7, 8).
 python_function('testql/interpreter/_testtoon_parser.py', '_expand_generic', 3, 4, 5).
 python_function('testql/interpreter/_testtoon_parser.py', 'testtoon_to_oql', 2, 2, 4).
 python_function('testql/interpreter/_validation.py', '_resolve_target', 2, 11, 8).
@@ -1012,6 +1060,8 @@ python_function('testql/ir_runner/executors/api.py', '_parse_response', 1, 3, 1)
 python_function('testql/ir_runner/executors/api.py', '_do_request', 4, 4, 7).
 python_function('testql/ir_runner/executors/api.py', '_payload', 3, 1, 0).
 python_function('testql/ir_runner/executors/api.py', 'execute', 2, 4, 8).
+python_function('testql/ir_runner/executors/assert_json.py', '_last_payload', 1, 1, 0).
+python_function('testql/ir_runner/executors/assert_json.py', 'execute', 2, 5, 5).
 python_function('testql/ir_runner/executors/base.py', 'step_label', 2, 2, 0).
 python_function('testql/ir_runner/executors/base.py', '_aggregate_assertion_status', 2, 3, 0).
 python_function('testql/ir_runner/executors/base.py', '_compose_message', 2, 3, 1).
@@ -1174,9 +1224,14 @@ python_function('tests/conftest.py', 'project_root', 0, 1, 1).
 python_function('tests/conftest.py', 'testql_pkg_dir', 0, 1, 1).
 python_function('tests/conftest.py', 'project_root_manifest', 0, 1, 2).
 python_function('tests/conftest.py', 'testql_pkg_manifest', 0, 1, 2).
+python_function('tests/conftest.py', 'pytest_configure', 1, 1, 1).
+python_function('tests/conftest.py', 'pytest_collection_modifyitems', 2, 4, 6).
 python_function('tests/fixtures/discovery/python_pkg/sample_api/main.py', 'health', 0, 1, 1).
 python_function('tests/test_browser_discovery.py', 'mock_playwright', 0, 1, 2).
 python_function('tests/test_browser_discovery.py', 'test_playwright_probe_collects_console_and_network', 1, 9, 4).
+python_function('tests/test_conversation_live_llm.py', 'test_live_llm_reply_for_real_api', 0, 5, 5).
+python_function('tests/test_conversation_live_llm.py', 'test_conversation_runner_with_live_llm_smoke', 0, 4, 10).
+python_function('tests/test_conversation_nlp2dsl.py', 'test_runner_with_fake_client', 0, 3, 7).
 python_function('tests/test_detectors.py', '_write', 3, 1, 2).
 python_function('tests/test_echo.py', 'write_toon', 3, 1, 2).
 python_function('tests/test_encoder_routes.py', 'test_normalize_legacy_test_path', 0, 2, 2).
@@ -1314,6 +1369,30 @@ python_method('NLDSLAdapter', 'detect', 1, 6, 4).
 python_method('NLDSLAdapter', 'parse', 1, 3, 8).
 python_method('NLDSLAdapter', 'render', 1, 5, 4).
 python_method('NLDSLAdapter', '_load_lexicon_safe', 1, 4, 2).
+python_class('testql/adapters/nlp2dsl/client.py', 'Nlp2DslResponse').
+python_method('Nlp2DslResponse', 'ok', 0, 1, 0).
+python_class('testql/adapters/nlp2dsl/client.py', 'Nlp2DslClient').
+python_method('Nlp2DslClient', '__init__', 2, 3, 2).
+python_method('Nlp2DslClient', '_post', 2, 5, 9).
+python_method('Nlp2DslClient', 'chatstart', 1, 2, 1).
+python_method('Nlp2DslClient', 'chatmessage', 1, 1, 1).
+python_method('Nlp2DslClient', 'runworkflow', 1, 1, 1).
+python_method('Nlp2DslClient', 'workflow_from_text', 1, 1, 1).
+python_class('testql/adapters/nlp2dsl/live_llm.py', 'LiveLLMProvider').
+python_method('LiveLLMProvider', 'from_env', 1, 4, 4).
+python_method('LiveLLMProvider', 'reply_for', 1, 3, 3).
+python_method('LiveLLMProvider', '_build_prompt', 1, 1, 1).
+python_method('LiveLLMProvider', '_chat', 1, 6, 8).
+python_method('LiveLLMProvider', '_parse_json_object', 1, 4, 6).
+python_class('testql/adapters/nlp2dsl/llm_provider.py', 'LLMProvider').
+python_method('LLMProvider', 'reply_for', 1, 1, 0).
+python_class('testql/adapters/nlp2dsl/mock_llm.py', 'MockLLMProvider').
+python_method('MockLLMProvider', 'reply_for', 1, 6, 1).
+python_class('testql/adapters/nlp2dsl/nlp2dsl_adapter.py', 'Nlp2DslAdapter').
+python_method('Nlp2DslAdapter', 'detect', 1, 7, 7).
+python_method('Nlp2DslAdapter', 'parse', 1, 4, 5).
+python_method('Nlp2DslAdapter', 'render', 1, 1, 1).
+python_method('Nlp2DslAdapter', 'validate', 1, 6, 4).
 python_class('testql/adapters/proto/compatibility.py', 'CompatibilityIssue').
 python_class('testql/adapters/proto/compatibility.py', 'CompatibilityReport').
 python_method('CompatibilityReport', 'is_compatible', 0, 2, 1).
@@ -1377,6 +1456,18 @@ python_class('testql/adapters/testtoon_adapter.py', 'TestToonAdapter').
 python_method('TestToonAdapter', 'detect', 1, 9, 7).
 python_method('TestToonAdapter', 'parse', 1, 1, 3).
 python_method('TestToonAdapter', 'render', 1, 1, 1).
+python_class('testql/artifacts/base.py', 'ArtifactCheckResult').
+python_class('testql/artifacts/base.py', 'BaseArtifactChecker').
+python_method('BaseArtifactChecker', 'check', 1, 1, 0).
+python_class('testql/artifacts/email_checker.py', 'EmailArtifactChecker').
+python_method('EmailArtifactChecker', 'check', 1, 10, 10).
+python_method('EmailArtifactChecker', '_list_messages', 1, 2, 3).
+python_class('testql/artifacts/file_checker.py', 'FileArtifactChecker').
+python_method('FileArtifactChecker', 'check', 1, 9, 9).
+python_class('testql/artifacts/registry.py', 'ArtifactCheckerRegistry').
+python_method('ArtifactCheckerRegistry', '__init__', 0, 1, 0).
+python_method('ArtifactCheckerRegistry', 'register', 1, 1, 0).
+python_method('ArtifactCheckerRegistry', 'check', 1, 2, 3).
 python_class('testql/commands/heal_scenario_cmd.py', 'HealReport').
 python_method('HealReport', '__post_init__', 0, 2, 0).
 python_class('testql/commands/templates/content.py', 'TestContentBuilder').
@@ -1389,6 +1480,21 @@ python_method('TestContentBuilder', '_build_mixed', 4, 1, 1).
 python_method('TestContentBuilder', '_build_performance', 4, 1, 1).
 python_method('TestContentBuilder', '_build_workflow', 4, 1, 1).
 python_method('TestContentBuilder', '_build_encoder', 4, 1, 1).
+python_class('testql/conversation/runner.py', 'TurnTrace').
+python_class('testql/conversation/runner.py', 'ConversationRunResult').
+python_method('ConversationRunResult', 'to_report_dict', 0, 2, 2).
+python_class('testql/conversation/runner.py', 'ConversationRunner').
+python_method('ConversationRunner', '__init__', 3, 4, 6).
+python_method('ConversationRunner', 'variables', 0, 1, 1).
+python_method('ConversationRunner', 'run', 1, 3, 6).
+python_method('ConversationRunner', '_apply_plan_config', 1, 9, 7).
+python_method('ConversationRunner', '_run_step', 2, 7, 6).
+python_method('ConversationRunner', '_run_via_ir', 2, 7, 5).
+python_method('ConversationRunner', '_run_nlp2dsl', 2, 15, 17).
+python_method('ConversationRunner', '_run_turn', 2, 4, 5).
+python_method('ConversationRunner', '_run_artifact', 2, 4, 6).
+python_method('ConversationRunner', '_interpolate_str', 1, 2, 3).
+python_method('ConversationRunner', '_interpolate', 1, 6, 4).
 python_class('testql/detectors/base.py', 'BaseEndpointDetector').
 python_method('BaseEndpointDetector', '__init__', 1, 1, 0).
 python_method('BaseEndpointDetector', 'detect', 0, 1, 0).
@@ -1597,6 +1703,9 @@ python_class('testql/generators/base.py', 'BaseAnalyzer').
 python_method('BaseAnalyzer', '__init__', 1, 1, 2).
 python_method('BaseAnalyzer', '_get_exclude_dirs', 0, 1, 0).
 python_method('BaseAnalyzer', '_should_exclude_path', 1, 1, 3).
+python_class('testql/generators/conversation_generator.py', 'ConversationGenerator').
+python_method('ConversationGenerator', 'from_trace', 1, 8, 9).
+python_method('ConversationGenerator', 'render_toon', 1, 1, 2).
 python_class('testql/generators/llm/coverage_optimizer.py', 'CoverageReport').
 python_class('testql/generators/llm/coverage_optimizer.py', 'CoverageOptimizer').
 python_method('CoverageOptimizer', 'analyse', 1, 1, 0).
@@ -1632,6 +1741,8 @@ python_class('testql/generators/sources/base.py', 'BaseSource').
 python_method('BaseSource', 'load', 1, 1, 0).
 python_class('testql/generators/sources/config_source.py', 'ConfigSource').
 python_method('ConfigSource', 'load', 1, 6, 12).
+python_class('testql/generators/sources/conversation.py', 'ConversationTestSource').
+python_method('ConversationTestSource', 'load', 1, 6, 7).
 python_class('testql/generators/sources/graphql_source.py', 'GraphQLSource').
 python_method('GraphQLSource', 'load', 1, 3, 7).
 python_class('testql/generators/sources/nl_source.py', 'NLSource').
@@ -1734,7 +1845,7 @@ python_method('ApiRunnerMixin', '_store_api_response', 3, 4, 4).
 python_method('ApiRunnerMixin', '_record_api_success', 4, 2, 4).
 python_method('ApiRunnerMixin', '_record_api_http_error', 2, 1, 3).
 python_method('ApiRunnerMixin', '_record_api_error', 2, 1, 4).
-python_method('ApiRunnerMixin', '_cmd_api', 2, 9, 15).
+python_method('ApiRunnerMixin', '_cmd_api', 2, 13, 18).
 python_method('ApiRunnerMixin', '_cmd_capture', 2, 3, 9).
 python_class('testql/interpreter/_assertions.py', 'AssertionsMixin').
 python_method('AssertionsMixin', '_cmd_assert_status', 2, 2, 5).
@@ -1805,6 +1916,14 @@ python_method('HardwareMixin', '_hardware_url', 0, 1, 1).
 python_method('HardwareMixin', '_hardware_do_http', 4, 4, 7).
 python_method('HardwareMixin', '_hardware_call', 5, 5, 6).
 python_method('HardwareMixin', '_cmd_hardware', 2, 8, 11).
+python_class('testql/interpreter/_modbus.py', 'ModbusMixin').
+python_method('ModbusMixin', '_modbus_probe_script', 0, 1, 4).
+python_method('ModbusMixin', '_modbus_store_response', 2, 1, 1).
+python_method('ModbusMixin', '_modbus_skip_enabled', 0, 1, 3).
+python_method('ModbusMixin', '_modbus_serial_exists', 1, 4, 3).
+python_method('ModbusMixin', '_modbus_parse_kv_args', 1, 3, 3).
+python_method('ModbusMixin', '_modbus_run_probe_script', 3, 16, 17).
+python_method('ModbusMixin', '_cmd_modbus', 2, 14, 18).
 python_class('testql/interpreter/_parser.py', 'OqlLine').
 python_class('testql/interpreter/_parser.py', 'OqlScript').
 python_class('testql/interpreter/_shell.py', 'ShellMixin').
@@ -1942,6 +2061,15 @@ python_method('ProtoStep', 'to_dict', 0, 1, 4).
 python_class('testql/ir/steps.py', 'GraphqlStep').
 python_method('GraphqlStep', '__post_init__', 0, 1, 0).
 python_method('GraphqlStep', 'to_dict', 0, 1, 4).
+python_class('testql/ir/steps.py', 'ConversationTurnStep').
+python_method('ConversationTurnStep', '__post_init__', 0, 1, 0).
+python_method('ConversationTurnStep', 'to_dict', 0, 1, 4).
+python_class('testql/ir/steps.py', 'Nlp2DslStep').
+python_method('Nlp2DslStep', '__post_init__', 0, 1, 0).
+python_method('Nlp2DslStep', 'to_dict', 0, 1, 3).
+python_class('testql/ir/steps.py', 'ArtifactAssertStep').
+python_method('ArtifactAssertStep', '__post_init__', 0, 1, 0).
+python_method('ArtifactAssertStep', 'to_dict', 0, 1, 4).
 python_class('testql/ir/steps.py', 'ValidateStep').
 python_method('ValidateStep', '__post_init__', 0, 1, 0).
 python_method('ValidateStep', 'to_dict', 0, 1, 3).
@@ -2210,6 +2338,28 @@ python_method('TestCheckAndUpgradeNeverBlocks', 'test_is_tty_agnostic', 0, 1, 2)
 python_class('tests/test_cli_no_block.py', 'TestMainNeverBlocks').
 python_method('TestMainNeverBlocks', 'test_main_via_runner', 0, 3, 3).
 python_method('TestMainNeverBlocks', 'test_main_does_not_call_input', 0, 2, 5).
+python_class('tests/test_conversation_live_llm.py', 'TestLLMProviderResolution').
+python_method('TestLLMProviderResolution', 'test_defaults_to_mock', 1, 2, 3).
+python_method('TestLLMProviderResolution', 'test_live_flag_selects_live_provider', 1, 2, 3).
+python_method('TestLLMProviderResolution', 'test_live_without_key_raises', 1, 1, 3).
+python_class('tests/test_conversation_live_llm.py', 'TestLiveLLMParsing').
+python_method('TestLiveLLMParsing', 'test_parse_json_object_strips_fence', 0, 2, 1).
+python_class('tests/test_conversation_nlp2dsl.py', 'TestAssertJsonSection').
+python_method('TestAssertJsonSection', 'test_assert_json_attached_to_step', 0, 6, 4).
+python_method('TestAssertJsonSection', 'test_assert_json_executor_uses_last_response', 0, 2, 6).
+python_class('tests/test_conversation_nlp2dsl.py', 'TestConversationGenerator').
+python_method('TestConversationGenerator', 'test_from_trace_builds_plan', 0, 4, 5).
+python_class('tests/test_conversation_nlp2dsl.py', 'TestConversationIRParse').
+python_method('TestConversationIRParse', 'test_parse_conversation_sections', 0, 13, 4).
+python_method('TestConversationIRParse', 'test_nlp2dsl_adapter_detects_conversation', 0, 2, 2).
+python_method('TestConversationIRParse', 'test_conversation_source_loads', 0, 2, 2).
+python_class('tests/test_conversation_nlp2dsl.py', 'TestConversationRunner').
+python_method('TestConversationRunner', 'test_dry_run_skips_http', 0, 3, 5).
+python_class('tests/test_conversation_nlp2dsl.py', 'TestArtifactChecker').
+python_method('TestArtifactChecker', 'test_file_hash', 1, 2, 7).
+python_class('tests/test_conversation_nlp2dsl.py', 'FakeClient').
+python_method('FakeClient', 'chatstart', 1, 1, 1).
+python_method('FakeClient', 'chatmessage', 1, 2, 2).
 python_class('tests/test_converter.py', 'TestRow').
 python_method('TestRow', 'test_row_creation', 0, 2, 1).
 python_method('TestRow', 'test_row_empty', 0, 2, 1).
@@ -2709,6 +2859,9 @@ python_method('TestStepVariants', 'test_nl_step', 0, 4, 2).
 python_method('TestStepVariants', 'test_sql_step', 0, 5, 2).
 python_method('TestStepVariants', 'test_proto_step', 0, 6, 2).
 python_method('TestStepVariants', 'test_graphql_step', 0, 4, 2).
+python_method('TestStepVariants', 'test_conversation_turn_step', 0, 4, 2).
+python_method('TestStepVariants', 'test_nlp2dsl_step', 0, 4, 2).
+python_method('TestStepVariants', 'test_artifact_assert_step', 0, 3, 2).
 python_method('TestStepVariants', 'test_step_with_asserts_and_wait', 0, 3, 3).
 python_class('tests/test_ir.py', 'TestTestPlan').
 python_method('TestTestPlan', 'test_empty', 0, 5, 1).
@@ -2913,6 +3066,13 @@ python_method('TestCreateCommand', 'test_force_overwrites_existing', 1, 3, 5).
 python_method('TestCreateCommand', 'test_api_type', 1, 3, 4).
 python_method('TestCreateCommand', 'test_with_module', 1, 2, 3).
 python_method('TestCreateCommand', 'test_creates_output_dir_if_missing', 1, 3, 4).
+python_class('tests/test_modbus_commands.py', 'TestModbusToonExpansion').
+python_method('TestModbusToonExpansion', 'test_modbus_probe_section', 0, 7, 3).
+python_class('tests/test_modbus_commands.py', 'TestModbusDryRun').
+python_method('TestModbusDryRun', 'test_modbus_probe_dry_run', 0, 4, 4).
+python_method('TestModbusDryRun', 'test_modbus_skip_if_no_port', 1, 2, 3).
+python_class('tests/test_modbus_commands.py', 'TestModbusApiExpansion').
+python_method('TestModbusApiExpansion', 'test_modbus_api_plan_expansion', 0, 3, 1).
 python_class('tests/test_navigate_json_path.py', 'TestNavigateJsonPath').
 python_method('TestNavigateJsonPath', 'test_indexed_first_element_field', 0, 2, 1).
 python_method('TestNavigateJsonPath', 'test_indexed_second_element_field', 0, 2, 1).
@@ -3806,6 +3966,12 @@ python_method('TestFlowExpansion', 'test_flow_value_dash_does_not_pollute_click'
 python_method('TestFlowExpansion', 'test_flow_value_null_treated_as_empty', 0, 2, 1).
 python_method('TestFlowExpansion', 'test_flow_meta_dict_legacy_passthrough', 0, 3, 1).
 python_method('TestFlowExpansion', 'test_flow_two_column_still_works', 0, 3, 1).
+python_class('tests/test_testtoon_adapter.py', 'TestShellExpansion').
+python_method('TestShellExpansion', '_expand', 1, 1, 1).
+python_method('TestShellExpansion', 'test_shell_section_quotes_compound_command', 0, 2, 1).
+python_method('TestShellExpansion', 'test_shell_expected_exit_column_alias', 0, 5, 1).
+python_method('TestShellExpansion', 'test_shell_quoted_row_in_testtoon', 0, 2, 2).
+python_method('TestShellExpansion', 'test_shell_dry_run_executes_full_command_not_first_token', 0, 7, 5).
 python_class('tests/test_testtoon_adapter.py', 'TestBackwardCompatibility').
 python_method('TestBackwardCompatibility', 'test_legacy_parser_imports', 0, 3, 3).
 python_method('TestBackwardCompatibility', 'test_interpreter_package_reexports', 0, 2, 2).

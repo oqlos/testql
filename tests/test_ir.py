@@ -4,11 +4,14 @@ from __future__ import annotations
 
 from testql.ir import (
     ApiStep,
+    ArtifactAssertStep,
     Assertion,
+    ConversationTurnStep,
     EncoderStep,
     Fixture,
     GraphqlStep,
     GuiStep,
+    Nlp2DslStep,
     NlStep,
     ProtoStep,
     ScenarioMetadata,
@@ -153,6 +156,26 @@ class TestStepVariants:
         d = s.to_dict()
         assert d["operation"] == "mutation"
         assert d["body"] == "mutation X { x }"
+
+    def test_conversation_turn_step(self):
+        s = ConversationTurnStep(role="user", message="hello", expect_status="incomplete")
+        assert s.kind == "conversation_turn"
+        d = s.to_dict()
+        assert d["role"] == "user"
+        assert d["expect_status"] == "incomplete"
+
+    def test_nlp2dsl_step(self):
+        s = Nlp2DslStep(endpoint="chatstart", payload={"userId": "u1"})
+        assert s.kind == "nlp2dsl"
+        d = s.to_dict()
+        assert d["endpoint"] == "chatstart"
+        assert d["payload"]["userId"] == "u1"
+
+    def test_artifact_assert_step(self):
+        s = ArtifactAssertStep(artifact_type="email", target="/inbox", criteria={"count>=": "1"})
+        assert s.kind == "artifact_assert"
+        d = s.to_dict()
+        assert d["artifact_type"] == "email"
 
     def test_step_with_asserts_and_wait(self):
         s = ApiStep(

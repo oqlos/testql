@@ -1,38 +1,42 @@
-# code2llm/evolution | 1410 func | 188f | 2026-05-27
+# code2llm/evolution | 1490 func | 203f | 2026-06-06
 # generated in 0.01s
 
-NEXT[5] (ranked by impact):
-  [1] !! SPLIT           testql/interpreter/_gui.py
-      WHY: 708L, 1 classes, max CC=12
-      EFFORT: ~4h  IMPACT: 8496
+NEXT[6] (ranked by impact):
+  [1] !! SPLIT           testql/adapters/testtoon_adapter.py
+      WHY: 742L, 1 classes, max CC=12
+      EFFORT: ~4h  IMPACT: 8904
 
-  [2] !  SPLIT-FUNC      watchdog  CC=21  fan=25
-      WHY: CC=21 exceeds 15
-      EFFORT: ~1h  IMPACT: 525
+  [2] !  SPLIT-FUNC      conversation_run  CC=20  fan=18
+      WHY: CC=20 exceeds 15
+      EFFORT: ~1h  IMPACT: 360
 
-  [3] !  SPLIT-FUNC      _render_generic_section_steps  CC=17  fan=13
-      WHY: CC=17 exceeds 15
-      EFFORT: ~1h  IMPACT: 221
+  [3] !  SPLIT-FUNC      ModbusMixin._modbus_run_probe_script  CC=16  fan=21
+      WHY: CC=16 exceeds 15
+      EFFORT: ~1h  IMPACT: 336
 
-  [4] !! SPLIT           planfile.yaml
+  [4] !  SPLIT-FUNC      ConversationRunner._run_nlp2dsl  CC=15  fan=18
+      WHY: CC=15 exceeds 15
+      EFFORT: ~1h  IMPACT: 270
+
+  [5] !! SPLIT           planfile.yaml
       WHY: 1319L, 0 classes, max CC=0
       EFFORT: ~4h  IMPACT: 0
 
-  [5] !! SPLIT           tree.txt
-      WHY: 831L, 0 classes, max CC=0
+  [6] !! SPLIT           tree.txt
+      WHY: 1104L, 0 classes, max CC=0
       EFFORT: ~4h  IMPACT: 0
 
 
 RISKS[3]:
   ⚠ Splitting planfile.yaml may break 0 import paths
   ⚠ Splitting tree.txt may break 0 import paths
-  ⚠ Splitting testql/interpreter/_gui.py may break 34 import paths
+  ⚠ Splitting testql/adapters/testtoon_adapter.py may break 46 import paths
 
 METRICS-TARGET:
   CC̄:          3.7 → ≤2.6
-  max-CC:      21 → ≤10
-  god-modules: 8 → 0
-  high-CC(≥15): 2 → ≤1
+  max-CC:      20 → ≤10
+  god-modules: 9 → 0
+  high-CC(≥15): 3 → ≤1
   hub-types:   0 → ≤0
 
 PATTERNS (language parser shared logic):
@@ -60,4 +64,4 @@ PATTERNS (language parser shared logic):
     - Standardized FunctionInfo/ClassInfo models
 
 HISTORY:
-  prev CC̄=3.6 → now CC̄=3.7
+  prev CC̄=3.7 → now CC̄=3.7

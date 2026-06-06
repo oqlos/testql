@@ -55,6 +55,72 @@ class ModbusMixin:
             out[key.strip().lower()] = value.strip()
         return out
 
+    def _execute_probe_script(
+        self, script: Path, env: dict[str, str], timeout_s: float, label: str
+    ) -> subprocess.CompletedProcess | None:
+        """Execute probe script subprocess; return None on failure."""
+        try:
+            return subprocess.run(
+                [os.environ.get("TESTQL_PYTHON", "python3"), str(script), "--emit-json"],
+                capture_output=True,
+                text=True,
+                timeout=max(5.0, timeout_s),
+                env=env,
+                cwd=str(script.parent),
+            )
+        except subprocess.TimeoutExpired:
+            self.out.fail(f"{label} timeout after {timeout_s}s")
+            self.results.append(
+                StepResult(name=label, status=StepStatus.FAILED, message="probe timeout")
+            )
+        except Exception as exc:
+            self.out.fail(f"{label}: {exc}")
+            self.results.append(StepResult(name=label, status=StepStatus.ERROR, message=str(exc)))
+        return None
+
+    def _parse_probe_response(
+        self, proc: subprocess.CompletedProcess
+    ) -> dict[str, Any]:
+        """Parse probe script output into structured data dict."""
+        stdout = (proc.stdout or "").strip()
+        stderr = (proc.stderr or "").strip()
+        if not stdout:
+            return {"ok": False, "error": "empty stdout", "stderr": stderr, "exit_code": proc.returncode}
+        try:
+            data = json.loads(stdout)
+            data["exit_code"] = proc.returncode
+            return data
+        except json.JSONDecodeError:
+            return {
+                "ok": False,
+                "error": "invalid JSON from probe",
+                "stdout": stdout[:500],
+                "stderr": stderr[:500],
+                "exit_code": proc.returncode,
+            }
+
+    def _emit_probe_result(self, data: dict[str, Any], label: str) -> bool:
+        """Emit probe result and append to results; return True on success."""
+        proc_ok = data.get("exit_code") == 0 and data.get("ok")
+        if proc_ok:
+            hits = sum(1 for row in data.get("results", []) if row.get("ok"))
+            self.out.step("✅", f"{label} → ok ({hits} hit(s))")
+            self.results.append(StepResult(name=label, status=StepStatus.PASSED, details=data))
+            return True
+
+        if self._modbus_skip_enabled():
+            self.out.warn(f"{label} failed — skipped (TESTQL_MODBUS_SKIP)")
+            self.results.append(
+                StepResult(name=label, status=StepStatus.SKIPPED, message=data.get("error", "probe failed"))
+            )
+            return False
+
+        self.out.step("❌", f"{label} → exit {data.get('exit_code')}")
+        self.results.append(
+            StepResult(name=label, status=StepStatus.FAILED, message=data.get("error", "probe failed"), details=data)
+        )
+        return False
+
     def _modbus_run_probe_script(
         self, line: OqlLine, label: str, extra_env: dict[str, str] | None = None
     ) -> bool:
@@ -80,55 +146,13 @@ class ModbusMixin:
 
         env = {**os.environ, **(extra_env or {})}
         timeout_s = float(self.vars.get("modbus_probe_timeout_s", env.get("MODBUS_PROBE_TIMEOUT", "45")))
-        try:
-            proc = subprocess.run(
-                [os.environ.get("TESTQL_PYTHON", "python3"), str(script), "--emit-json"],
-                capture_output=True,
-                text=True,
-                timeout=max(5.0, timeout_s),
-                env=env,
-                cwd=str(script.parent),
-            )
-        except subprocess.TimeoutExpired:
-            self.out.fail(f"{label} timeout after {timeout_s}s")
-            self.results.append(
-                StepResult(name=label, status=StepStatus.FAILED, message="probe timeout")
-            )
-            return False
-        except Exception as exc:
-            self.out.fail(f"{label}: {exc}")
-            self.results.append(StepResult(name=label, status=StepStatus.ERROR, message=str(exc)))
+        proc = self._execute_probe_script(script, env, timeout_s, label)
+        if proc is None:
             return False
 
-        stdout = (proc.stdout or "").strip()
-        stderr = (proc.stderr or "").strip()
-        data: dict[str, Any]
-        try:
-            data = json.loads(stdout) if stdout else {"ok": False, "error": "empty stdout", "stderr": stderr}
-        except json.JSONDecodeError:
-            data = {"ok": False, "error": "invalid JSON from probe", "stdout": stdout[:500], "stderr": stderr[:500]}
-
-        data["exit_code"] = proc.returncode
+        data = self._parse_probe_response(proc)
         self._modbus_store_response(data, label)
-
-        if proc.returncode == 0 and data.get("ok"):
-            hits = sum(1 for row in data.get("results", []) if row.get("ok"))
-            self.out.step("✅", f"{label} → ok ({hits} hit(s))")
-            self.results.append(StepResult(name=label, status=StepStatus.PASSED, details=data))
-            return True
-
-        if self._modbus_skip_enabled():
-            self.out.warn(f"{label} failed — skipped (TESTQL_MODBUS_SKIP)")
-            self.results.append(
-                StepResult(name=label, status=StepStatus.SKIPPED, message=data.get("error", "probe failed"))
-            )
-            return False
-
-        self.out.step("❌", f"{label} → exit {proc.returncode}")
-        self.results.append(
-            StepResult(name=label, status=StepStatus.FAILED, message=data.get("error", "probe failed"), details=data)
-        )
-        return False
+        return self._emit_probe_result(data, label)
 
     def _cmd_modbus(self, args: str, line: OqlLine) -> None:
         """MODBUS <action> [key=value ...] — RTU probe or HTTP wizard helpers.

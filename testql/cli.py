@@ -9,6 +9,7 @@ import httpx
 from importlib.metadata import version as pkg_version
 
 from testql.commands.auto_cmd import auto
+from testql.commands.conversation_cmd import conversation
 from testql.commands.discover_cmd import discover
 from testql.commands.endpoints_cmd import endpoints, openapi
 from testql.commands.generate_cmd import analyze, generate
@@ -43,6 +44,7 @@ def cli():
     pass
 
 
+cli.add_command(conversation)
 cli.add_command(auto)
 cli.add_command(run)
 cli.add_command(run_ir)

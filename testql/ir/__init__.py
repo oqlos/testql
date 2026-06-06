@@ -16,9 +16,12 @@ from .metadata import ScenarioMetadata
 from .plan import TestPlan
 from .steps import (
     ApiStep,
+    ArtifactAssertStep,
+    ConversationTurnStep,
     EncoderStep,
     GraphqlStep,
     GuiStep,
+    Nlp2DslStep,
     NlStep,
     ProtoStep,
     ShellStep,
@@ -41,6 +44,9 @@ __all__ = [
     "ShellStep",
     "UnitStep",
     "NlStep",
+    "ConversationTurnStep",
+    "Nlp2DslStep",
+    "ArtifactAssertStep",
     "SqlStep",
     "ProtoStep",
     "GraphqlStep",

@@ -1,5 +1,5 @@
 flowchart TD
-%% generated in 0.06s
+%% generated in 0.03s
 
     %% Entry points (blue)
     classDef entry fill:#4dabf7,stroke:#1971c2,color:#fff
@@ -13,22 +13,26 @@ flowchart TD
     end
 
     subgraph Core
-        testql__sumd_generator__save_sumd["save_sumd"]
-        testql__commands__self_test_cmd__self_test["self_test"]
-        testql__commands__discover_cmd__discover["discover"]
-        testql__commands__topology_cmd__topology["topology"]
-        testql__commands__run_ir_cmd__run_ir["run_ir"]
-        testql__commands__generate_cmd___is_workspace["_is_workspace"]
-        testql__commands__generate_cmd__generate["generate"]
-        testql__commands__generate_cmd__analyze["analyze"]
-        testql__commands__misc_cmds__init["init"]
-        testql__commands__misc_cmds__create["create"]
-        testql__commands__misc_cmds__watch["watch"]
-        testql__commands__misc_cmds__from_sumd["from_sumd"]
-        testql__commands__misc_cmds__report["report"]
-        testql__commands__misc_cmds__echo["echo"]
-        testql__sumd_parser__SumdParser__parse_file["parse_file"]
-        ...["+800 more"]
+        TODO__testtoon_parser__Section__to_dicts["to_dicts"]
+        TODO__testtoon_parser__Section__validate["validate"]
+        TODO__testtoon_parser__print_parsed["print_parsed"]
+        testql__toon_parser__ToonParser__parse_file["parse_file"]
+        testql__toon_parser__ToonParser__parse["parse"]
+        testql__toon_parser__ToonParser___parse_api_block["_parse_api_block"]
+        testql__toon_parser__ToonParser___parse_assert_block["_parse_assert_block"]
+        testql__toon_parser__ToonParser___parse_log_block["_parse_log_block"]
+        testql__doql_parser__DoqlParser__parse_file["parse_file"]
+        testql__doql_parser__DoqlParser__parse["parse"]
+        testql__doql_parser__DoqlParser___parse_app_block["_parse_app_block"]
+        testql__doql_parser__DoqlParser___parse_entity_block["_parse_entity_block"]
+        testql__doql_parser__DoqlParser___parse_workflow_block["_parse_workflow_block"]
+        testql__doql_parser__DoqlParser___parse_interface_block["_parse_interface_block"]
+        testql__doql_parser__DoqlParser___parse_deploy_block["_parse_deploy_block"]
+        ...["+854 more"]
     end
 
-    class testql__sumd_generator__save_sumd,testql__commands__self_test_cmd__self_test,testql__commands__discover_cmd__discover,testql__commands__topology_cmd__topology,testql__commands__run_ir_cmd__run_ir,testql__commands__generate_cmd___is_workspace,testql__commands__generate_cmd__generate,testql__commands__generate_cmd__analyze,testql__cli__mcp_serve,testql__cli__cli entry
+    subgraph Exporters
+        testql__generators__conversation_generator__trace_from_export["trace_from_export"]
+    end
+
+    class TODO__testtoon_parser__Section__to_dicts,TODO__testtoon_parser__Section__validate,TODO__testtoon_parser__print_parsed,testql__toon_parser__ToonParser__parse_file,testql__toon_parser__ToonParser__parse,testql__toon_parser__ToonParser___parse_api_block,testql__toon_parser__ToonParser___parse_assert_block,testql__toon_parser__ToonParser___parse_log_block,testql__cli__mcp_serve,testql__cli__cli entry

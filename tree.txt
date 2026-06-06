@@ -464,6 +464,13 @@
 │   │   │   │   └── pl.yaml
 │   │   │   ├── llm_fallback.py
 │   │   │   └── nl_adapter.py
+│   │   ├── nlp2dsl
+│   │   │   ├── client.py
+│   │   │   ├── __init__.py
+│   │   │   ├── live_llm.py
+│   │   │   ├── llm_provider.py
+│   │   │   ├── mock_llm.py
+│   │   │   └── nlp2dsl_adapter.py
 │   │   ├── proto
 │   │   │   ├── compatibility.py
 │   │   │   ├── descriptor_loader.py
@@ -480,12 +487,19 @@
 │   │   │   ├── query_parser.py
 │   │   │   └── sql_adapter.py
 │   │   └── testtoon_adapter.py
+│   ├── artifacts
+│   │   ├── base.py
+│   │   ├── email_checker.py
+│   │   ├── file_checker.py
+│   │   ├── __init__.py
+│   │   └── registry.py
 │   ├── autoloop_runner.py
 │   ├── _base_fallback.py
 │   ├── base.py
 │   ├── cli.py
 │   ├── commands
 │   │   ├── auto_cmd.py
+│   │   ├── conversation_cmd.py
 │   │   ├── discover_cmd.py
 │   │   ├── echo
 │   │   │   ├── cli.py
@@ -527,6 +541,9 @@
 │   │   │   └── templates.py
 │   │   ├── topology_cmd.py
 │   │   └── watchdog_cmd.py
+│   ├── conversation
+│   │   ├── __init__.py
+│   │   └── runner.py
 │   ├── detectors
 │   │   ├── base.py
 │   │   ├── config_detector.py
@@ -571,6 +588,7 @@
 │   │   ├── api_generator.py
 │   │   ├── base.py
 │   │   ├── convenience.py
+│   │   ├── conversation_generator.py
 │   │   ├── generators.py
 │   │   ├── __init__.py
 │   │   ├── llm
@@ -585,6 +603,7 @@
 │   │   ├── sources
 │   │   │   ├── base.py
 │   │   │   ├── config_source.py
+│   │   │   ├── conversation.py
 │   │   │   ├── graphql_source.py
 │   │   │   ├── __init__.py
 │   │   │   ├── nl_source.py
@@ -643,6 +662,7 @@
 │   │   ├── _hardware.py
 │   │   ├── __init__.py
 │   │   ├── interpreter.py
+│   │   ├── _modbus.py
 │   │   ├── _parser.py
 │   │   ├── _shell.py
 │   │   ├── testtoon_models.py
@@ -666,6 +686,7 @@
 │   │   ├── engine.py
 │   │   ├── executors
 │   │   │   ├── api.py
+│   │   │   ├── assert_json.py
 │   │   │   ├── base.py
 │   │   │   ├── encoder.py
 │   │   │   ├── graphql.py
@@ -990,6 +1011,8 @@
 │   ├── test_browser_discovery.py
 │   ├── test_cli_no_block.py
 │   ├── test_cli.py
+│   ├── test_conversation_live_llm.py
+│   ├── test_conversation_nlp2dsl.py
 │   ├── test_converter_handlers.py
 │   ├── test_converter.py
 │   ├── test_detectors.py
@@ -1020,6 +1043,7 @@
 │   ├── test_meta_mutator.py
 │   ├── test_meta_self_test.py
 │   ├── test_misc_cmds.py
+│   ├── test_modbus_commands.py
 │   ├── test_navigate_json_path.py
 │   ├── test_network_discovery.py
 │   ├── test_nl_adapter.py
@@ -1077,4 +1101,4 @@
 ├── uv.lock
 └── VERSION
 
-137 directories, 941 files
+140 directories, 962 files

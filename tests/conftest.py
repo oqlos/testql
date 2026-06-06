@@ -42,3 +42,18 @@ def project_root_manifest():
 def testql_pkg_manifest():
     """Cached discovery manifest for the ``testql`` package subdirectory."""
     return discover_path(TESTQL_PKG)
+
+
+def pytest_configure(config):
+    config.addinivalue_line(
+        "markers",
+        "live_llm: optional live LLM integration (requires TESTQL_LIVE_LLM=1 and API key)",
+    )
+
+
+def pytest_collection_modifyitems(config, items):
+    run_live = __import__("os").environ.get("TESTQL_LIVE_LLM", "").strip().lower() in {"1", "true", "yes", "on"}
+    skip_live = pytest.mark.skip(reason="set TESTQL_LIVE_LLM=1 and OPENROUTER_API_KEY to run live LLM tests")
+    for item in items:
+        if "live_llm" in item.keywords and not run_live:
+            item.add_marker(skip_live)

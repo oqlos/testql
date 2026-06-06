@@ -1,0 +1,56 @@
+REFACTOR_PLAN{key, value}:
+  project, testql+nlp2dsl
+  version_target, 1.6.0
+  status, done
+  phases, 6
+
+PHASES[6]{id, name, status, version}:
+  phase.0, contract_and_example_scenario, done, 1.3.0-rc
+  phase.1, ir_conversation_steps, done, 1.3.0
+  phase.2, nlp2dsl_adapter_mock_llm, done, 1.4.0-rc
+  phase.3, artifact_assertions, done, 1.4.0
+  phase.4, conversation_runner_trace, done, 1.5.0
+  phase.5, generator_and_koru_ci, done, 1.5.x
+  phase.6, live_llm_optional, done, 1.6.0
+
+MODULES[5]{id, path, responsibility}:
+  conversation-source, testql/generators/sources/conversation.py, scenario to TestPlan
+  conversation-runner, testql/conversation/runner.py, multi-turn execution and trace
+  artifact-assertions, testql/artifacts/, email/file/spool side-effect checks
+  adapter-nlp2dsl, testql/adapters/nlp2dsl/, HTTP/SDK bridge and validation
+  llm-providers, testql/adapters/nlp2dsl/llm_provider.py, mock vs live LLM resolution
+
+CHECKS[13]{id, status, summary}:
+  check.ir.conversation_turn, passed, ConversationTurnStep in testql.ir
+  check.ir.nlp2dsl_step, passed, Nlp2DslStep in testql.ir
+  check.ir.artifact_assert, passed, ArtifactAssertStep in testql.ir
+  check.adapter.nlp2dsl, passed, Nlp2DslAdapter registered
+  check.source.conversation, passed, ConversationTestSource in generators
+  check.runner.dry_run, passed, ConversationRunner dry-run skips HTTP
+  check.koru.scenario, passed, send-invoice.testql.toon.yaml in koru
+  check.nlpshim.client, passed, ConversationTestClient in nlpshim
+  check.assert_json.section, passed, ASSERT_JSON attaches to target step
+  check.runner.api_delegate, passed, ApiStep delegated to IRRunner
+  check.ci.koru, passed, testql-conversations workflow + validate script
+  check.live_llm.provider, passed, resolve_llm_provider mock/live switch
+  check.live_llm.ci, passed, testql-conversations-live workflow (continue-on-error)
+
+ACTIONS[0]{id, type, target, summary}:
+
+USAGE[6]{context, command, notes}:
+  koru_dry_run, testql run testql-scenarios/conversations/send-invoice.testql.toon.yaml --dry-run, validates IR without nlp2dsl service
+  koru_execute_mock, python scripts/run_testql_conversations.py, mock LLM via mock-llm-replies.yaml
+  koru_execute_live, TESTQL_LIVE_LLM=1 python scripts/run_testql_conversations.py --live-llm, requires OPENROUTER_API_KEY + NLP2DSL_URL
+  testql_conversation, testql conversation run scenario.testql.toon.yaml --mock-replies replies.yaml, CLI entrypoint
+  testql_generate, testql generate . --source conversation --output-dir testql-scenarios/conversations, from project topology/history
+  nlpshim_repl, python -c "from nlpshim import ConversationTestClient; c=ConversationTestClient(); c.start(); print(c.message('hello'))", local mock path without SDK
+
+DIRECTORIES[2]{repo, path, purpose}:
+  koru, testql-scenarios/conversations/, conversation scenario files
+  koru, testql-scenarios/artifacts/, mock inbox and user file fixtures
+  testql, testql/adapters/nlp2dsl/, nlp2dsl adapter package
+  testql, testql/artifacts/, artifact assertion checkers
+  testql, testql/conversation/, conversation runner
+  testql, tests/test_conversation_nlp2dsl.py, integration tests
+
+FINDINGS[0]{id, severity, node_id, summary}:

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from testql.interpreter import OqlInterpreter
-from testql.interpreter._testtoon_parser import testtoon_to_oql, parse_testtoon
+from testql.interpreter._testtoon_parser import testtoon_to_oql as _testtoon_to_oql, parse_testtoon
 from testql.base import StepStatus
 
 
@@ -13,7 +13,7 @@ class TestModbusToonExpansion:
             "MODBUS[1]{action, serial, baud, parity, function}:\n"
             "  probe, /dev/ttyTEST0, 9600, N, read_coils\n"
         )
-        script = testtoon_to_oql(source)
+        script = _testtoon_to_oql(source)
         assert len(script.lines) == 1
         assert script.lines[0].command == "MODBUS"
         assert "probe" in script.lines[0].args
@@ -40,6 +40,6 @@ class TestModbusDryRun:
 
 class TestModbusApiExpansion:
     def test_modbus_api_plan_expansion(self):
-        script = testtoon_to_oql("MODBUS[1]{action}:\n  plan\n")
+        script = _testtoon_to_oql("MODBUS[1]{action}:\n  plan\n")
         assert script.lines[0].command == "MODBUS"
         assert script.lines[0].args == "api plan"

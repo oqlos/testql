@@ -188,6 +188,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Remaining
 - Add Playwright-backed browser execution, JavaScript-rendered DOM capture, screenshots, console errors, network logs, link-by-link validation, accessibility/performance checks, MCP service integration, and runtime-vs-code delta reports.
 
+## [1.2.53] - 2026-06-06
+
+### Docs
+- Update README.md
+- Update SUMD.md
+- Update SUMR.md
+- Update docs/conversation-refactor-plan.toon.yaml
+- Update project/README.md
+- Update project/context.md
+
+### Test
+- Update testql/adapters/__init__.py
+- Update testql/adapters/nlp2dsl/__init__.py
+- Update testql/adapters/nlp2dsl/client.py
+- Update testql/adapters/nlp2dsl/live_llm.py
+- Update testql/adapters/nlp2dsl/llm_provider.py
+- Update testql/adapters/nlp2dsl/mock_llm.py
+- Update testql/adapters/nlp2dsl/nlp2dsl_adapter.py
+- Update testql/adapters/testtoon_adapter.py
+- Update testql/artifacts/__init__.py
+- Update testql/artifacts/base.py
+- ... and 21 more files
+
+### Other
+- Update .gitignore
+- Update .testql/inspection.json
+- Update .testql/inspection.yaml
+- Update .testql/metadata.json
+- Update .testql/topology.json
+- Update .testql/topology.toon.yaml
+- Update .testql/topology.yaml
+- Update app.doql.less
+- Update coverage.json
+- Update project/analysis.toon.yaml
+- ... and 18 more files
+
 ## [1.2.52] - 2026-05-29
 
 ### Docs

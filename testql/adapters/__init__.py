@@ -16,6 +16,7 @@ from .base import (
 )
 from .graphql import GraphQLDSLAdapter
 from .nl import NLDSLAdapter
+from .nlp2dsl import Nlp2DslAdapter
 from .proto import ProtoDSLAdapter
 from .registry import AdapterRegistry, get_registry
 from .scenario_yaml import ScenarioYamlAdapter
@@ -30,6 +31,7 @@ registry.register(NLDSLAdapter())
 registry.register(SqlDSLAdapter())
 registry.register(ProtoDSLAdapter())
 registry.register(GraphQLDSLAdapter())
+registry.register(Nlp2DslAdapter())
 registry.ensure_plugins_loaded()
 
 __all__ = [
@@ -44,6 +46,7 @@ __all__ = [
     "SqlDSLAdapter",
     "ProtoDSLAdapter",
     "GraphQLDSLAdapter",
+    "Nlp2DslAdapter",
     "registry",
     "get_registry",
     "read_source",

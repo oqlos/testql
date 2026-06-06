@@ -113,6 +113,7 @@ LANG: en
 
 _BUILTIN_SOURCE_NAMES = {
     "openapi", "sql", "proto", "graphql", "nl", "ui", "page", "pytest", "oql",
+    "conversation", "nlp2dsl",
 }
 
 _CONFIG_SOURCE_ALIASES = {"config", "makefile", "taskfile", "docker-compose", "buf"}

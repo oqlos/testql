@@ -8,6 +8,9 @@ Hierarchy:
     ├── ShellStep    — shell command execution
     ├── UnitStep     — unit-test invocation
     ├── NlStep       — raw natural-language line (pre-resolution)
+    ├── ConversationTurnStep — one dialog turn (user/assistant/system)
+    ├── Nlp2DslStep  — nlp2dsl endpoint call (chatstart, chatmessage, …)
+    ├── ArtifactAssertStep — side-effect verification (email, file, spool)
     ├── SqlStep      — SQL DDL/DML execution
     ├── ProtoStep    — protobuf message round-trip / validation
     └── GraphqlStep  — GraphQL query/mutation/subscription
@@ -228,6 +231,70 @@ class GraphqlStep(Step):
             out["variables"] = dict(self.variables)
         if self.endpoint is not None:
             out["endpoint"] = self.endpoint
+        return out
+
+
+@dataclass
+class ConversationTurnStep(Step):
+    """Single turn in a multi-step dialog scenario."""
+
+    role: str = "user"
+    message: str = ""
+    expect_status: str | None = None
+    expect_missing: list[str] = field(default_factory=list)
+
+    def __post_init__(self) -> None:
+        self.kind = "conversation_turn"
+
+    def to_dict(self) -> dict:
+        out = super().to_dict()
+        out.update({"role": self.role, "message": self.message})
+        if self.expect_status is not None:
+            out["expect_status"] = self.expect_status
+        if self.expect_missing:
+            out["expect_missing"] = list(self.expect_missing)
+        return out
+
+
+@dataclass
+class Nlp2DslStep(Step):
+    """Call into nlp2dsl (HTTP or SDK) as part of a conversation test."""
+
+    endpoint: str = "chatmessage"
+    payload: dict[str, Any] = field(default_factory=dict)
+    mock_llm: dict[str, Any] | None = None
+
+    def __post_init__(self) -> None:
+        self.kind = "nlp2dsl"
+
+    def to_dict(self) -> dict:
+        out = super().to_dict()
+        out["endpoint"] = self.endpoint
+        if self.payload:
+            out["payload"] = dict(self.payload)
+        if self.mock_llm is not None:
+            out["mock_llm"] = dict(self.mock_llm)
+        return out
+
+
+@dataclass
+class ArtifactAssertStep(Step):
+    """Verify a service side-effect rather than an HTTP response body."""
+
+    artifact_type: str = "file"
+    target: str = ""
+    criteria: dict[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        self.kind = "artifact_assert"
+
+    def to_dict(self) -> dict:
+        out = super().to_dict()
+        out.update({
+            "artifact_type": self.artifact_type,
+            "target": self.target,
+            "criteria": dict(self.criteria),
+        })
         return out
 
 

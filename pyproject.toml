@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "testql"
-version = "1.2.52"
+version = "1.2.53"
 description = "TestQL — Multi-DSL Test Platform: TestTOON / NL / SQL / Proto / GraphQL adapters with Unified IR, generator engine, and meta-testing"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -60,6 +60,9 @@ model = "openrouter/qwen/qwen3-coder-next"
 [tool.pytest.ini_options]
 addopts = "--cov=testql --cov-report=term-missing --cov-report=json"
 testpaths = ["tests"]
+markers = [
+    "live_llm: optional live LLM integration (requires TESTQL_LIVE_LLM=1 and API key)",
+]
 
 [tool.pfix.runtime]
 auto_apply = true

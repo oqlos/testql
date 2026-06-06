@@ -18,7 +18,7 @@ SUMD - Structured Unified Markdown Descriptor for AI-aware project refactorizati
 ## Metadata
 
 - **name**: `testql`
-- **version**: `1.2.50`
+- **version**: `1.2.52`
 - **python_requires**: `>=3.10`
 - **license**: {'text': 'Apache-2.0'}
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -39,7 +39,7 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 1.2.50;
+  version: 1.2.52;
 }
 
 dependencies {
@@ -733,7 +733,7 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 
 ## Call Graph
 
-*518 nodes · 500 edges · 104 modules · CC̄=3.6*
+*523 nodes · 500 edges · 111 modules · CC̄=3.7*
 
 ### Hubs (by degree)
 
@@ -741,83 +741,78 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 |----------|----|----|-----|-------|
 | `print` *(in examples.browser-inspection.run)* | 0 | 48 | 0 | **48** |
 | `_render_toon` *(in testql.results.serializers)* | 6 | 1 | 46 | **47** |
+| `_render_plan` *(in testql.adapters.testtoon_adapter)* | 9 | 4 | 31 | **35** |
+| `parse_testtoon` *(in TODO.testtoon_parser)* | 14 ⚠ | 1 | 31 | **32** |
 | `write_inspection_artifacts` *(in testql.results.artifacts)* | 1 | 3 | 28 | **31** |
-| `heal_scenario` *(in testql.commands.heal_scenario_cmd)* | 8 | 0 | 30 | **30** |
 | `_cmd_assert_json` *(in testql.interpreter._assertions.AssertionsMixin)* | 13 ⚠ | 0 | 30 | **30** |
+| `heal_scenario` *(in testql.commands.heal_scenario_cmd)* | 8 | 0 | 30 | **30** |
 | `_cmd_validate` *(in testql.interpreter._validation.ValidationMixin)* | 10 ⚠ | 0 | 30 | **30** |
-| `_render_step` *(in testql.adapters.scenario_yaml)* | 10 ⚠ | 2 | 26 | **28** |
-| `set` *(in testql._base_fallback.VariableStore)* | 1 | 27 | 0 | **27** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# generated in 0.77s
-# nodes: 518 | edges: 500 | modules: 104
-# CC̄=3.6
+# generated in 0.26s
+# nodes: 523 | edges: 500 | modules: 111
+# CC̄=3.7
 
 HUBS[20]:
   examples.browser-inspection.run.print
     CC=0  in:48  out:0  total:48
   testql.results.serializers._render_toon
     CC=6  in:1  out:46  total:47
+  testql.adapters.testtoon_adapter._render_plan
+    CC=9  in:4  out:31  total:35
+  TODO.testtoon_parser.parse_testtoon
+    CC=14  in:1  out:31  total:32
   testql.results.artifacts.write_inspection_artifacts
     CC=1  in:3  out:28  total:31
-  testql.commands.heal_scenario_cmd.heal_scenario
-    CC=8  in:0  out:30  total:30
   testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
     CC=13  in:0  out:30  total:30
+  testql.commands.heal_scenario_cmd.heal_scenario
+    CC=8  in:0  out:30  total:30
   testql.interpreter._validation.ValidationMixin._cmd_validate
     CC=10  in:0  out:30  total:30
   testql.adapters.scenario_yaml._render_step
     CC=10  in:2  out:26  total:28
   testql._base_fallback.VariableStore.set
     CC=1  in:27  out:0  total:27
-  testql.commands.generate_topology_cmd.generate_topology
-    CC=5  in:0  out:24  total:24
+  testql.commands.watchdog_cmd._update_metrics
+    CC=11  in:2  out:23  total:25
   testql.commands.generate_cmd._print_routes_section
     CC=10  in:1  out:23  total:24
   testql.commands.inspect_cmd.inspect
     CC=6  in:0  out:24  total:24
+  testql.commands.generate_topology_cmd.generate_topology
+    CC=5  in:0  out:24  total:24
+  testql.conversation.runner.ConversationRunner._run_nlp2dsl
+    CC=15  in:0  out:24  total:24
   testql.adapters.scenario_yaml._gui_step
     CC=9  in:0  out:23  total:23
+  testql.adapters.base.read_source
+    CC=5  in:14  out:9  total:23
+  testql.commands.encoder_routes._run_oql_lines
+    CC=6  in:1  out:22  total:23
   testql.commands.echo.parsers.doql._parse_workflows
     CC=7  in:1  out:22  total:23
   testql.commands.misc_cmds.report
     CC=4  in:0  out:22  total:22
-  testql.report_generator.generate_report
-    CC=3  in:2  out:20  total:22
-  testql.adapters.base.read_source
-    CC=5  in:13  out:9  total:22
-  testql.commands.run_cmd.run
-    CC=10  in:0  out:21  total:21
-  testql.adapters.sql.fixtures.schema_fixture_from_rows
-    CC=4  in:1  out:20  total:21
-  testql.commands.misc_cmds.echo
-    CC=4  in:0  out:20  total:20
-  testql.commands.misc_cmds.init
-    CC=4  in:0  out:20  total:20
 
 MODULES:
-  TODO.testtoon_parser  [2 funcs]
+  TODO.testtoon_parser  [3 funcs]
+    parse_testtoon  CC=14  out:31
     print_parsed  CC=8  out:12
     validate  CC=2  out:2
   examples.artifact-bundle.generate_bundle  [1 funcs]
     main  CC=2  out:10
   examples.browser-inspection.run  [1 funcs]
     print  CC=0  out:0
-  testql._base_fallback  [2 funcs]
+  testql._base_fallback  [4 funcs]
+    emit  CC=2  out:2
+    all  CC=1  out:1
     has  CC=1  out:0
     set  CC=1  out:0
   testql.adapters.base  [1 funcs]
     read_source  CC=5  out:9
-  testql.adapters.graphql.query_executor  [4 funcs]
-    _coerce_literal  CC=3  out:2
-    _is_quoted  CC=3  out:1
-    _try_number  CC=3  out:2
-    parse_variables  CC=6  out:7
-  testql.adapters.graphql.schema_introspection  [4 funcs]
-    _kind_to_canonical  CC=1  out:2
-    _parse_type_block  CC=4  out:12
-    _scan_balanced_braces  CC=5  out:1
+  testql.adapters.graphql.schema_introspection  [1 funcs]
     parse_schema  CC=4  out:6
   testql.adapters.nl.entity_extractor  [5 funcs]
     all_backticked  CC=2  out:2
@@ -825,55 +820,25 @@ MODULES:
     first_path  CC=6  out:6
     first_quoted  CC=3  out:4
     first_selector  CC=7  out:7
-  testql.adapters.nl.grammar  [6 funcs]
-    _apply_meta  CC=2  out:0
-    _consume_line  CC=5  out:13
-    is_step_line  CC=1  out:2
+  testql.adapters.nl.grammar  [1 funcs]
     normalize  CC=1  out:3
-    split_header_and_body  CC=2  out:4
-    strip_step_prefix  CC=1  out:2
   testql.adapters.nl.intent_recognizer  [3 funcs]
     _intent_table  CC=5  out:8
     recognize_intent  CC=4  out:11
     recognize_operator  CC=6  out:8
-  testql.adapters.proto.compatibility  [7 funcs]
-    _compare_field  CC=5  out:8
-    _compare_message  CC=2  out:3
-    _find_candidate_field  CC=6  out:2
-    _scan_new_messages  CC=4  out:2
-    _scan_old_messages  CC=3  out:5
-    _wire_compatible  CC=4  out:1
-    compare_schemas  CC=2  out:3
-  testql.adapters.proto.descriptor_loader  [7 funcs]
-    _iter_messages  CC=3  out:4
-    _parse_field  CC=3  out:9
-    _parse_message  CC=2  out:3
-    _scan_balanced_braces  CC=5  out:1
-    _strip_comments  CC=1  out:2
-    load_proto_file  CC=1  out:3
+  testql.adapters.nl.nl_adapter  [2 funcs]
+    _assert_field  CC=7  out:7
+    _build_assert  CC=2  out:5
+  testql.adapters.nlp2dsl.llm_provider  [2 funcs]
+    live_llm_enabled  CC=2  out:3
+    resolve_llm_provider  CC=4  out:6
+  testql.adapters.nlp2dsl.mock_llm  [1 funcs]
+    load_mock_replies  CC=5  out:9
+  testql.adapters.nlp2dsl.nlp2dsl_adapter  [1 funcs]
+    detect  CC=7  out:10
+  testql.adapters.proto.descriptor_loader  [1 funcs]
     parse_proto  CC=4  out:9
-  testql.adapters.proto.message_validator  [8 funcs]
-    _missing_required  CC=4  out:1
-    _row_issues  CC=3  out:4
-    _validate_field_known  CC=2  out:2
-    _validate_field_type  CC=3  out:2
-    _validate_field_value  CC=3  out:2
-    coerce_scalar  CC=5  out:6
-    round_trip_equal  CC=6  out:4
-    validate_message_instance  CC=5  out:7
-  testql.adapters.proto.proto_adapter  [16 funcs]
-    detect  CC=5  out:6
-    parse  CC=1  out:3
-    render  CC=1  out:1
-    _apply_section  CC=2  out:6
-    _assert_section  CC=5  out:12
-    _h_assert  CC=3  out:2
-    _h_message  CC=1  out:3
-    _h_proto  CC=1  out:4
-    _message_section  CC=5  out:8
-    _proto_section  CC=3  out:7
-  testql.adapters.registry  [2 funcs]
-    all  CC=1  out:2
+  testql.adapters.registry  [1 funcs]
     detect  CC=9  out:8
   testql.adapters.scenario_yaml  [33 funcs]
     detect  CC=5  out:9
@@ -920,17 +885,19 @@ MODULES:
     _h_assert  CC=3  out:2
     _h_config  CC=1  out:3
     _h_query  CC=1  out:3
-  testql.adapters.testtoon_adapter  [12 funcs]
+  testql.adapters.testtoon_adapter  [20 funcs]
     detect  CC=9  out:12
     parse  CC=1  out:3
     render  CC=1  out:1
+    _assert_json_section_apply  CC=12  out:19
     _capture_section_apply  CC=8  out:12
     _config_to_dict  CC=3  out:3
+    _context_section_to_config  CC=1  out:1
+    _derive_columns  CC=4  out:4
     _format_extra_value  CC=6  out:4
-    _render_generic_section_steps  CC=17  out:15
-    _render_gui_action_steps  CC=9  out:7
-    _resolve_capture_target  CC=4  out:3
-    _toon_safe_selector  CC=3  out:2
+    _group_generic_steps  CC=9  out:4
+  testql.artifacts.registry  [1 funcs]
+    get_artifact_registry  CC=2  out:5
   testql.cli  [5 funcs]
     _fetch_latest_version  CC=2  out:3
     check_and_upgrade  CC=4  out:3
@@ -976,6 +943,17 @@ MODULES:
     collect_doql_data  CC=2  out:5
     collect_toon_data  CC=3  out:7
     render_echo  CC=3  out:4
+  testql.commands.encoder_routes  [25 funcs]
+    _assert_bool_prop  CC=2  out:5
+    _assert_classes_prop  CC=2  out:1
+    _assert_count_prop  CC=2  out:2
+    _assert_text_prop  CC=2  out:2
+    _build_run_summary  CC=2  out:1
+    _evaluate_assertion  CC=6  out:6
+    _exec_assert_cmd  CC=7  out:11
+    _exec_browser_cmd  CC=9  out:10
+    _exec_encoder_cmd  CC=6  out:4
+    _execute_oql_line  CC=10  out:13
   testql.commands.endpoints_cmd  [5 funcs]
     _format_endpoints  CC=3  out:3
     _format_endpoints_csv  CC=5  out:7
@@ -1004,11 +982,10 @@ MODULES:
     echo  CC=4  out:20
     init  CC=4  out:20
     report  CC=4  out:22
-  testql.commands.run_cmd  [5 funcs]
+  testql.commands.run_cmd  [4 funcs]
     _emit_multi_json  CC=3  out:8
     _emit_single_json  CC=1  out:4
     _maybe_planfile  CC=9  out:5
-    _resolve_input_paths  CC=10  out:13
     run  CC=10  out:21
   testql.commands.run_ir_cmd  [2 funcs]
     _emit_json  CC=2  out:4
@@ -1043,6 +1020,19 @@ MODULES:
     save_report  CC=3  out:5
   testql.commands.topology_cmd  [1 funcs]
     topology  CC=3  out:13
+  testql.commands.watchdog_cmd  [5 funcs]
+    _extract_failures  CC=10  out:15
+    _post_failures  CC=4  out:5
+    _process_one_scenario  CC=3  out:8
+    _run_scenario  CC=3  out:5
+    _update_metrics  CC=11  out:23
+  testql.conversation.runner  [6 funcs]
+    __init__  CC=4  out:6
+    _run_nlp2dsl  CC=15  out:24
+    _run_step  CC=7  out:10
+    _run_via_ir  CC=7  out:7
+    _extract_path  CC=4  out:3
+    _step_status_name  CC=4  out:0
   testql.discovery.manifest  [7 funcs]
     from_probe_results  CC=8  out:6
     _dedupe_dicts  CC=4  out:8
@@ -1051,17 +1041,30 @@ MODULES:
     _merge_metadata  CC=10  out:7
     _score_confidence  CC=5  out:1
     _unique  CC=3  out:3
-  testql.discovery.probes.filesystem.package_python  [14 funcs]
+  testql.discovery.probes.filesystem.api_openapi  [2 funcs]
+    _find_specs  CC=9  out:11
+    _excluded  CC=4  out:3
+  testql.discovery.probes.filesystem.package_python  [13 funcs]
     _find_python_files  CC=7  out:6
     _read_metadata  CC=8  out:13
     _call_kw  CC=2  out:3
     _dedupe_deps  CC=4  out:5
     _dep  CC=3  out:4
-    _excluded  CC=2  out:1
     _parse_pyproject  CC=7  out:12
     _parse_pyproject_dependencies  CC=6  out:15
     _parse_requirements  CC=4  out:5
     _parse_setup_cfg  CC=3  out:6
+    _parse_setup_py  CC=3  out:4
+  testql.discovery.probes.network.http_endpoint  [9 funcs]
+    probe  CC=6  out:14
+    handle_starttag  CC=10  out:14
+    _asset_kind  CC=8  out:2
+    _fetch  CC=1  out:2
+    _limit  CC=1  out:0
+    _link_kind  CC=4  out:4
+    _looks_textual  CC=2  out:2
+    _metadata  CC=1  out:10
+    _parse_html  CC=2  out:5
   testql.discovery.registry  [3 funcs]
     __init__  CC=2  out:1
     default_probes  CC=3  out:9
@@ -1162,9 +1165,13 @@ MODULES:
     _cmd_include  CC=7  out:17
   testql.interpreter._parser  [1 funcs]
     parse_oql  CC=5  out:10
-  testql.interpreter._testtoon_parser  [3 funcs]
+  testql.interpreter._testtoon_parser  [7 funcs]
     _append_api_asserts  CC=9  out:11
     _expand_api  CC=4  out:9
+    _expand_shell  CC=6  out:12
+    _quote_shell_command  CC=1  out:2
+    _shell_expected_exit  CC=7  out:8
+    _shell_timeout_ms  CC=5  out:9
     testtoon_to_oql  CC=2  out:4
   testql.interpreter._validation  [2 funcs]
     _cmd_validate  CC=10  out:30
@@ -1218,6 +1225,10 @@ MODULES:
     scan_aria  CC=4  out:9
     _aom_node_to_element  CC=2  out:13
     _flatten_aom  CC=2  out:3
+  testql.interpreter.interpreter  [3 funcs]
+    __init__  CC=3  out:6
+    execute  CC=4  out:16
+    parse  CC=2  out:3
   testql.interpreter.testtoon_parser  [21 funcs]
     _add_bare_commands_section  CC=3  out:4
     _add_row_to_section  CC=5  out:5
@@ -1231,29 +1242,10 @@ MODULES:
     _make_mapping_section  CC=1  out:2
   testql.ir_runner.engine  [1 funcs]
     run_plan  CC=1  out:2
-  testql.mcp.server  [6 funcs]
-    __post_init__  CC=1  out:3
-    _register_tools  CC=1  out:16
-    _normalize_run_payload  CC=4  out:8
-    _require_fastmcp  CC=2  out:1
-    create_server  CC=1  out:1
+  testql.ir_runner.executors.base  [1 funcs]
+    assemble_result  CC=5  out:6
+  testql.mcp.server  [1 funcs]
     run_server  CC=1  out:2
-  testql.meta.confidence_scorer  [4 funcs]
-    _is_llm_resolved  CC=3  out:1
-    _score_assertions  CC=3  out:2
-    _score_step  CC=3  out:9
-    _score_typed  CC=2  out:1
-  testql.meta.coverage_analyzer  [13 funcs]
-    _build_report  CC=1  out:6
-    _extract_table_names  CC=3  out:4
-    _load_text  CC=4  out:6
-    _load_yaml  CC=3  out:3
-    _openapi_endpoints  CC=6  out:7
-    _plan_endpoints  CC=3  out:1
-    _plan_proto_messages  CC=4  out:1
-    _plan_sql_tables  CC=3  out:4
-    _proto_messages  CC=2  out:0
-    _sql_tables  CC=2  out:1
   testql.openapi_generator  [5 funcs]
     _load_spec  CC=2  out:3
     _extract_parameters  CC=1  out:3
@@ -1285,6 +1277,13 @@ MODULES:
     render_inspection  CC=2  out:5
     render_refactor_plan  CC=1  out:2
     render_result_envelope  CC=1  out:2
+  testql.runner  [6 funcs]
+    _dispatch  CC=6  out:6
+    cmd_log  CC=2  out:3
+    cmd_print  CC=2  out:4
+    run_script  CC=11  out:20
+    parse_line  CC=9  out:20
+    parse_script  CC=3  out:2
   testql.sumd_generator  [11 funcs]
     _api_contract_section  CC=6  out:11
     _architecture_section  CC=1  out:0
@@ -1308,6 +1307,27 @@ MODULES:
     render_topology  CC=4  out:5
 
 EDGES:
+  examples.artifact-bundle.generate_bundle.main → examples.browser-inspection.run.print
+  examples.artifact-bundle.generate_bundle.main → testql.results.analyzer.inspect_source
+  examples.artifact-bundle.generate_bundle.main → testql.results.artifacts.write_inspection_artifacts
+  TODO.testtoon_parser.print_parsed → examples.browser-inspection.run.print
+  TODO.testtoon_parser.print_parsed → TODO.testtoon_parser.validate
+  testql.cli.mcp_serve → testql.mcp.server.run_server
+  testql.cli.check_and_upgrade → testql.cli._fetch_latest_version
+  testql.cli.check_and_upgrade → examples.browser-inspection.run.print
+  testql.cli.main → testql.cli.check_and_upgrade
+  testql.cli.main → testql.cli.cli
+  testql.runner.parse_line → examples.browser-inspection.run.print
+  testql.runner.parse_script → testql.runner.parse_line
+  testql.runner.DslCliExecutor._dispatch → examples.browser-inspection.run.print
+  testql.runner.DslCliExecutor.cmd_log → examples.browser-inspection.run.print
+  testql.runner.DslCliExecutor.cmd_print → examples.browser-inspection.run.print
+  testql.runner.DslCliExecutor.run_script → testql.runner.parse_script
+  testql.runner.DslCliExecutor.run_script → examples.browser-inspection.run.print
+  testql.openapi_generator.OpenAPIGenerator._infer_tags → testql._base_fallback.VariableStore.set
+  testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_path_params
+  testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_ep_params
+  testql._base_fallback.InterpreterOutput.emit → examples.browser-inspection.run.print
   testql.sumd_generator.generate_sumd → testql.sumd_generator._header_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._metadata_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._architecture_section
@@ -1318,46 +1338,25 @@ EDGES:
   testql.sumd_generator.generate_sumd → testql.sumd_generator._llm_suggestions_section
   testql.sumd_generator._llm_suggestions_section → testql.sumd_generator._workflow_snippet
   testql.sumd_generator.save_sumd → testql.sumd_generator.generate_sumd
+  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_block_interfaces
+  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_api_interfaces
   testql.commands.self_test_cmd.self_test → testql.commands.self_test_cmd._print_human
-  examples.artifact-bundle.generate_bundle.main → examples.browser-inspection.run.print
-  examples.artifact-bundle.generate_bundle.main → testql.results.analyzer.inspect_source
-  examples.artifact-bundle.generate_bundle.main → testql.results.artifacts.write_inspection_artifacts
   testql.commands.discover_cmd.discover → testql.discovery.registry.discover_path
+  testql.commands.generate_cmd._print_routes_section → testql.commands.generate_cmd._count_routes_by
   testql.commands.topology_cmd.topology → testql.topology.builder.build_topology
   testql.commands.topology_cmd.topology → testql.topology.serializers.render_topology
-  testql.commands.run_ir_cmd.run_ir → testql.ir_runner.engine.run_plan
-  testql.commands.run_ir_cmd.run_ir → testql.commands.run_ir_cmd._emit_json
-  testql.commands.generate_cmd._print_routes_section → testql.commands.generate_cmd._count_routes_by
-  testql.cli.mcp_serve → testql.mcp.server.run_server
-  testql.cli.check_and_upgrade → testql.cli._fetch_latest_version
-  testql.cli.check_and_upgrade → examples.browser-inspection.run.print
-  testql.cli.main → testql.cli.check_and_upgrade
-  testql.cli.main → testql.cli.cli
   testql.commands.misc_cmds.init → testql.commands.misc_cmds._create_templates
   testql.commands.misc_cmds.report → testql.report_generator.generate_report
   testql.commands.misc_cmds.echo → testql.commands.echo_helpers.render_echo
   testql.commands.misc_cmds.echo → testql.commands.echo_helpers.collect_toon_data
-  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_block_interfaces
-  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_api_interfaces
-  testql.commands.run_cmd._emit_single_json → examples.browser-inspection.run.print
-  testql.commands.run_cmd._emit_multi_json → examples.browser-inspection.run.print
-  testql.commands.run_cmd._maybe_planfile → testql.integrations.planfile_hook.create_test_failure_ticket
-  testql.commands.run_cmd.run → testql.adapters.registry.AdapterRegistry.all
-  testql.commands.echo_helpers._collect_toon_directory → testql.toon_parser.parse_toon_file
-  testql.commands.echo_helpers.collect_toon_data → testql.commands.echo_helpers._collect_toon_directory
-  testql.commands.echo_helpers.collect_toon_data → testql.toon_parser.parse_toon_file
-  testql.commands.echo_helpers.collect_doql_data → testql.doql_parser.parse_doql_file
-  testql.commands.echo_helpers.render_echo → testql.sumd_generator.generate_sumd
-  testql.commands.generate_topology_cmd.generate_topology → testql.topology.builder.build_topology
-  testql.commands.generate_topology_cmd.generate_topology → testql.commands.generate_topology_cmd._pick_trace
-  testql.commands.inspect_cmd.inspect → testql.results.analyzer.inspect_source
-  testql.commands.auto_cmd._run_generation_phase → testql.results.analyzer.inspect_source
-  testql.commands.auto_cmd._run_generation_phase → testql.results.artifacts.write_inspection_artifacts
-  testql.commands.auto_cmd._run_report_phase → testql.commands.auto_cmd._render_markdown_report
-  testql.commands.auto_cmd._run_report_phase → testql.commands.auto_cmd._render_console_report
-  testql.commands.generate_ir_cmd._split_from_arg → testql.generators.sources.available_sources
-  testql.commands.generate_ir_cmd.generate_ir → testql.commands.generate_ir_cmd._split_from_arg
-  testql.commands.suite.cli.list_tests → testql.commands.suite.collection.collect_list_files
+  testql.commands.run_ir_cmd.run_ir → testql.ir_runner.engine.run_plan
+  testql.commands.run_ir_cmd.run_ir → testql.commands.run_ir_cmd._emit_json
+  testql.commands.heal_scenario_cmd._collect_selectors → testql._base_fallback.VariableStore.set
+  testql.commands.heal_scenario_cmd.heal_scenario → testql.commands.heal_scenario_cmd._collect_selectors
+  testql.commands.heal_scenario_cmd._heal_with_elements → testql.generators.page_analyzer.pick_selector
+  testql.commands.heal_scenario_cmd._heal_with_elements → testql.generators.page_analyzer.find_replacement
+  testql.commands.heal_scenario_cmd._heal_with_elements → testql.adapters.testtoon_adapter._toon_safe_selector
+  testql.commands.heal_scenario_cmd._heal_with_browser → testql.generators.sources.page_source.extract_elements_from_page
 ```
 
 ## Test Contracts
@@ -1608,74 +1607,69 @@ EDGES:
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# generated in 0.77s
-# nodes: 518 | edges: 500 | modules: 104
-# CC̄=3.6
+# generated in 0.26s
+# nodes: 523 | edges: 500 | modules: 111
+# CC̄=3.7
 
 HUBS[20]:
   examples.browser-inspection.run.print
     CC=0  in:48  out:0  total:48
   testql.results.serializers._render_toon
     CC=6  in:1  out:46  total:47
+  testql.adapters.testtoon_adapter._render_plan
+    CC=9  in:4  out:31  total:35
+  TODO.testtoon_parser.parse_testtoon
+    CC=14  in:1  out:31  total:32
   testql.results.artifacts.write_inspection_artifacts
     CC=1  in:3  out:28  total:31
-  testql.commands.heal_scenario_cmd.heal_scenario
-    CC=8  in:0  out:30  total:30
   testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
     CC=13  in:0  out:30  total:30
+  testql.commands.heal_scenario_cmd.heal_scenario
+    CC=8  in:0  out:30  total:30
   testql.interpreter._validation.ValidationMixin._cmd_validate
     CC=10  in:0  out:30  total:30
   testql.adapters.scenario_yaml._render_step
     CC=10  in:2  out:26  total:28
   testql._base_fallback.VariableStore.set
     CC=1  in:27  out:0  total:27
-  testql.commands.generate_topology_cmd.generate_topology
-    CC=5  in:0  out:24  total:24
+  testql.commands.watchdog_cmd._update_metrics
+    CC=11  in:2  out:23  total:25
   testql.commands.generate_cmd._print_routes_section
     CC=10  in:1  out:23  total:24
   testql.commands.inspect_cmd.inspect
     CC=6  in:0  out:24  total:24
+  testql.commands.generate_topology_cmd.generate_topology
+    CC=5  in:0  out:24  total:24
+  testql.conversation.runner.ConversationRunner._run_nlp2dsl
+    CC=15  in:0  out:24  total:24
   testql.adapters.scenario_yaml._gui_step
     CC=9  in:0  out:23  total:23
+  testql.adapters.base.read_source
+    CC=5  in:14  out:9  total:23
+  testql.commands.encoder_routes._run_oql_lines
+    CC=6  in:1  out:22  total:23
   testql.commands.echo.parsers.doql._parse_workflows
     CC=7  in:1  out:22  total:23
   testql.commands.misc_cmds.report
     CC=4  in:0  out:22  total:22
-  testql.report_generator.generate_report
-    CC=3  in:2  out:20  total:22
-  testql.adapters.base.read_source
-    CC=5  in:13  out:9  total:22
-  testql.commands.run_cmd.run
-    CC=10  in:0  out:21  total:21
-  testql.adapters.sql.fixtures.schema_fixture_from_rows
-    CC=4  in:1  out:20  total:21
-  testql.commands.misc_cmds.echo
-    CC=4  in:0  out:20  total:20
-  testql.commands.misc_cmds.init
-    CC=4  in:0  out:20  total:20
 
 MODULES:
-  TODO.testtoon_parser  [2 funcs]
+  TODO.testtoon_parser  [3 funcs]
+    parse_testtoon  CC=14  out:31
     print_parsed  CC=8  out:12
     validate  CC=2  out:2
   examples.artifact-bundle.generate_bundle  [1 funcs]
     main  CC=2  out:10
   examples.browser-inspection.run  [1 funcs]
     print  CC=0  out:0
-  testql._base_fallback  [2 funcs]
+  testql._base_fallback  [4 funcs]
+    emit  CC=2  out:2
+    all  CC=1  out:1
     has  CC=1  out:0
     set  CC=1  out:0
   testql.adapters.base  [1 funcs]
     read_source  CC=5  out:9
-  testql.adapters.graphql.query_executor  [4 funcs]
-    _coerce_literal  CC=3  out:2
-    _is_quoted  CC=3  out:1
-    _try_number  CC=3  out:2
-    parse_variables  CC=6  out:7
-  testql.adapters.graphql.schema_introspection  [4 funcs]
-    _kind_to_canonical  CC=1  out:2
-    _parse_type_block  CC=4  out:12
-    _scan_balanced_braces  CC=5  out:1
+  testql.adapters.graphql.schema_introspection  [1 funcs]
     parse_schema  CC=4  out:6
   testql.adapters.nl.entity_extractor  [5 funcs]
     all_backticked  CC=2  out:2
@@ -1683,55 +1677,25 @@ MODULES:
     first_path  CC=6  out:6
     first_quoted  CC=3  out:4
     first_selector  CC=7  out:7
-  testql.adapters.nl.grammar  [6 funcs]
-    _apply_meta  CC=2  out:0
-    _consume_line  CC=5  out:13
-    is_step_line  CC=1  out:2
+  testql.adapters.nl.grammar  [1 funcs]
     normalize  CC=1  out:3
-    split_header_and_body  CC=2  out:4
-    strip_step_prefix  CC=1  out:2
   testql.adapters.nl.intent_recognizer  [3 funcs]
     _intent_table  CC=5  out:8
     recognize_intent  CC=4  out:11
     recognize_operator  CC=6  out:8
-  testql.adapters.proto.compatibility  [7 funcs]
-    _compare_field  CC=5  out:8
-    _compare_message  CC=2  out:3
-    _find_candidate_field  CC=6  out:2
-    _scan_new_messages  CC=4  out:2
-    _scan_old_messages  CC=3  out:5
-    _wire_compatible  CC=4  out:1
-    compare_schemas  CC=2  out:3
-  testql.adapters.proto.descriptor_loader  [7 funcs]
-    _iter_messages  CC=3  out:4
-    _parse_field  CC=3  out:9
-    _parse_message  CC=2  out:3
-    _scan_balanced_braces  CC=5  out:1
-    _strip_comments  CC=1  out:2
-    load_proto_file  CC=1  out:3
+  testql.adapters.nl.nl_adapter  [2 funcs]
+    _assert_field  CC=7  out:7
+    _build_assert  CC=2  out:5
+  testql.adapters.nlp2dsl.llm_provider  [2 funcs]
+    live_llm_enabled  CC=2  out:3
+    resolve_llm_provider  CC=4  out:6
+  testql.adapters.nlp2dsl.mock_llm  [1 funcs]
+    load_mock_replies  CC=5  out:9
+  testql.adapters.nlp2dsl.nlp2dsl_adapter  [1 funcs]
+    detect  CC=7  out:10
+  testql.adapters.proto.descriptor_loader  [1 funcs]
     parse_proto  CC=4  out:9
-  testql.adapters.proto.message_validator  [8 funcs]
-    _missing_required  CC=4  out:1
-    _row_issues  CC=3  out:4
-    _validate_field_known  CC=2  out:2
-    _validate_field_type  CC=3  out:2
-    _validate_field_value  CC=3  out:2
-    coerce_scalar  CC=5  out:6
-    round_trip_equal  CC=6  out:4
-    validate_message_instance  CC=5  out:7
-  testql.adapters.proto.proto_adapter  [16 funcs]
-    detect  CC=5  out:6
-    parse  CC=1  out:3
-    render  CC=1  out:1
-    _apply_section  CC=2  out:6
-    _assert_section  CC=5  out:12
-    _h_assert  CC=3  out:2
-    _h_message  CC=1  out:3
-    _h_proto  CC=1  out:4
-    _message_section  CC=5  out:8
-    _proto_section  CC=3  out:7
-  testql.adapters.registry  [2 funcs]
-    all  CC=1  out:2
+  testql.adapters.registry  [1 funcs]
     detect  CC=9  out:8
   testql.adapters.scenario_yaml  [33 funcs]
     detect  CC=5  out:9
@@ -1778,17 +1742,19 @@ MODULES:
     _h_assert  CC=3  out:2
     _h_config  CC=1  out:3
     _h_query  CC=1  out:3
-  testql.adapters.testtoon_adapter  [12 funcs]
+  testql.adapters.testtoon_adapter  [20 funcs]
     detect  CC=9  out:12
     parse  CC=1  out:3
     render  CC=1  out:1
+    _assert_json_section_apply  CC=12  out:19
     _capture_section_apply  CC=8  out:12
     _config_to_dict  CC=3  out:3
+    _context_section_to_config  CC=1  out:1
+    _derive_columns  CC=4  out:4
     _format_extra_value  CC=6  out:4
-    _render_generic_section_steps  CC=17  out:15
-    _render_gui_action_steps  CC=9  out:7
-    _resolve_capture_target  CC=4  out:3
-    _toon_safe_selector  CC=3  out:2
+    _group_generic_steps  CC=9  out:4
+  testql.artifacts.registry  [1 funcs]
+    get_artifact_registry  CC=2  out:5
   testql.cli  [5 funcs]
     _fetch_latest_version  CC=2  out:3
     check_and_upgrade  CC=4  out:3
@@ -1834,6 +1800,17 @@ MODULES:
     collect_doql_data  CC=2  out:5
     collect_toon_data  CC=3  out:7
     render_echo  CC=3  out:4
+  testql.commands.encoder_routes  [25 funcs]
+    _assert_bool_prop  CC=2  out:5
+    _assert_classes_prop  CC=2  out:1
+    _assert_count_prop  CC=2  out:2
+    _assert_text_prop  CC=2  out:2
+    _build_run_summary  CC=2  out:1
+    _evaluate_assertion  CC=6  out:6
+    _exec_assert_cmd  CC=7  out:11
+    _exec_browser_cmd  CC=9  out:10
+    _exec_encoder_cmd  CC=6  out:4
+    _execute_oql_line  CC=10  out:13
   testql.commands.endpoints_cmd  [5 funcs]
     _format_endpoints  CC=3  out:3
     _format_endpoints_csv  CC=5  out:7
@@ -1862,11 +1839,10 @@ MODULES:
     echo  CC=4  out:20
     init  CC=4  out:20
     report  CC=4  out:22
-  testql.commands.run_cmd  [5 funcs]
+  testql.commands.run_cmd  [4 funcs]
     _emit_multi_json  CC=3  out:8
     _emit_single_json  CC=1  out:4
     _maybe_planfile  CC=9  out:5
-    _resolve_input_paths  CC=10  out:13
     run  CC=10  out:21
   testql.commands.run_ir_cmd  [2 funcs]
     _emit_json  CC=2  out:4
@@ -1901,6 +1877,19 @@ MODULES:
     save_report  CC=3  out:5
   testql.commands.topology_cmd  [1 funcs]
     topology  CC=3  out:13
+  testql.commands.watchdog_cmd  [5 funcs]
+    _extract_failures  CC=10  out:15
+    _post_failures  CC=4  out:5
+    _process_one_scenario  CC=3  out:8
+    _run_scenario  CC=3  out:5
+    _update_metrics  CC=11  out:23
+  testql.conversation.runner  [6 funcs]
+    __init__  CC=4  out:6
+    _run_nlp2dsl  CC=15  out:24
+    _run_step  CC=7  out:10
+    _run_via_ir  CC=7  out:7
+    _extract_path  CC=4  out:3
+    _step_status_name  CC=4  out:0
   testql.discovery.manifest  [7 funcs]
     from_probe_results  CC=8  out:6
     _dedupe_dicts  CC=4  out:8
@@ -1909,17 +1898,30 @@ MODULES:
     _merge_metadata  CC=10  out:7
     _score_confidence  CC=5  out:1
     _unique  CC=3  out:3
-  testql.discovery.probes.filesystem.package_python  [14 funcs]
+  testql.discovery.probes.filesystem.api_openapi  [2 funcs]
+    _find_specs  CC=9  out:11
+    _excluded  CC=4  out:3
+  testql.discovery.probes.filesystem.package_python  [13 funcs]
     _find_python_files  CC=7  out:6
     _read_metadata  CC=8  out:13
     _call_kw  CC=2  out:3
     _dedupe_deps  CC=4  out:5
     _dep  CC=3  out:4
-    _excluded  CC=2  out:1
     _parse_pyproject  CC=7  out:12
     _parse_pyproject_dependencies  CC=6  out:15
     _parse_requirements  CC=4  out:5
     _parse_setup_cfg  CC=3  out:6
+    _parse_setup_py  CC=3  out:4
+  testql.discovery.probes.network.http_endpoint  [9 funcs]
+    probe  CC=6  out:14
+    handle_starttag  CC=10  out:14
+    _asset_kind  CC=8  out:2
+    _fetch  CC=1  out:2
+    _limit  CC=1  out:0
+    _link_kind  CC=4  out:4
+    _looks_textual  CC=2  out:2
+    _metadata  CC=1  out:10
+    _parse_html  CC=2  out:5
   testql.discovery.registry  [3 funcs]
     __init__  CC=2  out:1
     default_probes  CC=3  out:9
@@ -2020,9 +2022,13 @@ MODULES:
     _cmd_include  CC=7  out:17
   testql.interpreter._parser  [1 funcs]
     parse_oql  CC=5  out:10
-  testql.interpreter._testtoon_parser  [3 funcs]
+  testql.interpreter._testtoon_parser  [7 funcs]
     _append_api_asserts  CC=9  out:11
     _expand_api  CC=4  out:9
+    _expand_shell  CC=6  out:12
+    _quote_shell_command  CC=1  out:2
+    _shell_expected_exit  CC=7  out:8
+    _shell_timeout_ms  CC=5  out:9
     testtoon_to_oql  CC=2  out:4
   testql.interpreter._validation  [2 funcs]
     _cmd_validate  CC=10  out:30
@@ -2076,6 +2082,10 @@ MODULES:
     scan_aria  CC=4  out:9
     _aom_node_to_element  CC=2  out:13
     _flatten_aom  CC=2  out:3
+  testql.interpreter.interpreter  [3 funcs]
+    __init__  CC=3  out:6
+    execute  CC=4  out:16
+    parse  CC=2  out:3
   testql.interpreter.testtoon_parser  [21 funcs]
     _add_bare_commands_section  CC=3  out:4
     _add_row_to_section  CC=5  out:5
@@ -2089,29 +2099,10 @@ MODULES:
     _make_mapping_section  CC=1  out:2
   testql.ir_runner.engine  [1 funcs]
     run_plan  CC=1  out:2
-  testql.mcp.server  [6 funcs]
-    __post_init__  CC=1  out:3
-    _register_tools  CC=1  out:16
-    _normalize_run_payload  CC=4  out:8
-    _require_fastmcp  CC=2  out:1
-    create_server  CC=1  out:1
+  testql.ir_runner.executors.base  [1 funcs]
+    assemble_result  CC=5  out:6
+  testql.mcp.server  [1 funcs]
     run_server  CC=1  out:2
-  testql.meta.confidence_scorer  [4 funcs]
-    _is_llm_resolved  CC=3  out:1
-    _score_assertions  CC=3  out:2
-    _score_step  CC=3  out:9
-    _score_typed  CC=2  out:1
-  testql.meta.coverage_analyzer  [13 funcs]
-    _build_report  CC=1  out:6
-    _extract_table_names  CC=3  out:4
-    _load_text  CC=4  out:6
-    _load_yaml  CC=3  out:3
-    _openapi_endpoints  CC=6  out:7
-    _plan_endpoints  CC=3  out:1
-    _plan_proto_messages  CC=4  out:1
-    _plan_sql_tables  CC=3  out:4
-    _proto_messages  CC=2  out:0
-    _sql_tables  CC=2  out:1
   testql.openapi_generator  [5 funcs]
     _load_spec  CC=2  out:3
     _extract_parameters  CC=1  out:3
@@ -2143,6 +2134,13 @@ MODULES:
     render_inspection  CC=2  out:5
     render_refactor_plan  CC=1  out:2
     render_result_envelope  CC=1  out:2
+  testql.runner  [6 funcs]
+    _dispatch  CC=6  out:6
+    cmd_log  CC=2  out:3
+    cmd_print  CC=2  out:4
+    run_script  CC=11  out:20
+    parse_line  CC=9  out:20
+    parse_script  CC=3  out:2
   testql.sumd_generator  [11 funcs]
     _api_contract_section  CC=6  out:11
     _architecture_section  CC=1  out:0
@@ -2166,6 +2164,27 @@ MODULES:
     render_topology  CC=4  out:5
 
 EDGES:
+  examples.artifact-bundle.generate_bundle.main → examples.browser-inspection.run.print
+  examples.artifact-bundle.generate_bundle.main → testql.results.analyzer.inspect_source
+  examples.artifact-bundle.generate_bundle.main → testql.results.artifacts.write_inspection_artifacts
+  TODO.testtoon_parser.print_parsed → examples.browser-inspection.run.print
+  TODO.testtoon_parser.print_parsed → TODO.testtoon_parser.validate
+  testql.cli.mcp_serve → testql.mcp.server.run_server
+  testql.cli.check_and_upgrade → testql.cli._fetch_latest_version
+  testql.cli.check_and_upgrade → examples.browser-inspection.run.print
+  testql.cli.main → testql.cli.check_and_upgrade
+  testql.cli.main → testql.cli.cli
+  testql.runner.parse_line → examples.browser-inspection.run.print
+  testql.runner.parse_script → testql.runner.parse_line
+  testql.runner.DslCliExecutor._dispatch → examples.browser-inspection.run.print
+  testql.runner.DslCliExecutor.cmd_log → examples.browser-inspection.run.print
+  testql.runner.DslCliExecutor.cmd_print → examples.browser-inspection.run.print
+  testql.runner.DslCliExecutor.run_script → testql.runner.parse_script
+  testql.runner.DslCliExecutor.run_script → examples.browser-inspection.run.print
+  testql.openapi_generator.OpenAPIGenerator._infer_tags → testql._base_fallback.VariableStore.set
+  testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_path_params
+  testql.openapi_generator.OpenAPIGenerator._extract_parameters → testql.openapi_generator._extract_ep_params
+  testql._base_fallback.InterpreterOutput.emit → examples.browser-inspection.run.print
   testql.sumd_generator.generate_sumd → testql.sumd_generator._header_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._metadata_section
   testql.sumd_generator.generate_sumd → testql.sumd_generator._architecture_section
@@ -2176,215 +2195,197 @@ EDGES:
   testql.sumd_generator.generate_sumd → testql.sumd_generator._llm_suggestions_section
   testql.sumd_generator._llm_suggestions_section → testql.sumd_generator._workflow_snippet
   testql.sumd_generator.save_sumd → testql.sumd_generator.generate_sumd
+  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_block_interfaces
+  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_api_interfaces
   testql.commands.self_test_cmd.self_test → testql.commands.self_test_cmd._print_human
-  examples.artifact-bundle.generate_bundle.main → examples.browser-inspection.run.print
-  examples.artifact-bundle.generate_bundle.main → testql.results.analyzer.inspect_source
-  examples.artifact-bundle.generate_bundle.main → testql.results.artifacts.write_inspection_artifacts
   testql.commands.discover_cmd.discover → testql.discovery.registry.discover_path
+  testql.commands.generate_cmd._print_routes_section → testql.commands.generate_cmd._count_routes_by
   testql.commands.topology_cmd.topology → testql.topology.builder.build_topology
   testql.commands.topology_cmd.topology → testql.topology.serializers.render_topology
-  testql.commands.run_ir_cmd.run_ir → testql.ir_runner.engine.run_plan
-  testql.commands.run_ir_cmd.run_ir → testql.commands.run_ir_cmd._emit_json
-  testql.commands.generate_cmd._print_routes_section → testql.commands.generate_cmd._count_routes_by
-  testql.cli.mcp_serve → testql.mcp.server.run_server
-  testql.cli.check_and_upgrade → testql.cli._fetch_latest_version
-  testql.cli.check_and_upgrade → examples.browser-inspection.run.print
-  testql.cli.main → testql.cli.check_and_upgrade
-  testql.cli.main → testql.cli.cli
   testql.commands.misc_cmds.init → testql.commands.misc_cmds._create_templates
   testql.commands.misc_cmds.report → testql.report_generator.generate_report
   testql.commands.misc_cmds.echo → testql.commands.echo_helpers.render_echo
   testql.commands.misc_cmds.echo → testql.commands.echo_helpers.collect_toon_data
-  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_block_interfaces
-  testql.sumd_parser.SumdParser._parse_interfaces → testql.sumd_parser._parse_api_interfaces
-  testql.commands.run_cmd._emit_single_json → examples.browser-inspection.run.print
-  testql.commands.run_cmd._emit_multi_json → examples.browser-inspection.run.print
-  testql.commands.run_cmd._maybe_planfile → testql.integrations.planfile_hook.create_test_failure_ticket
-  testql.commands.run_cmd.run → testql.adapters.registry.AdapterRegistry.all
-  testql.commands.echo_helpers._collect_toon_directory → testql.toon_parser.parse_toon_file
-  testql.commands.echo_helpers.collect_toon_data → testql.commands.echo_helpers._collect_toon_directory
-  testql.commands.echo_helpers.collect_toon_data → testql.toon_parser.parse_toon_file
-  testql.commands.echo_helpers.collect_doql_data → testql.doql_parser.parse_doql_file
-  testql.commands.echo_helpers.render_echo → testql.sumd_generator.generate_sumd
-  testql.commands.generate_topology_cmd.generate_topology → testql.topology.builder.build_topology
-  testql.commands.generate_topology_cmd.generate_topology → testql.commands.generate_topology_cmd._pick_trace
-  testql.commands.inspect_cmd.inspect → testql.results.analyzer.inspect_source
-  testql.commands.auto_cmd._run_generation_phase → testql.results.analyzer.inspect_source
-  testql.commands.auto_cmd._run_generation_phase → testql.results.artifacts.write_inspection_artifacts
-  testql.commands.auto_cmd._run_report_phase → testql.commands.auto_cmd._render_markdown_report
-  testql.commands.auto_cmd._run_report_phase → testql.commands.auto_cmd._render_console_report
-  testql.commands.generate_ir_cmd._split_from_arg → testql.generators.sources.available_sources
-  testql.commands.generate_ir_cmd.generate_ir → testql.commands.generate_ir_cmd._split_from_arg
-  testql.commands.suite.cli.list_tests → testql.commands.suite.collection.collect_list_files
+  testql.commands.run_ir_cmd.run_ir → testql.ir_runner.engine.run_plan
+  testql.commands.run_ir_cmd.run_ir → testql.commands.run_ir_cmd._emit_json
+  testql.commands.heal_scenario_cmd._collect_selectors → testql._base_fallback.VariableStore.set
+  testql.commands.heal_scenario_cmd.heal_scenario → testql.commands.heal_scenario_cmd._collect_selectors
+  testql.commands.heal_scenario_cmd._heal_with_elements → testql.generators.page_analyzer.pick_selector
+  testql.commands.heal_scenario_cmd._heal_with_elements → testql.generators.page_analyzer.find_replacement
+  testql.commands.heal_scenario_cmd._heal_with_elements → testql.adapters.testtoon_adapter._toon_safe_selector
+  testql.commands.heal_scenario_cmd._heal_with_browser → testql.generators.sources.page_source.extract_elements_from_page
 ```
 
 ### Code Analysis (`project/analysis.toon.yaml`)
 
 ```toon markpact:analysis path=project/analysis.toon.yaml
-# code2llm | 398f 35550L | python:232,yaml:118,shell:23,yml:2,json:2,txt:2,toml:1,doql:1 | 2026-05-27
-# generated in 0.18s
-# CC̅=3.6 | critical:2/1426 | dups:0 | cycles:0
+# code2llm | 415f 37453L | python:248,yaml:119,shell:23,json:2,txt:2,yml:2,toml:1,doql:1 | 2026-06-06
+# generated in 0.11s
+# CC̅=3.7 | critical:3/1506 | dups:0 | cycles:0
 
-HEALTH[2]:
-  🟡 CC    watchdog CC=21 (limit:15)
-  🟡 CC    _render_generic_section_steps CC=17 (limit:15)
+HEALTH[3]:
+  🟡 CC    conversation_run CC=20 (limit:15)
+  🟡 CC    _modbus_run_probe_script CC=16 (limit:15)
+  🟡 CC    _run_nlp2dsl CC=15 (limit:15)
 
 REFACTOR[1]:
-  1. split 2 high-CC methods  (CC>15)
+  1. split 3 high-CC methods  (CC>15)
 
-PIPELINES[759]:
-  [1] Src [save_sumd]: save_sumd → generate_sumd → _header_section
+PIPELINES[812]:
+  [1] Src [main]: main → print
       PURITY: 100% pure
-  [2] Src [self_test]: self_test → _print_human
+  [2] Src [health]: health
       PURITY: 100% pure
-  [3] Src [main]: main → print
+  [3] Src [devices]: devices
       PURITY: 100% pure
-  [4] Src [discover]: discover → discover_path
+  [4] Src [list_scenarios]: list_scenarios
       PURITY: 100% pure
-  [5] Src [topology]: topology → build_topology
+  [5] Src [create_scenario]: create_scenario
       PURITY: 100% pure
-  [6] Src [run_ir]: run_ir → run_plan
+  [6] Src [get_scenario]: get_scenario
       PURITY: 100% pure
-  [7] Src [_is_workspace]: _is_workspace
+  [7] Src [update_scenario]: update_scenario
       PURITY: 100% pure
-  [8] Src [generate]: generate → _echo_analysis
+  [8] Src [delete_scenario]: delete_scenario
       PURITY: 100% pure
-  [9] Src [analyze]: analyze → _print_routes_section → _count_routes_by
+  [9] Src [users]: users
       PURITY: 100% pure
-  [10] Src [mcp_serve]: mcp_serve → run_server → create_server
+  [10] Src [validate]: validate
       PURITY: 100% pure
-  [11] Src [main]: main → check_and_upgrade → _fetch_latest_version
+  [11] Src [print_parsed]: print_parsed → print
       PURITY: 100% pure
-  [12] Src [init]: init → _create_templates
+  [12] Src [__init__]: __init__
       PURITY: 100% pure
-  [13] Src [create]: create
+  [13] Src [parse_file]: parse_file
       PURITY: 100% pure
-  [14] Src [watch]: watch
+  [14] Src [parse]: parse
       PURITY: 100% pure
-  [15] Src [from_sumd]: from_sumd
+  [15] Src [_parse_api_block]: _parse_api_block
       PURITY: 100% pure
-  [16] Src [report]: report → generate_report → _adapt_test_entry
+  [16] Src [_parse_assert_block]: _parse_assert_block
       PURITY: 100% pure
-  [17] Src [echo]: echo → render_echo → generate_sumd → _header_section
+  [17] Src [_parse_log_block]: _parse_log_block
       PURITY: 100% pure
-  [18] Src [parse_file]: parse_file
+  [18] Src [mcp_serve]: mcp_serve → run_server → create_server
       PURITY: 100% pure
-  [19] Src [parse]: parse
+  [19] Src [main]: main → check_and_upgrade → _fetch_latest_version
       PURITY: 100% pure
-  [20] Src [_parse_metadata]: _parse_metadata
+  [20] Src [__init__]: __init__
       PURITY: 100% pure
-  [21] Src [_parse_interfaces]: _parse_interfaces → _parse_block_interfaces
+  [21] Src [parse_file]: parse_file
       PURITY: 100% pure
-  [22] Src [_parse_workflows]: _parse_workflows
+  [22] Src [parse]: parse
       PURITY: 100% pure
-  [23] Src [_parse_testql_scenarios]: _parse_testql_scenarios
+  [23] Src [_parse_app_block]: _parse_app_block
       PURITY: 100% pure
-  [24] Src [_parse_architecture]: _parse_architecture
+  [24] Src [_parse_entity_block]: _parse_entity_block
       PURITY: 100% pure
-  [25] Src [_extract_section]: _extract_section
+  [25] Src [_parse_workflow_block]: _parse_workflow_block
       PURITY: 100% pure
-  [26] Src [generate_testql_scenarios]: generate_testql_scenarios
+  [26] Src [_parse_interface_block]: _parse_interface_block
       PURITY: 100% pure
-  [27] Src [parse_sumd_file]: parse_sumd_file
+  [27] Src [_parse_deploy_block]: _parse_deploy_block
       PURITY: 100% pure
-  [28] Src [run]: run → all
+  [28] Src [parse_testql_results]: parse_testql_results
       PURITY: 100% pure
-  [29] Src [generate_from_page]: generate_from_page → snapshot_to_plan → _create_base_plan
+  [29] Src [to_json]: to_json
       PURITY: 100% pure
-  [30] Src [generate_topology]: generate_topology → build_topology
+  [30] Src [__init__]: __init__
       PURITY: 100% pure
-  [31] Src [inspect]: inspect → inspect_source → build_topology
+  [31] Src [generate]: generate
       PURITY: 100% pure
-  [32] Src [auto]: auto → _run_generation_phase → inspect_source → build_topology
+  [32] Src [_render_html]: _render_html
       PURITY: 100% pure
-  [33] Src [build]: build
+  [33] Src [_render_test_row]: _render_test_row
       PURITY: 100% pure
-  [34] Src [_build_meta_header]: _build_meta_header
+  [34] Src [__init__]: __init__
       PURITY: 100% pure
-  [35] Src [_build_gui]: _build_gui
+  [35] Src [execute]: execute
       PURITY: 100% pure
-  [36] Src [_build_api]: _build_api
+  [36] Src [_dispatch]: _dispatch → print
       PURITY: 100% pure
-  [37] Src [_build_mixed]: _build_mixed
+  [37] Src [cmd_api]: cmd_api
       PURITY: 100% pure
-  [38] Src [_build_performance]: _build_performance
+  [38] Src [cmd_wait]: cmd_wait
       PURITY: 100% pure
-  [39] Src [_build_workflow]: _build_workflow
+  [39] Src [cmd_log]: cmd_log → print
       PURITY: 100% pure
-  [40] Src [_build_encoder]: _build_encoder
+  [40] Src [cmd_print]: cmd_print → print
       PURITY: 100% pure
-  [41] Src [generate_ir]: generate_ir → _split_from_arg → available_sources → set
+  [41] Src [cmd_store]: cmd_store
       PURITY: 100% pure
-  [42] Src [suite]: suite → collect_test_files → _deduplicate_files → set
+  [42] Src [cmd_env]: cmd_env
       PURITY: 100% pure
-  [43] Src [list_tests]: list_tests → collect_list_files → set
+  [43] Src [cmd_assert_status]: cmd_assert_status
       PURITY: 100% pure
-  [44] Src [endpoints]: endpoints → _format_endpoints → _format_endpoints_table
+  [44] Src [cmd_assert_json]: cmd_assert_json
       PURITY: 100% pure
-  [45] Src [openapi]: openapi
+  [45] Src [cmd_set_header]: cmd_set_header
       PURITY: 100% pure
-  [46] Src [health]: health
+  [46] Src [cmd_set_base_url]: cmd_set_base_url
       PURITY: 100% pure
-  [47] Src [devices]: devices
+  [47] Src [run_script]: run_script → parse_script → parse_line → print
       PURITY: 100% pure
-  [48] Src [list_scenarios]: list_scenarios
+  [48] Src [_format_cmd]: _format_cmd
       PURITY: 100% pure
-  [49] Src [create_scenario]: create_scenario
+  [49] Src [main]: main → parse_line → print
       PURITY: 100% pure
-  [50] Src [get_scenario]: get_scenario
+  [50] Src [to_json]: to_json
       PURITY: 100% pure
 
 LAYERS:
-  TODO/                           CC̄=5.9    ←in:0  →out:8  !! split
-  │ testtoon_parser            141L  1C    7m  CC=14     ←0
+  TODO/                           CC̄=5.9    ←in:1  →out:8  !! split
+  │ testtoon_parser            141L  1C    7m  CC=14     ←1
   │
-  testql/                         CC̄=3.7    ←in:37  →out:24  !! split
+  testql/                         CC̄=3.7    ←in:41  →out:23  !! split
+  │ !! testtoon_adapter           742L  1C   46m  CC=12     ←4
   │ !! _gui                       708L  1C   34m  CC=12     ←0
-  │ !! testtoon_adapter           576L  1C   35m  CC=17     ←1
+  │ !! _testtoon_parser           564L  0C   24m  CC=14     ←1
   │ !! page_analyzer              526L  1C   31m  CC=10     ←3
   │ !! scenario_yaml              506L  1C   43m  CC=13     ←1
   │ !! analyzer                   504L  0C   38m  CC=14     ←3
   │ encoder_routes             477L  0C   27m  CC=10     ←0
-  │ _testtoon_parser           468L  0C   19m  CC=14     ←1
   │ openapi_generator          444L  3C   21m  CC=11     ←1
   │ dom_scanner                418L  1C   26m  CC=13     ←0
   │ pytest_source              389L  3C   13m  CC=13     ←0
   │ runner                     371L  3C   18m  CC=12     ←0
   │ nl_adapter                 353L  1C   30m  CC=7      ←0
-  │ sql_adapter                333L  1C   26m  CC=8      ←3
+  │ sql_adapter                333L  1C   26m  CC=8      ←0
   │ dom_scan_mixin             318L  1C   11m  CC=9      ←0
+  │ steps                      318L  14C   27m  CC=8      ←0
   │ analyzers                  309L  1C   16m  CC=10     ←0
   │ heal_scenario_cmd          307L  1C    9m  CC=8      ←0
   │ oql_source                 306L  1C   22m  CC=10     ←0
   │ config_source              305L  1C   13m  CC=14     ←0
   │ _assertions                304L  1C    7m  CC=13     ←0
+  │ _api_runner                302L  1C   16m  CC=13     ←2
   │ api_generator              298L  2C   19m  CC=10     ←0
-  │ testtoon_parser            296L  0C   21m  CC=11     ←1
+  │ testtoon_parser            296L  0C   21m  CC=11     ←0
   │ misc_cmds                  292L  0C    7m  CC=6      ←0
-  │ _api_runner                288L  1C   16m  CC=10     ←2
+  │ watchdog_cmd               282L  0C    9m  CC=14     ←0
   │ sumd_parser                277L  5C   12m  CC=11     ←0
   │ graphql_adapter            273L  1C   23m  CC=6      ←0
   │ _unit                      267L  1C   10m  CC=10     ←0
+  │ !! runner                     267L  3C   13m  CC=15     ←1
   │ oql_parser                 267L  1C   20m  CC=7      ←0
-  │ !! watchdog_cmd               260L  0C    7m  CC=21     ←0
   │ _shell                     260L  1C    9m  CC=8      ←0
-  │ steps                      251L  11C   21m  CC=8      ←0
   │ report_generator           250L  4C    8m  CC=5      ←1
   │ proto_adapter              242L  1C   18m  CC=6      ←0
   │ generator                  241L  2C   17m  CC=8      ←0
   │ unified                    239L  1C   12m  CC=13     ←0
-  │ _base_fallback             232L  7C   26m  CC=4      ←20
+  │ _base_fallback             232L  7C   26m  CC=4      ←24
   │ ddl_parser                 228L  3C   17m  CC=7      ←2
   │ mutator                    219L  2C   12m  CC=6      ←0
   │ config_detector            218L  1C   10m  CC=14     ←0
   │ sumd_generator             208L  0C   11m  CC=7      ←1
+  │ !! _modbus                    208L  1C    7m  CC=16     ←0
   │ auto_cmd                   202L  0C    9m  CC=9      ←0
-  │ package_python             200L  1C   19m  CC=10     ←1
+  │ package_python             200L  1C   19m  CC=10     ←0
   │ message_validator          187L  2C   11m  CC=7      ←1
   │ manifest                   173L  6C   12m  CC=10     ←0
   │ coverage_analyzer          173L  1C   15m  CC=6      ←0
-  │ _websockets                172L  1C    8m  CC=8      ←0
   │ doql_parser                172L  1C    9m  CC=6      ←1
+  │ _websockets                172L  1C    8m  CC=8      ←0
   │ page_source                172L  1C    6m  CC=4      ←1
   │ generate_cmd               171L  0C    9m  CC=10     ←0
   │ specialized_generator      170L  1C    5m  CC=1      ←0
@@ -2392,15 +2393,15 @@ LAYERS:
   │ _flow                      165L  1C    6m  CC=9      ←0
   │ descriptor_loader          162L  3C   13m  CC=5      ←3
   │ run_cmd                    160L  0C    6m  CC=10     ←1
-  │ http_endpoint              160L  2C   15m  CC=10     ←0
+  │ http_endpoint              160L  2C   15m  CC=10     ←1
+  │ interpreter                159L  1C    7m  CC=8      ←0
   │ server                     159L  1C    7m  CC=4      ←1
-  │ interpreter                158L  1C    7m  CC=8      ←0
-  │ _validation                153L  1C    3m  CC=11     ←0
   │ echo_schemas               153L  6C    2m  CC=8      ←0
+  │ _validation                153L  1C    3m  CC=11     ←0
   │ fastapi_detector           153L  1C   12m  CC=6      ←0
-  │ registry                   150L  1C   13m  CC=9      ←5
+  │ registry                   150L  1C   13m  CC=9      ←1
   │ generate-test-reports.testql.toon.yaml   150L  0C    0m  CC=0.0    ←0
-  │ playwright_page            147L  1C    6m  CC=10     ←1
+  │ playwright_page            147L  1C    6m  CC=10     ←0
   │ pytest_generator           147L  1C    9m  CC=7      ←0
   │ pipeline                   145L  2C    7m  CC=7      ←0
   │ artifacts                  144L  0C    4m  CC=10     ←3
@@ -2420,19 +2421,19 @@ LAYERS:
   │ listing                    114L  0C    6m  CC=7      ←1
   │ serializers                112L  0C    8m  CC=7      ←2
   │ run-all-views.testql.toon.yaml   112L  0C    0m  CC=0.0    ←0
-  │ _hardware                  110L  1C    4m  CC=8      ←0
   │ toon_parser                110L  1C    7m  CC=4      ←1
+  │ _hardware                  109L  1C    4m  CC=8      ←0
   │ grammar                    107L  1C    7m  CC=5      ←2
+  │ cli                        106L  0C    5m  CC=4      ←0
   │ multi                      105L  1C    5m  CC=6      ←0
   │ fixtures                   105L  2C    7m  CC=5      ←1
   │ models                     105L  5C    6m  CC=6      ←0
-  │ cli                        104L  0C    5m  CC=4      ←0
   │ pl.yaml                    103L  0C    0m  CC=0.0    ←0
   │ cli                        100L  0C    2m  CC=13     ←0
   │ _encoder                   100L  1C   13m  CC=9      ←0
   │ generate_from_page_cmd      99L  0C    2m  CC=8      ←0
   │ intent_recognizer           99L  1C    3m  CC=6      ←1
-  │ base                        97L  3C    5m  CC=5      ←7
+  │ base                        97L  3C    5m  CC=5      ←8
   │ text                        95L  0C    7m  CC=6      ←1
   │ pipeline                    95L  1C    6m  CC=5      ←0
   │ query_parser                95L  1C    5m  CC=5      ←0
@@ -2442,6 +2443,7 @@ LAYERS:
   │ en.yaml                     93L  0C    0m  CC=0.0    ←0
   │ __init__                    91L  0C    1m  CC=8      ←0
   │ proto_source                90L  1C    5m  CC=5      ←0
+  │ live_llm                    90L  1C    5m  CC=6      ←0
   │ openapi_detector            90L  1C    3m  CC=9      ←0
   │ reports                     89L  0C    5m  CC=6      ←1
   │ dialect_resolver            88L  1C    4m  CC=4      ←3
@@ -2451,19 +2453,22 @@ LAYERS:
   │ dispatcher                  86L  1C    6m  CC=5      ←1
   │ dom_scan_formatters         84L  0C    4m  CC=13     ←1
   │ ui_source                   81L  1C    5m  CC=5      ←0
+  │ nlp2dsl_adapter             81L  1C    4m  CC=7      ←0
+  │ __init__                    80L  0C    3m  CC=4      ←3
   │ junit                       79L  1C    3m  CC=8      ←0
   │ sql_source                  79L  1C    4m  CC=5      ←0
   │ encoder                     77L  0C    3m  CC=5      ←0
   │ toon                        76L  0C    4m  CC=5      ←1
   │ query_executor              76L  0C    5m  CC=6      ←1
   │ test-device-flow.testql.toon.yaml    76L  0C    0m  CC=0.0    ←0
-  │ __init__                    75L  0C    3m  CC=4      ←3
   │ execution                   73L  0C    2m  CC=5      ←1
-  │ api_openapi                 72L  1C    5m  CC=9      ←0
+  │ api_openapi                 72L  1C    5m  CC=9      ←1
+  │ !! conversation_cmd            70L  0C    2m  CC=20     ←0
   │ base                        70L  3C    8m  CC=4      ←0
   │ test-gui-connect-id.testql.toon.yaml    70L  0C    0m  CC=0.0    ←0
+  │ conversation_generator      69L  1C    3m  CC=8      ←0
   │ echo_helpers                68L  0C    4m  CC=8      ←1
-  │ base                        68L  1C    7m  CC=5      ←10
+  │ base                        68L  1C    7m  CC=5      ←12
   │ api                         67L  0C    5m  CC=4      ←0
   │ graphql_source              66L  1C    4m  CC=5      ←0
   │ __init__                    66L  0C    0m  CC=0.0    ←0
@@ -2473,6 +2478,7 @@ LAYERS:
   │ test-gui-connect-workshop.testql.toon.yaml    65L  0C    0m  CC=0.0    ←0
   │ renderer                    64L  0C    4m  CC=7      ←1
   │ pytest_target               64L  1C    4m  CC=5      ←0
+  │ client                      62L  2C    6m  CC=5      ←0
   │ endpoint_detector           62L  0C    0m  CC=0.0    ←0
   │ _converter                  62L  0C    0m  CC=0.0    ←0
   │ generator                   61L  0C    0m  CC=0.0    ←0
@@ -2488,16 +2494,17 @@ LAYERS:
   │ create-todays-reports.testql.toon.yaml    58L  0C    0m  CC=0.0    ←0
   │ context                     54L  0C    3m  CC=4      ←1
   │ package_node                54L  1C    2m  CC=14     ←0
+  │ __init__                    54L  0C    0m  CC=0.0    ←0
   │ __init__                    53L  0C    1m  CC=2      ←0
+  │ __init__                    53L  0C    3m  CC=1      ←1
   │ dom_scan_models             53L  4C    0m  CC=0.0    ←0
+  │ __init__                    53L  0C    0m  CC=0.0    ←0
   │ __init__                    53L  0C    0m  CC=0.0    ←0
   │ __init__                    52L  0C    0m  CC=0.0    ←0
   │ recorded-test-session.testql.toon.yaml    52L  0C    0m  CC=0.0    ←0
   │ convenience                 51L  0C    2m  CC=1      ←0
   │ django_detector             51L  1C    2m  CC=4      ←0
-  │ __init__                    51L  0C    3m  CC=1      ←1
   │ serializers                 51L  0C    3m  CC=5      ←4
-  │ __init__                    50L  0C    0m  CC=0.0    ←0
   │ __init__                    50L  0C    0m  CC=0.0    ←0
   │ test-gui-connect-config.testql.toon.yaml    50L  0C    0m  CC=0.0    ←0
   │ generate_ir_cmd             49L  0C    2m  CC=2      ←0
@@ -2505,21 +2512,24 @@ LAYERS:
   │ llm_fallback                49L  3C    4m  CC=1      ←1
   │ connect-reports-year.testql.toon.yaml    49L  0C    0m  CC=0.0    ←0
   │ websocket_detector          48L  1C    2m  CC=3      ←0
-  │ __init__                    48L  0C    0m  CC=0.0    ←0
   │ test-gui-connect-reports.testql.toon.yaml    48L  0C    0m  CC=0.0    ←0
   │ encoder                     47L  0C    3m  CC=5      ←0
   │ test-gui-connect-manager.testql.toon.yaml    47L  0C    0m  CC=0.0    ←0
   │ discover_cmd                46L  0C    2m  CC=9      ←0
+  │ mock_llm                    46L  1C    2m  CC=6      ←1
   │ shell                       46L  0C    3m  CC=5      ←0
   │ self_test_cmd               45L  0C    2m  CC=4      ←0
   │ session-recording.testql.toon.yaml    45L  0C    0m  CC=0.0    ←0
   │ connect-reports-month.testql.toon.yaml    45L  0C    0m  CC=0.0    ←0
-  │ container_compose           44L  1C    3m  CC=9      ←1
+  │ email_checker               44L  1C    2m  CC=10     ←0
+  │ container_compose           44L  1C    3m  CC=9      ←0
   │ connect-id-rfid.testql.toon.yaml    44L  0C    0m  CC=0.0    ←0
   │ connect-reports-week.testql.toon.yaml    43L  0C    0m  CC=0.0    ←0
+  │ file_checker                42L  1C    1m  CC=9      ←0
   │ plan                        42L  1C    1m  CC=3      ←0
-  │ unit                        42L  0C    2m  CC=6      ←0
+  │ llm_provider                42L  1C    3m  CC=4      ←2
   │ context                     42L  1C    1m  CC=1      ←0
+  │ unit                        42L  0C    2m  CC=6      ←0
   │ connect-reports-quarter.testql.toon.yaml    42L  0C    0m  CC=0.0    ←0
   │ connect-reports-chart.testql.toon.yaml    42L  0C    0m  CC=0.0    ←0
   │ container_dockerfile        41L  1C    3m  CC=6      ←0
@@ -2537,6 +2547,8 @@ LAYERS:
   │ base                        37L  0C    0m  CC=0.0    ←0
   │ connect-manager-scenarios.testql.toon.yaml    37L  0C    0m  CC=0.0    ←0
   │ __init__                    36L  0C    2m  CC=2      ←3
+  │ registry                    35L  1C    4m  CC=2      ←1
+  │ conversation                35L  1C    1m  CC=6      ←0
   │ __init__                    35L  0C    0m  CC=0.0    ←0
   │ inspect_cmd                 34L  0C    1m  CC=6      ←0
   │ assertions                  34L  0C    1m  CC=9      ←1
@@ -2544,11 +2556,11 @@ LAYERS:
   │ __init__                    34L  0C    0m  CC=0.0    ←0
   │ connect-id-qr.testql.toon.yaml    34L  0C    0m  CC=0.0    ←0
   │ _parser                     33L  2C    1m  CC=5      ←2
+  │ testtoon_models             33L  2C    1m  CC=3      ←0
   │ fixtures                    33L  1C    1m  CC=1      ←0
+  │ assertions                  33L  1C    1m  CC=3      ←0
   │ source                      33L  2C    2m  CC=4      ←0
   │ json_reporter               33L  0C    1m  CC=2      ←0
-  │ testtoon_models             33L  2C    1m  CC=3      ←0
-  │ assertions                  33L  1C    1m  CC=3      ←0
   │ __init__                    33L  0C    0m  CC=0.0    ←0
   │ navigate                    32L  0C    1m  CC=6      ←0
   │ base                        32L  1C    1m  CC=1      ←0
@@ -2556,6 +2568,7 @@ LAYERS:
   │ api                         31L  0C    1m  CC=6      ←0
   │ metadata                    31L  1C    1m  CC=3      ←0
   │ gui                         30L  0C    1m  CC=2      ←0
+  │ assert_json                 30L  0C    2m  CC=5      ←0
   │ oql_models                  30L  2C    0m  CC=0.0    ←0
   │ __init__                    30L  0C    0m  CC=0.0    ←0
   │ generators                  30L  0C    0m  CC=0.0    ←0
@@ -2569,6 +2582,7 @@ LAYERS:
   │ __init__                    25L  0C    0m  CC=0.0    ←0
   │ connect-config-users.testql.toon.yaml    25L  0C    0m  CC=0.0    ←0
   │ record                      24L  0C    2m  CC=1      ←0
+  │ base                        24L  2C    1m  CC=1      ←0
   │ nl                          24L  0C    1m  CC=1      ←0
   │ test-protocol-flow.testql.toon.yaml    24L  0C    0m  CC=0.0    ←0
   │ topology_cmd                23L  0C    1m  CC=3      ←0
@@ -2579,8 +2593,8 @@ LAYERS:
   │ wait                        22L  0C    1m  CC=4      ←0
   │ nl_target                   22L  1C    1m  CC=1      ←0
   │ __init__                    22L  0C    0m  CC=0.0    ←0
-  │ connect-id-barcode.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
   │ backend-diagnostic.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
+  │ connect-id-barcode.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
   │ connect-workshop-requests-search.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
   │ connect-manager-activities.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
   │ connect-id-list.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
@@ -2588,19 +2602,20 @@ LAYERS:
   │ connect-manager-intervals.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
   │ connect-workshop-services-search.testql.toon.yaml    22L  0C    0m  CC=0.0    ←0
   │ base                        21L  1C    1m  CC=1      ←1
+  │ __init__                    21L  0C    0m  CC=0.0    ←0
   │ connect-config-settings.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
   │ connect-test-testing-rfid.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
   │ connect-config-tables.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
-  │ connect-config-users.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
   │ connect-reports-filter.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
   │ connect-id-barcode.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-config-users.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
   │ connect-config-feature-flags.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
-  │ connect-test-full-test.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
   │ connect-id-manual.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ connect-test-full-test.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
   │ connect-workshop-transport-search.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
   │ connect-config-theme.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
-  │ __init__                    21L  0C    0m  CC=0.0    ←0
   │ connect-workshop-dispositions-search.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │ __init__                    21L  0C    0m  CC=0.0    ←0
   │ models                      20L  2C    0m  CC=0.0    ←0
   │ __init__                    20L  0C    0m  CC=0.0    ←0
   │ connect-test-testing-barcode.testql.toon.yaml    20L  0C    0m  CC=0.0    ←0
@@ -2613,6 +2628,7 @@ LAYERS:
   │ encoder-workshop.testql.toon.yaml    19L  0C    0m  CC=0.0    ←0
   │ unknown                     18L  0C    1m  CC=3      ←1
   │ __init__                    18L  0C    0m  CC=0.0    ←0
+  │ __init__                    17L  0C    0m  CC=0.0    ←0
   │ test-api.testql.toon.yaml    17L  0C    0m  CC=0.0    ←0
   │ __init__                    16L  0C    0m  CC=0.0    ←0
   │ connect-workshop-transport.testql.toon.yaml    16L  0C    0m  CC=0.0    ←0
@@ -2642,8 +2658,7 @@ LAYERS:
   │ __init__                     6L  0C    0m  CC=0.0    ←0
   │ __init__                     5L  0C    0m  CC=0.0    ←0
   │ __init__                     5L  0C    0m  CC=0.0    ←0
-  │ autoloop_runner              0L  0C    0m  CC=0.0    ←0
-  │ __init__                     0L  0C    0m  CC=0.0    ←0
+  │ __init__                     5L  0C    0m  CC=0.0    ←0
   │
   examples/                       CC̄=0.9    ←in:0  →out:0
   │ run-matrix.sh              101L  0C    0m  CC=0.0    ←0
@@ -2676,17 +2691,17 @@ LAYERS:
   │ login-form.testql.toon.yaml    20L  0C    0m  CC=0.0    ←0
   │ Makefile                    20L  0C    0m  CC=0.0    ←0
   │ health-check.testql.yaml    19L  0C    0m  CC=0.0    ←0
+  │ Makefile                    18L  0C    0m  CC=0.0    ←0
   │ run.sh                      18L  0C    0m  CC=0.0    ←0
   │ topology.sh                 18L  0C    0m  CC=0.0    ←0
   │ Makefile                    18L  0C    0m  CC=0.0    ←0
   │ Makefile                    18L  0C    0m  CC=0.0    ←0
   │ Makefile                    18L  0C    0m  CC=0.0    ←0
-  │ Makefile                    18L  0C    0m  CC=0.0    ←0
-  │ Makefile                    17L  0C    0m  CC=0.0    ←0
-  │ Makefile                    17L  0C    0m  CC=0.0    ←0
   │ run.sh                      17L  0C    0m  CC=0.0    ←0
-  │ api-contract.testql.toon.yaml    17L  0C    0m  CC=0.0    ←0
   │ Makefile                    17L  0C    0m  CC=0.0    ←0
+  │ Makefile                    17L  0C    0m  CC=0.0    ←0
+  │ Makefile                    17L  0C    0m  CC=0.0    ←0
+  │ api-contract.testql.toon.yaml    17L  0C    0m  CC=0.0    ←0
   │ Makefile                    17L  0C    0m  CC=0.0    ←0
   │ run.sh                      16L  0C    0m  CC=0.0    ←0
   │ Makefile                    15L  0C    0m  CC=0.0    ←0
@@ -2709,26 +2724,29 @@ LAYERS:
   │
   ./                              CC̄=0.0    ←in:0  →out:0
   │ !! planfile.yaml             1319L  0C    0m  CC=0.0    ←0
-  │ !! tree.txt                   831L  0C    0m  CC=0.0    ←0
+  │ !! tree.txt                  1104L  0C    0m  CC=0.0    ←0
   │ !! goal.yaml                  511L  0C    0m  CC=0.0    ←0
   │ sumd.json                  204L  0C    0m  CC=0.0    ←0
   │ Taskfile.yml               185L  0C    0m  CC=0.0    ←0
   │ openapi.yaml               175L  0C    0m  CC=0.0    ←0
   │ Taskfile.testql.yml        117L  0C    0m  CC=0.0    ←0
   │ Makefile                    99L  0C    0m  CC=0.0    ←0
+  │ pyproject.toml              92L  0C    0m  CC=0.0    ←0
   │ prefact.yaml                91L  0C    0m  CC=0.0    ←0
-  │ pyproject.toml              89L  0C    0m  CC=0.0    ←0
   │ pyqual.yaml                 71L  0C    0m  CC=0.0    ←0
   │ project.sh                  50L  0C    0m  CC=0.0    ←0
   │ coverage.json                1L  0C    0m  CC=0.0    ←0
   │ topology.toon.yaml           0L  0C    0m  CC=0.0    ←0
   │
+  docs/                           CC̄=0.0    ←in:0  →out:0
+  │ conversation-refactor-plan.toon.yaml    56L  0C    0m  CC=0.0    ←0
+  │
   testql-scenarios/               CC̄=0.0    ←in:0  →out:0
   │ generated-api-smoke.testql.toon.yaml    35L  0C    0m  CC=0.0    ←0
   │ generated-sitemap-assert.testql.toon.yaml    29L  0C    0m  CC=0.0    ←0
+  │ generated-cli-extended.testql.toon.yaml    23L  0C    0m  CC=0.0    ←0
   │ generated-asset-assert.testql.toon.yaml    23L  0C    0m  CC=0.0    ←0
   │ generated-from-pytests.testql.toon.yaml    23L  0C    0m  CC=0.0    ←0
-  │ generated-cli-extended.testql.toon.yaml    23L  0C    0m  CC=0.0    ←0
   │ orders-sqlite.sql.testql.yaml    22L  0C    0m  CC=0.0    ←0
   │ users-contract.sql.testql.yaml    21L  0C    0m  CC=0.0    ←0
   │ orders-mutations.graphql.testql.yaml    20L  0C    0m  CC=0.0    ←0
@@ -2748,40 +2766,38 @@ LAYERS:
   │ encoder-connect-test-devices-admin-pl.testql.toon.yaml    29L  0C    0m  CC=0.0    ←0
   │
   ── zero ──
-     testql/autoloop_runner.py                 0L
-     testql/runners/__init__.py                0L
      topology.toon.yaml                        0L
 
 COUPLING:
-                                                    testql  examples.browser-inspection              testql.commands              testql.adapters            testql.generators               testql.results              testql.topology          testql.integrations             testql.ir_runner                         TODO             testql.discovery                   testql.mcp     examples.artifact-bundle                  testql.meta           testql.interpreter
-                       testql                           ──                           22                          ←12                            1                           ←6                                                                                                                                                                            ←6                            1                                                        ←4                           ←2  hub
-  examples.browser-inspection                          ←22                           ──                           ←3                                                                                                                                               ←8                                                        ←8                                                                                     ←4                                                        ←1  hub
-              testql.commands                           12                            3                           ──                            3                            7                            7                            3                            1                            1                                                         1                           ←2                                                                                         !! fan-out
-              testql.adapters                            6                                                        ←3                           ──                           ←3                                                                                                                  ←8                                                                                                                                               ←2                           ←1  hub
-            testql.generators                            6                                                        ←7                            3                           ──                                                        ←1                                                                                                                                               ←2                                                                                      1  hub
-               testql.results                                                                                     ←7                                                                                     ──                            4                                                                                                                                                                            ←2                                                            hub
-              testql.topology                                                                                     ←3                                                         1                           ←4                           ──                                                                                                                   1                           ←2                                                                                         hub
-          testql.integrations                                                         8                           ←1                                                                                                                                               ──                                                                                                                                                                                                             !! fan-out
-             testql.ir_runner                                                                                     ←1                            8                                                                                                                                               ──                                                                                                                                                                                !! fan-out
-                         TODO                                                         8                                                                                                                                                                                                                                      ──                                                                                                                                                   !! fan-out
-             testql.discovery                            6                                                        ←1                                                                                                                  ←1                                                                                                                  ──                                                                                                                    
-                   testql.mcp                           ←1                                                         2                                                         2                                                         2                                                                                                                                               ──                                                                                       
+                                                    testql  examples.browser-inspection              testql.commands              testql.adapters            testql.generators               testql.results             testql.ir_runner              testql.topology                         TODO          testql.integrations             testql.discovery                   testql.mcp     examples.artifact-bundle           testql.interpreter                  testql.meta
+                       testql                           ──                           22                          ←13                           ←6                           ←6                                                        ←2                                                                                                                  ←6                            1                                                        ←3                           ←4  hub
+  examples.browser-inspection                          ←22                           ──                           ←3                                                                                                                                                                            ←8                           ←8                                                                                     ←4                           ←1                               hub
+              testql.commands                           13                            3                           ──                            4                            7                            7                            1                            3                                                         1                            1                           ←2                                                                                         !! fan-out
+              testql.adapters                            6                                                        ←4                           ──                           ←3                                                        ←6                                                                                                                                                                                                                                      ←2  hub
+            testql.generators                            6                                                        ←7                            3                           ──                                                                                     ←1                                                                                                                  ←2                                                         1                               hub
+               testql.results                                                                                     ←7                                                                                     ──                                                         4                                                                                                                                               ←2                                                            hub
+             testql.ir_runner                            2                                                        ←1                            6                                                                                     ──                                                                                                                                                                                                                                          !! fan-out
+              testql.topology                                                                                     ←3                                                         1                           ←4                                                        ──                                                                                      1                           ←2                                                                                         hub
+                         TODO                                                         8                                                                                                                                                                                                         ──                                                                                                                                               ←1                               !! fan-out
+          testql.integrations                                                         8                           ←1                                                                                                                                                                                                         ──                                                                                                                                                   !! fan-out
+             testql.discovery                            6                                                        ←1                                                                                                                                               ←1                                                                                     ──                                                                                                                    
+                   testql.mcp                           ←1                                                         2                                                         2                                                                                      2                                                                                                                  ──                                                                                       
      examples.artifact-bundle                                                         4                                                                                                                   2                                                                                                                                                                                                         ──                                                          
-                  testql.meta                            4                                                                                      2                                                                                                                                                                                                                                                                                                ──                             
-           testql.interpreter                            2                            1                                                         1                           ←1                                                                                                                                                                                                                                                                                                ──
+           testql.interpreter                            3                            1                                                                                     ←1                                                                                                                   1                                                                                                                                               ──                             
+                  testql.meta                            4                                                                                      2                                                                                                                                                                                                                                                                                                                             ──
   CYCLES: none
-  HUB: testql.results/ (fan-in=9)
-  HUB: testql.generators/ (fan-in=10)
-  HUB: testql/ (fan-in=37)
+  HUB: testql.adapters/ (fan-in=16)
   HUB: examples.browser-inspection/ (fan-in=48)
+  HUB: testql/ (fan-in=41)
   HUB: testql.topology/ (fan-in=9)
-  HUB: testql.adapters/ (fan-in=18)
-  SMELL: testql.generators/ fan-out=10 → split needed
+  HUB: testql.generators/ (fan-in=10)
+  HUB: testql.results/ (fan-in=9)
+  SMELL: testql.commands/ fan-out=40 → split needed
   SMELL: TODO/ fan-out=8 → split needed
-  SMELL: testql/ fan-out=24 → split needed
-  SMELL: testql.commands/ fan-out=38 → split needed
-  SMELL: testql.ir_runner/ fan-out=8 → split needed
+  SMELL: testql/ fan-out=23 → split needed
   SMELL: testql.integrations/ fan-out=8 → split needed
+  SMELL: testql.ir_runner/ fan-out=9 → split needed
+  SMELL: testql.generators/ fan-out=10 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon
@@ -2791,7 +2807,7 @@ EXTERNAL:
 ### Duplication (`project/duplication.toon.yaml`)
 
 ```toon markpact:analysis path=project/duplication.toon.yaml
-# redup/duplication | 0 groups | 1f 36L | 2026-05-27
+# redup/duplication | 0 groups | 1f 36L | 2026-06-06
 
 SUMMARY:
   files_scanned: 1
@@ -2799,47 +2815,51 @@ SUMMARY:
   dup_groups:    0
   dup_fragments: 0
   saved_lines:   0
-  scan_ms:       5544
+  scan_ms:       2211
 ```
 
 ### Evolution / Churn (`project/evolution.toon.yaml`)
 
 ```toon markpact:analysis path=project/evolution.toon.yaml
-# code2llm/evolution | 1410 func | 188f | 2026-05-27
+# code2llm/evolution | 1490 func | 203f | 2026-06-06
 # generated in 0.01s
 
-NEXT[5] (ranked by impact):
-  [1] !! SPLIT           testql/interpreter/_gui.py
-      WHY: 708L, 1 classes, max CC=12
-      EFFORT: ~4h  IMPACT: 8496
+NEXT[6] (ranked by impact):
+  [1] !! SPLIT           testql/adapters/testtoon_adapter.py
+      WHY: 742L, 1 classes, max CC=12
+      EFFORT: ~4h  IMPACT: 8904
 
-  [2] !  SPLIT-FUNC      watchdog  CC=21  fan=25
-      WHY: CC=21 exceeds 15
-      EFFORT: ~1h  IMPACT: 525
+  [2] !  SPLIT-FUNC      conversation_run  CC=20  fan=18
+      WHY: CC=20 exceeds 15
+      EFFORT: ~1h  IMPACT: 360
 
-  [3] !  SPLIT-FUNC      _render_generic_section_steps  CC=17  fan=13
-      WHY: CC=17 exceeds 15
-      EFFORT: ~1h  IMPACT: 221
+  [3] !  SPLIT-FUNC      ModbusMixin._modbus_run_probe_script  CC=16  fan=21
+      WHY: CC=16 exceeds 15
+      EFFORT: ~1h  IMPACT: 336
 
-  [4] !! SPLIT           planfile.yaml
+  [4] !  SPLIT-FUNC      ConversationRunner._run_nlp2dsl  CC=15  fan=18
+      WHY: CC=15 exceeds 15
+      EFFORT: ~1h  IMPACT: 270
+
+  [5] !! SPLIT           planfile.yaml
       WHY: 1319L, 0 classes, max CC=0
       EFFORT: ~4h  IMPACT: 0
 
-  [5] !! SPLIT           tree.txt
-      WHY: 831L, 0 classes, max CC=0
+  [6] !! SPLIT           tree.txt
+      WHY: 1104L, 0 classes, max CC=0
       EFFORT: ~4h  IMPACT: 0
 
 
 RISKS[3]:
   ⚠ Splitting planfile.yaml may break 0 import paths
   ⚠ Splitting tree.txt may break 0 import paths
-  ⚠ Splitting testql/interpreter/_gui.py may break 34 import paths
+  ⚠ Splitting testql/adapters/testtoon_adapter.py may break 46 import paths
 
 METRICS-TARGET:
   CC̄:          3.7 → ≤2.6
-  max-CC:      21 → ≤10
-  god-modules: 8 → 0
-  high-CC(≥15): 2 → ≤1
+  max-CC:      20 → ≤10
+  god-modules: 9 → 0
+  high-CC(≥15): 3 → ≤1
   hub-types:   0 → ≤0
 
 PATTERNS (language parser shared logic):
@@ -2867,7 +2887,7 @@ PATTERNS (language parser shared logic):
     - Standardized FunctionInfo/ClassInfo models
 
 HISTORY:
-  prev CC̄=3.6 → now CC̄=3.7
+  prev CC̄=3.7 → now CC̄=3.7
 ```
 
 ### Validation (`project/validation.toon.yaml`)

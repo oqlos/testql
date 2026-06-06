@@ -1,10 +1,10 @@
-# testql | 351f 43203L | python:323,shell:24,less:4 | 2026-05-27
-# stats: 873 func | 570 cls | 351 mod | CC̄=3.7 | critical:34 | cycles:0
-# alerts[5]: CC watchdog=21; CC _render_generic_section_steps=17; CC main=15; CC parse_testtoon=14; CC _filter_commands=14
-# hotspots[5]: watchdog fan=25; generate_from_page fan=19; heal_scenario fan=19; watch fan=19; suite fan=19
+# testql | 372f 45174L | python:344,shell:24,less:4 | 2026-06-06
+# stats: 907 func | 602 cls | 372 mod | CC̄=3.8 | critical:37 | cycles:0
+# alerts[5]: CC conversation_run=20; CC main=15; CC parse_testtoon=14; CC watchdog=14; CC _filter_commands=14
+# hotspots[5]: generate_from_page fan=19; heal_scenario fan=19; watch fan=19; suite fan=19; watchdog fan=19
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[351]:
+M[372]:
   TODO/testtoon_parser.py,142
   app.doql.less,237
   examples/api-testing/mock_server.py,51
@@ -39,7 +39,7 @@ M[351]:
   testql/__init__.py,10
   testql/__main__.py,7
   testql/_base_fallback.py,233
-  testql/adapters/__init__.py,51
+  testql/adapters/__init__.py,54
   testql/adapters/base.py,98
   testql/adapters/graphql/__init__.py,26
   testql/adapters/graphql/graphql_adapter.py,274
@@ -53,6 +53,12 @@ M[351]:
   testql/adapters/nl/lexicon/__init__.py,39
   testql/adapters/nl/llm_fallback.py,50
   testql/adapters/nl/nl_adapter.py,354
+  testql/adapters/nlp2dsl/__init__.py,22
+  testql/adapters/nlp2dsl/client.py,63
+  testql/adapters/nlp2dsl/live_llm.py,91
+  testql/adapters/nlp2dsl/llm_provider.py,43
+  testql/adapters/nlp2dsl/mock_llm.py,47
+  testql/adapters/nlp2dsl/nlp2dsl_adapter.py,82
   testql/adapters/proto/__init__.py,54
   testql/adapters/proto/compatibility.py,144
   testql/adapters/proto/descriptor_loader.py,163
@@ -66,12 +72,18 @@ M[351]:
   testql/adapters/sql/fixtures.py,106
   testql/adapters/sql/query_parser.py,96
   testql/adapters/sql/sql_adapter.py,334
-  testql/adapters/testtoon_adapter.py,577
+  testql/adapters/testtoon_adapter.py,743
+  testql/artifacts/__init__.py,18
+  testql/artifacts/base.py,25
+  testql/artifacts/email_checker.py,45
+  testql/artifacts/file_checker.py,43
+  testql/artifacts/registry.py,36
   testql/autoloop_runner.py,1
   testql/base.py,38
-  testql/cli.py,105
+  testql/cli.py,107
   testql/commands/__init__.py,36
   testql/commands/auto_cmd.py,203
+  testql/commands/conversation_cmd.py,71
   testql/commands/discover_cmd.py,47
   testql/commands/echo/__init__.py,23
   testql/commands/echo/cli.py,40
@@ -106,7 +118,9 @@ M[351]:
   testql/commands/templates/content.py,167
   testql/commands/templates/templates.py,60
   testql/commands/topology_cmd.py,24
-  testql/commands/watchdog_cmd.py,261
+  testql/commands/watchdog_cmd.py,283
+  testql/conversation/__init__.py,6
+  testql/conversation/runner.py,268
   testql/detectors/__init__.py,54
   testql/detectors/base.py,35
   testql/detectors/config_detector.py,219
@@ -145,6 +159,7 @@ M[351]:
   testql/generators/api_generator.py,299
   testql/generators/base.py,60
   testql/generators/convenience.py,52
+  testql/generators/conversation_generator.py,70
   testql/generators/generators.py,31
   testql/generators/llm/__init__.py,17
   testql/generators/llm/coverage_optimizer.py,33
@@ -154,9 +169,10 @@ M[351]:
   testql/generators/pipeline.py,96
   testql/generators/pytest_generator.py,148
   testql/generators/scenario_generator.py,88
-  testql/generators/sources/__init__.py,76
+  testql/generators/sources/__init__.py,81
   testql/generators/sources/base.py,33
   testql/generators/sources/config_source.py,306
+  testql/generators/sources/conversation.py,36
   testql/generators/sources/graphql_source.py,67
   testql/generators/sources/nl_source.py,28
   testql/generators/sources/openapi_source.py,94
@@ -177,17 +193,18 @@ M[351]:
   testql/generators/test_generator.py,107
   testql/integrations/planfile_hook.py,116
   testql/interpreter/__init__.py,92
-  testql/interpreter/_api_runner.py,289
+  testql/interpreter/_api_runner.py,303
   testql/interpreter/_assertions.py,305
   testql/interpreter/_converter.py,63
   testql/interpreter/_dom_scan.py,41
   testql/interpreter/_encoder.py,101
   testql/interpreter/_flow.py,166
   testql/interpreter/_gui.py,709
-  testql/interpreter/_hardware.py,111
+  testql/interpreter/_hardware.py,110
+  testql/interpreter/_modbus.py,209
   testql/interpreter/_parser.py,34
   testql/interpreter/_shell.py,261
-  testql/interpreter/_testtoon_parser.py,469
+  testql/interpreter/_testtoon_parser.py,565
   testql/interpreter/_unit.py,268
   testql/interpreter/_validation.py,154
   testql/interpreter/_websockets.py,173
@@ -213,23 +230,24 @@ M[351]:
   testql/interpreter/dom_scan_mixin.py,319
   testql/interpreter/dom_scan_models.py,54
   testql/interpreter/dom_scanner.py,419
-  testql/interpreter/interpreter.py,159
+  testql/interpreter/interpreter.py,160
   testql/interpreter/testtoon_models.py,34
   testql/interpreter/testtoon_parser.py,297
   testql/interpreter.py,28
-  testql/ir/__init__.py,49
+  testql/ir/__init__.py,55
   testql/ir/assertions.py,34
   testql/ir/captures.py,38
   testql/ir/fixtures.py,34
   testql/ir/metadata.py,32
   testql/ir/plan.py,43
-  testql/ir/steps.py,252
+  testql/ir/steps.py,319
   testql/ir_runner/__init__.py,35
   testql/ir_runner/assertion_eval.py,125
   testql/ir_runner/context.py,43
   testql/ir_runner/engine.py,137
-  testql/ir_runner/executors/__init__.py,52
+  testql/ir_runner/executors/__init__.py,54
   testql/ir_runner/executors/api.py,68
+  testql/ir_runner/executors/assert_json.py,31
   testql/ir_runner/executors/base.py,69
   testql/ir_runner/executors/encoder.py,78
   testql/ir_runner/executors/graphql.py,60
@@ -272,7 +290,7 @@ M[351]:
   testql/topology/models.py,106
   testql/topology/serializers.py,52
   testql/topology/sitemap.py,120
-  tests/conftest.py,45
+  tests/conftest.py,60
   tests/fixtures/discovery/python_pkg/sample_api/__init__.py,2
   tests/fixtures/discovery/python_pkg/sample_api/main.py,8
   tests/test_adapter_capture_syntax.py,167
@@ -281,6 +299,8 @@ M[351]:
   tests/test_browser_discovery.py,111
   tests/test_cli.py,98
   tests/test_cli_no_block.py,104
+  tests/test_conversation_live_llm.py,83
+  tests/test_conversation_nlp2dsl.py,158
   tests/test_converter.py,178
   tests/test_converter_handlers.py,352
   tests/test_detectors.py,389
@@ -298,7 +318,7 @@ M[351]:
   tests/test_graphql_adapter.py,197
   tests/test_gui_execution.py,130
   tests/test_interpreter.py,224
-  tests/test_ir.py,194
+  tests/test_ir.py,217
   tests/test_ir_captures.py,51
   tests/test_ir_runner_assertion_eval.py,108
   tests/test_ir_runner_captures.py,153
@@ -311,6 +331,7 @@ M[351]:
   tests/test_meta_mutator.py,190
   tests/test_meta_self_test.py,99
   tests/test_misc_cmds.py,111
+  tests/test_modbus_commands.py,46
   tests/test_navigate_json_path.py,161
   tests/test_network_discovery.py,163
   tests/test_nl_adapter.py,278
@@ -349,7 +370,7 @@ M[351]:
   tests/test_sumd_parser.py,206
   tests/test_targets.py,87
   tests/test_test_generator.py,121
-  tests/test_testtoon_adapter.py,355
+  tests/test_testtoon_adapter.py,412
   tests/test_toon_parser.py,84
   tests/test_topology.py,88
   tests/test_topology_generator.py,162
@@ -555,6 +576,26 @@ D:
     _metadata_from_header(header;lang)
     parse(source)
     render(plan)
+  testql/adapters/nlp2dsl/__init__.py:
+  testql/adapters/nlp2dsl/client.py:
+    e: Nlp2DslResponse,Nlp2DslClient
+    Nlp2DslResponse: ok(0)
+    Nlp2DslClient: __init__(2),_post(2),chatstart(1),chatmessage(1),runworkflow(1),workflow_from_text(1)  # Call nlp2dsl REST endpoints used in conversation test scenar
+  testql/adapters/nlp2dsl/live_llm.py:
+    e: LiveLLMProvider
+    LiveLLMProvider: from_env(1),reply_for(1),_build_prompt(1),_chat(1),_parse_json_object(1)  # Call an OpenAI-compatible chat API to fill missing dialog fi
+  testql/adapters/nlp2dsl/llm_provider.py:
+    e: live_llm_enabled,resolve_llm_provider,LLMProvider
+    LLMProvider: reply_for(1)
+    live_llm_enabled(explicit)
+    resolve_llm_provider()
+  testql/adapters/nlp2dsl/mock_llm.py:
+    e: load_mock_replies,MockLLMProvider
+    MockLLMProvider: reply_for(1)  # Return canned assistant payloads keyed by conversation turn 
+    load_mock_replies(source)
+  testql/adapters/nlp2dsl/nlp2dsl_adapter.py:
+    e: Nlp2DslAdapter
+    Nlp2DslAdapter: detect(1),parse(1),render(1),validate(1)  # Wraps TestTOON parsing and adds conversation/nlp2dsl validat
   testql/adapters/proto/__init__.py:
     e: has_protobuf
     has_protobuf()
@@ -726,7 +767,7 @@ D:
     parse(source)
     render(plan)
   testql/adapters/testtoon_adapter.py:
-    e: _config_to_dict,_api_section_to_steps,_navigate_section_to_steps,_gui_section_to_steps,_encoder_section_to_steps,_assert_section_to_steps,_capture_section_apply,_resolve_capture_target,_generic_section_to_steps,_shell_section_to_steps,_unit_section_to_steps,_log_section_to_steps,_translate_section,_toon_to_plan,_render_meta,_render_config,_render_api_steps,_render_navigate_steps,_render_encoder_steps,_toon_safe_selector,_render_gui_action_steps,_render_shell_steps,_render_unit_steps,_render_log_steps,_render_assertions,_render_captures,_render_validate_steps,_format_extra_value,_render_generic_section_steps,_render_plan,parse,render,TestToonAdapter
+    e: _config_to_dict,_api_section_to_steps,_navigate_section_to_steps,_gui_section_to_steps,_encoder_section_to_steps,_assert_section_to_steps,_capture_section_apply,_resolve_capture_target,_coerce_assert_expected,_assert_json_field,_assert_json_section_apply,_generic_section_to_steps,_shell_section_to_steps,_unit_section_to_steps,_log_section_to_steps,_context_section_to_config,_conversation_section_to_steps,_nlp2dsl_section_to_steps,_validate_section_to_steps,_parse_artifact_criteria,_translate_section,_toon_to_plan,_render_meta,_render_config,_render_api_steps,_render_navigate_steps,_render_encoder_steps,_toon_safe_selector,_render_gui_action_steps,_render_shell_steps,_render_unit_steps,_render_log_steps,_render_assertions,_render_captures,_render_validate_steps,_format_extra_value,_group_generic_steps,_derive_columns,_render_group_section,_render_generic_section_steps,_render_plan,parse,render,TestToonAdapter
     TestToonAdapter: detect(1),parse(1),render(1)  # Adapter for the legacy `*.testql.toon.yaml` format (TestTOON
     _config_to_dict(section)
     _api_section_to_steps(section)
@@ -736,10 +777,18 @@ D:
     _assert_section_to_steps(section)
     _capture_section_apply(section;plan)
     _resolve_capture_target(target;by_name;steps)
+    _coerce_assert_expected(raw)
+    _assert_json_field(path)
+    _assert_json_section_apply(section;plan)
     _generic_section_to_steps(section)
     _shell_section_to_steps(section)
     _unit_section_to_steps(section)
     _log_section_to_steps(section)
+    _context_section_to_config(section)
+    _conversation_section_to_steps(section)
+    _nlp2dsl_section_to_steps(section)
+    _validate_section_to_steps(section)
+    _parse_artifact_criteria(criteria)
     _translate_section(section)
     _toon_to_plan(toon)
     _render_meta(md)
@@ -756,10 +805,28 @@ D:
     _render_captures(steps)
     _render_validate_steps(steps)
     _format_extra_value(value)
+    _group_generic_steps(steps)
+    _derive_columns(rows)
+    _render_group_section(name;rows;columns)
     _render_generic_section_steps(steps)
     _render_plan(plan)
     parse(source)
     render(plan)
+  testql/artifacts/__init__.py:
+  testql/artifacts/base.py:
+    e: ArtifactCheckResult,BaseArtifactChecker
+    ArtifactCheckResult:
+    BaseArtifactChecker: check(1)
+  testql/artifacts/email_checker.py:
+    e: EmailArtifactChecker
+    EmailArtifactChecker: check(1),_list_messages(1)
+  testql/artifacts/file_checker.py:
+    e: FileArtifactChecker
+    FileArtifactChecker: check(1)
+  testql/artifacts/registry.py:
+    e: get_artifact_registry,ArtifactCheckerRegistry
+    ArtifactCheckerRegistry: __init__(0),register(1),check(1)
+    get_artifact_registry()
   testql/autoloop_runner.py:
   testql/base.py:
   testql/cli.py:
@@ -781,6 +848,10 @@ D:
     _print_summary(envelope;report_data;out_dir)
     _render_console_report(data;out_dir)
     _render_markdown_report(data;out_dir)
+  testql/commands/conversation_cmd.py:
+    e: conversation,conversation_run
+    conversation()
+    conversation_run(scenario;api_url;dry_run;mock_replies;live_llm;output_fmt)
   testql/commands/discover_cmd.py:
     e: discover,_print_summary
     discover(source;fmt;scan_network)
@@ -973,14 +1044,24 @@ D:
     e: topology
     topology(source;fmt;include_manifest;scan_network)
   testql/commands/watchdog_cmd.py:
-    e: _discover_scenarios,_run_scenario,_post_failures,_extract_failures,_start_metrics_server,_update_metrics,watchdog
+    e: _discover_scenarios,_run_scenario,_post_failures,_extract_failures,_start_metrics_server,_update_metrics,_resolve_watchdog_config,_process_one_scenario,watchdog
     _discover_scenarios(specs)
     _run_scenario(scenario;url;timeout)
     _post_failures(webhook_url;scenario;failures)
     _extract_failures(payload)
     _start_metrics_server(port;scenarios)
     _update_metrics(metrics;scenario;exit_code;payload;elapsed)
+    _resolve_watchdog_config(interval;webhook;port;url;timeout)
+    _process_one_scenario(scenario;base_url;timeout_s;webhook_url;metrics)
     watchdog(scenarios;interval;webhook;port;url;timeout;once;verbose)
+  testql/conversation/__init__.py:
+  testql/conversation/runner.py:
+    e: _step_status_name,_extract_path,TurnTrace,ConversationRunResult,ConversationRunner
+    TurnTrace:
+    ConversationRunResult: to_report_dict(0)
+    ConversationRunner: __init__(3),variables(0),run(1),_apply_plan_config(1),_run_step(2),_run_via_ir(2),_run_nlp2dsl(2),_run_turn(2),_run_artifact(2),_interpolate_str(1),_interpolate(1)  # Execute conversation-layer steps and collect trace for resul
+    _step_status_name(status)
+    _extract_path(payload;path)
   testql/detectors/__init__.py:
   testql/detectors/base.py:
     e: BaseEndpointDetector
@@ -1129,6 +1210,10 @@ D:
     e: generate_for_project,generate_for_workspace
     generate_for_project(project_path)
     generate_for_workspace(workspace_path)
+  testql/generators/conversation_generator.py:
+    e: trace_from_export,ConversationGenerator
+    ConversationGenerator: from_trace(1),render_toon(1)  # Build a declarative TestPlan from a runtime conversation tra
+    trace_from_export(export)
   testql/generators/generators.py:
   testql/generators/llm/__init__.py:
   testql/generators/llm/coverage_optimizer.py:
@@ -1214,6 +1299,9 @@ D:
     _parse_targets(content;source_path)
     _parse_buf_yaml(content)
     _filter_commands(commands;target_name)
+  testql/generators/sources/conversation.py:
+    e: ConversationTestSource
+    ConversationTestSource: load(1)  # Load `.testql.toon.yaml` conversation scenarios into TestPla
   testql/generators/sources/graphql_source.py:
     e: _load_sdl,_type_to_query,_is_smoke_target,GraphQLSource
     GraphQLSource: load(1)  # GraphQL SDL → TestPlan with one smoke query per top-level ty
@@ -1331,6 +1419,9 @@ D:
   testql/interpreter/_hardware.py:
     e: HardwareMixin
     HardwareMixin: _hardware_url(0),_hardware_do_http(4),_hardware_call(5),_cmd_hardware(2)  # Mixin providing HARDWARE command support for peripheral chec
+  testql/interpreter/_modbus.py:
+    e: ModbusMixin
+    ModbusMixin: _modbus_probe_script(0),_modbus_store_response(2),_modbus_skip_enabled(0),_modbus_serial_exists(1),_modbus_parse_kv_args(1),_modbus_run_probe_script(3),_cmd_modbus(2)  # MODBUS probe / API wizard helpers for TestQL automation.
   testql/interpreter/_parser.py:
     e: parse_oql,OqlLine,OqlScript
     OqlLine:
@@ -1340,7 +1431,7 @@ D:
     e: ShellMixin
     ShellMixin: _parse_shell_command(1),_execute_shell_dry_run(2),_execute_shell_live(3),_cmd_shell(2),_cmd_exec(2),_cmd_run(2),_cmd_assert_exit_code(2),_cmd_assert_stdout_contains(2),_cmd_assert_stderr_contains(2)  # Mixin providing shell command execution: SHELL, EXEC, RUN, A
   testql/interpreter/_testtoon_parser.py:
-    e: validate_testtoon,_expand_config,_append_api_asserts,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_validate,_expand_commands,_expand_dom_audit_buttons,_expand_generic,testtoon_to_oql
+    e: validate_testtoon,_expand_config,_append_api_asserts,_expand_api,_expand_navigate,_expand_encoder,_expand_select,_expand_assert,_expand_steps,_expand_flow,_expand_oql,_expand_wait,_expand_include,_expand_record,_expand_validate,_expand_commands,_expand_dom_audit_buttons,_shell_expected_exit,_shell_timeout_ms,_quote_shell_command,_expand_shell,_expand_modbus,_expand_generic,testtoon_to_oql
     validate_testtoon(script)
     _expand_config(section;lines;line_num)
     _append_api_asserts(row;lines;line_num)
@@ -1358,6 +1449,11 @@ D:
     _expand_validate(section;lines;line_num)
     _expand_commands(section;lines;line_num)
     _expand_dom_audit_buttons(section;lines;line_num)
+    _shell_expected_exit(row)
+    _shell_timeout_ms(row;default_ms)
+    _quote_shell_command(command)
+    _expand_shell(section;lines;line_num)
+    _expand_modbus(section;lines;line_num)
     _expand_generic(section;lines;line_num)
     testtoon_to_oql(text;filename)
   testql/interpreter/_unit.py:
@@ -1502,7 +1598,7 @@ D:
     e: TestPlan
     TestPlan: to_dict(0),name(0),type(0)  # Adapter-neutral representation of a single test scenario.
   testql/ir/steps.py:
-    e: Step,ApiStep,GuiStep,EncoderStep,ShellStep,UnitStep,NlStep,SqlStep,ProtoStep,GraphqlStep,ValidateStep
+    e: Step,ApiStep,GuiStep,EncoderStep,ShellStep,UnitStep,NlStep,SqlStep,ProtoStep,GraphqlStep,ConversationTurnStep,Nlp2DslStep,ArtifactAssertStep,ValidateStep
     Step: to_dict(0)  # Base step. Subclasses add typed fields; `kind` discriminator
     ApiStep: __post_init__(0),to_dict(0)
     GuiStep: __post_init__(0),to_dict(0)
@@ -1513,6 +1609,9 @@ D:
     SqlStep: __post_init__(0),to_dict(0)
     ProtoStep: __post_init__(0),to_dict(0)
     GraphqlStep: __post_init__(0),to_dict(0)
+    ConversationTurnStep: __post_init__(0),to_dict(0)  # Single turn in a multi-step dialog scenario.
+    Nlp2DslStep: __post_init__(0),to_dict(0)  # Call into nlp2dsl (HTTP or SDK) as part of a conversation te
+    ArtifactAssertStep: __post_init__(0),to_dict(0)  # Verify a service side-effect rather than an HTTP response bo
     ValidateStep: __post_init__(0),to_dict(0)  # NL/text validation step with type, target, and criteria.
   testql/ir_runner/__init__.py:
   testql/ir_runner/assertion_eval.py:
@@ -1545,6 +1644,10 @@ D:
     _parse_response(text)
     _do_request(method;url;body;headers)
     _payload(status;data;headers)
+    execute(step;ctx)
+  testql/ir_runner/executors/assert_json.py:
+    e: _last_payload,execute
+    _last_payload(ctx)
     execute(step;ctx)
   testql/ir_runner/executors/base.py:
     e: step_label,_aggregate_assertion_status,_compose_message,assemble_result,error_result,skipped_result,StepExecutor
@@ -1820,11 +1923,13 @@ D:
     _looks_textual(content_type)
     _parse_subpage(text)
   tests/conftest.py:
-    e: project_root,testql_pkg_dir,project_root_manifest,testql_pkg_manifest
+    e: project_root,testql_pkg_dir,project_root_manifest,testql_pkg_manifest,pytest_configure,pytest_collection_modifyitems
     project_root()
     testql_pkg_dir()
     project_root_manifest()
     testql_pkg_manifest()
+    pytest_configure(config)
+    pytest_collection_modifyitems(config;items)
   tests/fixtures/discovery/python_pkg/sample_api/__init__.py:
   tests/fixtures/discovery/python_pkg/sample_api/main.py:
     e: health
@@ -1867,6 +1972,21 @@ D:
     TestNoInputCall: test_no_input_in_source(0),test_no_subprocess_in_check_and_upgrade(0)  # Static guarantee: input() must not appear in cli.py.
     TestCheckAndUpgradeNeverBlocks: test_runs_when_up_to_date(0),test_runs_when_outdated(1),test_runs_when_pypi_unreachable(0),test_runs_when_version_unavailable(0),test_is_tty_agnostic(0)  # check_and_upgrade must return quickly regardless of TTY or v
     TestMainNeverBlocks: test_main_via_runner(0),test_main_does_not_call_input(0)  # main() entry point must not block in any environment.
+  tests/test_conversation_live_llm.py:
+    e: test_live_llm_reply_for_real_api,test_conversation_runner_with_live_llm_smoke,TestLLMProviderResolution,TestLiveLLMParsing
+    TestLLMProviderResolution: test_defaults_to_mock(1),test_live_flag_selects_live_provider(1),test_live_without_key_raises(1)
+    TestLiveLLMParsing: test_parse_json_object_strips_fence(0)
+    test_live_llm_reply_for_real_api()
+    test_conversation_runner_with_live_llm_smoke()
+  tests/test_conversation_nlp2dsl.py:
+    e: test_runner_with_fake_client,TestAssertJsonSection,TestConversationGenerator,TestConversationIRParse,TestConversationRunner,TestArtifactChecker,FakeClient
+    TestAssertJsonSection: test_assert_json_attached_to_step(0),test_assert_json_executor_uses_last_response(0)
+    TestConversationGenerator: test_from_trace_builds_plan(0)
+    TestConversationIRParse: test_parse_conversation_sections(0),test_nlp2dsl_adapter_detects_conversation(0),test_conversation_source_loads(0)
+    TestConversationRunner: test_dry_run_skips_http(0)
+    TestArtifactChecker: test_file_hash(1)
+    FakeClient: chatstart(1),chatmessage(1)
+    test_runner_with_fake_client()
   tests/test_converter.py:
     e: TestRow,TestSection,TestConvertOqlToTesttoon,TestConvertFile,TestConvertDirectory
     TestRow: test_row_creation(0),test_row_empty(0),test_row_multiple_fields(0)
@@ -2008,7 +2128,7 @@ D:
     TestScenarioMetadata: test_defaults(0),test_to_dict_minimal(0),test_to_dict_full(0)
     TestAssertion: test_defaults(0),test_to_dict_minimal(0),test_to_dict_full(0)
     TestFixture: test_defaults(0),test_to_dict(0)
-    TestStepVariants: test_base_step_kind(0),test_api_step(0),test_gui_step(0),test_encoder_step(0),test_shell_step(0),test_unit_step(0),test_nl_step(0),test_sql_step(0),test_proto_step(0),test_graphql_step(0),test_step_with_asserts_and_wait(0)
+    TestStepVariants: test_base_step_kind(0),test_api_step(0),test_gui_step(0),test_encoder_step(0),test_shell_step(0),test_unit_step(0),test_nl_step(0),test_sql_step(0),test_proto_step(0),test_graphql_step(0),test_conversation_turn_step(0),test_nlp2dsl_step(0),test_artifact_assert_step(0),test_step_with_asserts_and_wait(0)
     TestTestPlan: test_empty(0),test_name_and_type_shortcuts(0),test_to_dict_round_trip_shape(0)
   tests/test_ir_captures.py:
     e: TestCaptureDataclass,TestStepCapturesField
@@ -2089,6 +2209,11 @@ D:
     e: TestInitCommand,TestCreateCommand
     TestInitCommand: test_creates_dirs_and_config(1),test_config_contains_project_name(1),test_api_type_creates_api_template(1),test_gui_type_creates_gui_template(1),test_encoder_type_creates_encoder_template(1),test_all_type_creates_all_templates(1),test_existing_config_not_overwritten(1),test_default_path_is_current_dir(1)
     TestCreateCommand: test_creates_test_file(1),test_file_contains_name(1),test_fails_if_exists_without_force(1),test_force_overwrites_existing(1),test_api_type(1),test_with_module(1),test_creates_output_dir_if_missing(1)
+  tests/test_modbus_commands.py:
+    e: TestModbusToonExpansion,TestModbusDryRun,TestModbusApiExpansion
+    TestModbusToonExpansion: test_modbus_probe_section(0)
+    TestModbusDryRun: test_modbus_probe_dry_run(0),test_modbus_skip_if_no_port(1)
+    TestModbusApiExpansion: test_modbus_api_plan_expansion(0)
   tests/test_navigate_json_path.py:
     e: TestNavigateJsonPath,TestAssertJsonAndCaptureWithIndexedPath,TestToonBareImperativeIndexedPath
     TestNavigateJsonPath: test_indexed_first_element_field(0),test_indexed_second_element_field(0),test_indexed_nested_field(0),test_top_level_scalar(0),test_missing_key_returns_none(0),test_out_of_range_index_returns_none(0),test_length_of_list(0)
@@ -2369,12 +2494,13 @@ D:
     TestTestGeneratorAnalyze: test_analyze_returns_profile(1),test_analyze_empty_project_mixed_type(1),test_analyze_fastapi_project(1),test_analyze_cli_project(1),test_analyze_argparse_cli_project(1),test_analyze_typer_cli_project(1),test_analyze_sets_project_path(1)
     TestTestGeneratorGenerateTests: test_generate_empty_project_returns_empty_list(1),test_generate_creates_output_dir(1),test_generate_default_output_dir(1),test_generate_auto_analyzes_if_not_analyzed(1),test_generate_returns_list(1),test_generate_with_python_tests(1),test_generate_accepts_string_output_dir(1),test_generate_with_discovered_routes(1)
   tests/test_testtoon_adapter.py:
-    e: TestDetect,TestParse,TestRender,TestAdapterRegistration,TestFlowExpansion,TestBackwardCompatibility
+    e: TestDetect,TestParse,TestRender,TestAdapterRegistration,TestFlowExpansion,TestShellExpansion,TestBackwardCompatibility
     TestDetect: test_detect_by_extension(1),test_detect_by_metadata_header(0),test_detect_negative(0),test_detect_section_header(0)
     TestParse: test_parse_string(0),test_parse_file(1),test_api_steps(0),test_api_step_has_status_assert(0),test_navigate_step(0),test_encoder_step(0),test_assert_section(0),test_unknown_section_falls_through_to_generic(0),test_indented_row_starting_with_hash_is_not_comment(0)
     TestRender: test_render_round_trip_basic(0),test_render_includes_metadata(0),test_render_includes_config(0),test_render_empty_plan(0),test_round_trip_preserves_flow_steps(0),test_round_trip_preserves_wait_steps(0),test_round_trip_preserves_include_steps(0)
     TestAdapterRegistration: test_adapter_registered_in_default_registry(0),test_extensions_match(0)
     TestFlowExpansion: _expand(1),test_flow_value_column_quoted_for_input(0),test_flow_text_column_alias(0),test_flow_meta_dash_emits_no_extra_arg(0),test_flow_value_dash_does_not_pollute_click(0),test_flow_value_null_treated_as_empty(0),test_flow_meta_dict_legacy_passthrough(0),test_flow_two_column_still_works(0)  # FLOW section third-column handling (regression for GUI_INPUT
+    TestShellExpansion: _expand(1),test_shell_section_quotes_compound_command(0),test_shell_expected_exit_column_alias(0),test_shell_quoted_row_in_testtoon(0),test_shell_dry_run_executes_full_command_not_first_token(0)  # SHELL section must quote compound commands (&&, |) for OQL e
     TestBackwardCompatibility: test_legacy_parser_imports(0),test_interpreter_package_reexports(0)  # The legacy parser must still work unchanged after Phase 0.
   tests/test_toon_parser.py:
     e: TestToonParser

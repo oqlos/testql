@@ -14,7 +14,7 @@ from testql.base import StepResult
 from testql.ir import Step
 
 from ..context import ExecutionContext
-from . import api, encoder, gui, graphql, nl, proto, shell, sql, unit
+from . import api, assert_json, encoder, gui, graphql, nl, proto, shell, sql, unit
 from .base import StepExecutor, error_result, step_label
 
 
@@ -28,6 +28,8 @@ _REGISTRY: dict[str, Callable[[Step, ExecutionContext], StepResult]] = {
     "unit": unit.execute,
     "nl": nl.execute,
     "gui": gui.execute,
+    "assert": assert_json.execute,
+    "assert_json": assert_json.execute,
 }
 
 

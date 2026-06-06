@@ -9,6 +9,8 @@ from __future__ import annotations
 from typing import Optional
 
 from .base import BaseSource, SourceLike
+from .config_source import ConfigSource
+from .conversation import ConversationTestSource
 from .graphql_source import GraphQLSource
 from .nl_source import NLSource
 from .openapi_source import OpenAPISource
@@ -32,6 +34,8 @@ _BUILTIN: dict[str, type[BaseSource]] = {
     "page": PageSource,
     "pytest": PytestSource,
     "oql": OqlSource,
+    "conversation": ConversationTestSource,
+    "nlp2dsl": ConversationTestSource,
 }
 
 _CONFIG_ALIASES = ("config", "makefile", "taskfile", "docker-compose", "buf")
@@ -45,10 +49,15 @@ def _get_config_source() -> type[BaseSource]:
 
 def get_source(name: str) -> Optional[BaseSource]:
     """Instantiate a registered source by name (e.g. "openapi")."""
-    cls = _BUILTIN.get(name.lower())
-    if cls is None and name.lower() in _CONFIG_ALIASES:
+    key = name.lower()
+    cls = _BUILTIN.get(key)
+    if cls is None and key in _CONFIG_ALIASES:
         cls = _get_config_source()
-    return cls() if cls else None
+    if cls is None:
+        return None
+    if cls is ConversationTestSource:
+        return cls(name=key)
+    return cls()
 
 
 def available_sources() -> list[str]:
@@ -66,6 +75,7 @@ __all__ = [
     "UISource",
     "PageSource",
     "PytestSource",
+    "ConversationTestSource",
     "OqlSource",
     "OqlCommand",
     "ParsedScenario",

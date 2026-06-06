@@ -8,6 +8,7 @@ Unified `TestPlan` IR. This keeps backward compatibility absolute.
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -19,10 +20,13 @@ from testql.interpreter._testtoon_parser import (
 )
 from testql.ir import (
     ApiStep,
+    ArtifactAssertStep,
     Assertion,
     Capture,
+    ConversationTurnStep,
     EncoderStep,
     GuiStep,
+    Nlp2DslStep,
     NlStep,
     ScenarioMetadata,
     ShellStep,
@@ -147,6 +151,50 @@ def _resolve_capture_target(target: str, by_name: dict[str, Step],
     return None
 
 
+def _coerce_assert_expected(raw: Any) -> Any:
+    if raw is None:
+        return None
+    text = str(raw).strip().strip("\"'")
+    lowered = text.lower()
+    if lowered == "true":
+        return True
+    if lowered == "false":
+        return False
+    if lowered in {"null", "none"}:
+        return None
+    try:
+        return float(text) if "." in text else int(text)
+    except ValueError:
+        return text
+
+
+def _assert_json_field(path: str) -> str:
+    path = str(path).strip()
+    if not path or path.startswith(("data.", "status", "headers.")):
+        return path
+    return f"data.{path}"
+
+
+def _assert_json_section_apply(section: ToonSection, plan: TestPlan) -> None:
+    """Attach ASSERT_JSON rows as `Assertion`s on a target step (default: last step)."""
+    by_name = {s.name: s for s in plan.steps if s.name}
+    for row in section.rows:
+        target = str(row.get("step", "")).strip() or str(len(plan.steps))
+        path = row.get("path") or row.get("field") or row.get("assert_key")
+        op = row.get("op") or "=="
+        expected = row.get("expected") or row.get("assert_value") or row.get("value")
+        if path is None:
+            continue
+        owner = _resolve_capture_target(target, by_name, plan.steps)
+        if owner is None:
+            continue
+        owner.asserts.append(Assertion(
+            field=_assert_json_field(str(path)),
+            op=str(op),
+            expected=_coerce_assert_expected(expected),
+        ))
+
+
 def _generic_section_to_steps(section: ToonSection) -> list[Step]:
     """Fallback for section types we don't yet model in the IR (FLOW, OQL, ...)."""
     steps: list[Step] = []
@@ -194,6 +242,96 @@ def _log_section_to_steps(section: ToonSection) -> list[Step]:
     return steps
 
 
+def _context_section_to_config(section: ToonSection) -> dict[str, Any]:
+    return _config_to_dict(section)
+
+
+def _conversation_section_to_steps(section: ToonSection) -> list[Step]:
+    steps: list[Step] = []
+    for row in section.rows:
+        missing_raw = row.get("expect_missing") or row.get("missing") or ""
+        missing = [m.strip() for m in str(missing_raw).split(",") if m.strip()]
+        steps.append(ConversationTurnStep(
+            role=str(row.get("role", "user")),
+            message=str(row.get("message", "")),
+            expect_status=row.get("expect_status") or row.get("status"),
+            expect_missing=missing,
+            name="CONVERSATION",
+        ))
+    return steps
+
+
+def _nlp2dsl_section_to_steps(section: ToonSection) -> list[Step]:
+    steps: list[Step] = []
+    for row in section.rows:
+        endpoint = str(row.get("endpoint") or row.get("command") or "chatmessage")
+        payload_raw = row.get("payload") or row.get("body") or "{}"
+        payload: dict[str, Any]
+        if isinstance(payload_raw, dict):
+            payload = dict(payload_raw)
+        else:
+            try:
+                payload = json.loads(str(payload_raw))
+            except json.JSONDecodeError:
+                payload = {"text": str(payload_raw)}
+        mock_llm = row.get("mock_llm")
+        step = Nlp2DslStep(
+            endpoint=endpoint,
+            payload=payload,
+            mock_llm=dict(mock_llm) if isinstance(mock_llm, dict) else None,
+            name="NLP_DSL",
+        )
+        if str(row.get("use_mock_llm", "")).lower() in {"1", "true", "yes"}:
+            step.mock_llm = step.mock_llm or {}
+        steps.append(step)
+    return steps
+
+
+_ARTIFACT_TYPES = frozenset({"file", "email", "spool", "api_record"})
+
+
+def _validate_section_to_steps(section: ToonSection) -> list[Step]:
+    steps: list[Step] = []
+    for row in section.rows:
+        validate_type = str(row.get("type") or row.get("validate_type") or "contains")
+        target = str(row.get("target") or "output")
+        criteria_raw = row.get("criteria") or ""
+        if validate_type in _ARTIFACT_TYPES or validate_type.startswith(("email_", "file_")):
+            artifact_type = validate_type.split("_", 1)[0] if "_" in validate_type else validate_type
+            criteria = _parse_artifact_criteria(str(criteria_raw))
+            steps.append(ArtifactAssertStep(
+                artifact_type=artifact_type,
+                target=target,
+                criteria=criteria,
+                name="ARTIFACT",
+            ))
+            continue
+        steps.append(ValidateStep(
+            validate_type=validate_type,
+            target=target,
+            criteria=str(criteria_raw),
+            name="VALIDATE",
+        ))
+    return steps
+
+
+def _parse_artifact_criteria(criteria: str) -> dict[str, Any]:
+    out: dict[str, Any] = {}
+    for part in criteria.split(","):
+        piece = part.strip()
+        if not piece:
+            continue
+        if ">=" in piece:
+            key, value = piece.split(">=", 1)
+            out[f"{key.strip()}>="] = value.strip()
+        elif "=" in piece:
+            key, value = piece.split("=", 1)
+            out[key.strip()] = value.strip()
+        else:
+            out["contains"] = piece
+    return out
+
+
 _SECTION_TRANSLATORS = {
     "API": _api_section_to_steps,
     "NAVIGATE": _navigate_section_to_steps,
@@ -203,6 +341,9 @@ _SECTION_TRANSLATORS = {
     "SHELL": _shell_section_to_steps,
     "UNIT": _unit_section_to_steps,
     "LOG": _log_section_to_steps,
+    "CONVERSATION": _conversation_section_to_steps,
+    "NLP_DSL": _nlp2dsl_section_to_steps,
+    "VALIDATE": _validate_section_to_steps,
 }
 
 
@@ -210,6 +351,8 @@ def _translate_section(section: ToonSection) -> tuple[list[Step], dict[str, Any]
     """Return (steps, config_delta) for a single ToonSection."""
     if section.type == "CONFIG":
         return [], _config_to_dict(section)
+    if section.type == "CONTEXT":
+        return [], {"context": _context_section_to_config(section)}
     translator = _SECTION_TRANSLATORS.get(section.type, _generic_section_to_steps)
     return translator(section), {}
 
@@ -225,15 +368,21 @@ def _toon_to_plan(toon: ToonScript) -> TestPlan:
     )
     plan = TestPlan(metadata=md)
     capture_sections: list[ToonSection] = []
+    assert_json_sections: list[ToonSection] = []
     for section in toon.sections:
         if section.type == "CAPTURE":
             capture_sections.append(section)  # apply after all steps are loaded
+            continue
+        if section.type == "ASSERT_JSON":
+            assert_json_sections.append(section)
             continue
         steps, cfg = _translate_section(section)
         plan.steps.extend(steps)
         plan.config.update(cfg)
     for section in capture_sections:
         _capture_section_apply(section, plan)
+    for section in assert_json_sections:
+        _assert_json_section_apply(section, plan)
     return plan
 
 
