@@ -1,6 +1,6 @@
-# testql | 372f 45174L | python:344,shell:24,less:4 | 2026-06-06
-# stats: 907 func | 602 cls | 372 mod | CC̄=3.8 | critical:37 | cycles:0
-# alerts[5]: CC conversation_run=20; CC main=15; CC parse_testtoon=14; CC watchdog=14; CC _filter_commands=14
+# testql | 372f 45261L | python:344,shell:24,less:4 | 2026-06-06
+# stats: 913 func | 602 cls | 372 mod | CC̄=3.7 | critical:36 | cycles:0
+# alerts[5]: CC main=15; CC parse_testtoon=14; CC watchdog=14; CC _filter_commands=14; CC _expand_flow=14
 # hotspots[5]: generate_from_page fan=19; heal_scenario fan=19; watch fan=19; suite fan=19; watchdog fan=19
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
@@ -83,7 +83,7 @@ M[372]:
   testql/cli.py,107
   testql/commands/__init__.py,36
   testql/commands/auto_cmd.py,203
-  testql/commands/conversation_cmd.py,71
+  testql/commands/conversation_cmd.py,109
   testql/commands/discover_cmd.py,47
   testql/commands/echo/__init__.py,23
   testql/commands/echo/cli.py,40
@@ -120,7 +120,7 @@ M[372]:
   testql/commands/topology_cmd.py,24
   testql/commands/watchdog_cmd.py,283
   testql/conversation/__init__.py,6
-  testql/conversation/runner.py,268
+  testql/conversation/runner.py,287
   testql/detectors/__init__.py,54
   testql/detectors/base.py,35
   testql/detectors/config_detector.py,219
@@ -169,7 +169,7 @@ M[372]:
   testql/generators/pipeline.py,96
   testql/generators/pytest_generator.py,148
   testql/generators/scenario_generator.py,88
-  testql/generators/sources/__init__.py,81
+  testql/generators/sources/__init__.py,86
   testql/generators/sources/base.py,33
   testql/generators/sources/config_source.py,306
   testql/generators/sources/conversation.py,36
@@ -201,7 +201,7 @@ M[372]:
   testql/interpreter/_flow.py,166
   testql/interpreter/_gui.py,709
   testql/interpreter/_hardware.py,110
-  testql/interpreter/_modbus.py,209
+  testql/interpreter/_modbus.py,233
   testql/interpreter/_parser.py,34
   testql/interpreter/_shell.py,261
   testql/interpreter/_testtoon_parser.py,565
@@ -357,7 +357,7 @@ M[372]:
   tests/test_scenario_yaml_adapter.py,208
   tests/test_shell_execution.py,134
   tests/test_smoke_decisions.py,160
-  tests/test_sources.py,496
+  tests/test_sources.py,497
   tests/test_sql_adapter.py,191
   tests/test_sql_ddl_parser.py,108
   tests/test_sql_dialect_resolver.py,75
@@ -849,7 +849,13 @@ D:
     _render_console_report(data;out_dir)
     _render_markdown_report(data;out_dir)
   testql/commands/conversation_cmd.py:
-    e: conversation,conversation_run
+    e: _validate_scenario,_resolve_base_url,_create_runner,_format_mode,_output_json,_output_text,conversation,conversation_run
+    _validate_scenario(adapter;scenario)
+    _resolve_base_url(api_url;plan)
+    _create_runner(api_url;dry_run;live_llm;mock_replies)
+    _format_mode(dry_run;live_llm)
+    _output_json(result)
+    _output_text(result;scenario;plan;dry_run;live_llm)
     conversation()
     conversation_run(scenario;api_url;dry_run;mock_replies;live_llm;output_fmt)
   testql/commands/discover_cmd.py:
@@ -1059,7 +1065,7 @@ D:
     e: _step_status_name,_extract_path,TurnTrace,ConversationRunResult,ConversationRunner
     TurnTrace:
     ConversationRunResult: to_report_dict(0)
-    ConversationRunner: __init__(3),variables(0),run(1),_apply_plan_config(1),_run_step(2),_run_via_ir(2),_run_nlp2dsl(2),_run_turn(2),_run_artifact(2),_interpolate_str(1),_interpolate(1)  # Execute conversation-layer steps and collect trace for resul
+    ConversationRunner: __init__(3),variables(0),run(1),_apply_plan_config(1),_run_step(2),_run_via_ir(2),_dispatch_nlp2dsl_endpoint(2),_apply_nlp2dsl_mock(2),_determine_nlp2dsl_status(3),_extract_captures(2),_build_captures_dict(1),_run_nlp2dsl(2),_run_turn(2),_run_artifact(2),_interpolate_str(1),_interpolate(1)  # Execute conversation-layer steps and collect trace for resul
     _step_status_name(status)
     _extract_path(payload;path)
   testql/detectors/__init__.py:
@@ -1421,7 +1427,7 @@ D:
     HardwareMixin: _hardware_url(0),_hardware_do_http(4),_hardware_call(5),_cmd_hardware(2)  # Mixin providing HARDWARE command support for peripheral chec
   testql/interpreter/_modbus.py:
     e: ModbusMixin
-    ModbusMixin: _modbus_probe_script(0),_modbus_store_response(2),_modbus_skip_enabled(0),_modbus_serial_exists(1),_modbus_parse_kv_args(1),_modbus_run_probe_script(3),_cmd_modbus(2)  # MODBUS probe / API wizard helpers for TestQL automation.
+    ModbusMixin: _modbus_probe_script(0),_modbus_store_response(2),_modbus_skip_enabled(0),_modbus_serial_exists(1),_modbus_parse_kv_args(1),_execute_probe_script(4),_parse_probe_response(1),_emit_probe_result(2),_modbus_run_probe_script(3),_cmd_modbus(2)  # MODBUS probe / API wizard helpers for TestQL automation.
   testql/interpreter/_parser.py:
     e: parse_oql,OqlLine,OqlScript
     OqlLine:

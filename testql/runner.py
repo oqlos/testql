@@ -270,6 +270,37 @@ class DslCliExecutor:
     # SCRIPT EXECUTION
     # =========================================================================
 
+    def _select_icon(self, cmd: DslCommand, result: ExecutionResult) -> str:
+        """Select appropriate icon based on command type and result."""
+        if cmd.type in self.BROWSER_COMMANDS:
+            return '🌐'
+        if cmd.type in self.SEMANTIC_COMMANDS:
+            return '📋'
+        return '✅' if result.success else '❌'
+
+    def _format_result_output(
+        self, cmd: DslCommand, result: ExecutionResult, index: int, total: int
+    ) -> str:
+        """Format single execution result for display."""
+        icon = self._select_icon(cmd, result)
+        duration = f"{result.duration_ms}ms"
+        return f"{icon} [{index}/{total}] {self._format_cmd(cmd)} ({duration})"
+
+    def _print_verbose_result(self, result: ExecutionResult) -> None:
+        """Print verbose output for a result if enabled."""
+        if self.verbose and result.result:
+            print(f"   └─ {json.dumps(result.result, indent=2)[:MAX_OUTPUT_LENGTH]}")
+
+    def _handle_execution_error(
+        self, result: ExecutionResult, stop_on_error: bool
+    ) -> bool:
+        """Handle execution error; return True if should stop."""
+        print(f"   └─ Error: {result.error}")
+        if stop_on_error:
+            print("⛔ Stopped on error")
+            return True
+        return False
+
     def run_script(self, content: str, stop_on_error: bool = True) -> list[ExecutionResult]:
         """Execute a DSL script"""
         commands = parse_script(content)
@@ -284,26 +315,11 @@ class DslCliExecutor:
             result = self.execute(cmd)
             results.append(result)
 
-            # Choose icon based on command type and result
-            if cmd.type in self.BROWSER_COMMANDS:
-                icon = '🌐'  # Browser command
-            elif cmd.type in self.SEMANTIC_COMMANDS:
-                icon = '📋'  # Semantic command
-            elif result.success:
-                icon = '✅'
-            else:
-                icon = '❌'
-            
-            duration = f"{result.duration_ms}ms"
-            print(f"{icon} [{i}/{len(commands)}] {self._format_cmd(cmd)} ({duration})")
-
-            if self.verbose and result.result:
-                print(f"   └─ {json.dumps(result.result, indent=2)[:MAX_OUTPUT_LENGTH]}")
+            print(self._format_result_output(cmd, result, i, len(commands)))
+            self._print_verbose_result(result)
 
             if not result.success:
-                print(f"   └─ Error: {result.error}")
-                if stop_on_error:
-                    print("⛔ Stopped on error")
+                if self._handle_execution_error(result, stop_on_error):
                     break
 
         print("-" * 50)

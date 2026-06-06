@@ -25,7 +25,7 @@ TestQL — Multi-DSL Test Platform: TestTOON / NL / SQL / Proto / GraphQL adapte
 ## Metadata
 
 - **name**: `testql`
-- **version**: `1.2.52`
+- **version**: `1.2.54`
 - **python_requires**: `>=3.10`
 - **license**: {'text': 'Apache-2.0'}
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -46,7 +46,7 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 1.2.52;
+  version: 1.2.54;
 }
 
 dependencies {
@@ -3539,7 +3539,7 @@ pipeline:
 ```yaml
 project:
   name: testql
-  version: 1.2.52
+  version: 1.2.54
   env: local
 ```
 
@@ -3629,9 +3629,9 @@ pip install -e .[dev]
 ### `project/map.toon.yaml`
 
 ```toon markpact:analysis path=project/map.toon.yaml
-# testql | 372f 45174L | python:344,shell:24,less:4 | 2026-06-06
-# stats: 907 func | 602 cls | 372 mod | CC̄=3.8 | critical:37 | cycles:0
-# alerts[5]: CC conversation_run=20; CC main=15; CC parse_testtoon=14; CC watchdog=14; CC _filter_commands=14
+# testql | 372f 45261L | python:344,shell:24,less:4 | 2026-06-06
+# stats: 913 func | 602 cls | 372 mod | CC̄=3.7 | critical:36 | cycles:0
+# alerts[5]: CC main=15; CC parse_testtoon=14; CC watchdog=14; CC _filter_commands=14; CC _expand_flow=14
 # hotspots[5]: generate_from_page fan=19; heal_scenario fan=19; watch fan=19; suite fan=19; watchdog fan=19
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
@@ -3714,7 +3714,7 @@ M[372]:
   testql/cli.py,107
   testql/commands/__init__.py,36
   testql/commands/auto_cmd.py,203
-  testql/commands/conversation_cmd.py,71
+  testql/commands/conversation_cmd.py,109
   testql/commands/discover_cmd.py,47
   testql/commands/echo/__init__.py,23
   testql/commands/echo/cli.py,40
@@ -3751,7 +3751,7 @@ M[372]:
   testql/commands/topology_cmd.py,24
   testql/commands/watchdog_cmd.py,283
   testql/conversation/__init__.py,6
-  testql/conversation/runner.py,268
+  testql/conversation/runner.py,287
   testql/detectors/__init__.py,54
   testql/detectors/base.py,35
   testql/detectors/config_detector.py,219
@@ -3800,7 +3800,7 @@ M[372]:
   testql/generators/pipeline.py,96
   testql/generators/pytest_generator.py,148
   testql/generators/scenario_generator.py,88
-  testql/generators/sources/__init__.py,81
+  testql/generators/sources/__init__.py,86
   testql/generators/sources/base.py,33
   testql/generators/sources/config_source.py,306
   testql/generators/sources/conversation.py,36
@@ -3832,7 +3832,7 @@ M[372]:
   testql/interpreter/_flow.py,166
   testql/interpreter/_gui.py,709
   testql/interpreter/_hardware.py,110
-  testql/interpreter/_modbus.py,209
+  testql/interpreter/_modbus.py,233
   testql/interpreter/_parser.py,34
   testql/interpreter/_shell.py,261
   testql/interpreter/_testtoon_parser.py,565
@@ -3988,7 +3988,7 @@ M[372]:
   tests/test_scenario_yaml_adapter.py,208
   tests/test_shell_execution.py,134
   tests/test_smoke_decisions.py,160
-  tests/test_sources.py,496
+  tests/test_sources.py,497
   tests/test_sql_adapter.py,191
   tests/test_sql_ddl_parser.py,108
   tests/test_sql_dialect_resolver.py,75
@@ -4480,7 +4480,13 @@ D:
     _render_console_report(data;out_dir)
     _render_markdown_report(data;out_dir)
   testql/commands/conversation_cmd.py:
-    e: conversation,conversation_run
+    e: _validate_scenario,_resolve_base_url,_create_runner,_format_mode,_output_json,_output_text,conversation,conversation_run
+    _validate_scenario(adapter;scenario)
+    _resolve_base_url(api_url;plan)
+    _create_runner(api_url;dry_run;live_llm;mock_replies)
+    _format_mode(dry_run;live_llm)
+    _output_json(result)
+    _output_text(result;scenario;plan;dry_run;live_llm)
     conversation()
     conversation_run(scenario;api_url;dry_run;mock_replies;live_llm;output_fmt)
   testql/commands/discover_cmd.py:
@@ -4690,7 +4696,7 @@ D:
     e: _step_status_name,_extract_path,TurnTrace,ConversationRunResult,ConversationRunner
     TurnTrace:
     ConversationRunResult: to_report_dict(0)
-    ConversationRunner: __init__(3),variables(0),run(1),_apply_plan_config(1),_run_step(2),_run_via_ir(2),_run_nlp2dsl(2),_run_turn(2),_run_artifact(2),_interpolate_str(1),_interpolate(1)  # Execute conversation-layer steps and collect trace for resul
+    ConversationRunner: __init__(3),variables(0),run(1),_apply_plan_config(1),_run_step(2),_run_via_ir(2),_dispatch_nlp2dsl_endpoint(2),_apply_nlp2dsl_mock(2),_determine_nlp2dsl_status(3),_extract_captures(2),_build_captures_dict(1),_run_nlp2dsl(2),_run_turn(2),_run_artifact(2),_interpolate_str(1),_interpolate(1)  # Execute conversation-layer steps and collect trace for resul
     _step_status_name(status)
     _extract_path(payload;path)
   testql/detectors/__init__.py:
@@ -5052,7 +5058,7 @@ D:
     HardwareMixin: _hardware_url(0),_hardware_do_http(4),_hardware_call(5),_cmd_hardware(2)  # Mixin providing HARDWARE command support for peripheral chec
   testql/interpreter/_modbus.py:
     e: ModbusMixin
-    ModbusMixin: _modbus_probe_script(0),_modbus_store_response(2),_modbus_skip_enabled(0),_modbus_serial_exists(1),_modbus_parse_kv_args(1),_modbus_run_probe_script(3),_cmd_modbus(2)  # MODBUS probe / API wizard helpers for TestQL automation.
+    ModbusMixin: _modbus_probe_script(0),_modbus_store_response(2),_modbus_skip_enabled(0),_modbus_serial_exists(1),_modbus_parse_kv_args(1),_execute_probe_script(4),_parse_probe_response(1),_emit_probe_result(2),_modbus_run_probe_script(3),_cmd_modbus(2)  # MODBUS probe / API wizard helpers for TestQL automation.
   testql/interpreter/_parser.py:
     e: parse_oql,OqlLine,OqlScript
     OqlLine:
@@ -6167,7 +6173,7 @@ D:
 
 ```prolog markpact:analysis path=project/logic.pl
 % ── Project Metadata ─────────────────────────────────────
-project_metadata('testql', '1.2.52', 'python').
+project_metadata('testql', '1.2.54', 'python').
 
 % ── Project Files ────────────────────────────────────────
 project_file('TODO/testtoon_parser.py', 142, 'python').
@@ -6248,7 +6254,7 @@ project_file('testql/base.py', 38, 'python').
 project_file('testql/cli.py', 107, 'python').
 project_file('testql/commands/__init__.py', 36, 'python').
 project_file('testql/commands/auto_cmd.py', 203, 'python').
-project_file('testql/commands/conversation_cmd.py', 71, 'python').
+project_file('testql/commands/conversation_cmd.py', 109, 'python').
 project_file('testql/commands/discover_cmd.py', 47, 'python').
 project_file('testql/commands/echo/__init__.py', 23, 'python').
 project_file('testql/commands/echo/cli.py', 40, 'python').
@@ -6285,7 +6291,7 @@ project_file('testql/commands/templates/templates.py', 60, 'python').
 project_file('testql/commands/topology_cmd.py', 24, 'python').
 project_file('testql/commands/watchdog_cmd.py', 283, 'python').
 project_file('testql/conversation/__init__.py', 6, 'python').
-project_file('testql/conversation/runner.py', 268, 'python').
+project_file('testql/conversation/runner.py', 287, 'python').
 project_file('testql/detectors/__init__.py', 54, 'python').
 project_file('testql/detectors/base.py', 35, 'python').
 project_file('testql/detectors/config_detector.py', 219, 'python').
@@ -6334,7 +6340,7 @@ project_file('testql/generators/page_analyzer.py', 527, 'python').
 project_file('testql/generators/pipeline.py', 96, 'python').
 project_file('testql/generators/pytest_generator.py', 148, 'python').
 project_file('testql/generators/scenario_generator.py', 88, 'python').
-project_file('testql/generators/sources/__init__.py', 81, 'python').
+project_file('testql/generators/sources/__init__.py', 86, 'python').
 project_file('testql/generators/sources/base.py', 33, 'python').
 project_file('testql/generators/sources/config_source.py', 306, 'python').
 project_file('testql/generators/sources/conversation.py', 36, 'python').
@@ -6366,7 +6372,7 @@ project_file('testql/interpreter/_encoder.py', 101, 'python').
 project_file('testql/interpreter/_flow.py', 166, 'python').
 project_file('testql/interpreter/_gui.py', 709, 'python').
 project_file('testql/interpreter/_hardware.py', 110, 'python').
-project_file('testql/interpreter/_modbus.py', 209, 'python').
+project_file('testql/interpreter/_modbus.py', 233, 'python').
 project_file('testql/interpreter/_parser.py', 34, 'python').
 project_file('testql/interpreter/_shell.py', 261, 'python').
 project_file('testql/interpreter/_testtoon_parser.py', 565, 'python').
@@ -6522,7 +6528,7 @@ project_file('tests/test_runner.py', 188, 'python').
 project_file('tests/test_scenario_yaml_adapter.py', 208, 'python').
 project_file('tests/test_shell_execution.py', 134, 'python').
 project_file('tests/test_smoke_decisions.py', 160, 'python').
-project_file('tests/test_sources.py', 496, 'python').
+project_file('tests/test_sources.py', 497, 'python').
 project_file('tests/test_sql_adapter.py', 191, 'python').
 project_file('tests/test_sql_ddl_parser.py', 108, 'python').
 project_file('tests/test_sql_dialect_resolver.py', 75, 'python').
@@ -6864,8 +6870,14 @@ python_function('testql/commands/auto_cmd.py', '_run_report_phase', 3, 3, 6).
 python_function('testql/commands/auto_cmd.py', '_print_summary', 3, 1, 6).
 python_function('testql/commands/auto_cmd.py', '_render_console_report', 2, 4, 3).
 python_function('testql/commands/auto_cmd.py', '_render_markdown_report', 2, 4, 4).
+python_function('testql/commands/conversation_cmd.py', '_validate_scenario', 2, 3, 2).
+python_function('testql/commands/conversation_cmd.py', '_resolve_base_url', 2, 4, 1).
+python_function('testql/commands/conversation_cmd.py', '_create_runner', 4, 2, 2).
+python_function('testql/commands/conversation_cmd.py', '_format_mode', 2, 4, 1).
+python_function('testql/commands/conversation_cmd.py', '_output_json', 1, 1, 3).
+python_function('testql/commands/conversation_cmd.py', '_output_text', 5, 6, 2).
 python_function('testql/commands/conversation_cmd.py', 'conversation', 0, 1, 1).
-python_function('testql/commands/conversation_cmd.py', 'conversation_run', 6, 20, 18).
+python_function('testql/commands/conversation_cmd.py', 'conversation_run', 6, 6, 16).
 python_function('testql/commands/discover_cmd.py', 'discover', 3, 5, 14).
 python_function('testql/commands/discover_cmd.py', '_print_summary', 1, 9, 6).
 python_function('testql/commands/echo/cli.py', 'echo', 5, 3, 10).
@@ -7079,7 +7091,7 @@ python_function('testql/generators/pipeline.py', 'sorted_targets', 0, 1, 1).
 python_function('testql/generators/pipeline.py', 'run', 0, 5, 12).
 python_function('testql/generators/pipeline.py', 'write', 2, 5, 9).
 python_function('testql/generators/sources/__init__.py', '_get_config_source', 0, 1, 0).
-python_function('testql/generators/sources/__init__.py', 'get_source', 1, 4, 4).
+python_function('testql/generators/sources/__init__.py', 'get_source', 1, 5, 4).
 python_function('testql/generators/sources/__init__.py', 'available_sources', 0, 1, 3).
 python_function('testql/generators/sources/config_source.py', '_load_file', 1, 4, 5).
 python_function('testql/generators/sources/config_source.py', '_load_includes', 2, 6, 7).
@@ -7658,7 +7670,12 @@ python_method('ConversationRunner', 'run', 1, 3, 6).
 python_method('ConversationRunner', '_apply_plan_config', 1, 9, 7).
 python_method('ConversationRunner', '_run_step', 2, 7, 6).
 python_method('ConversationRunner', '_run_via_ir', 2, 7, 5).
-python_method('ConversationRunner', '_run_nlp2dsl', 2, 15, 17).
+python_method('ConversationRunner', '_dispatch_nlp2dsl_endpoint', 2, 5, 9).
+python_method('ConversationRunner', '_apply_nlp2dsl_mock', 2, 4, 5).
+python_method('ConversationRunner', '_determine_nlp2dsl_status', 3, 4, 2).
+python_method('ConversationRunner', '_extract_captures', 2, 3, 2).
+python_method('ConversationRunner', '_build_captures_dict', 1, 2, 1).
+python_method('ConversationRunner', '_run_nlp2dsl', 2, 3, 8).
 python_method('ConversationRunner', '_run_turn', 2, 4, 5).
 python_method('ConversationRunner', '_run_artifact', 2, 4, 6).
 python_method('ConversationRunner', '_interpolate_str', 1, 2, 3).
@@ -8090,7 +8107,10 @@ python_method('ModbusMixin', '_modbus_store_response', 2, 1, 1).
 python_method('ModbusMixin', '_modbus_skip_enabled', 0, 1, 3).
 python_method('ModbusMixin', '_modbus_serial_exists', 1, 4, 3).
 python_method('ModbusMixin', '_modbus_parse_kv_args', 1, 3, 3).
-python_method('ModbusMixin', '_modbus_run_probe_script', 3, 16, 17).
+python_method('ModbusMixin', '_execute_probe_script', 4, 3, 7).
+python_method('ModbusMixin', '_parse_probe_response', 1, 5, 2).
+python_method('ModbusMixin', '_emit_probe_result', 2, 6, 7).
+python_method('ModbusMixin', '_modbus_run_probe_script', 3, 6, 14).
 python_method('ModbusMixin', '_cmd_modbus', 2, 14, 18).
 python_class('testql/interpreter/_parser.py', 'OqlLine').
 python_class('testql/interpreter/_parser.py', 'OqlScript').
@@ -10662,7 +10682,7 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 
 ## Call Graph
 
-*523 nodes · 500 edges · 111 modules · CC̄=3.7*
+*525 nodes · 500 edges · 109 modules · CC̄=3.7*
 
 ### Hubs (by degree)
 
@@ -10673,14 +10693,14 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 | `_render_plan` *(in testql.adapters.testtoon_adapter)* | 9 | 4 | 31 | **35** |
 | `parse_testtoon` *(in TODO.testtoon_parser)* | 14 ⚠ | 1 | 31 | **32** |
 | `write_inspection_artifacts` *(in testql.results.artifacts)* | 1 | 3 | 28 | **31** |
-| `_cmd_assert_json` *(in testql.interpreter._assertions.AssertionsMixin)* | 13 ⚠ | 0 | 30 | **30** |
 | `heal_scenario` *(in testql.commands.heal_scenario_cmd)* | 8 | 0 | 30 | **30** |
+| `_cmd_assert_json` *(in testql.interpreter._assertions.AssertionsMixin)* | 13 ⚠ | 0 | 30 | **30** |
 | `_cmd_validate` *(in testql.interpreter._validation.ValidationMixin)* | 10 ⚠ | 0 | 30 | **30** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# generated in 0.26s
-# nodes: 523 | edges: 500 | modules: 111
+# generated in 0.27s
+# nodes: 525 | edges: 500 | modules: 109
 # CC̄=3.7
 
 HUBS[20]:
@@ -10694,10 +10714,10 @@ HUBS[20]:
     CC=14  in:1  out:31  total:32
   testql.results.artifacts.write_inspection_artifacts
     CC=1  in:3  out:28  total:31
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
-    CC=13  in:0  out:30  total:30
   testql.commands.heal_scenario_cmd.heal_scenario
     CC=8  in:0  out:30  total:30
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+    CC=13  in:0  out:30  total:30
   testql.interpreter._validation.ValidationMixin._cmd_validate
     CC=10  in:0  out:30  total:30
   testql.adapters.scenario_yaml._render_step
@@ -10708,22 +10728,22 @@ HUBS[20]:
     CC=11  in:2  out:23  total:25
   testql.commands.generate_cmd._print_routes_section
     CC=10  in:1  out:23  total:24
-  testql.commands.inspect_cmd.inspect
-    CC=6  in:0  out:24  total:24
   testql.commands.generate_topology_cmd.generate_topology
     CC=5  in:0  out:24  total:24
-  testql.conversation.runner.ConversationRunner._run_nlp2dsl
-    CC=15  in:0  out:24  total:24
-  testql.adapters.scenario_yaml._gui_step
-    CC=9  in:0  out:23  total:23
-  testql.adapters.base.read_source
-    CC=5  in:14  out:9  total:23
+  testql.commands.inspect_cmd.inspect
+    CC=6  in:0  out:24  total:24
   testql.commands.encoder_routes._run_oql_lines
     CC=6  in:1  out:22  total:23
+  testql.adapters.base.read_source
+    CC=5  in:14  out:9  total:23
   testql.commands.echo.parsers.doql._parse_workflows
     CC=7  in:1  out:22  total:23
-  testql.commands.misc_cmds.report
-    CC=4  in:0  out:22  total:22
+  testql.adapters.scenario_yaml._gui_step
+    CC=9  in:0  out:23  total:23
+  testql.report_generator.generate_report
+    CC=3  in:2  out:20  total:22
+  testql.runner.parse_line
+    CC=9  in:2  out:20  total:22
 
 MODULES:
   TODO.testtoon_parser  [3 funcs]
@@ -10755,9 +10775,19 @@ MODULES:
     _intent_table  CC=5  out:8
     recognize_intent  CC=4  out:11
     recognize_operator  CC=6  out:8
-  testql.adapters.nl.nl_adapter  [2 funcs]
+  testql.adapters.nl.llm_fallback  [1 funcs]
+    get_resolver  CC=1  out:0
+  testql.adapters.nl.nl_adapter  [12 funcs]
+    _api_status_part  CC=2  out:3
+    _assert_expected  CC=4  out:3
     _assert_field  CC=7  out:7
+    _build_api  CC=6  out:8
     _build_assert  CC=2  out:5
+    _build_encoder  CC=2  out:5
+    _build_step  CC=3  out:4
+    _build_unresolved  CC=2  out:4
+    _render_assert  CC=4  out:0
+    _render_by_kind  CC=3  out:2
   testql.adapters.nlp2dsl.llm_provider  [2 funcs]
     live_llm_enabled  CC=2  out:3
     resolve_llm_provider  CC=4  out:6
@@ -10825,8 +10855,6 @@ MODULES:
     _derive_columns  CC=4  out:4
     _format_extra_value  CC=6  out:4
     _group_generic_steps  CC=9  out:4
-  testql.artifacts.registry  [1 funcs]
-    get_artifact_registry  CC=2  out:5
   testql.cli  [5 funcs]
     _fetch_latest_version  CC=2  out:3
     check_and_upgrade  CC=4  out:3
@@ -10955,13 +10983,6 @@ MODULES:
     _process_one_scenario  CC=3  out:8
     _run_scenario  CC=3  out:5
     _update_metrics  CC=11  out:23
-  testql.conversation.runner  [6 funcs]
-    __init__  CC=4  out:6
-    _run_nlp2dsl  CC=15  out:24
-    _run_step  CC=7  out:10
-    _run_via_ir  CC=7  out:7
-    _extract_path  CC=4  out:3
-    _step_status_name  CC=4  out:0
   testql.discovery.manifest  [7 funcs]
     from_probe_results  CC=8  out:6
     _dedupe_dicts  CC=4  out:8
@@ -11022,10 +11043,9 @@ MODULES:
     sorted_sources  CC=1  out:1
     sorted_targets  CC=1  out:1
     write  CC=5  out:9
-  testql.generators.sources  [3 funcs]
-    _get_config_source  CC=1  out:0
+  testql.generators.sources  [2 funcs]
     available_sources  CC=1  out:4
-    get_source  CC=4  out:5
+    get_source  CC=5  out:5
   testql.generators.sources.config_source  [13 funcs]
     load  CC=6  out:15
     _auto_detect_parser  CC=4  out:0
@@ -11171,8 +11191,6 @@ MODULES:
     _make_mapping_section  CC=1  out:2
   testql.ir_runner.engine  [1 funcs]
     run_plan  CC=1  out:2
-  testql.ir_runner.executors.base  [1 funcs]
-    assemble_result  CC=5  out:6
   testql.mcp.server  [1 funcs]
     run_server  CC=1  out:2
   testql.openapi_generator  [5 funcs]

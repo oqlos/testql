@@ -7,10 +7,10 @@
 - **Primary Language**: python
 - **Languages**: python: 248, yaml: 119, shell: 23, json: 2, txt: 2
 - **Analysis Mode**: static
-- **Total Functions**: 1506
+- **Total Functions**: 1520
 - **Total Classes**: 220
 - **Modules**: 415
-- **Entry Points**: 909
+- **Entry Points**: 916
 
 ## Architecture by Module
 
@@ -114,9 +114,6 @@
 
 Main execution flows into the system:
 
-### testql.interpreter._modbus.ModbusMixin._modbus_run_probe_script
-- **Calls**: self._modbus_probe_script, float, None.strip, None.strip, self._modbus_store_response, self._modbus_skip_enabled, self.out.step, self.results.append
-
 ### testql.commands.watchdog_cmd.watchdog
 > Run TestQL scenarios in a continuous loop with Prometheus metrics.
 
@@ -136,6 +133,9 @@ round-robin ord
 > Watch for file changes and re-run tests automatically.
 - **Calls**: click.command, click.option, click.option, click.option, click.option, None.resolve, click.echo, click.echo
 
+### testql.topology.builder.TopologyBuilder._add_page_schema_nodes
+- **Calls**: manifest.metadata.get, topology.nodes.append, topology.edges.append, enumerate, enumerate, enumerate, isinstance, TopologyNode
+
 ### testql.interpreter._modbus.ModbusMixin._cmd_modbus
 > MODBUS <action> [key=value ...] — RTU probe or HTTP wizard helpers.
 
@@ -143,13 +143,6 @@ Examples:
     MODBUS probe
     MODBUS probe serial=/dev/ttyACM1 baud=9600 device_
 - **Calls**: None.lower, self._modbus_parse_kv_args, self.out.fail, args.strip, shlex.split, self.out.fail, kv.get, self.vars.set
-
-### testql.topology.builder.TopologyBuilder._add_page_schema_nodes
-- **Calls**: manifest.metadata.get, topology.nodes.append, topology.edges.append, enumerate, enumerate, enumerate, isinstance, TopologyNode
-
-### testql.commands.conversation_cmd.conversation_run
-> Execute a `.testql.toon.yaml` conversation scenario.
-- **Calls**: conversation.command, click.argument, click.option, click.option, click.option, click.option, click.option, Nlp2DslAdapter
 
 ### testql.commands.heal_scenario_cmd.heal_scenario
 > Validate and heal selectors in an existing TestTOON scenario.
@@ -243,9 +236,6 @@ Examples:
 ### testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_taborder
 - **Calls**: shlex.split, DomScanner, scanner.assert_taborder, len, self.out.fail, self.results.append, int, getattr
 
-### testql.conversation.runner.ConversationRunner._run_nlp2dsl
-- **Calls**: self._interpolate, step.endpoint.lower, TurnTrace, TurnTrace, self.mock_llm.reply_for, payload.setdefault, self.client.chatstart, testql.ir_runner.executors.base.assemble_result
-
 ### testql.adapters.testtoon_adapter._api_section_to_steps
 - **Calls**: steps.append, row.get, row.get, asserts.append, row.get, asserts.append, None.strip, ApiStep
 
@@ -253,33 +243,48 @@ Examples:
 > Generate TestQL scenarios from SUMD.md documentation.
 - **Calls**: click.command, click.argument, click.option, click.option, Path, SumdParser, click.echo, parser.parse_file
 
+### testql.commands.endpoints_cmd.openapi
+> Generate OpenAPI spec from detected endpoints.
+- **Calls**: click.command, click.argument, click.option, click.option, click.option, click.option, click.option, Path
+
+### testql.interpreter._gui.GuiMixin._cmd_gui_input
+> GUI_INPUT "selector" "text" — Type text into element.
+
+Examples:
+    GUI_INPUT "[data-testid=search]" "hello world"
+    GUI_INPUT "input#username" "te
+- **Calls**: None.split, None.strip, None.strip, len, self.out.fail, self.out.step, self.results.append, self.out.fail
+
+### testql.adapters.scenario_yaml._gui_step
+- **Calls**: testql.adapters.scenario_yaml._step_common, GuiStep, GuiStep, str, GuiStep, str, GuiStep, str
+
 ## Process Flows
 
 Key execution flows identified:
 
-### Flow 1: _modbus_run_probe_script
-```
-_modbus_run_probe_script [testql.interpreter._modbus.ModbusMixin]
-```
-
-### Flow 2: watchdog
+### Flow 1: watchdog
 ```
 watchdog [testql.commands.watchdog_cmd]
 ```
 
-### Flow 3: suite
+### Flow 2: suite
 ```
 suite [testql.commands.suite.cli]
 ```
 
-### Flow 4: to_oql
+### Flow 3: to_oql
 ```
 to_oql [testql.generators.sources.pytest_source.PytestSource]
 ```
 
-### Flow 5: watch
+### Flow 4: watch
 ```
 watch [testql.commands.misc_cmds]
+```
+
+### Flow 5: _add_page_schema_nodes
+```
+_add_page_schema_nodes [testql.topology.builder.TopologyBuilder]
 ```
 
 ### Flow 6: _cmd_modbus
@@ -287,24 +292,25 @@ watch [testql.commands.misc_cmds]
 _cmd_modbus [testql.interpreter._modbus.ModbusMixin]
 ```
 
-### Flow 7: _add_page_schema_nodes
-```
-_add_page_schema_nodes [testql.topology.builder.TopologyBuilder]
-```
-
-### Flow 8: conversation_run
-```
-conversation_run [testql.commands.conversation_cmd]
-```
-
-### Flow 9: heal_scenario
+### Flow 7: heal_scenario
 ```
 heal_scenario [testql.commands.heal_scenario_cmd]
 ```
 
-### Flow 10: _cmd_assert_json
+### Flow 8: _cmd_assert_json
 ```
 _cmd_assert_json [testql.interpreter._assertions.AssertionsMixin]
+```
+
+### Flow 9: _cmd_validate
+```
+_cmd_validate [testql.interpreter._validation.ValidationMixin]
+  └─ →> _resolve_target
+```
+
+### Flow 10: _cmd_assert_schema
+```
+_cmd_assert_schema [testql.interpreter._assertions.AssertionsMixin]
 ```
 
 ## Key Classes
@@ -350,6 +356,11 @@ OQL (Object Query Language) and CQL (Command Query Language) are comm
 - **Key Methods**: testql.generators.analyzers.ProjectAnalyzer._detect_web_frontend, testql.generators.analyzers.ProjectAnalyzer._detect_python_type, testql.generators.analyzers.ProjectAnalyzer._has_argparse_usage, testql.generators.analyzers.ProjectAnalyzer._detect_hardware, testql.generators.analyzers.ProjectAnalyzer.detect_project_type, testql.generators.analyzers.ProjectAnalyzer.run_full_analysis, testql.generators.analyzers.ProjectAnalyzer._scan_directory_structure, testql.generators.analyzers.ProjectAnalyzer._collect_patterns_from_tree, testql.generators.analyzers.ProjectAnalyzer._analyze_python_tests, testql.generators.analyzers.ProjectAnalyzer._extract_test_pattern
 - **Inherits**: BaseAnalyzer
 
+### testql.conversation.runner.ConversationRunner
+> Execute conversation-layer steps and collect trace for result.toon.yaml.
+- **Methods**: 16
+- **Key Methods**: testql.conversation.runner.ConversationRunner.__init__, testql.conversation.runner.ConversationRunner.variables, testql.conversation.runner.ConversationRunner.run, testql.conversation.runner.ConversationRunner._apply_plan_config, testql.conversation.runner.ConversationRunner._run_step, testql.conversation.runner.ConversationRunner._run_via_ir, testql.conversation.runner.ConversationRunner._dispatch_nlp2dsl_endpoint, testql.conversation.runner.ConversationRunner._apply_nlp2dsl_mock, testql.conversation.runner.ConversationRunner._determine_nlp2dsl_status, testql.conversation.runner.ConversationRunner._extract_captures
+
 ### testql.runner.DslCliExecutor
 - **Methods**: 15
 - **Key Methods**: testql.runner.DslCliExecutor.__init__, testql.runner.DslCliExecutor.execute, testql.runner.DslCliExecutor._dispatch, testql.runner.DslCliExecutor.cmd_api, testql.runner.DslCliExecutor.cmd_wait, testql.runner.DslCliExecutor.cmd_log, testql.runner.DslCliExecutor.cmd_print, testql.runner.DslCliExecutor.cmd_store, testql.runner.DslCliExecutor.cmd_env, testql.runner.DslCliExecutor.cmd_assert_status
@@ -377,11 +388,6 @@ Adapters register themselves on import (or are r
 - **Methods**: 11
 - **Key Methods**: testql.interpreter.dom_scan_mixin.DomScanMixin._parse_dom_scan_args, testql.interpreter.dom_scan_mixin.DomScanMixin._execute_dom_scan, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_dom_scan, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_dom_audit_buttons, testql.interpreter.dom_scan_mixin.DomScanMixin._parse_audit_args, testql.interpreter.dom_scan_mixin.DomScanMixin._ensure_gui_session, testql.interpreter.dom_scan_mixin.DomScanMixin._handle_audit_report, testql.interpreter.dom_scan_mixin.DomScanMixin._save_report_to_file, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_taborder, testql.interpreter.dom_scan_mixin.DomScanMixin._cmd_assert_aria
 
-### testql.conversation.runner.ConversationRunner
-> Execute conversation-layer steps and collect trace for result.toon.yaml.
-- **Methods**: 11
-- **Key Methods**: testql.conversation.runner.ConversationRunner.__init__, testql.conversation.runner.ConversationRunner.variables, testql.conversation.runner.ConversationRunner.run, testql.conversation.runner.ConversationRunner._apply_plan_config, testql.conversation.runner.ConversationRunner._run_step, testql.conversation.runner.ConversationRunner._run_via_ir, testql.conversation.runner.ConversationRunner._run_nlp2dsl, testql.conversation.runner.ConversationRunner._run_turn, testql.conversation.runner.ConversationRunner._run_artifact, testql.conversation.runner.ConversationRunner._interpolate_str
-
 ### testql.detectors.unified.UnifiedEndpointDetector
 > Unified detector that runs all specialized detectors.
 - **Methods**: 11
@@ -398,6 +404,11 @@ Adapters register themselves on import (or are r
 - **Key Methods**: testql.detectors.config_detector.ConfigEndpointDetector.detect, testql.detectors.config_detector.ConfigEndpointDetector._detect_from_docker_compose, testql.detectors.config_detector.ConfigEndpointDetector._detect_from_env_files, testql.detectors.config_detector.ConfigEndpointDetector._detect_from_config_py, testql.detectors.config_detector.ConfigEndpointDetector._analyze_docker_compose, testql.detectors.config_detector.ConfigEndpointDetector._parse_port_mapping, testql.detectors.config_detector.ConfigEndpointDetector._infer_protocol, testql.detectors.config_detector.ConfigEndpointDetector._analyze_env_file, testql.detectors.config_detector.ConfigEndpointDetector._analyze_config_py, testql.detectors.config_detector.ConfigEndpointDetector._extract_port_from_url
 - **Inherits**: BaseEndpointDetector
 
+### testql.interpreter._modbus.ModbusMixin
+> MODBUS probe / API wizard helpers for TestQL automation.
+- **Methods**: 10
+- **Key Methods**: testql.interpreter._modbus.ModbusMixin._modbus_probe_script, testql.interpreter._modbus.ModbusMixin._modbus_store_response, testql.interpreter._modbus.ModbusMixin._modbus_skip_enabled, testql.interpreter._modbus.ModbusMixin._modbus_serial_exists, testql.interpreter._modbus.ModbusMixin._modbus_parse_kv_args, testql.interpreter._modbus.ModbusMixin._execute_probe_script, testql.interpreter._modbus.ModbusMixin._parse_probe_response, testql.interpreter._modbus.ModbusMixin._emit_probe_result, testql.interpreter._modbus.ModbusMixin._modbus_run_probe_script, testql.interpreter._modbus.ModbusMixin._cmd_modbus
+
 ### testql.openapi_generator.OpenAPIGenerator
 > Generate OpenAPI specs from detected endpoints.
 - **Methods**: 9
@@ -412,11 +423,6 @@ Adapters register themselves on import (or are r
 > Builds test content for different test types.
 - **Methods**: 9
 - **Key Methods**: testql.commands.templates.content.TestContentBuilder.build, testql.commands.templates.content.TestContentBuilder._build_meta_header, testql.commands.templates.content.TestContentBuilder._build_standard_vars, testql.commands.templates.content.TestContentBuilder._build_gui, testql.commands.templates.content.TestContentBuilder._build_api, testql.commands.templates.content.TestContentBuilder._build_mixed, testql.commands.templates.content.TestContentBuilder._build_performance, testql.commands.templates.content.TestContentBuilder._build_workflow, testql.commands.templates.content.TestContentBuilder._build_encoder
-
-### testql.interpreter._shell.ShellMixin
-> Mixin providing shell command execution: SHELL, EXEC, RUN, ASSERT_EXIT_CODE, etc.
-- **Methods**: 9
-- **Key Methods**: testql.interpreter._shell.ShellMixin._parse_shell_command, testql.interpreter._shell.ShellMixin._execute_shell_dry_run, testql.interpreter._shell.ShellMixin._execute_shell_live, testql.interpreter._shell.ShellMixin._cmd_shell, testql.interpreter._shell.ShellMixin._cmd_exec, testql.interpreter._shell.ShellMixin._cmd_run, testql.interpreter._shell.ShellMixin._cmd_assert_exit_code, testql.interpreter._shell.ShellMixin._cmd_assert_stdout_contains, testql.interpreter._shell.ShellMixin._cmd_assert_stderr_contains
 
 ## Data Transformation Functions
 
@@ -589,7 +595,6 @@ Functions exposed as public API (no underscore prefix):
 - `testql.generators.sources.pytest_source.PytestSource.to_oql` - 36 calls
 - `testql.commands.misc_cmds.watch` - 35 calls
 - `TODO.testtoon_parser.parse_testtoon` - 31 calls
-- `testql.commands.conversation_cmd.conversation_run` - 30 calls
 - `testql.commands.heal_scenario_cmd.heal_scenario` - 30 calls
 - `testql.results.artifacts.write_inspection_artifacts` - 28 calls
 - `testql.discovery.probes.browser.playwright_page.PlaywrightPageProbe.probe` - 27 calls
@@ -608,6 +613,7 @@ Functions exposed as public API (no underscore prefix):
 - `testql.artifacts.email_checker.EmailArtifactChecker.check` - 22 calls
 - `testql.commands.misc_cmds.create` - 21 calls
 - `testql.commands.run_cmd.run` - 21 calls
+- `testql.commands.conversation_cmd.conversation_run` - 21 calls
 - `testql.report_generator.generate_report` - 20 calls
 - `testql.runner.parse_line` - 20 calls
 - `testql.runner.DslCliExecutor.run_script` - 20 calls
@@ -631,10 +637,6 @@ How components interact:
 
 ```mermaid
 graph TD
-    _modbus_run_probe_sc --> _modbus_probe_script
-    _modbus_run_probe_sc --> float
-    _modbus_run_probe_sc --> strip
-    _modbus_run_probe_sc --> _modbus_store_respon
     watchdog --> command
     watchdog --> argument
     watchdog --> option
@@ -645,22 +647,26 @@ graph TD
     to_oql --> append
     watch --> command
     watch --> option
+    _add_page_schema_nod --> get
+    _add_page_schema_nod --> append
+    _add_page_schema_nod --> enumerate
     _cmd_modbus --> lower
     _cmd_modbus --> _modbus_parse_kv_arg
     _cmd_modbus --> fail
     _cmd_modbus --> strip
     _cmd_modbus --> split
-    _add_page_schema_nod --> get
-    _add_page_schema_nod --> append
-    _add_page_schema_nod --> enumerate
-    conversation_run --> command
-    conversation_run --> argument
-    conversation_run --> option
     heal_scenario --> command
     heal_scenario --> argument
     heal_scenario --> option
     _cmd_assert_json --> split
     _cmd_assert_json --> startswith
+    _cmd_assert_json --> strip
+    _cmd_assert_json --> lower
+    _cmd_assert_json --> get
+    _cmd_validate --> split
+    _cmd_validate --> strip
+    _cmd_validate --> _resolve_target
+    _cmd_validate --> warn
 ```
 
 ## Reverse Engineering Guidelines

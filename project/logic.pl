@@ -1,5 +1,5 @@
 % ── Project Metadata ─────────────────────────────────────
-project_metadata('testql', '1.2.52', 'python').
+project_metadata('testql', '1.2.54', 'python').
 
 % ── Project Files ────────────────────────────────────────
 project_file('TODO/testtoon_parser.py', 142, 'python').
@@ -80,7 +80,7 @@ project_file('testql/base.py', 38, 'python').
 project_file('testql/cli.py', 107, 'python').
 project_file('testql/commands/__init__.py', 36, 'python').
 project_file('testql/commands/auto_cmd.py', 203, 'python').
-project_file('testql/commands/conversation_cmd.py', 71, 'python').
+project_file('testql/commands/conversation_cmd.py', 109, 'python').
 project_file('testql/commands/discover_cmd.py', 47, 'python').
 project_file('testql/commands/echo/__init__.py', 23, 'python').
 project_file('testql/commands/echo/cli.py', 40, 'python').
@@ -117,7 +117,7 @@ project_file('testql/commands/templates/templates.py', 60, 'python').
 project_file('testql/commands/topology_cmd.py', 24, 'python').
 project_file('testql/commands/watchdog_cmd.py', 283, 'python').
 project_file('testql/conversation/__init__.py', 6, 'python').
-project_file('testql/conversation/runner.py', 268, 'python').
+project_file('testql/conversation/runner.py', 287, 'python').
 project_file('testql/detectors/__init__.py', 54, 'python').
 project_file('testql/detectors/base.py', 35, 'python').
 project_file('testql/detectors/config_detector.py', 219, 'python').
@@ -166,7 +166,7 @@ project_file('testql/generators/page_analyzer.py', 527, 'python').
 project_file('testql/generators/pipeline.py', 96, 'python').
 project_file('testql/generators/pytest_generator.py', 148, 'python').
 project_file('testql/generators/scenario_generator.py', 88, 'python').
-project_file('testql/generators/sources/__init__.py', 81, 'python').
+project_file('testql/generators/sources/__init__.py', 86, 'python').
 project_file('testql/generators/sources/base.py', 33, 'python').
 project_file('testql/generators/sources/config_source.py', 306, 'python').
 project_file('testql/generators/sources/conversation.py', 36, 'python').
@@ -198,7 +198,7 @@ project_file('testql/interpreter/_encoder.py', 101, 'python').
 project_file('testql/interpreter/_flow.py', 166, 'python').
 project_file('testql/interpreter/_gui.py', 709, 'python').
 project_file('testql/interpreter/_hardware.py', 110, 'python').
-project_file('testql/interpreter/_modbus.py', 209, 'python').
+project_file('testql/interpreter/_modbus.py', 233, 'python').
 project_file('testql/interpreter/_parser.py', 34, 'python').
 project_file('testql/interpreter/_shell.py', 261, 'python').
 project_file('testql/interpreter/_testtoon_parser.py', 565, 'python').
@@ -354,7 +354,7 @@ project_file('tests/test_runner.py', 188, 'python').
 project_file('tests/test_scenario_yaml_adapter.py', 208, 'python').
 project_file('tests/test_shell_execution.py', 134, 'python').
 project_file('tests/test_smoke_decisions.py', 160, 'python').
-project_file('tests/test_sources.py', 496, 'python').
+project_file('tests/test_sources.py', 497, 'python').
 project_file('tests/test_sql_adapter.py', 191, 'python').
 project_file('tests/test_sql_ddl_parser.py', 108, 'python').
 project_file('tests/test_sql_dialect_resolver.py', 75, 'python').
@@ -696,8 +696,14 @@ python_function('testql/commands/auto_cmd.py', '_run_report_phase', 3, 3, 6).
 python_function('testql/commands/auto_cmd.py', '_print_summary', 3, 1, 6).
 python_function('testql/commands/auto_cmd.py', '_render_console_report', 2, 4, 3).
 python_function('testql/commands/auto_cmd.py', '_render_markdown_report', 2, 4, 4).
+python_function('testql/commands/conversation_cmd.py', '_validate_scenario', 2, 3, 2).
+python_function('testql/commands/conversation_cmd.py', '_resolve_base_url', 2, 4, 1).
+python_function('testql/commands/conversation_cmd.py', '_create_runner', 4, 2, 2).
+python_function('testql/commands/conversation_cmd.py', '_format_mode', 2, 4, 1).
+python_function('testql/commands/conversation_cmd.py', '_output_json', 1, 1, 3).
+python_function('testql/commands/conversation_cmd.py', '_output_text', 5, 6, 2).
 python_function('testql/commands/conversation_cmd.py', 'conversation', 0, 1, 1).
-python_function('testql/commands/conversation_cmd.py', 'conversation_run', 6, 20, 18).
+python_function('testql/commands/conversation_cmd.py', 'conversation_run', 6, 6, 16).
 python_function('testql/commands/discover_cmd.py', 'discover', 3, 5, 14).
 python_function('testql/commands/discover_cmd.py', '_print_summary', 1, 9, 6).
 python_function('testql/commands/echo/cli.py', 'echo', 5, 3, 10).
@@ -911,7 +917,7 @@ python_function('testql/generators/pipeline.py', 'sorted_targets', 0, 1, 1).
 python_function('testql/generators/pipeline.py', 'run', 0, 5, 12).
 python_function('testql/generators/pipeline.py', 'write', 2, 5, 9).
 python_function('testql/generators/sources/__init__.py', '_get_config_source', 0, 1, 0).
-python_function('testql/generators/sources/__init__.py', 'get_source', 1, 4, 4).
+python_function('testql/generators/sources/__init__.py', 'get_source', 1, 5, 4).
 python_function('testql/generators/sources/__init__.py', 'available_sources', 0, 1, 3).
 python_function('testql/generators/sources/config_source.py', '_load_file', 1, 4, 5).
 python_function('testql/generators/sources/config_source.py', '_load_includes', 2, 6, 7).
@@ -1490,7 +1496,12 @@ python_method('ConversationRunner', 'run', 1, 3, 6).
 python_method('ConversationRunner', '_apply_plan_config', 1, 9, 7).
 python_method('ConversationRunner', '_run_step', 2, 7, 6).
 python_method('ConversationRunner', '_run_via_ir', 2, 7, 5).
-python_method('ConversationRunner', '_run_nlp2dsl', 2, 15, 17).
+python_method('ConversationRunner', '_dispatch_nlp2dsl_endpoint', 2, 5, 9).
+python_method('ConversationRunner', '_apply_nlp2dsl_mock', 2, 4, 5).
+python_method('ConversationRunner', '_determine_nlp2dsl_status', 3, 4, 2).
+python_method('ConversationRunner', '_extract_captures', 2, 3, 2).
+python_method('ConversationRunner', '_build_captures_dict', 1, 2, 1).
+python_method('ConversationRunner', '_run_nlp2dsl', 2, 3, 8).
 python_method('ConversationRunner', '_run_turn', 2, 4, 5).
 python_method('ConversationRunner', '_run_artifact', 2, 4, 6).
 python_method('ConversationRunner', '_interpolate_str', 1, 2, 3).
@@ -1922,7 +1933,10 @@ python_method('ModbusMixin', '_modbus_store_response', 2, 1, 1).
 python_method('ModbusMixin', '_modbus_skip_enabled', 0, 1, 3).
 python_method('ModbusMixin', '_modbus_serial_exists', 1, 4, 3).
 python_method('ModbusMixin', '_modbus_parse_kv_args', 1, 3, 3).
-python_method('ModbusMixin', '_modbus_run_probe_script', 3, 16, 17).
+python_method('ModbusMixin', '_execute_probe_script', 4, 3, 7).
+python_method('ModbusMixin', '_parse_probe_response', 1, 5, 2).
+python_method('ModbusMixin', '_emit_probe_result', 2, 6, 7).
+python_method('ModbusMixin', '_modbus_run_probe_script', 3, 6, 14).
 python_method('ModbusMixin', '_cmd_modbus', 2, 14, 18).
 python_class('testql/interpreter/_parser.py', 'OqlLine').
 python_class('testql/interpreter/_parser.py', 'OqlScript').

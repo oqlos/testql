@@ -1,28 +1,16 @@
-# code2llm/evolution | 1490 func | 203f | 2026-06-06
+# code2llm/evolution | 1504 func | 203f | 2026-06-06
 # generated in 0.01s
 
-NEXT[6] (ranked by impact):
+NEXT[3] (ranked by impact):
   [1] !! SPLIT           testql/adapters/testtoon_adapter.py
       WHY: 742L, 1 classes, max CC=12
       EFFORT: ~4h  IMPACT: 8904
 
-  [2] !  SPLIT-FUNC      conversation_run  CC=20  fan=18
-      WHY: CC=20 exceeds 15
-      EFFORT: ~1h  IMPACT: 360
-
-  [3] !  SPLIT-FUNC      ModbusMixin._modbus_run_probe_script  CC=16  fan=21
-      WHY: CC=16 exceeds 15
-      EFFORT: ~1h  IMPACT: 336
-
-  [4] !  SPLIT-FUNC      ConversationRunner._run_nlp2dsl  CC=15  fan=18
-      WHY: CC=15 exceeds 15
-      EFFORT: ~1h  IMPACT: 270
-
-  [5] !! SPLIT           planfile.yaml
+  [2] !! SPLIT           planfile.yaml
       WHY: 1319L, 0 classes, max CC=0
       EFFORT: ~4h  IMPACT: 0
 
-  [6] !! SPLIT           tree.txt
+  [3] !! SPLIT           tree.txt
       WHY: 1104L, 0 classes, max CC=0
       EFFORT: ~4h  IMPACT: 0
 
@@ -34,9 +22,9 @@ RISKS[3]:
 
 METRICS-TARGET:
   CC̄:          3.7 → ≤2.6
-  max-CC:      20 → ≤10
+  max-CC:      14 → ≤7
   god-modules: 9 → 0
-  high-CC(≥15): 3 → ≤1
+  high-CC(≥15): 0 → ≤0
   hub-types:   0 → ≤0
 
 PATTERNS (language parser shared logic):

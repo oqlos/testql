@@ -1,5 +1,5 @@
 flowchart TD
-%% generated in 0.02s
+%% generated in 0.01s
     subgraph TODO__testtoon_parser
         TODO__testtoon_parser__Section__to_dicts["to_dicts"]
         TODO__testtoon_parser__Section__validate["validate"]
@@ -153,8 +153,6 @@ flowchart TD
         testql__commands__self_test_cmd__self_test["self_test"]
         testql__commands__discover_cmd__discover["discover"]
         testql__commands__discover_cmd___print_summary("_print_summary CC=9")
-        testql__commands__conversation_cmd__conversation["conversation"]
-        testql__commands__conversation_cmd__conversation_run{{conversation_run CC=20}}
         testql__commands__generate_cmd___is_workspace["_is_workspace"]
         testql__commands__generate_cmd___echo_analysis["_echo_analysis"]
         testql__commands__generate_cmd___echo_generation["_echo_generation"]
@@ -209,6 +207,8 @@ flowchart TD
         testql__commands__encoder_routes___update_counters["_update_counters"]
         testql__commands__encoder_routes___build_run_summary["_build_run_summary"]
         testql__commands__encoder_routes___write_run_log["_write_run_log"]
+        testql__commands__encoder_routes__oql_list_logs["oql_list_logs"]
+        testql__commands__encoder_routes__oql_read_log["oql_read_log"]
     end
     subgraph testql__conversation
         testql__conversation__runner__ConversationRunResult__to_report_dict["to_report_dict"]
@@ -218,7 +218,12 @@ flowchart TD
         testql__conversation__runner__ConversationRunner___apply_plan_config("_apply_plan_config CC=9")
         testql__conversation__runner__ConversationRunner___run_step["_run_step"]
         testql__conversation__runner__ConversationRunner___run_via_ir["_run_via_ir"]
-        testql__conversation__runner__ConversationRunner___run_nlp2dsl{{_run_nlp2dsl CC=15}}
+        testql__conversation__runner__ConversationRunner___dispatch_nlp2dsl_endpoint["_dispatch_nlp2dsl_endpoint"]
+        testql__conversation__runner__ConversationRunner___apply_nlp2dsl_mock["_apply_nlp2dsl_mock"]
+        testql__conversation__runner__ConversationRunner___determine_nlp2dsl_status["_determine_nlp2dsl_status"]
+        testql__conversation__runner__ConversationRunner___extract_captures["_extract_captures"]
+        testql__conversation__runner__ConversationRunner___build_captures_dict["_build_captures_dict"]
+        testql__conversation__runner__ConversationRunner___run_nlp2dsl["_run_nlp2dsl"]
         testql__conversation__runner__ConversationRunner___run_turn["_run_turn"]
         testql__conversation__runner__ConversationRunner___run_artifact["_run_artifact"]
         testql__conversation__runner__ConversationRunner___interpolate_str["_interpolate_str"]
@@ -1134,13 +1139,6 @@ flowchart TD
     testql__discovery__probes__filesystem__package_python___parse_pyproject_dependencies --> testql__discovery__probes__filesystem__package_python___dep
     testql__discovery__probes__filesystem__package_python___parse_requirements --> testql__discovery__probes__filesystem__package_python___dep
     testql__discovery__probes__filesystem__package_python___dedupe_deps --> testql___base_fallback__VariableStore__set
-    testql__conversation__runner__ConversationRunner____init__ --> testql__artifacts__registry__get_artifact_registry
-    testql__conversation__runner__ConversationRunner____init__ --> testql__adapters__nlp2dsl__llm_provider__resolve_llm_provider
-    testql__conversation__runner__ConversationRunner___run_via_ir --> testql__conversation__runner__ConversationRunner___run_step
-    testql__conversation__runner__ConversationRunner___run_via_ir --> testql__conversation__runner___step_status_name
-    testql__conversation__runner__ConversationRunner___run_nlp2dsl --> testql__ir_runner__executors__base__assemble_result
-    testql__conversation__runner__ConversationRunner___run_nlp2dsl --> testql__conversation__runner___step_status_name
-    testql__conversation__runner__ConversationRunner___run_nlp2dsl --> testql__conversation__runner___extract_path
     testql__results__artifacts__write_inspection_artifacts --> testql__results__artifacts___write_group
     testql__results__artifacts__write_inspection_artifacts --> testql__results__artifacts___render_summary_md
     testql__results__artifacts___render_summary_md --> testql__results__serializers___render_nlp
@@ -1265,8 +1263,6 @@ flowchart TD
     testql__generators__sources__openapi_source__OpenAPISource__load --> testql__openapi_generator__ContractTestGenerator___load_spec
     testql__generators__sources__openapi_source__OpenAPISource__load --> testql__generators__sources__openapi_source___iter_operations
     testql__generators__sources__openapi_source__OpenAPISource__load --> testql__generators__sources__openapi_source___operation_to_step
-    testql__generators__sources__get_source --> testql__generators__sources___get_config_source
-    testql__generators__sources__available_sources --> testql___base_fallback__VariableStore__set
     testql__generators__sources__ui_source__UISource__load --> testql__generators__sources__ui_source___load_html
     testql__generators__sources__ui_source__UISource__load --> testql__interpreter___api_runner___navigate_step
     testql__generators__sources__ui_source__UISource__load --> testql__generators__sources__ui_source___input_steps
@@ -1444,8 +1440,16 @@ flowchart TD
     testql__adapters__proto__proto_adapter___toon_to_plan --> testql__adapters__proto__proto_adapter___apply_section
     testql__adapters__proto__proto_adapter___h_proto --> testql__adapters__proto__proto_adapter___proto_section
     testql__adapters__proto__proto_adapter___h_message --> testql__adapters__proto__proto_adapter___message_section
+    testql__adapters__proto__proto_adapter___h_assert --> testql__adapters__proto__proto_adapter___assert_section
+    testql__adapters__proto__proto_adapter___render_plan --> testql__adapters__proto__proto_adapter___render_meta
+    testql__adapters__proto__proto_adapter___render_plan --> testql__adapters__proto__proto_adapter___render_proto_files
+    testql__adapters__proto__proto_adapter___render_plan --> testql__adapters__proto__proto_adapter___render_messages
+    testql__adapters__proto__proto_adapter___render_plan --> testql__adapters__proto__proto_adapter___render_asserts
+    testql__adapters__proto__proto_adapter__ProtoDSLAdapter__detect --> testql__adapters__base__read_source
+    testql__adapters__proto__proto_adapter__ProtoDSLAdapter__parse --> testql__adapters__base__read_source
+    testql__adapters__proto__proto_adapter__ProtoDSLAdapter__parse --> testql__adapters__testtoon_adapter___toon_to_plan
+    testql__adapters__proto__proto_adapter__ProtoDSLAdapter__render --> testql__adapters__testtoon_adapter___render_plan
 
     classDef highCC fill:#ff6b6b,stroke:#c92a2a,color:#fff
     classDef medCC fill:#ffd43b,stroke:#f08c00,color:#000
-    class testql__commands__conversation_cmd__conversation_run,testql__interpreter___modbus__ModbusMixin___modbus_run_probe_script,testql__conversation__runner__ConversationRunner___run_nlp2dsl highCC
     class TODO__testtoon_parser__parse_value,TODO__testtoon_parser__parse_testtoon,TODO__testtoon_parser__print_parsed,testql__runner__parse_line,testql__runner__DslCliExecutor__cmd_assert_json,testql__runner__DslCliExecutor__run_script,testql__runner__main,testql__openapi_generator__ContractTestGenerator__validate_response,testql__echo_schemas__ProjectEcho__to_text,testql__sumd_parser___parse_api_interfaces,testql__sumd_parser__SumdParser___parse_metadata,testql__sumd_parser__SumdParser___parse_testql_scenarios,testql__commands__discover_cmd___print_summary,testql__commands__generate_cmd___print_routes_section,testql__commands__heal_scenario_cmd__heal_scenario,testql__commands__encoder_routes___exec_browser_cmd,testql__commands__encoder_routes___execute_oql_line,testql__commands__run_cmd___resolve_input_paths,testql__commands__run_cmd___maybe_planfile,testql__commands__run_cmd__run,testql__commands__echo_helpers___collect_toon_directory,testql__commands__generate_from_page_cmd__generate_from_page,testql__commands__auto_cmd___build_report_data,testql__commands__watchdog_cmd___discover_scenarios,testql__commands__watchdog_cmd___extract_failures,testql__commands__watchdog_cmd___update_metrics,testql__commands__watchdog_cmd__watchdog,testql__commands__endpoints_cmd__endpoints,testql__commands__suite__cli__suite,testql__interpreter___testtoon_parser___append_api_asserts medCC

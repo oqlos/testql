@@ -1,6 +1,6 @@
 # code2llm call graph | /home/tom/github/oqlos/testql
-# generated in 0.26s
-# nodes: 523 | edges: 500 | modules: 111
+# generated in 0.27s
+# nodes: 525 | edges: 500 | modules: 109
 # CC̄=3.7
 
 HUBS[20]:
@@ -14,10 +14,10 @@ HUBS[20]:
     CC=14  in:1  out:31  total:32
   testql.results.artifacts.write_inspection_artifacts
     CC=1  in:3  out:28  total:31
-  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
-    CC=13  in:0  out:30  total:30
   testql.commands.heal_scenario_cmd.heal_scenario
     CC=8  in:0  out:30  total:30
+  testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
+    CC=13  in:0  out:30  total:30
   testql.interpreter._validation.ValidationMixin._cmd_validate
     CC=10  in:0  out:30  total:30
   testql.adapters.scenario_yaml._render_step
@@ -28,22 +28,22 @@ HUBS[20]:
     CC=11  in:2  out:23  total:25
   testql.commands.generate_cmd._print_routes_section
     CC=10  in:1  out:23  total:24
-  testql.commands.inspect_cmd.inspect
-    CC=6  in:0  out:24  total:24
   testql.commands.generate_topology_cmd.generate_topology
     CC=5  in:0  out:24  total:24
-  testql.conversation.runner.ConversationRunner._run_nlp2dsl
-    CC=15  in:0  out:24  total:24
-  testql.adapters.scenario_yaml._gui_step
-    CC=9  in:0  out:23  total:23
-  testql.adapters.base.read_source
-    CC=5  in:14  out:9  total:23
+  testql.commands.inspect_cmd.inspect
+    CC=6  in:0  out:24  total:24
   testql.commands.encoder_routes._run_oql_lines
     CC=6  in:1  out:22  total:23
+  testql.adapters.base.read_source
+    CC=5  in:14  out:9  total:23
   testql.commands.echo.parsers.doql._parse_workflows
     CC=7  in:1  out:22  total:23
-  testql.commands.misc_cmds.report
-    CC=4  in:0  out:22  total:22
+  testql.adapters.scenario_yaml._gui_step
+    CC=9  in:0  out:23  total:23
+  testql.report_generator.generate_report
+    CC=3  in:2  out:20  total:22
+  testql.runner.parse_line
+    CC=9  in:2  out:20  total:22
 
 MODULES:
   TODO.testtoon_parser  [3 funcs]
@@ -75,9 +75,19 @@ MODULES:
     _intent_table  CC=5  out:8
     recognize_intent  CC=4  out:11
     recognize_operator  CC=6  out:8
-  testql.adapters.nl.nl_adapter  [2 funcs]
+  testql.adapters.nl.llm_fallback  [1 funcs]
+    get_resolver  CC=1  out:0
+  testql.adapters.nl.nl_adapter  [12 funcs]
+    _api_status_part  CC=2  out:3
+    _assert_expected  CC=4  out:3
     _assert_field  CC=7  out:7
+    _build_api  CC=6  out:8
     _build_assert  CC=2  out:5
+    _build_encoder  CC=2  out:5
+    _build_step  CC=3  out:4
+    _build_unresolved  CC=2  out:4
+    _render_assert  CC=4  out:0
+    _render_by_kind  CC=3  out:2
   testql.adapters.nlp2dsl.llm_provider  [2 funcs]
     live_llm_enabled  CC=2  out:3
     resolve_llm_provider  CC=4  out:6
@@ -145,8 +155,6 @@ MODULES:
     _derive_columns  CC=4  out:4
     _format_extra_value  CC=6  out:4
     _group_generic_steps  CC=9  out:4
-  testql.artifacts.registry  [1 funcs]
-    get_artifact_registry  CC=2  out:5
   testql.cli  [5 funcs]
     _fetch_latest_version  CC=2  out:3
     check_and_upgrade  CC=4  out:3
@@ -275,13 +283,6 @@ MODULES:
     _process_one_scenario  CC=3  out:8
     _run_scenario  CC=3  out:5
     _update_metrics  CC=11  out:23
-  testql.conversation.runner  [6 funcs]
-    __init__  CC=4  out:6
-    _run_nlp2dsl  CC=15  out:24
-    _run_step  CC=7  out:10
-    _run_via_ir  CC=7  out:7
-    _extract_path  CC=4  out:3
-    _step_status_name  CC=4  out:0
   testql.discovery.manifest  [7 funcs]
     from_probe_results  CC=8  out:6
     _dedupe_dicts  CC=4  out:8
@@ -342,10 +343,9 @@ MODULES:
     sorted_sources  CC=1  out:1
     sorted_targets  CC=1  out:1
     write  CC=5  out:9
-  testql.generators.sources  [3 funcs]
-    _get_config_source  CC=1  out:0
+  testql.generators.sources  [2 funcs]
     available_sources  CC=1  out:4
-    get_source  CC=4  out:5
+    get_source  CC=5  out:5
   testql.generators.sources.config_source  [13 funcs]
     load  CC=6  out:15
     _auto_detect_parser  CC=4  out:0
@@ -491,8 +491,6 @@ MODULES:
     _make_mapping_section  CC=1  out:2
   testql.ir_runner.engine  [1 funcs]
     run_plan  CC=1  out:2
-  testql.ir_runner.executors.base  [1 funcs]
-    assemble_result  CC=5  out:6
   testql.mcp.server  [1 funcs]
     run_server  CC=1  out:2
   testql.openapi_generator  [5 funcs]

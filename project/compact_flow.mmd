@@ -7,14 +7,14 @@ flowchart TD
     testql__adapters["testql.adapters<br/>330 funcs"]
     testql__artifacts["testql.artifacts<br/>8 funcs"]
     testql__cli["testql.cli<br/>5 funcs"]
-    testql__commands["testql.commands<br/>159 funcs"]
-    testql__conversation["testql.conversation<br/>13 funcs"]
+    testql__commands["testql.commands<br/>165 funcs"]
+    testql__conversation["testql.conversation<br/>18 funcs"]
     testql__detectors["testql.detectors<br/>61 funcs"]
     testql__discovery["testql.discovery<br/>81 funcs"]
     testql__doql_parser["testql.doql_parser<br/>9 funcs"]
     testql__generators["testql.generators<br/>217 funcs"]
     testql__integrations["testql.integrations<br/>2 funcs"]
-    testql__interpreter["testql.interpreter<br/>246 funcs"]
+    testql__interpreter["testql.interpreter<br/>249 funcs"]
     testql__ir_runner["testql.ir_runner<br/>54 funcs"]
     testql__mcp["testql.mcp<br/>7 funcs"]
     testql__meta["testql.meta<br/>34 funcs"]
@@ -64,12 +64,11 @@ flowchart TD
     testql__commands -->|1| testql__doql_parser
     testql__commands -->|1| testql__sumd_generator
     testql__interpreter -->|1| TODO__testtoon_parser
-    testql__conversation -->|1| testql__artifacts
-    testql__conversation -->|1| testql__adapters
-    testql__conversation -->|1| testql__ir_runner
     testql__generators -->|1| testql__openapi_generator
     testql__generators -->|1| testql__interpreter
     testql__detectors -->|1| testql___base_fallback
-    testql__ir_runner -->|1| testql__conversation
     testql__topology -->|1| testql__generators
     testql__topology -->|1| testql__discovery
+    testql__conversation -->|1| testql__artifacts
+    testql__conversation -->|1| testql__adapters
+    testql__conversation -->|1| testql__ir_runner

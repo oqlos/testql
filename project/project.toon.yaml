@@ -1,20 +1,20 @@
-# testql | 1506 func | 211f | 37453L | python | 2026-06-06
+# testql | 1520 func | 211f | 37539L | python | 2026-06-06
 # generated in 0.00s
 
 HEALTH:
-  CC̄=3.7  critical=64 (limit:10)  dup=4  cycles=0
+  CC̄=3.7  critical=61 (limit:10)  dup=4  cycles=0
 
 ALERTS[20]:
   !!! high_fan_out     parse_testtoon = 21 (limit:10)
   !!! high_fan_out     heal_scenario = 21 (limit:10)
   !!! high_fan_out     AssertionsMixin._cmd_assert_cookies = 21 (limit:10)
   !!! high_fan_out     ValidationMixin._cmd_validate = 21 (limit:10)
-  !!! high_fan_out     ModbusMixin._modbus_run_probe_script = 21 (limit:10)
   !!! high_fan_out     ModbusMixin._cmd_modbus = 21 (limit:10)
   !!! high_fan_out     watch = 20 (limit:10)
   !!! high_fan_out     suite = 20 (limit:10)
   !!! high_fan_out     AssertionsMixin._cmd_assert_json = 20 (limit:10)
-  !!  cc_exceeded      conversation_run = 20 (limit:15)
+  !!  high_fan_out     generate_from_page = 19 (limit:10)
+  !!  high_fan_out     watchdog = 19 (limit:10)
 
 MODULES[415] (top by size):
   M[planfile.yaml] 1319L C:0 F:0 CC↑0 D:0 (yaml)
@@ -45,9 +45,12 @@ Examples:
 
 Types:
   - regex          → re.search(cri
-  ★ ModbusMixin._modbus_run_probe_script fan=21  // Orchestrates 21 calls
+  ★ ModbusMixin._cmd_modbus fan=21  // MODBUS <action> [key=value ...] — RTU probe or HTTP wizard helpers.
 
-REFACTOR[15]:
+Examples:
+ 
+
+REFACTOR[12]:
   [1] H/H Split god module testql/interpreter/_testtoon_parser.py (564L, 0 classes)
   [2] H/H Split god module testql/results/analyzer.py (504L, 0 classes)
   [3] H/H Split god module testql/adapters/scenario_yaml.py (506L, 1 classes)
@@ -55,4 +58,4 @@ REFACTOR[15]:
   [5] H/H Split god module testql/interpreter/_gui.py (708L, 1 classes)
 
 EVOLUTION:
-  2026-06-06 CC̄=3.7 crit=64 37453L // Automated analysis
+  2026-06-06 CC̄=3.7 crit=61 37539L // Automated analysis
