@@ -19,6 +19,7 @@ from testql.commands.generate_topology_cmd import generate_topology
 from testql.commands.heal_scenario_cmd import heal_scenario
 from testql.commands.inspect_cmd import inspect
 from testql.commands.misc_cmds import create, echo, from_sumd, init, report, watch
+from testql.commands.nlp2env_cmd import nlp2env
 from testql.commands.run_cmd import run
 from testql.commands.watchdog_cmd import watchdog
 from testql.commands.run_ir_cmd import run_ir
@@ -45,6 +46,7 @@ def cli():
 
 
 cli.add_command(conversation)
+cli.add_command(nlp2env)
 cli.add_command(auto)
 cli.add_command(run)
 cli.add_command(run_ir)

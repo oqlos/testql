@@ -47,6 +47,7 @@ desktop = [
 sql = ["sqlglot>=20.0"]
 proto = ["protobuf>=4.21"]
 graphql = ["graphql-core>=3.2"]
+nlp2env = ["mcp>=1.0", "nlp2env[mcp]>=0.1.2"]
 mcp = ["mcp>=1.0"]
 dev = ["pytest", "pytest-asyncio", "pytest-cov",
     "mcp>=1.0",

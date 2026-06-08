@@ -32,7 +32,30 @@ def _resolve_input_paths(spec: str) -> list[Path]:
     )
 
 
+def _run_nlp2env(path: Path, dry_run: bool) -> object:
+    import os
+
+    from testql.nlp2env.runner import Nlp2EnvRunner
+
+    return Nlp2EnvRunner(
+        example_dir=path.parent,
+        dry_run=dry_run,
+        skip_llm=os.getenv("NLP2ENV_SKIP_LLM", "").lower() in {"1", "true", "yes"},
+        only_llm=os.getenv("NLP2ENV_LLM_ONLY", "").lower() in {"1", "true", "yes"},
+    ).run_file(path)
+
+
+def _is_nlp2env_scenario(path: Path) -> bool:
+    from testql.adapters.nlp2env import Nlp2EnvAdapter
+
+    adapter = Nlp2EnvAdapter()
+    return adapter.detect(path).matches or adapter.detect(path.read_text(encoding="utf-8")).matches
+
+
 def _run_single(path: Path, url: str, dry_run: bool, quiet: bool, timeout: int | None):
+    if _is_nlp2env_scenario(path):
+        return _run_nlp2env(path, dry_run)
+
     from testql.interpreter import OqlInterpreter
 
     source = path.read_text(encoding="utf-8")
