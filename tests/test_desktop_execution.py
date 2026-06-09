@@ -96,6 +96,13 @@ def test_dispatcher_registers_desktop_commands(interpreter: OqlInterpreter) -> N
         "desktop_key",
         "desktop_capture",
         "desktop_assert_window",
+        "desktop_monitors",
+        "desktop_inspect",
+        "desktop_describe",
+        "desktop_analyze",
+        "desktop_assert_text",
+        "desktop_assert_elements",
+        "desktop_click_text",
         "desktop_stop",
     ):
         assert interpreter.dispatcher.has_command(cmd)

@@ -1,0 +1,4 @@
+# Vision demo on a real multi-window screenshot (imgl sample).
+DESKTOP_DESCRIBE "/home/tom/github/semcod/imgl/screen.region-top.png"
+DESKTOP_ANALYZE "/home/tom/github/semcod/imgl/screen.region-top.png" "examples/desktop/screen.imgl.json"
+DESKTOP_ASSERT_TEXT "GitHub" "/home/tom/github/semcod/imgl/screen.region-top.png"

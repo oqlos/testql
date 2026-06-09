@@ -88,10 +88,11 @@ class TestNlp2EnvRunner:
         assert all(s.status == StepStatus.PASSED for s in result.steps)
 
     @pytest.mark.skipif(not mcp_available(), reason="nlp2env-mcp not installed")
-    def test_inline_mcp_e2e(self, tmp_path: Path):
+    def test_inline_mcp_e2e(self, tmp_path: Path, monkeypatch):
         scenario = tmp_path / "inline.testql.toon.yaml"
         scenario.write_text(INLINE_SAMPLE, encoding="utf-8")
         (tmp_path / ".env.example").write_text("SMTP_PASSWORD=e2e-test-secret-42\n", encoding="utf-8")
+        monkeypatch.setenv("SMTP_PASSWORD", "e2e-test-secret-42")
 
         result = Nlp2EnvRunner(
             example_dir=tmp_path,

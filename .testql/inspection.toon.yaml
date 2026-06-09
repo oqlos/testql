@@ -20,15 +20,15 @@ CHECKS[15]{id, status, summary}:
   check.web.assets, passed, Extracted 61 page assets.
   check.web.forms, skipped, No forms detected; form submission checks were skipped.
   check.web.link_status, passed, All 98 checked internal links returned successful status.
-  check.web.asset_status, failed, 4 of 61 assets returned error status.
+  check.web.asset_status, failed, 5 of 61 assets returned error status.
   check.sitemap.crawl, passed, Crawled 7 subpage(s).
   check.sitemap.broken, passed, All 7 crawled subpages returned successful status.
   check.sitemap.duplicates, warning, 2 duplicate title(s) found across 7 subpages.
 
 FINDINGS[2]{id, severity, node_id, summary}:
-  finding.web.asset_status, high, page.root, 4 of 61 assets returned error status.
+  finding.web.asset_status, high, page.root, 5 of 61 assets returned error status.
   finding.sitemap.duplicates, medium, sitemap.root, 2 duplicate title(s) found across 7 subpages.
 
 ACTIONS[2]{id, type, target, summary}:
-  action.web.asset_status, investigate_broken_resources, page.root, Resolve finding.web.asset_status: 4 of 61 assets returned error status.
+  action.web.asset_status, investigate_broken_resources, page.root, Resolve finding.web.asset_status: 5 of 61 assets returned error status.
   action.sitemap.duplicates, fix_duplicate_titles, sitemap.root, Resolve finding.sitemap.duplicates: 2 duplicate title(s) found across 7 subpages.

@@ -23,55 +23,52 @@ class Nlp2EnvRunner:
     only_llm: bool = False
     force_ollama: bool = False
 
-    def run_file(self, path: Path | str) -> ScriptResult:
-        from testql.adapters.nlp2env import Nlp2EnvAdapter
+    def _validation_failure(self, source: str, issues: list[object], started: float) -> ScriptResult:
+        return ScriptResult(
+            source=source,
+            ok=False,
+            errors=[getattr(i, "message", str(i)) for i in issues],
+            duration_ms=(time.perf_counter() - started) * 1000,
+        )
 
-        started = time.perf_counter()
-        scenario_path = Path(path).resolve()
-        source = scenario_path.name
-        adapter = Nlp2EnvAdapter()
-        plan = adapter.parse(scenario_path)
-        issues = [i for i in adapter.validate(plan) if i.severity == "error"]
-        if issues:
-            return ScriptResult(
-                source=source,
-                ok=False,
-                errors=[i.message for i in issues],
-                duration_ms=(time.perf_counter() - started) * 1000,
+    def _dry_run_result(self, source: str, scenarios: list[PromptScenario], started: float) -> ScriptResult:
+        steps = [
+            StepResult(
+                name=s.prompt_id,
+                status=StepStatus.PASSED,
+                message=f"dry-run source={s.source}",
             )
+            for s in scenarios
+        ]
+        return ScriptResult(
+            source=source,
+            ok=True,
+            steps=steps,
+            duration_ms=(time.perf_counter() - started) * 1000,
+        )
 
-        example = self.example_dir or scenario_path.parent
-        work_root = self.workdir or (example / "workdir-testql")
-        scenarios = load_scenarios_file(scenario_path)
-        scenarios = self._filter_scenarios(scenarios)
-
-        if self.dry_run:
-            steps = [
-                StepResult(
-                    name=s.prompt_id,
-                    status=StepStatus.PASSED,
-                    message=f"dry-run source={s.source}",
-                )
-                for s in scenarios
-            ]
-            return ScriptResult(
-                source=source,
-                ok=True,
-                steps=steps,
-                duration_ms=(time.perf_counter() - started) * 1000,
-            )
-
+    def _resolve_llm_backend(self, source: str, started: float) -> tuple[str, str] | ScriptResult:
         backend, model = resolve_llm_backend()
-        if self.force_ollama and backend == "ollama":
-            pass
-        elif self.force_ollama and backend != "ollama":
+        if self.force_ollama and backend != "ollama":
             return ScriptResult(
                 source=source,
                 ok=False,
                 errors=["NLP2ENV_FORCE_OLLAMA=1 ale Ollama niedostępna"],
                 duration_ms=(time.perf_counter() - started) * 1000,
             )
+        return backend, model
 
+    def _execute_scenarios(
+        self,
+        *,
+        source: str,
+        scenarios: list[PromptScenario],
+        work_root: Path,
+        example: Path,
+        backend: str,
+        model: str,
+        started: float,
+    ) -> ScriptResult:
         env_by_id: dict[str, Path] = {}
         steps: list[StepResult] = []
         errors: list[str] = []
@@ -106,6 +103,39 @@ class Nlp2EnvRunner:
             steps=steps,
             errors=errors,
             duration_ms=(time.perf_counter() - started) * 1000,
+        )
+
+    def run_file(self, path: Path | str) -> ScriptResult:
+        from testql.adapters.nlp2env import Nlp2EnvAdapter
+
+        started = time.perf_counter()
+        scenario_path = Path(path).resolve()
+        source = scenario_path.name
+        adapter = Nlp2EnvAdapter()
+        plan = adapter.parse(scenario_path)
+        issues = [i for i in adapter.validate(plan) if i.severity == "error"]
+        if issues:
+            return self._validation_failure(source, issues, started)
+
+        example = self.example_dir or scenario_path.parent
+        work_root = self.workdir or (example / "workdir-testql")
+        scenarios = self._filter_scenarios(load_scenarios_file(scenario_path))
+
+        if self.dry_run:
+            return self._dry_run_result(source, scenarios, started)
+
+        llm = self._resolve_llm_backend(source, started)
+        if isinstance(llm, ScriptResult):
+            return llm
+        backend, model = llm
+        return self._execute_scenarios(
+            source=source,
+            scenarios=scenarios,
+            work_root=work_root,
+            example=example,
+            backend=backend,
+            model=model,
+            started=started,
         )
 
     def _filter_scenarios(self, scenarios: list[PromptScenario]) -> list[PromptScenario]:

@@ -1,0 +1,9 @@
+# SCENARIO: gui-e2e-inspect — full desktop environment probe (read-only)
+name: gui-e2e-inspect
+description: Monitors, windows, vdisplay mirror capture, img2nl scene class, imgl OCR layout
+
+DESKTOP[4]{command,args}:
+  DESKTOP_MONITORS,
+  DESKTOP_LIST,
+  DESKTOP_INSPECT,examples/desktop/gui-e2e-inspect.png
+  DESKTOP_ASSERT_WINDOW,Toolbox

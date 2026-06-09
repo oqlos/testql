@@ -1,4 +1,4 @@
-# code2llm/evolution | 1504 func | 203f | 2026-06-06
+# code2llm/evolution | 1818 func | 249f | 2026-06-09
 # generated in 0.01s
 
 NEXT[3] (ranked by impact):
@@ -11,7 +11,7 @@ NEXT[3] (ranked by impact):
       EFFORT: ~4h  IMPACT: 0
 
   [3] !! SPLIT           tree.txt
-      WHY: 1104L, 0 classes, max CC=0
+      WHY: 1252L, 0 classes, max CC=0
       EFFORT: ~4h  IMPACT: 0
 
 
@@ -21,9 +21,9 @@ RISKS[3]:
   ⚠ Splitting testql/adapters/testtoon_adapter.py may break 46 import paths
 
 METRICS-TARGET:
-  CC̄:          3.7 → ≤2.6
+  CC̄:          3.8 → ≤2.7
   max-CC:      14 → ≤7
-  god-modules: 9 → 0
+  god-modules: 11 → 0
   high-CC(≥15): 0 → ≤0
   hub-types:   0 → ≤0
 
@@ -52,4 +52,4 @@ PATTERNS (language parser shared logic):
     - Standardized FunctionInfo/ClassInfo models
 
 HISTORY:
-  prev CC̄=3.7 → now CC̄=3.7
+  prev CC̄=3.8 → now CC̄=3.8

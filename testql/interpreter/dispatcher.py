@@ -59,12 +59,16 @@ class CommandDispatcher:
             except Exception as e:
                 self.interpreter.out.fail(f"Handler error for {cmd}: {e}")
                 self.interpreter.errors.append(f"L{line.number}: {cmd} handler error: {e}")
-                self.interpreter.results.append(
-                    self.interpreter.results.__class__.__name__,
-                    name=f"{cmd} handler",
-                    status=self.interpreter.results.__class__.__name__,
-                    message=str(e),
-                ) if hasattr(self.interpreter, 'results') else None
+                if hasattr(self.interpreter, "results"):
+                    from testql.base import StepResult, StepStatus
+
+                    self.interpreter.results.append(
+                        StepResult(
+                            name=f"{cmd} handler",
+                            status=StepStatus.ERROR,
+                            message=str(e),
+                        ),
+                    )
                 return True  # Handler found but failed
 
         # Command not found - suggest similar commands

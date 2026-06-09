@@ -11,7 +11,61 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 from testql.desktop.models import DesktopSession, DesktopWindow
+from testql.desktop.screenshot_tools import screenshot_candidates, try_screenshot_candidates
 from testql.desktop.wmctrl import parse_wmctrl_listing
+
+
+def _parse_xdotool_geometry(shell_output: str) -> tuple[int, int, int, int]:
+    x = y = width = height = 0
+    for line in shell_output.splitlines():
+        key, _, value = line.partition("=")
+        if key == "X":
+            x = int(value or 0)
+        elif key == "Y":
+            y = int(value or 0)
+        elif key == "WIDTH":
+            width = int(value or 0)
+        elif key == "HEIGHT":
+            height = int(value or 0)
+    return x, y, width, height
+
+
+def _desktop_window_from_vdisplay(item: dict) -> DesktopWindow | None:
+    from testql.desktop.window_discovery import window_display_title, window_to_hex_id
+
+    wid = item.get("window_id")
+    if wid is None:
+        return None
+    return DesktopWindow(
+        id=window_to_hex_id(wid),
+        title=window_display_title(item),
+        x=int(item.get("x") or 0),
+        y=int(item.get("y") or 0),
+        width=int(item.get("width") or 0),
+        height=int(item.get("height") or 0),
+    )
+
+
+def _match_window_by_vdisplay_title(
+    title: str,
+    windows: list[DesktopWindow],
+) -> DesktopWindow | None:
+    try:
+        from testql.desktop.window_discovery import list_capture_windows, window_matches
+    except ImportError:
+        return None
+
+    for item in list_capture_windows():
+        if not window_matches(item, title):
+            continue
+        candidate = _desktop_window_from_vdisplay(item)
+        if candidate is None:
+            continue
+        for window in windows:
+            if window.id.lower() == candidate.id.lower():
+                return window
+        return candidate
+    return None
 
 
 def _run(
@@ -111,12 +165,12 @@ class LinuxDesktopBackend(DesktopBackend):
         return found
 
     def list_windows(self) -> list[DesktopWindow]:
-        windows: list[DesktopWindow] = []
-        if shutil.which("wmctrl"):
+        windows = self._list_windows_vdisplay()
+        if not windows and shutil.which("wmctrl"):
             proc = _run(["wmctrl", "-l", "-G"])
             if proc.returncode == 0 and proc.stdout.strip():
                 windows = parse_wmctrl_listing(proc.stdout)
-        elif shutil.which("xdotool"):
+        if not windows and shutil.which("xdotool"):
             windows = self._list_windows_xdotool()
 
         active_id = self._active_window_id()
@@ -124,6 +178,19 @@ class LinuxDesktopBackend(DesktopBackend):
             for window in windows:
                 if window.id.lower() == active_id.lower():
                     window.active = True
+        return windows
+
+    def _list_windows_vdisplay(self) -> list[DesktopWindow]:
+        try:
+            from testql.desktop.window_discovery import list_capture_windows
+        except ImportError:
+            return []
+
+        windows: list[DesktopWindow] = []
+        for item in list_capture_windows():
+            window = _desktop_window_from_vdisplay(item)
+            if window is not None:
+                windows.append(window)
         return windows
 
     def _list_windows_xdotool(self) -> list[DesktopWindow]:
@@ -142,16 +209,7 @@ class LinuxDesktopBackend(DesktopBackend):
             x = y = width = height = 0
             geom_proc = _run(["xdotool", "getwindowgeometry", "--shell", wid])
             if geom_proc.returncode == 0:
-                for line in geom_proc.stdout.splitlines():
-                    key, _, value = line.partition("=")
-                    if key == "X":
-                        x = int(value or 0)
-                    elif key == "Y":
-                        y = int(value or 0)
-                    elif key == "WIDTH":
-                        width = int(value or 0)
-                    elif key == "HEIGHT":
-                        height = int(value or 0)
+                x, y, width, height = _parse_xdotool_geometry(geom_proc.stdout)
             if title or width > 0:
                 windows.append(
                     DesktopWindow(
@@ -188,6 +246,10 @@ class LinuxDesktopBackend(DesktopBackend):
                 if window.id.lower() == window_id.lower():
                     return window
         if title:
+            matched = _match_window_by_vdisplay_title(title, windows)
+            if matched is not None:
+                return matched
+
             needle = title.lower()
             for window in windows:
                 if needle in window.title.lower():
@@ -312,42 +374,58 @@ class LinuxDesktopBackend(DesktopBackend):
         if proc.returncode != 0:
             raise RuntimeError(proc.stderr.strip() or "xdotool key failed")
 
-    def screenshot(self, path: str) -> None:
+    def screenshot(self, path: str, *, monitor: str | int | None = None) -> None:
         out = Path(path)
         out.parent.mkdir(parents=True, exist_ok=True)
-        errors: list[str] = []
 
-        candidates: list[tuple[list[str], dict[str, str] | None]] = []
-        if self.display_server == "wayland":
-            if shutil.which("grim"):
-                candidates.append((["grim", str(out)], None))
-            if shutil.which("gnome-screenshot"):
-                candidates.append((["gnome-screenshot", "-f", str(out)], None))
-            x_display = os.environ.get("DISPLAY")
-            if x_display and shutil.which("scrot"):
-                candidates.append((["scrot", str(out)], {"DISPLAY": x_display}))
-        if shutil.which("scrot"):
-            candidates.append((["scrot", str(out)], None))
-        if shutil.which("import"):
-            candidates.append((["import", "-window", "root", str(out)], None))
+        if self.display_server == "wayland" and self._screenshot_vdisplay(out, monitor=monitor):
+            return
 
-        for argv, run_env in candidates:
-            if not shutil.which(argv[0]):
-                continue
-            proc = _run(argv, env=run_env)
-            if proc.returncode == 0 and out.is_file() and out.stat().st_size > 0:
-                return
-            detail = (proc.stderr or proc.stdout or "").strip() or f"{argv[0]} failed"
-            errors.append(f"{argv[0]}: {detail}")
+        candidates = screenshot_candidates(display_server=self.display_server, output=out)
+        errors = try_screenshot_candidates(
+            candidates,
+            output=out,
+            run_fn=_run,
+            is_blank=self._screenshot_is_blank,
+        )
+        if out.is_file() and not self._screenshot_is_blank(out):
+            return
 
-        if self._screenshot_mss(out):
+        if self._screenshot_mss(out) and not self._screenshot_is_blank(out):
+            return
+        if out.is_file():
+            errors.append("mss: blank capture")
+
+        if self._screenshot_vdisplay(out, monitor=monitor):
             return
 
         hint = "; ".join(errors) if errors else "no screenshot tool found"
         raise RuntimeError(
             f"desktop screenshot failed ({hint}). "
-            "On GNOME Wayland try: DISPLAY=:0 scrot, gnome-screenshot, or pip install mss",
+            "On GNOME Wayland use vdisplay mirror: pip install -e ~/github/wronai/vdisplay[pillow]",
         )
+
+    def _screenshot_is_blank(self, out: Path) -> bool:
+        try:
+            from testql.desktop.vdisplay_capture import is_blank_image
+
+            return is_blank_image(out)
+        except ImportError:
+            return False
+
+    def _screenshot_vdisplay(self, out: Path, *, monitor: str | int | None = None) -> bool:
+        try:
+            from testql.desktop.vdisplay_capture import capture_via_vdisplay, save_capture_with_meta
+
+            result = capture_via_vdisplay(out, monitor=monitor)
+            if result.ok:
+                save_capture_with_meta(out, result)
+                return True
+        except ImportError:
+            return False
+        except Exception:
+            return False
+        return False
 
     def _screenshot_mss(self, out: Path) -> bool:
         try:

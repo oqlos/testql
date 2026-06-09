@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nlp2testql"
+version = "0.1.0"
+description = "Natural language to TestQL generation bridge"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+dependencies = [
+    "testql>=1.2.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

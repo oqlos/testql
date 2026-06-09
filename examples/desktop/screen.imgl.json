@@ -1,0 +1,8136 @@
+{
+  "version": "1.0",
+  "scene": {
+    "width": 2700,
+    "height": 1850,
+    "source_image": "/home/tom/github/semcod/imgl/screen.region-top.png"
+  },
+  "windows": [
+    {
+      "id": "window_0",
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 2696,
+        "h": 1848
+      },
+      "title": null,
+      "z": 1,
+      "elements": [
+        {
+          "id": "window_0-button-0",
+          "type": "button",
+          "text": "You are viewing the README repositories as a public user.",
+          "bbox": {
+            "x": 1865,
+            "y": 785,
+            "w": 236,
+            "h": 59
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-1",
+          "type": "button",
+          "text": "Set up discussions community!",
+          "bbox": {
+            "x": 1856,
+            "y": 1055,
+            "w": 194,
+            "h": 59
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-2",
+          "type": "button",
+          "text": "(wg) wronai",
+          "bbox": {
+            "x": 177,
+            "y": 177,
+            "w": 169,
+            "h": 68
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-3",
+          "type": "button",
+          "text": "@ Overview",
+          "bbox": {
+            "x": 118,
+            "y": 253,
+            "w": 169,
+            "h": 59
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-4",
+          "type": "button",
+          "text": "WronAl",
+          "bbox": {
+            "x": 472,
+            "y": 818,
+            "w": 177,
+            "h": 51
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-5",
+          "type": "button",
+          "text": "wronAl",
+          "bbox": {
+            "x": 624,
+            "y": 464,
+            "w": 152,
+            "h": 51
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-6",
+          "type": "button",
+          "text": ", wora:",
+          "bbox": {
+            "x": 472,
+            "y": 894,
+            "w": 152,
+            "h": 51
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-7",
+          "type": "button",
+          "text": "Projekty",
+          "bbox": {
+            "x": 472,
+            "y": 1072,
+            "w": 152,
+            "h": 51
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-8",
+          "type": "button",
+          "text": "© Packages",
+          "bbox": {
+            "x": 709,
+            "y": 253,
+            "w": 152,
+            "h": 42
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-9",
+          "type": "button",
+          "text": "Repositories",
+          "bbox": {
+            "x": 1856,
+            "y": 1232,
+            "w": 152,
+            "h": 42
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-10",
+          "type": "button",
+          "text": "i raportowanie",
+          "bbox": {
+            "x": 1392,
+            "y": 1274,
+            "w": 152,
+            "h": 42
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-11",
+          "type": "button",
+          "text": "rozwijający się",
+          "bbox": {
+            "x": 1282,
+            "y": 1569,
+            "w": 152,
+            "h": 42
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-12",
+          "type": "button",
+          "text": "Discussions",
+          "bbox": {
+            "x": 1848,
+            "y": 987,
+            "w": 143,
+            "h": 42
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-13",
+          "type": "button",
+          "text": "B Projects",
+          "bbox": {
+            "x": 557,
+            "y": 253,
+            "w": 135,
+            "h": 42
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-14",
+          "type": "button",
+          "text": "potrzebami",
+          "bbox": {
+            "x": 1443,
+            "y": 1569,
+            "w": 118,
+            "h": 42
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-15",
+          "type": "button",
+          "text": "People 3",
+          "bbox": {
+            "x": 1046,
+            "y": 262,
+            "w": 135,
+            "h": 34
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-16",
+          "type": "button",
+          "text": "Settings",
+          "bbox": {
+            "x": 1401,
+            "y": 262,
+            "w": 101,
+            "h": 42
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-17",
+          "type": "button",
+          "text": "% Teams",
+          "bbox": {
+            "x": 886,
+            "y": 262,
+            "w": 118,
+            "h": 34
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-18",
+          "type": "button",
+          "text": "LLM for edge",
+          "bbox": {
+            "x": 650,
+            "y": 523,
+            "w": 118,
+            "h": 34
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-19",
+          "type": "button",
+          "text": "AI-first dla",
+          "bbox": {
+            "x": 675,
+            "y": 962,
+            "w": 118,
+            "h": 34
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-20",
+          "type": "button",
+          "text": "Projekt",
+          "bbox": {
+            "x": 574,
+            "y": 1223,
+            "w": 93,
+            "h": 42
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-21",
+          "type": "button",
+          "text": "todomat",
+          "bbox": {
+            "x": 1856,
+            "y": 1468,
+            "w": 93,
+            "h": 42
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-22",
+          "type": "button",
+          "text": "README .md",
+          "bbox": {
+            "x": 472,
+            "y": 751,
+            "w": 110,
+            "h": 34
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-button-23",
+          "type": "button",
+          "text": "discussions",
+          "bbox": {
+            "x": 1949,
+            "y": 1131,
+            "w": 110,
+            "h": 34
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "source": "contrast_blob",
+            "detected_label": "button"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-24",
+          "type": "input",
+          "text": null,
+          "bbox": {
+            "x": 1688,
+            "y": 1698,
+            "w": 922,
+            "h": 141
+          },
+          "confidence": 0.5,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-25",
+          "type": "input",
+          "text": "© 4 6 % ©",
+          "bbox": {
+            "x": 2233,
+            "y": 123,
+            "w": 439,
+            "h": 34
+          },
+          "confidence": 0.65,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-26",
+          "type": "input",
+          "text": null,
+          "bbox": {
+            "x": 444,
+            "y": 545,
+            "w": 152,
+            "h": 68
+          },
+          "confidence": 0.5,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-label-27",
+          "type": "label",
+          "text": "—",
+          "bbox": {
+            "x": 1862,
+            "y": 200,
+            "w": 18,
+            "h": 1
+          },
+          "confidence": 0.64,
+          "metadata": {
+            "source": "ocr",
+            "for_input": "window_0-input-27"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-27",
+          "type": "input",
+          "text": "Q Type (7) to search",
+          "bbox": {
+            "x": 1749,
+            "y": 202,
+            "w": 298,
+            "h": 34
+          },
+          "confidence": 0.65,
+          "metadata": {
+            "source": "frame_detect",
+            "label": "—"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-28",
+          "type": "input",
+          "text": "LLM Agent, asystent AI",
+          "bbox": {
+            "x": 1068,
+            "y": 1580,
+            "w": 315,
+            "h": 28
+          },
+          "confidence": 0.65,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-29",
+          "type": "input",
+          "text": "© View as: Public +",
+          "bbox": {
+            "x": 1862,
+            "y": 736,
+            "w": 242,
+            "h": 34
+          },
+          "confidence": 0.65,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-30",
+          "type": "input",
+          "text": "A lokalnymi LLM Python",
+          "bbox": {
+            "x": 1411,
+            "y": 1529,
+            "w": 344,
+            "h": 23
+          },
+          "confidence": 0.65,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-31",
+          "type": "input",
+          "text": null,
+          "bbox": {
+            "x": 2390,
+            "y": 123,
+            "w": 282,
+            "h": 22
+          },
+          "confidence": 0.5,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-32",
+          "type": "input",
+          "text": null,
+          "bbox": {
+            "x": 911,
+            "y": 900,
+            "w": 179,
+            "h": 34
+          },
+          "confidence": 0.5,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-33",
+          "type": "input",
+          "text": "ELLMa — Evolutionary",
+          "bbox": {
+            "x": 753,
+            "y": 1575,
+            "w": 243,
+            "h": 22
+          },
+          "confidence": 0.65,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-34",
+          "type": "input",
+          "text": null,
+          "bbox": {
+            "x": 495,
+            "y": 562,
+            "w": 101,
+            "h": 51
+          },
+          "confidence": 0.5,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-35",
+          "type": "input",
+          "text": null,
+          "bbox": {
+            "x": 753,
+            "y": 900,
+            "w": 152,
+            "h": 34
+          },
+          "confidence": 0.5,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-36",
+          "type": "input",
+          "text": null,
+          "bbox": {
+            "x": 449,
+            "y": 574,
+            "w": 130,
+            "h": 39
+          },
+          "confidence": 0.5,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-37",
+          "type": "input",
+          "text": null,
+          "bbox": {
+            "x": 1828,
+            "y": 202,
+            "w": 219,
+            "h": 22
+          },
+          "confidence": 0.5,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-38",
+          "type": "input",
+          "text": "przetwarzanie języka",
+          "bbox": {
+            "x": 1259,
+            "y": 972,
+            "w": 209,
+            "h": 23
+          },
+          "confidence": 0.65,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-39",
+          "type": "input",
+          "text": "wie:",
+          "bbox": {
+            "x": 2469,
+            "y": 1676,
+            "w": 140,
+            "h": 34
+          },
+          "confidence": 0.65,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-40",
+          "type": "input",
+          "text": null,
+          "bbox": {
+            "x": 478,
+            "y": 540,
+            "w": 118,
+            "h": 39
+          },
+          "confidence": 0.5,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-41",
+          "type": "input",
+          "text": null,
+          "bbox": {
+            "x": 1181,
+            "y": 1586,
+            "w": 202,
+            "h": 22
+          },
+          "confidence": 0.5,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-42",
+          "type": "input",
+          "text": null,
+          "bbox": {
+            "x": 1451,
+            "y": 1580,
+            "w": 157,
+            "h": 28
+          },
+          "confidence": 0.5,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-43",
+          "type": "input",
+          "text": "Ekosystem narzędzi",
+          "bbox": {
+            "x": 495,
+            "y": 972,
+            "w": 180,
+            "h": 23
+          },
+          "confidence": 0.65,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-44",
+          "type": "input",
+          "text": "P",
+          "bbox": {
+            "x": 630,
+            "y": 900,
+            "w": 118,
+            "h": 34
+          },
+          "confidence": 0.65,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-45",
+          "type": "input",
+          "text": null,
+          "bbox": {
+            "x": 584,
+            "y": 1232,
+            "w": 163,
+            "h": 22
+          },
+          "confidence": 0.5,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-46",
+          "type": "input",
+          "text": null,
+          "bbox": {
+            "x": 1614,
+            "y": 1529,
+            "w": 141,
+            "h": 23
+          },
+          "confidence": 0.5,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-47",
+          "type": "input",
+          "text": null,
+          "bbox": {
+            "x": 483,
+            "y": 1080,
+            "w": 96,
+            "h": 34
+          },
+          "confidence": 0.5,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-48",
+          "type": "input",
+          "text": "programistów",
+          "bbox": {
+            "x": 793,
+            "y": 972,
+            "w": 135,
+            "h": 23
+          },
+          "confidence": 0.65,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-49",
+          "type": "input",
+          "text": null,
+          "bbox": {
+            "x": 1276,
+            "y": 1580,
+            "w": 108,
+            "h": 28
+          },
+          "confidence": 0.5,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-50",
+          "type": "input",
+          "text": "Bl~",
+          "bbox": {
+            "x": 2052,
+            "y": 202,
+            "w": 91,
+            "h": 34
+          },
+          "confidence": 0.65,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-51",
+          "type": "input",
+          "text": null,
+          "bbox": {
+            "x": 2537,
+            "y": 123,
+            "w": 135,
+            "h": 22
+          },
+          "confidence": 0.5,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-52",
+          "type": "input",
+          "text": "kompleksowa",
+          "bbox": {
+            "x": 1175,
+            "y": 1282,
+            "w": 135,
+            "h": 22
+          },
+          "confidence": 0.65,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-53",
+          "type": "input",
+          "text": "Repositories",
+          "bbox": {
+            "x": 348,
+            "y": 264,
+            "w": 124,
+            "h": 23
+          },
+          "confidence": 0.65,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-54",
+          "type": "input",
+          "text": null,
+          "bbox": {
+            "x": 989,
+            "y": 900,
+            "w": 101,
+            "h": 28
+          },
+          "confidence": 0.5,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-input-55",
+          "type": "input",
+          "text": "Intelligent",
+          "bbox": {
+            "x": 776,
+            "y": 1524,
+            "w": 101,
+            "h": 28
+          },
+          "confidence": 0.65,
+          "metadata": {
+            "source": "frame_detect",
+            "label": null
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-57",
+          "type": "label",
+          "text": "Jun8",
+          "bbox": {
+            "x": 1303,
+            "y": 14,
+            "w": 42,
+            "h": 13
+          },
+          "confidence": 0.85,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-58",
+          "type": "label",
+          "text": "21:49",
+          "bbox": {
+            "x": 1354,
+            "y": 14,
+            "w": 44,
+            "h": 13
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-59",
+          "type": "label",
+          "text": "u",
+          "bbox": {
+            "x": 2348,
+            "y": 9,
+            "w": 18,
+            "h": 21
+          },
+          "confidence": 0.8,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-60",
+          "type": "label",
+          "text": "£",
+          "bbox": {
+            "x": 2408,
+            "y": 11,
+            "w": 17,
+            "h": 19
+          },
+          "confidence": 0.81,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-61",
+          "type": "label",
+          "text": "©",
+          "bbox": {
+            "x": 2466,
+            "y": 9,
+            "w": 20,
+            "h": 21
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-62",
+          "type": "text",
+          "text": "PP",
+          "bbox": {
+            "x": 2531,
+            "y": 11,
+            "w": 15,
+            "h": 20
+          },
+          "confidence": 0.47,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-63",
+          "type": "text",
+          "text": "AMO",
+          "bbox": {
+            "x": 2590,
+            "y": 11,
+            "w": 88,
+            "h": 18
+          },
+          "confidence": 0.34,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-64",
+          "type": "text",
+          "text": "G",
+          "bbox": {
+            "x": 167,
+            "y": 73,
+            "w": 20,
+            "h": 20
+          },
+          "confidence": 0.4,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-65",
+          "type": "label",
+          "text": "€",
+          "bbox": {
+            "x": 221,
+            "y": 75,
+            "w": 7,
+            "h": 15
+          },
+          "confidence": 0.76,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-66",
+          "type": "label",
+          "text": "®",
+          "bbox": {
+            "x": 259,
+            "y": 75,
+            "w": 14,
+            "h": 15
+          },
+          "confidence": 0.7,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-67",
+          "type": "text",
+          "text": "MH",
+          "bbox": {
+            "x": 288,
+            "y": 73,
+            "w": 26,
+            "h": 19
+          },
+          "confidence": 0.34,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-68",
+          "type": "label",
+          "text": "OQOsem",
+          "bbox": {
+            "x": 351,
+            "y": 73,
+            "w": 57,
+            "h": 19
+          },
+          "confidence": 0.48,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-69",
+          "type": "label",
+          "text": "+",
+          "bbox": {
+            "x": 451,
+            "y": 80,
+            "w": 5,
+            "h": 5
+          },
+          "confidence": 0.46,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-70",
+          "type": "label",
+          "text": "New",
+          "bbox": {
+            "x": 475,
+            "y": 77,
+            "w": 30,
+            "h": 12
+          },
+          "confidence": 0.92,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-71",
+          "type": "label",
+          "text": "Qoqlo",
+          "bbox": {
+            "x": 541,
+            "y": 73,
+            "w": 59,
+            "h": 19
+          },
+          "confidence": 0.46,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-72",
+          "type": "label",
+          "text": "Q)sem",
+          "bbox": {
+            "x": 636,
+            "y": 73,
+            "w": 59,
+            "h": 19
+          },
+          "confidence": 0.42,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-73",
+          "type": "text",
+          "text": "Q",
+          "bbox": {
+            "x": 731,
+            "y": 73,
+            "w": 20,
+            "h": 19
+          },
+          "confidence": 0.42,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-74",
+          "type": "label",
+          "text": "sem",
+          "bbox": {
+            "x": 759,
+            "y": 79,
+            "w": 31,
+            "h": 9
+          },
+          "confidence": 0.86,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-75",
+          "type": "label",
+          "text": "Qwror",
+          "bbox": {
+            "x": 826,
+            "y": 73,
+            "w": 58,
+            "h": 19
+          },
+          "confidence": 0.56,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-76",
+          "type": "label",
+          "text": "Qwror",
+          "bbox": {
+            "x": 921,
+            "y": 73,
+            "w": 58,
+            "h": 19
+          },
+          "confidence": 0.42,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-77",
+          "type": "label",
+          "text": "w#",
+          "bbox": {
+            "x": 1019,
+            "y": 76,
+            "w": 15,
+            "h": 11
+          },
+          "confidence": 0.38,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-78",
+          "type": "label",
+          "text": "prow",
+          "bbox": {
+            "x": 1045,
+            "y": 79,
+            "w": 25,
+            "h": 13
+          },
+          "confidence": 0.68,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-79",
+          "type": "label",
+          "text": "d%nipz",
+          "bbox": {
+            "x": 1114,
+            "y": 75,
+            "w": 55,
+            "h": 18
+          },
+          "confidence": 0.47,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-80",
+          "type": "label",
+          "text": "stwo",
+          "bbox": {
+            "x": 1329,
+            "y": 76,
+            "w": 27,
+            "h": 13
+          },
+          "confidence": 0.69,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-81",
+          "type": "label",
+          "text": "©",
+          "bbox": {
+            "x": 1399,
+            "y": 75,
+            "w": 16,
+            "h": 16
+          },
+          "confidence": 0.73,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-82",
+          "type": "label",
+          "text": "chat",
+          "bbox": {
+            "x": 1424,
+            "y": 75,
+            "w": 28,
+            "h": 14
+          },
+          "confidence": 0.73,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-83",
+          "type": "label",
+          "text": "(who",
+          "bbox": {
+            "x": 1491,
+            "y": 73,
+            "w": 53,
+            "h": 19
+          },
+          "confidence": 0.75,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-84",
+          "type": "label",
+          "text": "www2t",
+          "bbox": {
+            "x": 1587,
+            "y": 76,
+            "w": 51,
+            "h": 13
+          },
+          "confidence": 0.81,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-85",
+          "type": "label",
+          "text": "jakir",
+          "bbox": {
+            "x": 1684,
+            "y": 75,
+            "w": 50,
+            "h": 17
+          },
+          "confidence": 0.51,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-86",
+          "type": "label",
+          "text": "Gchat",
+          "bbox": {
+            "x": 1778,
+            "y": 75,
+            "w": 54,
+            "h": 16
+          },
+          "confidence": 0.45,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-87",
+          "type": "text",
+          "text": "<APIŁ",
+          "bbox": {
+            "x": 1872,
+            "y": 75,
+            "w": 52,
+            "h": 15
+          },
+          "confidence": 0.34,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-88",
+          "type": "label",
+          "text": "<",
+          "bbox": {
+            "x": 1967,
+            "y": 75,
+            "w": 18,
+            "h": 15
+          },
+          "confidence": 0.88,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-89",
+          "type": "label",
+          "text": "Mod",
+          "bbox": {
+            "x": 1994,
+            "y": 76,
+            "w": 31,
+            "h": 13
+          },
+          "confidence": 0.88,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-90",
+          "type": "label",
+          "text": "(Page",
+          "bbox": {
+            "x": 2061,
+            "y": 73,
+            "w": 56,
+            "h": 20
+          },
+          "confidence": 0.5,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-91",
+          "type": "label",
+          "text": "OProb",
+          "bbox": {
+            "x": 2157,
+            "y": 73,
+            "w": 58,
+            "h": 19
+          },
+          "confidence": 0.62,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-92",
+          "type": "label",
+          "text": "|",
+          "bbox": {
+            "x": 2238,
+            "y": 66,
+            "w": 15,
+            "h": 33
+          },
+          "confidence": 0.3,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-93",
+          "type": "label",
+          "text": "wx",
+          "bbox": {
+            "x": 2251,
+            "y": 73,
+            "w": 65,
+            "h": 19
+          },
+          "confidence": 0.3,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-94",
+          "type": "label",
+          "text": "+",
+          "bbox": {
+            "x": 2387,
+            "y": 76,
+            "w": 14,
+            "h": 15
+          },
+          "confidence": 0.9,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-95",
+          "type": "label",
+          "text": "v",
+          "bbox": {
+            "x": 2436,
+            "y": 78,
+            "w": 15,
+            "h": 8
+          },
+          "confidence": 0.78,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-96",
+          "type": "label",
+          "text": "©",
+          "bbox": {
+            "x": 2582,
+            "y": 77,
+            "w": 11,
+            "h": 11
+          },
+          "confidence": 0.76,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-97",
+          "type": "text",
+          "text": "EE",
+          "bbox": {
+            "x": 2629,
+            "y": 78,
+            "w": 9,
+            "h": 9
+          },
+          "confidence": 0.6,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-98",
+          "type": "text",
+          "text": "€>G",
+          "bbox": {
+            "x": 122,
+            "y": 126,
+            "w": 108,
+            "h": 19
+          },
+          "confidence": 0.81,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-99",
+          "type": "label",
+          "text": "©",
+          "bbox": {
+            "x": 401,
+            "y": 124,
+            "w": 19,
+            "h": 21
+          },
+          "confidence": 0.94,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-100",
+          "type": "label",
+          "text": "se",
+          "bbox": {
+            "x": 436,
+            "y": 129,
+            "w": 18,
+            "h": 13
+          },
+          "confidence": 0.8,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-101",
+          "type": "label",
+          "text": "github.com/wronai",
+          "bbox": {
+            "x": 468,
+            "y": 127,
+            "w": 161,
+            "h": 19
+          },
+          "confidence": 0.91,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-102",
+          "type": "text",
+          "text": "B",
+          "bbox": {
+            "x": 1893,
+            "y": 126,
+            "w": 16,
+            "h": 19
+          },
+          "confidence": 0.77,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-103",
+          "type": "label",
+          "text": "0%",
+          "bbox": {
+            "x": 1936,
+            "y": 130,
+            "w": 38,
+            "h": 12
+          },
+          "confidence": 0.35,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-104",
+          "type": "label",
+          "text": "*",
+          "bbox": {
+            "x": 1998,
+            "y": 126,
+            "w": 20,
+            "h": 19
+          },
+          "confidence": 0.59,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-105",
+          "type": "label",
+          "text": "e",
+          "bbox": {
+            "x": 2567,
+            "y": 184,
+            "w": 12,
+            "h": 12
+          },
+          "confidence": 0.88,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-106",
+          "type": "label",
+          "text": "=",
+          "bbox": {
+            "x": 139,
+            "y": 200,
+            "w": 20,
+            "h": 17
+          },
+          "confidence": 0.89,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-107",
+          "type": "label",
+          "text": "a+",
+          "bbox": {
+            "x": 2161,
+            "y": 200,
+            "w": 46,
+            "h": 17
+          },
+          "confidence": 0.32,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-108",
+          "type": "label",
+          "text": "a",
+          "bbox": {
+            "x": 2588,
+            "y": 185,
+            "w": 50,
+            "h": 50
+          },
+          "confidence": 0.79,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-109",
+          "type": "text",
+          "text": "U",
+          "bbox": {
+            "x": 2662,
+            "y": 206,
+            "w": 5,
+            "h": 14
+          },
+          "confidence": 0.58,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-110",
+          "type": "label",
+          "text": "76",
+          "bbox": {
+            "x": 497,
+            "y": 270,
+            "w": 20,
+            "h": 13
+          },
+          "confidence": 0.82,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-111",
+          "type": "text",
+          "text": "A",
+          "bbox": {
+            "x": 1034,
+            "y": 266,
+            "w": 17,
+            "h": 19
+          },
+          "confidence": 0.84,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-112",
+          "type": "label",
+          "text": "l",
+          "bbox": {
+            "x": 1215,
+            "y": 266,
+            "w": 23,
+            "h": 20
+          },
+          "confidence": 0.53,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-113",
+          "type": "label",
+          "text": "Insights",
+          "bbox": {
+            "x": 1254,
+            "y": 269,
+            "w": 78,
+            "h": 20
+          },
+          "confidence": 0.9,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-114",
+          "type": "label",
+          "text": "(6)",
+          "bbox": {
+            "x": 120,
+            "y": 333,
+            "w": 34,
+            "h": 36
+          },
+          "confidence": 0.71,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-115",
+          "type": "label",
+          "text": "GitHub",
+          "bbox": {
+            "x": 161,
+            "y": 344,
+            "w": 69,
+            "h": 15
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-116",
+          "type": "label",
+          "text": "Copilot",
+          "bbox": {
+            "x": 237,
+            "y": 344,
+            "w": 69,
+            "h": 20
+          },
+          "confidence": 0.92,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-117",
+          "type": "label",
+          "text": "billing",
+          "bbox": {
+            "x": 313,
+            "y": 344,
+            "w": 58,
+            "h": 20
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-118",
+          "type": "label",
+          "text": "for",
+          "bbox": {
+            "x": 378,
+            "y": 344,
+            "w": 28,
+            "h": 15
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-119",
+          "type": "label",
+          "text": "wronai",
+          "bbox": {
+            "x": 411,
+            "y": 344,
+            "w": 73,
+            "h": 15
+          },
+          "confidence": 0.92,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-120",
+          "type": "label",
+          "text": "is",
+          "bbox": {
+            "x": 491,
+            "y": 344,
+            "w": 14,
+            "h": 15
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-121",
+          "type": "label",
+          "text": "now",
+          "bbox": {
+            "x": 513,
+            "y": 347,
+            "w": 41,
+            "h": 12
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-122",
+          "type": "label",
+          "text": "usage-based.",
+          "bbox": {
+            "x": 560,
+            "y": 344,
+            "w": 130,
+            "h": 20
+          },
+          "confidence": 0.91,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-123",
+          "type": "label",
+          "text": "Set",
+          "bbox": {
+            "x": 696,
+            "y": 344,
+            "w": 32,
+            "h": 15
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-124",
+          "type": "label",
+          "text": "a",
+          "bbox": {
+            "x": 733,
+            "y": 347,
+            "w": 11,
+            "h": 12
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-125",
+          "type": "label",
+          "text": "per-user",
+          "bbox": {
+            "x": 751,
+            "y": 347,
+            "w": 83,
+            "h": 17
+          },
+          "confidence": 0.9,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-126",
+          "type": "label",
+          "text": "budget",
+          "bbox": {
+            "x": 841,
+            "y": 344,
+            "w": 70,
+            "h": 20
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-127",
+          "type": "label",
+          "text": "to",
+          "bbox": {
+            "x": 915,
+            "y": 345,
+            "w": 20,
+            "h": 14
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-128",
+          "type": "label",
+          "text": "manage",
+          "bbox": {
+            "x": 943,
+            "y": 347,
+            "w": 79,
+            "h": 17
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-129",
+          "type": "label",
+          "text": "costs.",
+          "bbox": {
+            "x": 1028,
+            "y": 345,
+            "w": 55,
+            "h": 14
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-130",
+          "type": "label",
+          "text": "Setyourbudget",
+          "bbox": {
+            "x": 2447,
+            "y": 344,
+            "w": 135,
+            "h": 19
+          },
+          "confidence": 0.9,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-131",
+          "type": "text",
+          "text": "X",
+          "bbox": {
+            "x": 2619,
+            "y": 344,
+            "w": 14,
+            "h": 14
+          },
+          "confidence": 0.92,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-132",
+          "type": "label",
+          "text": "Follow",
+          "bbox": {
+            "x": 2230,
+            "y": 506,
+            "w": 63,
+            "h": 16
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-133",
+          "type": "label",
+          "text": "computing",
+          "bbox": {
+            "x": 768,
+            "y": 535,
+            "w": 104,
+            "h": 18
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-134",
+          "type": "label",
+          "text": "purpose",
+          "bbox": {
+            "x": 881,
+            "y": 536,
+            "w": 80,
+            "h": 16
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-135",
+          "type": "label",
+          "text": "o",
+          "bbox": {
+            "x": 1730,
+            "y": 767,
+            "w": 20,
+            "h": 20
+          },
+          "confidence": 0.37,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-136",
+          "type": "label",
+          "text": "and",
+          "bbox": {
+            "x": 2109,
+            "y": 790,
+            "w": 31,
+            "h": 14
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-137",
+          "type": "label",
+          "text": "pinned",
+          "bbox": {
+            "x": 2147,
+            "y": 790,
+            "w": 56,
+            "h": 18
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-138",
+          "type": "label",
+          "text": "You",
+          "bbox": {
+            "x": 1862,
+            "y": 857,
+            "w": 30,
+            "h": 13
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-139",
+          "type": "label",
+          "text": "can",
+          "bbox": {
+            "x": 1898,
+            "y": 860,
+            "w": 27,
+            "h": 11
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-140",
+          "type": "label",
+          "text": "pin",
+          "bbox": {
+            "x": 1933,
+            "y": 857,
+            "w": 24,
+            "h": 18
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-141",
+          "type": "label",
+          "text": "repositories",
+          "bbox": {
+            "x": 1965,
+            "y": 857,
+            "w": 99,
+            "h": 18
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-142",
+          "type": "label",
+          "text": "visible",
+          "bbox": {
+            "x": 2069,
+            "y": 856,
+            "w": 52,
+            "h": 14
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-143",
+          "type": "label",
+          "text": "to",
+          "bbox": {
+            "x": 2127,
+            "y": 859,
+            "w": 16,
+            "h": 12
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-144",
+          "type": "label",
+          "text": "anyone.",
+          "bbox": {
+            "x": 2149,
+            "y": 860,
+            "w": 65,
+            "h": 16
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-145",
+          "type": "label",
+          "text": "You",
+          "bbox": {
+            "x": 1862,
+            "y": 896,
+            "w": 30,
+            "h": 13
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-146",
+          "type": "label",
+          "text": "can",
+          "bbox": {
+            "x": 1898,
+            "y": 899,
+            "w": 27,
+            "h": 11
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-147",
+          "type": "label",
+          "text": "hide",
+          "bbox": {
+            "x": 1933,
+            "y": 895,
+            "w": 35,
+            "h": 14
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-148",
+          "type": "label",
+          "text": "the",
+          "bbox": {
+            "x": 1974,
+            "y": 895,
+            "w": 26,
+            "h": 14
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-149",
+          "type": "label",
+          "text": "tasks",
+          "bbox": {
+            "x": 2006,
+            "y": 895,
+            "w": 43,
+            "h": 14
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-150",
+          "type": "label",
+          "text": "we've",
+          "bbox": {
+            "x": 2055,
+            "y": 896,
+            "w": 49,
+            "h": 13
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-151",
+          "type": "label",
+          "text": "suggested",
+          "bbox": {
+            "x": 2109,
+            "y": 894,
+            "w": 85,
+            "h": 20
+          },
+          "confidence": 0.95,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-152",
+          "type": "label",
+          "text": "on",
+          "bbox": {
+            "x": 2202,
+            "y": 899,
+            "w": 20,
+            "h": 9
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-153",
+          "type": "label",
+          "text": "this",
+          "bbox": {
+            "x": 2229,
+            "y": 895,
+            "w": 30,
+            "h": 14
+          },
+          "confidence": 0.95,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-154",
+          "type": "label",
+          "text": "page",
+          "bbox": {
+            "x": 1863,
+            "y": 926,
+            "w": 40,
+            "h": 15
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-155",
+          "type": "label",
+          "text": "and",
+          "bbox": {
+            "x": 1909,
+            "y": 923,
+            "w": 31,
+            "h": 14
+          },
+          "confidence": 0.94,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-156",
+          "type": "label",
+          "text": "bring",
+          "bbox": {
+            "x": 1947,
+            "y": 923,
+            "w": 42,
+            "h": 18
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-157",
+          "type": "label",
+          "text": "them",
+          "bbox": {
+            "x": 1995,
+            "y": 923,
+            "w": 43,
+            "h": 14
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-158",
+          "type": "label",
+          "text": "back",
+          "bbox": {
+            "x": 2046,
+            "y": 923,
+            "w": 37,
+            "h": 14
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-159",
+          "type": "label",
+          "text": "later.",
+          "bbox": {
+            "x": 2090,
+            "y": 923,
+            "w": 41,
+            "h": 14
+          },
+          "confidence": 0.81,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-160",
+          "type": "label",
+          "text": "—",
+          "bbox": {
+            "x": 934,
+            "y": 982,
+            "w": 20,
+            "h": 2
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-161",
+          "type": "label",
+          "text": "automatyzacja,",
+          "bbox": {
+            "x": 961,
+            "y": 975,
+            "w": 148,
+            "h": 21
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-162",
+          "type": "text",
+          "text": "LLM,",
+          "bbox": {
+            "x": 1116,
+            "y": 975,
+            "w": 44,
+            "h": 18
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-163",
+          "type": "label",
+          "text": "DevOps",
+          "bbox": {
+            "x": 1168,
+            "y": 975,
+            "w": 76,
+            "h": 20
+          },
+          "confidence": 0.92,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-164",
+          "type": "label",
+          "text": "i",
+          "bbox": {
+            "x": 1250,
+            "y": 975,
+            "w": 3,
+            "h": 16
+          },
+          "confidence": 0.95,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-165",
+          "type": "label",
+          "text": "naturalnego.",
+          "bbox": {
+            "x": 1472,
+            "y": 975,
+            "w": 126,
+            "h": 21
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-166",
+          "type": "label",
+          "text": "to",
+          "bbox": {
+            "x": 2047,
+            "y": 1061,
+            "w": 20,
+            "h": 14
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-167",
+          "type": "label",
+          "text": "engage",
+          "bbox": {
+            "x": 2074,
+            "y": 1063,
+            "w": 73,
+            "h": 17
+          },
+          "confidence": 0.91,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-168",
+          "type": "label",
+          "text": "with",
+          "bbox": {
+            "x": 2153,
+            "y": 1060,
+            "w": 41,
+            "h": 15
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-169",
+          "type": "label",
+          "text": "your",
+          "bbox": {
+            "x": 2200,
+            "y": 1063,
+            "w": 45,
+            "h": 17
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-170",
+          "type": "label",
+          "text": "Turn",
+          "bbox": {
+            "x": 1860,
+            "y": 1138,
+            "w": 44,
+            "h": 16
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-171",
+          "type": "label",
+          "text": "on",
+          "bbox": {
+            "x": 1913,
+            "y": 1142,
+            "w": 23,
+            "h": 12
+          },
+          "confidence": 0.97,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-172",
+          "type": "text",
+          "text": "LLM",
+          "bbox": {
+            "x": 484,
+            "y": 1168,
+            "w": 51,
+            "h": 19
+          },
+          "confidence": 0.92,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-173",
+          "type": "label",
+          "text": "8",
+          "bbox": {
+            "x": 544,
+            "y": 1168,
+            "w": 19,
+            "h": 19
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-174",
+          "type": "text",
+          "text": "AI",
+          "bbox": {
+            "x": 570,
+            "y": 1168,
+            "w": 30,
+            "h": 19
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-175",
+          "type": "label",
+          "text": "Agents",
+          "bbox": {
+            "x": 605,
+            "y": 1168,
+            "w": 92,
+            "h": 25
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-176",
+          "type": "label",
+          "text": "Opis",
+          "bbox": {
+            "x": 1154,
+            "y": 1232,
+            "w": 46,
+            "h": 35
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-177",
+          "type": "label",
+          "text": "Język",
+          "bbox": {
+            "x": 1644,
+            "y": 1232,
+            "w": 57,
+            "h": 35
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-178",
+          "type": "text",
+          "text": "LLM",
+          "bbox": {
+            "x": 778,
+            "y": 1287,
+            "w": 38,
+            "h": 16
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-179",
+          "type": "label",
+          "text": "Testing",
+          "bbox": {
+            "x": 823,
+            "y": 1287,
+            "w": 72,
+            "h": 21
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-180",
+          "type": "label",
+          "text": "and",
+          "bbox": {
+            "x": 901,
+            "y": 1288,
+            "w": 37,
+            "h": 15
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-181",
+          "type": "label",
+          "text": "Benchmarking",
+          "bbox": {
+            "x": 945,
+            "y": 1287,
+            "w": 141,
+            "h": 21
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-182",
+          "type": "label",
+          "text": "Suite",
+          "bbox": {
+            "x": 1094,
+            "y": 1287,
+            "w": 49,
+            "h": 16
+          },
+          "confidence": 0.92,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-183",
+          "type": "label",
+          "text": "—",
+          "bbox": {
+            "x": 1149,
+            "y": 1295,
+            "w": 20,
+            "h": 2
+          },
+          "confidence": 0.92,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-184",
+          "type": "label",
+          "text": "analiza",
+          "bbox": {
+            "x": 1316,
+            "y": 1288,
+            "w": 68,
+            "h": 15
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-185",
+          "type": "label",
+          "text": "Python,",
+          "bbox": {
+            "x": 1618,
+            "y": 1287,
+            "w": 73,
+            "h": 21
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-186",
+          "type": "label",
+          "text": "allama",
+          "bbox": {
+            "x": 503,
+            "y": 1297,
+            "w": 64,
+            "h": 28
+          },
+          "confidence": 0.92,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-187",
+          "type": "label",
+          "text": "7",
+          "bbox": {
+            "x": 841,
+            "y": 1318,
+            "w": 3,
+            "h": 2
+          },
+          "confidence": 0.52,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-188",
+          "type": "label",
+          "text": "img2nl",
+          "bbox": {
+            "x": 1863,
+            "y": 1304,
+            "w": 69,
+            "h": 20
+          },
+          "confidence": 0.72,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-189",
+          "type": "label",
+          "text": "———",
+          "bbox": {
+            "x": 500,
+            "y": 1314,
+            "w": 72,
+            "h": 31
+          },
+          "confidence": 0.39,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-190",
+          "type": "label",
+          "text": "modeli",
+          "bbox": {
+            "x": 778,
+            "y": 1318,
+            "w": 65,
+            "h": 16
+          },
+          "confidence": 0.92,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-191",
+          "type": "text",
+          "text": "LLM",
+          "bbox": {
+            "x": 851,
+            "y": 1318,
+            "w": 39,
+            "h": 16
+          },
+          "confidence": 0.91,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-192",
+          "type": "text",
+          "text": "PHP",
+          "bbox": {
+            "x": 1618,
+            "y": 1318,
+            "w": 40,
+            "h": 16
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-193",
+          "type": "label",
+          "text": "©",
+          "bbox": {
+            "x": 1862,
+            "y": 1336,
+            "w": 17,
+            "h": 17
+          },
+          "confidence": 0.91,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-194",
+          "type": "label",
+          "text": "Python",
+          "bbox": {
+            "x": 1886,
+            "y": 1339,
+            "w": 57,
+            "h": 18
+          },
+          "confidence": 0.85,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-195",
+          "type": "label",
+          "text": "Updated",
+          "bbox": {
+            "x": 2024,
+            "y": 1339,
+            "w": 71,
+            "h": 18
+          },
+          "confidence": 0.81,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-196",
+          "type": "label",
+          "text": "38",
+          "bbox": {
+            "x": 2102,
+            "y": 1341,
+            "w": 18,
+            "h": 12
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-197",
+          "type": "label",
+          "text": "minutes",
+          "bbox": {
+            "x": 2126,
+            "y": 1342,
+            "w": 68,
+            "h": 11
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-198",
+          "type": "label",
+          "text": "ago",
+          "bbox": {
+            "x": 2200,
+            "y": 1343,
+            "w": 30,
+            "h": 15
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-199",
+          "type": "label",
+          "text": "allama-benchmark-",
+          "bbox": {
+            "x": 503,
+            "y": 1365,
+            "w": 191,
+            "h": 26
+          },
+          "confidence": 0.91,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-200",
+          "type": "label",
+          "text": "5",
+          "bbox": {
+            "x": 869,
+            "y": 1385,
+            "w": 3,
+            "h": 3
+          },
+          "confidence": 0.52,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-201",
+          "type": "label",
+          "text": "m",
+          "bbox": {
+            "x": 914,
+            "y": 1385,
+            "w": 45,
+            "h": 2
+          },
+          "confidence": 0.47,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-202",
+          "type": "label",
+          "text": "7",
+          "bbox": {
+            "x": 1008,
+            "y": 1385,
+            "w": 3,
+            "h": 3
+          },
+          "confidence": 0.59,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-203",
+          "type": "label",
+          "text": "7",
+          "bbox": {
+            "x": 1359,
+            "y": 1385,
+            "w": 3,
+            "h": 2
+          },
+          "confidence": 0.56,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-204",
+          "type": "label",
+          "text": "sewer",
+          "bbox": {
+            "x": 499,
+            "y": 1378,
+            "w": 196,
+            "h": 42
+          },
+          "confidence": 0.66,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-205",
+          "type": "label",
+          "text": "Serwer",
+          "bbox": {
+            "x": 777,
+            "y": 1385,
+            "w": 69,
+            "h": 16
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-206",
+          "type": "label",
+          "text": "wizualizacji",
+          "bbox": {
+            "x": 851,
+            "y": 1385,
+            "w": 109,
+            "h": 20
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-207",
+          "type": "label",
+          "text": "wyników",
+          "bbox": {
+            "x": 966,
+            "y": 1385,
+            "w": 86,
+            "h": 20
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-208",
+          "type": "label",
+          "text": "benchmarków",
+          "bbox": {
+            "x": 1059,
+            "y": 1385,
+            "w": 140,
+            "h": 16
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-209",
+          "type": "label",
+          "text": "Allama",
+          "bbox": {
+            "x": 1203,
+            "y": 1385,
+            "w": 68,
+            "h": 16
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-210",
+          "type": "label",
+          "text": "z",
+          "bbox": {
+            "x": 1277,
+            "y": 1388,
+            "w": 9,
+            "h": 13
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-211",
+          "type": "label",
+          "text": "interfejsem",
+          "bbox": {
+            "x": 1293,
+            "y": 1385,
+            "w": 111,
+            "h": 20
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-212",
+          "type": "label",
+          "text": "radarowym",
+          "bbox": {
+            "x": 1411,
+            "y": 1385,
+            "w": 111,
+            "h": 20
+          },
+          "confidence": 0.92,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-213",
+          "type": "text",
+          "text": "PHP",
+          "bbox": {
+            "x": 1618,
+            "y": 1385,
+            "w": 40,
+            "h": 16
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-214",
+          "type": "label",
+          "text": "nip2cmd",
+          "bbox": {
+            "x": 1863,
+            "y": 1391,
+            "w": 86,
+            "h": 20
+          },
+          "confidence": 0.61,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-215",
+          "type": "label",
+          "text": "©",
+          "bbox": {
+            "x": 1862,
+            "y": 1424,
+            "w": 17,
+            "h": 19
+          },
+          "confidence": 0.91,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-216",
+          "type": "label",
+          "text": "python",
+          "bbox": {
+            "x": 1886,
+            "y": 1428,
+            "w": 57,
+            "h": 18
+          },
+          "confidence": 0.82,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-217",
+          "type": "text",
+          "text": "Y7",
+          "bbox": {
+            "x": 1962,
+            "y": 1424,
+            "w": 21,
+            "h": 20
+          },
+          "confidence": 0.86,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-218",
+          "type": "label",
+          "text": "1",
+          "bbox": {
+            "x": 1991,
+            "y": 1429,
+            "w": 4,
+            "h": 12
+          },
+          "confidence": 0.92,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-219",
+          "type": "label",
+          "text": "Updated",
+          "bbox": {
+            "x": 2017,
+            "y": 1428,
+            "w": 71,
+            "h": 18
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-220",
+          "type": "label",
+          "text": "2",
+          "bbox": {
+            "x": 2094,
+            "y": 1429,
+            "w": 8,
+            "h": 12
+          },
+          "confidence": 0.92,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-221",
+          "type": "label",
+          "text": "hours",
+          "bbox": {
+            "x": 2109,
+            "y": 1428,
+            "w": 47,
+            "h": 13
+          },
+          "confidence": 0.94,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-222",
+          "type": "label",
+          "text": "ago",
+          "bbox": {
+            "x": 2162,
+            "y": 1431,
+            "w": 31,
+            "h": 15
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-223",
+          "type": "label",
+          "text": "Intent-Iterative",
+          "bbox": {
+            "x": 777,
+            "y": 1451,
+            "w": 149,
+            "h": 15
+          },
+          "confidence": 0.9,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-224",
+          "type": "label",
+          "text": "—",
+          "bbox": {
+            "x": 932,
+            "y": 1459,
+            "w": 20,
+            "h": 2
+          },
+          "confidence": 0.92,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-225",
+          "type": "text",
+          "text": "DSL",
+          "bbox": {
+            "x": 960,
+            "y": 1451,
+            "w": 37,
+            "h": 15
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-226",
+          "type": "label",
+          "text": "do",
+          "bbox": {
+            "x": 1002,
+            "y": 1451,
+            "w": 25,
+            "h": 15
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-227",
+          "type": "label",
+          "text": "wykonywania",
+          "bbox": {
+            "x": 1061,
+            "y": 1451,
+            "w": 104,
+            "h": 15
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-228",
+          "type": "label",
+          "text": "intencji",
+          "bbox": {
+            "x": 1172,
+            "y": 1451,
+            "w": 70,
+            "h": 15
+          },
+          "confidence": 0.95,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-229",
+          "type": "label",
+          "text": "z",
+          "bbox": {
+            "x": 1249,
+            "y": 1454,
+            "w": 9,
+            "h": 12
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-230",
+          "type": "label",
+          "text": "iteracyjną",
+          "bbox": {
+            "x": 1265,
+            "y": 1451,
+            "w": 82,
+            "h": 15
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-231",
+          "type": "label",
+          "text": "refinacją",
+          "bbox": {
+            "x": 1366,
+            "y": 1451,
+            "w": 72,
+            "h": 15
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-232",
+          "type": "label",
+          "text": "i",
+          "bbox": {
+            "x": 1460,
+            "y": 1451,
+            "w": 1,
+            "h": 15
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-233",
+          "type": "label",
+          "text": "wsparciem",
+          "bbox": {
+            "x": 1466,
+            "y": 1451,
+            "w": 107,
+            "h": 15
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-234",
+          "type": "label",
+          "text": "amen",
+          "bbox": {
+            "x": 503,
+            "y": 1471,
+            "w": 55,
+            "h": 12
+          },
+          "confidence": 0.88,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-235",
+          "type": "label",
+          "text": "wykonyw:",
+          "bbox": {
+            "x": 1033,
+            "y": 1454,
+            "w": 92,
+            "h": 17
+          },
+          "confidence": 0.71,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-236",
+          "type": "text",
+          "text": "J",
+          "bbox": {
+            "x": 1231,
+            "y": 1454,
+            "w": 5,
+            "h": 17
+          },
+          "confidence": 0.51,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-237",
+          "type": "label",
+          "text": "ją",
+          "bbox": {
+            "x": 1431,
+            "y": 1454,
+            "w": 18,
+            "h": 17
+          },
+          "confidence": 0.8,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-238",
+          "type": "label",
+          "text": "i",
+          "bbox": {
+            "x": 1457,
+            "y": 1449,
+            "w": 9,
+            "h": 33
+          },
+          "confidence": 0.9,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-239",
+          "type": "label",
+          "text": "wsp:",
+          "bbox": {
+            "x": 1494,
+            "y": 1454,
+            "w": 11,
+            "h": 17
+          },
+          "confidence": 0.89,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-240",
+          "type": "label",
+          "text": "Python",
+          "bbox": {
+            "x": 1618,
+            "y": 1467,
+            "w": 68,
+            "h": 21
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-241",
+          "type": "text",
+          "text": "AI",
+          "bbox": {
+            "x": 776,
+            "y": 1482,
+            "w": 21,
+            "h": 16
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-242",
+          "type": "label",
+          "text": "|",
+          "bbox": {
+            "x": 1955,
+            "y": 1476,
+            "w": 8,
+            "h": 30
+          },
+          "confidence": 0.75,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-243",
+          "type": "label",
+          "text": "Private",
+          "bbox": {
+            "x": 1975,
+            "y": 1481,
+            "w": 56,
+            "h": 13
+          },
+          "confidence": 0.75,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-244",
+          "type": "label",
+          "text": "©",
+          "bbox": {
+            "x": 1862,
+            "y": 1518,
+            "w": 17,
+            "h": 17
+          },
+          "confidence": 0.88,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-245",
+          "type": "label",
+          "text": "Pyth",
+          "bbox": {
+            "x": 1886,
+            "y": 1521,
+            "w": 35,
+            "h": 13
+          },
+          "confidence": 0.88,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-246",
+          "type": "label",
+          "text": "0",
+          "bbox": {
+            "x": 1985,
+            "y": 1521,
+            "w": 8,
+            "h": 13
+          },
+          "confidence": 0.55,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-247",
+          "type": "label",
+          "text": "Updated",
+          "bbox": {
+            "x": 2024,
+            "y": 1520,
+            "w": 51,
+            "h": 14
+          },
+          "confidence": 0.67,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-248",
+          "type": "label",
+          "text": "6",
+          "bbox": {
+            "x": 2102,
+            "y": 1520,
+            "w": 8,
+            "h": 14
+          },
+          "confidence": 0.92,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-249",
+          "type": "label",
+          "text": "hours",
+          "bbox": {
+            "x": 2117,
+            "y": 1512,
+            "w": 43,
+            "h": 32
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-250",
+          "type": "label",
+          "text": "a",
+          "bbox": {
+            "x": 2169,
+            "y": 1528,
+            "w": 5,
+            "h": 5
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-251",
+          "type": "label",
+          "text": "curllm",
+          "bbox": {
+            "x": 503,
+            "y": 1520,
+            "w": 61,
+            "h": 38
+          },
+          "confidence": 0.81,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-252",
+          "type": "label",
+          "text": "Browser",
+          "bbox": {
+            "x": 885,
+            "y": 1534,
+            "w": 80,
+            "h": 16
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-253",
+          "type": "label",
+          "text": "Automation",
+          "bbox": {
+            "x": 970,
+            "y": 1534,
+            "w": 116,
+            "h": 16
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-254",
+          "type": "label",
+          "text": "—",
+          "bbox": {
+            "x": 1093,
+            "y": 1541,
+            "w": 21,
+            "h": 2
+          },
+          "confidence": 0.92,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-255",
+          "type": "label",
+          "text": "automatyzacja",
+          "bbox": {
+            "x": 1120,
+            "y": 1535,
+            "w": 142,
+            "h": 19
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-256",
+          "type": "label",
+          "text": "przeglądarki",
+          "bbox": {
+            "x": 1270,
+            "y": 1534,
+            "w": 121,
+            "h": 20
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-257",
+          "type": "label",
+          "text": "z",
+          "bbox": {
+            "x": 1397,
+            "y": 1537,
+            "w": 9,
+            "h": 13
+          },
+          "confidence": 0.96,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-258",
+          "type": "label",
+          "text": "jem",
+          "bbox": {
+            "x": 1895,
+            "y": 1524,
+            "w": 47,
+            "h": 15
+          },
+          "confidence": 0.54,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-259",
+          "type": "label",
+          "text": "(20",
+          "bbox": {
+            "x": 1962,
+            "y": 1517,
+            "w": 21,
+            "h": 21
+          },
+          "confidence": 0.65,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-260",
+          "type": "label",
+          "text": "Local",
+          "bbox": {
+            "x": 1003,
+            "y": 1585,
+            "w": 49,
+            "h": 15
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-261",
+          "type": "label",
+          "text": "z",
+          "bbox": {
+            "x": 1435,
+            "y": 1588,
+            "w": 8,
+            "h": 12
+          },
+          "confidence": 0.94,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-262",
+          "type": "label",
+          "text": "pz.",
+          "bbox": {
+            "x": 1863,
+            "y": 1573,
+            "w": 72,
+            "h": 20
+          },
+          "confidence": 0.34,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-263",
+          "type": "label",
+          "text": "v",
+          "bbox": {
+            "x": 109,
+            "y": 1626,
+            "w": 13,
+            "h": 7
+          },
+          "confidence": 0.81,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-264",
+          "type": "label",
+          "text": "©",
+          "bbox": {
+            "x": 151,
+            "y": 1621,
+            "w": 18,
+            "h": 18
+          },
+          "confidence": 0.61,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-265",
+          "type": "label",
+          "text": "screen.png",
+          "bbox": {
+            "x": 180,
+            "y": 1625,
+            "w": 92,
+            "h": 15
+          },
+          "confidence": 0.91,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-266",
+          "type": "label",
+          "text": "(2700x4800)",
+          "bbox": {
+            "x": 277,
+            "y": 1621,
+            "w": 105,
+            "h": 19
+          },
+          "confidence": 0.93,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-267",
+          "type": "label",
+          "text": "x",
+          "bbox": {
+            "x": 405,
+            "y": 1625,
+            "w": 11,
+            "h": 9
+          },
+          "confidence": 0.95,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-268",
+          "type": "label",
+          "text": "+",
+          "bbox": {
+            "x": 448,
+            "y": 1623,
+            "w": 13,
+            "h": 14
+          },
+          "confidence": 0.91,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-269",
+          "type": "label",
+          "text": "-",
+          "bbox": {
+            "x": 2504,
+            "y": 1634,
+            "w": 13,
+            "h": 2
+          },
+          "confidence": 0.88,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-270",
+          "type": "label",
+          "text": "o",
+          "bbox": {
+            "x": 2544,
+            "y": 1624,
+            "w": 12,
+            "h": 12
+          },
+          "confidence": 0.83,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-271",
+          "type": "label",
+          "text": "x",
+          "bbox": {
+            "x": 2585,
+            "y": 1624,
+            "w": 11,
+            "h": 12
+          },
+          "confidence": 0.95,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-272",
+          "type": "label",
+          "text": "<",
+          "bbox": {
+            "x": 112,
+            "y": 1677,
+            "w": 15,
+            "h": 14
+          },
+          "confidence": 0.76,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-273",
+          "type": "label",
+          "text": ">",
+          "bbox": {
+            "x": 156,
+            "y": 1677,
+            "w": 15,
+            "h": 14
+          },
+          "confidence": 0.91,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-274",
+          "type": "text",
+          "text": "G©",
+          "bbox": {
+            "x": 200,
+            "y": 1676,
+            "w": 16,
+            "h": 16
+          },
+          "confidence": 0.41,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-275",
+          "type": "label",
+          "text": "@File",
+          "bbox": {
+            "x": 254,
+            "y": 1675,
+            "w": 54,
+            "h": 18
+          },
+          "confidence": 0.46,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        },
+        {
+          "id": "window_0-text-276",
+          "type": "label",
+          "text": "/tmp/screen.png",
+          "bbox": {
+            "x": 328,
+            "y": 1676,
+            "w": 132,
+            "h": 18
+          },
+          "confidence": 0.84,
+          "metadata": {
+            "ocr_level": "word",
+            "source": "ocr"
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "orphan_elements": [],
+  "ocr_boxes": [
+    {
+      "text": "Jun8",
+      "bbox": {
+        "x": 1303,
+        "y": 14,
+        "w": 42,
+        "h": 13
+      },
+      "confidence": 85.0,
+      "level": "word"
+    },
+    {
+      "text": "21:49",
+      "bbox": {
+        "x": 1354,
+        "y": 14,
+        "w": 44,
+        "h": 13
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "u",
+      "bbox": {
+        "x": 2348,
+        "y": 9,
+        "w": 18,
+        "h": 21
+      },
+      "confidence": 80.0,
+      "level": "word"
+    },
+    {
+      "text": "£",
+      "bbox": {
+        "x": 2408,
+        "y": 11,
+        "w": 17,
+        "h": 19
+      },
+      "confidence": 81.0,
+      "level": "word"
+    },
+    {
+      "text": "©",
+      "bbox": {
+        "x": 2466,
+        "y": 9,
+        "w": 20,
+        "h": 21
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "PP",
+      "bbox": {
+        "x": 2531,
+        "y": 11,
+        "w": 15,
+        "h": 20
+      },
+      "confidence": 47.0,
+      "level": "word"
+    },
+    {
+      "text": "AMO",
+      "bbox": {
+        "x": 2590,
+        "y": 11,
+        "w": 88,
+        "h": 18
+      },
+      "confidence": 34.0,
+      "level": "word"
+    },
+    {
+      "text": "G",
+      "bbox": {
+        "x": 167,
+        "y": 73,
+        "w": 20,
+        "h": 20
+      },
+      "confidence": 40.0,
+      "level": "word"
+    },
+    {
+      "text": "€",
+      "bbox": {
+        "x": 221,
+        "y": 75,
+        "w": 7,
+        "h": 15
+      },
+      "confidence": 76.0,
+      "level": "word"
+    },
+    {
+      "text": "®",
+      "bbox": {
+        "x": 259,
+        "y": 75,
+        "w": 14,
+        "h": 15
+      },
+      "confidence": 70.0,
+      "level": "word"
+    },
+    {
+      "text": "MH",
+      "bbox": {
+        "x": 288,
+        "y": 73,
+        "w": 26,
+        "h": 19
+      },
+      "confidence": 34.0,
+      "level": "word"
+    },
+    {
+      "text": "OQOsem",
+      "bbox": {
+        "x": 351,
+        "y": 73,
+        "w": 57,
+        "h": 19
+      },
+      "confidence": 48.0,
+      "level": "word"
+    },
+    {
+      "text": "+",
+      "bbox": {
+        "x": 451,
+        "y": 80,
+        "w": 5,
+        "h": 5
+      },
+      "confidence": 46.0,
+      "level": "word"
+    },
+    {
+      "text": "New",
+      "bbox": {
+        "x": 475,
+        "y": 77,
+        "w": 30,
+        "h": 12
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "Qoqlo",
+      "bbox": {
+        "x": 541,
+        "y": 73,
+        "w": 59,
+        "h": 19
+      },
+      "confidence": 46.0,
+      "level": "word"
+    },
+    {
+      "text": "Q)sem",
+      "bbox": {
+        "x": 636,
+        "y": 73,
+        "w": 59,
+        "h": 19
+      },
+      "confidence": 42.0,
+      "level": "word"
+    },
+    {
+      "text": "Q",
+      "bbox": {
+        "x": 731,
+        "y": 73,
+        "w": 20,
+        "h": 19
+      },
+      "confidence": 42.0,
+      "level": "word"
+    },
+    {
+      "text": "sem",
+      "bbox": {
+        "x": 759,
+        "y": 79,
+        "w": 31,
+        "h": 9
+      },
+      "confidence": 86.0,
+      "level": "word"
+    },
+    {
+      "text": "Qwror",
+      "bbox": {
+        "x": 826,
+        "y": 73,
+        "w": 58,
+        "h": 19
+      },
+      "confidence": 56.0,
+      "level": "word"
+    },
+    {
+      "text": "Qwror",
+      "bbox": {
+        "x": 921,
+        "y": 73,
+        "w": 58,
+        "h": 19
+      },
+      "confidence": 42.0,
+      "level": "word"
+    },
+    {
+      "text": "w#",
+      "bbox": {
+        "x": 1019,
+        "y": 76,
+        "w": 15,
+        "h": 11
+      },
+      "confidence": 38.0,
+      "level": "word"
+    },
+    {
+      "text": "prow",
+      "bbox": {
+        "x": 1045,
+        "y": 79,
+        "w": 25,
+        "h": 13
+      },
+      "confidence": 68.0,
+      "level": "word"
+    },
+    {
+      "text": "d%nipz",
+      "bbox": {
+        "x": 1114,
+        "y": 75,
+        "w": 55,
+        "h": 18
+      },
+      "confidence": 47.0,
+      "level": "word"
+    },
+    {
+      "text": "stwo",
+      "bbox": {
+        "x": 1329,
+        "y": 76,
+        "w": 27,
+        "h": 13
+      },
+      "confidence": 69.0,
+      "level": "word"
+    },
+    {
+      "text": "©",
+      "bbox": {
+        "x": 1399,
+        "y": 75,
+        "w": 16,
+        "h": 16
+      },
+      "confidence": 73.0,
+      "level": "word"
+    },
+    {
+      "text": "chat",
+      "bbox": {
+        "x": 1424,
+        "y": 75,
+        "w": 28,
+        "h": 14
+      },
+      "confidence": 73.0,
+      "level": "word"
+    },
+    {
+      "text": "(who",
+      "bbox": {
+        "x": 1491,
+        "y": 73,
+        "w": 53,
+        "h": 19
+      },
+      "confidence": 75.0,
+      "level": "word"
+    },
+    {
+      "text": "www2t",
+      "bbox": {
+        "x": 1587,
+        "y": 76,
+        "w": 51,
+        "h": 13
+      },
+      "confidence": 81.0,
+      "level": "word"
+    },
+    {
+      "text": "jakir",
+      "bbox": {
+        "x": 1684,
+        "y": 75,
+        "w": 50,
+        "h": 17
+      },
+      "confidence": 51.0,
+      "level": "word"
+    },
+    {
+      "text": "Gchat",
+      "bbox": {
+        "x": 1778,
+        "y": 75,
+        "w": 54,
+        "h": 16
+      },
+      "confidence": 45.0,
+      "level": "word"
+    },
+    {
+      "text": "<APIŁ",
+      "bbox": {
+        "x": 1872,
+        "y": 75,
+        "w": 52,
+        "h": 15
+      },
+      "confidence": 34.0,
+      "level": "word"
+    },
+    {
+      "text": "<",
+      "bbox": {
+        "x": 1967,
+        "y": 75,
+        "w": 18,
+        "h": 15
+      },
+      "confidence": 88.0,
+      "level": "word"
+    },
+    {
+      "text": "Mod",
+      "bbox": {
+        "x": 1994,
+        "y": 76,
+        "w": 31,
+        "h": 13
+      },
+      "confidence": 88.0,
+      "level": "word"
+    },
+    {
+      "text": "(Page",
+      "bbox": {
+        "x": 2061,
+        "y": 73,
+        "w": 56,
+        "h": 20
+      },
+      "confidence": 50.0,
+      "level": "word"
+    },
+    {
+      "text": "OProb",
+      "bbox": {
+        "x": 2157,
+        "y": 73,
+        "w": 58,
+        "h": 19
+      },
+      "confidence": 62.0,
+      "level": "word"
+    },
+    {
+      "text": "|",
+      "bbox": {
+        "x": 2238,
+        "y": 66,
+        "w": 15,
+        "h": 33
+      },
+      "confidence": 30.0,
+      "level": "word"
+    },
+    {
+      "text": "wx",
+      "bbox": {
+        "x": 2251,
+        "y": 73,
+        "w": 65,
+        "h": 19
+      },
+      "confidence": 30.0,
+      "level": "word"
+    },
+    {
+      "text": "+",
+      "bbox": {
+        "x": 2387,
+        "y": 76,
+        "w": 14,
+        "h": 15
+      },
+      "confidence": 90.0,
+      "level": "word"
+    },
+    {
+      "text": "v",
+      "bbox": {
+        "x": 2436,
+        "y": 78,
+        "w": 15,
+        "h": 8
+      },
+      "confidence": 78.0,
+      "level": "word"
+    },
+    {
+      "text": "©",
+      "bbox": {
+        "x": 2582,
+        "y": 77,
+        "w": 11,
+        "h": 11
+      },
+      "confidence": 76.0,
+      "level": "word"
+    },
+    {
+      "text": "EE",
+      "bbox": {
+        "x": 2629,
+        "y": 78,
+        "w": 9,
+        "h": 9
+      },
+      "confidence": 60.0,
+      "level": "word"
+    },
+    {
+      "text": "€>G",
+      "bbox": {
+        "x": 122,
+        "y": 126,
+        "w": 108,
+        "h": 19
+      },
+      "confidence": 81.0,
+      "level": "word"
+    },
+    {
+      "text": "©",
+      "bbox": {
+        "x": 401,
+        "y": 124,
+        "w": 19,
+        "h": 21
+      },
+      "confidence": 94.0,
+      "level": "word"
+    },
+    {
+      "text": "se",
+      "bbox": {
+        "x": 436,
+        "y": 129,
+        "w": 18,
+        "h": 13
+      },
+      "confidence": 80.0,
+      "level": "word"
+    },
+    {
+      "text": "github.com/wronai",
+      "bbox": {
+        "x": 468,
+        "y": 127,
+        "w": 161,
+        "h": 19
+      },
+      "confidence": 91.0,
+      "level": "word"
+    },
+    {
+      "text": "B",
+      "bbox": {
+        "x": 1893,
+        "y": 126,
+        "w": 16,
+        "h": 19
+      },
+      "confidence": 77.0,
+      "level": "word"
+    },
+    {
+      "text": "0%",
+      "bbox": {
+        "x": 1936,
+        "y": 130,
+        "w": 38,
+        "h": 12
+      },
+      "confidence": 35.0,
+      "level": "word"
+    },
+    {
+      "text": "*",
+      "bbox": {
+        "x": 1998,
+        "y": 126,
+        "w": 20,
+        "h": 19
+      },
+      "confidence": 59.0,
+      "level": "word"
+    },
+    {
+      "text": "©",
+      "bbox": {
+        "x": 2325,
+        "y": 119,
+        "w": 24,
+        "h": 25
+      },
+      "confidence": 70.0,
+      "level": "word"
+    },
+    {
+      "text": "4",
+      "bbox": {
+        "x": 2376,
+        "y": 124,
+        "w": 17,
+        "h": 21
+      },
+      "confidence": 73.0,
+      "level": "word"
+    },
+    {
+      "text": "6",
+      "bbox": {
+        "x": 2475,
+        "y": 126,
+        "w": 17,
+        "h": 20
+      },
+      "confidence": 50.0,
+      "level": "word"
+    },
+    {
+      "text": "%",
+      "bbox": {
+        "x": 2524,
+        "y": 119,
+        "w": 25,
+        "h": 25
+      },
+      "confidence": 87.0,
+      "level": "word"
+    },
+    {
+      "text": "©",
+      "bbox": {
+        "x": 2574,
+        "y": 126,
+        "w": 19,
+        "h": 19
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "—",
+      "bbox": {
+        "x": 1862,
+        "y": 200,
+        "w": 18,
+        "h": 1
+      },
+      "confidence": 64.0,
+      "level": "word"
+    },
+    {
+      "text": "e",
+      "bbox": {
+        "x": 2567,
+        "y": 184,
+        "w": 12,
+        "h": 12
+      },
+      "confidence": 88.0,
+      "level": "word"
+    },
+    {
+      "text": "=",
+      "bbox": {
+        "x": 139,
+        "y": 200,
+        "w": 20,
+        "h": 17
+      },
+      "confidence": 89.0,
+      "level": "word"
+    },
+    {
+      "text": "(wg)",
+      "bbox": {
+        "x": 188,
+        "y": 182,
+        "w": 54,
+        "h": 54
+      },
+      "confidence": 46.0,
+      "level": "word"
+    },
+    {
+      "text": "wronai",
+      "bbox": {
+        "x": 261,
+        "y": 193,
+        "w": 72,
+        "h": 33
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "Q",
+      "bbox": {
+        "x": 1772,
+        "y": 199,
+        "w": 13,
+        "h": 20
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "Type",
+      "bbox": {
+        "x": 1800,
+        "y": 195,
+        "w": 40,
+        "h": 33
+      },
+      "confidence": 65.0,
+      "level": "word"
+    },
+    {
+      "text": "(7)",
+      "bbox": {
+        "x": 1854,
+        "y": 204,
+        "w": 28,
+        "h": 20
+      },
+      "confidence": 61.0,
+      "level": "word"
+    },
+    {
+      "text": "to",
+      "bbox": {
+        "x": 1889,
+        "y": 205,
+        "w": 16,
+        "h": 13
+      },
+      "confidence": 61.0,
+      "level": "word"
+    },
+    {
+      "text": "search",
+      "bbox": {
+        "x": 1914,
+        "y": 202,
+        "w": 63,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "Bl~",
+      "bbox": {
+        "x": 2067,
+        "y": 199,
+        "w": 58,
+        "h": 20
+      },
+      "confidence": 61.0,
+      "level": "word"
+    },
+    {
+      "text": "a+",
+      "bbox": {
+        "x": 2161,
+        "y": 200,
+        "w": 46,
+        "h": 17
+      },
+      "confidence": 32.0,
+      "level": "word"
+    },
+    {
+      "text": "a",
+      "bbox": {
+        "x": 2588,
+        "y": 185,
+        "w": 50,
+        "h": 50
+      },
+      "confidence": 79.0,
+      "level": "word"
+    },
+    {
+      "text": "U",
+      "bbox": {
+        "x": 2662,
+        "y": 206,
+        "w": 5,
+        "h": 14
+      },
+      "confidence": 58.0,
+      "level": "word"
+    },
+    {
+      "text": "@",
+      "bbox": {
+        "x": 139,
+        "y": 265,
+        "w": 21,
+        "h": 21
+      },
+      "confidence": 89.0,
+      "level": "word"
+    },
+    {
+      "text": "Overview",
+      "bbox": {
+        "x": 174,
+        "y": 269,
+        "w": 98,
+        "h": 15
+      },
+      "confidence": 68.0,
+      "level": "word"
+    },
+    {
+      "text": "Repositories",
+      "bbox": {
+        "x": 350,
+        "y": 269,
+        "w": 120,
+        "h": 20
+      },
+      "confidence": 82.0,
+      "level": "word"
+    },
+    {
+      "text": "76",
+      "bbox": {
+        "x": 497,
+        "y": 270,
+        "w": 20,
+        "h": 13
+      },
+      "confidence": 82.0,
+      "level": "word"
+    },
+    {
+      "text": "B",
+      "bbox": {
+        "x": 562,
+        "y": 264,
+        "w": 24,
+        "h": 24
+      },
+      "confidence": 86.0,
+      "level": "word"
+    },
+    {
+      "text": "Projects",
+      "bbox": {
+        "x": 603,
+        "y": 265,
+        "w": 77,
+        "h": 28
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "©",
+      "bbox": {
+        "x": 721,
+        "y": 265,
+        "w": 21,
+        "h": 22
+      },
+      "confidence": 89.0,
+      "level": "word"
+    },
+    {
+      "text": "Packages",
+      "bbox": {
+        "x": 760,
+        "y": 269,
+        "w": 90,
+        "h": 20
+      },
+      "confidence": 91.0,
+      "level": "word"
+    },
+    {
+      "text": "%",
+      "bbox": {
+        "x": 890,
+        "y": 267,
+        "w": 23,
+        "h": 16
+      },
+      "confidence": 43.0,
+      "level": "word"
+    },
+    {
+      "text": "Teams",
+      "bbox": {
+        "x": 927,
+        "y": 269,
+        "w": 64,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "A",
+      "bbox": {
+        "x": 1034,
+        "y": 266,
+        "w": 17,
+        "h": 19
+      },
+      "confidence": 84.0,
+      "level": "word"
+    },
+    {
+      "text": "People",
+      "bbox": {
+        "x": 1068,
+        "y": 269,
+        "w": 65,
+        "h": 20
+      },
+      "confidence": 95.0,
+      "level": "word"
+    },
+    {
+      "text": "3",
+      "bbox": {
+        "x": 1158,
+        "y": 270,
+        "w": 11,
+        "h": 13
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "l",
+      "bbox": {
+        "x": 1215,
+        "y": 266,
+        "w": 23,
+        "h": 20
+      },
+      "confidence": 53.0,
+      "level": "word"
+    },
+    {
+      "text": "Insights",
+      "bbox": {
+        "x": 1254,
+        "y": 269,
+        "w": 78,
+        "h": 20
+      },
+      "confidence": 90.0,
+      "level": "word"
+    },
+    {
+      "text": "Settings",
+      "bbox": {
+        "x": 1412,
+        "y": 269,
+        "w": 78,
+        "h": 20
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "(6)",
+      "bbox": {
+        "x": 120,
+        "y": 333,
+        "w": 34,
+        "h": 36
+      },
+      "confidence": 71.0,
+      "level": "word"
+    },
+    {
+      "text": "GitHub",
+      "bbox": {
+        "x": 161,
+        "y": 344,
+        "w": 69,
+        "h": 15
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "Copilot",
+      "bbox": {
+        "x": 237,
+        "y": 344,
+        "w": 69,
+        "h": 20
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "billing",
+      "bbox": {
+        "x": 313,
+        "y": 344,
+        "w": 58,
+        "h": 20
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "for",
+      "bbox": {
+        "x": 378,
+        "y": 344,
+        "w": 28,
+        "h": 15
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "wronai",
+      "bbox": {
+        "x": 411,
+        "y": 344,
+        "w": 73,
+        "h": 15
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "is",
+      "bbox": {
+        "x": 491,
+        "y": 344,
+        "w": 14,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "now",
+      "bbox": {
+        "x": 513,
+        "y": 347,
+        "w": 41,
+        "h": 12
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "usage-based.",
+      "bbox": {
+        "x": 560,
+        "y": 344,
+        "w": 130,
+        "h": 20
+      },
+      "confidence": 91.0,
+      "level": "word"
+    },
+    {
+      "text": "Set",
+      "bbox": {
+        "x": 696,
+        "y": 344,
+        "w": 32,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "a",
+      "bbox": {
+        "x": 733,
+        "y": 347,
+        "w": 11,
+        "h": 12
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "per-user",
+      "bbox": {
+        "x": 751,
+        "y": 347,
+        "w": 83,
+        "h": 17
+      },
+      "confidence": 90.0,
+      "level": "word"
+    },
+    {
+      "text": "budget",
+      "bbox": {
+        "x": 841,
+        "y": 344,
+        "w": 70,
+        "h": 20
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "to",
+      "bbox": {
+        "x": 915,
+        "y": 345,
+        "w": 20,
+        "h": 14
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "manage",
+      "bbox": {
+        "x": 943,
+        "y": 347,
+        "w": 79,
+        "h": 17
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "costs.",
+      "bbox": {
+        "x": 1028,
+        "y": 345,
+        "w": 55,
+        "h": 14
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "Setyourbudget",
+      "bbox": {
+        "x": 2447,
+        "y": 344,
+        "w": 135,
+        "h": 19
+      },
+      "confidence": 90.0,
+      "level": "word"
+    },
+    {
+      "text": "X",
+      "bbox": {
+        "x": 2619,
+        "y": 344,
+        "w": 14,
+        "h": 14
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "wronAl",
+      "bbox": {
+        "x": 631,
+        "y": 474,
+        "w": 132,
+        "h": 26
+      },
+      "confidence": 74.0,
+      "level": "word"
+    },
+    {
+      "text": "Follow",
+      "bbox": {
+        "x": 2230,
+        "y": 506,
+        "w": 63,
+        "h": 16
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "LLM",
+      "bbox": {
+        "x": 633,
+        "y": 533,
+        "w": 38,
+        "h": 15
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "for",
+      "bbox": {
+        "x": 679,
+        "y": 533,
+        "w": 26,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "edge",
+      "bbox": {
+        "x": 713,
+        "y": 533,
+        "w": 47,
+        "h": 20
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "computing",
+      "bbox": {
+        "x": 768,
+        "y": 535,
+        "w": 104,
+        "h": 18
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "purpose",
+      "bbox": {
+        "x": 881,
+        "y": 536,
+        "w": 80,
+        "h": 16
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "©",
+      "bbox": {
+        "x": 1879,
+        "y": 737,
+        "w": 24,
+        "h": 19
+      },
+      "confidence": 94.0,
+      "level": "word"
+    },
+    {
+      "text": "View",
+      "bbox": {
+        "x": 1916,
+        "y": 740,
+        "w": 46,
+        "h": 15
+      },
+      "confidence": 94.0,
+      "level": "word"
+    },
+    {
+      "text": "as:",
+      "bbox": {
+        "x": 1969,
+        "y": 744,
+        "w": 25,
+        "h": 12
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "Public",
+      "bbox": {
+        "x": 2003,
+        "y": 739,
+        "w": 58,
+        "h": 16
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "+",
+      "bbox": {
+        "x": 2075,
+        "y": 745,
+        "w": 11,
+        "h": 6
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "README",
+      "bbox": {
+        "x": 486,
+        "y": 755,
+        "w": 60,
+        "h": 35
+      },
+      "confidence": 77.0,
+      "level": "word"
+    },
+    {
+      "text": ".md",
+      "bbox": {
+        "x": 554,
+        "y": 765,
+        "w": 27,
+        "h": 15
+      },
+      "confidence": 91.0,
+      "level": "word"
+    },
+    {
+      "text": "o",
+      "bbox": {
+        "x": 1730,
+        "y": 767,
+        "w": 20,
+        "h": 20
+      },
+      "confidence": 37.0,
+      "level": "word"
+    },
+    {
+      "text": "You",
+      "bbox": {
+        "x": 1862,
+        "y": 791,
+        "w": 30,
+        "h": 13
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "are",
+      "bbox": {
+        "x": 1898,
+        "y": 794,
+        "w": 26,
+        "h": 9
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "viewing",
+      "bbox": {
+        "x": 1930,
+        "y": 792,
+        "w": 63,
+        "h": 17
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "the",
+      "bbox": {
+        "x": 2000,
+        "y": 790,
+        "w": 26,
+        "h": 14
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "README",
+      "bbox": {
+        "x": 2033,
+        "y": 791,
+        "w": 70,
+        "h": 13
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "and",
+      "bbox": {
+        "x": 2109,
+        "y": 790,
+        "w": 31,
+        "h": 14
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "pinned",
+      "bbox": {
+        "x": 2147,
+        "y": 790,
+        "w": 56,
+        "h": 18
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "repositories",
+      "bbox": {
+        "x": 1863,
+        "y": 819,
+        "w": 99,
+        "h": 16
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "as",
+      "bbox": {
+        "x": 1968,
+        "y": 822,
+        "w": 17,
+        "h": 9
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "a",
+      "bbox": {
+        "x": 1991,
+        "y": 822,
+        "w": 7,
+        "h": 9
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "public",
+      "bbox": {
+        "x": 2006,
+        "y": 817,
+        "w": 49,
+        "h": 18
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "user.",
+      "bbox": {
+        "x": 2062,
+        "y": 822,
+        "w": 40,
+        "h": 9
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "WronAl",
+      "bbox": {
+        "x": 482,
+        "y": 826,
+        "w": 158,
+        "h": 31
+      },
+      "confidence": 80.0,
+      "level": "word"
+    },
+    {
+      "text": "You",
+      "bbox": {
+        "x": 1862,
+        "y": 857,
+        "w": 30,
+        "h": 13
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "can",
+      "bbox": {
+        "x": 1898,
+        "y": 860,
+        "w": 27,
+        "h": 11
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "pin",
+      "bbox": {
+        "x": 1933,
+        "y": 857,
+        "w": 24,
+        "h": 18
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "repositories",
+      "bbox": {
+        "x": 1965,
+        "y": 857,
+        "w": 99,
+        "h": 18
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "visible",
+      "bbox": {
+        "x": 2069,
+        "y": 856,
+        "w": 52,
+        "h": 14
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "to",
+      "bbox": {
+        "x": 2127,
+        "y": 859,
+        "w": 16,
+        "h": 12
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "anyone.",
+      "bbox": {
+        "x": 2149,
+        "y": 860,
+        "w": 65,
+        "h": 16
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": ",",
+      "bbox": {
+        "x": 551,
+        "y": 905,
+        "w": 1,
+        "h": 4
+      },
+      "confidence": 65.0,
+      "level": "word"
+    },
+    {
+      "text": "P",
+      "bbox": {
+        "x": 630,
+        "y": 908,
+        "w": 1,
+        "h": 3
+      },
+      "confidence": 66.0,
+      "level": "word"
+    },
+    {
+      "text": "You",
+      "bbox": {
+        "x": 1862,
+        "y": 896,
+        "w": 30,
+        "h": 13
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "can",
+      "bbox": {
+        "x": 1898,
+        "y": 899,
+        "w": 27,
+        "h": 11
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "hide",
+      "bbox": {
+        "x": 1933,
+        "y": 895,
+        "w": 35,
+        "h": 14
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "the",
+      "bbox": {
+        "x": 1974,
+        "y": 895,
+        "w": 26,
+        "h": 14
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "tasks",
+      "bbox": {
+        "x": 2006,
+        "y": 895,
+        "w": 43,
+        "h": 14
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "we've",
+      "bbox": {
+        "x": 2055,
+        "y": 896,
+        "w": 49,
+        "h": 13
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "suggested",
+      "bbox": {
+        "x": 2109,
+        "y": 894,
+        "w": 85,
+        "h": 20
+      },
+      "confidence": 95.0,
+      "level": "word"
+    },
+    {
+      "text": "on",
+      "bbox": {
+        "x": 2202,
+        "y": 899,
+        "w": 20,
+        "h": 9
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "this",
+      "bbox": {
+        "x": 2229,
+        "y": 895,
+        "w": 30,
+        "h": 14
+      },
+      "confidence": 95.0,
+      "level": "word"
+    },
+    {
+      "text": "wora:",
+      "bbox": {
+        "x": 560,
+        "y": 912,
+        "w": 54,
+        "h": 13
+      },
+      "confidence": 53.0,
+      "level": "word"
+    },
+    {
+      "text": "page",
+      "bbox": {
+        "x": 1863,
+        "y": 926,
+        "w": 40,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "and",
+      "bbox": {
+        "x": 1909,
+        "y": 923,
+        "w": 31,
+        "h": 14
+      },
+      "confidence": 94.0,
+      "level": "word"
+    },
+    {
+      "text": "bring",
+      "bbox": {
+        "x": 1947,
+        "y": 923,
+        "w": 42,
+        "h": 18
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "them",
+      "bbox": {
+        "x": 1995,
+        "y": 923,
+        "w": 43,
+        "h": 14
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "back",
+      "bbox": {
+        "x": 2046,
+        "y": 923,
+        "w": 37,
+        "h": 14
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "later.",
+      "bbox": {
+        "x": 2090,
+        "y": 923,
+        "w": 41,
+        "h": 14
+      },
+      "confidence": 81.0,
+      "level": "word"
+    },
+    {
+      "text": "Ekosystem",
+      "bbox": {
+        "x": 484,
+        "y": 975,
+        "w": 102,
+        "h": 21
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "narzędzi",
+      "bbox": {
+        "x": 594,
+        "y": 975,
+        "w": 81,
+        "h": 19
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "AI-first",
+      "bbox": {
+        "x": 681,
+        "y": 975,
+        "w": 68,
+        "h": 16
+      },
+      "confidence": 85.0,
+      "level": "word"
+    },
+    {
+      "text": "dla",
+      "bbox": {
+        "x": 755,
+        "y": 975,
+        "w": 28,
+        "h": 16
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "programistów",
+      "bbox": {
+        "x": 791,
+        "y": 975,
+        "w": 138,
+        "h": 21
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "—",
+      "bbox": {
+        "x": 934,
+        "y": 982,
+        "w": 20,
+        "h": 2
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "automatyzacja,",
+      "bbox": {
+        "x": 961,
+        "y": 975,
+        "w": 148,
+        "h": 21
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "LLM,",
+      "bbox": {
+        "x": 1116,
+        "y": 975,
+        "w": 44,
+        "h": 18
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "DevOps",
+      "bbox": {
+        "x": 1168,
+        "y": 975,
+        "w": 76,
+        "h": 20
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "i",
+      "bbox": {
+        "x": 1250,
+        "y": 975,
+        "w": 3,
+        "h": 16
+      },
+      "confidence": 95.0,
+      "level": "word"
+    },
+    {
+      "text": "przetwarzanie",
+      "bbox": {
+        "x": 1261,
+        "y": 970,
+        "w": 126,
+        "h": 31
+      },
+      "confidence": 95.0,
+      "level": "word"
+    },
+    {
+      "text": "języka",
+      "bbox": {
+        "x": 1402,
+        "y": 970,
+        "w": 62,
+        "h": 31
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "naturalnego.",
+      "bbox": {
+        "x": 1472,
+        "y": 975,
+        "w": 126,
+        "h": 21
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "Discussions",
+      "bbox": {
+        "x": 1863,
+        "y": 1000,
+        "w": 130,
+        "h": 19
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "Set",
+      "bbox": {
+        "x": 1862,
+        "y": 1060,
+        "w": 31,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "up",
+      "bbox": {
+        "x": 1898,
+        "y": 1063,
+        "w": 24,
+        "h": 17
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "discussions",
+      "bbox": {
+        "x": 1930,
+        "y": 1060,
+        "w": 111,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "to",
+      "bbox": {
+        "x": 2047,
+        "y": 1061,
+        "w": 20,
+        "h": 14
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "engage",
+      "bbox": {
+        "x": 2074,
+        "y": 1063,
+        "w": 73,
+        "h": 17
+      },
+      "confidence": 91.0,
+      "level": "word"
+    },
+    {
+      "text": "with",
+      "bbox": {
+        "x": 2153,
+        "y": 1060,
+        "w": 41,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "your",
+      "bbox": {
+        "x": 2200,
+        "y": 1063,
+        "w": 45,
+        "h": 17
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "Projekty",
+      "bbox": {
+        "x": 485,
+        "y": 1078,
+        "w": 133,
+        "h": 40
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "community!",
+      "bbox": {
+        "x": 1862,
+        "y": 1085,
+        "w": 117,
+        "h": 32
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "Turn",
+      "bbox": {
+        "x": 1860,
+        "y": 1138,
+        "w": 44,
+        "h": 16
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "on",
+      "bbox": {
+        "x": 1913,
+        "y": 1142,
+        "w": 23,
+        "h": 12
+      },
+      "confidence": 97.0,
+      "level": "word"
+    },
+    {
+      "text": "discussions",
+      "bbox": {
+        "x": 1945,
+        "y": 1139,
+        "w": 111,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "LLM",
+      "bbox": {
+        "x": 484,
+        "y": 1168,
+        "w": 51,
+        "h": 19
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "8",
+      "bbox": {
+        "x": 544,
+        "y": 1168,
+        "w": 19,
+        "h": 19
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "AI",
+      "bbox": {
+        "x": 570,
+        "y": 1168,
+        "w": 30,
+        "h": 19
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "Agents",
+      "bbox": {
+        "x": 605,
+        "y": 1168,
+        "w": 92,
+        "h": 25
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "Projekt",
+      "bbox": {
+        "x": 583,
+        "y": 1236,
+        "w": 75,
+        "h": 20
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "Opis",
+      "bbox": {
+        "x": 1154,
+        "y": 1232,
+        "w": 46,
+        "h": 35
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "Język",
+      "bbox": {
+        "x": 1644,
+        "y": 1232,
+        "w": 57,
+        "h": 35
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "Repositories",
+      "bbox": {
+        "x": 1863,
+        "y": 1242,
+        "w": 138,
+        "h": 25
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "LLM",
+      "bbox": {
+        "x": 778,
+        "y": 1287,
+        "w": 38,
+        "h": 16
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "Testing",
+      "bbox": {
+        "x": 823,
+        "y": 1287,
+        "w": 72,
+        "h": 21
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "and",
+      "bbox": {
+        "x": 901,
+        "y": 1288,
+        "w": 37,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "Benchmarking",
+      "bbox": {
+        "x": 945,
+        "y": 1287,
+        "w": 141,
+        "h": 21
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "Suite",
+      "bbox": {
+        "x": 1094,
+        "y": 1287,
+        "w": 49,
+        "h": 16
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "—",
+      "bbox": {
+        "x": 1149,
+        "y": 1295,
+        "w": 20,
+        "h": 2
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "kompleksowa",
+      "bbox": {
+        "x": 1176,
+        "y": 1288,
+        "w": 133,
+        "h": 20
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "analiza",
+      "bbox": {
+        "x": 1316,
+        "y": 1288,
+        "w": 68,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "i",
+      "bbox": {
+        "x": 1391,
+        "y": 1288,
+        "w": 3,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "raportowanie",
+      "bbox": {
+        "x": 1402,
+        "y": 1288,
+        "w": 132,
+        "h": 20
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "Python,",
+      "bbox": {
+        "x": 1618,
+        "y": 1287,
+        "w": 73,
+        "h": 21
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "allama",
+      "bbox": {
+        "x": 503,
+        "y": 1297,
+        "w": 64,
+        "h": 28
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "7",
+      "bbox": {
+        "x": 841,
+        "y": 1318,
+        "w": 3,
+        "h": 2
+      },
+      "confidence": 52.0,
+      "level": "word"
+    },
+    {
+      "text": "img2nl",
+      "bbox": {
+        "x": 1863,
+        "y": 1304,
+        "w": 69,
+        "h": 20
+      },
+      "confidence": 72.0,
+      "level": "word"
+    },
+    {
+      "text": "———",
+      "bbox": {
+        "x": 500,
+        "y": 1314,
+        "w": 72,
+        "h": 31
+      },
+      "confidence": 39.0,
+      "level": "word"
+    },
+    {
+      "text": "modeli",
+      "bbox": {
+        "x": 778,
+        "y": 1318,
+        "w": 65,
+        "h": 16
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "LLM",
+      "bbox": {
+        "x": 851,
+        "y": 1318,
+        "w": 39,
+        "h": 16
+      },
+      "confidence": 91.0,
+      "level": "word"
+    },
+    {
+      "text": "PHP",
+      "bbox": {
+        "x": 1618,
+        "y": 1318,
+        "w": 40,
+        "h": 16
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "©",
+      "bbox": {
+        "x": 1862,
+        "y": 1336,
+        "w": 17,
+        "h": 17
+      },
+      "confidence": 91.0,
+      "level": "word"
+    },
+    {
+      "text": "Python",
+      "bbox": {
+        "x": 1886,
+        "y": 1339,
+        "w": 57,
+        "h": 18
+      },
+      "confidence": 85.0,
+      "level": "word"
+    },
+    {
+      "text": "Updated",
+      "bbox": {
+        "x": 2024,
+        "y": 1339,
+        "w": 71,
+        "h": 18
+      },
+      "confidence": 81.0,
+      "level": "word"
+    },
+    {
+      "text": "38",
+      "bbox": {
+        "x": 2102,
+        "y": 1341,
+        "w": 18,
+        "h": 12
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "minutes",
+      "bbox": {
+        "x": 2126,
+        "y": 1342,
+        "w": 68,
+        "h": 11
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "ago",
+      "bbox": {
+        "x": 2200,
+        "y": 1343,
+        "w": 30,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "allama-benchmark-",
+      "bbox": {
+        "x": 503,
+        "y": 1365,
+        "w": 191,
+        "h": 26
+      },
+      "confidence": 91.0,
+      "level": "word"
+    },
+    {
+      "text": "5",
+      "bbox": {
+        "x": 869,
+        "y": 1385,
+        "w": 3,
+        "h": 3
+      },
+      "confidence": 52.0,
+      "level": "word"
+    },
+    {
+      "text": "m",
+      "bbox": {
+        "x": 914,
+        "y": 1385,
+        "w": 45,
+        "h": 2
+      },
+      "confidence": 47.0,
+      "level": "word"
+    },
+    {
+      "text": "7",
+      "bbox": {
+        "x": 1008,
+        "y": 1385,
+        "w": 3,
+        "h": 3
+      },
+      "confidence": 59.0,
+      "level": "word"
+    },
+    {
+      "text": "7",
+      "bbox": {
+        "x": 1359,
+        "y": 1385,
+        "w": 3,
+        "h": 2
+      },
+      "confidence": 56.0,
+      "level": "word"
+    },
+    {
+      "text": "sewer",
+      "bbox": {
+        "x": 499,
+        "y": 1378,
+        "w": 196,
+        "h": 42
+      },
+      "confidence": 66.0,
+      "level": "word"
+    },
+    {
+      "text": "Serwer",
+      "bbox": {
+        "x": 777,
+        "y": 1385,
+        "w": 69,
+        "h": 16
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "wizualizacji",
+      "bbox": {
+        "x": 851,
+        "y": 1385,
+        "w": 109,
+        "h": 20
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "wyników",
+      "bbox": {
+        "x": 966,
+        "y": 1385,
+        "w": 86,
+        "h": 20
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "benchmarków",
+      "bbox": {
+        "x": 1059,
+        "y": 1385,
+        "w": 140,
+        "h": 16
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "Allama",
+      "bbox": {
+        "x": 1203,
+        "y": 1385,
+        "w": 68,
+        "h": 16
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "z",
+      "bbox": {
+        "x": 1277,
+        "y": 1388,
+        "w": 9,
+        "h": 13
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "interfejsem",
+      "bbox": {
+        "x": 1293,
+        "y": 1385,
+        "w": 111,
+        "h": 20
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "radarowym",
+      "bbox": {
+        "x": 1411,
+        "y": 1385,
+        "w": 111,
+        "h": 20
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "PHP",
+      "bbox": {
+        "x": 1618,
+        "y": 1385,
+        "w": 40,
+        "h": 16
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "nip2cmd",
+      "bbox": {
+        "x": 1863,
+        "y": 1391,
+        "w": 86,
+        "h": 20
+      },
+      "confidence": 61.0,
+      "level": "word"
+    },
+    {
+      "text": "©",
+      "bbox": {
+        "x": 1862,
+        "y": 1424,
+        "w": 17,
+        "h": 19
+      },
+      "confidence": 91.0,
+      "level": "word"
+    },
+    {
+      "text": "python",
+      "bbox": {
+        "x": 1886,
+        "y": 1428,
+        "w": 57,
+        "h": 18
+      },
+      "confidence": 82.0,
+      "level": "word"
+    },
+    {
+      "text": "Y7",
+      "bbox": {
+        "x": 1962,
+        "y": 1424,
+        "w": 21,
+        "h": 20
+      },
+      "confidence": 86.0,
+      "level": "word"
+    },
+    {
+      "text": "1",
+      "bbox": {
+        "x": 1991,
+        "y": 1429,
+        "w": 4,
+        "h": 12
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "Updated",
+      "bbox": {
+        "x": 2017,
+        "y": 1428,
+        "w": 71,
+        "h": 18
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "2",
+      "bbox": {
+        "x": 2094,
+        "y": 1429,
+        "w": 8,
+        "h": 12
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "hours",
+      "bbox": {
+        "x": 2109,
+        "y": 1428,
+        "w": 47,
+        "h": 13
+      },
+      "confidence": 94.0,
+      "level": "word"
+    },
+    {
+      "text": "ago",
+      "bbox": {
+        "x": 2162,
+        "y": 1431,
+        "w": 31,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "Intent-Iterative",
+      "bbox": {
+        "x": 777,
+        "y": 1451,
+        "w": 149,
+        "h": 15
+      },
+      "confidence": 90.0,
+      "level": "word"
+    },
+    {
+      "text": "—",
+      "bbox": {
+        "x": 932,
+        "y": 1459,
+        "w": 20,
+        "h": 2
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "DSL",
+      "bbox": {
+        "x": 960,
+        "y": 1451,
+        "w": 37,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "do",
+      "bbox": {
+        "x": 1002,
+        "y": 1451,
+        "w": 25,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "wykonywania",
+      "bbox": {
+        "x": 1061,
+        "y": 1451,
+        "w": 104,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "intencji",
+      "bbox": {
+        "x": 1172,
+        "y": 1451,
+        "w": 70,
+        "h": 15
+      },
+      "confidence": 95.0,
+      "level": "word"
+    },
+    {
+      "text": "z",
+      "bbox": {
+        "x": 1249,
+        "y": 1454,
+        "w": 9,
+        "h": 12
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "iteracyjną",
+      "bbox": {
+        "x": 1265,
+        "y": 1451,
+        "w": 82,
+        "h": 15
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "refinacją",
+      "bbox": {
+        "x": 1366,
+        "y": 1451,
+        "w": 72,
+        "h": 15
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "i",
+      "bbox": {
+        "x": 1460,
+        "y": 1451,
+        "w": 1,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "wsparciem",
+      "bbox": {
+        "x": 1466,
+        "y": 1451,
+        "w": 107,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "amen",
+      "bbox": {
+        "x": 503,
+        "y": 1471,
+        "w": 55,
+        "h": 12
+      },
+      "confidence": 88.0,
+      "level": "word"
+    },
+    {
+      "text": "wykonyw:",
+      "bbox": {
+        "x": 1033,
+        "y": 1454,
+        "w": 92,
+        "h": 17
+      },
+      "confidence": 71.0,
+      "level": "word"
+    },
+    {
+      "text": "J",
+      "bbox": {
+        "x": 1231,
+        "y": 1454,
+        "w": 5,
+        "h": 17
+      },
+      "confidence": 51.0,
+      "level": "word"
+    },
+    {
+      "text": "ją",
+      "bbox": {
+        "x": 1431,
+        "y": 1454,
+        "w": 18,
+        "h": 17
+      },
+      "confidence": 80.0,
+      "level": "word"
+    },
+    {
+      "text": "i",
+      "bbox": {
+        "x": 1457,
+        "y": 1449,
+        "w": 9,
+        "h": 33
+      },
+      "confidence": 90.0,
+      "level": "word"
+    },
+    {
+      "text": "wsp:",
+      "bbox": {
+        "x": 1494,
+        "y": 1454,
+        "w": 11,
+        "h": 17
+      },
+      "confidence": 89.0,
+      "level": "word"
+    },
+    {
+      "text": "Python",
+      "bbox": {
+        "x": 1618,
+        "y": 1467,
+        "w": 68,
+        "h": 21
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "AI",
+      "bbox": {
+        "x": 776,
+        "y": 1482,
+        "w": 21,
+        "h": 16
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "todomat",
+      "bbox": {
+        "x": 1862,
+        "y": 1480,
+        "w": 90,
+        "h": 16
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "|",
+      "bbox": {
+        "x": 1955,
+        "y": 1476,
+        "w": 8,
+        "h": 30
+      },
+      "confidence": 75.0,
+      "level": "word"
+    },
+    {
+      "text": "Private",
+      "bbox": {
+        "x": 1975,
+        "y": 1481,
+        "w": 56,
+        "h": 13
+      },
+      "confidence": 75.0,
+      "level": "word"
+    },
+    {
+      "text": "A",
+      "bbox": {
+        "x": 1504,
+        "y": 1534,
+        "w": 3,
+        "h": 2
+      },
+      "confidence": 41.0,
+      "level": "word"
+    },
+    {
+      "text": "©",
+      "bbox": {
+        "x": 1862,
+        "y": 1518,
+        "w": 17,
+        "h": 17
+      },
+      "confidence": 88.0,
+      "level": "word"
+    },
+    {
+      "text": "Pyth",
+      "bbox": {
+        "x": 1886,
+        "y": 1521,
+        "w": 35,
+        "h": 13
+      },
+      "confidence": 88.0,
+      "level": "word"
+    },
+    {
+      "text": "0",
+      "bbox": {
+        "x": 1985,
+        "y": 1521,
+        "w": 8,
+        "h": 13
+      },
+      "confidence": 55.0,
+      "level": "word"
+    },
+    {
+      "text": "Updated",
+      "bbox": {
+        "x": 2024,
+        "y": 1520,
+        "w": 51,
+        "h": 14
+      },
+      "confidence": 67.0,
+      "level": "word"
+    },
+    {
+      "text": "6",
+      "bbox": {
+        "x": 2102,
+        "y": 1520,
+        "w": 8,
+        "h": 14
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "hours",
+      "bbox": {
+        "x": 2117,
+        "y": 1512,
+        "w": 43,
+        "h": 32
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "a",
+      "bbox": {
+        "x": 2169,
+        "y": 1528,
+        "w": 5,
+        "h": 5
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "curllm",
+      "bbox": {
+        "x": 503,
+        "y": 1520,
+        "w": 61,
+        "h": 38
+      },
+      "confidence": 81.0,
+      "level": "word"
+    },
+    {
+      "text": "Intelligent",
+      "bbox": {
+        "x": 777,
+        "y": 1534,
+        "w": 101,
+        "h": 20
+      },
+      "confidence": 91.0,
+      "level": "word"
+    },
+    {
+      "text": "Browser",
+      "bbox": {
+        "x": 885,
+        "y": 1534,
+        "w": 80,
+        "h": 16
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "Automation",
+      "bbox": {
+        "x": 970,
+        "y": 1534,
+        "w": 116,
+        "h": 16
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "—",
+      "bbox": {
+        "x": 1093,
+        "y": 1541,
+        "w": 21,
+        "h": 2
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "automatyzacja",
+      "bbox": {
+        "x": 1120,
+        "y": 1535,
+        "w": 142,
+        "h": 19
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "przeglądarki",
+      "bbox": {
+        "x": 1270,
+        "y": 1534,
+        "w": 121,
+        "h": 20
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "z",
+      "bbox": {
+        "x": 1397,
+        "y": 1537,
+        "w": 9,
+        "h": 13
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "lokalnymi",
+      "bbox": {
+        "x": 1413,
+        "y": 1534,
+        "w": 94,
+        "h": 20
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "LLM",
+      "bbox": {
+        "x": 1515,
+        "y": 1534,
+        "w": 39,
+        "h": 16
+      },
+      "confidence": 92.0,
+      "level": "word"
+    },
+    {
+      "text": "Python",
+      "bbox": {
+        "x": 1614,
+        "y": 1521,
+        "w": 72,
+        "h": 38
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "jem",
+      "bbox": {
+        "x": 1895,
+        "y": 1524,
+        "w": 47,
+        "h": 15
+      },
+      "confidence": 54.0,
+      "level": "word"
+    },
+    {
+      "text": "(20",
+      "bbox": {
+        "x": 1962,
+        "y": 1517,
+        "w": 21,
+        "h": 21
+      },
+      "confidence": 65.0,
+      "level": "word"
+    },
+    {
+      "text": "ELLMa",
+      "bbox": {
+        "x": 778,
+        "y": 1585,
+        "w": 62,
+        "h": 15
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "—",
+      "bbox": {
+        "x": 847,
+        "y": 1593,
+        "w": 21,
+        "h": 2
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "Evolutionary",
+      "bbox": {
+        "x": 874,
+        "y": 1585,
+        "w": 122,
+        "h": 20
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "Local",
+      "bbox": {
+        "x": 1003,
+        "y": 1585,
+        "w": 49,
+        "h": 15
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "LLM",
+      "bbox": {
+        "x": 1060,
+        "y": 1585,
+        "w": 38,
+        "h": 15
+      },
+      "confidence": 91.0,
+      "level": "word"
+    },
+    {
+      "text": "Agent,",
+      "bbox": {
+        "x": 1104,
+        "y": 1585,
+        "w": 63,
+        "h": 20
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "asystent",
+      "bbox": {
+        "x": 1175,
+        "y": 1586,
+        "w": 82,
+        "h": 19
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "AI",
+      "bbox": {
+        "x": 1262,
+        "y": 1585,
+        "w": 20,
+        "h": 15
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "rozwijający",
+      "bbox": {
+        "x": 1290,
+        "y": 1585,
+        "w": 107,
+        "h": 20
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "się",
+      "bbox": {
+        "x": 1403,
+        "y": 1585,
+        "w": 26,
+        "h": 19
+      },
+      "confidence": 96.0,
+      "level": "word"
+    },
+    {
+      "text": "z",
+      "bbox": {
+        "x": 1435,
+        "y": 1588,
+        "w": 8,
+        "h": 12
+      },
+      "confidence": 94.0,
+      "level": "word"
+    },
+    {
+      "text": "potrzebami",
+      "bbox": {
+        "x": 1451,
+        "y": 1585,
+        "w": 111,
+        "h": 20
+      },
+      "confidence": 94.0,
+      "level": "word"
+    },
+    {
+      "text": "pz.",
+      "bbox": {
+        "x": 1863,
+        "y": 1573,
+        "w": 72,
+        "h": 20
+      },
+      "confidence": 34.0,
+      "level": "word"
+    },
+    {
+      "text": "v",
+      "bbox": {
+        "x": 109,
+        "y": 1626,
+        "w": 13,
+        "h": 7
+      },
+      "confidence": 81.0,
+      "level": "word"
+    },
+    {
+      "text": "©",
+      "bbox": {
+        "x": 151,
+        "y": 1621,
+        "w": 18,
+        "h": 18
+      },
+      "confidence": 61.0,
+      "level": "word"
+    },
+    {
+      "text": "screen.png",
+      "bbox": {
+        "x": 180,
+        "y": 1625,
+        "w": 92,
+        "h": 15
+      },
+      "confidence": 91.0,
+      "level": "word"
+    },
+    {
+      "text": "(2700x4800)",
+      "bbox": {
+        "x": 277,
+        "y": 1621,
+        "w": 105,
+        "h": 19
+      },
+      "confidence": 93.0,
+      "level": "word"
+    },
+    {
+      "text": "x",
+      "bbox": {
+        "x": 405,
+        "y": 1625,
+        "w": 11,
+        "h": 9
+      },
+      "confidence": 95.0,
+      "level": "word"
+    },
+    {
+      "text": "+",
+      "bbox": {
+        "x": 448,
+        "y": 1623,
+        "w": 13,
+        "h": 14
+      },
+      "confidence": 91.0,
+      "level": "word"
+    },
+    {
+      "text": "-",
+      "bbox": {
+        "x": 2504,
+        "y": 1634,
+        "w": 13,
+        "h": 2
+      },
+      "confidence": 88.0,
+      "level": "word"
+    },
+    {
+      "text": "o",
+      "bbox": {
+        "x": 2544,
+        "y": 1624,
+        "w": 12,
+        "h": 12
+      },
+      "confidence": 83.0,
+      "level": "word"
+    },
+    {
+      "text": "x",
+      "bbox": {
+        "x": 2585,
+        "y": 1624,
+        "w": 11,
+        "h": 12
+      },
+      "confidence": 95.0,
+      "level": "word"
+    },
+    {
+      "text": "wie:",
+      "bbox": {
+        "x": 2465,
+        "y": 1674,
+        "w": 119,
+        "h": 22
+      },
+      "confidence": 46.0,
+      "level": "word"
+    },
+    {
+      "text": "<",
+      "bbox": {
+        "x": 112,
+        "y": 1677,
+        "w": 15,
+        "h": 14
+      },
+      "confidence": 76.0,
+      "level": "word"
+    },
+    {
+      "text": ">",
+      "bbox": {
+        "x": 156,
+        "y": 1677,
+        "w": 15,
+        "h": 14
+      },
+      "confidence": 91.0,
+      "level": "word"
+    },
+    {
+      "text": "G©",
+      "bbox": {
+        "x": 200,
+        "y": 1676,
+        "w": 16,
+        "h": 16
+      },
+      "confidence": 41.0,
+      "level": "word"
+    },
+    {
+      "text": "@File",
+      "bbox": {
+        "x": 254,
+        "y": 1675,
+        "w": 54,
+        "h": 18
+      },
+      "confidence": 46.0,
+      "level": "word"
+    },
+    {
+      "text": "/tmp/screen.png",
+      "bbox": {
+        "x": 328,
+        "y": 1676,
+        "w": 132,
+        "h": 18
+      },
+      "confidence": 84.0,
+      "level": "word"
+    }
+  ],
+  "metadata": {
+    "ocr_backend": "tesseract",
+    "lang": "eng+pol",
+    "scale": 0.9481481481481482,
+    "detect_source": "local",
+    "element_count": 277,
+    "roles": {
+      "button": 24,
+      "input": 32,
+      "label": 197,
+      "text": 24
+    },
+    "content_check": {
+      "source": "img2nl",
+      "worth_analyzing": true,
+      "is_blank": false,
+      "scene_class": "general",
+      "recommendation": "proceed_with_layout",
+      "summary": "Obraz 2700×1850 px. Widocznych ~847 kolorów w próbce. Dominują: #0D1117, #0E1218, #0E0E0E. Jasność 1–234 (zakres dynamiki 255). Widoczny szum lub drobna tekstura. Wykryto 4 dużych regionów/obiektów."
+    },
+    "analysis_scale": 0.9481481481481482,
+    "screen_width": 2700,
+    "screen_height": 1850
+  }
+}

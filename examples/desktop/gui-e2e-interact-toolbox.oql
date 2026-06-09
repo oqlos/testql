@@ -1,0 +1,8 @@
+# E2E GUI interaction with Toolbox — requires visible Toolbox window on primary monitor.
+
+DESKTOP_ASSERT_WINDOW "Toolbox"
+DESKTOP_CAPTURE "examples/desktop/interact-shot.png" primary
+DESKTOP_ASSERT_ELEMENTS 1 "examples/desktop/interact-shot.png"
+DESKTOP_ANALYZE "examples/desktop/interact-shot.png" "examples/desktop/interact-shot.imgl.json"
+DESKTOP_DESCRIBE "examples/desktop/interact-shot.png"
+DESKTOP_FOCUS "Toolbox"

@@ -8,6 +8,7 @@ This directory contains runnable examples demonstrating TestQL's core features.
 |---------|---------------------|-------------|
 | [api-testing](api-testing/) | REST API testing with assertions | `make run` or `testql run *.testql.toon.yaml` |
 | [gui-testing](gui-testing/) | Playwright-based GUI automation | `testql run *.oql` |
+| [desktop](desktop/) | Native Linux desktop E2E (vdisplay, img2nl, imgl) | `DISPLAY=:0 bash run-all.sh` |
 | [shell-testing](shell-testing/) | Shell command testing | `testql run *.oql` |
 | [testtoon-basics](testtoon-basics/) | TestTOON tabular format syntax | `testql run *.testql.toon.yaml` |
 | [project-echo](project-echo/) | AI-friendly project metadata + DOQL app generation | `make help` |
@@ -55,6 +56,9 @@ cd encoder-testing && make dry-run
 
 # Variables and flow control (dry-run)
 cd flow-control && make dry-run
+
+# Native desktop E2E (Linux, requires DISPLAY=:0)
+cd desktop && DISPLAY=:0 bash run-all.sh
 ```
 
 ## Running All Examples

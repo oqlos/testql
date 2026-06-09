@@ -1,0 +1,11 @@
+{
+  "$id": "dsl2testql/commands/generate",
+  "type": "object",
+  "required": ["verb", "text"],
+  "properties": {
+    "verb": { "const": "GENERATE" },
+    "text": { "type": "string" },
+    "out": { "type": "string" }
+  },
+  "additionalProperties": false
+}

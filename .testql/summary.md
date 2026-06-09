@@ -1,10 +1,10 @@
 Inspection status: failed.
 Executed 15 structural checks; found 2 findings.
 Key findings:
-- high: 4 of 61 assets returned error status.
+- high: 5 of 61 assets returned error status.
 - medium: 2 duplicate title(s) found across 7 subpages.
 Recommended actions:
-- Resolve finding.web.asset_status: 4 of 61 assets returned error status.
+- Resolve finding.web.asset_status: 5 of 61 assets returned error status.
 - Resolve finding.sitemap.duplicates: 2 duplicate title(s) found across 7 subpages.
 
 ## Generated Artifacts

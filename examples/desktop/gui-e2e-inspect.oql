@@ -1,0 +1,9 @@
+# E2E GUI discovery: monitors, windows, screenshot, img2nl + imgl analysis.
+# Capture uses vdisplay mirror→Xvfb (selected monitor → virtual display → xwd screenshot).
+
+DESKTOP_MONITORS
+DESKTOP_LIST
+DESKTOP_INSPECT "examples/desktop/gui-e2e-inspect.png"
+DESKTOP_CAPTURE "examples/desktop/gui-e2e-inspect.png" primary
+DESKTOP_DESCRIBE "examples/desktop/gui-e2e-inspect.png"
+DESKTOP_ANALYZE "examples/desktop/gui-e2e-inspect.png" "examples/desktop/gui-e2e-inspect.imgl.json"

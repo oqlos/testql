@@ -3,23 +3,24 @@
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-1.2.59-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$7.50-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-61.1h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-1.2.60-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$7.50-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-62.3h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $7.5000 (111 commits)
-- 👤 **Human dev:** ~$6113 (61.1h @ $100/h, 30min dedup)
+- 🤖 **LLM usage:** $7.5000 (113 commits)
+- 👤 **Human dev:** ~$6230 (62.3h @ $100/h, 30min dedup)
 
-Generated on 2026-06-06 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
+Generated on 2026-06-09 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 
 ---
 
-![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-1.2.59-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-1.2.60-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
 ![AI Cost](https://img.shields.io/badge/AI%20Cost-$7.50-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-49.4h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
 TestQL is a declarative DSL (Domain Specific Language) for testing GUI, REST API, and hardware encoder interfaces. It provides a simple, readable syntax for writing automated tests without programming overhead.
 
 ### What's new in 1.2.x
 
+- **Native Desktop E2E**: `DESKTOP_*` commands with vdisplay mirror→Xvfb capture, img2nl + imgl OCR on Linux (no Wayland portal)
 - **Artifact Discovery & Topology**: Complete codebase inspection with manifest generation
 - **Web Inspection**: Live URL scanning with Playwright browser automation
 - **Multi-DSL Platform**: TestTOON, NL, SQL, Proto, GraphQL adapters with Unified IR
@@ -62,7 +63,19 @@ pip install -e ".[dev]"
 
 - Python 3.10+
 - HTTPX for API testing
-- Playwright for GUI testing (optional)
+- Playwright for browser GUI testing (optional)
+- Native desktop E2E (optional): `vdisplay`, `img2nl`, `imgl` — see [Desktop GUI E2E](docs/DESKTOP_GUI_E2E.md)
+
+### Optional: native desktop + vision
+
+```bash
+pip install -e ".[desktop,vision]" \
+  -e ~/github/wronai/vdisplay[pillow] \
+  -e ~/github/wronai/img2nl[analyze,similarity,opencv,scan] \
+  -e ~/github/semcod/imgl
+
+# System: xvfb x11-apps xdotool xrandr tesseract-ocr
+```
 
 ## Quick Start
 
@@ -304,6 +317,8 @@ ASSERT_JSON status != "error"
 
 ### GUI Navigation (Playwright)
 
+Browser-based GUI tests via Playwright. For **native OS desktop** (monitors, windows, OCR, mirror capture on Wayland), see [Desktop GUI E2E](docs/DESKTOP_GUI_E2E.md).
+
 ```testql
 # Navigation
 NAVIGATE "/connect-workshop"
@@ -318,6 +333,24 @@ CLICK "button[type='submit']"
 # Assertions
 ASSERT_VISIBLE "[data-testid='results']"
 ASSERT_TEXT "#status" "Connected"
+```
+
+### Native Desktop (Linux)
+
+Real OS desktop E2E via vdisplay mirror→Xvfb (no Wayland portal). Full guide: [Desktop GUI E2E](docs/DESKTOP_GUI_E2E.md).
+
+```testql
+DESKTOP_MONITORS
+DESKTOP_CAPTURE "shot.png" primary
+DESKTOP_ASSERT_WINDOW "Toolbox"
+DESKTOP_ASSERT_ELEMENTS 1 "shot.png"
+DESKTOP_ANALYZE "shot.png" "layout.json"
+DESKTOP_FOCUS "Toolbox"
+```
+
+```bash
+DISPLAY=:0 testql run examples/desktop/gui-e2e-inspect.oql
+DISPLAY=:0 bash examples/desktop/run-all.sh
 ```
 
 ### Hardware Encoder Commands
@@ -572,6 +605,7 @@ open http://localhost:9101/metrics   # testql_scenario_pass_total / fail_total
 | [Artifact Bundle](examples/artifact-bundle/) | Generate `.testql/` bundles via CLI or Python script |
 | [Browser Inspection](examples/browser-inspection/) | Headless browser inspection with Playwright |
 | [Discovery](examples/discovery/) | Discover artifacts and build project topology |
+| [Desktop E2E](examples/desktop/) | Native Linux desktop: vdisplay mirror, img2nl, imgl OCR |
 | [GUI Testing](examples/gui-testing/) | Playwright-based GUI navigation and assertions |
 | [Project Echo](examples/project-echo/) | Generate AI context from TestQL + DOQL models |
 | [Shell Testing](examples/shell-testing/) | Run shell commands and assert exit codes/output |
@@ -583,6 +617,8 @@ open http://localhost:9101/metrics   # testql_scenario_pass_total / fail_total
 ## Documentation
 
 - [TestQL Specification](docs/testql-spec.md) — Complete language reference
+- [Desktop GUI E2E](docs/DESKTOP_GUI_E2E.md) — Native Linux desktop testing (vdisplay, img2nl, imgl)
+- [Desktop examples](examples/desktop/README.md) — Scenario index and run-all script
 - [Recipes](docs/recipes/) — Common testing patterns and examples
 
 ## License

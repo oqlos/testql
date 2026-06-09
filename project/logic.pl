@@ -1,14 +1,15 @@
 % ── Project Metadata ─────────────────────────────────────
-project_metadata('testql', '1.2.54', 'python').
+project_metadata('testql', '1.2.59', 'python').
 
 % ── Project Files ────────────────────────────────────────
 project_file('TODO/testtoon_parser.py', 142, 'python').
-project_file('app.doql.less', 237, 'less').
+project_file('app.doql.less', 284, 'less').
 project_file('examples/api-testing/mock_server.py', 51, 'python').
 project_file('examples/api-testing/run.sh', 28, 'shell').
 project_file('examples/artifact-bundle/generate_bundle.py', 37, 'python').
 project_file('examples/artifact-bundle/run.sh', 19, 'shell').
 project_file('examples/browser-inspection/run.sh', 65, 'shell').
+project_file('examples/desktop/run-all.sh', 19, 'shell').
 project_file('examples/discovery/discover-local.sh', 15, 'shell').
 project_file('examples/discovery/inspect-web.sh', 21, 'shell').
 project_file('examples/discovery/topology.sh', 19, 'shell').
@@ -26,6 +27,43 @@ project_file('examples/web-inspection/c2004-localhost/run-matrix.sh', 102, 'shel
 project_file('examples/web-inspection/c2004-localhost/run.sh', 73, 'shell').
 project_file('examples/web-inspection/run.sh', 43, 'shell').
 project_file('examples/web-inspection-dot-testql/run.sh', 14, 'shell').
+project_file('packages/cli2testql/src/cli2testql/__init__.py', 6, 'python').
+project_file('packages/cli2testql/src/cli2testql/cli.py', 52, 'python').
+project_file('packages/cli2testql/src/cli2testql/cli_handlers.py', 57, 'python').
+project_file('packages/dsl2testql/scripts/generate-proto.sh', 8, 'shell').
+project_file('packages/dsl2testql/src/dsl2testql/__init__.py', 7, 'python').
+project_file('packages/dsl2testql/src/dsl2testql/bus.py', 77, 'python').
+project_file('packages/dsl2testql/src/dsl2testql/cli.py', 90, 'python').
+project_file('packages/dsl2testql/src/dsl2testql/cli_handlers.py', 114, 'python').
+project_file('packages/dsl2testql/src/dsl2testql/codec.py', 36, 'python').
+project_file('packages/dsl2testql/src/dsl2testql/engine.py', 25, 'python').
+project_file('packages/dsl2testql/src/dsl2testql/events.py', 102, 'python').
+project_file('packages/dsl2testql/src/dsl2testql/grammar.py', 82, 'python').
+project_file('packages/dsl2testql/src/dsl2testql/handlers/__init__.py', 2, 'python').
+project_file('packages/dsl2testql/src/dsl2testql/handlers/command.py', 73, 'python').
+project_file('packages/dsl2testql/src/dsl2testql/handlers/query.py', 42, 'python').
+project_file('packages/dsl2testql/src/dsl2testql/pb_codec.py', 127, 'python').
+project_file('packages/dsl2testql/src/dsl2testql/result.py', 29, 'python').
+project_file('packages/dsl2testql/src/dsl2testql/schema/__init__.py', 2, 'python').
+project_file('packages/dsl2testql/src/dsl2testql/schema/commands/__init__.py', 2, 'python').
+project_file('packages/dsl2testql/src/dsl2testql/schema_registry.py', 47, 'python').
+project_file('packages/dsl2testql/src/dsl2testql/v1/__init__.py', 2, 'python').
+project_file('packages/dsl2testql/src/dsl2testql/v1/command_pb2.py', 45, 'python').
+project_file('packages/dsl2testql/src/dsl2testql/v1/result_pb2.py', 40, 'python').
+project_file('packages/mcp2testql/src/mcp2testql/__init__.py', 6, 'python').
+project_file('packages/mcp2testql/src/mcp2testql/cli.py', 33, 'python').
+project_file('packages/mcp2testql/src/mcp2testql/server.py', 119, 'python').
+project_file('packages/nlp2testql/src/nlp2testql/__init__.py', 14, 'python').
+project_file('packages/nlp2testql/src/nlp2testql/models.py', 45, 'python').
+project_file('packages/nlp2testql/src/nlp2testql/pipeline.py', 60, 'python').
+project_file('packages/nlp2testql/src/nlp2testql/validate.py', 27, 'python').
+project_file('packages/uri2testql/src/uri2testql/__init__.py', 31, 'python').
+project_file('packages/uri2testql/src/uri2testql/block_resolver.py', 92, 'python').
+project_file('packages/uri2testql/src/uri2testql/files.py', 27, 'python').
+project_file('packages/uri2testql/src/uri2testql/materialize.py', 110, 'python').
+project_file('packages/uri2testql/src/uri2testql/patch.py', 200, 'python').
+project_file('packages/uri2testql/src/uri2testql/query.py', 180, 'python').
+project_file('packages/uri2testql/src/uri2testql/uri.py', 103, 'python').
 project_file('project.sh', 50, 'shell').
 project_file('scripts/install_testql_autoloop.sh', 157, 'shell').
 project_file('scripts/setup_mcp_windsurf.sh', 92, 'shell').
@@ -36,7 +74,7 @@ project_file('test_manifest_and_generators.py', 526, 'python').
 project_file('testql/__init__.py', 10, 'python').
 project_file('testql/__main__.py', 7, 'python').
 project_file('testql/_base_fallback.py', 233, 'python').
-project_file('testql/adapters/__init__.py', 54, 'python').
+project_file('testql/adapters/__init__.py', 57, 'python').
 project_file('testql/adapters/base.py', 98, 'python').
 project_file('testql/adapters/graphql/__init__.py', 26, 'python').
 project_file('testql/adapters/graphql/graphql_adapter.py', 274, 'python').
@@ -56,6 +94,8 @@ project_file('testql/adapters/nlp2dsl/live_llm.py', 91, 'python').
 project_file('testql/adapters/nlp2dsl/llm_provider.py', 43, 'python').
 project_file('testql/adapters/nlp2dsl/mock_llm.py', 47, 'python').
 project_file('testql/adapters/nlp2dsl/nlp2dsl_adapter.py', 82, 'python').
+project_file('testql/adapters/nlp2env/__init__.py', 6, 'python').
+project_file('testql/adapters/nlp2env/nlp2env_adapter.py', 74, 'python').
 project_file('testql/adapters/proto/__init__.py', 54, 'python').
 project_file('testql/adapters/proto/compatibility.py', 144, 'python').
 project_file('testql/adapters/proto/descriptor_loader.py', 163, 'python').
@@ -77,8 +117,8 @@ project_file('testql/artifacts/file_checker.py', 43, 'python').
 project_file('testql/artifacts/registry.py', 36, 'python').
 project_file('testql/autoloop_runner.py', 1, 'python').
 project_file('testql/base.py', 38, 'python').
-project_file('testql/cli.py', 107, 'python').
-project_file('testql/commands/__init__.py', 36, 'python').
+project_file('testql/cli.py', 109, 'python').
+project_file('testql/commands/__init__.py', 44, 'python').
 project_file('testql/commands/auto_cmd.py', 203, 'python').
 project_file('testql/commands/conversation_cmd.py', 109, 'python').
 project_file('testql/commands/discover_cmd.py', 47, 'python').
@@ -101,7 +141,8 @@ project_file('testql/commands/generate_topology_cmd.py', 59, 'python').
 project_file('testql/commands/heal_scenario_cmd.py', 308, 'python').
 project_file('testql/commands/inspect_cmd.py', 35, 'python').
 project_file('testql/commands/misc_cmds.py', 293, 'python').
-project_file('testql/commands/run_cmd.py', 161, 'python').
+project_file('testql/commands/nlp2env_cmd.py', 85, 'python').
+project_file('testql/commands/run_cmd.py', 184, 'python').
 project_file('testql/commands/run_ir_cmd.py', 66, 'python').
 project_file('testql/commands/self_test_cmd.py', 46, 'python').
 project_file('testql/commands/suite/__init__.py', 9, 'python').
@@ -116,8 +157,20 @@ project_file('testql/commands/templates/content.py', 167, 'python').
 project_file('testql/commands/templates/templates.py', 60, 'python').
 project_file('testql/commands/topology_cmd.py', 24, 'python').
 project_file('testql/commands/watchdog_cmd.py', 283, 'python').
+project_file('testql/context/__init__.py', 11, 'python').
+project_file('testql/context/runtime.py', 164, 'python').
 project_file('testql/conversation/__init__.py', 6, 'python').
 project_file('testql/conversation/runner.py', 287, 'python').
+project_file('testql/desktop/__init__.py', 13, 'python').
+project_file('testql/desktop/backend.py', 448, 'python').
+project_file('testql/desktop/catalog.py', 208, 'python').
+project_file('testql/desktop/element_assert.py', 53, 'python').
+project_file('testql/desktop/models.py', 27, 'python').
+project_file('testql/desktop/screenshot_tools.py', 63, 'python').
+project_file('testql/desktop/vdisplay_capture.py', 674, 'python').
+project_file('testql/desktop/vision.py', 364, 'python').
+project_file('testql/desktop/window_discovery.py', 134, 'python').
+project_file('testql/desktop/wmctrl.py', 33, 'python').
 project_file('testql/detectors/__init__.py', 54, 'python').
 project_file('testql/detectors/base.py', 35, 'python').
 project_file('testql/detectors/config_detector.py', 219, 'python').
@@ -150,6 +203,8 @@ project_file('testql/discovery/source.py', 34, 'python').
 project_file('testql/doql_parser.py', 173, 'python').
 project_file('testql/echo_schemas.py', 154, 'python').
 project_file('testql/endpoint_detector.py', 63, 'python').
+project_file('testql/export/__init__.py', 6, 'python').
+project_file('testql/export/scenario_builder.py', 105, 'python').
 project_file('testql/generator.py', 62, 'python').
 project_file('testql/generators/__init__.py', 53, 'python').
 project_file('testql/generators/analyzers.py', 310, 'python').
@@ -192,16 +247,19 @@ project_file('testql/integrations/planfile_hook.py', 116, 'python').
 project_file('testql/interpreter/__init__.py', 92, 'python').
 project_file('testql/interpreter/_api_runner.py', 303, 'python').
 project_file('testql/interpreter/_assertions.py', 305, 'python').
+project_file('testql/interpreter/_context.py', 62, 'python').
 project_file('testql/interpreter/_converter.py', 63, 'python').
+project_file('testql/interpreter/_desktop.py', 684, 'python').
 project_file('testql/interpreter/_dom_scan.py', 41, 'python').
 project_file('testql/interpreter/_encoder.py', 101, 'python').
 project_file('testql/interpreter/_flow.py', 166, 'python').
-project_file('testql/interpreter/_gui.py', 709, 'python').
+project_file('testql/interpreter/_gui.py', 723, 'python').
+project_file('testql/interpreter/_gui_expand.py', 181, 'python').
 project_file('testql/interpreter/_hardware.py', 110, 'python').
 project_file('testql/interpreter/_modbus.py', 233, 'python').
 project_file('testql/interpreter/_parser.py', 34, 'python').
 project_file('testql/interpreter/_shell.py', 261, 'python').
-project_file('testql/interpreter/_testtoon_parser.py', 565, 'python').
+project_file('testql/interpreter/_testtoon_parser.py', 657, 'python').
 project_file('testql/interpreter/_unit.py', 268, 'python').
 project_file('testql/interpreter/_validation.py', 154, 'python').
 project_file('testql/interpreter/_websockets.py', 173, 'python').
@@ -222,12 +280,12 @@ project_file('testql/interpreter/converter/handlers/wait.py', 23, 'python').
 project_file('testql/interpreter/converter/models.py', 21, 'python').
 project_file('testql/interpreter/converter/parsers.py', 94, 'python').
 project_file('testql/interpreter/converter/renderer.py', 65, 'python').
-project_file('testql/interpreter/dispatcher.py', 87, 'python').
+project_file('testql/interpreter/dispatcher.py', 91, 'python').
 project_file('testql/interpreter/dom_scan_formatters.py', 85, 'python').
 project_file('testql/interpreter/dom_scan_mixin.py', 319, 'python').
 project_file('testql/interpreter/dom_scan_models.py', 54, 'python').
 project_file('testql/interpreter/dom_scanner.py', 419, 'python').
-project_file('testql/interpreter/interpreter.py', 160, 'python').
+project_file('testql/interpreter/interpreter.py', 162, 'python').
 project_file('testql/interpreter/testtoon_models.py', 34, 'python').
 project_file('testql/interpreter/testtoon_parser.py', 297, 'python').
 project_file('testql/interpreter.py', 28, 'python').
@@ -262,6 +320,11 @@ project_file('testql/meta/confidence_scorer.py', 95, 'python').
 project_file('testql/meta/coverage_analyzer.py', 174, 'python').
 project_file('testql/meta/mutator.py', 220, 'python').
 project_file('testql/meta/self_test.py', 59, 'python').
+project_file('testql/nlp2env/__init__.py', 25, 'python').
+project_file('testql/nlp2env/llm.py', 102, 'python').
+project_file('testql/nlp2env/mcp_client.py', 79, 'python').
+project_file('testql/nlp2env/runner.py', 227, 'python').
+project_file('testql/nlp2env/scenarios.py', 223, 'python').
 project_file('testql/openapi_generator.py', 445, 'python').
 project_file('testql/pipeline.py', 146, 'python').
 project_file('testql/report_generator.py', 251, 'python').
@@ -274,7 +337,7 @@ project_file('testql/results/analyzer.py', 505, 'python').
 project_file('testql/results/artifacts.py', 145, 'python').
 project_file('testql/results/models.py', 141, 'python').
 project_file('testql/results/serializers.py', 113, 'python').
-project_file('testql/runner.py', 372, 'python').
+project_file('testql/runner.py', 388, 'python').
 project_file('testql/runners/__init__.py', 1, 'python').
 project_file('testql/scenarios/c2004/c2004.testql.less', 29, 'less').
 project_file('testql/scenarios/config.testql.less', 44, 'less').
@@ -294,12 +357,18 @@ project_file('tests/test_adapter_capture_syntax.py', 167, 'python').
 project_file('tests/test_adapters_base.py', 159, 'python').
 project_file('tests/test_api_handler.py', 90, 'python').
 project_file('tests/test_browser_discovery.py', 111, 'python').
+project_file('tests/test_cc_refactor_helpers.py', 148, 'python').
 project_file('tests/test_cli.py', 98, 'python').
 project_file('tests/test_cli_no_block.py', 104, 'python').
 project_file('tests/test_conversation_live_llm.py', 83, 'python').
 project_file('tests/test_conversation_nlp2dsl.py', 158, 'python').
 project_file('tests/test_converter.py', 178, 'python').
 project_file('tests/test_converter_handlers.py', 352, 'python').
+project_file('tests/test_desktop_assert_elements.py', 66, 'python').
+project_file('tests/test_desktop_backend.py', 197, 'python').
+project_file('tests/test_desktop_catalog.py', 16, 'python').
+project_file('tests/test_desktop_execution.py', 109, 'python').
+project_file('tests/test_desktop_vision.py', 136, 'python').
 project_file('tests/test_detectors.py', 389, 'python').
 project_file('tests/test_discovery.py', 104, 'python').
 project_file('tests/test_dispatcher.py', 140, 'python').
@@ -307,6 +376,7 @@ project_file('tests/test_doql_parser_sumd_gen.py', 323, 'python').
 project_file('tests/test_echo.py', 227, 'python').
 project_file('tests/test_echo_doql_parser.py', 220, 'python').
 project_file('tests/test_echo_schemas_helpers.py', 214, 'python').
+project_file('tests/test_element_assert.py', 24, 'python').
 project_file('tests/test_encoder_routes.py', 42, 'python').
 project_file('tests/test_generate_cmd.py', 95, 'python').
 project_file('tests/test_generate_from_page_cli.py', 280, 'python').
@@ -336,6 +406,7 @@ project_file('tests/test_nl_entity_extractor.py', 155, 'python').
 project_file('tests/test_nl_grammar.py', 101, 'python').
 project_file('tests/test_nl_intent_recognizer.py', 133, 'python').
 project_file('tests/test_nl_scenarios_e2e.py', 92, 'python').
+project_file('tests/test_nlp2env_adapter.py', 118, 'python').
 project_file('tests/test_openapi_generator.py', 344, 'python').
 project_file('tests/test_page_analyzer.py', 246, 'python').
 project_file('tests/test_pipeline.py', 153, 'python').
@@ -351,6 +422,7 @@ project_file('tests/test_results.py', 124, 'python').
 project_file('tests/test_run_cmd.py', 114, 'python').
 project_file('tests/test_run_ir_cli.py', 66, 'python').
 project_file('tests/test_runner.py', 188, 'python').
+project_file('tests/test_runtime_context.py', 87, 'python').
 project_file('tests/test_scenario_yaml_adapter.py', 208, 'python').
 project_file('tests/test_shell_execution.py', 134, 'python').
 project_file('tests/test_smoke_decisions.py', 160, 'python').
@@ -373,6 +445,8 @@ project_file('tests/test_topology.py', 88, 'python').
 project_file('tests/test_topology_generator.py', 162, 'python').
 project_file('tests/test_unit_execution.py', 113, 'python').
 project_file('tests/test_validation.py', 185, 'python').
+project_file('tests/test_vdisplay_capture.py', 202, 'python').
+project_file('tests/test_window_discovery.py', 57, 'python').
 project_file('tree.sh', 2, 'shell').
 
 % ── Python Functions ─────────────────────────────────────
@@ -390,6 +464,108 @@ python_function('examples/api-testing/mock_server.py', 'update_scenario', 2, 2, 
 python_function('examples/api-testing/mock_server.py', 'delete_scenario', 1, 1, 3).
 python_function('examples/api-testing/mock_server.py', 'users', 0, 1, 1).
 python_function('examples/artifact-bundle/generate_bundle.py', 'main', 0, 2, 7).
+python_function('packages/cli2testql/src/cli2testql/cli.py', 'run_shell', 0, 1, 1).
+python_function('packages/cli2testql/src/cli2testql/cli.py', 'main', 1, 6, 9).
+python_function('packages/cli2testql/src/cli2testql/cli_handlers.py', 'print_result', 1, 4, 4).
+python_function('packages/cli2testql/src/cli2testql/cli_handlers.py', 'cmd_run_script', 1, 3, 4).
+python_function('packages/cli2testql/src/cli2testql/cli_handlers.py', 'cmd_exec_line', 1, 2, 2).
+python_function('packages/cli2testql/src/cli2testql/cli_handlers.py', 'run_shell_loop', 0, 6, 6).
+python_function('packages/dsl2testql/src/dsl2testql/bus.py', '_dispatch_cmd', 1, 5, 12).
+python_function('packages/dsl2testql/src/dsl2testql/bus.py', '_bytes_to_cmd', 1, 3, 5).
+python_function('packages/dsl2testql/src/dsl2testql/bus.py', 'dispatch', 1, 6, 11).
+python_function('packages/dsl2testql/src/dsl2testql/bus.py', 'execute_dsl_line', 1, 1, 1).
+python_function('packages/dsl2testql/src/dsl2testql/bus.py', 'execute_dsl', 1, 4, 5).
+python_function('packages/dsl2testql/src/dsl2testql/cli.py', '_main_legacy', 1, 9, 14).
+python_function('packages/dsl2testql/src/dsl2testql/cli.py', '_main_subcommands', 1, 2, 2).
+python_function('packages/dsl2testql/src/dsl2testql/cli.py', 'main', 1, 4, 2).
+python_function('packages/dsl2testql/src/dsl2testql/cli_handlers.py', '_print_result', 1, 4, 4).
+python_function('packages/dsl2testql/src/dsl2testql/cli_handlers.py', 'cmd_validate_schema', 1, 3, 2).
+python_function('packages/dsl2testql/src/dsl2testql/cli_handlers.py', 'cmd_exec', 1, 2, 5).
+python_function('packages/dsl2testql/src/dsl2testql/cli_handlers.py', 'cmd_run', 1, 3, 7).
+python_function('packages/dsl2testql/src/dsl2testql/cli_handlers.py', 'cmd_encode', 1, 2, 5).
+python_function('packages/dsl2testql/src/dsl2testql/cli_handlers.py', 'cmd_decode', 1, 2, 8).
+python_function('packages/dsl2testql/src/dsl2testql/cli_handlers.py', 'cmd_replay', 1, 2, 7).
+python_function('packages/dsl2testql/src/dsl2testql/cli_handlers.py', 'cmd_shell', 1, 7, 8).
+python_function('packages/dsl2testql/src/dsl2testql/codec.py', 'encode_text', 1, 2, 2).
+python_function('packages/dsl2testql/src/dsl2testql/codec.py', 'roundtrip_text', 1, 3, 5).
+python_function('packages/dsl2testql/src/dsl2testql/codec.py', 'encode_protobuf', 1, 1, 1).
+python_function('packages/dsl2testql/src/dsl2testql/codec.py', 'decode_protobuf', 1, 1, 1).
+python_function('packages/dsl2testql/src/dsl2testql/engine.py', 'execute_dsl_line', 1, 1, 1).
+python_function('packages/dsl2testql/src/dsl2testql/engine.py', 'execute_dsl', 1, 1, 1).
+python_function('packages/dsl2testql/src/dsl2testql/engine.py', 'dispatch', 1, 1, 1).
+python_function('packages/dsl2testql/src/dsl2testql/events.py', 'default_event_store', 1, 2, 3).
+python_function('packages/dsl2testql/src/dsl2testql/grammar.py', 'split_command', 1, 4, 3).
+python_function('packages/dsl2testql/src/dsl2testql/grammar.py', 'pick_flag', 2, 3, 2).
+python_function('packages/dsl2testql/src/dsl2testql/grammar.py', '_parse_query', 2, 4, 2).
+python_function('packages/dsl2testql/src/dsl2testql/grammar.py', '_parse_patch', 2, 4, 1).
+python_function('packages/dsl2testql/src/dsl2testql/grammar.py', '_parse_generate', 2, 3, 2).
+python_function('packages/dsl2testql/src/dsl2testql/grammar.py', 'parse_line', 1, 3, 4).
+python_function('packages/dsl2testql/src/dsl2testql/grammar.py', 'to_text', 1, 6, 6).
+python_function('packages/dsl2testql/src/dsl2testql/handlers/command.py', '_read_content', 1, 1, 3).
+python_function('packages/dsl2testql/src/dsl2testql/handlers/command.py', 'handle_generate', 1, 1, 3).
+python_function('packages/dsl2testql/src/dsl2testql/handlers/command.py', 'handle_patch', 1, 3, 8).
+python_function('packages/dsl2testql/src/dsl2testql/handlers/command.py', 'handle_from_tokens', 2, 7, 8).
+python_function('packages/dsl2testql/src/dsl2testql/handlers/query.py', 'handle_query', 1, 4, 6).
+python_function('packages/dsl2testql/src/dsl2testql/handlers/query.py', 'handle_validate', 1, 5, 6).
+python_function('packages/dsl2testql/src/dsl2testql/pb_codec.py', '_set_body', 2, 6, 4).
+python_function('packages/dsl2testql/src/dsl2testql/pb_codec.py', '_decode_query_body', 2, 4, 0).
+python_function('packages/dsl2testql/src/dsl2testql/pb_codec.py', '_decode_patch_body', 2, 4, 0).
+python_function('packages/dsl2testql/src/dsl2testql/pb_codec.py', '_decode_generate_body', 2, 3, 0).
+python_function('packages/dsl2testql/src/dsl2testql/pb_codec.py', 'envelope_to_dict', 1, 4, 5).
+python_function('packages/dsl2testql/src/dsl2testql/pb_codec.py', 'encode_protobuf', 1, 1, 6).
+python_function('packages/dsl2testql/src/dsl2testql/pb_codec.py', 'decode_protobuf', 1, 1, 3).
+python_function('packages/dsl2testql/src/dsl2testql/pb_codec.py', 'encode_text_to_protobuf', 1, 2, 3).
+python_function('packages/dsl2testql/src/dsl2testql/pb_codec.py', 'decode_protobuf_to_text', 1, 1, 2).
+python_function('packages/dsl2testql/src/dsl2testql/pb_codec.py', 'result_to_pb', 1, 4, 4).
+python_function('packages/dsl2testql/src/dsl2testql/pb_codec.py', 'encode_result_protobuf', 1, 1, 2).
+python_function('packages/dsl2testql/src/dsl2testql/schema_registry.py', '_load_schemas', 0, 3, 9).
+python_function('packages/dsl2testql/src/dsl2testql/schema_registry.py', 'schema_for_verb', 1, 1, 3).
+python_function('packages/dsl2testql/src/dsl2testql/schema_registry.py', 'all_schemas', 0, 1, 2).
+python_function('packages/dsl2testql/src/dsl2testql/schema_registry.py', 'validate_command_dict', 1, 3, 7).
+python_function('packages/dsl2testql/src/dsl2testql/schema_registry.py', 'validate_schema_registry', 0, 3, 4).
+python_function('packages/mcp2testql/src/mcp2testql/cli.py', 'main', 1, 4, 8).
+python_function('packages/mcp2testql/src/mcp2testql/server.py', '_require_fastmcp', 0, 2, 1).
+python_function('packages/mcp2testql/src/mcp2testql/server.py', 'create_server', 1, 1, 1).
+python_function('packages/mcp2testql/src/mcp2testql/server.py', 'run_server', 0, 1, 2).
+python_function('packages/nlp2testql/src/nlp2testql/pipeline.py', 'plan_with_rules', 1, 2, 4).
+python_function('packages/nlp2testql/src/nlp2testql/pipeline.py', 'generate_spec', 1, 6, 11).
+python_function('packages/nlp2testql/src/nlp2testql/validate.py', 'validate_testql', 1, 2, 3).
+python_function('packages/nlp2testql/src/nlp2testql/validate.py', 'validate_testql_file', 1, 2, 4).
+python_function('packages/uri2testql/src/uri2testql/block_resolver.py', 'parse_block_ref', 1, 6, 4).
+python_function('packages/uri2testql/src/uri2testql/block_resolver.py', 'selector_from_ref', 1, 10, 0).
+python_function('packages/uri2testql/src/uri2testql/block_resolver.py', '_find_named', 1, 3, 2).
+python_function('packages/uri2testql/src/uri2testql/block_resolver.py', 'extract_block_data', 3, 12, 3).
+python_function('packages/uri2testql/src/uri2testql/block_resolver.py', 'render_block_partial', 2, 14, 3).
+python_function('packages/uri2testql/src/uri2testql/files.py', 'resolve_testql_file', 1, 8, 7).
+python_function('packages/uri2testql/src/uri2testql/materialize.py', '_materialize_file', 1, 4, 8).
+python_function('packages/uri2testql/src/uri2testql/materialize.py', '_materialize_generate', 1, 6, 7).
+python_function('packages/uri2testql/src/uri2testql/materialize.py', '_materialize_block', 1, 5, 11).
+python_function('packages/uri2testql/src/uri2testql/materialize.py', 'materialize_uri', 1, 9, 10).
+python_function('packages/uri2testql/src/uri2testql/patch.py', '_selector_pattern', 1, 12, 5).
+python_function('packages/uri2testql/src/uri2testql/patch.py', '_find_block_span', 2, 5, 2).
+python_function('packages/uri2testql/src/uri2testql/patch.py', 'replace_block_in_text', 3, 3, 8).
+python_function('packages/uri2testql/src/uri2testql/patch.py', 'append_blocks_to_text', 2, 3, 2).
+python_function('packages/uri2testql/src/uri2testql/patch.py', 'patch_uri', 1, 6, 11).
+python_function('packages/uri2testql/src/uri2testql/patch.py', 'append_uri', 1, 6, 9).
+python_function('packages/uri2testql/src/uri2testql/patch.py', 'apply_uri', 1, 8, 6).
+python_function('packages/uri2testql/src/uri2testql/patch.py', 'update_uri', 1, 1, 1).
+python_function('packages/uri2testql/src/uri2testql/query.py', '_to_plain', 1, 8, 5).
+python_function('packages/uri2testql/src/uri2testql/query.py', '_render_partial', 2, 1, 2).
+python_function('packages/uri2testql/src/uri2testql/query.py', '_extract_data', 2, 1, 2).
+python_function('packages/uri2testql/src/uri2testql/query.py', '_selector_from_parts', 1, 2, 3).
+python_function('packages/uri2testql/src/uri2testql/query.py', '_apply_output_format', 2, 3, 2).
+python_function('packages/uri2testql/src/uri2testql/query.py', '_query_file_source', 1, 4, 10).
+python_function('packages/uri2testql/src/uri2testql/query.py', '_query_generate_source', 1, 6, 6).
+python_function('packages/uri2testql/src/uri2testql/query.py', '_query_block_source', 1, 3, 12).
+python_function('packages/uri2testql/src/uri2testql/query.py', 'query_uri', 1, 9, 11).
+python_function('packages/uri2testql/src/uri2testql/uri.py', '_encode', 1, 1, 1).
+python_function('packages/uri2testql/src/uri2testql/uri.py', '_decode', 1, 2, 1).
+python_function('packages/uri2testql/src/uri2testql/uri.py', 'uri_for_file', 1, 2, 1).
+python_function('packages/uri2testql/src/uri2testql/uri.py', 'uri_for_block', 0, 7, 3).
+python_function('packages/uri2testql/src/uri2testql/uri.py', 'uri_for_generate', 1, 2, 1).
+python_function('packages/uri2testql/src/uri2testql/uri.py', 'is_testql_uri', 1, 1, 2).
+python_function('packages/uri2testql/src/uri2testql/uri.py', 'parse_testql_uri', 1, 7, 6).
+python_function('packages/uri2testql/src/uri2testql/uri.py', 'build_testql_uri_index', 0, 1, 1).
 python_function('test_autoloop_api.py', 'add_colors', 0, 1, 0).
 python_function('test_autoloop_api.py', 'ok', 1, 1, 1).
 python_function('test_autoloop_api.py', 'fail', 1, 1, 1).
@@ -511,6 +687,7 @@ python_function('testql/adapters/nl/nl_adapter.py', 'render', 1, 5, 2).
 python_function('testql/adapters/nlp2dsl/llm_provider.py', 'live_llm_enabled', 1, 2, 3).
 python_function('testql/adapters/nlp2dsl/llm_provider.py', 'resolve_llm_provider', 0, 4, 5).
 python_function('testql/adapters/nlp2dsl/mock_llm.py', 'load_mock_replies', 1, 5, 8).
+python_function('testql/adapters/nlp2env/nlp2env_adapter.py', 'scenario_count_from_source', 1, 1, 2).
 python_function('testql/adapters/proto/__init__.py', 'has_protobuf', 0, 2, 0).
 python_function('testql/adapters/proto/compatibility.py', '_wire_compatible', 2, 4, 1).
 python_function('testql/adapters/proto/compatibility.py', '_compare_field', 3, 5, 3).
@@ -687,6 +864,7 @@ python_function('testql/cli.py', 'cli', 0, 1, 3).
 python_function('testql/cli.py', '_fetch_latest_version', 0, 2, 3).
 python_function('testql/cli.py', 'check_and_upgrade', 0, 4, 3).
 python_function('testql/cli.py', 'main', 0, 1, 2).
+python_function('testql/commands/__init__.py', '__getattr__', 1, 2, 3).
 python_function('testql/commands/auto_cmd.py', 'auto', 8, 5, 12).
 python_function('testql/commands/auto_cmd.py', '_status_color', 1, 1, 1).
 python_function('testql/commands/auto_cmd.py', '_run_generation_phase', 2, 2, 6).
@@ -798,8 +976,13 @@ python_function('testql/commands/misc_cmds.py', 'watch', 4, 4, 19).
 python_function('testql/commands/misc_cmds.py', 'from_sumd', 3, 3, 10).
 python_function('testql/commands/misc_cmds.py', 'report', 3, 4, 10).
 python_function('testql/commands/misc_cmds.py', 'echo', 5, 4, 10).
+python_function('testql/commands/nlp2env_cmd.py', '_validate', 1, 5, 5).
+python_function('testql/commands/nlp2env_cmd.py', 'nlp2env', 0, 1, 1).
+python_function('testql/commands/nlp2env_cmd.py', 'nlp2env_run', 8, 10, 15).
 python_function('testql/commands/run_cmd.py', '_resolve_input_paths', 1, 10, 8).
-python_function('testql/commands/run_cmd.py', '_run_single', 5, 1, 4).
+python_function('testql/commands/run_cmd.py', '_run_nlp2env', 2, 1, 4).
+python_function('testql/commands/run_cmd.py', '_is_nlp2env_scenario', 1, 2, 3).
+python_function('testql/commands/run_cmd.py', '_run_single', 5, 2, 6).
 python_function('testql/commands/run_cmd.py', '_emit_single_json', 1, 1, 4).
 python_function('testql/commands/run_cmd.py', '_emit_multi_json', 1, 3, 7).
 python_function('testql/commands/run_cmd.py', '_maybe_planfile', 3, 9, 4).
@@ -842,8 +1025,80 @@ python_function('testql/commands/watchdog_cmd.py', '_update_metrics', 5, 11, 6).
 python_function('testql/commands/watchdog_cmd.py', '_resolve_watchdog_config', 5, 6, 4).
 python_function('testql/commands/watchdog_cmd.py', '_process_one_scenario', 5, 3, 7).
 python_function('testql/commands/watchdog_cmd.py', 'watchdog', 8, 14, 19).
+python_function('testql/context/runtime.py', '_desktop_tools', 0, 3, 2).
+python_function('testql/context/runtime.py', 'detect_runtime_profile', 0, 12, 14).
+python_function('testql/context/runtime.py', '_importable', 1, 2, 1).
+python_function('testql/context/runtime.py', 'profile_to_variables', 1, 5, 3).
+python_function('testql/context/runtime.py', '_profile_str', 1, 3, 2).
+python_function('testql/context/runtime.py', '_profile_bool', 1, 1, 2).
+python_function('testql/context/runtime.py', '_profile_capabilities', 1, 5, 4).
+python_function('testql/context/runtime.py', '_coerce_profile_dict', 1, 4, 6).
+python_function('testql/context/runtime.py', 'apply_profile', 2, 4, 6).
 python_function('testql/conversation/runner.py', '_step_status_name', 1, 4, 0).
 python_function('testql/conversation/runner.py', '_extract_path', 2, 4, 3).
+python_function('testql/desktop/backend.py', '_parse_xdotool_geometry', 1, 10, 3).
+python_function('testql/desktop/backend.py', '_desktop_window_from_vdisplay', 1, 6, 5).
+python_function('testql/desktop/backend.py', '_match_window_by_vdisplay_title', 2, 7, 4).
+python_function('testql/desktop/backend.py', '_run', 1, 2, 1).
+python_function('testql/desktop/backend.py', 'detect_display_server', 0, 3, 1).
+python_function('testql/desktop/backend.py', 'get_desktop_backend', 1, 1, 1).
+python_function('testql/desktop/catalog.py', 'collect_desktop_catalog', 0, 4, 3).
+python_function('testql/desktop/element_assert.py', 'evaluate_element_assert', 0, 5, 1).
+python_function('testql/desktop/screenshot_tools.py', 'screenshot_candidates', 0, 8, 4).
+python_function('testql/desktop/screenshot_tools.py', 'try_screenshot_candidates', 1, 12, 7).
+python_function('testql/desktop/vdisplay_capture.py', '_allocate_virtual_display', 0, 3, 1).
+python_function('testql/desktop/vdisplay_capture.py', 'vdisplay_available', 0, 1, 0).
+python_function('testql/desktop/vdisplay_capture.py', 'vdisplay_missing_message', 0, 2, 0).
+python_function('testql/desktop/vdisplay_capture.py', 'resolve_display', 0, 3, 3).
+python_function('testql/desktop/vdisplay_capture.py', '_format_window_id', 1, 2, 5).
+python_function('testql/desktop/vdisplay_capture.py', '_xwd_window_png', 2, 5, 4).
+python_function('testql/desktop/vdisplay_capture.py', 'shutil_which', 1, 1, 1).
+python_function('testql/desktop/vdisplay_capture.py', 'is_blank_image', 1, 13, 6).
+python_function('testql/desktop/vdisplay_capture.py', '_scene_class', 1, 4, 2).
+python_function('testql/desktop/vdisplay_capture.py', '_primary_output', 1, 3, 1).
+python_function('testql/desktop/vdisplay_capture.py', '_match_output_by_index', 2, 5, 2).
+python_function('testql/desktop/vdisplay_capture.py', '_match_output_by_name', 2, 5, 3).
+python_function('testql/desktop/vdisplay_capture.py', '_resolve_monitor', 2, 5, 8).
+python_function('testql/desktop/vdisplay_capture.py', '_windows_on_monitor', 2, 7, 3).
+python_function('testql/desktop/vdisplay_capture.py', '_paste_window', 1, 3, 6).
+python_function('testql/desktop/vdisplay_capture.py', 'build_monitor_canvas', 0, 9, 12).
+python_function('testql/desktop/vdisplay_capture.py', '_viewer_script', 3, 1, 0).
+python_function('testql/desktop/vdisplay_capture.py', '_find_mirror_window', 1, 4, 4).
+python_function('testql/desktop/vdisplay_capture.py', '_capture_virtual_window', 2, 4, 3).
+python_function('testql/desktop/vdisplay_capture.py', '_stop_mirror_resources', 0, 6, 6).
+python_function('testql/desktop/vdisplay_capture.py', '_mirror_capture_result', 0, 5, 5).
+python_function('testql/desktop/vdisplay_capture.py', 'capture_monitor_mirror_virtual', 1, 9, 22).
+python_function('testql/desktop/vdisplay_capture.py', 'capture_monitor_composite', 1, 4, 9).
+python_function('testql/desktop/vdisplay_capture.py', '_desktop_bounds', 1, 7, 3).
+python_function('testql/desktop/vdisplay_capture.py', '_composite_windows', 1, 5, 3).
+python_function('testql/desktop/vdisplay_capture.py', '_finalize_desktop_composite', 1, 2, 3).
+python_function('testql/desktop/vdisplay_capture.py', 'capture_desktop_composite', 1, 5, 15).
+python_function('testql/desktop/vdisplay_capture.py', '_try_scrot_region_capture', 1, 12, 11).
+python_function('testql/desktop/vdisplay_capture.py', 'capture_via_vdisplay', 1, 8, 9).
+python_function('testql/desktop/vdisplay_capture.py', 'read_capture_meta', 1, 4, 6).
+python_function('testql/desktop/vdisplay_capture.py', 'save_capture_with_meta', 2, 1, 5).
+python_function('testql/desktop/vision.py', 'check_vision_availability', 0, 4, 3).
+python_function('testql/desktop/vision.py', '_display', 0, 2, 2).
+python_function('testql/desktop/vision.py', 'list_monitors', 0, 8, 13).
+python_function('testql/desktop/vision.py', 'list_os_windows', 0, 14, 11).
+python_function('testql/desktop/vision.py', 'describe_image', 1, 4, 7).
+python_function('testql/desktop/vision.py', 'analyze_layout', 1, 9, 15).
+python_function('testql/desktop/vision.py', '_collect_ocr_text', 1, 9, 3).
+python_function('testql/desktop/vision.py', 'find_text', 2, 8, 13).
+python_function('testql/desktop/vision.py', 'inspect_environment', 0, 5, 18).
+python_function('testql/desktop/window_discovery.py', '_display', 0, 3, 4).
+python_function('testql/desktop/window_discovery.py', '_vdisplay_available', 0, 2, 0).
+python_function('testql/desktop/window_discovery.py', 'window_to_hex_id', 1, 2, 5).
+python_function('testql/desktop/window_discovery.py', '_has_unusable_title', 2, 3, 0).
+python_function('testql/desktop/window_discovery.py', '_is_internal_without_title', 3, 3, 2).
+python_function('testql/desktop/window_discovery.py', '_matches_junk_marker', 2, 3, 1).
+python_function('testql/desktop/window_discovery.py', '_meets_min_size', 2, 2, 0).
+python_function('testql/desktop/window_discovery.py', 'is_capture_window', 1, 12, 9).
+python_function('testql/desktop/window_discovery.py', '_filter_capture_windows', 1, 3, 1).
+python_function('testql/desktop/window_discovery.py', 'list_capture_windows', 0, 6, 5).
+python_function('testql/desktop/window_discovery.py', 'window_display_title', 1, 8, 4).
+python_function('testql/desktop/window_discovery.py', 'window_matches', 2, 8, 6).
+python_function('testql/desktop/wmctrl.py', 'parse_wmctrl_listing', 1, 3, 7).
 python_function('testql/detectors/unified.py', 'detect_endpoints', 3, 2, 3).
 python_function('testql/discovery/manifest.py', '_score_confidence', 1, 5, 1).
 python_function('testql/discovery/manifest.py', '_merge_metadata', 1, 10, 5).
@@ -877,6 +1132,7 @@ python_function('testql/discovery/registry.py', 'default_probes', 2, 3, 8).
 python_function('testql/discovery/registry.py', 'discover_path', 3, 1, 2).
 python_function('testql/discovery/registry.py', '_cost_key', 1, 1, 1).
 python_function('testql/doql_parser.py', 'parse_doql_file', 1, 1, 2).
+python_function('testql/export/scenario_builder.py', '_csv', 1, 3, 3).
 python_function('testql/generators/convenience.py', 'generate_for_project', 1, 1, 2).
 python_function('testql/generators/convenience.py', 'generate_for_workspace', 1, 1, 3).
 python_function('testql/generators/conversation_generator.py', 'trace_from_export', 1, 4, 2).
@@ -968,8 +1224,19 @@ python_function('testql/interpreter/_api_runner.py', '_navigate_dot_notation', 2
 python_function('testql/interpreter/_api_runner.py', '_navigate_dot_part', 2, 4, 4).
 python_function('testql/interpreter/_api_runner.py', '_handle_length_virtual', 1, 2, 2).
 python_function('testql/interpreter/_api_runner.py', '_handle_mixed_notation', 2, 3, 4).
+python_function('testql/interpreter/_gui_expand.py', 'quote_gui_token', 1, 3, 1).
+python_function('testql/interpreter/_gui_expand.py', 'gui_row_fields', 1, 4, 4).
+python_function('testql/interpreter/_gui_expand.py', '_format_gui_value', 1, 4, 2).
+python_function('testql/interpreter/_gui_expand.py', '_format_gui_expected', 1, 5, 3).
+python_function('testql/interpreter/_gui_expand.py', '_gui_action_group', 1, 8, 0).
+python_function('testql/interpreter/_gui_expand.py', '_expand_gui_nav', 0, 4, 3).
+python_function('testql/interpreter/_gui_expand.py', '_expand_gui_input', 0, 1, 3).
+python_function('testql/interpreter/_gui_expand.py', '_expand_gui_text', 0, 1, 4).
+python_function('testql/interpreter/_gui_expand.py', '_expand_gui_custom', 0, 2, 5).
+python_function('testql/interpreter/_gui_expand.py', 'expand_gui_row', 1, 9, 9).
 python_function('testql/interpreter/_parser.py', 'parse_oql', 2, 5, 9).
 python_function('testql/interpreter/_testtoon_parser.py', 'validate_testtoon', 1, 2, 2).
+python_function('testql/interpreter/_testtoon_parser.py', '_append_raw_command', 4, 2, 2).
 python_function('testql/interpreter/_testtoon_parser.py', '_expand_config', 3, 4, 7).
 python_function('testql/interpreter/_testtoon_parser.py', '_append_api_asserts', 3, 9, 4).
 python_function('testql/interpreter/_testtoon_parser.py', '_expand_api', 3, 4, 7).
@@ -978,6 +1245,9 @@ python_function('testql/interpreter/_testtoon_parser.py', '_expand_encoder', 3, 
 python_function('testql/interpreter/_testtoon_parser.py', '_expand_select', 3, 5, 8).
 python_function('testql/interpreter/_testtoon_parser.py', '_expand_assert', 3, 9, 4).
 python_function('testql/interpreter/_testtoon_parser.py', '_expand_steps', 3, 3, 5).
+python_function('testql/interpreter/_testtoon_parser.py', '_expand_environment', 3, 9, 6).
+python_function('testql/interpreter/_testtoon_parser.py', '_expand_context', 3, 8, 5).
+python_function('testql/interpreter/_testtoon_parser.py', '_expand_gui', 3, 3, 2).
 python_function('testql/interpreter/_testtoon_parser.py', '_expand_flow', 3, 14, 9).
 python_function('testql/interpreter/_testtoon_parser.py', '_expand_oql', 3, 2, 3).
 python_function('testql/interpreter/_testtoon_parser.py', '_expand_wait', 3, 2, 4).
@@ -991,6 +1261,7 @@ python_function('testql/interpreter/_testtoon_parser.py', '_shell_timeout_ms', 2
 python_function('testql/interpreter/_testtoon_parser.py', '_quote_shell_command', 1, 1, 1).
 python_function('testql/interpreter/_testtoon_parser.py', '_expand_shell', 3, 6, 8).
 python_function('testql/interpreter/_testtoon_parser.py', '_expand_modbus', 3, 7, 8).
+python_function('testql/interpreter/_testtoon_parser.py', '_expand_desktop', 3, 11, 6).
 python_function('testql/interpreter/_testtoon_parser.py', '_expand_generic', 3, 4, 5).
 python_function('testql/interpreter/_testtoon_parser.py', 'testtoon_to_oql', 2, 2, 4).
 python_function('testql/interpreter/_validation.py', '_resolve_target', 2, 11, 8).
@@ -1131,6 +1402,31 @@ python_function('testql/meta/mutator.py', 'mutate', 1, 2, 2).
 python_function('testql/meta/mutator.py', 'run_mutation_test', 2, 4, 4).
 python_function('testql/meta/self_test.py', 'generate_self_test_plan', 1, 1, 2).
 python_function('testql/meta/self_test.py', 'run_self_test', 1, 1, 6).
+python_function('testql/nlp2env/__init__.py', '__getattr__', 1, 3, 1).
+python_function('testql/nlp2env/llm.py', 'ollama_reachable', 1, 3, 3).
+python_function('testql/nlp2env/llm.py', 'resolve_llm_backend', 0, 5, 5).
+python_function('testql/nlp2env/llm.py', '_http_post_json', 3, 2, 7).
+python_function('testql/nlp2env/llm.py', '_extract_json_object', 1, 5, 7).
+python_function('testql/nlp2env/llm.py', 'translate_nl_to_mcp', 3, 7, 12).
+python_function('testql/nlp2env/mcp_client.py', '_find_mcp_command', 0, 7, 8).
+python_function('testql/nlp2env/mcp_client.py', '_call_tool_async', 2, 5, 10).
+python_function('testql/nlp2env/mcp_client.py', 'mcp_call', 2, 1, 2).
+python_function('testql/nlp2env/mcp_client.py', 'assert_ok', 2, 2, 2).
+python_function('testql/nlp2env/mcp_client.py', 'mcp_available', 0, 3, 2).
+python_function('testql/nlp2env/runner.py', 'run_nlp2env_file', 1, 1, 2).
+python_function('testql/nlp2env/runner.py', 'is_nlp2env_scenario_text', 1, 1, 2).
+python_function('testql/nlp2env/scenarios.py', '_strip_quoted', 1, 6, 2).
+python_function('testql/nlp2env/scenarios.py', '_detect_sep', 1, 2, 1).
+python_function('testql/nlp2env/scenarios.py', '_split_row', 3, 9, 2).
+python_function('testql/nlp2env/scenarios.py', '_parse_value', 1, 6, 4).
+python_function('testql/nlp2env/scenarios.py', '_parse_nlp2env_toon', 1, 13, 15).
+python_function('testql/nlp2env/scenarios.py', '_index_prompt_fields', 1, 6, 5).
+python_function('testql/nlp2env/scenarios.py', '_index_expects', 1, 6, 6).
+python_function('testql/nlp2env/scenarios.py', '_prompt_id_column', 1, 3, 0).
+python_function('testql/nlp2env/scenarios.py', 'scenarios_from_parsed', 1, 11, 12).
+python_function('testql/nlp2env/scenarios.py', 'load_scenarios', 1, 1, 2).
+python_function('testql/nlp2env/scenarios.py', 'load_scenarios_file', 1, 1, 3).
+python_function('testql/nlp2env/scenarios.py', 'scenario_count', 1, 2, 2).
 python_function('testql/openapi_generator.py', '_extract_path_params', 1, 4, 3).
 python_function('testql/openapi_generator.py', '_extract_ep_params', 2, 7, 4).
 python_function('testql/openapi_generator.py', 'generate_openapi_spec', 3, 1, 3).
@@ -1235,11 +1531,56 @@ python_function('tests/conftest.py', 'pytest_collection_modifyitems', 2, 4, 6).
 python_function('tests/fixtures/discovery/python_pkg/sample_api/main.py', 'health', 0, 1, 1).
 python_function('tests/test_browser_discovery.py', 'mock_playwright', 0, 1, 2).
 python_function('tests/test_browser_discovery.py', 'test_playwright_probe_collects_console_and_network', 1, 9, 4).
+python_function('tests/test_cc_refactor_helpers.py', 'test_quote_gui_token_preserves_interpolation', 0, 3, 1).
+python_function('tests/test_cc_refactor_helpers.py', 'test_expand_gui_row_emits_start_and_input', 0, 4, 3).
+python_function('tests/test_cc_refactor_helpers.py', 'test_scenario_index_helpers', 0, 4, 3).
+python_function('tests/test_cc_refactor_helpers.py', 'test_coerce_profile_dict_accepts_dotted_keys', 0, 6, 2).
+python_function('tests/test_cc_refactor_helpers.py', 'test_dsl2testql_grammar_parse_line', 0, 2, 1).
+python_function('tests/test_cc_refactor_helpers.py', 'test_dsl2testql_envelope_roundtrip', 0, 6, 3).
+python_function('tests/test_cc_refactor_helpers.py', 'test_uri_block_resolver_app_selector', 0, 2, 2).
+python_function('tests/test_cc_refactor_helpers.py', 'test_expand_gui_row_click_and_stop', 0, 5, 3).
+python_function('tests/test_cc_refactor_helpers.py', 'test_cli2testql_cmd_exec_line_reports_failure', 1, 3, 3).
 python_function('tests/test_conversation_live_llm.py', 'test_live_llm_reply_for_real_api', 0, 5, 5).
 python_function('tests/test_conversation_live_llm.py', 'test_conversation_runner_with_live_llm_smoke', 0, 4, 10).
 python_function('tests/test_conversation_nlp2dsl.py', 'test_runner_with_fake_client', 0, 3, 7).
+python_function('tests/test_desktop_assert_elements.py', 'test_assert_elements_passes_on_mirrored_windows', 2, 3, 7).
+python_function('tests/test_desktop_assert_elements.py', 'test_assert_elements_fails_on_empty_capture', 2, 3, 8).
+python_function('tests/test_desktop_backend.py', 'test_parse_wmctrl_listing', 0, 5, 2).
+python_function('tests/test_desktop_backend.py', 'test_focus_window_by_title', 1, 5, 6).
+python_function('tests/test_desktop_backend.py', 'test_launch_executable', 2, 3, 7).
+python_function('tests/test_desktop_backend.py', 'test_type_text_wayland', 1, 3, 5).
+python_function('tests/test_desktop_backend.py', 'test_list_windows_xdotool_fallback', 1, 4, 6).
+python_function('tests/test_desktop_backend.py', 'test_screenshot_vdisplay_failure_does_not_raise', 2, 2, 4).
+python_function('tests/test_desktop_backend.py', 'test_screenshot_scrot_fallback_on_wayland', 2, 2, 8).
+python_function('tests/test_desktop_backend.py', 'test_live_list_windows', 0, 4, 5).
+python_function('tests/test_desktop_catalog.py', 'test_collect_desktop_catalog_has_commands', 0, 7, 3).
+python_function('tests/test_desktop_execution.py', 'interpreter', 0, 1, 1).
+python_function('tests/test_desktop_execution.py', 'test_desktop_list_dry_run', 1, 2, 2).
+python_function('tests/test_desktop_execution.py', 'test_desktop_focus_dry_run', 1, 2, 2).
+python_function('tests/test_desktop_execution.py', 'test_desktop_launch_dry_run', 1, 2, 2).
+python_function('tests/test_desktop_execution.py', 'test_desktop_click_dry_run', 1, 2, 2).
+python_function('tests/test_desktop_execution.py', 'test_desktop_type_dry_run', 1, 2, 2).
+python_function('tests/test_desktop_execution.py', 'test_desktop_key_dry_run', 1, 2, 2).
+python_function('tests/test_desktop_execution.py', 'test_desktop_capture_dry_run', 1, 2, 2).
+python_function('tests/test_desktop_execution.py', 'test_desktop_assert_window_dry_run', 1, 2, 2).
+python_function('tests/test_desktop_execution.py', 'test_dispatcher_registers_desktop_commands', 1, 3, 1).
+python_function('tests/test_desktop_vision.py', 'interpreter', 0, 1, 1).
+python_function('tests/test_desktop_vision.py', 'test_check_vision_availability', 0, 3, 3).
+python_function('tests/test_desktop_vision.py', 'test_list_monitors_xrandr_fallback', 1, 4, 5).
+python_function('tests/test_desktop_vision.py', 'test_desktop_monitors_dry_run', 1, 2, 2).
+python_function('tests/test_desktop_vision.py', 'test_desktop_inspect_dry_run', 1, 2, 2).
+python_function('tests/test_desktop_vision.py', 'test_desktop_describe_dry_run', 1, 2, 2).
+python_function('tests/test_desktop_vision.py', 'test_desktop_analyze_dry_run', 1, 2, 2).
+python_function('tests/test_desktop_vision.py', 'test_desktop_assert_text_dry_run', 1, 2, 2).
+python_function('tests/test_desktop_vision.py', 'test_desktop_assert_elements_dry_run', 1, 2, 2).
+python_function('tests/test_desktop_vision.py', 'test_dispatcher_registers_vision_commands', 1, 3, 1).
+python_function('tests/test_desktop_vision.py', 'test_collect_desktop_catalog_includes_vision_commands', 0, 4, 1).
+python_function('tests/test_desktop_vision.py', 'test_live_inspect_environment', 1, 6, 4).
 python_function('tests/test_detectors.py', '_write', 3, 1, 2).
 python_function('tests/test_echo.py', 'write_toon', 3, 1, 2).
+python_function('tests/test_element_assert.py', 'test_element_assert_passes_on_imgl_count', 0, 3, 1).
+python_function('tests/test_element_assert.py', 'test_element_assert_passes_on_mirrored_windows', 0, 3, 1).
+python_function('tests/test_element_assert.py', 'test_element_assert_fails_on_empty_capture', 0, 3, 1).
 python_function('tests/test_encoder_routes.py', 'test_normalize_legacy_test_path', 0, 2, 2).
 python_function('tests/test_encoder_routes.py', 'test_normalize_legacy_view_path', 0, 2, 2).
 python_function('tests/test_encoder_routes.py', 'test_normalize_testql_prefixed_path', 0, 2, 2).
@@ -1262,6 +1603,7 @@ python_function('tests/test_nl_intent_recognizer.py', 'pl', 0, 1, 1).
 python_function('tests/test_nl_intent_recognizer.py', 'en', 0, 1, 1).
 python_function('tests/test_nl_scenarios_e2e.py', '_scenario_files', 0, 1, 2).
 python_function('tests/test_nl_scenarios_e2e.py', 'scenario', 1, 1, 2).
+python_function('tests/test_nlp2env_adapter.py', 'test_real_inline_scenario_dry_run', 0, 3, 7).
 python_function('tests/test_openapi_generator.py', '_make_ep', 11, 4, 2).
 python_function('tests/test_plugin_registry.py', '_install_module', 2, 2, 3).
 python_function('tests/test_proto_graphql_scenarios_e2e.py', '_proto_scenarios', 0, 1, 2).
@@ -1274,6 +1616,12 @@ python_function('tests/test_reporters.py', 'make_step', 4, 1, 1).
 python_function('tests/test_run_cmd.py', '_install_fake_interpreter', 1, 1, 2).
 python_function('tests/test_run_cmd.py', '_mk_scenario', 1, 1, 1).
 python_function('tests/test_run_ir_cli.py', '_write', 3, 1, 1).
+python_function('tests/test_runtime_context.py', 'test_detect_runtime_profile_has_browser_or_api', 0, 3, 1).
+python_function('tests/test_runtime_context.py', 'test_profile_to_variables_flattens_browser_keys', 0, 3, 2).
+python_function('tests/test_runtime_context.py', 'test_environment_section_expands_to_context_apply', 0, 5, 1).
+python_function('tests/test_runtime_context.py', 'test_gui_section_expands_to_gui_commands', 0, 6, 1).
+python_function('tests/test_runtime_context.py', 'test_context_detect_command_sets_variables', 0, 4, 4).
+python_function('tests/test_runtime_context.py', 'test_scenario_builder_roundtrip_parseable', 0, 2, 7).
 python_function('tests/test_smoke_decisions.py', '_load', 1, 1, 2).
 python_function('tests/test_smoke_decisions.py', '_schema', 0, 1, 2).
 python_function('tests/test_smoke_decisions.py', '_check_required', 2, 3, 1).
@@ -1289,11 +1637,43 @@ python_function('tests/test_targets.py', '_sample_plan', 0, 1, 4).
 python_function('tests/test_topology_generator.py', '_manifest', 0, 2, 6).
 python_function('tests/test_validation.py', 'interp', 0, 1, 2).
 python_function('tests/test_validation.py', '_seed_shell', 4, 1, 0).
+python_function('tests/test_vdisplay_capture.py', 'test_capture_monitor_composite_places_windows', 2, 6, 7).
+python_function('tests/test_vdisplay_capture.py', 'test_capture_via_vdisplay_prefers_mirror', 2, 4, 5).
+python_function('tests/test_vdisplay_capture.py', 'test_capture_desktop_composite_places_windows', 2, 6, 6).
+python_function('tests/test_vdisplay_capture.py', 'test_capture_via_vdisplay_falls_back_to_scrot_region', 2, 4, 4).
+python_function('tests/test_vdisplay_capture.py', 'test_capture_via_vdisplay_falls_back', 2, 3, 5).
+python_function('tests/test_vdisplay_capture.py', 'test_backend_uses_vdisplay_when_scrot_blank', 2, 3, 8).
+python_function('tests/test_window_discovery.py', 'test_is_capture_window_rejects_root_and_junk', 0, 4, 1).
+python_function('tests/test_window_discovery.py', 'test_list_capture_windows_prefers_apps_only', 1, 4, 4).
+python_function('tests/test_window_discovery.py', 'test_list_capture_windows_falls_back_when_apps_empty', 1, 3, 3).
+python_function('tests/test_window_discovery.py', 'test_window_matches_title_and_synthetic_id', 0, 4, 1).
 
 % ── Python Classes ───────────────────────────────────────
 python_class('TODO/testtoon_parser.py', 'Section').
 python_method('Section', 'to_dicts', 0, 1, 0).
 python_method('Section', 'validate', 0, 3, 2).
+python_class('packages/dsl2testql/src/dsl2testql/events.py', 'DslEvent').
+python_method('DslEvent', 'to_dict', 0, 1, 1).
+python_class('packages/dsl2testql/src/dsl2testql/events.py', 'EventStore').
+python_method('EventStore', '__init__', 1, 3, 1).
+python_method('EventStore', 'append', 2, 3, 21).
+python_method('EventStore', 'replay', 0, 7, 13).
+python_class('packages/dsl2testql/src/dsl2testql/result.py', 'DslResult').
+python_method('DslResult', 'to_dict', 0, 1, 0).
+python_class('packages/mcp2testql/src/mcp2testql/server.py', 'TestqlMCPServer').
+python_method('TestqlMCPServer', '__post_init__', 0, 1, 3).
+python_method('TestqlMCPServer', '_register_tools', 0, 1, 12).
+python_method('TestqlMCPServer', 'run', 0, 1, 1).
+python_class('packages/nlp2testql/src/nlp2testql/models.py', 'Plan').
+python_method('Plan', 'to_testql_less', 0, 1, 0).
+python_class('packages/nlp2testql/src/nlp2testql/models.py', 'GenerateResult').
+python_class('packages/uri2testql/src/uri2testql/block_resolver.py', 'BlockRef').
+python_class('packages/uri2testql/src/uri2testql/materialize.py', 'MaterializeResult').
+python_method('MaterializeResult', 'to_dict', 0, 1, 0).
+python_class('packages/uri2testql/src/uri2testql/patch.py', 'PatchResult').
+python_method('PatchResult', 'to_dict', 0, 1, 0).
+python_class('packages/uri2testql/src/uri2testql/query.py', 'QueryResult').
+python_method('QueryResult', 'to_dict', 0, 1, 0).
 python_class('test_autoloop_mcp.py', 'C').
 python_class('test_manifest_and_generators.py', 'Colors').
 python_class('test_manifest_and_generators.py', 'ManifestProbeTester').
@@ -1399,6 +1779,11 @@ python_method('Nlp2DslAdapter', 'detect', 1, 7, 7).
 python_method('Nlp2DslAdapter', 'parse', 1, 4, 5).
 python_method('Nlp2DslAdapter', 'render', 1, 1, 1).
 python_method('Nlp2DslAdapter', 'validate', 1, 6, 4).
+python_class('testql/adapters/nlp2env/nlp2env_adapter.py', 'Nlp2EnvAdapter').
+python_method('Nlp2EnvAdapter', 'detect', 1, 7, 6).
+python_method('Nlp2EnvAdapter', 'parse', 1, 4, 6).
+python_method('Nlp2EnvAdapter', 'render', 1, 1, 1).
+python_method('Nlp2EnvAdapter', 'validate', 1, 2, 3).
 python_class('testql/adapters/proto/compatibility.py', 'CompatibilityIssue').
 python_class('testql/adapters/proto/compatibility.py', 'CompatibilityReport').
 python_method('CompatibilityReport', 'is_compatible', 0, 2, 1).
@@ -1486,6 +1871,8 @@ python_method('TestContentBuilder', '_build_mixed', 4, 1, 1).
 python_method('TestContentBuilder', '_build_performance', 4, 1, 1).
 python_method('TestContentBuilder', '_build_workflow', 4, 1, 1).
 python_method('TestContentBuilder', '_build_encoder', 4, 1, 1).
+python_class('testql/context/runtime.py', 'RuntimeProfile').
+python_method('RuntimeProfile', 'to_dict', 0, 1, 2).
 python_class('testql/conversation/runner.py', 'TurnTrace').
 python_class('testql/conversation/runner.py', 'ConversationRunResult').
 python_method('ConversationRunResult', 'to_report_dict', 0, 2, 2).
@@ -1506,6 +1893,47 @@ python_method('ConversationRunner', '_run_turn', 2, 4, 5).
 python_method('ConversationRunner', '_run_artifact', 2, 4, 6).
 python_method('ConversationRunner', '_interpolate_str', 1, 2, 3).
 python_method('ConversationRunner', '_interpolate', 1, 6, 4).
+python_class('testql/desktop/backend.py', 'DesktopBackend').
+python_method('DesktopBackend', 'display_server', 0, 1, 0).
+python_method('DesktopBackend', 'tools', 0, 3, 0).
+python_method('DesktopBackend', 'list_windows', 0, 10, 0).
+python_method('DesktopBackend', 'focus_window', 0, 12, 0).
+python_method('DesktopBackend', 'launch', 2, 3, 0).
+python_method('DesktopBackend', 'click', 2, 2, 0).
+python_method('DesktopBackend', 'type_text', 1, 8, 0).
+python_method('DesktopBackend', 'send_key', 1, 11, 0).
+python_method('DesktopBackend', 'screenshot', 1, 10, 0).
+python_class('testql/desktop/backend.py', 'LinuxDesktopBackend').
+python_method('LinuxDesktopBackend', '__init__', 1, 2, 2).
+python_method('LinuxDesktopBackend', 'session', 0, 1, 0).
+python_method('LinuxDesktopBackend', 'display_server', 0, 1, 0).
+python_method('LinuxDesktopBackend', 'tools', 0, 3, 2).
+python_method('LinuxDesktopBackend', 'list_windows', 0, 10, 8).
+python_method('LinuxDesktopBackend', '_list_windows_vdisplay', 0, 4, 3).
+python_method('LinuxDesktopBackend', '_list_windows_xdotool', 0, 10, 8).
+python_method('LinuxDesktopBackend', '_active_window_id', 0, 5, 5).
+python_method('LinuxDesktopBackend', '_match_window', 1, 8, 2).
+python_method('LinuxDesktopBackend', 'focus_window', 0, 12, 8).
+python_method('LinuxDesktopBackend', 'launch', 2, 3, 10).
+python_method('LinuxDesktopBackend', 'click', 2, 2, 2).
+python_method('LinuxDesktopBackend', '_click_x11', 2, 4, 5).
+python_method('LinuxDesktopBackend', '_click_wayland', 2, 6, 5).
+python_method('LinuxDesktopBackend', 'type_text', 1, 8, 4).
+python_method('LinuxDesktopBackend', 'send_key', 1, 11, 10).
+python_method('LinuxDesktopBackend', 'screenshot', 1, 10, 11).
+python_method('LinuxDesktopBackend', '_screenshot_is_blank', 1, 2, 1).
+python_method('LinuxDesktopBackend', '_screenshot_vdisplay', 1, 4, 2).
+python_method('LinuxDesktopBackend', '_screenshot_mss', 1, 4, 6).
+python_class('testql/desktop/element_assert.py', 'ElementAssertOutcome').
+python_class('testql/desktop/models.py', 'DesktopWindow').
+python_class('testql/desktop/models.py', 'DesktopSession').
+python_class('testql/desktop/vdisplay_capture.py', 'CaptureResult').
+python_method('CaptureResult', 'as_dict', 0, 1, 0).
+python_class('testql/desktop/vdisplay_capture.py', 'MonitorCanvas').
+python_class('testql/desktop/vision.py', 'VisionAvailability').
+python_method('VisionAvailability', 'as_dict', 0, 1, 0).
+python_class('testql/desktop/vision.py', 'EnvironmentInspect').
+python_method('EnvironmentInspect', 'as_dict', 0, 1, 0).
 python_class('testql/detectors/base.py', 'BaseEndpointDetector').
 python_method('BaseEndpointDetector', '__init__', 1, 1, 0).
 python_method('BaseEndpointDetector', 'detect', 0, 1, 0).
@@ -1670,6 +2098,17 @@ python_class('testql/echo_schemas.py', 'SystemModel').
 python_class('testql/echo_schemas.py', 'ProjectEcho').
 python_method('ProjectEcho', 'to_dict', 0, 4, 0).
 python_method('ProjectEcho', 'to_text', 0, 8, 4).
+python_class('testql/export/scenario_builder.py', 'ScenarioBuilder').
+python_method('ScenarioBuilder', '__init__', 0, 3, 3).
+python_method('ScenarioBuilder', 'environment', 1, 3, 4).
+python_method('ScenarioBuilder', 'config', 1, 3, 4).
+python_method('ScenarioBuilder', 'context', 1, 3, 4).
+python_method('ScenarioBuilder', 'commands', 1, 2, 2).
+python_method('ScenarioBuilder', 'gui', 1, 7, 4).
+python_method('ScenarioBuilder', 'flow', 1, 8, 4).
+python_method('ScenarioBuilder', 'shell', 1, 4, 3).
+python_method('ScenarioBuilder', 'wait', 1, 1, 1).
+python_method('ScenarioBuilder', 'build', 0, 1, 2).
 python_class('testql/generators/analyzers.py', 'ProjectAnalyzer').
 python_method('ProjectAnalyzer', '_detect_web_frontend', 1, 3, 0).
 python_method('ProjectAnalyzer', '_detect_python_type', 1, 7, 4).
@@ -1866,6 +2305,32 @@ python_method('AssertionsMixin', '_cmd_assert_json', 2, 13, 16).
 python_method('AssertionsMixin', '_cmd_assert_schema', 2, 8, 13).
 python_method('AssertionsMixin', '_cmd_assert_headers', 2, 8, 10).
 python_method('AssertionsMixin', '_cmd_assert_cookies', 2, 13, 11).
+python_class('testql/interpreter/_context.py', 'ContextMixin').
+python_method('ContextMixin', '_cmd_context_detect', 2, 5, 6).
+python_method('ContextMixin', '_cmd_context_apply', 2, 5, 8).
+python_method('ContextMixin', '_record_context_step', 3, 3, 6).
+python_class('testql/interpreter/_desktop.py', 'DesktopMixin').
+python_method('DesktopMixin', '_desktop', 0, 3, 2).
+python_method('DesktopMixin', '_cmd_desktop_list', 2, 4, 8).
+python_method('DesktopMixin', '_cmd_desktop_focus', 2, 6, 10).
+python_method('DesktopMixin', '_cmd_desktop_launch', 2, 5, 11).
+python_method('DesktopMixin', '_cmd_desktop_click', 2, 5, 11).
+python_method('DesktopMixin', '_cmd_desktop_type', 2, 4, 8).
+python_method('DesktopMixin', '_cmd_desktop_key', 2, 4, 8).
+python_method('DesktopMixin', '_cmd_desktop_capture', 2, 12, 16).
+python_method('DesktopMixin', '_cmd_desktop_assert_window', 2, 6, 9).
+python_method('DesktopMixin', '_parse_image_args', 1, 5, 4).
+python_method('DesktopMixin', '_resolve_capture_path', 1, 3, 2).
+python_method('DesktopMixin', '_ensure_capture', 1, 4, 7).
+python_method('DesktopMixin', '_capture_is_stale_blank', 1, 2, 1).
+python_method('DesktopMixin', '_cmd_desktop_monitors', 2, 7, 8).
+python_method('DesktopMixin', '_cmd_desktop_inspect', 2, 11, 12).
+python_method('DesktopMixin', '_cmd_desktop_describe', 2, 8, 10).
+python_method('DesktopMixin', '_cmd_desktop_analyze', 2, 11, 15).
+python_method('DesktopMixin', '_cmd_desktop_assert_text', 2, 5, 9).
+python_method('DesktopMixin', '_cmd_desktop_assert_elements', 2, 14, 16).
+python_method('DesktopMixin', '_cmd_desktop_click_text', 2, 6, 12).
+python_method('DesktopMixin', '_cmd_desktop_stop', 2, 4, 7).
 python_class('testql/interpreter/_encoder.py', 'EncoderMixin').
 python_method('EncoderMixin', '_encoder_url', 0, 1, 1).
 python_method('EncoderMixin', '_encoder_prefix', 0, 1, 1).
@@ -1899,7 +2364,7 @@ python_method('GuiMixin', '_try_single_selector', 2, 5, 3).
 python_method('GuiMixin', '_find_element_with_logging', 2, 6, 5).
 python_method('GuiMixin', '_init_gui_driver', 0, 6, 2).
 python_method('GuiMixin', '_cmd_gui_start', 2, 8, 11).
-python_method('GuiMixin', '_start_playwright', 2, 3, 14).
+python_method('GuiMixin', '_start_playwright', 2, 4, 17).
 python_method('GuiMixin', '_start_selenium', 2, 4, 12).
 python_method('GuiMixin', '_cmd_gui_navigate', 2, 12, 11).
 python_method('GuiMixin', '_cmd_navigate', 2, 1, 1).
@@ -1979,7 +2444,7 @@ python_class('testql/interpreter/dispatcher.py', 'CommandDispatcher').
 python_method('CommandDispatcher', '__init__', 1, 1, 1).
 python_method('CommandDispatcher', '_discover_handlers', 0, 3, 3).
 python_method('CommandDispatcher', 'register', 2, 1, 1).
-python_method('CommandDispatcher', 'dispatch', 3, 5, 11).
+python_method('CommandDispatcher', 'dispatch', 3, 5, 12).
 python_method('CommandDispatcher', 'list_commands', 0, 1, 2).
 python_method('CommandDispatcher', 'has_command', 1, 1, 1).
 python_class('testql/interpreter/dom_scan_mixin.py', 'DomScanMixin').
@@ -2116,6 +2581,23 @@ python_method('MutationReport', 'to_dict', 0, 3, 1).
 python_class('testql/meta/self_test.py', 'SelfTestReport').
 python_method('SelfTestReport', 'is_release_ready', 0, 2, 0).
 python_method('SelfTestReport', 'to_dict', 0, 1, 1).
+python_class('testql/nlp2env/runner.py', 'Nlp2EnvRunner').
+python_method('Nlp2EnvRunner', '_validation_failure', 3, 2, 4).
+python_method('Nlp2EnvRunner', '_dry_run_result', 3, 2, 3).
+python_method('Nlp2EnvRunner', '_resolve_llm_backend', 2, 3, 3).
+python_method('Nlp2EnvRunner', '_execute_scenarios', 0, 6, 9).
+python_method('Nlp2EnvRunner', 'run_file', 1, 8, 13).
+python_method('Nlp2EnvRunner', '_filter_scenarios', 1, 6, 1).
+python_method('Nlp2EnvRunner', '_prepare_env', 4, 4, 4).
+python_method('Nlp2EnvRunner', '_verify_env', 2, 6, 5).
+python_method('Nlp2EnvRunner', '_run_scenario', 1, 11, 10).
+python_class('testql/nlp2env/scenarios.py', 'PromptScenario').
+python_method('PromptScenario', 'nl', 0, 1, 1).
+python_method('PromptScenario', 'source', 0, 1, 2).
+python_method('PromptScenario', 'tool', 0, 1, 1).
+python_method('PromptScenario', 'after', 0, 1, 1).
+python_method('PromptScenario', 'assert_configured', 0, 1, 2).
+python_method('PromptScenario', 'inline_arguments', 0, 4, 1).
 python_class('testql/openapi_generator.py', 'OpenAPISpec').
 python_method('OpenAPISpec', 'to_dict', 0, 1, 0).
 python_method('OpenAPISpec', 'to_json', 1, 1, 2).
@@ -2185,7 +2667,11 @@ python_method('DslCliExecutor', 'cmd_assert_status', 1, 2, 3).
 python_method('DslCliExecutor', 'cmd_assert_json', 1, 12, 10).
 python_method('DslCliExecutor', 'cmd_set_header', 1, 2, 1).
 python_method('DslCliExecutor', 'cmd_set_base_url', 1, 1, 1).
-python_method('DslCliExecutor', 'run_script', 2, 11, 9).
+python_method('DslCliExecutor', '_select_icon', 2, 4, 0).
+python_method('DslCliExecutor', '_format_result_output', 4, 1, 2).
+python_method('DslCliExecutor', '_print_verbose_result', 1, 3, 2).
+python_method('DslCliExecutor', '_handle_execution_error', 2, 2, 1).
+python_method('DslCliExecutor', 'run_script', 2, 6, 10).
 python_method('DslCliExecutor', '_format_cmd', 1, 2, 1).
 python_class('testql/sumd_parser.py', 'SumdMetadata').
 python_class('testql/sumd_parser.py', 'SumdInterface').
@@ -3256,6 +3742,16 @@ python_method('TestSpecificScenarios', 'test_login_pl', 0, 5, 3).
 python_method('TestSpecificScenarios', 'test_api_smoke_pl', 0, 6, 4).
 python_method('TestSpecificScenarios', 'test_encoder_flow_pl', 0, 5, 3).
 python_method('TestSpecificScenarios', 'test_login_en', 0, 4, 3).
+python_class('tests/test_nlp2env_adapter.py', 'TestNlp2EnvAdapter').
+python_method('TestNlp2EnvAdapter', 'test_detect_by_type_header', 0, 3, 2).
+python_method('TestNlp2EnvAdapter', 'test_detect_by_sections', 0, 2, 2).
+python_method('TestNlp2EnvAdapter', 'test_parse_sets_config', 0, 4, 2).
+python_method('TestNlp2EnvAdapter', 'test_validate_requires_prompts', 0, 5, 3).
+python_method('TestNlp2EnvAdapter', 'test_load_scenarios', 0, 5, 2).
+python_method('TestNlp2EnvAdapter', 'test_scenario_count', 0, 3, 1).
+python_class('tests/test_nlp2env_adapter.py', 'TestNlp2EnvRunner').
+python_method('TestNlp2EnvRunner', 'test_dry_run', 1, 4, 5).
+python_method('TestNlp2EnvRunner', 'test_inline_mcp_e2e', 2, 3, 6).
 python_class('tests/test_openapi_generator.py', 'TestOpenAPISpec').
 python_method('TestOpenAPISpec', 'test_defaults', 0, 3, 1).
 python_method('TestOpenAPISpec', 'test_to_dict_has_keys', 0, 2, 4).

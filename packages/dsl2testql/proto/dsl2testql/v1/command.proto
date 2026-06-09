@@ -1,0 +1,35 @@
+syntax = "proto3";
+package dsl2testql.v1;
+
+message QueryCommand {
+  string target = 1;
+  string file = 2;
+  string format = 3;
+}
+
+message ValidateCommand {
+  string path = 1;
+}
+
+message PatchCommand {
+  string target = 1;
+  string with_path = 2;
+  string file = 3;
+}
+
+message GenerateCommand {
+  string text = 1;
+  string out = 2;
+}
+
+message DslEnvelope {
+  string verb = 1;
+  oneof body {
+    QueryCommand query = 10;
+    ValidateCommand validate = 11;
+    PatchCommand patch = 12;
+    GenerateCommand generate = 13;
+  }
+  string default_file = 20;
+  string correlation_id = 21;
+}

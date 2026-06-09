@@ -2409,7 +2409,7 @@
           {
             "kind": "internal",
             "text": "Idea",
-            "url": "https://tom.sapletta.com/category/idea-en/"
+            "url": "https://tom.sapletta.com/category/idea/"
           },
           {
             "kind": "internal",
@@ -2469,7 +2469,7 @@
           {
             "kind": "internal",
             "text": "Idea",
-            "url": "https://tom.sapletta.com/category/idea/"
+            "url": "https://tom.sapletta.com/category/idea-en/"
           },
           {
             "kind": "internal",
@@ -3045,9 +3045,9 @@
       "metadata": {
         "kind": "internal",
         "text": "Idea",
-        "url": "https://tom.sapletta.com/category/idea-en/"
+        "url": "https://tom.sapletta.com/category/idea/"
       },
-      "source": "https://tom.sapletta.com/category/idea-en/"
+      "source": "https://tom.sapletta.com/category/idea/"
     },
     {
       "evidence": [
@@ -3261,9 +3261,9 @@
       "metadata": {
         "kind": "internal",
         "text": "Idea",
-        "url": "https://tom.sapletta.com/category/idea/"
+        "url": "https://tom.sapletta.com/category/idea-en/"
       },
-      "source": "https://tom.sapletta.com/category/idea/"
+      "source": "https://tom.sapletta.com/category/idea-en/"
     },
     {
       "evidence": [
@@ -4729,11 +4729,11 @@
       "id": "subpage.5",
       "kind": "subpage",
       "metadata": {
-        "links": 82,
+        "links": 52,
         "status_code": 200,
         "title": "Idea | Tom Sapletta 'Blog"
       },
-      "source": "https://tom.sapletta.com/category/idea-en/"
+      "source": "https://tom.sapletta.com/category/idea/"
     },
     {
       "evidence": [],

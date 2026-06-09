@@ -2,13 +2,18 @@
 
 from __future__ import annotations
 
+import json
 import os
 import shlex
+import subprocess
+from pathlib import Path
 from typing import Any
 
 from testql.base import StepResult, StepStatus
 from testql.desktop import get_desktop_backend
+from testql.desktop.element_assert import evaluate_element_assert
 from testql.desktop.models import DesktopSession
+from testql.desktop import vision as desktop_vision
 
 from ._parser import OqlLine
 
@@ -25,6 +30,13 @@ class DesktopMixin:
       - DESKTOP_KEY Return | ctrl+s — send key combo
       - DESKTOP_CAPTURE "file.png" — full-screen screenshot
       - DESKTOP_ASSERT_WINDOW "title" — assert window exists
+      - DESKTOP_MONITORS — list connected monitors (vdisplay / xrandr)
+      - DESKTOP_INSPECT ["file.png"] — discover monitors, windows, vision summary
+      - DESKTOP_DESCRIBE "file.png" — img2nl heuristic scene description
+      - DESKTOP_ANALYZE "file.png" [out.json] — imgl OCR/layout analysis
+      - DESKTOP_ASSERT_TEXT "needle" ["file.png"] — assert visible text (imgl OCR)
+      - DESKTOP_ASSERT_ELEMENTS min ["file.png"] — assert imgl layout element count
+      - DESKTOP_CLICK_TEXT "label" ["file.png"] — click element by OCR label/text
       - DESKTOP_STOP — terminate launched apps from this session
     """
 
@@ -219,18 +231,21 @@ class DesktopMixin:
         )
 
     def _cmd_desktop_capture(self, args: str, line: OqlLine) -> None:
-        filename = args.strip().strip('"\'') or "desktop.png"
+        parts = shlex.split(args.strip()) if args.strip() else []
+        filename = parts[0].strip('"\'') if parts else "desktop.png"
+        monitor = parts[1] if len(parts) > 1 else None
 
         if self.dry_run:
-            self.out.step("📸", f'DESKTOP_CAPTURE "{filename}" (dry-run)')
+            label = f' "{monitor}"' if monitor else ""
+            self.out.step("📸", f'DESKTOP_CAPTURE "{filename}"{label} (dry-run)')
             self.results.append(
                 StepResult(name=f'DESKTOP_CAPTURE "{filename}"', status=StepStatus.PASSED),
             )
             return
 
         try:
-            self._desktop().screenshot(filename)
-        except RuntimeError as exc:
+            self._desktop().screenshot(filename, monitor=monitor)
+        except (RuntimeError, subprocess.TimeoutExpired) as exc:
             self.out.fail(f"DESKTOP_CAPTURE error: {exc}")
             self.results.append(
                 StepResult(
@@ -241,7 +256,27 @@ class DesktopMixin:
             )
             return
 
-        self.out.step("📸", f'DESKTOP_CAPTURE → "{filename}"')
+        meta_note = ""
+        meta_path = Path(f"{filename}.vdisplay.json")
+        if meta_path.is_file():
+            try:
+                import json
+
+                meta = json.loads(meta_path.read_text(encoding="utf-8"))
+                method = meta.get("method") or "direct"
+                windows = meta.get("window_count")
+                vdisp = meta.get("virtual_display")
+                meta_note = f" [{method}"
+                if vdisp:
+                    meta_note += f" @ {vdisp}"
+                if windows:
+                    meta_note += f", {windows} windows"
+                meta_note += "]"
+            except Exception:
+                pass
+
+        self.out.step("📸", f'DESKTOP_CAPTURE → "{filename}"{meta_note}')
+        self.vars.set("desktop_last_capture", filename)
         self.results.append(
             StepResult(name=f'DESKTOP_CAPTURE "{filename}"', status=StepStatus.PASSED),
         )
@@ -282,6 +317,343 @@ class DesktopMixin:
                 name=f'DESKTOP_ASSERT_WINDOW "{title}"',
                 status=StepStatus.PASSED,
             ),
+        )
+
+    def _parse_image_args(self, args: str) -> tuple[str | None, str | None]:
+        """Parse optional image path and quoted needle from DESKTOP_* args."""
+        parts = shlex.split(args.strip()) if args.strip() else []
+        image: str | None = None
+        needle: str | None = None
+        for part in parts:
+            if part.lower().endswith((".png", ".jpg", ".jpeg", ".webp")):
+                image = part
+            elif needle is None:
+                needle = part.strip('"\'')
+        return needle, image
+
+    def _resolve_capture_path(self, image: str | None, *, default: str) -> str:
+        if image:
+            return image
+        cached = self.vars.get("desktop_last_capture")
+        if cached:
+            return str(cached)
+        return default
+
+    def _ensure_capture(self, image: str | None, *, default: str, monitor: str | int | None = "primary") -> str:
+        path = self._resolve_capture_path(image, default=default)
+        if Path(path).is_file() and not self._capture_is_stale_blank(path):
+            return path
+        if self.dry_run:
+            return path
+        self._desktop().screenshot(path, monitor=monitor)
+        self.vars.set("desktop_last_capture", path)
+        return path
+
+    def _capture_is_stale_blank(self, path: str | Path) -> bool:
+        try:
+            from testql.desktop.vdisplay_capture import is_blank_image
+
+            return is_blank_image(path)
+        except ImportError:
+            return False
+
+    def _cmd_desktop_monitors(self, args: str, line: OqlLine) -> None:
+        if self.dry_run:
+            self.out.step("🖥️", "DESKTOP_MONITORS (dry-run)")
+            self.results.append(StepResult(name="DESKTOP_MONITORS", status=StepStatus.PASSED))
+            return
+
+        monitors = desktop_vision.list_monitors()
+        self.out.step("🖥️", f"DESKTOP_MONITORS: {len(monitors)} monitor(s)")
+        for monitor in monitors:
+            label = monitor.get("name") or monitor.get("label") or "?"
+            geom = monitor.get("geometry") or f"{monitor.get('width')}x{monitor.get('height')}"
+            primary = " primary" if monitor.get("primary") else ""
+            self.out.step("  ", f"{label} {geom}{primary}")
+        self.vars.set("desktop_monitor_count", str(len(monitors)))
+        self.results.append(
+            StepResult(
+                name="DESKTOP_MONITORS",
+                status=StepStatus.PASSED,
+                message=f"{len(monitors)} monitors",
+            ),
+        )
+
+    def _cmd_desktop_inspect(self, args: str, line: OqlLine) -> None:
+        parts = shlex.split(args.strip()) if args.strip() else []
+        capture = parts[0] if parts else "examples/desktop/inspect.png"
+
+        if self.dry_run:
+            self.out.step("🔍", f'DESKTOP_INSPECT "{capture}" (dry-run)')
+            self.results.append(StepResult(name="DESKTOP_INSPECT", status=StepStatus.PASSED))
+            return
+
+        payload = desktop_vision.inspect_environment(capture_path=capture)
+        self.out.step("🔍", "DESKTOP_INSPECT")
+        self.out.step("  ", f"display={payload.display_server} {payload.display}")
+        self.out.step("  ", f"monitors={len(payload.monitors)} windows={len(payload.windows)}")
+        for window in payload.windows[:12]:
+            title = str(window.get("title") or window.get("app_label") or "?")
+            self.out.step("  ", f"window: {title[:70]}")
+        if payload.describe and payload.describe.get("ok"):
+            self.out.step("  ", f"img2nl: {payload.describe.get('scene_class')} — {str(payload.describe.get('text', ''))[:80]}")
+        if payload.layout and payload.layout.get("ok"):
+            self.out.step(
+                "  ",
+                f"imgl: {payload.layout.get('window_count')} windows, "
+                f"{payload.layout.get('element_count')} elements",
+            )
+        self.vars.set("desktop_last_capture", capture)
+        self.vars.set("desktop_inspect_json", json.dumps(payload.as_dict(), ensure_ascii=False))
+        self.results.append(
+            StepResult(
+                name="DESKTOP_INSPECT",
+                status=StepStatus.PASSED,
+                message=f"monitors={len(payload.monitors)} windows={len(payload.windows)}",
+            ),
+        )
+
+    def _cmd_desktop_describe(self, args: str, line: OqlLine) -> None:
+        parts = shlex.split(args.strip()) if args.strip() else []
+        if not parts:
+            self.out.fail(f"L{line.number}: DESKTOP_DESCRIBE requires image path")
+            return
+        image = parts[0]
+
+        if self.dry_run:
+            self.out.step("📝", f'DESKTOP_DESCRIBE "{image}" (dry-run)')
+            self.results.append(StepResult(name="DESKTOP_DESCRIBE", status=StepStatus.PASSED))
+            return
+
+        result = desktop_vision.describe_image(image)
+        if not result.get("ok"):
+            self.out.fail(f"DESKTOP_DESCRIBE error: {result.get('error', 'unknown')}")
+            self.results.append(
+                StepResult(
+                    name="DESKTOP_DESCRIBE",
+                    status=StepStatus.ERROR,
+                    message=str(result.get("error")),
+                ),
+            )
+            return
+
+        summary = str(result.get("text") or "")[:120]
+        scene = result.get("scene_class") or "unknown"
+        self.out.step("📝", f"DESKTOP_DESCRIBE {scene}: {summary}")
+        self.vars.set("desktop_scene_class", str(scene))
+        self.vars.set("desktop_describe_text", str(result.get("text") or ""))
+        self.results.append(
+            StepResult(name="DESKTOP_DESCRIBE", status=StepStatus.PASSED, message=scene),
+        )
+
+    def _cmd_desktop_analyze(self, args: str, line: OqlLine) -> None:
+        parts = shlex.split(args.strip()) if args.strip() else []
+        if not parts:
+            self.out.fail(f"L{line.number}: DESKTOP_ANALYZE requires image path")
+            return
+        image = parts[0]
+        out_json = parts[1] if len(parts) > 1 else None
+
+        if self.dry_run:
+            self.out.step("🧩", f'DESKTOP_ANALYZE "{image}" (dry-run)')
+            self.results.append(StepResult(name="DESKTOP_ANALYZE", status=StepStatus.PASSED))
+            return
+
+        result = desktop_vision.analyze_layout(image)
+        if not result.get("ok"):
+            self.out.fail(f"DESKTOP_ANALYZE error: {result.get('error', 'unknown')}")
+            self.results.append(
+                StepResult(
+                    name="DESKTOP_ANALYZE",
+                    status=StepStatus.ERROR,
+                    message=str(result.get("error")),
+                ),
+            )
+            return
+
+        if out_json:
+            Path(out_json).parent.mkdir(parents=True, exist_ok=True)
+            Path(out_json).write_text(
+                json.dumps(result.get("scene_json", {}), indent=2, ensure_ascii=False),
+                encoding="utf-8",
+            )
+
+        self.out.step(
+            "🧩",
+            f"DESKTOP_ANALYZE: {result.get('window_count')} windows, "
+            f"{result.get('element_count')} elements",
+        )
+        samples = result.get("text_samples") or []
+        for sample in samples[:8]:
+            self.out.step("  ", str(sample)[:70])
+        self.vars.set("desktop_element_count", str(result.get("element_count") or 0))
+        self.vars.set("desktop_window_count", str(result.get("window_count") or 0))
+        self.results.append(
+            StepResult(
+                name="DESKTOP_ANALYZE",
+                status=StepStatus.PASSED,
+                message=f"elements={result.get('element_count')}",
+            ),
+        )
+
+    def _cmd_desktop_assert_text(self, args: str, line: OqlLine) -> None:
+        needle, image = self._parse_image_args(args)
+        if not needle:
+            self.out.fail(f"L{line.number}: DESKTOP_ASSERT_TEXT requires text needle")
+            return
+
+        if self.dry_run:
+            self.out.step("✅", f'DESKTOP_ASSERT_TEXT "{needle}" (dry-run)')
+            self.results.append(
+                StepResult(name=f'DESKTOP_ASSERT_TEXT "{needle}"', status=StepStatus.PASSED),
+            )
+            return
+
+        capture = self._ensure_capture(image, default="examples/desktop/assert-text.png")
+        result = desktop_vision.find_text(capture, needle)
+        if not result.get("ok"):
+            self.out.fail(f"DESKTOP_ASSERT_TEXT error: {result.get('error', 'unknown')}")
+            self.results.append(
+                StepResult(
+                    name=f'DESKTOP_ASSERT_TEXT "{needle}"',
+                    status=StepStatus.ERROR,
+                    message=str(result.get("error")),
+                ),
+            )
+            return
+
+        if not result.get("found"):
+            self.out.step("❌", f'DESKTOP_ASSERT_TEXT "{needle}" not found')
+            self.results.append(
+                StepResult(
+                    name=f'DESKTOP_ASSERT_TEXT "{needle}"',
+                    status=StepStatus.FAILED,
+                    message="text not found",
+                ),
+            )
+            return
+
+        self.out.step("✅", f'DESKTOP_ASSERT_TEXT "{needle}"')
+        self.results.append(
+            StepResult(name=f'DESKTOP_ASSERT_TEXT "{needle}"', status=StepStatus.PASSED),
+        )
+
+    def _cmd_desktop_assert_elements(self, args: str, line: OqlLine) -> None:
+        parts = shlex.split(args.strip()) if args.strip() else []
+        if not parts:
+            self.out.fail(f"L{line.number}: DESKTOP_ASSERT_ELEMENTS requires minimum count")
+            return
+        try:
+            minimum = int(parts[0])
+        except ValueError:
+            self.out.fail(f"L{line.number}: DESKTOP_ASSERT_ELEMENTS count must be integer")
+            return
+
+        image: str | None = None
+        for part in parts[1:]:
+            if part.lower().endswith((".png", ".jpg", ".jpeg", ".webp")):
+                image = part.strip('"\'')
+                break
+
+        if self.dry_run:
+            self.out.step("✅", f"DESKTOP_ASSERT_ELEMENTS >= {minimum} (dry-run)")
+            self.results.append(
+                StepResult(name=f"DESKTOP_ASSERT_ELEMENTS >= {minimum}", status=StepStatus.PASSED),
+            )
+            return
+
+        capture = self._ensure_capture(image, default="examples/desktop/assert-elements.png")
+        from testql.desktop.vdisplay_capture import read_capture_meta
+
+        meta = read_capture_meta(capture) or {}
+        mirrored_windows = int(meta.get("window_count") or 0)
+
+        result = desktop_vision.analyze_layout(capture)
+        if not result.get("ok"):
+            self.out.fail(f"DESKTOP_ASSERT_ELEMENTS error: {result.get('error', 'unknown')}")
+            self.results.append(
+                StepResult(
+                    name=f"DESKTOP_ASSERT_ELEMENTS >= {minimum}",
+                    status=StepStatus.ERROR,
+                    message=str(result.get("error")),
+                ),
+            )
+            return
+
+        count = int(result.get("element_count") or 0)
+        outcome = evaluate_element_assert(
+            minimum=minimum,
+            element_count=count,
+            mirrored_windows=mirrored_windows,
+        )
+        icon = "✅" if outcome.passed else "❌"
+        self.out.step(icon, outcome.step_text)
+        self.vars.set("desktop_element_count", str(count))
+        if mirrored_windows:
+            self.vars.set("desktop_mirrored_window_count", str(mirrored_windows))
+        self.results.append(
+            StepResult(
+                name=f"DESKTOP_ASSERT_ELEMENTS >= {minimum}",
+                status=StepStatus.PASSED if outcome.passed else StepStatus.FAILED,
+                message=outcome.message,
+            ),
+        )
+
+    def _cmd_desktop_click_text(self, args: str, line: OqlLine) -> None:
+        needle, image = self._parse_image_args(args)
+        if not needle:
+            self.out.fail(f"L{line.number}: DESKTOP_CLICK_TEXT requires label/text")
+            return
+
+        if self.dry_run:
+            self.out.step("🖱️", f'DESKTOP_CLICK_TEXT "{needle}" (dry-run)')
+            self.results.append(
+                StepResult(name=f'DESKTOP_CLICK_TEXT "{needle}"', status=StepStatus.PASSED),
+            )
+            return
+
+        capture = self._ensure_capture(image, default="examples/desktop/click-text.png")
+        result = desktop_vision.find_text(capture, needle)
+        if not result.get("ok"):
+            self.out.fail(f"DESKTOP_CLICK_TEXT error: {result.get('error', 'unknown')}")
+            self.results.append(
+                StepResult(
+                    name=f'DESKTOP_CLICK_TEXT "{needle}"',
+                    status=StepStatus.ERROR,
+                    message=str(result.get("error")),
+                ),
+            )
+            return
+
+        coords = result.get("coords")
+        if not coords:
+            self.out.fail(f'DESKTOP_CLICK_TEXT: "{needle}" found in OCR but no clickable element')
+            self.results.append(
+                StepResult(
+                    name=f'DESKTOP_CLICK_TEXT "{needle}"',
+                    status=StepStatus.FAILED,
+                    message="no clickable coords",
+                ),
+            )
+            return
+
+        x, y = int(coords["x"]), int(coords["y"])
+        try:
+            self._desktop().click(x, y)
+        except RuntimeError as exc:
+            self.out.fail(f"DESKTOP_CLICK_TEXT error: {exc}")
+            self.results.append(
+                StepResult(
+                    name=f'DESKTOP_CLICK_TEXT "{needle}"',
+                    status=StepStatus.ERROR,
+                    message=str(exc),
+                ),
+            )
+            return
+
+        self.out.step("🖱️", f'DESKTOP_CLICK_TEXT "{needle}" @ {x},{y}')
+        self.results.append(
+            StepResult(name=f'DESKTOP_CLICK_TEXT "{needle}"', status=StepStatus.PASSED),
         )
 
     def _cmd_desktop_stop(self, args: str, line: OqlLine) -> None:

@@ -50,9 +50,9 @@ _DESKTOP_COMMANDS: tuple[tuple[str, str, list[str], list[str], str], ...] = (
     ),
     (
         "testql_desktop_capture",
-        "Full-screen screenshot (grim / scrot / import)",
+        "Screenshot via vdisplay mirror→Xvfb (no Wayland portal) or grim/scrot fallback",
         ["file"],
-        [],
+        ["monitor"],
         "DESKTOP_CAPTURE",
     ),
     (
@@ -61,6 +61,55 @@ _DESKTOP_COMMANDS: tuple[tuple[str, str, list[str], list[str], str], ...] = (
         ["title"],
         [],
         "DESKTOP_ASSERT_WINDOW",
+    ),
+    (
+        "testql_desktop_monitors",
+        "List connected monitors (vdisplay / xrandr)",
+        [],
+        [],
+        "DESKTOP_MONITORS",
+    ),
+    (
+        "testql_desktop_inspect",
+        "Discover monitors, windows, capture + img2nl/imgl summary",
+        [],
+        ["capture_path"],
+        "DESKTOP_INSPECT",
+    ),
+    (
+        "testql_desktop_describe",
+        "Heuristic scene description via img2nl (no vision LLM)",
+        ["image"],
+        ["locale"],
+        "DESKTOP_DESCRIBE",
+    ),
+    (
+        "testql_desktop_analyze",
+        "Semantic UI layout + OCR via imgl",
+        ["image"],
+        ["out_json", "lang"],
+        "DESKTOP_ANALYZE",
+    ),
+    (
+        "testql_desktop_assert_text",
+        "Assert visible text on screen (imgl OCR)",
+        ["needle"],
+        ["image"],
+        "DESKTOP_ASSERT_TEXT",
+    ),
+    (
+        "testql_desktop_assert_elements",
+        "Assert minimum imgl layout element count on capture",
+        ["minimum"],
+        ["image"],
+        "DESKTOP_ASSERT_ELEMENTS",
+    ),
+    (
+        "testql_desktop_click_text",
+        "Click UI element by OCR label/text (imgl → DESKTOP_CLICK)",
+        ["label"],
+        ["image"],
+        "DESKTOP_CLICK_TEXT",
     ),
     (
         "testql_desktop_stop",
@@ -112,6 +161,21 @@ RECOMMENDED_PYTHON_LIBS: tuple[dict[str, str], ...] = (
         "package": "playwright",
         "role": "web",
         "note": "Browser/Electron webview DOM — use GUI_* commands, not DESKTOP_*",
+    },
+    {
+        "package": "img2nl",
+        "role": "vision",
+        "note": "Heuristic screenshot → NL summary (DESKTOP_DESCRIBE, DESKTOP_INSPECT)",
+    },
+    {
+        "package": "imgl",
+        "role": "vision",
+        "note": "OCR + UI layout for DESKTOP_ANALYZE / ASSERT_TEXT / CLICK_TEXT",
+    },
+    {
+        "package": "vdisplay",
+        "role": "discovery",
+        "note": "OS window/monitor truth on X11 (DESKTOP_MONITORS, DESKTOP_INSPECT)",
     },
 )
 

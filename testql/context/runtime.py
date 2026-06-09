@@ -115,22 +115,38 @@ def profile_to_variables(profile: RuntimeProfile) -> dict[str, str]:
     return vars_map
 
 
-def _coerce_profile_dict(data: dict[str, Any]) -> RuntimeProfile:
-    headless_raw = data.get("browser_headless", data.get("browser.headless", "true"))
+def _profile_str(data: dict[str, Any], *keys: str, default: str = "") -> str:
+    for key in keys:
+        value = data.get(key)
+        if value not in (None, ""):
+            return str(value)
+    return default
+
+
+def _profile_bool(data: dict[str, Any], *keys: str) -> bool:
+    raw = _profile_str(data, *keys, default="true")
+    return raw.lower() in {"1", "true", "yes", "on"}
+
+
+def _profile_capabilities(data: dict[str, Any]) -> list[str]:
     caps = data.get("capabilities")
     if isinstance(caps, str):
-        caps = [c for c in caps.split(",") if c]
+        return [item for item in caps.split(",") if item]
+    return list(caps or [])
+
+
+def _coerce_profile_dict(data: dict[str, Any]) -> RuntimeProfile:
     return RuntimeProfile(
-        os_family=str(data.get("os_family") or data.get("os") or "unknown"),
-        os_release=str(data.get("os_release") or data.get("os.release") or ""),
-        session_type=str(data.get("session_type") or data.get("session") or ""),
-        display_server=str(data.get("display_server") or data.get("display") or ""),
-        browser_engine=str(data.get("browser_engine") or data.get("browser.engine") or "chromium"),
-        browser_headless=str(headless_raw).lower() in {"1", "true", "yes", "on"},
-        app_type=str(data.get("app_type") or data.get("app.type") or "generic"),
-        app_id=str(data.get("app_id") or data.get("app.id") or ""),
-        source_runtime=str(data.get("source_runtime") or data.get("runtime.source") or ""),
-        capabilities=list(caps or []),
+        os_family=_profile_str(data, "os_family", "os", default="unknown"),
+        os_release=_profile_str(data, "os_release", "os.release"),
+        session_type=_profile_str(data, "session_type", "session"),
+        display_server=_profile_str(data, "display_server", "display"),
+        browser_engine=_profile_str(data, "browser_engine", "browser.engine", default="chromium"),
+        browser_headless=_profile_bool(data, "browser_headless", "browser.headless"),
+        app_type=_profile_str(data, "app_type", "app.type", default="generic"),
+        app_id=_profile_str(data, "app_id", "app.id"),
+        source_runtime=_profile_str(data, "source_runtime", "runtime.source"),
+        capabilities=_profile_capabilities(data),
         extra={k: v for k, v in data.items() if k.startswith("runtime.") and k not in {"runtime.source"}},
     )
 

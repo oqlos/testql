@@ -25,11 +25,138 @@ flowchart TD
     subgraph examples__browser_inspection
         examples__browser_inspection__run__print["print"]
     end
+    subgraph examples__desktop
+        examples__desktop__run_all__run["run"]
+    end
     subgraph examples__run_all
         examples__run_all__run_example["run_example"]
     end
     subgraph examples__web_inspection
         examples__web_inspection__run__print["print"]
+    end
+    subgraph packages__cli2testql
+        packages__cli2testql__src__cli2testql__cli__run_shell["run_shell"]
+        packages__cli2testql__src__cli2testql__cli__main["main"]
+        packages__cli2testql__src__cli2testql__cli_handlers__print_result["print_result"]
+        packages__cli2testql__src__cli2testql__cli_handlers__cmd_run_script["cmd_run_script"]
+        packages__cli2testql__src__cli2testql__cli_handlers__cmd_exec_line["cmd_exec_line"]
+        packages__cli2testql__src__cli2testql__cli_handlers__run_shell_loop["run_shell_loop"]
+    end
+    subgraph packages__dsl2testql
+        packages__dsl2testql__src__dsl2testql__bus___dispatch_cmd["_dispatch_cmd"]
+        packages__dsl2testql__src__dsl2testql__bus___bytes_to_cmd["_bytes_to_cmd"]
+        packages__dsl2testql__src__dsl2testql__bus__dispatch["dispatch"]
+        packages__dsl2testql__src__dsl2testql__bus__execute_dsl_line["execute_dsl_line"]
+        packages__dsl2testql__src__dsl2testql__bus__execute_dsl["execute_dsl"]
+        packages__dsl2testql__src__dsl2testql__engine__execute_dsl_line["execute_dsl_line"]
+        packages__dsl2testql__src__dsl2testql__engine__execute_dsl["execute_dsl"]
+        packages__dsl2testql__src__dsl2testql__engine__dispatch["dispatch"]
+        packages__dsl2testql__src__dsl2testql__cli___main_legacy("_main_legacy CC=9")
+        packages__dsl2testql__src__dsl2testql__cli___main_subcommands["_main_subcommands"]
+        packages__dsl2testql__src__dsl2testql__cli__main["main"]
+        packages__dsl2testql__src__dsl2testql__events__DslEvent__to_dict["to_dict"]
+        packages__dsl2testql__src__dsl2testql__events__EventStore____init__["__init__"]
+        packages__dsl2testql__src__dsl2testql__events__EventStore__append["append"]
+        packages__dsl2testql__src__dsl2testql__events__EventStore__replay["replay"]
+        packages__dsl2testql__src__dsl2testql__events__default_event_store["default_event_store"]
+        packages__dsl2testql__src__dsl2testql__pb_codec___set_body["_set_body"]
+        packages__dsl2testql__src__dsl2testql__pb_codec___decode_query_body["_decode_query_body"]
+        packages__dsl2testql__src__dsl2testql__pb_codec___decode_patch_body["_decode_patch_body"]
+        packages__dsl2testql__src__dsl2testql__pb_codec___decode_generate_body["_decode_generate_body"]
+        packages__dsl2testql__src__dsl2testql__pb_codec__envelope_to_dict["envelope_to_dict"]
+        packages__dsl2testql__src__dsl2testql__pb_codec__encode_protobuf["encode_protobuf"]
+        packages__dsl2testql__src__dsl2testql__pb_codec__decode_protobuf["decode_protobuf"]
+        packages__dsl2testql__src__dsl2testql__pb_codec__encode_text_to_protobuf["encode_text_to_protobuf"]
+        packages__dsl2testql__src__dsl2testql__pb_codec__decode_protobuf_to_text["decode_protobuf_to_text"]
+        packages__dsl2testql__src__dsl2testql__pb_codec__result_to_pb["result_to_pb"]
+        packages__dsl2testql__src__dsl2testql__pb_codec__encode_result_protobuf["encode_result_protobuf"]
+        packages__dsl2testql__src__dsl2testql__schema_registry___load_schemas["_load_schemas"]
+        packages__dsl2testql__src__dsl2testql__schema_registry__schema_for_verb["schema_for_verb"]
+        packages__dsl2testql__src__dsl2testql__schema_registry__all_schemas["all_schemas"]
+        packages__dsl2testql__src__dsl2testql__schema_registry__validate_command_dict["validate_command_dict"]
+        packages__dsl2testql__src__dsl2testql__schema_registry__validate_schema_registry["validate_schema_registry"]
+        packages__dsl2testql__src__dsl2testql__grammar__split_command["split_command"]
+        packages__dsl2testql__src__dsl2testql__grammar__pick_flag["pick_flag"]
+        packages__dsl2testql__src__dsl2testql__grammar___parse_query["_parse_query"]
+        packages__dsl2testql__src__dsl2testql__grammar___parse_patch["_parse_patch"]
+        packages__dsl2testql__src__dsl2testql__grammar___parse_generate["_parse_generate"]
+        packages__dsl2testql__src__dsl2testql__grammar__parse_line["parse_line"]
+        packages__dsl2testql__src__dsl2testql__grammar__to_text["to_text"]
+        packages__dsl2testql__src__dsl2testql__codec__encode_text["encode_text"]
+        packages__dsl2testql__src__dsl2testql__codec__roundtrip_text["roundtrip_text"]
+        packages__dsl2testql__src__dsl2testql__codec__encode_protobuf["encode_protobuf"]
+        packages__dsl2testql__src__dsl2testql__codec__decode_protobuf["decode_protobuf"]
+        packages__dsl2testql__src__dsl2testql__cli_handlers___print_result["_print_result"]
+        packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_validate_schema["cmd_validate_schema"]
+        packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_exec["cmd_exec"]
+        packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_run["cmd_run"]
+        packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_encode["cmd_encode"]
+        packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_decode["cmd_decode"]
+        packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_replay["cmd_replay"]
+        packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_shell["cmd_shell"]
+        packages__dsl2testql__src__dsl2testql__result__DslResult__to_dict["to_dict"]
+        packages__dsl2testql__src__dsl2testql__handlers__command___read_content["_read_content"]
+        packages__dsl2testql__src__dsl2testql__handlers__command__handle_generate["handle_generate"]
+        packages__dsl2testql__src__dsl2testql__handlers__command__handle_patch["handle_patch"]
+        packages__dsl2testql__src__dsl2testql__handlers__command__handle_from_tokens["handle_from_tokens"]
+        packages__dsl2testql__src__dsl2testql__handlers__query__handle_query["handle_query"]
+        packages__dsl2testql__src__dsl2testql__handlers__query__handle_validate["handle_validate"]
+    end
+    subgraph packages__mcp2testql
+        packages__mcp2testql__src__mcp2testql__cli__main["main"]
+        packages__mcp2testql__src__mcp2testql__server___require_fastmcp["_require_fastmcp"]
+        packages__mcp2testql__src__mcp2testql__server__TestqlMCPServer____post_init__["__post_init__"]
+        packages__mcp2testql__src__mcp2testql__server__TestqlMCPServer___register_tools["_register_tools"]
+        packages__mcp2testql__src__mcp2testql__server__TestqlMCPServer__run["run"]
+        packages__mcp2testql__src__mcp2testql__server__create_server["create_server"]
+        packages__mcp2testql__src__mcp2testql__server__run_server["run_server"]
+    end
+    subgraph packages__nlp2testql
+        packages__nlp2testql__src__nlp2testql__validate__validate_testql["validate_testql"]
+        packages__nlp2testql__src__nlp2testql__validate__validate_testql_file["validate_testql_file"]
+        packages__nlp2testql__src__nlp2testql__models__Plan__to_testql_less["to_testql_less"]
+        packages__nlp2testql__src__nlp2testql__pipeline__plan_with_rules["plan_with_rules"]
+        packages__nlp2testql__src__nlp2testql__pipeline__generate_spec["generate_spec"]
+    end
+    subgraph packages__uri2testql
+        packages__uri2testql__src__uri2testql__query__QueryResult__to_dict["to_dict"]
+        packages__uri2testql__src__uri2testql__query___to_plain("_to_plain CC=8")
+        packages__uri2testql__src__uri2testql__query___render_partial["_render_partial"]
+        packages__uri2testql__src__uri2testql__query___extract_data["_extract_data"]
+        packages__uri2testql__src__uri2testql__query___selector_from_parts["_selector_from_parts"]
+        packages__uri2testql__src__uri2testql__query___apply_output_format["_apply_output_format"]
+        packages__uri2testql__src__uri2testql__query___query_file_source["_query_file_source"]
+        packages__uri2testql__src__uri2testql__query___query_generate_source["_query_generate_source"]
+        packages__uri2testql__src__uri2testql__query___query_block_source["_query_block_source"]
+        packages__uri2testql__src__uri2testql__query__query_uri("query_uri CC=9")
+        packages__uri2testql__src__uri2testql__files__resolve_testql_file("resolve_testql_file CC=8")
+        packages__uri2testql__src__uri2testql__uri___encode["_encode"]
+        packages__uri2testql__src__uri2testql__uri___decode["_decode"]
+        packages__uri2testql__src__uri2testql__uri__uri_for_file["uri_for_file"]
+        packages__uri2testql__src__uri2testql__uri__uri_for_block["uri_for_block"]
+        packages__uri2testql__src__uri2testql__uri__uri_for_generate["uri_for_generate"]
+        packages__uri2testql__src__uri2testql__uri__is_testql_uri["is_testql_uri"]
+        packages__uri2testql__src__uri2testql__uri__parse_testql_uri["parse_testql_uri"]
+        packages__uri2testql__src__uri2testql__uri__build_testql_uri_index["build_testql_uri_index"]
+        packages__uri2testql__src__uri2testql__materialize__MaterializeResult__to_dict["to_dict"]
+        packages__uri2testql__src__uri2testql__materialize___materialize_file["_materialize_file"]
+        packages__uri2testql__src__uri2testql__materialize___materialize_generate["_materialize_generate"]
+        packages__uri2testql__src__uri2testql__materialize___materialize_block["_materialize_block"]
+        packages__uri2testql__src__uri2testql__materialize__materialize_uri("materialize_uri CC=9")
+        packages__uri2testql__src__uri2testql__patch__PatchResult__to_dict["to_dict"]
+        packages__uri2testql__src__uri2testql__patch___selector_pattern("_selector_pattern CC=12")
+        packages__uri2testql__src__uri2testql__patch___find_block_span["_find_block_span"]
+        packages__uri2testql__src__uri2testql__patch__replace_block_in_text["replace_block_in_text"]
+        packages__uri2testql__src__uri2testql__patch__append_blocks_to_text["append_blocks_to_text"]
+        packages__uri2testql__src__uri2testql__patch__patch_uri["patch_uri"]
+        packages__uri2testql__src__uri2testql__patch__append_uri["append_uri"]
+        packages__uri2testql__src__uri2testql__patch__apply_uri("apply_uri CC=8")
+        packages__uri2testql__src__uri2testql__patch__update_uri["update_uri"]
+        packages__uri2testql__src__uri2testql__block_resolver__parse_block_ref["parse_block_ref"]
+        packages__uri2testql__src__uri2testql__block_resolver__selector_from_ref("selector_from_ref CC=10")
+        packages__uri2testql__src__uri2testql__block_resolver___find_named["_find_named"]
+        packages__uri2testql__src__uri2testql__block_resolver__extract_block_data("extract_block_data CC=12")
+        packages__uri2testql__src__uri2testql__block_resolver__render_block_partial("render_block_partial CC=14")
     end
     subgraph scripts__install_testql_autoloop
         scripts__install_testql_autoloop__log["log"]
@@ -151,8 +278,19 @@ flowchart TD
     subgraph testql__commands
         testql__commands__self_test_cmd___print_human["_print_human"]
         testql__commands__self_test_cmd__self_test["self_test"]
+        testql__commands__nlp2env_cmd___validate["_validate"]
+        testql__commands__nlp2env_cmd__nlp2env["nlp2env"]
+        testql__commands__nlp2env_cmd__nlp2env_run("nlp2env_run CC=10")
         testql__commands__discover_cmd__discover["discover"]
         testql__commands__discover_cmd___print_summary("_print_summary CC=9")
+        testql__commands__conversation_cmd___validate_scenario["_validate_scenario"]
+        testql__commands__conversation_cmd___resolve_base_url["_resolve_base_url"]
+        testql__commands__conversation_cmd___create_runner["_create_runner"]
+        testql__commands__conversation_cmd___format_mode["_format_mode"]
+        testql__commands__conversation_cmd___output_json["_output_json"]
+        testql__commands__conversation_cmd___output_text["_output_text"]
+        testql__commands__conversation_cmd__conversation["conversation"]
+        testql__commands__conversation_cmd__conversation_run["conversation_run"]
         testql__commands__generate_cmd___is_workspace["_is_workspace"]
         testql__commands__generate_cmd___echo_analysis["_echo_analysis"]
         testql__commands__generate_cmd___echo_generation["_echo_generation"]
@@ -170,6 +308,7 @@ flowchart TD
         testql__commands__misc_cmds__from_sumd["from_sumd"]
         testql__commands__misc_cmds__report["report"]
         testql__commands__misc_cmds__echo["echo"]
+        testql__commands____getattr__["__getattr__"]
         testql__commands__run_ir_cmd___emit_json["_emit_json"]
         testql__commands__run_ir_cmd___emit_console["_emit_console"]
         testql__commands__run_ir_cmd__run_ir["run_ir"]
@@ -197,18 +336,18 @@ flowchart TD
         testql__commands__encoder_routes___exec_browser_cmd("_exec_browser_cmd CC=9")
         testql__commands__encoder_routes___exec_assert_cmd["_exec_assert_cmd"]
         testql__commands__encoder_routes___execute_oql_line("_execute_oql_line CC=10")
-        testql__commands__encoder_routes__oql_list_files["oql_list_files"]
-        testql__commands__encoder_routes__oql_read_file["oql_read_file"]
-        testql__commands__encoder_routes__oql_list_tables["oql_list_tables"]
-        testql__commands__encoder_routes___extract_table_names["_extract_table_names"]
-        testql__commands__encoder_routes__oql_run_line["oql_run_line"]
-        testql__commands__encoder_routes__oql_run_file["oql_run_file"]
-        testql__commands__encoder_routes___run_oql_lines["_run_oql_lines"]
-        testql__commands__encoder_routes___update_counters["_update_counters"]
-        testql__commands__encoder_routes___build_run_summary["_build_run_summary"]
-        testql__commands__encoder_routes___write_run_log["_write_run_log"]
-        testql__commands__encoder_routes__oql_list_logs["oql_list_logs"]
-        testql__commands__encoder_routes__oql_read_log["oql_read_log"]
+    end
+    subgraph testql__context
+        testql__context__runtime__RuntimeProfile__to_dict["to_dict"]
+        testql__context__runtime___desktop_tools["_desktop_tools"]
+        testql__context__runtime__detect_runtime_profile("detect_runtime_profile CC=12")
+        testql__context__runtime___importable["_importable"]
+        testql__context__runtime__profile_to_variables["profile_to_variables"]
+        testql__context__runtime___profile_str["_profile_str"]
+        testql__context__runtime___profile_bool["_profile_bool"]
+        testql__context__runtime___profile_capabilities["_profile_capabilities"]
+        testql__context__runtime___coerce_profile_dict["_coerce_profile_dict"]
+        testql__context__runtime__apply_profile["apply_profile"]
     end
     subgraph testql__conversation
         testql__conversation__runner__ConversationRunResult__to_report_dict["to_report_dict"]
@@ -229,6 +368,68 @@ flowchart TD
         testql__conversation__runner__ConversationRunner___interpolate_str["_interpolate_str"]
         testql__conversation__runner__ConversationRunner___interpolate["_interpolate"]
         testql__conversation__runner___extract_path["_extract_path"]
+    end
+    subgraph testql__desktop
+        testql__desktop__vision__VisionAvailability__as_dict["as_dict"]
+        testql__desktop__vision__check_vision_availability["check_vision_availability"]
+        testql__desktop__vision___display["_display"]
+        testql__desktop__vision__list_monitors("list_monitors CC=8")
+        testql__desktop__vision__list_os_windows("list_os_windows CC=14")
+        testql__desktop__vision__describe_image["describe_image"]
+        testql__desktop__vision__analyze_layout("analyze_layout CC=9")
+        testql__desktop__vision___collect_ocr_text("_collect_ocr_text CC=9")
+        testql__desktop__vision__find_text("find_text CC=8")
+        testql__desktop__vision__EnvironmentInspect__as_dict["as_dict"]
+        testql__desktop__vision__inspect_environment["inspect_environment"]
+        testql__desktop__element_assert__evaluate_element_assert["evaluate_element_assert"]
+        testql__desktop__screenshot_tools__screenshot_candidates("screenshot_candidates CC=8")
+        testql__desktop__screenshot_tools__try_screenshot_candidates("try_screenshot_candidates CC=12")
+        testql__desktop__catalog__collect_desktop_catalog["collect_desktop_catalog"]
+        testql__desktop__window_discovery___display["_display"]
+        testql__desktop__window_discovery___vdisplay_available["_vdisplay_available"]
+        testql__desktop__window_discovery__window_to_hex_id["window_to_hex_id"]
+        testql__desktop__window_discovery___has_unusable_title["_has_unusable_title"]
+        testql__desktop__window_discovery___is_internal_without_title["_is_internal_without_title"]
+        testql__desktop__window_discovery___matches_junk_marker["_matches_junk_marker"]
+        testql__desktop__window_discovery___meets_min_size["_meets_min_size"]
+        testql__desktop__window_discovery__is_capture_window("is_capture_window CC=12")
+        testql__desktop__window_discovery___filter_capture_windows["_filter_capture_windows"]
+        testql__desktop__window_discovery__list_capture_windows["list_capture_windows"]
+        testql__desktop__window_discovery__window_display_title("window_display_title CC=8")
+        testql__desktop__window_discovery__window_matches("window_matches CC=8")
+        testql__desktop__vdisplay_capture___allocate_virtual_display["_allocate_virtual_display"]
+        testql__desktop__vdisplay_capture__CaptureResult__as_dict["as_dict"]
+        testql__desktop__vdisplay_capture__vdisplay_available["vdisplay_available"]
+        testql__desktop__vdisplay_capture__vdisplay_missing_message["vdisplay_missing_message"]
+        testql__desktop__vdisplay_capture__resolve_display["resolve_display"]
+        testql__desktop__vdisplay_capture___format_window_id["_format_window_id"]
+        testql__desktop__vdisplay_capture___xwd_window_png["_xwd_window_png"]
+        testql__desktop__vdisplay_capture__shutil_which["shutil_which"]
+        testql__desktop__vdisplay_capture__is_blank_image("is_blank_image CC=13")
+        testql__desktop__vdisplay_capture___scene_class["_scene_class"]
+        testql__desktop__vdisplay_capture___primary_output["_primary_output"]
+        testql__desktop__vdisplay_capture___match_output_by_index["_match_output_by_index"]
+        testql__desktop__vdisplay_capture___match_output_by_name["_match_output_by_name"]
+        testql__desktop__vdisplay_capture___resolve_monitor["_resolve_monitor"]
+        testql__desktop__vdisplay_capture___windows_on_monitor["_windows_on_monitor"]
+        testql__desktop__vdisplay_capture___paste_window["_paste_window"]
+        testql__desktop__vdisplay_capture__build_monitor_canvas("build_monitor_canvas CC=9")
+        testql__desktop__vdisplay_capture___viewer_script["_viewer_script"]
+        testql__desktop__vdisplay_capture___find_mirror_window["_find_mirror_window"]
+        testql__desktop__vdisplay_capture___capture_virtual_window["_capture_virtual_window"]
+        testql__desktop__vdisplay_capture___stop_mirror_resources["_stop_mirror_resources"]
+        testql__desktop__vdisplay_capture___mirror_capture_result["_mirror_capture_result"]
+        testql__desktop__vdisplay_capture__capture_monitor_mirror_virtual("capture_monitor_mirror_virtual CC=9")
+        testql__desktop__vdisplay_capture__capture_monitor_composite["capture_monitor_composite"]
+        testql__desktop__vdisplay_capture___desktop_bounds["_desktop_bounds"]
+        testql__desktop__vdisplay_capture___composite_windows["_composite_windows"]
+        testql__desktop__vdisplay_capture___finalize_desktop_composite["_finalize_desktop_composite"]
+        testql__desktop__vdisplay_capture__capture_desktop_composite["capture_desktop_composite"]
+        testql__desktop__vdisplay_capture___try_scrot_region_capture("_try_scrot_region_capture CC=12")
+        testql__desktop__vdisplay_capture__capture_via_vdisplay("capture_via_vdisplay CC=8")
+        testql__desktop__vdisplay_capture__read_capture_meta["read_capture_meta"]
+        testql__desktop__vdisplay_capture__save_capture_with_meta["save_capture_with_meta"]
+        testql__desktop__wmctrl__parse_wmctrl_listing["parse_wmctrl_listing"]
     end
     subgraph testql__detectors
         testql__detectors__graphql_detector__GraphQLDetector__detect["detect"]
@@ -369,6 +570,19 @@ flowchart TD
         testql__echo_schemas__ProjectEcho__to_dict["to_dict"]
         testql__echo_schemas__ProjectEcho__to_text("to_text CC=8")
     end
+    subgraph testql__export
+        testql__export__scenario_builder___csv["_csv"]
+        testql__export__scenario_builder__ScenarioBuilder____init__["__init__"]
+        testql__export__scenario_builder__ScenarioBuilder__environment["environment"]
+        testql__export__scenario_builder__ScenarioBuilder__config["config"]
+        testql__export__scenario_builder__ScenarioBuilder__context["context"]
+        testql__export__scenario_builder__ScenarioBuilder__commands["commands"]
+        testql__export__scenario_builder__ScenarioBuilder__gui["gui"]
+        testql__export__scenario_builder__ScenarioBuilder__flow("flow CC=8")
+        testql__export__scenario_builder__ScenarioBuilder__shell["shell"]
+        testql__export__scenario_builder__ScenarioBuilder__wait["wait"]
+        testql__export__scenario_builder__ScenarioBuilder__build["build"]
+    end
     subgraph testql__generators
         testql__generators__convenience__generate_for_project["generate_for_project"]
         testql__generators__convenience__generate_for_workspace["generate_for_workspace"]
@@ -437,6 +651,7 @@ flowchart TD
     end
     subgraph testql__interpreter
         testql__interpreter___testtoon_parser__validate_testtoon["validate_testtoon"]
+        testql__interpreter___testtoon_parser___append_raw_command["_append_raw_command"]
         testql__interpreter___testtoon_parser___expand_config["_expand_config"]
         testql__interpreter___testtoon_parser___append_api_asserts("_append_api_asserts CC=9")
         testql__interpreter___testtoon_parser___expand_api["_expand_api"]
@@ -445,6 +660,9 @@ flowchart TD
         testql__interpreter___testtoon_parser___expand_select["_expand_select"]
         testql__interpreter___testtoon_parser___expand_assert("_expand_assert CC=9")
         testql__interpreter___testtoon_parser___expand_steps["_expand_steps"]
+        testql__interpreter___testtoon_parser___expand_environment("_expand_environment CC=9")
+        testql__interpreter___testtoon_parser___expand_context("_expand_context CC=8")
+        testql__interpreter___testtoon_parser___expand_gui["_expand_gui"]
         testql__interpreter___testtoon_parser___expand_flow("_expand_flow CC=14")
         testql__interpreter___testtoon_parser___expand_oql["_expand_oql"]
         testql__interpreter___testtoon_parser___expand_wait["_expand_wait"]
@@ -458,6 +676,7 @@ flowchart TD
         testql__interpreter___testtoon_parser___quote_shell_command["_quote_shell_command"]
         testql__interpreter___testtoon_parser___expand_shell["_expand_shell"]
         testql__interpreter___testtoon_parser___expand_modbus["_expand_modbus"]
+        testql__interpreter___testtoon_parser___expand_desktop("_expand_desktop CC=11")
         testql__interpreter___testtoon_parser___expand_generic["_expand_generic"]
         testql__interpreter___testtoon_parser__testtoon_to_oql["testtoon_to_oql"]
         testql__interpreter___parser__parse_oql["parse_oql"]
@@ -491,11 +710,6 @@ flowchart TD
         testql__interpreter___api_runner__ApiRunnerMixin___do_http_request_with_retry("_do_http_request_with_retry CC=10")
         testql__interpreter___api_runner__ApiRunnerMixin___store_api_response["_store_api_response"]
         testql__interpreter___api_runner__ApiRunnerMixin___record_api_success["_record_api_success"]
-        testql__interpreter___api_runner__ApiRunnerMixin___record_api_http_error["_record_api_http_error"]
-        testql__interpreter___api_runner__ApiRunnerMixin___record_api_error["_record_api_error"]
-        testql__interpreter___api_runner__ApiRunnerMixin___cmd_api("_cmd_api CC=13")
-        testql__interpreter___api_runner__ApiRunnerMixin___cmd_capture["_cmd_capture"]
-        testql__interpreter___api_runner___resolve_length["_resolve_length"]
     end
     subgraph testql__ir
         testql__ir__fixtures__Fixture__to_dict["to_dict"]
@@ -632,6 +846,43 @@ flowchart TD
         testql__meta__confidence_scorer___score_step["_score_step"]
         testql__meta__confidence_scorer__score_plan["score_plan"]
     end
+    subgraph testql__nlp2env
+        testql__nlp2env__mcp_client___find_mcp_command["_find_mcp_command"]
+        testql__nlp2env__mcp_client___call_tool_async["_call_tool_async"]
+        testql__nlp2env__mcp_client__mcp_call["mcp_call"]
+        testql__nlp2env__mcp_client__assert_ok["assert_ok"]
+        testql__nlp2env__mcp_client__mcp_available["mcp_available"]
+        testql__nlp2env__llm__ollama_reachable["ollama_reachable"]
+        testql__nlp2env__llm__resolve_llm_backend["resolve_llm_backend"]
+        testql__nlp2env__llm___http_post_json["_http_post_json"]
+        testql__nlp2env__llm___extract_json_object["_extract_json_object"]
+        testql__nlp2env__llm__translate_nl_to_mcp["translate_nl_to_mcp"]
+        testql__nlp2env__scenarios__PromptScenario__inline_arguments["inline_arguments"]
+        testql__nlp2env__scenarios___strip_quoted["_strip_quoted"]
+        testql__nlp2env__scenarios___detect_sep["_detect_sep"]
+        testql__nlp2env__scenarios___split_row("_split_row CC=9")
+        testql__nlp2env__scenarios___parse_value["_parse_value"]
+        testql__nlp2env__scenarios___parse_nlp2env_toon("_parse_nlp2env_toon CC=13")
+        testql__nlp2env__scenarios___index_prompt_fields["_index_prompt_fields"]
+        testql__nlp2env__scenarios___index_expects["_index_expects"]
+        testql__nlp2env__scenarios___prompt_id_column["_prompt_id_column"]
+        testql__nlp2env__scenarios__scenarios_from_parsed("scenarios_from_parsed CC=11")
+        testql__nlp2env__scenarios__load_scenarios["load_scenarios"]
+        testql__nlp2env__scenarios__load_scenarios_file["load_scenarios_file"]
+        testql__nlp2env__scenarios__scenario_count["scenario_count"]
+        testql__nlp2env__runner__Nlp2EnvRunner___validation_failure["_validation_failure"]
+        testql__nlp2env__runner__Nlp2EnvRunner___dry_run_result["_dry_run_result"]
+        testql__nlp2env__runner__Nlp2EnvRunner___resolve_llm_backend["_resolve_llm_backend"]
+        testql__nlp2env__runner__Nlp2EnvRunner___execute_scenarios["_execute_scenarios"]
+        testql__nlp2env__runner__Nlp2EnvRunner__run_file("run_file CC=8")
+        testql__nlp2env__runner__Nlp2EnvRunner___filter_scenarios["_filter_scenarios"]
+        testql__nlp2env__runner__Nlp2EnvRunner___prepare_env["_prepare_env"]
+        testql__nlp2env__runner__Nlp2EnvRunner___verify_env["_verify_env"]
+        testql__nlp2env__runner__Nlp2EnvRunner___run_scenario("_run_scenario CC=11")
+        testql__nlp2env__runner__run_nlp2env_file["run_nlp2env_file"]
+        testql__nlp2env__runner__is_nlp2env_scenario_text["is_nlp2env_scenario_text"]
+        testql__nlp2env____getattr__["__getattr__"]
+    end
     subgraph testql__openapi_generator
         testql__openapi_generator__OpenAPISpec__to_dict["to_dict"]
         testql__openapi_generator__OpenAPISpec__to_json["to_json"]
@@ -755,7 +1006,11 @@ flowchart TD
         testql__runner__DslCliExecutor__cmd_assert_json("cmd_assert_json CC=12")
         testql__runner__DslCliExecutor__cmd_set_header["cmd_set_header"]
         testql__runner__DslCliExecutor__cmd_set_base_url["cmd_set_base_url"]
-        testql__runner__DslCliExecutor__run_script("run_script CC=11")
+        testql__runner__DslCliExecutor___select_icon["_select_icon"]
+        testql__runner__DslCliExecutor___format_result_output["_format_result_output"]
+        testql__runner__DslCliExecutor___print_verbose_result["_print_verbose_result"]
+        testql__runner__DslCliExecutor___handle_execution_error["_handle_execution_error"]
+        testql__runner__DslCliExecutor__run_script["run_script"]
         testql__runner__DslCliExecutor___format_cmd["_format_cmd"]
         testql__runner__main("main CC=10")
     end
@@ -849,13 +1104,138 @@ flowchart TD
         testql__topology__builder___protocol_for_interface["_protocol_for_interface"]
         testql__topology__builder___protocol_for_evidence["_protocol_for_evidence"]
     end
+    packages__dsl2testql__src__dsl2testql__bus___dispatch_cmd --> packages__dsl2testql__src__dsl2testql__schema_registry__validate_command_dict
+    packages__dsl2testql__src__dsl2testql__bus___dispatch_cmd --> packages__dsl2testql__src__dsl2testql__grammar__split_command
+    packages__dsl2testql__src__dsl2testql__bus___dispatch_cmd --> packages__dsl2testql__src__dsl2testql__handlers__command__handle_from_tokens
+    packages__dsl2testql__src__dsl2testql__bus___dispatch_cmd --> packages__dsl2testql__src__dsl2testql__events__default_event_store
+    packages__dsl2testql__src__dsl2testql__bus___bytes_to_cmd --> packages__dsl2testql__src__dsl2testql__pb_codec__decode_protobuf
+    packages__dsl2testql__src__dsl2testql__bus___bytes_to_cmd --> packages__dsl2testql__src__dsl2testql__grammar__to_text
+    packages__dsl2testql__src__dsl2testql__bus___bytes_to_cmd --> packages__dsl2testql__src__dsl2testql__grammar__parse_line
+    packages__dsl2testql__src__dsl2testql__bus__dispatch --> packages__dsl2testql__src__dsl2testql__grammar__split_command
+    packages__dsl2testql__src__dsl2testql__bus__dispatch --> packages__dsl2testql__src__dsl2testql__bus___dispatch_cmd
+    packages__dsl2testql__src__dsl2testql__bus__dispatch --> packages__dsl2testql__src__dsl2testql__bus___bytes_to_cmd
+    packages__dsl2testql__src__dsl2testql__bus__dispatch --> packages__dsl2testql__src__dsl2testql__grammar__to_text
+    packages__dsl2testql__src__dsl2testql__bus__dispatch --> packages__dsl2testql__src__dsl2testql__grammar__parse_line
+    packages__dsl2testql__src__dsl2testql__bus__execute_dsl_line --> packages__dsl2testql__src__dsl2testql__bus__dispatch
+    packages__dsl2testql__src__dsl2testql__bus__execute_dsl --> packages__dsl2testql__src__dsl2testql__bus__execute_dsl_line
+    packages__dsl2testql__src__dsl2testql__engine__dispatch --> testql__runner__DslCliExecutor___dispatch
+    packages__dsl2testql__src__dsl2testql__cli___main_legacy --> packages__dsl2testql__src__dsl2testql__bus__execute_dsl_line
+    packages__dsl2testql__src__dsl2testql__cli___main_legacy --> packages__dsl2testql__src__dsl2testql__bus__execute_dsl
+    packages__dsl2testql__src__dsl2testql__cli___main_legacy --> examples__browser_inspection__run__print
+    packages__dsl2testql__src__dsl2testql__cli__main --> packages__dsl2testql__src__dsl2testql__cli___main_legacy
+    packages__dsl2testql__src__dsl2testql__cli__main --> packages__dsl2testql__src__dsl2testql__cli___main_subcommands
+    packages__dsl2testql__src__dsl2testql__events__EventStore__append --> packages__dsl2testql__src__dsl2testql__pb_codec__encode_protobuf
+    packages__dsl2testql__src__dsl2testql__events__EventStore__append --> packages__dsl2testql__src__dsl2testql__pb_codec__result_to_pb
+    packages__dsl2testql__src__dsl2testql__events__EventStore__replay --> packages__dsl2testql__src__dsl2testql__pb_codec__envelope_to_dict
+    packages__dsl2testql__src__dsl2testql__pb_codec__encode_protobuf --> packages__dsl2testql__src__dsl2testql__pb_codec___set_body
+    packages__dsl2testql__src__dsl2testql__pb_codec__decode_protobuf --> packages__dsl2testql__src__dsl2testql__pb_codec__envelope_to_dict
+    packages__dsl2testql__src__dsl2testql__pb_codec__encode_text_to_protobuf --> packages__dsl2testql__src__dsl2testql__grammar__parse_line
+    packages__dsl2testql__src__dsl2testql__pb_codec__encode_text_to_protobuf --> packages__dsl2testql__src__dsl2testql__pb_codec__encode_protobuf
+    packages__dsl2testql__src__dsl2testql__pb_codec__decode_protobuf_to_text --> packages__dsl2testql__src__dsl2testql__grammar__to_text
+    packages__dsl2testql__src__dsl2testql__pb_codec__decode_protobuf_to_text --> packages__dsl2testql__src__dsl2testql__pb_codec__decode_protobuf
+    packages__dsl2testql__src__dsl2testql__pb_codec__encode_result_protobuf --> packages__dsl2testql__src__dsl2testql__pb_codec__result_to_pb
+    packages__dsl2testql__src__dsl2testql__schema_registry__schema_for_verb --> packages__dsl2testql__src__dsl2testql__schema_registry___load_schemas
+    packages__dsl2testql__src__dsl2testql__schema_registry__all_schemas --> packages__dsl2testql__src__dsl2testql__schema_registry___load_schemas
+    packages__dsl2testql__src__dsl2testql__schema_registry__validate_command_dict --> packages__dsl2testql__src__dsl2testql__schema_registry__schema_for_verb
+    packages__dsl2testql__src__dsl2testql__schema_registry__validate_schema_registry --> packages__dsl2testql__src__dsl2testql__schema_registry___load_schemas
+    packages__dsl2testql__src__dsl2testql__grammar___parse_query --> packages__dsl2testql__src__dsl2testql__grammar__pick_flag
+    packages__dsl2testql__src__dsl2testql__grammar___parse_patch --> packages__dsl2testql__src__dsl2testql__grammar__pick_flag
+    packages__dsl2testql__src__dsl2testql__grammar___parse_generate --> packages__dsl2testql__src__dsl2testql__grammar__pick_flag
+    packages__dsl2testql__src__dsl2testql__grammar__parse_line --> packages__dsl2testql__src__dsl2testql__grammar__split_command
+    packages__dsl2testql__src__dsl2testql__codec__encode_text --> packages__dsl2testql__src__dsl2testql__grammar__parse_line
+    packages__dsl2testql__src__dsl2testql__codec__encode_text --> packages__dsl2testql__src__dsl2testql__schema_registry__validate_command_dict
+    packages__dsl2testql__src__dsl2testql__codec__roundtrip_text --> packages__dsl2testql__src__dsl2testql__grammar__parse_line
+    packages__dsl2testql__src__dsl2testql__codec__roundtrip_text --> packages__dsl2testql__src__dsl2testql__schema_registry__validate_command_dict
+    packages__dsl2testql__src__dsl2testql__codec__roundtrip_text --> packages__dsl2testql__src__dsl2testql__grammar__to_text
+    packages__dsl2testql__src__dsl2testql__codec__encode_protobuf --> packages__dsl2testql__src__dsl2testql__pb_codec__encode_text_to_protobuf
+    packages__dsl2testql__src__dsl2testql__codec__decode_protobuf --> packages__dsl2testql__src__dsl2testql__pb_codec__decode_protobuf_to_text
+    packages__dsl2testql__src__dsl2testql__cli_handlers___print_result --> examples__browser_inspection__run__print
+    packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_validate_schema --> packages__dsl2testql__src__dsl2testql__schema_registry__validate_schema_registry
+    packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_validate_schema --> examples__browser_inspection__run__print
+    packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_exec --> packages__dsl2testql__src__dsl2testql__bus__execute_dsl_line
+    packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_exec --> packages__dsl2testql__src__dsl2testql__cli_handlers___print_result
+    packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_run --> packages__dsl2testql__src__dsl2testql__bus__execute_dsl
+    packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_run --> packages__dsl2testql__src__dsl2testql__cli_handlers___print_result
+    packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_encode --> packages__dsl2testql__src__dsl2testql__pb_codec__encode_text_to_protobuf
+    packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_decode --> examples__browser_inspection__run__print
+    packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_decode --> packages__dsl2testql__src__dsl2testql__pb_codec__decode_protobuf_to_text
+    packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_replay --> packages__dsl2testql__src__dsl2testql__events__default_event_store
+    packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_replay --> examples__browser_inspection__run__print
+    packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_shell --> examples__browser_inspection__run__print
+    packages__dsl2testql__src__dsl2testql__cli_handlers__cmd_shell --> packages__dsl2testql__src__dsl2testql__bus__execute_dsl_line
+    packages__dsl2testql__src__dsl2testql__handlers__command__handle_generate --> packages__nlp2testql__src__nlp2testql__pipeline__generate_spec
+    packages__dsl2testql__src__dsl2testql__handlers__command__handle_patch --> packages__dsl2testql__src__dsl2testql__handlers__command___read_content
+    packages__dsl2testql__src__dsl2testql__handlers__command__handle_patch --> packages__uri2testql__src__uri2testql__patch__patch_uri
+    packages__dsl2testql__src__dsl2testql__handlers__command__handle_from_tokens --> packages__dsl2testql__src__dsl2testql__grammar__parse_line
+    packages__dsl2testql__src__dsl2testql__handlers__command__handle_from_tokens --> packages__dsl2testql__src__dsl2testql__handlers__query__handle_query
+    packages__dsl2testql__src__dsl2testql__handlers__command__handle_from_tokens --> packages__dsl2testql__src__dsl2testql__handlers__query__handle_validate
+    packages__dsl2testql__src__dsl2testql__handlers__command__handle_from_tokens --> packages__dsl2testql__src__dsl2testql__handlers__command__handle_generate
+    packages__dsl2testql__src__dsl2testql__handlers__command__handle_from_tokens --> packages__dsl2testql__src__dsl2testql__handlers__command__handle_patch
+    packages__dsl2testql__src__dsl2testql__handlers__query__handle_query --> packages__uri2testql__src__uri2testql__query__query_uri
+    packages__dsl2testql__src__dsl2testql__handlers__query__handle_validate --> packages__nlp2testql__src__nlp2testql__validate__validate_testql_file
+    packages__uri2testql__src__uri2testql__query___render_partial --> packages__uri2testql__src__uri2testql__block_resolver__render_block_partial
+    packages__uri2testql__src__uri2testql__query___render_partial --> packages__uri2testql__src__uri2testql__block_resolver__parse_block_ref
+    packages__uri2testql__src__uri2testql__query___extract_data --> packages__uri2testql__src__uri2testql__block_resolver__extract_block_data
+    packages__uri2testql__src__uri2testql__query___extract_data --> packages__uri2testql__src__uri2testql__block_resolver__parse_block_ref
+    packages__uri2testql__src__uri2testql__query___selector_from_parts --> packages__uri2testql__src__uri2testql__block_resolver__selector_from_ref
+    packages__uri2testql__src__uri2testql__query___selector_from_parts --> packages__uri2testql__src__uri2testql__block_resolver__parse_block_ref
+    packages__uri2testql__src__uri2testql__query___query_file_source --> packages__uri2testql__src__uri2testql__files__resolve_testql_file
+    packages__uri2testql__src__uri2testql__query___query_file_source --> packages__uri2testql__src__uri2testql__query___to_plain
+    packages__uri2testql__src__uri2testql__query___query_generate_source --> packages__nlp2testql__src__nlp2testql__pipeline__generate_spec
+    packages__uri2testql__src__uri2testql__query___query_block_source --> packages__uri2testql__src__uri2testql__files__resolve_testql_file
+    packages__uri2testql__src__uri2testql__query___query_block_source --> packages__uri2testql__src__uri2testql__query___extract_data
+    packages__uri2testql__src__uri2testql__query___query_block_source --> packages__uri2testql__src__uri2testql__query___render_partial
+    packages__uri2testql__src__uri2testql__query___query_block_source --> packages__uri2testql__src__uri2testql__query___apply_output_format
+    packages__uri2testql__src__uri2testql__query___query_block_source --> packages__uri2testql__src__uri2testql__query___selector_from_parts
+    packages__uri2testql__src__uri2testql__query__query_uri --> packages__uri2testql__src__uri2testql__uri__parse_testql_uri
+    packages__uri2testql__src__uri2testql__query__query_uri --> packages__uri2testql__src__uri2testql__query___query_file_source
+    packages__uri2testql__src__uri2testql__query__query_uri --> packages__uri2testql__src__uri2testql__query___query_generate_source
+    packages__uri2testql__src__uri2testql__query__query_uri --> packages__uri2testql__src__uri2testql__query___query_block_source
+    packages__uri2testql__src__uri2testql__query__query_uri --> packages__uri2testql__src__uri2testql__query___selector_from_parts
+    packages__uri2testql__src__uri2testql__uri__uri_for_file --> packages__uri2testql__src__uri2testql__uri___encode
+    packages__uri2testql__src__uri2testql__uri__uri_for_block --> packages__uri2testql__src__uri2testql__uri___encode
+    packages__uri2testql__src__uri2testql__uri__uri_for_generate --> packages__uri2testql__src__uri2testql__uri___encode
+    packages__uri2testql__src__uri2testql__uri__parse_testql_uri --> packages__uri2testql__src__uri2testql__uri___decode
+    packages__uri2testql__src__uri2testql__uri__parse_testql_uri --> packages__uri2testql__src__uri2testql__uri__is_testql_uri
+    packages__uri2testql__src__uri2testql__uri__build_testql_uri_index --> packages__uri2testql__src__uri2testql__uri__uri_for_block
+    packages__uri2testql__src__uri2testql__materialize___materialize_file --> packages__uri2testql__src__uri2testql__files__resolve_testql_file
+    packages__uri2testql__src__uri2testql__materialize___materialize_generate --> packages__nlp2testql__src__nlp2testql__pipeline__generate_spec
+    packages__uri2testql__src__uri2testql__materialize___materialize_block --> packages__uri2testql__src__uri2testql__query__query_uri
+    packages__uri2testql__src__uri2testql__materialize__materialize_uri --> packages__uri2testql__src__uri2testql__uri__parse_testql_uri
+    packages__uri2testql__src__uri2testql__materialize__materialize_uri --> packages__uri2testql__src__uri2testql__materialize___materialize_file
+    packages__uri2testql__src__uri2testql__materialize__materialize_uri --> packages__uri2testql__src__uri2testql__materialize___materialize_generate
+    packages__uri2testql__src__uri2testql__materialize__materialize_uri --> packages__uri2testql__src__uri2testql__materialize___materialize_block
+    packages__uri2testql__src__uri2testql__patch__replace_block_in_text --> packages__uri2testql__src__uri2testql__patch___selector_pattern
+    packages__uri2testql__src__uri2testql__patch__replace_block_in_text --> packages__uri2testql__src__uri2testql__patch___find_block_span
+    packages__uri2testql__src__uri2testql__patch__patch_uri --> packages__uri2testql__src__uri2testql__uri__parse_testql_uri
+    packages__uri2testql__src__uri2testql__patch__patch_uri --> packages__uri2testql__src__uri2testql__files__resolve_testql_file
+    packages__uri2testql__src__uri2testql__patch__patch_uri --> packages__uri2testql__src__uri2testql__patch__replace_block_in_text
+    packages__uri2testql__src__uri2testql__patch__patch_uri --> packages__uri2testql__src__uri2testql__query__query_uri
+    packages__uri2testql__src__uri2testql__patch__append_uri --> packages__uri2testql__src__uri2testql__files__resolve_testql_file
+    packages__uri2testql__src__uri2testql__patch__append_uri --> packages__uri2testql__src__uri2testql__patch__append_blocks_to_text
+    packages__uri2testql__src__uri2testql__patch__append_uri --> packages__uri2testql__src__uri2testql__uri__parse_testql_uri
+    packages__uri2testql__src__uri2testql__patch__apply_uri --> packages__uri2testql__src__uri2testql__patch__patch_uri
+    packages__uri2testql__src__uri2testql__patch__apply_uri --> packages__uri2testql__src__uri2testql__patch__append_uri
+    packages__uri2testql__src__uri2testql__patch__apply_uri --> packages__uri2testql__src__uri2testql__materialize__materialize_uri
+    packages__uri2testql__src__uri2testql__patch__update_uri --> packages__uri2testql__src__uri2testql__patch__patch_uri
+    packages__uri2testql__src__uri2testql__block_resolver__extract_block_data --> packages__uri2testql__src__uri2testql__block_resolver___find_named
+    packages__uri2testql__src__uri2testql__block_resolver__render_block_partial --> packages__uri2testql__src__uri2testql__block_resolver___find_named
+    packages__mcp2testql__src__mcp2testql__cli__main --> packages__mcp2testql__src__mcp2testql__server__create_server
+    packages__mcp2testql__src__mcp2testql__server__TestqlMCPServer____post_init__ --> packages__mcp2testql__src__mcp2testql__server___require_fastmcp
+    packages__mcp2testql__src__mcp2testql__server__TestqlMCPServer___register_tools --> packages__uri2testql__src__uri2testql__query__query_uri
+    packages__mcp2testql__src__mcp2testql__server__TestqlMCPServer___register_tools --> packages__uri2testql__src__uri2testql__materialize__materialize_uri
+    packages__mcp2testql__src__mcp2testql__server__TestqlMCPServer___register_tools --> packages__nlp2testql__src__nlp2testql__validate__validate_testql_file
+    packages__mcp2testql__src__mcp2testql__server__TestqlMCPServer___register_tools --> packages__dsl2testql__src__dsl2testql__bus__execute_dsl
+    packages__mcp2testql__src__mcp2testql__server__run_server --> packages__mcp2testql__src__mcp2testql__server__create_server
+    packages__nlp2testql__src__nlp2testql__pipeline__generate_spec --> packages__nlp2testql__src__nlp2testql__pipeline__plan_with_rules
+    packages__nlp2testql__src__nlp2testql__pipeline__generate_spec --> packages__nlp2testql__src__nlp2testql__validate__validate_testql
     examples__artifact_bundle__generate_bundle__main --> examples__browser_inspection__run__print
     examples__artifact_bundle__generate_bundle__main --> testql__results__analyzer__inspect_source
     examples__artifact_bundle__generate_bundle__main --> testql__results__artifacts__write_inspection_artifacts
     TODO__testtoon_parser__parse_testtoon --> TODO__testtoon_parser__detect_separator
     TODO__testtoon_parser__print_parsed --> examples__browser_inspection__run__print
     TODO__testtoon_parser__print_parsed --> TODO__testtoon_parser__validate
-    testql__cli__mcp_serve --> testql__mcp__server__run_server
+    testql__cli__mcp_serve --> packages__mcp2testql__src__mcp2testql__server__run_server
     testql__cli__check_and_upgrade --> testql__cli___fetch_latest_version
     testql__cli__check_and_upgrade --> examples__browser_inspection__run__print
     testql__cli__main --> testql__cli__check_and_upgrade
@@ -865,6 +1245,8 @@ flowchart TD
     testql__runner__DslCliExecutor___dispatch --> examples__browser_inspection__run__print
     testql__runner__DslCliExecutor__cmd_log --> examples__browser_inspection__run__print
     testql__runner__DslCliExecutor__cmd_print --> examples__browser_inspection__run__print
+    testql__runner__DslCliExecutor___print_verbose_result --> examples__browser_inspection__run__print
+    testql__runner__DslCliExecutor___handle_execution_error --> examples__browser_inspection__run__print
     testql__runner__DslCliExecutor__run_script --> testql__runner__parse_script
     testql__runner__DslCliExecutor__run_script --> examples__browser_inspection__run__print
     testql__runner__main --> testql__runner__parse_line
@@ -886,8 +1268,17 @@ flowchart TD
     testql__sumd_parser__SumdParser___parse_interfaces --> testql__sumd_parser___parse_block_interfaces
     testql__sumd_parser__SumdParser___parse_interfaces --> testql__sumd_parser___parse_api_interfaces
     testql__commands__self_test_cmd__self_test --> testql__commands__self_test_cmd___print_human
+    testql__commands__nlp2env_cmd__nlp2env_run --> testql__commands__nlp2env_cmd___validate
     testql__commands__discover_cmd__discover --> testql__discovery__registry__discover_path
     testql__commands__discover_cmd__discover --> testql__commands__discover_cmd___print_summary
+    testql__commands__conversation_cmd___create_runner --> testql__adapters__nlp2dsl__llm_provider__live_llm_enabled
+    testql__commands__conversation_cmd___format_mode --> testql__adapters__nlp2dsl__llm_provider__live_llm_enabled
+    testql__commands__conversation_cmd___output_text --> testql__commands__conversation_cmd___format_mode
+    testql__commands__conversation_cmd__conversation_run --> testql__commands__conversation_cmd___validate_scenario
+    testql__commands__conversation_cmd__conversation_run --> testql__commands__conversation_cmd___resolve_base_url
+    testql__commands__conversation_cmd__conversation_run --> testql__commands__conversation_cmd___create_runner
+    testql__commands__conversation_cmd__conversation_run --> testql__commands__conversation_cmd___output_json
+    testql__commands__conversation_cmd__conversation_run --> testql__commands__conversation_cmd___output_text
     testql__commands__generate_cmd__generate --> testql__commands__generate_cmd___echo_analysis
     testql__commands__generate_cmd__generate --> testql__commands__generate_cmd___echo_generation
     testql__commands__generate_cmd__analyze --> testql__commands__generate_cmd___print_routes_section
@@ -939,6 +1330,8 @@ flowchart TD
     testql__commands__encoder_routes__oql_run_file --> testql__commands__encoder_routes___run_oql_lines
     testql__commands__encoder_routes___run_oql_lines --> testql__commands__encoder_routes___update_counters
     testql__commands__encoder_routes___run_oql_lines --> testql__commands__encoder_routes___format_log_detail
+    testql__commands__run_cmd___run_single --> testql__commands__run_cmd___is_nlp2env_scenario
+    testql__commands__run_cmd___run_single --> testql__commands__run_cmd___run_nlp2env
     testql__commands__run_cmd___emit_single_json --> examples__browser_inspection__run__print
     testql__commands__run_cmd___emit_multi_json --> examples__browser_inspection__run__print
     testql__commands__run_cmd___maybe_planfile --> testql__integrations__planfile_hook__create_test_failure_ticket
@@ -1027,10 +1420,21 @@ flowchart TD
     testql__commands__echo__parsers__doql__parse_doql_less --> testql__commands__echo__parsers__doql___parse_deploy
     testql__commands__echo__parsers__doql__parse_doql_less --> testql__commands__echo__parsers__doql___parse_environment
     testql__commands__echo__parsers__doql__parse_doql_less --> testql__commands__echo__parsers__doql___parse_integrations
+    testql__export__scenario_builder__ScenarioBuilder__environment --> testql__export__scenario_builder___csv
+    testql__export__scenario_builder__ScenarioBuilder__config --> testql__export__scenario_builder___csv
+    testql__export__scenario_builder__ScenarioBuilder__context --> testql__export__scenario_builder___csv
+    testql__export__scenario_builder__ScenarioBuilder__gui --> testql__export__scenario_builder___csv
+    testql__export__scenario_builder__ScenarioBuilder__flow --> testql__export__scenario_builder___csv
+    testql__export__scenario_builder__ScenarioBuilder__shell --> testql__export__scenario_builder___csv
     testql__interpreter___testtoon_parser___expand_api --> testql__interpreter___testtoon_parser___append_api_asserts
+    testql__interpreter___testtoon_parser___expand_environment --> testql__interpreter___testtoon_parser___append_raw_command
+    testql__interpreter___testtoon_parser___expand_context --> testql__interpreter___testtoon_parser___append_raw_command
+    testql__interpreter___testtoon_parser___expand_gui --> testql__interpreter___gui_expand__expand_gui_row
+    testql__interpreter___testtoon_parser___expand_gui --> testql__interpreter___testtoon_parser___append_raw_command
     testql__interpreter___testtoon_parser___expand_shell --> testql__interpreter___testtoon_parser___shell_timeout_ms
     testql__interpreter___testtoon_parser___expand_shell --> testql__interpreter___testtoon_parser___quote_shell_command
     testql__interpreter___testtoon_parser___expand_shell --> testql__interpreter___testtoon_parser___shell_expected_exit
+    testql__interpreter___testtoon_parser___expand_desktop --> testql__interpreter___testtoon_parser___append_raw_command
     testql__interpreter___testtoon_parser__testtoon_to_oql --> TODO__testtoon_parser__parse_testtoon
     testql__interpreter__dom_scanner__DomScanner__scan_aria --> testql__interpreter__dom_scanner___flatten_aom
     testql__interpreter__dom_scanner__DomScanner__scan_aria --> testql__interpreter__dom_scanner___aom_node_to_element
@@ -1044,8 +1448,14 @@ flowchart TD
     testql__interpreter___api_runner___navigate_dot_part --> testql__interpreter___api_runner___handle_mixed_notation
     testql__interpreter___api_runner___navigate_dot_part --> testql__interpreter___api_runner___navigate_step
     testql__interpreter___api_runner___handle_mixed_notation --> testql__interpreter___api_runner___navigate_step
+    testql__interpreter___gui__GuiMixin___start_playwright --> testql__desktop__backend__get_desktop_backend
     testql__interpreter__main --> examples__browser_inspection__run__print
     testql__interpreter___flow__FlowMixin___cmd_include --> testql__interpreter___parser__parse_oql
+    testql__interpreter___context__ContextMixin___cmd_context_detect --> testql__context__runtime__detect_runtime_profile
+    testql__interpreter___context__ContextMixin___cmd_context_detect --> testql__context__runtime__apply_profile
+    testql__interpreter___context__ContextMixin___cmd_context_apply --> testql__context__runtime__apply_profile
+    testql__interpreter___context__ContextMixin___cmd_context_apply --> testql__context__runtime___coerce_profile_dict
+    testql__interpreter___context__ContextMixin___cmd_context_apply --> testql__context__runtime__detect_runtime_profile
     testql__interpreter__testtoon_parser___detect_separator --> testql__interpreter__testtoon_parser___strip_quoted_regions
     testql__interpreter__testtoon_parser___parse_inline_array --> testql__interpreter__testtoon_parser___parse_value
     testql__interpreter__testtoon_parser___parse_inline_dict --> testql__interpreter__testtoon_parser___parse_value
@@ -1075,6 +1485,9 @@ flowchart TD
     testql__interpreter__interpreter__OqlInterpreter__parse --> testql__interpreter___testtoon_parser__testtoon_to_oql
     testql__interpreter__interpreter__OqlInterpreter__execute --> testql___base_fallback__VariableStore__all
     testql__interpreter___websockets__WebSocketMixin___cmd_ws_connect --> testql___base_fallback__EventBridge__connect
+    testql__interpreter___desktop__DesktopMixin___desktop --> testql__desktop__backend__get_desktop_backend
+    testql__interpreter___desktop__DesktopMixin___capture_is_stale_blank --> testql__desktop__vdisplay_capture__is_blank_image
+    testql__interpreter___desktop__DesktopMixin___cmd_desktop_assert_elements --> testql__desktop__element_assert__evaluate_element_assert
     testql__interpreter___validation__ValidationMixin___cmd_validate --> testql__interpreter___validation___resolve_target
     testql__interpreter__dom_scan_mixin__DomScanMixin___handle_audit_report --> testql__interpreter__dom_scan_formatters__to_text_audit
     testql__interpreter__converter__core__convert_oql_to_testtoon --> testql__interpreter__converter__parsers__parse_commands
@@ -1082,7 +1495,7 @@ flowchart TD
     testql__interpreter__converter__core__convert_oql_to_testtoon --> testql__interpreter__converter__parsers__detect_scenario_type
     testql__interpreter__converter__core__convert_oql_to_testtoon --> testql__interpreter__converter__renderer__build_config_section
     testql__interpreter__converter__core__convert_oql_to_testtoon --> testql__interpreter__converter__renderer__build_header
-    testql__interpreter__converter__core__convert_oql_to_testtoon --> testql__interpreter__dispatcher__CommandDispatcher__dispatch
+    testql__interpreter__converter__core__convert_oql_to_testtoon --> packages__dsl2testql__src__dsl2testql__bus__dispatch
     testql__interpreter__converter__core__convert_oql_to_testtoon --> testql__interpreter__converter__renderer__render_sections
     testql__interpreter__converter__core__convert_file --> testql__interpreter__converter__core__convert_oql_to_testtoon
     testql__interpreter__converter__core__convert_directory --> testql__interpreter__converter__core__convert_file
@@ -1103,6 +1516,99 @@ flowchart TD
     testql__interpreter__converter__handlers__flow__handle_flow --> testql__interpreter__converter__parsers__parse_target_from_args
     testql__interpreter__converter__handlers__flow__handle_flow --> testql__interpreter__converter__parsers__parse_meta_from_args
     testql__interpreter__converter__handlers__record__handle_record_start --> testql__interpreter__converter__parsers__parse_target_from_args
+    testql__desktop__vision__list_monitors --> testql__desktop__vision__check_vision_availability
+    testql__desktop__vision__list_monitors --> testql__desktop__vision___display
+    testql__desktop__vision__list_os_windows --> testql__desktop__vision__check_vision_availability
+    testql__desktop__vision__list_os_windows --> testql__desktop__window_discovery__list_capture_windows
+    testql__desktop__vision__list_os_windows --> testql__desktop__vision___display
+    testql__desktop__vision__list_os_windows --> testql__desktop__window_discovery__window_display_title
+    testql__desktop__vision__describe_image --> testql__desktop__vision__check_vision_availability
+    testql__desktop__vision__analyze_layout --> testql__desktop__vision___collect_ocr_text
+    testql__desktop__vision__analyze_layout --> testql__commands__generate_cmd__analyze
+    testql__desktop__vision__analyze_layout --> testql__desktop__vision__check_vision_availability
+    testql__desktop__vision__find_text --> testql__commands__generate_cmd__analyze
+    testql__desktop__vision__find_text --> testql__desktop__vision__check_vision_availability
+    testql__desktop__vision__inspect_environment --> testql__desktop__vdisplay_capture__capture_via_vdisplay
+    testql__desktop__vision__inspect_environment --> testql__desktop__vision__describe_image
+    testql__desktop__vision__inspect_environment --> testql__desktop__vision__analyze_layout
+    testql__desktop__vision__inspect_environment --> testql__desktop__backend__detect_display_server
+    testql__desktop__vision__inspect_environment --> testql__desktop__vision___display
+    testql__desktop__vision__inspect_environment --> testql__desktop__vision__list_monitors
+    testql__desktop__vision__inspect_environment --> testql__desktop__vision__list_os_windows
+    testql__desktop__vision__inspect_environment --> testql__desktop__vdisplay_capture__save_capture_with_meta
+    testql__desktop__catalog__collect_desktop_catalog --> testql__desktop__backend__detect_display_server
+    testql__desktop__window_discovery___display --> testql__desktop__window_discovery___vdisplay_available
+    testql__desktop__window_discovery__is_capture_window --> testql__desktop__window_discovery___has_unusable_title
+    testql__desktop__window_discovery__is_capture_window --> testql__desktop__window_discovery___is_internal_without_title
+    testql__desktop__window_discovery__is_capture_window --> testql__desktop__window_discovery___matches_junk_marker
+    testql__desktop__window_discovery__is_capture_window --> testql__desktop__window_discovery___meets_min_size
+    testql__desktop__window_discovery___filter_capture_windows --> testql__desktop__window_discovery__is_capture_window
+    testql__desktop__window_discovery__list_capture_windows --> testql__desktop__window_discovery___filter_capture_windows
+    testql__desktop__window_discovery__list_capture_windows --> testql__desktop__window_discovery___vdisplay_available
+    testql__desktop__window_discovery__list_capture_windows --> testql__desktop__window_discovery___display
+    testql__desktop__window_discovery__list_capture_windows --> testql__desktop__backend__DesktopBackend__list_windows
+    testql__desktop__window_discovery__window_display_title --> testql__desktop__window_discovery__window_to_hex_id
+    testql__desktop__window_discovery__window_matches --> testql__desktop__window_discovery__window_display_title
+    testql__desktop__vdisplay_capture___xwd_window_png --> testql__desktop__vdisplay_capture___format_window_id
+    testql__desktop__vdisplay_capture___xwd_window_png --> testql__desktop__vdisplay_capture__shutil_which
+    testql__desktop__vdisplay_capture___resolve_monitor --> testql__desktop__vdisplay_capture___match_output_by_name
+    testql__desktop__vdisplay_capture___resolve_monitor --> testql__desktop__vdisplay_capture___primary_output
+    testql__desktop__vdisplay_capture___resolve_monitor --> testql__desktop__vdisplay_capture___match_output_by_index
+    testql__desktop__vdisplay_capture__build_monitor_canvas --> testql__desktop__vdisplay_capture___resolve_monitor
+    testql__desktop__vdisplay_capture__build_monitor_canvas --> testql__desktop__window_discovery__list_capture_windows
+    testql__desktop__vdisplay_capture__build_monitor_canvas --> testql__desktop__vdisplay_capture___windows_on_monitor
+    testql__desktop__vdisplay_capture__build_monitor_canvas --> testql__desktop__vdisplay_capture___composite_windows
+    testql__desktop__vdisplay_capture__build_monitor_canvas --> testql__desktop__vdisplay_capture__resolve_display
+    testql__desktop__vdisplay_capture___find_mirror_window --> testql__desktop__vdisplay_capture__shutil_which
+    testql__desktop__vdisplay_capture___capture_virtual_window --> testql__desktop__vdisplay_capture___format_window_id
+    testql__desktop__vdisplay_capture___mirror_capture_result --> testql__desktop__vdisplay_capture__is_blank_image
+    testql__desktop__vdisplay_capture___mirror_capture_result --> testql__desktop__vdisplay_capture___scene_class
+    testql__desktop__vdisplay_capture__capture_monitor_mirror_virtual --> testql__desktop__vdisplay_capture__build_monitor_canvas
+    testql__desktop__vdisplay_capture__capture_monitor_mirror_virtual --> testql__desktop__vdisplay_capture___allocate_virtual_display
+    testql__desktop__vdisplay_capture__capture_monitor_mirror_virtual --> testql__desktop__vdisplay_capture___find_mirror_window
+    testql__desktop__vdisplay_capture__capture_monitor_mirror_virtual --> testql__desktop__vdisplay_capture___mirror_capture_result
+    testql__desktop__vdisplay_capture__capture_monitor_composite --> testql__desktop__vdisplay_capture__build_monitor_canvas
+    testql__desktop__vdisplay_capture__capture_monitor_composite --> testql__desktop__vdisplay_capture__is_blank_image
+    testql__desktop__vdisplay_capture__capture_monitor_composite --> testql__desktop__vdisplay_capture___scene_class
+    testql__desktop__vdisplay_capture___composite_windows --> testql__desktop__vdisplay_capture___xwd_window_png
+    testql__desktop__vdisplay_capture___composite_windows --> testql__desktop__vdisplay_capture___paste_window
+    testql__desktop__vdisplay_capture___finalize_desktop_composite --> testql__desktop__vdisplay_capture__is_blank_image
+    testql__desktop__vdisplay_capture__capture_desktop_composite --> testql__desktop__vdisplay_capture___desktop_bounds
+    testql__desktop__vdisplay_capture__capture_desktop_composite --> testql__desktop__vdisplay_capture___composite_windows
+    testql__desktop__vdisplay_capture__capture_desktop_composite --> testql__desktop__vdisplay_capture___finalize_desktop_composite
+    testql__desktop__vdisplay_capture__capture_desktop_composite --> testql__desktop__vdisplay_capture__resolve_display
+    testql__desktop__vdisplay_capture__capture_desktop_composite --> testql__desktop__window_discovery__list_capture_windows
+    testql__desktop__vdisplay_capture___try_scrot_region_capture --> testql__desktop__vdisplay_capture__is_blank_image
+    testql__desktop__vdisplay_capture___try_scrot_region_capture --> testql__desktop__vdisplay_capture__resolve_display
+    testql__desktop__vdisplay_capture___try_scrot_region_capture --> testql__desktop__vdisplay_capture___resolve_monitor
+    testql__desktop__vdisplay_capture__capture_via_vdisplay --> testql__desktop__vdisplay_capture__capture_monitor_composite
+    testql__desktop__vdisplay_capture__capture_via_vdisplay --> testql__desktop__vdisplay_capture__capture_desktop_composite
+    testql__desktop__vdisplay_capture__capture_via_vdisplay --> testql__desktop__vdisplay_capture___try_scrot_region_capture
+    testql__desktop__vdisplay_capture__capture_via_vdisplay --> testql__desktop__vdisplay_capture__capture_monitor_mirror_virtual
+    testql__desktop__backend___desktop_window_from_vdisplay --> testql__desktop__window_discovery__window_to_hex_id
+    testql__desktop__backend___desktop_window_from_vdisplay --> testql__desktop__window_discovery__window_display_title
+    testql__desktop__backend___match_window_by_vdisplay_title --> testql__desktop__window_discovery__list_capture_windows
+    testql__desktop__backend___match_window_by_vdisplay_title --> testql__desktop__backend___desktop_window_from_vdisplay
+    testql__desktop__backend___match_window_by_vdisplay_title --> testql__desktop__window_discovery__window_matches
+    testql__desktop__backend__LinuxDesktopBackend____init__ --> testql__desktop__backend__detect_display_server
+    testql__desktop__backend__LinuxDesktopBackend__list_windows --> testql__desktop__backend___run
+    testql__desktop__backend__LinuxDesktopBackend__list_windows --> testql__desktop__wmctrl__parse_wmctrl_listing
+    testql__desktop__backend__LinuxDesktopBackend___list_windows_vdisplay --> testql__desktop__window_discovery__list_capture_windows
+    testql__desktop__backend__LinuxDesktopBackend___list_windows_vdisplay --> testql__desktop__backend___desktop_window_from_vdisplay
+    testql__desktop__backend__LinuxDesktopBackend___list_windows_xdotool --> testql__desktop__backend___run
+    testql__desktop__backend__LinuxDesktopBackend___list_windows_xdotool --> testql__desktop__backend___parse_xdotool_geometry
+    testql__desktop__backend__LinuxDesktopBackend___active_window_id --> testql__desktop__backend___run
+    testql__desktop__backend__LinuxDesktopBackend___match_window --> testql__desktop__backend___match_window_by_vdisplay_title
+    testql__desktop__backend__LinuxDesktopBackend__focus_window --> testql__desktop__backend___run
+    testql__desktop__backend__LinuxDesktopBackend___click_x11 --> testql__desktop__backend___run
+    testql__desktop__backend__LinuxDesktopBackend___click_wayland --> testql__desktop__backend___run
+    testql__desktop__backend__LinuxDesktopBackend__type_text --> testql__desktop__backend___run
+    testql__desktop__backend__LinuxDesktopBackend__send_key --> testql__desktop__backend___run
+    testql__desktop__backend__LinuxDesktopBackend__screenshot --> testql__desktop__screenshot_tools__screenshot_candidates
+    testql__desktop__backend__LinuxDesktopBackend__screenshot --> testql__desktop__screenshot_tools__try_screenshot_candidates
+    testql__desktop__backend__LinuxDesktopBackend___screenshot_is_blank --> testql__desktop__vdisplay_capture__is_blank_image
+    testql__desktop__backend__LinuxDesktopBackend___screenshot_vdisplay --> testql__desktop__vdisplay_capture__capture_via_vdisplay
+    testql__desktop__backend__LinuxDesktopBackend___screenshot_vdisplay --> testql__desktop__vdisplay_capture__save_capture_with_meta
     testql__discovery__registry__ProbeRegistry____init__ --> testql__discovery__registry__default_probes
     testql__discovery__manifest__ArtifactManifest__from_probe_results --> testql__discovery__manifest___unique
     testql__discovery__manifest__ArtifactManifest__from_probe_results --> testql__discovery__manifest___merge_metadata
@@ -1139,6 +1645,13 @@ flowchart TD
     testql__discovery__probes__filesystem__package_python___parse_pyproject_dependencies --> testql__discovery__probes__filesystem__package_python___dep
     testql__discovery__probes__filesystem__package_python___parse_requirements --> testql__discovery__probes__filesystem__package_python___dep
     testql__discovery__probes__filesystem__package_python___dedupe_deps --> testql___base_fallback__VariableStore__set
+    testql__conversation__runner__ConversationRunner____init__ --> testql__artifacts__registry__get_artifact_registry
+    testql__conversation__runner__ConversationRunner____init__ --> testql__adapters__nlp2dsl__llm_provider__resolve_llm_provider
+    testql__conversation__runner__ConversationRunner___run_via_ir --> testql__conversation__runner__ConversationRunner___run_step
+    testql__conversation__runner__ConversationRunner___run_via_ir --> testql__conversation__runner___step_status_name
+    testql__conversation__runner__ConversationRunner___determine_nlp2dsl_status --> testql__ir_runner__executors__base__assemble_result
+    testql__conversation__runner__ConversationRunner___determine_nlp2dsl_status --> testql__conversation__runner___step_status_name
+    testql__conversation__runner__ConversationRunner___extract_captures --> testql__conversation__runner___extract_path
     testql__results__artifacts__write_inspection_artifacts --> testql__results__artifacts___write_group
     testql__results__artifacts__write_inspection_artifacts --> testql__results__artifacts___render_summary_md
     testql__results__artifacts___render_summary_md --> testql__results__serializers___render_nlp
@@ -1191,265 +1704,7 @@ flowchart TD
     testql__results__serializers___render_data --> testql__results__serializers___render_toon
     testql__results__serializers___render_data --> testql__results__serializers___render_nlp_dict
     testql__results__serializers___render_nlp --> testql__results__serializers___render_nlp_dict
-    testql__generators__base__BaseAnalyzer___should_exclude_path --> testql___base_fallback__VariableStore__set
-    testql__generators__api_generator__APIGeneratorMixin___deduplicate_rest_routes --> testql___base_fallback__VariableStore__set
-    testql__generators__pipeline___resolve_source --> testql__generators__sources__get_source
-    testql__generators__pipeline___resolve_source --> testql__generators__pipeline__sorted_sources
-    testql__generators__pipeline___resolve_target --> testql__generators__targets__get_target
-    testql__generators__pipeline___resolve_target --> testql__generators__pipeline__sorted_targets
-    testql__generators__pipeline__sorted_sources --> testql__generators__sources__available_sources
-    testql__generators__pipeline__sorted_targets --> testql__generators__targets__available_targets
-    testql__generators__pipeline__run --> testql__generators__pipeline___resolve_source
-    testql__generators__pipeline__run --> testql__generators__pipeline___resolve_target
-    testql__generators__pipeline__write --> testql__generators__targets__get_target
-    testql__generators__page_analyzer___try_testid_selector --> testql__generators__page_analyzer___css_escape
-    testql__generators__page_analyzer___try_id_selector --> testql__generators__page_analyzer___is_unstable
-    testql__generators__page_analyzer___try_name_selector --> testql__generators__page_analyzer___css_escape
-    testql__generators__page_analyzer___try_role_aria_selector --> testql__generators__page_analyzer___css_escape
-    testql__generators__page_analyzer___try_input_type_selector --> testql__generators__page_analyzer___css_escape
-    testql__generators__page_analyzer___try_class_selector --> testql__generators__page_analyzer___is_unstable
-    testql__generators__page_analyzer__snapshot_to_plan --> testql__generators__page_analyzer___create_base_plan
-    testql__generators__page_analyzer__snapshot_to_plan --> testql__generators__page_analyzer___add_navigate_step
-    testql__generators__page_analyzer__snapshot_to_plan --> testql__generators__page_analyzer___process_elements
-    testql__generators__page_analyzer__snapshot_to_plan --> testql__generators__page_analyzer___add_body_assertion
-    testql__generators__page_analyzer___process_elements --> testql___base_fallback__VariableStore__set
-    testql__generators__page_analyzer___process_elements --> testql__generators__page_analyzer__pick_selector
-    testql__generators__page_analyzer___process_elements --> testql__generators__page_analyzer___should_add_input_step
-    testql__generators__page_analyzer___process_elements --> testql__generators__page_analyzer___add_input_step
-    testql__generators__page_analyzer___process_elements --> testql__generators__page_analyzer___should_add_click_step
-    testql__generators__page_analyzer___process_elements --> testql__generators__page_analyzer___add_click_step
-    testql__generators__page_analyzer___process_elements --> testql__generators__page_analyzer___should_add_assert_visible
-    testql__generators__page_analyzer___process_elements --> testql__generators__page_analyzer___add_assert_visible_step
-    testql__generators__page_analyzer___should_add_input_step --> testql__generators__page_analyzer__is_typed_input
-    testql__generators__page_analyzer___add_input_step --> testql__generators__page_analyzer__default_input_value
-    testql__generators__page_analyzer___add_input_step --> testql__generators__page_analyzer___name_or_selector
-    testql__generators__page_analyzer___should_add_click_step --> testql__generators__page_analyzer__is_clickable
-    testql__generators__page_analyzer___add_click_step --> testql__generators__page_analyzer___name_or_selector
-    testql__generators__page_analyzer___add_assert_visible_step --> testql__generators__page_analyzer___name_or_selector
-    testql__generators__page_analyzer__find_replacement --> testql__generators__page_analyzer___hint_from_selector
-    testql__generators__page_analyzer__find_replacement --> testql__generators__page_analyzer___normalise
-    testql__generators__page_analyzer__find_replacement --> testql__generators__page_analyzer___find_exact_match
-    testql__generators__page_analyzer__find_replacement --> testql__generators__page_analyzer___find_fuzzy_match
-    testql__generators__page_analyzer___find_exact_match --> testql__generators__page_analyzer__pick_selector
-    testql__generators__page_analyzer___find_exact_match --> testql__generators__page_analyzer___normalise
-    testql__generators__page_analyzer___find_fuzzy_match --> testql__generators__page_analyzer___build_element_haystack
-    testql__generators__page_analyzer___find_fuzzy_match --> testql__generators__page_analyzer__pick_selector
-    testql__generators__page_analyzer___build_element_haystack --> testql__generators__page_analyzer___normalise
-    testql__generators__targets__pytest_target___emit_test --> testql__generators__targets__pytest_target___safe_ident
-    testql__generators__targets__pytest_target___emit_test --> testql__generators__targets__pytest_target___step_summary
-    testql__generators__targets__pytest_target__PytestTarget__render --> testql__generators__targets__pytest_target___emit_test
-    testql__generators__sources__proto_source___sample_fields_blob --> testql__generators__sources__proto_source___sample_value_for
-    testql__generators__sources__proto_source___message_to_step --> testql__generators__sources__proto_source___sample_fields_blob
-    testql__generators__sources__proto_source__ProtoSource__load --> testql__generators__sources__proto_source___load_proto_text
-    testql__generators__sources__proto_source__ProtoSource__load --> testql__adapters__proto__descriptor_loader__parse_proto
-    testql__generators__sources__proto_source__ProtoSource__load --> testql__generators__sources__proto_source___message_to_step
-    testql__generators__sources__config_source___parse_makefile --> testql__generators__sources__config_source___load_includes
-    testql__generators__sources__config_source___parse_makefile --> testql__generators__sources__config_source___extract_phony_targets
-    testql__generators__sources__config_source___parse_makefile --> testql__generators__sources__config_source___extract_target_commands
-    testql__generators__sources__config_source___parse_targets --> testql__generators__sources__config_source___parse_buf_yaml
-    testql__generators__sources__config_source___parse_targets --> testql__generators__sources__config_source___select_parser_for_file
-    testql__generators__sources__config_source___parse_targets --> testql__generators__sources__config_source___auto_detect_parser
-    testql__generators__sources__config_source___parse_targets --> testql__generators__sources__config_source___parse_makefile
-    testql__generators__sources__config_source___parse_targets --> testql__generators__sources__config_source___parse_taskfile
-    testql__generators__sources__config_source___parse_targets --> testql__generators__sources__config_source___parse_docker_compose
-    testql__generators__sources__config_source__ConfigSource__load --> testql__generators__sources__config_source___load_file
-    testql__generators__sources__config_source__ConfigSource__load --> testql__generators__sources__config_source___parse_targets
-    testql__generators__sources__config_source__ConfigSource__load --> testql__generators__sources__config_source___filter_commands
-    testql__generators__sources__graphql_source__GraphQLSource__load --> testql__generators__sources__graphql_source___load_sdl
-    testql__generators__sources__graphql_source__GraphQLSource__load --> testql__adapters__graphql__schema_introspection__parse_schema
-    testql__generators__sources__graphql_source__GraphQLSource__load --> testql__generators__sources__graphql_source___is_smoke_target
-    testql__generators__sources__graphql_source__GraphQLSource__load --> testql__generators__sources__graphql_source___type_to_query
-    testql__generators__sources__openapi_source___operation_to_step --> testql__generators__sources__openapi_source___pick_success_status
-    testql__generators__sources__openapi_source__OpenAPISource__load --> testql__openapi_generator__ContractTestGenerator___load_spec
-    testql__generators__sources__openapi_source__OpenAPISource__load --> testql__generators__sources__openapi_source___iter_operations
-    testql__generators__sources__openapi_source__OpenAPISource__load --> testql__generators__sources__openapi_source___operation_to_step
-    testql__generators__sources__ui_source__UISource__load --> testql__generators__sources__ui_source___load_html
-    testql__generators__sources__ui_source__UISource__load --> testql__interpreter___api_runner___navigate_step
-    testql__generators__sources__ui_source__UISource__load --> testql__generators__sources__ui_source___input_steps
-    testql__generators__sources__ui_source__UISource__load --> testql__generators__sources__ui_source___button_steps
-    testql__generators__sources__sql_source__SqlSource__load --> testql__generators__sources__sql_source___load_sql_text
-    testql__generators__sources__sql_source__SqlSource__load --> testql__adapters__sql__ddl_parser__parse_ddl
-    testql__generators__sources__sql_source__SqlSource__load --> testql__generators__sources__sql_source___crud_steps
-    testql__generators__sources__sql_source__SqlSource__load --> testql__generators__sources__sql_source___schema_fixture_from_ddl
-    testql__generators__sources__page_source__PageSource__load --> testql__generators__sources__page_source___origin
-    testql__generators__sources__page_source__PageSource__load --> testql__generators__page_analyzer__snapshot_to_plan
-    testql__generators__sources__page_source__PageSource__load --> testql__generators__sources__page_source___path_of
-    testql__generators__sources__page_source__PageSource___fetch_via_playwright --> testql__generators__sources__page_source__extract_elements_from_page
-    testql__adapters__registry__AdapterRegistry__detect --> testql__adapters__base__read_source
-    testql__adapters__scenario_yaml___split_request --> testql__adapters__scenario_yaml___as_dict
-    testql__adapters__scenario_yaml___captures_from --> testql__adapters__scenario_yaml___as_dict
-    testql__adapters__scenario_yaml___captures_from --> testql__adapters__scenario_yaml___normalise_capture_path
-    testql__adapters__scenario_yaml___assertions_from_expect --> testql__adapters__scenario_yaml___assertion_from_field
-    testql__adapters__scenario_yaml___step_common --> testql__adapters__scenario_yaml___assertions_from_expect
-    testql__adapters__scenario_yaml___step_common --> testql__adapters__scenario_yaml___captures_from
-    testql__adapters__scenario_yaml___step_common --> testql__adapters__scenario_yaml___parse_wait_ms
-    testql__adapters__scenario_yaml___api_step --> testql__adapters__scenario_yaml___split_request
-    testql__adapters__scenario_yaml___api_step --> testql__adapters__scenario_yaml___as_dict
-    testql__adapters__scenario_yaml___api_step --> testql__adapters__scenario_yaml___step_common
-    testql__adapters__scenario_yaml___gui_step --> testql__adapters__scenario_yaml___step_common
-    testql__adapters__scenario_yaml___gui_step --> testql__adapters__scenario_yaml___as_dict
-    testql__adapters__scenario_yaml___encoder_step --> testql__adapters__scenario_yaml___step_common
-    testql__adapters__scenario_yaml___shell_step --> testql__adapters__scenario_yaml___as_dict
-    testql__adapters__scenario_yaml___shell_step --> testql__adapters__scenario_yaml___step_common
-    testql__adapters__scenario_yaml___unit_step --> testql__adapters__scenario_yaml___step_common
-    testql__adapters__scenario_yaml___typed_step --> testql__adapters__scenario_yaml___as_dict
-    testql__adapters__scenario_yaml___typed_step --> testql__adapters__scenario_yaml___detect_step_type
-    testql__adapters__scenario_yaml___typed_step --> testql__adapters__scenario_yaml___create_step_by_type
-    testql__adapters__scenario_yaml___detect_step_type --> testql__adapters__scenario_yaml___is_gui_step
-    testql__adapters__scenario_yaml___detect_step_type --> testql__adapters__scenario_yaml___is_encoder_step
-    testql__adapters__scenario_yaml___detect_step_type --> testql__adapters__scenario_yaml___is_unit_step
-    testql__adapters__scenario_yaml___create_sql_step --> testql__adapters__scenario_yaml___step_common
-    testql__adapters__scenario_yaml___create_graphql_step --> testql__adapters__scenario_yaml___as_dict
-    testql__adapters__scenario_yaml___create_graphql_step --> testql__adapters__scenario_yaml___step_common
-    testql__adapters__scenario_yaml___metadata_from --> testql__adapters__scenario_yaml___as_list
-    testql__adapters__scenario_yaml___config_from --> testql__adapters__scenario_yaml___as_dict
-    testql__adapters__scenario_yaml___plan_from_yaml --> testql__adapters__scenario_yaml___as_list
-    testql__adapters__scenario_yaml___plan_from_yaml --> testql__adapters__scenario_yaml___metadata_from
-    testql__adapters__scenario_yaml___plan_from_yaml --> testql__adapters__scenario_yaml___config_from
-    testql__adapters__scenario_yaml___plan_from_yaml --> testql__adapters__scenario_yaml___typed_step
-    testql__adapters__scenario_yaml___render_step --> testql__adapters__scenario_yaml___add_common_step_attributes
-    testql__adapters__scenario_yaml___render_step --> testql__adapters__scenario_yaml___render_api_step
-    testql__adapters__scenario_yaml___render_step --> testql__adapters__scenario_yaml___render_gui_step
-    testql__adapters__scenario_yaml___render_step --> testql__adapters__scenario_yaml___render_shell_step
-    testql__adapters__scenario_yaml___render_step --> testql__adapters__scenario_yaml___render_encoder_step
-    testql__adapters__scenario_yaml___add_common_step_attributes --> testql__adapters__scenario_yaml___reverse_operator
-    testql__adapters__scenario_yaml__ScenarioYamlAdapter__detect --> testql__adapters__base__read_source
-    testql__adapters__scenario_yaml__ScenarioYamlAdapter__parse --> testql__adapters__base__read_source
-    testql__adapters__scenario_yaml__ScenarioYamlAdapter__parse --> testql__adapters__scenario_yaml___plan_from_yaml
-    testql__adapters__scenario_yaml__ScenarioYamlAdapter__render --> testql__adapters__scenario_yaml___render_step
-    testql__adapters__testtoon_adapter___capture_section_apply --> testql__adapters__testtoon_adapter___resolve_capture_target
-    testql__adapters__testtoon_adapter___assert_json_section_apply --> testql__adapters__testtoon_adapter___resolve_capture_target
-    testql__adapters__testtoon_adapter___assert_json_section_apply --> testql__adapters__testtoon_adapter___assert_json_field
-    testql__adapters__testtoon_adapter___context_section_to_config --> testql__adapters__testtoon_adapter___config_to_dict
-    testql__adapters__testtoon_adapter___validate_section_to_steps --> testql__adapters__testtoon_adapter___parse_artifact_criteria
-    testql__adapters__testtoon_adapter___translate_section --> testql__adapters__testtoon_adapter___config_to_dict
-    testql__adapters__testtoon_adapter___translate_section --> testql__adapters__testtoon_adapter___context_section_to_config
-    testql__adapters__testtoon_adapter___toon_to_plan --> testql__adapters__testtoon_adapter___translate_section
-    testql__adapters__testtoon_adapter___toon_to_plan --> testql__adapters__testtoon_adapter___capture_section_apply
-    testql__adapters__testtoon_adapter___toon_to_plan --> testql__adapters__testtoon_adapter___assert_json_section_apply
-    testql__adapters__testtoon_adapter___render_gui_action_steps --> testql__adapters__testtoon_adapter___toon_safe_selector
-    testql__adapters__testtoon_adapter___derive_columns --> testql___base_fallback__VariableStore__set
-    testql__adapters__testtoon_adapter___render_group_section --> testql__adapters__testtoon_adapter___format_extra_value
-    testql__adapters__testtoon_adapter___render_generic_section_steps --> testql__adapters__testtoon_adapter___group_generic_steps
-    testql__adapters__testtoon_adapter___render_generic_section_steps --> testql__adapters__testtoon_adapter___derive_columns
-    testql__adapters__testtoon_adapter___render_generic_section_steps --> testql__adapters__testtoon_adapter___render_group_section
-    testql__adapters__testtoon_adapter___render_plan --> testql__adapters__testtoon_adapter___render_meta
-    testql__adapters__testtoon_adapter__TestToonAdapter__detect --> testql__adapters__base__read_source
-    testql__adapters__testtoon_adapter__TestToonAdapter__parse --> testql__adapters__base__read_source
-    testql__adapters__testtoon_adapter__TestToonAdapter__parse --> testql__adapters__testtoon_adapter___toon_to_plan
-    testql__adapters__testtoon_adapter__TestToonAdapter__render --> testql__adapters__testtoon_adapter___render_plan
-    testql__adapters__sql__fixtures__schema_fixture_from_rows --> testql__adapters__sql__fixtures___truthy
-    testql__adapters__sql__ddl_parser___iter_create_tables --> testql__adapters__sql__ddl_parser___scan_balanced_parens
-    testql__adapters__sql__ddl_parser___split_top_level --> testql__adapters__sql__ddl_parser___depth_delta
-    testql__adapters__sql__ddl_parser___parse_column_line --> testql__adapters__sql__ddl_parser___extract_default
-    testql__adapters__sql__ddl_parser___parse_table_regex --> testql__adapters__sql__ddl_parser___parse_column_line
-    testql__adapters__sql__ddl_parser___parse_table_regex --> testql__adapters__sql__ddl_parser___split_top_level
-    testql__adapters__sql__ddl_parser___parse_ddl_regex --> testql__adapters__sql__ddl_parser___parse_table_regex
-    testql__adapters__sql__ddl_parser___parse_ddl_regex --> testql__adapters__sql__ddl_parser___iter_create_tables
-    testql__adapters__sql__ddl_parser___parse_ddl_sqlglot --> testql__adapters__sql__ddl_parser___table_from_sqlglot
-    testql__adapters__sql__ddl_parser___parse_ddl_sqlglot --> testql__adapters__sql__dialect_resolver__normalize_dialect
-    testql__adapters__sql__ddl_parser___table_from_sqlglot --> testql__adapters__sql__ddl_parser___column_from_sqlglot
-    testql__adapters__sql__ddl_parser___column_from_sqlglot --> testql___base_fallback__VariableStore__has
-    testql__adapters__sql__ddl_parser__parse_ddl --> testql__adapters__sql__ddl_parser___parse_ddl_regex
-    testql__adapters__sql__ddl_parser__parse_ddl --> testql__adapters__sql__dialect_resolver__has_sqlglot
-    testql__adapters__sql__ddl_parser__parse_ddl --> testql__adapters__sql__ddl_parser___parse_ddl_sqlglot
-    testql__adapters__sql__query_parser___analyze_with_sqlglot --> testql__adapters__sql__query_parser___projection_columns
-    testql__adapters__sql__query_parser___analyze_with_sqlglot --> testql__adapters__sql__query_parser__classify
-    testql__adapters__sql__query_parser___analyze_with_sqlglot --> testql__adapters__sql__dialect_resolver__normalize_dialect
-    testql__adapters__sql__query_parser___projection_columns --> testql___base_fallback__VariableStore__set
-    testql__adapters__sql__query_parser__analyze_query --> testql__adapters__sql__dialect_resolver__has_sqlglot
-    testql__adapters__sql__query_parser__analyze_query --> testql__adapters__sql__query_parser___analyze_with_sqlglot
-    testql__adapters__sql__query_parser__analyze_query --> testql__adapters__sql__query_parser__classify
-    testql__adapters__sql__sql_adapter___schema_section --> testql__adapters__sql__fixtures__schema_fixture_from_rows
-    testql__adapters__sql__sql_adapter___query_section --> testql__adapters__sql__sql_adapter___row_query
-    testql__adapters__sql__sql_adapter___assert_section --> testql__adapters__sql__sql_adapter___resolve_owner
-    testql__adapters__sql__sql_adapter___toon_to_plan --> testql__adapters__sql__dialect_resolver__normalize_dialect
-    testql__adapters__sql__sql_adapter___toon_to_plan --> testql__adapters__sql__sql_adapter___apply_section
-    testql__adapters__sql__sql_adapter___h_config --> testql__adapters__sql__sql_adapter___config_section
-    testql__adapters__sql__sql_adapter___h_schema --> testql__adapters__sql__sql_adapter___schema_section
-    testql__adapters__sql__sql_adapter___h_query --> testql__adapters__sql__sql_adapter___query_section
-    testql__adapters__sql__sql_adapter___h_assert --> testql__adapters__sql__sql_adapter___assert_section
-    testql__adapters__sql__sql_adapter___render_schema --> testql__adapters__sql__sql_adapter___collect_schema_rows
-    testql__adapters__sql__sql_adapter___render_plan --> testql__adapters__sql__sql_adapter___render_meta
-    testql__adapters__sql__sql_adapter___render_plan --> testql__adapters__sql__sql_adapter___render_config
-    testql__adapters__sql__sql_adapter___render_plan --> testql__adapters__sql__sql_adapter___render_schema
-    testql__adapters__sql__sql_adapter___render_plan --> testql__adapters__sql__sql_adapter___render_queries
-    testql__adapters__sql__sql_adapter___render_plan --> testql__adapters__sql__sql_adapter___render_asserts
-    testql__adapters__sql__sql_adapter___render_plan --> testql__adapters__sql__sql_adapter___render_captures
-    testql__adapters__sql__sql_adapter__SqlDSLAdapter__detect --> testql__adapters__base__read_source
-    testql__adapters__sql__sql_adapter__SqlDSLAdapter__parse --> testql__adapters__base__read_source
-    testql__adapters__sql__sql_adapter__SqlDSLAdapter__parse --> testql__adapters__testtoon_adapter___toon_to_plan
-    testql__adapters__sql__sql_adapter__SqlDSLAdapter__render --> testql__adapters__testtoon_adapter___render_plan
-    testql__adapters__sql__dialect_resolver__is_supported --> testql__adapters__sql__dialect_resolver__normalize_dialect
-    testql__adapters__sql__dialect_resolver__transpile --> testql__adapters__sql__dialect_resolver__normalize_dialect
-    testql__adapters__sql__dialect_resolver__transpile --> testql__adapters__sql__dialect_resolver__has_sqlglot
-    testql__adapters__nlp2dsl__nlp2dsl_adapter__Nlp2DslAdapter__detect --> testql__adapters__base__read_source
-    testql__adapters__nlp2dsl__llm_provider__resolve_llm_provider --> testql__adapters__nlp2dsl__llm_provider__live_llm_enabled
-    testql__adapters__nlp2dsl__llm_provider__resolve_llm_provider --> testql__adapters__nlp2dsl__mock_llm__load_mock_replies
-    testql__adapters__nl__entity_extractor__first_path --> testql__adapters__nl__entity_extractor__first_backtick
-    testql__adapters__nl__entity_extractor__first_path --> testql__adapters__nl__entity_extractor__first_quoted
-    testql__adapters__nl__entity_extractor__first_selector --> testql__adapters__nl__entity_extractor__all_backticked
-    testql__adapters__nl__intent_recognizer___intent_table --> testql__adapters__nl__grammar__normalize
-    testql__adapters__nl__intent_recognizer__recognize_intent --> testql__adapters__nl__grammar__normalize
-    testql__adapters__nl__intent_recognizer__recognize_intent --> testql__adapters__nl__intent_recognizer___intent_table
-    testql__adapters__nl__intent_recognizer__recognize_operator --> testql__adapters__nl__grammar__normalize
-    testql__adapters__nl__nl_adapter___build_assert --> testql__adapters__nl__intent_recognizer__recognize_operator
-    testql__adapters__nl__nl_adapter___build_assert --> testql__adapters__nl__nl_adapter___assert_field
-    testql__adapters__nl__nl_adapter___build_assert --> testql__adapters__nl__nl_adapter___assert_expected
-    testql__adapters__nl__nl_adapter___assert_field --> testql__adapters__nl__grammar__normalize
-    testql__adapters__nl__nl_adapter___build_api --> testql__adapters__nl__nl_adapter___api_status_part
-    testql__adapters__nl__nl_adapter___build_encoder --> testql__adapters__nl__nl_adapter___resolve_encoder_action
-    testql__adapters__nl__nl_adapter___build_step --> testql__adapters__nl__nl_adapter___build_unresolved
-    testql__adapters__nl__nl_adapter___build_step --> testql__adapters__nl__nl_adapter___build_assert
-    testql__adapters__nl__nl_adapter___build_unresolved --> testql__adapters__nl__llm_fallback__get_resolver
-    testql__adapters__nl__nl_adapter___render_by_kind --> testql__adapters__nl__nl_adapter___render_assert
-    testql__adapters__nl__nl_adapter___render_by_kind --> testql__adapters__nl__nl_adapter___render_wait
-    testql__adapters__nl__nl_adapter___render_step --> testql__adapters__nl__nl_adapter___render_by_kind
-    testql__adapters__nl__nl_adapter__NLDSLAdapter__detect --> testql__adapters__base__read_source
-    testql__adapters__nl__nl_adapter__NLDSLAdapter__parse --> testql__adapters__base__read_source
-    testql__adapters__nl__nl_adapter__NLDSLAdapter__parse --> testql__adapters__nl__grammar__split_header_and_body
-    testql__adapters__nl__nl_adapter__NLDSLAdapter__parse --> testql__adapters__nl__intent_recognizer__recognize_intent
-    testql__adapters__nl__nl_adapter__NLDSLAdapter__parse --> testql__adapters__nl__nl_adapter___metadata_from_header
-    testql__adapters__nl__nl_adapter__NLDSLAdapter__parse --> testql__adapters__nl__nl_adapter___build_step
-    testql__adapters__nl__nl_adapter__NLDSLAdapter__render --> testql__adapters__scenario_yaml___render_step
-    testql__adapters__nl__nl_adapter__NLDSLAdapter___load_lexicon_safe --> testql__adapters__nl__lexicon__load_lexicon
-    testql__adapters__nl__grammar___consume_line --> testql__adapters__nl__grammar__is_step_line
-    testql__adapters__nl__grammar___consume_line --> testql__adapters__nl__grammar___apply_meta
-    testql__adapters__nl__grammar___consume_line --> testql__adapters__nl__grammar__strip_step_prefix
-    testql__adapters__nl__grammar__split_header_and_body --> testql__adapters__nl__grammar___consume_line
-    testql__adapters__proto__descriptor_loader___parse_message --> testql__adapters__proto__descriptor_loader___parse_field
-    testql__adapters__proto__descriptor_loader___iter_messages --> testql__adapters__proto__descriptor_loader___scan_balanced_braces
-    testql__adapters__proto__descriptor_loader__parse_proto --> testql__adapters__proto__descriptor_loader___strip_comments
-    testql__adapters__proto__descriptor_loader__parse_proto --> testql__adapters__proto__descriptor_loader___iter_messages
-    testql__adapters__proto__descriptor_loader__parse_proto --> testql__adapters__proto__descriptor_loader___parse_message
-    testql__adapters__proto__descriptor_loader__load_proto_file --> testql__adapters__proto__descriptor_loader__parse_proto
-    testql__adapters__proto__compatibility___compare_field --> testql__adapters__proto__compatibility___wire_compatible
-    testql__adapters__proto__compatibility___compare_message --> testql__adapters__proto__compatibility___find_candidate_field
-    testql__adapters__proto__compatibility___compare_message --> testql__adapters__proto__compatibility___compare_field
-    testql__adapters__proto__compatibility___scan_old_messages --> testql__adapters__proto__compatibility___compare_message
-    testql__adapters__proto__compatibility__compare_schemas --> testql__adapters__proto__compatibility___scan_old_messages
-    testql__adapters__proto__compatibility__compare_schemas --> testql__adapters__proto__compatibility___scan_new_messages
-    testql__adapters__proto__message_validator___validate_field_value --> testql__adapters__proto__message_validator__coerce_scalar
-    testql__adapters__proto__message_validator__validate_message_instance --> testql___base_fallback__VariableStore__set
-    testql__adapters__proto__message_validator__validate_message_instance --> testql__adapters__proto__message_validator___row_issues
-    testql__adapters__proto__message_validator__validate_message_instance --> testql__adapters__proto__message_validator___missing_required
-    testql__adapters__proto__message_validator___row_issues --> testql__adapters__proto__message_validator___validate_field_known
-    testql__adapters__proto__message_validator___row_issues --> testql__adapters__proto__message_validator___validate_field_type
-    testql__adapters__proto__message_validator___row_issues --> testql__adapters__proto__message_validator___validate_field_value
-    testql__adapters__proto__message_validator__round_trip_equal --> testql__adapters__proto__message_validator__coerce_scalar
-    testql__adapters__proto__proto_adapter___toon_to_plan --> testql__adapters__proto__proto_adapter___apply_section
-    testql__adapters__proto__proto_adapter___h_proto --> testql__adapters__proto__proto_adapter___proto_section
-    testql__adapters__proto__proto_adapter___h_message --> testql__adapters__proto__proto_adapter___message_section
-    testql__adapters__proto__proto_adapter___h_assert --> testql__adapters__proto__proto_adapter___assert_section
-    testql__adapters__proto__proto_adapter___render_plan --> testql__adapters__proto__proto_adapter___render_meta
-    testql__adapters__proto__proto_adapter___render_plan --> testql__adapters__proto__proto_adapter___render_proto_files
-    testql__adapters__proto__proto_adapter___render_plan --> testql__adapters__proto__proto_adapter___render_messages
-    testql__adapters__proto__proto_adapter___render_plan --> testql__adapters__proto__proto_adapter___render_asserts
-    testql__adapters__proto__proto_adapter__ProtoDSLAdapter__detect --> testql__adapters__base__read_source
-    testql__adapters__proto__proto_adapter__ProtoDSLAdapter__parse --> testql__adapters__base__read_source
-    testql__adapters__proto__proto_adapter__ProtoDSLAdapter__parse --> testql__adapters__testtoon_adapter___toon_to_plan
-    testql__adapters__proto__proto_adapter__ProtoDSLAdapter__render --> testql__adapters__testtoon_adapter___render_plan
 
     classDef highCC fill:#ff6b6b,stroke:#c92a2a,color:#fff
     classDef medCC fill:#ffd43b,stroke:#f08c00,color:#000
-    class TODO__testtoon_parser__parse_value,TODO__testtoon_parser__parse_testtoon,TODO__testtoon_parser__print_parsed,testql__runner__parse_line,testql__runner__DslCliExecutor__cmd_assert_json,testql__runner__DslCliExecutor__run_script,testql__runner__main,testql__openapi_generator__ContractTestGenerator__validate_response,testql__echo_schemas__ProjectEcho__to_text,testql__sumd_parser___parse_api_interfaces,testql__sumd_parser__SumdParser___parse_metadata,testql__sumd_parser__SumdParser___parse_testql_scenarios,testql__commands__discover_cmd___print_summary,testql__commands__generate_cmd___print_routes_section,testql__commands__heal_scenario_cmd__heal_scenario,testql__commands__encoder_routes___exec_browser_cmd,testql__commands__encoder_routes___execute_oql_line,testql__commands__run_cmd___resolve_input_paths,testql__commands__run_cmd___maybe_planfile,testql__commands__run_cmd__run,testql__commands__echo_helpers___collect_toon_directory,testql__commands__generate_from_page_cmd__generate_from_page,testql__commands__auto_cmd___build_report_data,testql__commands__watchdog_cmd___discover_scenarios,testql__commands__watchdog_cmd___extract_failures,testql__commands__watchdog_cmd___update_metrics,testql__commands__watchdog_cmd__watchdog,testql__commands__endpoints_cmd__endpoints,testql__commands__suite__cli__suite,testql__interpreter___testtoon_parser___append_api_asserts medCC
+    class packages__dsl2testql__src__dsl2testql__cli___main_legacy,packages__uri2testql__src__uri2testql__query___to_plain,packages__uri2testql__src__uri2testql__query__query_uri,packages__uri2testql__src__uri2testql__files__resolve_testql_file,packages__uri2testql__src__uri2testql__materialize__materialize_uri,packages__uri2testql__src__uri2testql__patch___selector_pattern,packages__uri2testql__src__uri2testql__patch__apply_uri,packages__uri2testql__src__uri2testql__block_resolver__selector_from_ref,packages__uri2testql__src__uri2testql__block_resolver__extract_block_data,packages__uri2testql__src__uri2testql__block_resolver__render_block_partial,TODO__testtoon_parser__parse_value,TODO__testtoon_parser__parse_testtoon,TODO__testtoon_parser__print_parsed,testql__runner__parse_line,testql__runner__DslCliExecutor__cmd_assert_json,testql__runner__main,testql__openapi_generator__ContractTestGenerator__validate_response,testql__echo_schemas__ProjectEcho__to_text,testql__sumd_parser___parse_api_interfaces,testql__sumd_parser__SumdParser___parse_metadata,testql__sumd_parser__SumdParser___parse_testql_scenarios,testql__commands__nlp2env_cmd__nlp2env_run,testql__commands__discover_cmd___print_summary,testql__commands__generate_cmd___print_routes_section,testql__commands__heal_scenario_cmd__heal_scenario,testql__commands__encoder_routes___exec_browser_cmd,testql__commands__encoder_routes___execute_oql_line,testql__commands__run_cmd___resolve_input_paths,testql__commands__run_cmd___maybe_planfile,testql__commands__run_cmd__run medCC

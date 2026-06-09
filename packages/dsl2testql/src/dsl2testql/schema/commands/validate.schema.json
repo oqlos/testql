@@ -1,0 +1,10 @@
+{
+  "$id": "dsl2testql/commands/validate",
+  "type": "object",
+  "required": ["verb", "path"],
+  "properties": {
+    "verb": { "const": "VALIDATE" },
+    "path": { "type": "string" }
+  },
+  "additionalProperties": false
+}

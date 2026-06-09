@@ -49,6 +49,7 @@ def test_focus_window_by_title(monkeypatch) -> None:
         return proc
 
     monkeypatch.setattr("testql.desktop.backend._run", fake_run)
+    monkeypatch.setattr(backend, "_list_windows_vdisplay", lambda: [])
 
     focused = backend.focus_window(title="Terminal")
     assert focused is not None
@@ -125,10 +126,25 @@ def test_list_windows_xdotool_fallback(monkeypatch) -> None:
         return proc
 
     monkeypatch.setattr("testql.desktop.backend._run", fake_run)
+    monkeypatch.setattr(backend, "_list_windows_vdisplay", lambda: [])
     windows = backend.list_windows()
     assert len(windows) == 1
     assert windows[0].title == "Test Window"
     assert windows[0].id == "0x3039"
+
+
+def test_screenshot_vdisplay_failure_does_not_raise(monkeypatch, tmp_path: Path) -> None:
+    backend = LinuxDesktopBackend()
+    out = tmp_path / "cap.png"
+
+    def boom(*args, **kwargs):
+        raise RuntimeError("xrandr missing")
+
+    monkeypatch.setattr(
+        "testql.desktop.vdisplay_capture.capture_via_vdisplay",
+        boom,
+    )
+    assert backend._screenshot_vdisplay(out) is False
 
 
 def test_screenshot_scrot_fallback_on_wayland(monkeypatch, tmp_path: Path) -> None:
@@ -145,6 +161,9 @@ def test_screenshot_scrot_fallback_on_wayland(monkeypatch, tmp_path: Path) -> No
         return None
 
     monkeypatch.setattr("testql.desktop.backend.shutil.which", fake_which)
+    monkeypatch.setattr(backend, "_screenshot_vdisplay", lambda path, monitor=None: False)
+    monkeypatch.setattr(backend, "_screenshot_is_blank", lambda path: False)
+    monkeypatch.setattr(backend, "_screenshot_mss", lambda path: False)
 
     def fake_run(argv, **kwargs):
         proc = MagicMock()
@@ -156,7 +175,7 @@ def test_screenshot_scrot_fallback_on_wayland(monkeypatch, tmp_path: Path) -> No
             proc.stderr = "gdk failed"
         elif argv[0] == "scrot":
             proc.returncode = 0
-            out.write_bytes(b"png")
+            out.write_bytes(b"\x89PNG\r\n\x1a\n" + b"\x00" * 2000)
         else:
             proc.returncode = 1
         proc.stdout = ""

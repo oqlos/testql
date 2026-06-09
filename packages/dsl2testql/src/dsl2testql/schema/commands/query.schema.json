@@ -1,0 +1,12 @@
+{
+  "$id": "dsl2testql/commands/query",
+  "type": "object",
+  "required": ["verb", "target"],
+  "properties": {
+    "verb": { "const": "QUERY" },
+    "target": { "type": "string", "pattern": "^testql://" },
+    "file": { "type": "string" },
+    "format": { "enum": ["json", "yaml", "less"], "default": "json" }
+  },
+  "additionalProperties": false
+}

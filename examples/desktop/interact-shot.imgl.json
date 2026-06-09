@@ -1,0 +1,43 @@
+{
+  "version": "1.0",
+  "scene": {
+    "width": 4320,
+    "height": 7680,
+    "source_image": "/home/tom/github/oqlos/testql/examples/desktop/interact-shot.png"
+  },
+  "windows": [
+    {
+      "id": "window_0",
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 4320,
+        "h": 7668
+      },
+      "title": null,
+      "z": 1,
+      "elements": []
+    }
+  ],
+  "orphan_elements": [],
+  "ocr_boxes": [],
+  "metadata": {
+    "ocr_backend": "tesseract",
+    "lang": "eng+pol",
+    "scale": 0.3333333333333333,
+    "detect_source": "local",
+    "element_count": 0,
+    "roles": {},
+    "content_check": {
+      "source": "img2nl",
+      "worth_analyzing": true,
+      "is_blank": false,
+      "scene_class": "flat_monochrome",
+      "recommendation": "proceed_with_layout",
+      "summary": "Obraz 4320×7680 px. Wygląda na jednokolorowy lub prawie jednokolorowy. Jasność 30–31 (zakres dynamiki 255). Niski kontrast. Płaska powierzchnia, mało szumu. Wykryto 1 dużych regionów/obiektów. Scena: płaska powierzchnia jednokolorowa."
+    },
+    "analysis_scale": 0.3333333333333333,
+    "screen_width": 4320,
+    "screen_height": 7680
+  }
+}

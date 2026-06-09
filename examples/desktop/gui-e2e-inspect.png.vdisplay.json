@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "path": "examples/desktop/gui-e2e-inspect.png",
+  "method": "vdisplay_mirror_virtual",
+  "monitor": "DP-2",
+  "window_count": 0,
+  "width": 4320,
+  "height": 7680,
+  "scene_class": "flat_monochrome",
+  "virtual_display": ":100",
+  "error": null
+}

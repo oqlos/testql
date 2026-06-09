@@ -141,6 +141,41 @@ def _parse_nlp2env_toon(text: str) -> dict[str, object]:
     return {"meta": meta, "sections": sections}
 
 
+def _index_prompt_fields(section: object) -> dict[str, dict[str, str]]:
+    extra_fields: dict[str, dict[str, str]] = {}
+    if not isinstance(section, dict):
+        return extra_fields
+    for row in section.get("rows", []):
+        if not isinstance(row, dict):
+            continue
+        pid = str(row.get("prompt_id", "")).strip()
+        key = str(row.get("key", "")).strip()
+        val = str(row.get("value", "")).strip()
+        if pid and key:
+            extra_fields.setdefault(pid, {})[key] = val
+    return extra_fields
+
+
+def _index_expects(section: object) -> dict[str, list[str]]:
+    expects: dict[str, list[str]] = {}
+    if not isinstance(section, dict):
+        return expects
+    for row in section.get("rows", []):
+        if not isinstance(row, dict):
+            continue
+        pid = str(row.get("prompt_id", "")).strip()
+        expect = str(row.get("expect", "")).strip()
+        if pid and expect:
+            expects.setdefault(pid, []).append(expect)
+    return expects
+
+
+def _prompt_id_column(prompt_cols: list[str]) -> str:
+    if "id" in prompt_cols:
+        return "id"
+    return prompt_cols[0] if prompt_cols else "id"
+
+
 def scenarios_from_parsed(parsed: dict[str, object]) -> list[PromptScenario]:
     sections = parsed.get("sections", {})
     assert isinstance(sections, dict)
@@ -153,31 +188,10 @@ def scenarios_from_parsed(parsed: dict[str, object]) -> list[PromptScenario]:
     assert isinstance(prompt_rows, list)
     assert isinstance(prompt_cols, list)
 
-    fields_section = sections.get("PROMPT_FIELDS")
-    assert_section = sections.get("ASSERT_ENV")
+    extra_fields = _index_prompt_fields(sections.get("PROMPT_FIELDS"))
+    expects = _index_expects(sections.get("ASSERT_ENV"))
+    id_col = _prompt_id_column(prompt_cols)
 
-    extra_fields: dict[str, dict[str, str]] = {}
-    if isinstance(fields_section, dict):
-        for row in fields_section.get("rows", []):
-            if not isinstance(row, dict):
-                continue
-            pid = str(row.get("prompt_id", "")).strip()
-            key = str(row.get("key", "")).strip()
-            val = str(row.get("value", "")).strip()
-            if pid and key:
-                extra_fields.setdefault(pid, {})[key] = val
-
-    expects: dict[str, list[str]] = {}
-    if isinstance(assert_section, dict):
-        for row in assert_section.get("rows", []):
-            if not isinstance(row, dict):
-                continue
-            pid = str(row.get("prompt_id", "")).strip()
-            expect = str(row.get("expect", "")).strip()
-            if pid and expect:
-                expects.setdefault(pid, []).append(expect)
-
-    id_col = "id" if "id" in prompt_cols else (prompt_cols[0] if prompt_cols else "id")
     scenarios: list[PromptScenario] = []
     for row in prompt_rows:
         if not isinstance(row, dict):

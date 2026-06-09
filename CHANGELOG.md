@@ -170,6 +170,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Native Desktop E2E (Linux)**: `DESKTOP_*` OQL commands — monitors, windows, mirror capture (vdisplay→Xvfb, no Wayland portal), img2nl scene description, imgl OCR/layout, mouse/keyboard via xdotool/ydotool/wtype.
+- `testql/desktop/vision.py`, `testql/desktop/vdisplay_capture.py` — vdisplay + img2nl + imgl integration.
+- `examples/desktop/` — inspect, interact, multi-monitor scenarios and `run-all.sh`.
+- [docs/DESKTOP_GUI_E2E.md](docs/DESKTOP_GUI_E2E.md) — setup, capture pipeline, command reference.
 - Add artifact discovery core with manifests, probes, and `testql discover`.
 - Add topology graph generation with `testql topology` and JSON/YAML/TOON output.
 - Add structured inspection results, refactor-plan envelope, NLP summaries, and `.testql` artifact bundle writer.
@@ -187,6 +191,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Remaining
 - Add Playwright-backed browser execution, JavaScript-rendered DOM capture, screenshots, console errors, network logs, link-by-link validation, accessibility/performance checks, MCP service integration, and runtime-vs-code delta reports.
+
+## [1.2.60] - 2026-06-09
+
+### Docs
+- Update .testql/summary.md
+- Update CHANGELOG.md
+- Update README.md
+- Update SUMD.md
+- Update SUMR.md
+- Update docs/DESKTOP_GUI_E2E.md
+- Update docs/testql-spec.md
+- Update examples/README.md
+- Update examples/desktop/README.md
+- Update packages/cli2testql/README.md
+- ... and 6 more files
+
+### Test
+- Update testql/context/runtime.py
+- Update testql/desktop/backend.py
+- Update testql/desktop/catalog.py
+- Update testql/desktop/element_assert.py
+- Update testql/desktop/screenshot_tools.py
+- Update testql/desktop/vdisplay_capture.py
+- Update testql/desktop/vision.py
+- Update testql/desktop/window_discovery.py
+- Update testql/interpreter/_desktop.py
+- Update testql/interpreter/_gui_expand.py
+- ... and 13 more files
+
+### Other
+- Update .gitignore
+- Update .testql/inspection.json
+- Update .testql/inspection.toon.yaml
+- Update .testql/inspection.yaml
+- Update .testql/metadata.json
+- Update .testql/refactor-plan.json
+- Update .testql/refactor-plan.toon.yaml
+- Update .testql/refactor-plan.yaml
+- Update .testql/result.json
+- Update .testql/result.toon.yaml
+- ... and 102 more files
 
 ## [1.2.59] - 2026-06-06
 

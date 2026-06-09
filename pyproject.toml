@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "testql"
-version = "1.2.59"
+version = "1.2.60"
 description = "TestQL — Multi-DSL Test Platform: TestTOON / NL / SQL / Proto / GraphQL adapters with Unified IR, generator engine, and meta-testing"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -44,6 +44,12 @@ desktop = [
     "dogtail>=0.9.11; platform_system=='Linux'",
     "pynput>=1.7",
 ]
+vision = [
+    "img2nl[analyze,similarity,opencv,scan]>=0.1.2",
+    "imgl>=0.7.2",
+    "vdisplay[pillow]>=0.1.3; platform_system=='Linux'",
+    "pytesseract>=0.3.10",
+]
 sql = ["sqlglot>=20.0"]
 proto = ["protobuf>=4.21"]
 graphql = ["graphql-core>=3.2"]
@@ -62,6 +68,9 @@ dev = ["pytest", "pytest-asyncio", "pytest-cov",
 
 [tool.setuptools.packages.find]
 include = ["testql*"]
+
+[tool.uv.sources]
+vdisplay = { path = "../../wronai/vdisplay", editable = true }
 
 [tool.pfix]
 # Self-healing Python configuration

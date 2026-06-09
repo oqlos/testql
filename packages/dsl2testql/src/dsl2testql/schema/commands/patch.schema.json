@@ -1,0 +1,12 @@
+{
+  "$id": "dsl2testql/commands/patch",
+  "type": "object",
+  "required": ["verb", "target", "with_path"],
+  "properties": {
+    "verb": { "const": "PATCH" },
+    "target": { "type": "string" },
+    "with_path": { "type": "string" },
+    "file": { "type": "string" }
+  },
+  "additionalProperties": false
+}

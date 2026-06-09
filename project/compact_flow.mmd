@@ -1,40 +1,55 @@
 flowchart TD
-%% generated in 0.03s
+%% generated in 0.06s
     TODO__testtoon_parser["TODO.testtoon_parser<br/>7 funcs"]
     examples__artifact_bundle["examples.artifact-bundle<br/>1 funcs"]
     examples__browser_inspection["examples.browser-inspection<br/>1 funcs"]
+    packages__cli2testql["packages.cli2testql<br/>6 funcs"]
+    packages__dsl2testql["packages.dsl2testql<br/>58 funcs"]
+    packages__mcp2testql["packages.mcp2testql<br/>7 funcs"]
+    packages__nlp2testql["packages.nlp2testql<br/>5 funcs"]
+    packages__uri2testql["packages.uri2testql<br/>38 funcs"]
     testql___base_fallback["testql._base_fallback<br/>26 funcs"]
-    testql__adapters["testql.adapters<br/>330 funcs"]
+    testql__adapters["testql.adapters<br/>335 funcs"]
     testql__artifacts["testql.artifacts<br/>8 funcs"]
     testql__cli["testql.cli<br/>5 funcs"]
-    testql__commands["testql.commands<br/>165 funcs"]
+    testql__commands["testql.commands<br/>171 funcs"]
+    testql__context["testql.context<br/>10 funcs"]
     testql__conversation["testql.conversation<br/>18 funcs"]
+    testql__desktop["testql.desktop<br/>90 funcs"]
     testql__detectors["testql.detectors<br/>61 funcs"]
     testql__discovery["testql.discovery<br/>81 funcs"]
     testql__doql_parser["testql.doql_parser<br/>9 funcs"]
     testql__generators["testql.generators<br/>217 funcs"]
     testql__integrations["testql.integrations<br/>2 funcs"]
-    testql__interpreter["testql.interpreter<br/>249 funcs"]
+    testql__interpreter["testql.interpreter<br/>288 funcs"]
     testql__ir_runner["testql.ir_runner<br/>54 funcs"]
     testql__mcp["testql.mcp<br/>7 funcs"]
     testql__meta["testql.meta<br/>34 funcs"]
+    testql__nlp2env["testql.nlp2env<br/>35 funcs"]
     testql__openapi_generator["testql.openapi_generator<br/>21 funcs"]
     testql__report_generator["testql.report_generator<br/>8 funcs"]
     testql__results["testql.results<br/>56 funcs"]
-    testql__runner["testql.runner<br/>18 funcs"]
+    testql__runner["testql.runner<br/>22 funcs"]
     testql__sumd_generator["testql.sumd_generator<br/>11 funcs"]
     testql__toon_parser["testql.toon_parser<br/>7 funcs"]
     testql__topology["testql.topology<br/>52 funcs"]
     testql__runner ==>|19| examples__browser_inspection
+    packages__dsl2testql ==>|14| examples__browser_inspection
+    testql__interpreter ==>|9| packages__dsl2testql
     TODO__testtoon_parser ==>|8| examples__browser_inspection
     testql__integrations ==>|8| examples__browser_inspection
     testql__commands ==>|7| testql___base_fallback
     testql__commands ==>|7| testql__generators
     testql__commands ==>|7| testql__results
+    testql__interpreter ==>|6| testql__context
     testql__discovery ==>|6| testql___base_fallback
     testql__adapters ==>|6| testql___base_fallback
     testql__ir_runner ==>|6| testql__adapters
+    packages__mcp2testql ==>|5| packages__uri2testql
+    testql__interpreter ==>|5| testql__desktop
     testql__generators ==>|5| testql___base_fallback
+    packages__cli2testql ==>|5| examples__browser_inspection
+    packages__mcp2testql ==>|4| packages__dsl2testql
     examples__artifact_bundle ==>|4| examples__browser_inspection
     testql__commands ==>|4| testql__adapters
     testql__results ==>|4| testql__topology
@@ -43,17 +58,25 @@ flowchart TD
     testql__commands -->|3| examples__browser_inspection
     testql__interpreter -->|3| testql___base_fallback
     testql__generators -->|3| testql__adapters
+    packages__cli2testql -->|3| packages__dsl2testql
+    packages__dsl2testql -->|2| packages__nlp2testql
+    packages__dsl2testql -->|2| packages__uri2testql
+    packages__uri2testql -->|2| packages__nlp2testql
     examples__artifact_bundle -->|2| testql__results
     testql__commands -->|2| testql__report_generator
     testql__commands -->|2| testql__toon_parser
     testql__interpreter -->|2| examples__browser_inspection
+    testql__desktop -->|2| testql__commands
+    testql__adapters -->|2| testql__nlp2env
     testql__mcp -->|2| testql__generators
     testql__mcp -->|2| testql__commands
     testql__mcp -->|2| testql__topology
     testql__meta -->|2| testql__adapters
     testql__detectors -->|2| examples__browser_inspection
     testql__ir_runner -->|2| testql___base_fallback
-    testql__cli -->|1| testql__mcp
+    packages__dsl2testql -->|1| testql__runner
+    packages__mcp2testql -->|1| packages__nlp2testql
+    testql__cli -->|1| packages__mcp2testql
     testql__cli -->|1| examples__browser_inspection
     testql__runner -->|1| testql___base_fallback
     testql__openapi_generator -->|1| testql___base_fallback
@@ -64,11 +87,14 @@ flowchart TD
     testql__commands -->|1| testql__doql_parser
     testql__commands -->|1| testql__sumd_generator
     testql__interpreter -->|1| TODO__testtoon_parser
-    testql__generators -->|1| testql__openapi_generator
-    testql__generators -->|1| testql__interpreter
-    testql__detectors -->|1| testql___base_fallback
-    testql__topology -->|1| testql__generators
-    testql__topology -->|1| testql__discovery
     testql__conversation -->|1| testql__artifacts
     testql__conversation -->|1| testql__adapters
     testql__conversation -->|1| testql__ir_runner
+    testql__generators -->|1| testql__openapi_generator
+    testql__generators -->|1| testql__interpreter
+    testql__mcp -->|1| packages__mcp2testql
+    testql__nlp2env -->|1| testql___base_fallback
+    testql__detectors -->|1| testql___base_fallback
+    testql__ir_runner -->|1| testql__conversation
+    testql__topology -->|1| testql__generators
+    testql__topology -->|1| testql__discovery

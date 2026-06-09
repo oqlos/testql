@@ -50,6 +50,31 @@ ASSERT_VISIBLE <selector>
 ASSERT_TEXT <selector> <text>
 ```
 
+## Native Desktop Commands (Linux)
+
+Control the real OS desktop: monitors, windows, mirror capture, OCR. See [DESKTOP_GUI_E2E.md](./DESKTOP_GUI_E2E.md).
+
+```
+DESKTOP_MONITORS
+DESKTOP_LIST
+DESKTOP_INSPECT "inspect.png"
+DESKTOP_CAPTURE "shot.png" [monitor]     # monitor: primary | DP-2 | 0
+DESKTOP_DESCRIBE "shot.png"
+DESKTOP_ANALYZE "shot.png" [out.json]
+DESKTOP_ASSERT_WINDOW "title"
+DESKTOP_ASSERT_TEXT "needle" ["shot.png"]
+DESKTOP_ASSERT_ELEMENTS 1 ["shot.png"]
+DESKTOP_CLICK_TEXT "label" ["shot.png"]
+DESKTOP_FOCUS "title"
+DESKTOP_CLICK x y
+DESKTOP_TYPE "text"
+DESKTOP_KEY Return
+DESKTOP_LAUNCH "/usr/bin/app" [args]
+DESKTOP_STOP
+```
+
+On GNOME/Wayland, `DESKTOP_CAPTURE` uses **vdisplay mirror→Xvfb** (no screenshot portal). Metadata: `shot.png.vdisplay.json`.
+
 ## Modbus Commands (RTU probe + wizard API)
 
 ```

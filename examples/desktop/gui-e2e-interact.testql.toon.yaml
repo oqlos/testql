@@ -1,0 +1,11 @@
+# SCENARIO: gui-e2e-interact — focus Toolbox, mirror capture, OCR assert
+name: gui-e2e-interact
+description: Focus app window, vdisplay mirror capture, assert visible text via imgl
+
+DESKTOP[6]{command,args}:
+  DESKTOP_ASSERT_WINDOW,Toolbox
+  DESKTOP_CAPTURE,examples/desktop/interact-shot.png primary
+  DESKTOP_ASSERT_ELEMENTS,1 examples/desktop/interact-shot.png
+  DESKTOP_ANALYZE,examples/desktop/interact-shot.png examples/desktop/interact-shot.imgl.json
+  DESKTOP_DESCRIBE,examples/desktop/interact-shot.png
+  DESKTOP_FOCUS,Toolbox

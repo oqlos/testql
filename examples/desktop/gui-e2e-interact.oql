@@ -1,0 +1,7 @@
+# E2E GUI interaction — mirror capture + vision pipeline (no hardcoded app title).
+# For window focus/assert against a named app, use gui-e2e-interact-toolbox.oql.
+
+DESKTOP_LIST
+DESKTOP_CAPTURE "examples/desktop/interact-shot.png" primary
+DESKTOP_ANALYZE "examples/desktop/interact-shot.png" "examples/desktop/interact-shot.imgl.json"
+DESKTOP_DESCRIBE "examples/desktop/interact-shot.png"

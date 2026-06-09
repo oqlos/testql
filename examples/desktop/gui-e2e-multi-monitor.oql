@@ -1,0 +1,10 @@
+# Multi-monitor mirror capture — one PNG per output (~60s total).
+# Validates per-monitor capture + DESKTOP_DESCRIBE (DP-1/HDMI may be flat_monochrome).
+
+DESKTOP_MONITORS
+DESKTOP_CAPTURE "examples/desktop/capture-dp2.png" DP-2
+DESKTOP_CAPTURE "examples/desktop/capture-dp1.png" DP-1
+DESKTOP_CAPTURE "examples/desktop/capture-hdmi.png" HDMI-1
+DESKTOP_DESCRIBE "examples/desktop/capture-dp2.png"
+DESKTOP_DESCRIBE "examples/desktop/capture-dp1.png"
+DESKTOP_DESCRIBE "examples/desktop/capture-hdmi.png"

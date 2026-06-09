@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import json
 
+from ._gui_expand import expand_gui_row
 from ._parser import OqlLine, OqlScript
 from .testtoon_models import ToonSection, ToonScript
 from .testtoon_parser import parse_testtoon
@@ -316,47 +317,13 @@ def _expand_gui(section: ToonSection, lines: list[OqlLine], line_num: int) -> in
     """Expand GUI table → GUI_START / GUI_* commands."""
     session_open = False
     for row in section.rows:
-        action = str(row.get("action", "")).strip().lower()
-        selector = str(row.get("selector") or row.get("target") or "").strip()
-        value = row.get("value") if row.get("value") not in (None, "-") else row.get("text")
-        wait_ms = row.get("wait_ms")
-
-        if action in {"open", "start", "navigate", "goto"}:
-            target = str(value or selector or "${target_url}")
-            if not session_open:
-                if target.startswith("${"):
-                    line_num = _append_raw_command(lines, line_num, "GUI_START", target)
-                else:
-                    line_num = _append_raw_command(lines, line_num, "GUI_START", f'"{target}"')
-                session_open = True
-            else:
-                path = target if target.startswith("${") else f'"{target}"'
-                line_num = _append_raw_command(lines, line_num, "GUI_NAVIGATE", path)
-        elif action in {"input", "type", "fill"}:
-            sel = f'"{selector}"' if selector and not selector.startswith("${") else selector
-            val = f'"{value}"' if value is not None and not str(value).startswith("${") else str(value)
-            line_num = _append_raw_command(lines, line_num, "GUI_INPUT", f"{sel} {val}")
-        elif action == "click":
-            sel = f'"{selector}"' if selector and not selector.startswith("${") else selector
-            line_num = _append_raw_command(lines, line_num, "GUI_CLICK", sel)
-        elif action in {"assert_visible", "visible"}:
-            sel = f'"{selector}"' if selector and not selector.startswith("${") else selector
-            line_num = _append_raw_command(lines, line_num, "GUI_ASSERT_VISIBLE", sel)
-        elif action in {"assert_text", "text"}:
-            expected = value if value is not None else ""
-            sel = f'"{selector}"' if selector and not selector.startswith("${") else selector
-            exp = f'"{expected}"' if expected != "" and not str(expected).startswith("${") else str(expected)
-            line_num = _append_raw_command(lines, line_num, "GUI_ASSERT_TEXT", f"{sel} {exp}")
-        elif action in {"stop", "close"}:
-            line_num = _append_raw_command(lines, line_num, "GUI_STOP", "")
-            session_open = False
-        elif action:
-            sel = f'"{selector}"' if selector else '""'
-            val = f'"{value}"' if value is not None else '""'
-            line_num = _append_raw_command(lines, line_num, action.upper(), f"{sel} {val}".strip())
-
-        if wait_ms not in (None, "-", "", 0, "0"):
-            line_num = _append_raw_command(lines, line_num, "WAIT", str(wait_ms))
+        line_num, session_open = expand_gui_row(
+            row,
+            lines=lines,
+            line_num=line_num,
+            session_open=session_open,
+            append=_append_raw_command,
+        )
 
     if session_open:
         line_num = _append_raw_command(lines, line_num, "GUI_STOP", "")

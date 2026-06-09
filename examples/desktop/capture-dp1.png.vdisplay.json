@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "path": "examples/desktop/capture-dp1.png",
+  "method": "vdisplay_mirror_virtual",
+  "monitor": "DP-1",
+  "window_count": 0,
+  "width": 4096,
+  "height": 2560,
+  "scene_class": "flat_monochrome",
+  "virtual_display": ":100",
+  "error": null
+}

@@ -1,5 +1,5 @@
 flowchart TD
-%% generated in 0.03s
+%% generated in 0.06s
 
     %% Entry points (blue)
     classDef entry fill:#4dabf7,stroke:#1971c2,color:#fff
@@ -10,29 +10,44 @@ flowchart TD
         testql__cli___fetch_latest_version["_fetch_latest_version"]
         testql__cli__check_and_upgrade["check_and_upgrade"]
         testql__cli__main["main"]
+        packages__cli2testql__src__cli2testql__cli__run_shell["run_shell"]
+        packages__cli2testql__src__cli2testql__cli__main["main"]
+        packages__cli2testql__src__cli2testql__cli_handlers__print_result["print_result"]
+        packages__cli2testql__src__cli2testql__cli_handlers__cmd_run_script["cmd_run_script"]
+        packages__cli2testql__src__cli2testql__cli_handlers__cmd_exec_line["cmd_exec_line"]
+        packages__cli2testql__src__cli2testql__cli_handlers__run_shell_loop["run_shell_loop"]
     end
 
     subgraph Core
-        TODO__testtoon_parser__Section__to_dicts["to_dicts"]
-        TODO__testtoon_parser__Section__validate["validate"]
-        TODO__testtoon_parser__print_parsed["print_parsed"]
-        testql__toon_parser__ToonParser__parse_file["parse_file"]
-        testql__toon_parser__ToonParser__parse["parse"]
-        testql__toon_parser__ToonParser___parse_api_block["_parse_api_block"]
-        testql__toon_parser__ToonParser___parse_assert_block["_parse_assert_block"]
-        testql__toon_parser__ToonParser___parse_log_block["_parse_log_block"]
-        testql__doql_parser__DoqlParser__parse_file["parse_file"]
-        testql__doql_parser__DoqlParser__parse["parse"]
-        testql__doql_parser__DoqlParser___parse_app_block["_parse_app_block"]
-        testql__doql_parser__DoqlParser___parse_entity_block["_parse_entity_block"]
-        testql__doql_parser__DoqlParser___parse_workflow_block["_parse_workflow_block"]
-        testql__doql_parser__DoqlParser___parse_interface_block["_parse_interface_block"]
-        testql__doql_parser__DoqlParser___parse_deploy_block["_parse_deploy_block"]
-        ...["+861 more"]
+        packages__dsl2testql__src__dsl2testql__bus___dispatch_cmd["_dispatch_cmd"]
+        packages__dsl2testql__src__dsl2testql__bus__dispatch["dispatch"]
+        packages__dsl2testql__src__dsl2testql__bus__execute_dsl_line["execute_dsl_line"]
+        packages__dsl2testql__src__dsl2testql__bus__execute_dsl["execute_dsl"]
+        packages__dsl2testql__src__dsl2testql__engine__execute_dsl_line["execute_dsl_line"]
+        packages__dsl2testql__src__dsl2testql__engine__execute_dsl["execute_dsl"]
+        packages__dsl2testql__src__dsl2testql__engine__dispatch["dispatch"]
+        packages__dsl2testql__src__dsl2testql__cli___main_legacy["_main_legacy"]
+        packages__dsl2testql__src__dsl2testql__cli___main_subcommands["_main_subcommands"]
+        packages__dsl2testql__src__dsl2testql__cli__main["main"]
+        packages__dsl2testql__src__dsl2testql__events__DslEvent__to_dict["to_dict"]
+        packages__dsl2testql__src__dsl2testql__events__EventStore__replay["replay"]
+        packages__dsl2testql__src__dsl2testql__pb_codec___decode_query_body["_decode_query_body"]
+        packages__dsl2testql__src__dsl2testql__pb_codec___decode_patch_body["_decode_patch_body"]
+        packages__dsl2testql__src__dsl2testql__pb_codec___decode_generate_body["_decode_generate_body"]
+        ...["+995 more"]
     end
 
     subgraph Exporters
+        testql__export__scenario_builder__ScenarioBuilder__environment["environment"]
+        testql__export__scenario_builder__ScenarioBuilder__config["config"]
+        testql__export__scenario_builder__ScenarioBuilder__context["context"]
+        testql__export__scenario_builder__ScenarioBuilder__commands["commands"]
+        testql__export__scenario_builder__ScenarioBuilder__gui["gui"]
+        testql__export__scenario_builder__ScenarioBuilder__flow["flow"]
+        testql__export__scenario_builder__ScenarioBuilder__shell["shell"]
+        testql__export__scenario_builder__ScenarioBuilder__wait["wait"]
+        testql__export__scenario_builder__ScenarioBuilder__build["build"]
         testql__generators__conversation_generator__trace_from_export["trace_from_export"]
     end
 
-    class TODO__testtoon_parser__Section__to_dicts,TODO__testtoon_parser__Section__validate,TODO__testtoon_parser__print_parsed,testql__toon_parser__ToonParser__parse_file,testql__toon_parser__ToonParser__parse,testql__toon_parser__ToonParser___parse_api_block,testql__toon_parser__ToonParser___parse_assert_block,testql__toon_parser__ToonParser___parse_log_block,testql__cli__mcp_serve,testql__cli__cli entry
+    class packages__dsl2testql__src__dsl2testql__engine__execute_dsl_line,packages__dsl2testql__src__dsl2testql__engine__execute_dsl,packages__dsl2testql__src__dsl2testql__engine__dispatch,packages__dsl2testql__src__dsl2testql__cli___main_legacy,packages__dsl2testql__src__dsl2testql__cli___main_subcommands,packages__dsl2testql__src__dsl2testql__cli__main,packages__dsl2testql__src__dsl2testql__events__DslEvent__to_dict,packages__dsl2testql__src__dsl2testql__events__EventStore__replay,packages__dsl2testql__src__dsl2testql__pb_codec___decode_query_body,packages__dsl2testql__src__dsl2testql__pb_codec___decode_patch_body entry

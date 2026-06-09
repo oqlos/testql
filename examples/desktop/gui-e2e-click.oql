@@ -1,0 +1,7 @@
+# E2E click demo — assert label, click via imgl coords (side effect: one mouse click).
+# Run only when you accept a click on the primary monitor.
+
+DESKTOP_ASSERT_WINDOW "Toolbox"
+DESKTOP_CAPTURE "examples/desktop/click-shot.png" primary
+DESKTOP_ASSERT_TEXT "Gateway" "examples/desktop/click-shot.png"
+DESKTOP_CLICK_TEXT "Gateway" "examples/desktop/click-shot.png"

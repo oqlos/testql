@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "path": "examples/desktop/capture-hdmi.png",
+  "method": "vdisplay_mirror_virtual",
+  "monitor": "HDMI-1",
+  "window_count": 0,
+  "width": 4096,
+  "height": 2560,
+  "scene_class": "flat_monochrome",
+  "virtual_display": ":101",
+  "error": null
+}
