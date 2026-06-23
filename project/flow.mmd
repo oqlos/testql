@@ -1,21 +1,21 @@
 flowchart TD
-%% generated in 0.06s
+%% generated in 0.04s
 
     %% Entry points (blue)
     classDef entry fill:#4dabf7,stroke:#1971c2,color:#fff
 
     subgraph CLI
-        testql__cli__mcp_serve["mcp_serve"]
-        testql__cli__cli["cli"]
-        testql__cli___fetch_latest_version["_fetch_latest_version"]
-        testql__cli__check_and_upgrade["check_and_upgrade"]
-        testql__cli__main["main"]
         packages__cli2testql__src__cli2testql__cli__run_shell["run_shell"]
         packages__cli2testql__src__cli2testql__cli__main["main"]
         packages__cli2testql__src__cli2testql__cli_handlers__print_result["print_result"]
         packages__cli2testql__src__cli2testql__cli_handlers__cmd_run_script["cmd_run_script"]
         packages__cli2testql__src__cli2testql__cli_handlers__cmd_exec_line["cmd_exec_line"]
         packages__cli2testql__src__cli2testql__cli_handlers__run_shell_loop["run_shell_loop"]
+        testql__cli__mcp_serve["mcp_serve"]
+        testql__cli__cli["cli"]
+        testql__cli___fetch_latest_version["_fetch_latest_version"]
+        testql__cli__check_and_upgrade["check_and_upgrade"]
+        testql__cli__main["main"]
     end
 
     subgraph Core

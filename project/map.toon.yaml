@@ -1,5 +1,5 @@
-# testql | 446f 52816L | python:416,shell:26,less:4 | 2026-06-09
-# stats: 1197 func | 630 cls | 446 mod | CC̄=3.8 | critical:51 | cycles:0
+# testql | 446f 52848L | python:416,shell:26,less:4 | 2026-06-09
+# stats: 1199 func | 630 cls | 446 mod | CC̄=3.8 | critical:51 | cycles:0
 # alerts[5]: CC main=15; CC parse_testtoon=14; CC render_block_partial=14; CC watchdog=14; CC list_os_windows=14
 # hotspots[5]: capture_monitor_mirror_virtual fan=22; generate_from_page fan=19; heal_scenario fan=19; watch fan=19; suite fan=19
 # evolution: baseline
@@ -170,9 +170,9 @@ M[446]:
   testql/desktop/element_assert.py,53
   testql/desktop/models.py,27
   testql/desktop/screenshot_tools.py,63
-  testql/desktop/vdisplay_capture.py,674
+  testql/desktop/vdisplay_capture.py,688
   testql/desktop/vision.py,364
-  testql/desktop/window_discovery.py,134
+  testql/desktop/window_discovery.py,138
   testql/desktop/wmctrl.py,33
   testql/detectors/__init__.py,54
   testql/detectors/base.py,35
@@ -360,7 +360,7 @@ M[446]:
   tests/test_adapters_base.py,159
   tests/test_api_handler.py,90
   tests/test_browser_discovery.py,111
-  tests/test_cc_refactor_helpers.py,148
+  tests/test_cc_refactor_helpers.py,153
   tests/test_cli.py,98
   tests/test_cli_no_block.py,104
   tests/test_conversation_live_llm.py,83
@@ -368,7 +368,7 @@ M[446]:
   tests/test_converter.py,178
   tests/test_converter_handlers.py,352
   tests/test_desktop_assert_elements.py,66
-  tests/test_desktop_backend.py,197
+  tests/test_desktop_backend.py,199
   tests/test_desktop_catalog.py,16
   tests/test_desktop_execution.py,109
   tests/test_desktop_vision.py,136
@@ -448,7 +448,7 @@ M[446]:
   tests/test_topology_generator.py,162
   tests/test_unit_execution.py,113
   tests/test_validation.py,185
-  tests/test_vdisplay_capture.py,202
+  tests/test_vdisplay_capture.py,209
   tests/test_window_discovery.py,57
   tree.sh,2
 D:
@@ -1417,7 +1417,7 @@ D:
     find_text(path;needle)
     inspect_environment()
   testql/desktop/window_discovery.py:
-    e: _display,_vdisplay_available,window_to_hex_id,_has_unusable_title,_is_internal_without_title,_matches_junk_marker,_meets_min_size,is_capture_window,_filter_capture_windows,list_capture_windows,window_display_title,window_matches
+    e: _display,_vdisplay_available,window_to_hex_id,_has_unusable_title,_is_internal_without_title,_matches_junk_marker,_meets_min_size,is_capture_window,_filter_capture_windows,_fetch_vdisplay_windows,list_capture_windows,window_display_title,window_matches
     _display()
     _vdisplay_available()
     window_to_hex_id(window_id)
@@ -1427,6 +1427,7 @@ D:
     _meets_min_size(width;height)
     is_capture_window(window)
     _filter_capture_windows(raw)
+    _fetch_vdisplay_windows(display)
     list_capture_windows()
     window_display_title(window)
     window_matches(window;needle)
@@ -3039,7 +3040,8 @@ D:
     interp()
     _seed_shell(interp;stdout;stderr;rc)
   tests/test_vdisplay_capture.py:
-    e: test_capture_monitor_composite_places_windows,test_capture_via_vdisplay_prefers_mirror,test_capture_desktop_composite_places_windows,test_capture_via_vdisplay_falls_back_to_scrot_region,test_capture_via_vdisplay_falls_back,test_backend_uses_vdisplay_when_scrot_blank
+    e: _enable_vdisplay_mocks,test_capture_monitor_composite_places_windows,test_capture_via_vdisplay_prefers_mirror,test_capture_desktop_composite_places_windows,test_capture_via_vdisplay_falls_back_to_scrot_region,test_capture_via_vdisplay_falls_back,test_backend_uses_vdisplay_when_scrot_blank
+    _enable_vdisplay_mocks(monkeypatch)
     test_capture_monitor_composite_places_windows(monkeypatch;tmp_path)
     test_capture_via_vdisplay_prefers_mirror(monkeypatch;tmp_path)
     test_capture_desktop_composite_places_windows(monkeypatch;tmp_path)

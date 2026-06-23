@@ -1,4 +1,4 @@
-# testql | 1835 func | 258f | 52557L | python | 2026-06-09
+# testql | 1836 func | 258f | 52579L | python | 2026-06-09
 # generated in 0.00s
 
 HEALTH:
@@ -19,11 +19,11 @@ ALERTS[20]:
 MODULES[501] (top by size):
   M[examples/desktop/screen.imgl.json] 8136L C:0 F:0 CC↑0 D:0 (json)
   M[planfile.yaml] 1319L C:0 F:0 CC↑0 D:0 (yaml)
-  M[tree.txt] 1252L C:0 F:0 CC↑0 D:0 (txt)
+  M[tree.txt] 1253L C:0 F:0 CC↑0 D:0 (txt)
   M[testql/adapters/testtoon_adapter.py] 742L C:1 F:46 CC↑12 D:4 (python)
   M[testql/interpreter/_gui.py] 722L C:1 F:34 CC↑12 D:0 (python)
+  M[testql/desktop/vdisplay_capture.py] 687L C:2 F:32 CC↑13 D:3 (python)
   M[testql/interpreter/_desktop.py] 683L C:1 F:21 CC↑14 D:0 (python)
-  M[testql/desktop/vdisplay_capture.py] 673L C:2 F:32 CC↑13 D:3 (python)
   M[testql/interpreter/_testtoon_parser.py] 656L C:0 F:29 CC↑14 D:1 (python)
   M[testql/generators/page_analyzer.py] 526L C:1 F:31 CC↑10 D:3 (python)
   M[goal.yaml] 511L C:0 F:0 CC↑0 D:0 (yaml)
@@ -49,7 +49,7 @@ REFACTOR[15]:
   [2] H/H Split god module testql/interpreter/_testtoon_parser.py (656L, 0 classes)
   [3] H/H Split god module testql/results/analyzer.py (504L, 0 classes)
   [4] H/H Split god module testql/adapters/scenario_yaml.py (506L, 1 classes)
-  [5] H/H Split god module testql/desktop/vdisplay_capture.py (673L, 2 classes)
+  [5] H/H Split god module testql/desktop/vdisplay_capture.py (687L, 2 classes)
 
 EVOLUTION:
-  2026-06-09 CC̄=3.8 crit=85 52557L // Automated analysis
+  2026-06-09 CC̄=3.8 crit=85 52579L // Automated analysis

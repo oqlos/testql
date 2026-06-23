@@ -1,5 +1,5 @@
 flowchart TD
-%% generated in 0.06s
+%% generated in 0.04s
     TODO__testtoon_parser["TODO.testtoon_parser<br/>7 funcs"]
     examples__artifact_bundle["examples.artifact-bundle<br/>1 funcs"]
     examples__browser_inspection["examples.browser-inspection<br/>1 funcs"]
@@ -15,7 +15,7 @@ flowchart TD
     testql__commands["testql.commands<br/>171 funcs"]
     testql__context["testql.context<br/>10 funcs"]
     testql__conversation["testql.conversation<br/>18 funcs"]
-    testql__desktop["testql.desktop<br/>90 funcs"]
+    testql__desktop["testql.desktop<br/>91 funcs"]
     testql__detectors["testql.detectors<br/>61 funcs"]
     testql__discovery["testql.discovery<br/>81 funcs"]
     testql__doql_parser["testql.doql_parser<br/>9 funcs"]
@@ -46,19 +46,19 @@ flowchart TD
     testql__adapters ==>|6| testql___base_fallback
     testql__ir_runner ==>|6| testql__adapters
     packages__mcp2testql ==>|5| packages__uri2testql
+    packages__cli2testql ==>|5| examples__browser_inspection
     testql__interpreter ==>|5| testql__desktop
     testql__generators ==>|5| testql___base_fallback
-    packages__cli2testql ==>|5| examples__browser_inspection
     packages__mcp2testql ==>|4| packages__dsl2testql
     examples__artifact_bundle ==>|4| examples__browser_inspection
     testql__commands ==>|4| testql__adapters
     testql__results ==>|4| testql__topology
     testql__meta ==>|4| testql___base_fallback
+    packages__cli2testql -->|3| packages__dsl2testql
     testql__commands -->|3| testql__topology
     testql__commands -->|3| examples__browser_inspection
     testql__interpreter -->|3| testql___base_fallback
     testql__generators -->|3| testql__adapters
-    packages__cli2testql -->|3| packages__dsl2testql
     packages__dsl2testql -->|2| packages__nlp2testql
     packages__dsl2testql -->|2| packages__uri2testql
     packages__uri2testql -->|2| packages__nlp2testql

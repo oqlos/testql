@@ -18,7 +18,7 @@ SUMD - Structured Unified Markdown Descriptor for AI-aware project refactorizati
 ## Metadata
 
 - **name**: `testql`
-- **version**: `1.2.59`
+- **version**: `1.2.60`
 - **python_requires**: `>=3.10`
 - **license**: {'text': 'Apache-2.0'}
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -39,14 +39,14 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 1.2.59;
+  version: 1.2.60;
 }
 
 dependencies {
   runtime: "httpx>=0.27, click>=8.0, rich>=13.0, pyyaml>=6.0, goal>=2.1.0, costs>=0.1.20, pfix>=0.1.60, websockets>=13.0, pytest-cov>=7.0, fastapi>=0.100";
   playwright: playwright>=1.40;
   desktop: "pyautogui>=0.9.54, mss>=9.0, opencv-python-headless>=4.8, dogtail>=0.9.11; platform_system=='Linux', pynput>=1.7";
-  vision: "img2nl[analyze,similarity,opencv,scan]>=0.1.2, imgl>=0.7.2, vdisplay[pillow]>=0.1.3, pytesseract>=0.3.10";
+  vision: "img2nl[analyze,similarity,opencv,scan]>=0.1.2, imgl>=0.7.2, vdisplay[pillow]>=0.1.3; platform_system=='Linux', pytesseract>=0.3.10";
   sql: sqlglot>=20.0;
   proto: protobuf>=4.21;
   graphql: graphql-core>=3.2;
@@ -784,32 +784,32 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 
 ## Call Graph
 
-*501 nodes · 500 edges · 118 modules · CC̄=3.8*
+*500 nodes · 500 edges · 120 modules · CC̄=3.8*
 
 ### Hubs (by degree)
 
 | Function | CC | in | out | total |
 |----------|----|----|-----|-------|
 | `print` *(in examples.browser-inspection.run)* | 0 | 67 | 0 | **67** |
-| `capture_monitor_mirror_virtual` *(in testql.desktop.vdisplay_capture)* | 9 | 1 | 34 | **35** |
+| `append` *(in packages.dsl2testql.src.dsl2testql.events.EventStore)* | 3 | 8 | 33 | **41** |
 | `_cmd_desktop_assert_elements` *(in testql.interpreter._desktop.DesktopMixin)* | 14 ⚠ | 0 | 34 | **34** |
 | `parse_testtoon` *(in TODO.testtoon_parser)* | 14 ⚠ | 1 | 31 | **32** |
 | `write_inspection_artifacts` *(in testql.results.artifacts)* | 1 | 3 | 28 | **31** |
 | `_cmd_assert_json` *(in testql.interpreter._assertions.AssertionsMixin)* | 13 ⚠ | 0 | 30 | **30** |
-| `_cmd_validate` *(in testql.interpreter._validation.ValidationMixin)* | 10 ⚠ | 0 | 30 | **30** |
 | `heal_scenario` *(in testql.commands.heal_scenario_cmd)* | 8 | 0 | 30 | **30** |
+| `_cmd_validate` *(in testql.interpreter._validation.ValidationMixin)* | 10 ⚠ | 0 | 30 | **30** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# generated in 0.40s
-# nodes: 501 | edges: 500 | modules: 118
+# generated in 0.38s
+# nodes: 500 | edges: 500 | modules: 120
 # CC̄=3.8
 
 HUBS[20]:
   examples.browser-inspection.run.print
     CC=0  in:67  out:0  total:67
-  testql.desktop.vdisplay_capture.capture_monitor_mirror_virtual
-    CC=9  in:1  out:34  total:35
+  packages.dsl2testql.src.dsl2testql.events.EventStore.append
+    CC=3  in:8  out:33  total:41
   testql.interpreter._desktop.DesktopMixin._cmd_desktop_assert_elements
     CC=14  in:0  out:34  total:34
   TODO.testtoon_parser.parse_testtoon
@@ -818,10 +818,10 @@ HUBS[20]:
     CC=1  in:3  out:28  total:31
   testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
     CC=13  in:0  out:30  total:30
-  testql.interpreter._validation.ValidationMixin._cmd_validate
-    CC=10  in:0  out:30  total:30
   testql.commands.heal_scenario_cmd.heal_scenario
     CC=8  in:0  out:30  total:30
+  testql.interpreter._validation.ValidationMixin._cmd_validate
+    CC=10  in:0  out:30  total:30
   testql.commands.nlp2env_cmd.nlp2env_run
     CC=10  in:0  out:29  total:29
   testql._base_fallback.VariableStore.set
@@ -830,18 +830,18 @@ HUBS[20]:
     CC=1  in:0  out:26  total:26
   testql.commands.watchdog_cmd._update_metrics
     CC=11  in:2  out:23  total:25
+  testql.commands.generate_cmd._print_routes_section
+    CC=10  in:1  out:23  total:24
   testql.commands.inspect_cmd.inspect
     CC=6  in:0  out:24  total:24
   packages.dsl2testql.src.dsl2testql.pb_codec._set_body
     CC=6  in:1  out:23  total:24
-  testql.desktop.window_discovery.is_capture_window
-    CC=12  in:1  out:23  total:24
   testql.commands.generate_topology_cmd.generate_topology
     CC=5  in:0  out:24  total:24
-  testql.commands.generate_cmd._print_routes_section
-    CC=10  in:1  out:23  total:24
   testql.commands.generate_cmd.analyze
     CC=4  in:2  out:22  total:24
+  testql.commands.echo.parsers.doql._parse_workflows
+    CC=7  in:1  out:22  total:23
   testql.context.runtime.detect_runtime_profile
     CC=12  in:3  out:20  total:23
   testql.commands.encoder_routes._run_oql_lines
@@ -856,6 +856,13 @@ MODULES:
     main  CC=2  out:10
   examples.browser-inspection.run  [1 funcs]
     print  CC=0  out:0
+  packages.cli2testql.src.cli2testql.cli  [1 funcs]
+    run_shell  CC=1  out:1
+  packages.cli2testql.src.cli2testql.cli_handlers  [4 funcs]
+    cmd_exec_line  CC=2  out:2
+    cmd_run_script  CC=3  out:4
+    print_result  CC=4  out:6
+    run_shell_loop  CC=6  out:7
   packages.dsl2testql.src.dsl2testql.bus  [5 funcs]
     _bytes_to_cmd  CC=3  out:5
     _dispatch_cmd  CC=5  out:12
@@ -882,7 +889,8 @@ MODULES:
     roundtrip_text  CC=3  out:6
   packages.dsl2testql.src.dsl2testql.engine  [1 funcs]
     dispatch  CC=1  out:1
-  packages.dsl2testql.src.dsl2testql.events  [1 funcs]
+  packages.dsl2testql.src.dsl2testql.events  [2 funcs]
+    append  CC=3  out:33
     default_event_store  CC=2  out:7
   packages.dsl2testql.src.dsl2testql.grammar  [7 funcs]
     _parse_generate  CC=3  out:3
@@ -1135,8 +1143,7 @@ MODULES:
     _run_via_ir  CC=7  out:7
     _extract_path  CC=4  out:3
     _step_status_name  CC=4  out:0
-  testql.desktop.backend  [21 funcs]
-    list_windows  CC=1  out:0
+  testql.desktop.backend  [20 funcs]
     __init__  CC=2  out:2
     _active_window_id  CC=5  out:6
     _click_wayland  CC=6  out:11
@@ -1146,6 +1153,7 @@ MODULES:
     _match_window  CC=8  out:5
     _screenshot_is_blank  CC=2  out:1
     _screenshot_vdisplay  CC=4  out:2
+    focus_window  CC=12  out:11
   testql.desktop.catalog  [1 funcs]
     collect_desktop_catalog  CC=4  out:3
   testql.desktop.element_assert  [1 funcs]
@@ -1153,17 +1161,10 @@ MODULES:
   testql.desktop.screenshot_tools  [2 funcs]
     screenshot_candidates  CC=8  out:16
     try_screenshot_candidates  CC=12  out:10
-  testql.desktop.vdisplay_capture  [26 funcs]
-    _allocate_virtual_display  CC=3  out:1
-    _capture_virtual_window  CC=4  out:3
-    _composite_windows  CC=5  out:3
-    _desktop_bounds  CC=7  out:10
-    _finalize_desktop_composite  CC=2  out:4
-    _find_mirror_window  CC=4  out:6
-    _format_window_id  CC=2  out:5
-    _match_output_by_index  CC=5  out:3
-    _match_output_by_name  CC=5  out:3
-    _mirror_capture_result  CC=5  out:8
+  testql.desktop.vdisplay_capture  [3 funcs]
+    capture_via_vdisplay  CC=8  out:11
+    is_blank_image  CC=13  out:10
+    save_capture_with_meta  CC=1  out:5
   testql.desktop.vision  [9 funcs]
     _collect_ocr_text  CC=9  out:7
     _display  CC=2  out:3
@@ -1174,17 +1175,11 @@ MODULES:
     inspect_environment  CC=5  out:19
     list_monitors  CC=8  out:18
     list_os_windows  CC=14  out:17
-  testql.desktop.window_discovery  [12 funcs]
-    _display  CC=3  out:5
-    _filter_capture_windows  CC=3  out:1
-    _has_unusable_title  CC=3  out:0
-    _is_internal_without_title  CC=3  out:2
-    _matches_junk_marker  CC=3  out:1
-    _meets_min_size  CC=2  out:0
-    _vdisplay_available  CC=2  out:0
-    is_capture_window  CC=12  out:23
+  testql.desktop.window_discovery  [4 funcs]
     list_capture_windows  CC=6  out:8
     window_display_title  CC=8  out:9
+    window_matches  CC=8  out:14
+    window_to_hex_id  CC=2  out:5
   testql.desktop.wmctrl  [1 funcs]
     parse_wmctrl_listing  CC=3  out:12
   testql.discovery.manifest  [7 funcs]
@@ -1262,8 +1257,17 @@ MODULES:
     _desktop  CC=3  out:2
   testql.interpreter._flow  [1 funcs]
     _cmd_include  CC=7  out:17
-  testql.interpreter._gui_expand  [1 funcs]
+  testql.interpreter._gui_expand  [10 funcs]
+    _expand_gui_custom  CC=2  out:6
+    _expand_gui_input  CC=1  out:3
+    _expand_gui_nav  CC=4  out:3
+    _expand_gui_text  CC=1  out:4
+    _format_gui_expected  CC=5  out:5
+    _format_gui_value  CC=4  out:3
+    _gui_action_group  CC=8  out:0
     expand_gui_row  CC=9  out:13
+    gui_row_fields  CC=4  out:12
+    quote_gui_token  CC=3  out:1
   testql.interpreter._parser  [1 funcs]
     parse_oql  CC=5  out:10
   testql.interpreter._testtoon_parser  [12 funcs]
@@ -1353,17 +1357,17 @@ MODULES:
     _extract_path_params  CC=4  out:4
   testql.report_generator  [1 funcs]
     generate_report  CC=3  out:20
-  testql.results.analyzer  [16 funcs]
+  testql.results.analyzer  [32 funcs]
     _actions_from_findings  CC=4  out:6
+    _browser_checks  CC=3  out:4
     _check_asset_statuses  CC=12  out:16
+    _check_browser_console  CC=3  out:5
+    _check_browser_network  CC=3  out:5
+    _check_browser_render  CC=3  out:4
     _check_confidence  CC=2  out:2
     _check_edges  CC=2  out:3
     _check_evidence  CC=4  out:4
     _check_interfaces  CC=4  out:4
-    _check_link_statuses  CC=14  out:17
-    _check_nodes  CC=2  out:3
-    _crawl_checks  CC=3  out:3
-    _findings_from_checks  CC=4  out:5
   testql.results.artifacts  [3 funcs]
     _render_summary_md  CC=10  out:17
     _write_group  CC=2  out:3
@@ -1702,15 +1706,15 @@ EDGES:
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# generated in 0.40s
-# nodes: 501 | edges: 500 | modules: 118
+# generated in 0.38s
+# nodes: 500 | edges: 500 | modules: 120
 # CC̄=3.8
 
 HUBS[20]:
   examples.browser-inspection.run.print
     CC=0  in:67  out:0  total:67
-  testql.desktop.vdisplay_capture.capture_monitor_mirror_virtual
-    CC=9  in:1  out:34  total:35
+  packages.dsl2testql.src.dsl2testql.events.EventStore.append
+    CC=3  in:8  out:33  total:41
   testql.interpreter._desktop.DesktopMixin._cmd_desktop_assert_elements
     CC=14  in:0  out:34  total:34
   TODO.testtoon_parser.parse_testtoon
@@ -1719,10 +1723,10 @@ HUBS[20]:
     CC=1  in:3  out:28  total:31
   testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
     CC=13  in:0  out:30  total:30
-  testql.interpreter._validation.ValidationMixin._cmd_validate
-    CC=10  in:0  out:30  total:30
   testql.commands.heal_scenario_cmd.heal_scenario
     CC=8  in:0  out:30  total:30
+  testql.interpreter._validation.ValidationMixin._cmd_validate
+    CC=10  in:0  out:30  total:30
   testql.commands.nlp2env_cmd.nlp2env_run
     CC=10  in:0  out:29  total:29
   testql._base_fallback.VariableStore.set
@@ -1731,18 +1735,18 @@ HUBS[20]:
     CC=1  in:0  out:26  total:26
   testql.commands.watchdog_cmd._update_metrics
     CC=11  in:2  out:23  total:25
+  testql.commands.generate_cmd._print_routes_section
+    CC=10  in:1  out:23  total:24
   testql.commands.inspect_cmd.inspect
     CC=6  in:0  out:24  total:24
   packages.dsl2testql.src.dsl2testql.pb_codec._set_body
     CC=6  in:1  out:23  total:24
-  testql.desktop.window_discovery.is_capture_window
-    CC=12  in:1  out:23  total:24
   testql.commands.generate_topology_cmd.generate_topology
     CC=5  in:0  out:24  total:24
-  testql.commands.generate_cmd._print_routes_section
-    CC=10  in:1  out:23  total:24
   testql.commands.generate_cmd.analyze
     CC=4  in:2  out:22  total:24
+  testql.commands.echo.parsers.doql._parse_workflows
+    CC=7  in:1  out:22  total:23
   testql.context.runtime.detect_runtime_profile
     CC=12  in:3  out:20  total:23
   testql.commands.encoder_routes._run_oql_lines
@@ -1757,6 +1761,13 @@ MODULES:
     main  CC=2  out:10
   examples.browser-inspection.run  [1 funcs]
     print  CC=0  out:0
+  packages.cli2testql.src.cli2testql.cli  [1 funcs]
+    run_shell  CC=1  out:1
+  packages.cli2testql.src.cli2testql.cli_handlers  [4 funcs]
+    cmd_exec_line  CC=2  out:2
+    cmd_run_script  CC=3  out:4
+    print_result  CC=4  out:6
+    run_shell_loop  CC=6  out:7
   packages.dsl2testql.src.dsl2testql.bus  [5 funcs]
     _bytes_to_cmd  CC=3  out:5
     _dispatch_cmd  CC=5  out:12
@@ -1783,7 +1794,8 @@ MODULES:
     roundtrip_text  CC=3  out:6
   packages.dsl2testql.src.dsl2testql.engine  [1 funcs]
     dispatch  CC=1  out:1
-  packages.dsl2testql.src.dsl2testql.events  [1 funcs]
+  packages.dsl2testql.src.dsl2testql.events  [2 funcs]
+    append  CC=3  out:33
     default_event_store  CC=2  out:7
   packages.dsl2testql.src.dsl2testql.grammar  [7 funcs]
     _parse_generate  CC=3  out:3
@@ -2036,8 +2048,7 @@ MODULES:
     _run_via_ir  CC=7  out:7
     _extract_path  CC=4  out:3
     _step_status_name  CC=4  out:0
-  testql.desktop.backend  [21 funcs]
-    list_windows  CC=1  out:0
+  testql.desktop.backend  [20 funcs]
     __init__  CC=2  out:2
     _active_window_id  CC=5  out:6
     _click_wayland  CC=6  out:11
@@ -2047,6 +2058,7 @@ MODULES:
     _match_window  CC=8  out:5
     _screenshot_is_blank  CC=2  out:1
     _screenshot_vdisplay  CC=4  out:2
+    focus_window  CC=12  out:11
   testql.desktop.catalog  [1 funcs]
     collect_desktop_catalog  CC=4  out:3
   testql.desktop.element_assert  [1 funcs]
@@ -2054,17 +2066,10 @@ MODULES:
   testql.desktop.screenshot_tools  [2 funcs]
     screenshot_candidates  CC=8  out:16
     try_screenshot_candidates  CC=12  out:10
-  testql.desktop.vdisplay_capture  [26 funcs]
-    _allocate_virtual_display  CC=3  out:1
-    _capture_virtual_window  CC=4  out:3
-    _composite_windows  CC=5  out:3
-    _desktop_bounds  CC=7  out:10
-    _finalize_desktop_composite  CC=2  out:4
-    _find_mirror_window  CC=4  out:6
-    _format_window_id  CC=2  out:5
-    _match_output_by_index  CC=5  out:3
-    _match_output_by_name  CC=5  out:3
-    _mirror_capture_result  CC=5  out:8
+  testql.desktop.vdisplay_capture  [3 funcs]
+    capture_via_vdisplay  CC=8  out:11
+    is_blank_image  CC=13  out:10
+    save_capture_with_meta  CC=1  out:5
   testql.desktop.vision  [9 funcs]
     _collect_ocr_text  CC=9  out:7
     _display  CC=2  out:3
@@ -2075,17 +2080,11 @@ MODULES:
     inspect_environment  CC=5  out:19
     list_monitors  CC=8  out:18
     list_os_windows  CC=14  out:17
-  testql.desktop.window_discovery  [12 funcs]
-    _display  CC=3  out:5
-    _filter_capture_windows  CC=3  out:1
-    _has_unusable_title  CC=3  out:0
-    _is_internal_without_title  CC=3  out:2
-    _matches_junk_marker  CC=3  out:1
-    _meets_min_size  CC=2  out:0
-    _vdisplay_available  CC=2  out:0
-    is_capture_window  CC=12  out:23
+  testql.desktop.window_discovery  [4 funcs]
     list_capture_windows  CC=6  out:8
     window_display_title  CC=8  out:9
+    window_matches  CC=8  out:14
+    window_to_hex_id  CC=2  out:5
   testql.desktop.wmctrl  [1 funcs]
     parse_wmctrl_listing  CC=3  out:12
   testql.discovery.manifest  [7 funcs]
@@ -2163,8 +2162,17 @@ MODULES:
     _desktop  CC=3  out:2
   testql.interpreter._flow  [1 funcs]
     _cmd_include  CC=7  out:17
-  testql.interpreter._gui_expand  [1 funcs]
+  testql.interpreter._gui_expand  [10 funcs]
+    _expand_gui_custom  CC=2  out:6
+    _expand_gui_input  CC=1  out:3
+    _expand_gui_nav  CC=4  out:3
+    _expand_gui_text  CC=1  out:4
+    _format_gui_expected  CC=5  out:5
+    _format_gui_value  CC=4  out:3
+    _gui_action_group  CC=8  out:0
     expand_gui_row  CC=9  out:13
+    gui_row_fields  CC=4  out:12
+    quote_gui_token  CC=3  out:1
   testql.interpreter._parser  [1 funcs]
     parse_oql  CC=5  out:10
   testql.interpreter._testtoon_parser  [12 funcs]
@@ -2254,17 +2262,17 @@ MODULES:
     _extract_path_params  CC=4  out:4
   testql.report_generator  [1 funcs]
     generate_report  CC=3  out:20
-  testql.results.analyzer  [16 funcs]
+  testql.results.analyzer  [32 funcs]
     _actions_from_findings  CC=4  out:6
+    _browser_checks  CC=3  out:4
     _check_asset_statuses  CC=12  out:16
+    _check_browser_console  CC=3  out:5
+    _check_browser_network  CC=3  out:5
+    _check_browser_render  CC=3  out:4
     _check_confidence  CC=2  out:2
     _check_edges  CC=2  out:3
     _check_evidence  CC=4  out:4
     _check_interfaces  CC=4  out:4
-    _check_link_statuses  CC=14  out:17
-    _check_nodes  CC=2  out:3
-    _crawl_checks  CC=3  out:3
-    _findings_from_checks  CC=4  out:5
   testql.results.artifacts  [3 funcs]
     _render_summary_md  CC=10  out:17
     _write_group  CC=2  out:3
@@ -2358,9 +2366,9 @@ EDGES:
 ### Code Analysis (`project/analysis.toon.yaml`)
 
 ```toon markpact:analysis path=project/analysis.toon.yaml
-# code2llm | 501f 52557L | python:309,yaml:122,shell:25,json:15,toml:6,txt:2,yml:2,proto:2,doql:1 | 2026-06-09
-# generated in 0.18s
-# CC̅=3.8 | critical:0/1835 | dups:0 | cycles:0
+# code2llm | 501f 52579L | python:309,yaml:122,shell:25,json:15,toml:6,txt:2,yml:2,proto:2,doql:1 | 2026-06-09
+# generated in 0.14s
+# CC̅=3.8 | critical:0/1836 | dups:0 | cycles:0
 
 HEALTH[0]: ok
 
@@ -2425,47 +2433,47 @@ PIPELINES[935]:
       PURITY: 100% pure
   [29] Src [run]: run
       PURITY: 100% pure
-  [30] Src [main]: main → print
+  [30] Src [main]: main → run_shell → run_shell_loop → print
       PURITY: 100% pure
-  [31] Src [health]: health
+  [31] Src [main]: main → print
       PURITY: 100% pure
-  [32] Src [devices]: devices
+  [32] Src [health]: health
       PURITY: 100% pure
-  [33] Src [list_scenarios]: list_scenarios
+  [33] Src [devices]: devices
       PURITY: 100% pure
-  [34] Src [create_scenario]: create_scenario
+  [34] Src [list_scenarios]: list_scenarios
       PURITY: 100% pure
-  [35] Src [get_scenario]: get_scenario
+  [35] Src [create_scenario]: create_scenario
       PURITY: 100% pure
-  [36] Src [update_scenario]: update_scenario
+  [36] Src [get_scenario]: get_scenario
       PURITY: 100% pure
-  [37] Src [delete_scenario]: delete_scenario
+  [37] Src [update_scenario]: update_scenario
       PURITY: 100% pure
-  [38] Src [users]: users
+  [38] Src [delete_scenario]: delete_scenario
       PURITY: 100% pure
-  [39] Src [validate]: validate
+  [39] Src [users]: users
       PURITY: 100% pure
-  [40] Src [print_parsed]: print_parsed → print
+  [40] Src [validate]: validate
       PURITY: 100% pure
-  [41] Src [__init__]: __init__
+  [41] Src [print_parsed]: print_parsed → print
       PURITY: 100% pure
-  [42] Src [parse_file]: parse_file
+  [42] Src [__init__]: __init__
       PURITY: 100% pure
-  [43] Src [parse]: parse
+  [43] Src [parse_file]: parse_file
       PURITY: 100% pure
-  [44] Src [_parse_api_block]: _parse_api_block
+  [44] Src [parse]: parse
       PURITY: 100% pure
-  [45] Src [_parse_assert_block]: _parse_assert_block
+  [45] Src [_parse_api_block]: _parse_api_block
       PURITY: 100% pure
-  [46] Src [_parse_log_block]: _parse_log_block
+  [46] Src [_parse_assert_block]: _parse_assert_block
       PURITY: 100% pure
-  [47] Src [mcp_serve]: mcp_serve → run_server → create_server
+  [47] Src [_parse_log_block]: _parse_log_block
       PURITY: 100% pure
-  [48] Src [main]: main → check_and_upgrade → _fetch_latest_version
+  [48] Src [mcp_serve]: mcp_serve → run_server → create_server
       PURITY: 100% pure
-  [49] Src [__init__]: __init__
+  [49] Src [main]: main → check_and_upgrade → _fetch_latest_version
       PURITY: 100% pure
-  [50] Src [parse_file]: parse_file
+  [50] Src [__init__]: __init__
       PURITY: 100% pure
 
 LAYERS:
@@ -2475,8 +2483,8 @@ LAYERS:
   testql/                         CC̄=3.8    ←in:43  →out:23  !! split
   │ !! testtoon_adapter           742L  1C   46m  CC=12     ←4
   │ !! _gui                       722L  1C   34m  CC=12     ←0
+  │ !! vdisplay_capture           687L  2C   32m  CC=13     ←3
   │ !! _desktop                   683L  1C   21m  CC=14     ←0
-  │ !! vdisplay_capture           673L  2C   32m  CC=13     ←3
   │ !! _testtoon_parser           656L  0C   29m  CC=14     ←1
   │ !! page_analyzer              526L  1C   31m  CC=10     ←3
   │ !! scenario_yaml              506L  1C   43m  CC=13     ←1
@@ -2552,10 +2560,10 @@ LAYERS:
   │ compatibility              143L  2C    8m  CC=6      ←0
   │ builder                    142L  1C   14m  CC=5      ←4
   │ models                     140L  5C    6m  CC=5      ←0
+  │ window_discovery           137L  0C   13m  CC=12     ←3
   │ endpoints_cmd              136L  0C    6m  CC=9      ←0
   │ engine                     136L  1C    7m  CC=9      ←1
   │ schema_introspection       135L  1C    7m  CC=5      ←1
-  │ window_discovery           133L  0C   12m  CC=12     ←3
   │ assertion_eval             124L  1C    7m  CC=6      ←2
   │ collection                 122L  0C    8m  CC=6      ←1
   │ flask_detector             121L  1C    9m  CC=6      ←0
@@ -2807,8 +2815,8 @@ LAYERS:
   │ test-devices-crud.testql.toon.yaml    10L  0C    0m  CC=0.0    ←0
   │ test-devices-crud.testql.toon.yaml    10L  0C    0m  CC=0.0    ←0
   │ __init__                     9L  0C    0m  CC=0.0    ←0
-  │ __init__                     9L  0C    0m  CC=0.0    ←0
   │ test-protocol-flow.testql.toon.yaml     9L  0C    0m  CC=0.0    ←0
+  │ __init__                     9L  0C    0m  CC=0.0    ←0
   │ __init__                     8L  0C    0m  CC=0.0    ←0
   │ __init__                     7L  0C    0m  CC=0.0    ←0
   │ api-health.testql.toon.yaml     7L  0C    0m  CC=0.0    ←0
@@ -2947,13 +2955,13 @@ LAYERS:
   │
   ./                              CC̄=0.0    ←in:0  →out:0
   │ !! planfile.yaml             1319L  0C    0m  CC=0.0    ←0
-  │ !! tree.txt                  1252L  0C    0m  CC=0.0    ←0
+  │ !! tree.txt                  1253L  0C    0m  CC=0.0    ←0
   │ !! goal.yaml                  511L  0C    0m  CC=0.0    ←0
   │ sumd.json                  204L  0C    0m  CC=0.0    ←0
   │ Taskfile.yml               185L  0C    0m  CC=0.0    ←0
   │ openapi.yaml               175L  0C    0m  CC=0.0    ←0
   │ Taskfile.testql.yml        117L  0C    0m  CC=0.0    ←0
-  │ pyproject.toml             109L  0C    0m  CC=0.0    ←0
+  │ pyproject.toml             112L  0C    0m  CC=0.0    ←0
   │ Makefile                    99L  0C    0m  CC=0.0    ←0
   │ prefact.yaml                91L  0C    0m  CC=0.0    ←0
   │ pyqual.yaml                 71L  0C    0m  CC=0.0    ←0
@@ -3009,28 +3017,28 @@ COUPLING:
           testql.integrations                            8                                                        ←1                                                                                                                                                                                                                                                                                                                             ──                               !! fan-out
           packages.cli2testql                            5                                                                                      3                                                                                                                                                                                                                                                                                                                             ──  !! fan-out
   CYCLES: none
-  HUB: testql.desktop/ (fan-in=5)
-  HUB: testql.adapters/ (fan-in=16)
   HUB: testql/ (fan-in=43)
-  HUB: testql.topology/ (fan-in=9)
   HUB: testql.results/ (fan-in=9)
-  HUB: testql.context/ (fan-in=6)
   HUB: testql.generators/ (fan-in=10)
-  HUB: packages.dsl2testql/ (fan-in=16)
+  HUB: testql.desktop/ (fan-in=5)
   HUB: packages.nlp2testql/ (fan-in=5)
-  HUB: examples.browser-inspection/ (fan-in=67)
+  HUB: packages.dsl2testql/ (fan-in=16)
+  HUB: testql.topology/ (fan-in=9)
+  HUB: testql.context/ (fan-in=6)
   HUB: packages.uri2testql/ (fan-in=7)
-  SMELL: packages.cli2testql/ fan-out=8 → split needed
-  SMELL: testql.adapters/ fan-out=8 → split needed
-  SMELL: packages.mcp2testql/ fan-out=10 → split needed
+  HUB: testql.adapters/ (fan-in=16)
+  HUB: examples.browser-inspection/ (fan-in=67)
   SMELL: testql/ fan-out=23 → split needed
-  SMELL: TODO/ fan-out=8 → split needed
+  SMELL: testql.integrations/ fan-out=8 → split needed
   SMELL: testql.generators/ fan-out=10 → split needed
-  SMELL: packages.dsl2testql/ fan-out=19 → split needed
+  SMELL: packages.cli2testql/ fan-out=8 → split needed
   SMELL: testql.commands/ fan-out=40 → split needed
+  SMELL: TODO/ fan-out=8 → split needed
+  SMELL: packages.dsl2testql/ fan-out=19 → split needed
+  SMELL: testql.adapters/ fan-out=8 → split needed
   SMELL: testql.ir_runner/ fan-out=9 → split needed
   SMELL: testql.interpreter/ fan-out=25 → split needed
-  SMELL: testql.integrations/ fan-out=8 → split needed
+  SMELL: packages.mcp2testql/ fan-out=10 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon
@@ -3048,13 +3056,13 @@ SUMMARY:
   dup_groups:    0
   dup_fragments: 0
   saved_lines:   0
-  scan_ms:       2921
+  scan_ms:       2251
 ```
 
 ### Evolution / Churn (`project/evolution.toon.yaml`)
 
 ```toon markpact:analysis path=project/evolution.toon.yaml
-# code2llm/evolution | 1818 func | 249f | 2026-06-09
+# code2llm/evolution | 1819 func | 249f | 2026-06-09
 # generated in 0.01s
 
 NEXT[3] (ranked by impact):
@@ -3067,7 +3075,7 @@ NEXT[3] (ranked by impact):
       EFFORT: ~4h  IMPACT: 0
 
   [3] !! SPLIT           tree.txt
-      WHY: 1252L, 0 classes, max CC=0
+      WHY: 1253L, 0 classes, max CC=0
       EFFORT: ~4h  IMPACT: 0
 
 

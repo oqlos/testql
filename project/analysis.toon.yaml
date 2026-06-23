@@ -1,6 +1,6 @@
-# code2llm | 501f 52557L | python:309,yaml:122,shell:25,json:15,toml:6,txt:2,yml:2,proto:2,doql:1 | 2026-06-09
-# generated in 0.18s
-# CC̅=3.8 | critical:0/1835 | dups:0 | cycles:0
+# code2llm | 501f 52579L | python:309,yaml:122,shell:25,json:15,toml:6,txt:2,yml:2,proto:2,doql:1 | 2026-06-09
+# generated in 0.14s
+# CC̅=3.8 | critical:0/1836 | dups:0 | cycles:0
 
 HEALTH[0]: ok
 
@@ -65,47 +65,47 @@ PIPELINES[935]:
       PURITY: 100% pure
   [29] Src [run]: run
       PURITY: 100% pure
-  [30] Src [main]: main → print
+  [30] Src [main]: main → run_shell → run_shell_loop → print
       PURITY: 100% pure
-  [31] Src [health]: health
+  [31] Src [main]: main → print
       PURITY: 100% pure
-  [32] Src [devices]: devices
+  [32] Src [health]: health
       PURITY: 100% pure
-  [33] Src [list_scenarios]: list_scenarios
+  [33] Src [devices]: devices
       PURITY: 100% pure
-  [34] Src [create_scenario]: create_scenario
+  [34] Src [list_scenarios]: list_scenarios
       PURITY: 100% pure
-  [35] Src [get_scenario]: get_scenario
+  [35] Src [create_scenario]: create_scenario
       PURITY: 100% pure
-  [36] Src [update_scenario]: update_scenario
+  [36] Src [get_scenario]: get_scenario
       PURITY: 100% pure
-  [37] Src [delete_scenario]: delete_scenario
+  [37] Src [update_scenario]: update_scenario
       PURITY: 100% pure
-  [38] Src [users]: users
+  [38] Src [delete_scenario]: delete_scenario
       PURITY: 100% pure
-  [39] Src [validate]: validate
+  [39] Src [users]: users
       PURITY: 100% pure
-  [40] Src [print_parsed]: print_parsed → print
+  [40] Src [validate]: validate
       PURITY: 100% pure
-  [41] Src [__init__]: __init__
+  [41] Src [print_parsed]: print_parsed → print
       PURITY: 100% pure
-  [42] Src [parse_file]: parse_file
+  [42] Src [__init__]: __init__
       PURITY: 100% pure
-  [43] Src [parse]: parse
+  [43] Src [parse_file]: parse_file
       PURITY: 100% pure
-  [44] Src [_parse_api_block]: _parse_api_block
+  [44] Src [parse]: parse
       PURITY: 100% pure
-  [45] Src [_parse_assert_block]: _parse_assert_block
+  [45] Src [_parse_api_block]: _parse_api_block
       PURITY: 100% pure
-  [46] Src [_parse_log_block]: _parse_log_block
+  [46] Src [_parse_assert_block]: _parse_assert_block
       PURITY: 100% pure
-  [47] Src [mcp_serve]: mcp_serve → run_server → create_server
+  [47] Src [_parse_log_block]: _parse_log_block
       PURITY: 100% pure
-  [48] Src [main]: main → check_and_upgrade → _fetch_latest_version
+  [48] Src [mcp_serve]: mcp_serve → run_server → create_server
       PURITY: 100% pure
-  [49] Src [__init__]: __init__
+  [49] Src [main]: main → check_and_upgrade → _fetch_latest_version
       PURITY: 100% pure
-  [50] Src [parse_file]: parse_file
+  [50] Src [__init__]: __init__
       PURITY: 100% pure
 
 LAYERS:
@@ -115,8 +115,8 @@ LAYERS:
   testql/                         CC̄=3.8    ←in:43  →out:23  !! split
   │ !! testtoon_adapter           742L  1C   46m  CC=12     ←4
   │ !! _gui                       722L  1C   34m  CC=12     ←0
+  │ !! vdisplay_capture           687L  2C   32m  CC=13     ←3
   │ !! _desktop                   683L  1C   21m  CC=14     ←0
-  │ !! vdisplay_capture           673L  2C   32m  CC=13     ←3
   │ !! _testtoon_parser           656L  0C   29m  CC=14     ←1
   │ !! page_analyzer              526L  1C   31m  CC=10     ←3
   │ !! scenario_yaml              506L  1C   43m  CC=13     ←1
@@ -192,10 +192,10 @@ LAYERS:
   │ compatibility              143L  2C    8m  CC=6      ←0
   │ builder                    142L  1C   14m  CC=5      ←4
   │ models                     140L  5C    6m  CC=5      ←0
+  │ window_discovery           137L  0C   13m  CC=12     ←3
   │ endpoints_cmd              136L  0C    6m  CC=9      ←0
   │ engine                     136L  1C    7m  CC=9      ←1
   │ schema_introspection       135L  1C    7m  CC=5      ←1
-  │ window_discovery           133L  0C   12m  CC=12     ←3
   │ assertion_eval             124L  1C    7m  CC=6      ←2
   │ collection                 122L  0C    8m  CC=6      ←1
   │ flask_detector             121L  1C    9m  CC=6      ←0
@@ -447,8 +447,8 @@ LAYERS:
   │ test-devices-crud.testql.toon.yaml    10L  0C    0m  CC=0.0    ←0
   │ test-devices-crud.testql.toon.yaml    10L  0C    0m  CC=0.0    ←0
   │ __init__                     9L  0C    0m  CC=0.0    ←0
-  │ __init__                     9L  0C    0m  CC=0.0    ←0
   │ test-protocol-flow.testql.toon.yaml     9L  0C    0m  CC=0.0    ←0
+  │ __init__                     9L  0C    0m  CC=0.0    ←0
   │ __init__                     8L  0C    0m  CC=0.0    ←0
   │ __init__                     7L  0C    0m  CC=0.0    ←0
   │ api-health.testql.toon.yaml     7L  0C    0m  CC=0.0    ←0
@@ -587,13 +587,13 @@ LAYERS:
   │
   ./                              CC̄=0.0    ←in:0  →out:0
   │ !! planfile.yaml             1319L  0C    0m  CC=0.0    ←0
-  │ !! tree.txt                  1252L  0C    0m  CC=0.0    ←0
+  │ !! tree.txt                  1253L  0C    0m  CC=0.0    ←0
   │ !! goal.yaml                  511L  0C    0m  CC=0.0    ←0
   │ sumd.json                  204L  0C    0m  CC=0.0    ←0
   │ Taskfile.yml               185L  0C    0m  CC=0.0    ←0
   │ openapi.yaml               175L  0C    0m  CC=0.0    ←0
   │ Taskfile.testql.yml        117L  0C    0m  CC=0.0    ←0
-  │ pyproject.toml             109L  0C    0m  CC=0.0    ←0
+  │ pyproject.toml             112L  0C    0m  CC=0.0    ←0
   │ Makefile                    99L  0C    0m  CC=0.0    ←0
   │ prefact.yaml                91L  0C    0m  CC=0.0    ←0
   │ pyqual.yaml                 71L  0C    0m  CC=0.0    ←0
@@ -649,28 +649,28 @@ COUPLING:
           testql.integrations                            8                                                        ←1                                                                                                                                                                                                                                                                                                                             ──                               !! fan-out
           packages.cli2testql                            5                                                                                      3                                                                                                                                                                                                                                                                                                                             ──  !! fan-out
   CYCLES: none
-  HUB: testql.desktop/ (fan-in=5)
-  HUB: testql.adapters/ (fan-in=16)
   HUB: testql/ (fan-in=43)
-  HUB: testql.topology/ (fan-in=9)
   HUB: testql.results/ (fan-in=9)
-  HUB: testql.context/ (fan-in=6)
   HUB: testql.generators/ (fan-in=10)
-  HUB: packages.dsl2testql/ (fan-in=16)
+  HUB: testql.desktop/ (fan-in=5)
   HUB: packages.nlp2testql/ (fan-in=5)
-  HUB: examples.browser-inspection/ (fan-in=67)
+  HUB: packages.dsl2testql/ (fan-in=16)
+  HUB: testql.topology/ (fan-in=9)
+  HUB: testql.context/ (fan-in=6)
   HUB: packages.uri2testql/ (fan-in=7)
-  SMELL: packages.cli2testql/ fan-out=8 → split needed
-  SMELL: testql.adapters/ fan-out=8 → split needed
-  SMELL: packages.mcp2testql/ fan-out=10 → split needed
+  HUB: testql.adapters/ (fan-in=16)
+  HUB: examples.browser-inspection/ (fan-in=67)
   SMELL: testql/ fan-out=23 → split needed
-  SMELL: TODO/ fan-out=8 → split needed
+  SMELL: testql.integrations/ fan-out=8 → split needed
   SMELL: testql.generators/ fan-out=10 → split needed
-  SMELL: packages.dsl2testql/ fan-out=19 → split needed
+  SMELL: packages.cli2testql/ fan-out=8 → split needed
   SMELL: testql.commands/ fan-out=40 → split needed
+  SMELL: TODO/ fan-out=8 → split needed
+  SMELL: packages.dsl2testql/ fan-out=19 → split needed
+  SMELL: testql.adapters/ fan-out=8 → split needed
   SMELL: testql.ir_runner/ fan-out=9 → split needed
   SMELL: testql.interpreter/ fan-out=25 → split needed
-  SMELL: testql.integrations/ fan-out=8 → split needed
+  SMELL: packages.mcp2testql/ fan-out=10 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon

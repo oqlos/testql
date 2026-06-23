@@ -1,5 +1,5 @@
 % ── Project Metadata ─────────────────────────────────────
-project_metadata('testql', '1.2.59', 'python').
+project_metadata('testql', '1.2.60', 'python').
 
 % ── Project Files ────────────────────────────────────────
 project_file('TODO/testtoon_parser.py', 142, 'python').
@@ -167,9 +167,9 @@ project_file('testql/desktop/catalog.py', 208, 'python').
 project_file('testql/desktop/element_assert.py', 53, 'python').
 project_file('testql/desktop/models.py', 27, 'python').
 project_file('testql/desktop/screenshot_tools.py', 63, 'python').
-project_file('testql/desktop/vdisplay_capture.py', 674, 'python').
+project_file('testql/desktop/vdisplay_capture.py', 688, 'python').
 project_file('testql/desktop/vision.py', 364, 'python').
-project_file('testql/desktop/window_discovery.py', 134, 'python').
+project_file('testql/desktop/window_discovery.py', 138, 'python').
 project_file('testql/desktop/wmctrl.py', 33, 'python').
 project_file('testql/detectors/__init__.py', 54, 'python').
 project_file('testql/detectors/base.py', 35, 'python').
@@ -357,7 +357,7 @@ project_file('tests/test_adapter_capture_syntax.py', 167, 'python').
 project_file('tests/test_adapters_base.py', 159, 'python').
 project_file('tests/test_api_handler.py', 90, 'python').
 project_file('tests/test_browser_discovery.py', 111, 'python').
-project_file('tests/test_cc_refactor_helpers.py', 148, 'python').
+project_file('tests/test_cc_refactor_helpers.py', 153, 'python').
 project_file('tests/test_cli.py', 98, 'python').
 project_file('tests/test_cli_no_block.py', 104, 'python').
 project_file('tests/test_conversation_live_llm.py', 83, 'python').
@@ -365,7 +365,7 @@ project_file('tests/test_conversation_nlp2dsl.py', 158, 'python').
 project_file('tests/test_converter.py', 178, 'python').
 project_file('tests/test_converter_handlers.py', 352, 'python').
 project_file('tests/test_desktop_assert_elements.py', 66, 'python').
-project_file('tests/test_desktop_backend.py', 197, 'python').
+project_file('tests/test_desktop_backend.py', 199, 'python').
 project_file('tests/test_desktop_catalog.py', 16, 'python').
 project_file('tests/test_desktop_execution.py', 109, 'python').
 project_file('tests/test_desktop_vision.py', 136, 'python').
@@ -445,7 +445,7 @@ project_file('tests/test_topology.py', 88, 'python').
 project_file('tests/test_topology_generator.py', 162, 'python').
 project_file('tests/test_unit_execution.py', 113, 'python').
 project_file('tests/test_validation.py', 185, 'python').
-project_file('tests/test_vdisplay_capture.py', 202, 'python').
+project_file('tests/test_vdisplay_capture.py', 209, 'python').
 project_file('tests/test_window_discovery.py', 57, 'python').
 project_file('tree.sh', 2, 'shell').
 
@@ -1095,6 +1095,7 @@ python_function('testql/desktop/window_discovery.py', '_matches_junk_marker', 2,
 python_function('testql/desktop/window_discovery.py', '_meets_min_size', 2, 2, 0).
 python_function('testql/desktop/window_discovery.py', 'is_capture_window', 1, 12, 9).
 python_function('testql/desktop/window_discovery.py', '_filter_capture_windows', 1, 3, 1).
+python_function('testql/desktop/window_discovery.py', '_fetch_vdisplay_windows', 1, 1, 1).
 python_function('testql/desktop/window_discovery.py', 'list_capture_windows', 0, 6, 5).
 python_function('testql/desktop/window_discovery.py', 'window_display_title', 1, 8, 4).
 python_function('testql/desktop/window_discovery.py', 'window_matches', 2, 8, 6).
@@ -1535,11 +1536,11 @@ python_function('tests/test_cc_refactor_helpers.py', 'test_quote_gui_token_prese
 python_function('tests/test_cc_refactor_helpers.py', 'test_expand_gui_row_emits_start_and_input', 0, 4, 3).
 python_function('tests/test_cc_refactor_helpers.py', 'test_scenario_index_helpers', 0, 4, 3).
 python_function('tests/test_cc_refactor_helpers.py', 'test_coerce_profile_dict_accepts_dotted_keys', 0, 6, 2).
-python_function('tests/test_cc_refactor_helpers.py', 'test_dsl2testql_grammar_parse_line', 0, 2, 1).
-python_function('tests/test_cc_refactor_helpers.py', 'test_dsl2testql_envelope_roundtrip', 0, 6, 3).
+python_function('tests/test_cc_refactor_helpers.py', 'test_dsl2testql_grammar_parse_line', 0, 2, 2).
+python_function('tests/test_cc_refactor_helpers.py', 'test_dsl2testql_envelope_roundtrip', 0, 6, 4).
 python_function('tests/test_cc_refactor_helpers.py', 'test_uri_block_resolver_app_selector', 0, 2, 2).
 python_function('tests/test_cc_refactor_helpers.py', 'test_expand_gui_row_click_and_stop', 0, 5, 3).
-python_function('tests/test_cc_refactor_helpers.py', 'test_cli2testql_cmd_exec_line_reports_failure', 1, 3, 3).
+python_function('tests/test_cc_refactor_helpers.py', 'test_cli2testql_cmd_exec_line_reports_failure', 1, 3, 4).
 python_function('tests/test_conversation_live_llm.py', 'test_live_llm_reply_for_real_api', 0, 5, 5).
 python_function('tests/test_conversation_live_llm.py', 'test_conversation_runner_with_live_llm_smoke', 0, 4, 10).
 python_function('tests/test_conversation_nlp2dsl.py', 'test_runner_with_fake_client', 0, 3, 7).
@@ -1637,10 +1638,11 @@ python_function('tests/test_targets.py', '_sample_plan', 0, 1, 4).
 python_function('tests/test_topology_generator.py', '_manifest', 0, 2, 6).
 python_function('tests/test_validation.py', 'interp', 0, 1, 2).
 python_function('tests/test_validation.py', '_seed_shell', 4, 1, 0).
-python_function('tests/test_vdisplay_capture.py', 'test_capture_monitor_composite_places_windows', 2, 6, 7).
+python_function('tests/test_vdisplay_capture.py', '_enable_vdisplay_mocks', 1, 1, 1).
+python_function('tests/test_vdisplay_capture.py', 'test_capture_monitor_composite_places_windows', 2, 6, 9).
 python_function('tests/test_vdisplay_capture.py', 'test_capture_via_vdisplay_prefers_mirror', 2, 4, 5).
-python_function('tests/test_vdisplay_capture.py', 'test_capture_desktop_composite_places_windows', 2, 6, 6).
-python_function('tests/test_vdisplay_capture.py', 'test_capture_via_vdisplay_falls_back_to_scrot_region', 2, 4, 4).
+python_function('tests/test_vdisplay_capture.py', 'test_capture_desktop_composite_places_windows', 2, 6, 8).
+python_function('tests/test_vdisplay_capture.py', 'test_capture_via_vdisplay_falls_back_to_scrot_region', 2, 4, 5).
 python_function('tests/test_vdisplay_capture.py', 'test_capture_via_vdisplay_falls_back', 2, 3, 5).
 python_function('tests/test_vdisplay_capture.py', 'test_backend_uses_vdisplay_when_scrot_blank', 2, 3, 8).
 python_function('tests/test_window_discovery.py', 'test_is_capture_window_rejects_root_and_junk', 0, 4, 1).

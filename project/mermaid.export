@@ -385,6 +385,37 @@ flowchart TD
         testql__desktop__screenshot_tools__screenshot_candidates("screenshot_candidates CC=8")
         testql__desktop__screenshot_tools__try_screenshot_candidates("try_screenshot_candidates CC=12")
         testql__desktop__catalog__collect_desktop_catalog["collect_desktop_catalog"]
+        testql__desktop__wmctrl__parse_wmctrl_listing["parse_wmctrl_listing"]
+        testql__desktop__backend___parse_xdotool_geometry("_parse_xdotool_geometry CC=10")
+        testql__desktop__backend___desktop_window_from_vdisplay["_desktop_window_from_vdisplay"]
+        testql__desktop__backend___match_window_by_vdisplay_title["_match_window_by_vdisplay_title"]
+        testql__desktop__backend___run["_run"]
+        testql__desktop__backend__detect_display_server["detect_display_server"]
+        testql__desktop__backend__DesktopBackend__list_windows["list_windows"]
+        testql__desktop__backend__DesktopBackend__focus_window["focus_window"]
+        testql__desktop__backend__DesktopBackend__launch["launch"]
+        testql__desktop__backend__DesktopBackend__click["click"]
+        testql__desktop__backend__DesktopBackend__type_text["type_text"]
+        testql__desktop__backend__DesktopBackend__send_key["send_key"]
+        testql__desktop__backend__DesktopBackend__screenshot["screenshot"]
+        testql__desktop__backend__LinuxDesktopBackend____init__["__init__"]
+        testql__desktop__backend__LinuxDesktopBackend__list_windows("list_windows CC=10")
+        testql__desktop__backend__LinuxDesktopBackend___list_windows_vdisplay["_list_windows_vdisplay"]
+        testql__desktop__backend__LinuxDesktopBackend___list_windows_xdotool("_list_windows_xdotool CC=10")
+        testql__desktop__backend__LinuxDesktopBackend___active_window_id["_active_window_id"]
+        testql__desktop__backend__LinuxDesktopBackend___match_window("_match_window CC=8")
+        testql__desktop__backend__LinuxDesktopBackend__focus_window("focus_window CC=12")
+        testql__desktop__backend__LinuxDesktopBackend__launch["launch"]
+        testql__desktop__backend__LinuxDesktopBackend__click["click"]
+        testql__desktop__backend__LinuxDesktopBackend___click_x11["_click_x11"]
+        testql__desktop__backend__LinuxDesktopBackend___click_wayland["_click_wayland"]
+        testql__desktop__backend__LinuxDesktopBackend__type_text("type_text CC=8")
+        testql__desktop__backend__LinuxDesktopBackend__send_key("send_key CC=11")
+        testql__desktop__backend__LinuxDesktopBackend__screenshot("screenshot CC=10")
+        testql__desktop__backend__LinuxDesktopBackend___screenshot_is_blank["_screenshot_is_blank"]
+        testql__desktop__backend__LinuxDesktopBackend___screenshot_vdisplay["_screenshot_vdisplay"]
+        testql__desktop__backend__LinuxDesktopBackend___screenshot_mss["_screenshot_mss"]
+        testql__desktop__backend__get_desktop_backend["get_desktop_backend"]
         testql__desktop__window_discovery___display["_display"]
         testql__desktop__window_discovery___vdisplay_available["_vdisplay_available"]
         testql__desktop__window_discovery__window_to_hex_id["window_to_hex_id"]
@@ -394,42 +425,11 @@ flowchart TD
         testql__desktop__window_discovery___meets_min_size["_meets_min_size"]
         testql__desktop__window_discovery__is_capture_window("is_capture_window CC=12")
         testql__desktop__window_discovery___filter_capture_windows["_filter_capture_windows"]
+        testql__desktop__window_discovery___fetch_vdisplay_windows["_fetch_vdisplay_windows"]
         testql__desktop__window_discovery__list_capture_windows["list_capture_windows"]
         testql__desktop__window_discovery__window_display_title("window_display_title CC=8")
         testql__desktop__window_discovery__window_matches("window_matches CC=8")
         testql__desktop__vdisplay_capture___allocate_virtual_display["_allocate_virtual_display"]
-        testql__desktop__vdisplay_capture__CaptureResult__as_dict["as_dict"]
-        testql__desktop__vdisplay_capture__vdisplay_available["vdisplay_available"]
-        testql__desktop__vdisplay_capture__vdisplay_missing_message["vdisplay_missing_message"]
-        testql__desktop__vdisplay_capture__resolve_display["resolve_display"]
-        testql__desktop__vdisplay_capture___format_window_id["_format_window_id"]
-        testql__desktop__vdisplay_capture___xwd_window_png["_xwd_window_png"]
-        testql__desktop__vdisplay_capture__shutil_which["shutil_which"]
-        testql__desktop__vdisplay_capture__is_blank_image("is_blank_image CC=13")
-        testql__desktop__vdisplay_capture___scene_class["_scene_class"]
-        testql__desktop__vdisplay_capture___primary_output["_primary_output"]
-        testql__desktop__vdisplay_capture___match_output_by_index["_match_output_by_index"]
-        testql__desktop__vdisplay_capture___match_output_by_name["_match_output_by_name"]
-        testql__desktop__vdisplay_capture___resolve_monitor["_resolve_monitor"]
-        testql__desktop__vdisplay_capture___windows_on_monitor["_windows_on_monitor"]
-        testql__desktop__vdisplay_capture___paste_window["_paste_window"]
-        testql__desktop__vdisplay_capture__build_monitor_canvas("build_monitor_canvas CC=9")
-        testql__desktop__vdisplay_capture___viewer_script["_viewer_script"]
-        testql__desktop__vdisplay_capture___find_mirror_window["_find_mirror_window"]
-        testql__desktop__vdisplay_capture___capture_virtual_window["_capture_virtual_window"]
-        testql__desktop__vdisplay_capture___stop_mirror_resources["_stop_mirror_resources"]
-        testql__desktop__vdisplay_capture___mirror_capture_result["_mirror_capture_result"]
-        testql__desktop__vdisplay_capture__capture_monitor_mirror_virtual("capture_monitor_mirror_virtual CC=9")
-        testql__desktop__vdisplay_capture__capture_monitor_composite["capture_monitor_composite"]
-        testql__desktop__vdisplay_capture___desktop_bounds["_desktop_bounds"]
-        testql__desktop__vdisplay_capture___composite_windows["_composite_windows"]
-        testql__desktop__vdisplay_capture___finalize_desktop_composite["_finalize_desktop_composite"]
-        testql__desktop__vdisplay_capture__capture_desktop_composite["capture_desktop_composite"]
-        testql__desktop__vdisplay_capture___try_scrot_region_capture("_try_scrot_region_capture CC=12")
-        testql__desktop__vdisplay_capture__capture_via_vdisplay("capture_via_vdisplay CC=8")
-        testql__desktop__vdisplay_capture__read_capture_meta["read_capture_meta"]
-        testql__desktop__vdisplay_capture__save_capture_with_meta["save_capture_with_meta"]
-        testql__desktop__wmctrl__parse_wmctrl_listing["parse_wmctrl_listing"]
     end
     subgraph testql__detectors
         testql__detectors__graphql_detector__GraphQLDetector__detect["detect"]
@@ -1229,6 +1229,15 @@ flowchart TD
     packages__mcp2testql__src__mcp2testql__server__run_server --> packages__mcp2testql__src__mcp2testql__server__create_server
     packages__nlp2testql__src__nlp2testql__pipeline__generate_spec --> packages__nlp2testql__src__nlp2testql__pipeline__plan_with_rules
     packages__nlp2testql__src__nlp2testql__pipeline__generate_spec --> packages__nlp2testql__src__nlp2testql__validate__validate_testql
+    packages__cli2testql__src__cli2testql__cli__run_shell --> packages__cli2testql__src__cli2testql__cli_handlers__run_shell_loop
+    packages__cli2testql__src__cli2testql__cli_handlers__print_result --> examples__browser_inspection__run__print
+    packages__cli2testql__src__cli2testql__cli_handlers__cmd_run_script --> packages__dsl2testql__src__dsl2testql__bus__execute_dsl
+    packages__cli2testql__src__cli2testql__cli_handlers__cmd_run_script --> packages__cli2testql__src__cli2testql__cli_handlers__print_result
+    packages__cli2testql__src__cli2testql__cli_handlers__cmd_exec_line --> packages__dsl2testql__src__dsl2testql__bus__execute_dsl_line
+    packages__cli2testql__src__cli2testql__cli_handlers__cmd_exec_line --> packages__cli2testql__src__cli2testql__cli_handlers__print_result
+    packages__cli2testql__src__cli2testql__cli_handlers__run_shell_loop --> examples__browser_inspection__run__print
+    packages__cli2testql__src__cli2testql__cli_handlers__run_shell_loop --> packages__dsl2testql__src__dsl2testql__bus__execute_dsl_line
+    packages__cli2testql__src__cli2testql__cli_handlers__run_shell_loop --> packages__cli2testql__src__cli2testql__cli_handlers__print_result
     examples__artifact_bundle__generate_bundle__main --> examples__browser_inspection__run__print
     examples__artifact_bundle__generate_bundle__main --> testql__results__analyzer__inspect_source
     examples__artifact_bundle__generate_bundle__main --> testql__results__artifacts__write_inspection_artifacts
@@ -1485,6 +1494,25 @@ flowchart TD
     testql__interpreter__interpreter__OqlInterpreter__parse --> testql__interpreter___testtoon_parser__testtoon_to_oql
     testql__interpreter__interpreter__OqlInterpreter__execute --> testql___base_fallback__VariableStore__all
     testql__interpreter___websockets__WebSocketMixin___cmd_ws_connect --> testql___base_fallback__EventBridge__connect
+    testql__interpreter___gui_expand___format_gui_expected --> testql__interpreter___gui_expand__quote_gui_token
+    testql__interpreter___gui_expand___expand_gui_nav --> packages__dsl2testql__src__dsl2testql__events__EventStore__append
+    testql__interpreter___gui_expand___expand_gui_nav --> testql__interpreter___gui_expand__quote_gui_token
+    testql__interpreter___gui_expand___expand_gui_input --> packages__dsl2testql__src__dsl2testql__events__EventStore__append
+    testql__interpreter___gui_expand___expand_gui_input --> testql__interpreter___gui_expand__quote_gui_token
+    testql__interpreter___gui_expand___expand_gui_input --> testql__interpreter___gui_expand___format_gui_value
+    testql__interpreter___gui_expand___expand_gui_text --> packages__dsl2testql__src__dsl2testql__events__EventStore__append
+    testql__interpreter___gui_expand___expand_gui_text --> testql__interpreter___gui_expand__quote_gui_token
+    testql__interpreter___gui_expand___expand_gui_text --> testql__interpreter___gui_expand___format_gui_expected
+    testql__interpreter___gui_expand___expand_gui_custom --> testql__interpreter___gui_expand__quote_gui_token
+    testql__interpreter___gui_expand___expand_gui_custom --> packages__dsl2testql__src__dsl2testql__events__EventStore__append
+    testql__interpreter___gui_expand__expand_gui_row --> testql__interpreter___gui_expand__gui_row_fields
+    testql__interpreter___gui_expand__expand_gui_row --> testql__interpreter___gui_expand___gui_action_group
+    testql__interpreter___gui_expand__expand_gui_row --> testql__interpreter___gui_expand___expand_gui_nav
+    testql__interpreter___gui_expand__expand_gui_row --> packages__dsl2testql__src__dsl2testql__events__EventStore__append
+    testql__interpreter___gui_expand__expand_gui_row --> testql__interpreter___gui_expand___expand_gui_input
+    testql__interpreter___gui_expand__expand_gui_row --> testql__interpreter___gui_expand__quote_gui_token
+    testql__interpreter___gui_expand__expand_gui_row --> testql__interpreter___gui_expand___expand_gui_text
+    testql__interpreter___gui_expand__expand_gui_row --> testql__interpreter___gui_expand___expand_gui_custom
     testql__interpreter___desktop__DesktopMixin___desktop --> testql__desktop__backend__get_desktop_backend
     testql__interpreter___desktop__DesktopMixin___capture_is_stale_blank --> testql__desktop__vdisplay_capture__is_blank_image
     testql__interpreter___desktop__DesktopMixin___cmd_desktop_assert_elements --> testql__desktop__element_assert__evaluate_element_assert
@@ -1537,54 +1565,6 @@ flowchart TD
     testql__desktop__vision__inspect_environment --> testql__desktop__vision__list_os_windows
     testql__desktop__vision__inspect_environment --> testql__desktop__vdisplay_capture__save_capture_with_meta
     testql__desktop__catalog__collect_desktop_catalog --> testql__desktop__backend__detect_display_server
-    testql__desktop__window_discovery___display --> testql__desktop__window_discovery___vdisplay_available
-    testql__desktop__window_discovery__is_capture_window --> testql__desktop__window_discovery___has_unusable_title
-    testql__desktop__window_discovery__is_capture_window --> testql__desktop__window_discovery___is_internal_without_title
-    testql__desktop__window_discovery__is_capture_window --> testql__desktop__window_discovery___matches_junk_marker
-    testql__desktop__window_discovery__is_capture_window --> testql__desktop__window_discovery___meets_min_size
-    testql__desktop__window_discovery___filter_capture_windows --> testql__desktop__window_discovery__is_capture_window
-    testql__desktop__window_discovery__list_capture_windows --> testql__desktop__window_discovery___filter_capture_windows
-    testql__desktop__window_discovery__list_capture_windows --> testql__desktop__window_discovery___vdisplay_available
-    testql__desktop__window_discovery__list_capture_windows --> testql__desktop__window_discovery___display
-    testql__desktop__window_discovery__list_capture_windows --> testql__desktop__backend__DesktopBackend__list_windows
-    testql__desktop__window_discovery__window_display_title --> testql__desktop__window_discovery__window_to_hex_id
-    testql__desktop__window_discovery__window_matches --> testql__desktop__window_discovery__window_display_title
-    testql__desktop__vdisplay_capture___xwd_window_png --> testql__desktop__vdisplay_capture___format_window_id
-    testql__desktop__vdisplay_capture___xwd_window_png --> testql__desktop__vdisplay_capture__shutil_which
-    testql__desktop__vdisplay_capture___resolve_monitor --> testql__desktop__vdisplay_capture___match_output_by_name
-    testql__desktop__vdisplay_capture___resolve_monitor --> testql__desktop__vdisplay_capture___primary_output
-    testql__desktop__vdisplay_capture___resolve_monitor --> testql__desktop__vdisplay_capture___match_output_by_index
-    testql__desktop__vdisplay_capture__build_monitor_canvas --> testql__desktop__vdisplay_capture___resolve_monitor
-    testql__desktop__vdisplay_capture__build_monitor_canvas --> testql__desktop__window_discovery__list_capture_windows
-    testql__desktop__vdisplay_capture__build_monitor_canvas --> testql__desktop__vdisplay_capture___windows_on_monitor
-    testql__desktop__vdisplay_capture__build_monitor_canvas --> testql__desktop__vdisplay_capture___composite_windows
-    testql__desktop__vdisplay_capture__build_monitor_canvas --> testql__desktop__vdisplay_capture__resolve_display
-    testql__desktop__vdisplay_capture___find_mirror_window --> testql__desktop__vdisplay_capture__shutil_which
-    testql__desktop__vdisplay_capture___capture_virtual_window --> testql__desktop__vdisplay_capture___format_window_id
-    testql__desktop__vdisplay_capture___mirror_capture_result --> testql__desktop__vdisplay_capture__is_blank_image
-    testql__desktop__vdisplay_capture___mirror_capture_result --> testql__desktop__vdisplay_capture___scene_class
-    testql__desktop__vdisplay_capture__capture_monitor_mirror_virtual --> testql__desktop__vdisplay_capture__build_monitor_canvas
-    testql__desktop__vdisplay_capture__capture_monitor_mirror_virtual --> testql__desktop__vdisplay_capture___allocate_virtual_display
-    testql__desktop__vdisplay_capture__capture_monitor_mirror_virtual --> testql__desktop__vdisplay_capture___find_mirror_window
-    testql__desktop__vdisplay_capture__capture_monitor_mirror_virtual --> testql__desktop__vdisplay_capture___mirror_capture_result
-    testql__desktop__vdisplay_capture__capture_monitor_composite --> testql__desktop__vdisplay_capture__build_monitor_canvas
-    testql__desktop__vdisplay_capture__capture_monitor_composite --> testql__desktop__vdisplay_capture__is_blank_image
-    testql__desktop__vdisplay_capture__capture_monitor_composite --> testql__desktop__vdisplay_capture___scene_class
-    testql__desktop__vdisplay_capture___composite_windows --> testql__desktop__vdisplay_capture___xwd_window_png
-    testql__desktop__vdisplay_capture___composite_windows --> testql__desktop__vdisplay_capture___paste_window
-    testql__desktop__vdisplay_capture___finalize_desktop_composite --> testql__desktop__vdisplay_capture__is_blank_image
-    testql__desktop__vdisplay_capture__capture_desktop_composite --> testql__desktop__vdisplay_capture___desktop_bounds
-    testql__desktop__vdisplay_capture__capture_desktop_composite --> testql__desktop__vdisplay_capture___composite_windows
-    testql__desktop__vdisplay_capture__capture_desktop_composite --> testql__desktop__vdisplay_capture___finalize_desktop_composite
-    testql__desktop__vdisplay_capture__capture_desktop_composite --> testql__desktop__vdisplay_capture__resolve_display
-    testql__desktop__vdisplay_capture__capture_desktop_composite --> testql__desktop__window_discovery__list_capture_windows
-    testql__desktop__vdisplay_capture___try_scrot_region_capture --> testql__desktop__vdisplay_capture__is_blank_image
-    testql__desktop__vdisplay_capture___try_scrot_region_capture --> testql__desktop__vdisplay_capture__resolve_display
-    testql__desktop__vdisplay_capture___try_scrot_region_capture --> testql__desktop__vdisplay_capture___resolve_monitor
-    testql__desktop__vdisplay_capture__capture_via_vdisplay --> testql__desktop__vdisplay_capture__capture_monitor_composite
-    testql__desktop__vdisplay_capture__capture_via_vdisplay --> testql__desktop__vdisplay_capture__capture_desktop_composite
-    testql__desktop__vdisplay_capture__capture_via_vdisplay --> testql__desktop__vdisplay_capture___try_scrot_region_capture
-    testql__desktop__vdisplay_capture__capture_via_vdisplay --> testql__desktop__vdisplay_capture__capture_monitor_mirror_virtual
     testql__desktop__backend___desktop_window_from_vdisplay --> testql__desktop__window_discovery__window_to_hex_id
     testql__desktop__backend___desktop_window_from_vdisplay --> testql__desktop__window_discovery__window_display_title
     testql__desktop__backend___match_window_by_vdisplay_title --> testql__desktop__window_discovery__list_capture_windows
@@ -1704,6 +1684,26 @@ flowchart TD
     testql__results__serializers___render_data --> testql__results__serializers___render_toon
     testql__results__serializers___render_data --> testql__results__serializers___render_nlp_dict
     testql__results__serializers___render_nlp --> testql__results__serializers___render_nlp_dict
+    testql__generators__base__BaseAnalyzer___should_exclude_path --> testql___base_fallback__VariableStore__set
+    testql__generators__api_generator__APIGeneratorMixin___deduplicate_rest_routes --> testql___base_fallback__VariableStore__set
+    testql__generators__pipeline___resolve_source --> testql__generators__sources__get_source
+    testql__generators__pipeline___resolve_source --> testql__generators__pipeline__sorted_sources
+    testql__generators__pipeline___resolve_target --> testql__generators__targets__get_target
+    testql__generators__pipeline___resolve_target --> testql__generators__pipeline__sorted_targets
+    testql__generators__pipeline__sorted_sources --> testql__generators__sources__available_sources
+    testql__generators__pipeline__sorted_targets --> testql__generators__targets__available_targets
+    testql__generators__pipeline__run --> testql__generators__pipeline___resolve_source
+    testql__generators__pipeline__run --> testql__generators__pipeline___resolve_target
+    testql__generators__pipeline__write --> testql__generators__targets__get_target
+    testql__generators__page_analyzer___try_testid_selector --> testql__generators__page_analyzer___css_escape
+    testql__generators__page_analyzer___try_id_selector --> testql__generators__page_analyzer___is_unstable
+    testql__generators__page_analyzer___try_name_selector --> testql__generators__page_analyzer___css_escape
+    testql__generators__page_analyzer___try_role_aria_selector --> testql__generators__page_analyzer___css_escape
+    testql__generators__page_analyzer___try_input_type_selector --> testql__generators__page_analyzer___css_escape
+    testql__generators__page_analyzer___try_class_selector --> testql__generators__page_analyzer___is_unstable
+    testql__generators__page_analyzer__snapshot_to_plan --> testql__generators__page_analyzer___create_base_plan
+    testql__generators__page_analyzer__snapshot_to_plan --> testql__generators__page_analyzer___add_navigate_step
+    testql__generators__page_analyzer__snapshot_to_plan --> testql__generators__page_analyzer___process_elements
 
     classDef highCC fill:#ff6b6b,stroke:#c92a2a,color:#fff
     classDef medCC fill:#ffd43b,stroke:#f08c00,color:#000

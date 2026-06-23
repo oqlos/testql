@@ -1,13 +1,13 @@
 # code2llm call graph | /home/tom/github/oqlos/testql
-# generated in 0.40s
-# nodes: 501 | edges: 500 | modules: 118
+# generated in 0.38s
+# nodes: 500 | edges: 500 | modules: 120
 # CC̄=3.8
 
 HUBS[20]:
   examples.browser-inspection.run.print
     CC=0  in:67  out:0  total:67
-  testql.desktop.vdisplay_capture.capture_monitor_mirror_virtual
-    CC=9  in:1  out:34  total:35
+  packages.dsl2testql.src.dsl2testql.events.EventStore.append
+    CC=3  in:8  out:33  total:41
   testql.interpreter._desktop.DesktopMixin._cmd_desktop_assert_elements
     CC=14  in:0  out:34  total:34
   TODO.testtoon_parser.parse_testtoon
@@ -16,10 +16,10 @@ HUBS[20]:
     CC=1  in:3  out:28  total:31
   testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
     CC=13  in:0  out:30  total:30
-  testql.interpreter._validation.ValidationMixin._cmd_validate
-    CC=10  in:0  out:30  total:30
   testql.commands.heal_scenario_cmd.heal_scenario
     CC=8  in:0  out:30  total:30
+  testql.interpreter._validation.ValidationMixin._cmd_validate
+    CC=10  in:0  out:30  total:30
   testql.commands.nlp2env_cmd.nlp2env_run
     CC=10  in:0  out:29  total:29
   testql._base_fallback.VariableStore.set
@@ -28,18 +28,18 @@ HUBS[20]:
     CC=1  in:0  out:26  total:26
   testql.commands.watchdog_cmd._update_metrics
     CC=11  in:2  out:23  total:25
+  testql.commands.generate_cmd._print_routes_section
+    CC=10  in:1  out:23  total:24
   testql.commands.inspect_cmd.inspect
     CC=6  in:0  out:24  total:24
   packages.dsl2testql.src.dsl2testql.pb_codec._set_body
     CC=6  in:1  out:23  total:24
-  testql.desktop.window_discovery.is_capture_window
-    CC=12  in:1  out:23  total:24
   testql.commands.generate_topology_cmd.generate_topology
     CC=5  in:0  out:24  total:24
-  testql.commands.generate_cmd._print_routes_section
-    CC=10  in:1  out:23  total:24
   testql.commands.generate_cmd.analyze
     CC=4  in:2  out:22  total:24
+  testql.commands.echo.parsers.doql._parse_workflows
+    CC=7  in:1  out:22  total:23
   testql.context.runtime.detect_runtime_profile
     CC=12  in:3  out:20  total:23
   testql.commands.encoder_routes._run_oql_lines
@@ -54,6 +54,13 @@ MODULES:
     main  CC=2  out:10
   examples.browser-inspection.run  [1 funcs]
     print  CC=0  out:0
+  packages.cli2testql.src.cli2testql.cli  [1 funcs]
+    run_shell  CC=1  out:1
+  packages.cli2testql.src.cli2testql.cli_handlers  [4 funcs]
+    cmd_exec_line  CC=2  out:2
+    cmd_run_script  CC=3  out:4
+    print_result  CC=4  out:6
+    run_shell_loop  CC=6  out:7
   packages.dsl2testql.src.dsl2testql.bus  [5 funcs]
     _bytes_to_cmd  CC=3  out:5
     _dispatch_cmd  CC=5  out:12
@@ -80,7 +87,8 @@ MODULES:
     roundtrip_text  CC=3  out:6
   packages.dsl2testql.src.dsl2testql.engine  [1 funcs]
     dispatch  CC=1  out:1
-  packages.dsl2testql.src.dsl2testql.events  [1 funcs]
+  packages.dsl2testql.src.dsl2testql.events  [2 funcs]
+    append  CC=3  out:33
     default_event_store  CC=2  out:7
   packages.dsl2testql.src.dsl2testql.grammar  [7 funcs]
     _parse_generate  CC=3  out:3
@@ -333,8 +341,7 @@ MODULES:
     _run_via_ir  CC=7  out:7
     _extract_path  CC=4  out:3
     _step_status_name  CC=4  out:0
-  testql.desktop.backend  [21 funcs]
-    list_windows  CC=1  out:0
+  testql.desktop.backend  [20 funcs]
     __init__  CC=2  out:2
     _active_window_id  CC=5  out:6
     _click_wayland  CC=6  out:11
@@ -344,6 +351,7 @@ MODULES:
     _match_window  CC=8  out:5
     _screenshot_is_blank  CC=2  out:1
     _screenshot_vdisplay  CC=4  out:2
+    focus_window  CC=12  out:11
   testql.desktop.catalog  [1 funcs]
     collect_desktop_catalog  CC=4  out:3
   testql.desktop.element_assert  [1 funcs]
@@ -351,17 +359,10 @@ MODULES:
   testql.desktop.screenshot_tools  [2 funcs]
     screenshot_candidates  CC=8  out:16
     try_screenshot_candidates  CC=12  out:10
-  testql.desktop.vdisplay_capture  [26 funcs]
-    _allocate_virtual_display  CC=3  out:1
-    _capture_virtual_window  CC=4  out:3
-    _composite_windows  CC=5  out:3
-    _desktop_bounds  CC=7  out:10
-    _finalize_desktop_composite  CC=2  out:4
-    _find_mirror_window  CC=4  out:6
-    _format_window_id  CC=2  out:5
-    _match_output_by_index  CC=5  out:3
-    _match_output_by_name  CC=5  out:3
-    _mirror_capture_result  CC=5  out:8
+  testql.desktop.vdisplay_capture  [3 funcs]
+    capture_via_vdisplay  CC=8  out:11
+    is_blank_image  CC=13  out:10
+    save_capture_with_meta  CC=1  out:5
   testql.desktop.vision  [9 funcs]
     _collect_ocr_text  CC=9  out:7
     _display  CC=2  out:3
@@ -372,17 +373,11 @@ MODULES:
     inspect_environment  CC=5  out:19
     list_monitors  CC=8  out:18
     list_os_windows  CC=14  out:17
-  testql.desktop.window_discovery  [12 funcs]
-    _display  CC=3  out:5
-    _filter_capture_windows  CC=3  out:1
-    _has_unusable_title  CC=3  out:0
-    _is_internal_without_title  CC=3  out:2
-    _matches_junk_marker  CC=3  out:1
-    _meets_min_size  CC=2  out:0
-    _vdisplay_available  CC=2  out:0
-    is_capture_window  CC=12  out:23
+  testql.desktop.window_discovery  [4 funcs]
     list_capture_windows  CC=6  out:8
     window_display_title  CC=8  out:9
+    window_matches  CC=8  out:14
+    window_to_hex_id  CC=2  out:5
   testql.desktop.wmctrl  [1 funcs]
     parse_wmctrl_listing  CC=3  out:12
   testql.discovery.manifest  [7 funcs]
@@ -460,8 +455,17 @@ MODULES:
     _desktop  CC=3  out:2
   testql.interpreter._flow  [1 funcs]
     _cmd_include  CC=7  out:17
-  testql.interpreter._gui_expand  [1 funcs]
+  testql.interpreter._gui_expand  [10 funcs]
+    _expand_gui_custom  CC=2  out:6
+    _expand_gui_input  CC=1  out:3
+    _expand_gui_nav  CC=4  out:3
+    _expand_gui_text  CC=1  out:4
+    _format_gui_expected  CC=5  out:5
+    _format_gui_value  CC=4  out:3
+    _gui_action_group  CC=8  out:0
     expand_gui_row  CC=9  out:13
+    gui_row_fields  CC=4  out:12
+    quote_gui_token  CC=3  out:1
   testql.interpreter._parser  [1 funcs]
     parse_oql  CC=5  out:10
   testql.interpreter._testtoon_parser  [12 funcs]
@@ -551,17 +555,17 @@ MODULES:
     _extract_path_params  CC=4  out:4
   testql.report_generator  [1 funcs]
     generate_report  CC=3  out:20
-  testql.results.analyzer  [16 funcs]
+  testql.results.analyzer  [32 funcs]
     _actions_from_findings  CC=4  out:6
+    _browser_checks  CC=3  out:4
     _check_asset_statuses  CC=12  out:16
+    _check_browser_console  CC=3  out:5
+    _check_browser_network  CC=3  out:5
+    _check_browser_render  CC=3  out:4
     _check_confidence  CC=2  out:2
     _check_edges  CC=2  out:3
     _check_evidence  CC=4  out:4
     _check_interfaces  CC=4  out:4
-    _check_link_statuses  CC=14  out:17
-    _check_nodes  CC=2  out:3
-    _crawl_checks  CC=3  out:3
-    _findings_from_checks  CC=4  out:5
   testql.results.artifacts  [3 funcs]
     _render_summary_md  CC=10  out:17
     _write_group  CC=2  out:3

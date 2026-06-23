@@ -25,7 +25,7 @@ TestQL — Multi-DSL Test Platform: TestTOON / NL / SQL / Proto / GraphQL adapte
 ## Metadata
 
 - **name**: `testql`
-- **version**: `1.2.59`
+- **version**: `1.2.60`
 - **python_requires**: `>=3.10`
 - **license**: {'text': 'Apache-2.0'}
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -46,14 +46,14 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: testql;
-  version: 1.2.59;
+  version: 1.2.60;
 }
 
 dependencies {
   runtime: "httpx>=0.27, click>=8.0, rich>=13.0, pyyaml>=6.0, goal>=2.1.0, costs>=0.1.20, pfix>=0.1.60, websockets>=13.0, pytest-cov>=7.0, fastapi>=0.100";
   playwright: playwright>=1.40;
   desktop: "pyautogui>=0.9.54, mss>=9.0, opencv-python-headless>=4.8, dogtail>=0.9.11; platform_system=='Linux', pynput>=1.7";
-  vision: "img2nl[analyze,similarity,opencv,scan]>=0.1.2, imgl>=0.7.2, vdisplay[pillow]>=0.1.3, pytesseract>=0.3.10";
+  vision: "img2nl[analyze,similarity,opencv,scan]>=0.1.2, imgl>=0.7.2, vdisplay[pillow]>=0.1.3; platform_system=='Linux', pytesseract>=0.3.10";
   sql: sqlglot>=20.0;
   proto: protobuf>=4.21;
   graphql: graphql-core>=3.2;
@@ -3586,7 +3586,7 @@ pipeline:
 ```yaml
 project:
   name: testql
-  version: 1.2.59
+  version: 1.2.60
   env: local
 ```
 
@@ -3676,8 +3676,8 @@ pip install -e .[dev]
 ### `project/map.toon.yaml`
 
 ```toon markpact:analysis path=project/map.toon.yaml
-# testql | 446f 52816L | python:416,shell:26,less:4 | 2026-06-09
-# stats: 1197 func | 630 cls | 446 mod | CC̄=3.8 | critical:51 | cycles:0
+# testql | 446f 52848L | python:416,shell:26,less:4 | 2026-06-09
+# stats: 1199 func | 630 cls | 446 mod | CC̄=3.8 | critical:51 | cycles:0
 # alerts[5]: CC main=15; CC parse_testtoon=14; CC render_block_partial=14; CC watchdog=14; CC list_os_windows=14
 # hotspots[5]: capture_monitor_mirror_virtual fan=22; generate_from_page fan=19; heal_scenario fan=19; watch fan=19; suite fan=19
 # evolution: baseline
@@ -3848,9 +3848,9 @@ M[446]:
   testql/desktop/element_assert.py,53
   testql/desktop/models.py,27
   testql/desktop/screenshot_tools.py,63
-  testql/desktop/vdisplay_capture.py,674
+  testql/desktop/vdisplay_capture.py,688
   testql/desktop/vision.py,364
-  testql/desktop/window_discovery.py,134
+  testql/desktop/window_discovery.py,138
   testql/desktop/wmctrl.py,33
   testql/detectors/__init__.py,54
   testql/detectors/base.py,35
@@ -4038,7 +4038,7 @@ M[446]:
   tests/test_adapters_base.py,159
   tests/test_api_handler.py,90
   tests/test_browser_discovery.py,111
-  tests/test_cc_refactor_helpers.py,148
+  tests/test_cc_refactor_helpers.py,153
   tests/test_cli.py,98
   tests/test_cli_no_block.py,104
   tests/test_conversation_live_llm.py,83
@@ -4046,7 +4046,7 @@ M[446]:
   tests/test_converter.py,178
   tests/test_converter_handlers.py,352
   tests/test_desktop_assert_elements.py,66
-  tests/test_desktop_backend.py,197
+  tests/test_desktop_backend.py,199
   tests/test_desktop_catalog.py,16
   tests/test_desktop_execution.py,109
   tests/test_desktop_vision.py,136
@@ -4126,7 +4126,7 @@ M[446]:
   tests/test_topology_generator.py,162
   tests/test_unit_execution.py,113
   tests/test_validation.py,185
-  tests/test_vdisplay_capture.py,202
+  tests/test_vdisplay_capture.py,209
   tests/test_window_discovery.py,57
   tree.sh,2
 D:
@@ -5095,7 +5095,7 @@ D:
     find_text(path;needle)
     inspect_environment()
   testql/desktop/window_discovery.py:
-    e: _display,_vdisplay_available,window_to_hex_id,_has_unusable_title,_is_internal_without_title,_matches_junk_marker,_meets_min_size,is_capture_window,_filter_capture_windows,list_capture_windows,window_display_title,window_matches
+    e: _display,_vdisplay_available,window_to_hex_id,_has_unusable_title,_is_internal_without_title,_matches_junk_marker,_meets_min_size,is_capture_window,_filter_capture_windows,_fetch_vdisplay_windows,list_capture_windows,window_display_title,window_matches
     _display()
     _vdisplay_available()
     window_to_hex_id(window_id)
@@ -5105,6 +5105,7 @@ D:
     _meets_min_size(width;height)
     is_capture_window(window)
     _filter_capture_windows(raw)
+    _fetch_vdisplay_windows(display)
     list_capture_windows()
     window_display_title(window)
     window_matches(window;needle)
@@ -6717,7 +6718,8 @@ D:
     interp()
     _seed_shell(interp;stdout;stderr;rc)
   tests/test_vdisplay_capture.py:
-    e: test_capture_monitor_composite_places_windows,test_capture_via_vdisplay_prefers_mirror,test_capture_desktop_composite_places_windows,test_capture_via_vdisplay_falls_back_to_scrot_region,test_capture_via_vdisplay_falls_back,test_backend_uses_vdisplay_when_scrot_blank
+    e: _enable_vdisplay_mocks,test_capture_monitor_composite_places_windows,test_capture_via_vdisplay_prefers_mirror,test_capture_desktop_composite_places_windows,test_capture_via_vdisplay_falls_back_to_scrot_region,test_capture_via_vdisplay_falls_back,test_backend_uses_vdisplay_when_scrot_blank
+    _enable_vdisplay_mocks(monkeypatch)
     test_capture_monitor_composite_places_windows(monkeypatch;tmp_path)
     test_capture_via_vdisplay_prefers_mirror(monkeypatch;tmp_path)
     test_capture_desktop_composite_places_windows(monkeypatch;tmp_path)
@@ -6736,7 +6738,7 @@ D:
 
 ```prolog markpact:analysis path=project/logic.pl
 % ── Project Metadata ─────────────────────────────────────
-project_metadata('testql', '1.2.59', 'python').
+project_metadata('testql', '1.2.60', 'python').
 
 % ── Project Files ────────────────────────────────────────
 project_file('TODO/testtoon_parser.py', 142, 'python').
@@ -6904,9 +6906,9 @@ project_file('testql/desktop/catalog.py', 208, 'python').
 project_file('testql/desktop/element_assert.py', 53, 'python').
 project_file('testql/desktop/models.py', 27, 'python').
 project_file('testql/desktop/screenshot_tools.py', 63, 'python').
-project_file('testql/desktop/vdisplay_capture.py', 674, 'python').
+project_file('testql/desktop/vdisplay_capture.py', 688, 'python').
 project_file('testql/desktop/vision.py', 364, 'python').
-project_file('testql/desktop/window_discovery.py', 134, 'python').
+project_file('testql/desktop/window_discovery.py', 138, 'python').
 project_file('testql/desktop/wmctrl.py', 33, 'python').
 project_file('testql/detectors/__init__.py', 54, 'python').
 project_file('testql/detectors/base.py', 35, 'python').
@@ -7094,7 +7096,7 @@ project_file('tests/test_adapter_capture_syntax.py', 167, 'python').
 project_file('tests/test_adapters_base.py', 159, 'python').
 project_file('tests/test_api_handler.py', 90, 'python').
 project_file('tests/test_browser_discovery.py', 111, 'python').
-project_file('tests/test_cc_refactor_helpers.py', 148, 'python').
+project_file('tests/test_cc_refactor_helpers.py', 153, 'python').
 project_file('tests/test_cli.py', 98, 'python').
 project_file('tests/test_cli_no_block.py', 104, 'python').
 project_file('tests/test_conversation_live_llm.py', 83, 'python').
@@ -7102,7 +7104,7 @@ project_file('tests/test_conversation_nlp2dsl.py', 158, 'python').
 project_file('tests/test_converter.py', 178, 'python').
 project_file('tests/test_converter_handlers.py', 352, 'python').
 project_file('tests/test_desktop_assert_elements.py', 66, 'python').
-project_file('tests/test_desktop_backend.py', 197, 'python').
+project_file('tests/test_desktop_backend.py', 199, 'python').
 project_file('tests/test_desktop_catalog.py', 16, 'python').
 project_file('tests/test_desktop_execution.py', 109, 'python').
 project_file('tests/test_desktop_vision.py', 136, 'python').
@@ -7182,7 +7184,7 @@ project_file('tests/test_topology.py', 88, 'python').
 project_file('tests/test_topology_generator.py', 162, 'python').
 project_file('tests/test_unit_execution.py', 113, 'python').
 project_file('tests/test_validation.py', 185, 'python').
-project_file('tests/test_vdisplay_capture.py', 202, 'python').
+project_file('tests/test_vdisplay_capture.py', 209, 'python').
 project_file('tests/test_window_discovery.py', 57, 'python').
 project_file('tree.sh', 2, 'shell').
 
@@ -7832,6 +7834,7 @@ python_function('testql/desktop/window_discovery.py', '_matches_junk_marker', 2,
 python_function('testql/desktop/window_discovery.py', '_meets_min_size', 2, 2, 0).
 python_function('testql/desktop/window_discovery.py', 'is_capture_window', 1, 12, 9).
 python_function('testql/desktop/window_discovery.py', '_filter_capture_windows', 1, 3, 1).
+python_function('testql/desktop/window_discovery.py', '_fetch_vdisplay_windows', 1, 1, 1).
 python_function('testql/desktop/window_discovery.py', 'list_capture_windows', 0, 6, 5).
 python_function('testql/desktop/window_discovery.py', 'window_display_title', 1, 8, 4).
 python_function('testql/desktop/window_discovery.py', 'window_matches', 2, 8, 6).
@@ -8272,11 +8275,11 @@ python_function('tests/test_cc_refactor_helpers.py', 'test_quote_gui_token_prese
 python_function('tests/test_cc_refactor_helpers.py', 'test_expand_gui_row_emits_start_and_input', 0, 4, 3).
 python_function('tests/test_cc_refactor_helpers.py', 'test_scenario_index_helpers', 0, 4, 3).
 python_function('tests/test_cc_refactor_helpers.py', 'test_coerce_profile_dict_accepts_dotted_keys', 0, 6, 2).
-python_function('tests/test_cc_refactor_helpers.py', 'test_dsl2testql_grammar_parse_line', 0, 2, 1).
-python_function('tests/test_cc_refactor_helpers.py', 'test_dsl2testql_envelope_roundtrip', 0, 6, 3).
+python_function('tests/test_cc_refactor_helpers.py', 'test_dsl2testql_grammar_parse_line', 0, 2, 2).
+python_function('tests/test_cc_refactor_helpers.py', 'test_dsl2testql_envelope_roundtrip', 0, 6, 4).
 python_function('tests/test_cc_refactor_helpers.py', 'test_uri_block_resolver_app_selector', 0, 2, 2).
 python_function('tests/test_cc_refactor_helpers.py', 'test_expand_gui_row_click_and_stop', 0, 5, 3).
-python_function('tests/test_cc_refactor_helpers.py', 'test_cli2testql_cmd_exec_line_reports_failure', 1, 3, 3).
+python_function('tests/test_cc_refactor_helpers.py', 'test_cli2testql_cmd_exec_line_reports_failure', 1, 3, 4).
 python_function('tests/test_conversation_live_llm.py', 'test_live_llm_reply_for_real_api', 0, 5, 5).
 python_function('tests/test_conversation_live_llm.py', 'test_conversation_runner_with_live_llm_smoke', 0, 4, 10).
 python_function('tests/test_conversation_nlp2dsl.py', 'test_runner_with_fake_client', 0, 3, 7).
@@ -8374,10 +8377,11 @@ python_function('tests/test_targets.py', '_sample_plan', 0, 1, 4).
 python_function('tests/test_topology_generator.py', '_manifest', 0, 2, 6).
 python_function('tests/test_validation.py', 'interp', 0, 1, 2).
 python_function('tests/test_validation.py', '_seed_shell', 4, 1, 0).
-python_function('tests/test_vdisplay_capture.py', 'test_capture_monitor_composite_places_windows', 2, 6, 7).
+python_function('tests/test_vdisplay_capture.py', '_enable_vdisplay_mocks', 1, 1, 1).
+python_function('tests/test_vdisplay_capture.py', 'test_capture_monitor_composite_places_windows', 2, 6, 9).
 python_function('tests/test_vdisplay_capture.py', 'test_capture_via_vdisplay_prefers_mirror', 2, 4, 5).
-python_function('tests/test_vdisplay_capture.py', 'test_capture_desktop_composite_places_windows', 2, 6, 6).
-python_function('tests/test_vdisplay_capture.py', 'test_capture_via_vdisplay_falls_back_to_scrot_region', 2, 4, 4).
+python_function('tests/test_vdisplay_capture.py', 'test_capture_desktop_composite_places_windows', 2, 6, 8).
+python_function('tests/test_vdisplay_capture.py', 'test_capture_via_vdisplay_falls_back_to_scrot_region', 2, 4, 5).
 python_function('tests/test_vdisplay_capture.py', 'test_capture_via_vdisplay_falls_back', 2, 3, 5).
 python_function('tests/test_vdisplay_capture.py', 'test_backend_uses_vdisplay_when_scrot_blank', 2, 3, 8).
 python_function('tests/test_window_discovery.py', 'test_is_capture_window_rejects_root_and_junk', 0, 4, 1).
@@ -11745,32 +11749,32 @@ def save_sumd(project_echo, project_path, output_path)  # CC=2, fan=2
 
 ## Call Graph
 
-*501 nodes · 500 edges · 118 modules · CC̄=3.8*
+*500 nodes · 500 edges · 120 modules · CC̄=3.8*
 
 ### Hubs (by degree)
 
 | Function | CC | in | out | total |
 |----------|----|----|-----|-------|
 | `print` *(in examples.browser-inspection.run)* | 0 | 67 | 0 | **67** |
-| `capture_monitor_mirror_virtual` *(in testql.desktop.vdisplay_capture)* | 9 | 1 | 34 | **35** |
+| `append` *(in packages.dsl2testql.src.dsl2testql.events.EventStore)* | 3 | 8 | 33 | **41** |
 | `_cmd_desktop_assert_elements` *(in testql.interpreter._desktop.DesktopMixin)* | 14 ⚠ | 0 | 34 | **34** |
 | `parse_testtoon` *(in TODO.testtoon_parser)* | 14 ⚠ | 1 | 31 | **32** |
 | `write_inspection_artifacts` *(in testql.results.artifacts)* | 1 | 3 | 28 | **31** |
 | `_cmd_assert_json` *(in testql.interpreter._assertions.AssertionsMixin)* | 13 ⚠ | 0 | 30 | **30** |
-| `_cmd_validate` *(in testql.interpreter._validation.ValidationMixin)* | 10 ⚠ | 0 | 30 | **30** |
 | `heal_scenario` *(in testql.commands.heal_scenario_cmd)* | 8 | 0 | 30 | **30** |
+| `_cmd_validate` *(in testql.interpreter._validation.ValidationMixin)* | 10 ⚠ | 0 | 30 | **30** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/oqlos/testql
-# generated in 0.40s
-# nodes: 501 | edges: 500 | modules: 118
+# generated in 0.38s
+# nodes: 500 | edges: 500 | modules: 120
 # CC̄=3.8
 
 HUBS[20]:
   examples.browser-inspection.run.print
     CC=0  in:67  out:0  total:67
-  testql.desktop.vdisplay_capture.capture_monitor_mirror_virtual
-    CC=9  in:1  out:34  total:35
+  packages.dsl2testql.src.dsl2testql.events.EventStore.append
+    CC=3  in:8  out:33  total:41
   testql.interpreter._desktop.DesktopMixin._cmd_desktop_assert_elements
     CC=14  in:0  out:34  total:34
   TODO.testtoon_parser.parse_testtoon
@@ -11779,10 +11783,10 @@ HUBS[20]:
     CC=1  in:3  out:28  total:31
   testql.interpreter._assertions.AssertionsMixin._cmd_assert_json
     CC=13  in:0  out:30  total:30
-  testql.interpreter._validation.ValidationMixin._cmd_validate
-    CC=10  in:0  out:30  total:30
   testql.commands.heal_scenario_cmd.heal_scenario
     CC=8  in:0  out:30  total:30
+  testql.interpreter._validation.ValidationMixin._cmd_validate
+    CC=10  in:0  out:30  total:30
   testql.commands.nlp2env_cmd.nlp2env_run
     CC=10  in:0  out:29  total:29
   testql._base_fallback.VariableStore.set
@@ -11791,18 +11795,18 @@ HUBS[20]:
     CC=1  in:0  out:26  total:26
   testql.commands.watchdog_cmd._update_metrics
     CC=11  in:2  out:23  total:25
+  testql.commands.generate_cmd._print_routes_section
+    CC=10  in:1  out:23  total:24
   testql.commands.inspect_cmd.inspect
     CC=6  in:0  out:24  total:24
   packages.dsl2testql.src.dsl2testql.pb_codec._set_body
     CC=6  in:1  out:23  total:24
-  testql.desktop.window_discovery.is_capture_window
-    CC=12  in:1  out:23  total:24
   testql.commands.generate_topology_cmd.generate_topology
     CC=5  in:0  out:24  total:24
-  testql.commands.generate_cmd._print_routes_section
-    CC=10  in:1  out:23  total:24
   testql.commands.generate_cmd.analyze
     CC=4  in:2  out:22  total:24
+  testql.commands.echo.parsers.doql._parse_workflows
+    CC=7  in:1  out:22  total:23
   testql.context.runtime.detect_runtime_profile
     CC=12  in:3  out:20  total:23
   testql.commands.encoder_routes._run_oql_lines
@@ -11817,6 +11821,13 @@ MODULES:
     main  CC=2  out:10
   examples.browser-inspection.run  [1 funcs]
     print  CC=0  out:0
+  packages.cli2testql.src.cli2testql.cli  [1 funcs]
+    run_shell  CC=1  out:1
+  packages.cli2testql.src.cli2testql.cli_handlers  [4 funcs]
+    cmd_exec_line  CC=2  out:2
+    cmd_run_script  CC=3  out:4
+    print_result  CC=4  out:6
+    run_shell_loop  CC=6  out:7
   packages.dsl2testql.src.dsl2testql.bus  [5 funcs]
     _bytes_to_cmd  CC=3  out:5
     _dispatch_cmd  CC=5  out:12
@@ -11843,7 +11854,8 @@ MODULES:
     roundtrip_text  CC=3  out:6
   packages.dsl2testql.src.dsl2testql.engine  [1 funcs]
     dispatch  CC=1  out:1
-  packages.dsl2testql.src.dsl2testql.events  [1 funcs]
+  packages.dsl2testql.src.dsl2testql.events  [2 funcs]
+    append  CC=3  out:33
     default_event_store  CC=2  out:7
   packages.dsl2testql.src.dsl2testql.grammar  [7 funcs]
     _parse_generate  CC=3  out:3
@@ -12096,8 +12108,7 @@ MODULES:
     _run_via_ir  CC=7  out:7
     _extract_path  CC=4  out:3
     _step_status_name  CC=4  out:0
-  testql.desktop.backend  [21 funcs]
-    list_windows  CC=1  out:0
+  testql.desktop.backend  [20 funcs]
     __init__  CC=2  out:2
     _active_window_id  CC=5  out:6
     _click_wayland  CC=6  out:11
@@ -12107,6 +12118,7 @@ MODULES:
     _match_window  CC=8  out:5
     _screenshot_is_blank  CC=2  out:1
     _screenshot_vdisplay  CC=4  out:2
+    focus_window  CC=12  out:11
   testql.desktop.catalog  [1 funcs]
     collect_desktop_catalog  CC=4  out:3
   testql.desktop.element_assert  [1 funcs]
@@ -12114,17 +12126,10 @@ MODULES:
   testql.desktop.screenshot_tools  [2 funcs]
     screenshot_candidates  CC=8  out:16
     try_screenshot_candidates  CC=12  out:10
-  testql.desktop.vdisplay_capture  [26 funcs]
-    _allocate_virtual_display  CC=3  out:1
-    _capture_virtual_window  CC=4  out:3
-    _composite_windows  CC=5  out:3
-    _desktop_bounds  CC=7  out:10
-    _finalize_desktop_composite  CC=2  out:4
-    _find_mirror_window  CC=4  out:6
-    _format_window_id  CC=2  out:5
-    _match_output_by_index  CC=5  out:3
-    _match_output_by_name  CC=5  out:3
-    _mirror_capture_result  CC=5  out:8
+  testql.desktop.vdisplay_capture  [3 funcs]
+    capture_via_vdisplay  CC=8  out:11
+    is_blank_image  CC=13  out:10
+    save_capture_with_meta  CC=1  out:5
   testql.desktop.vision  [9 funcs]
     _collect_ocr_text  CC=9  out:7
     _display  CC=2  out:3
@@ -12135,17 +12140,11 @@ MODULES:
     inspect_environment  CC=5  out:19
     list_monitors  CC=8  out:18
     list_os_windows  CC=14  out:17
-  testql.desktop.window_discovery  [12 funcs]
-    _display  CC=3  out:5
-    _filter_capture_windows  CC=3  out:1
-    _has_unusable_title  CC=3  out:0
-    _is_internal_without_title  CC=3  out:2
-    _matches_junk_marker  CC=3  out:1
-    _meets_min_size  CC=2  out:0
-    _vdisplay_available  CC=2  out:0
-    is_capture_window  CC=12  out:23
+  testql.desktop.window_discovery  [4 funcs]
     list_capture_windows  CC=6  out:8
     window_display_title  CC=8  out:9
+    window_matches  CC=8  out:14
+    window_to_hex_id  CC=2  out:5
   testql.desktop.wmctrl  [1 funcs]
     parse_wmctrl_listing  CC=3  out:12
   testql.discovery.manifest  [7 funcs]
@@ -12223,8 +12222,17 @@ MODULES:
     _desktop  CC=3  out:2
   testql.interpreter._flow  [1 funcs]
     _cmd_include  CC=7  out:17
-  testql.interpreter._gui_expand  [1 funcs]
+  testql.interpreter._gui_expand  [10 funcs]
+    _expand_gui_custom  CC=2  out:6
+    _expand_gui_input  CC=1  out:3
+    _expand_gui_nav  CC=4  out:3
+    _expand_gui_text  CC=1  out:4
+    _format_gui_expected  CC=5  out:5
+    _format_gui_value  CC=4  out:3
+    _gui_action_group  CC=8  out:0
     expand_gui_row  CC=9  out:13
+    gui_row_fields  CC=4  out:12
+    quote_gui_token  CC=3  out:1
   testql.interpreter._parser  [1 funcs]
     parse_oql  CC=5  out:10
   testql.interpreter._testtoon_parser  [12 funcs]
@@ -12314,17 +12322,17 @@ MODULES:
     _extract_path_params  CC=4  out:4
   testql.report_generator  [1 funcs]
     generate_report  CC=3  out:20
-  testql.results.analyzer  [16 funcs]
+  testql.results.analyzer  [32 funcs]
     _actions_from_findings  CC=4  out:6
+    _browser_checks  CC=3  out:4
     _check_asset_statuses  CC=12  out:16
+    _check_browser_console  CC=3  out:5
+    _check_browser_network  CC=3  out:5
+    _check_browser_render  CC=3  out:4
     _check_confidence  CC=2  out:2
     _check_edges  CC=2  out:3
     _check_evidence  CC=4  out:4
     _check_interfaces  CC=4  out:4
-    _check_link_statuses  CC=14  out:17
-    _check_nodes  CC=2  out:3
-    _crawl_checks  CC=3  out:3
-    _findings_from_checks  CC=4  out:5
   testql.results.artifacts  [3 funcs]
     _render_summary_md  CC=10  out:17
     _write_group  CC=2  out:3

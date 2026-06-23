@@ -1,4 +1,4 @@
-# code2llm/evolution | 1818 func | 249f | 2026-06-09
+# code2llm/evolution | 1819 func | 249f | 2026-06-09
 # generated in 0.01s
 
 NEXT[3] (ranked by impact):
@@ -11,7 +11,7 @@ NEXT[3] (ranked by impact):
       EFFORT: ~4h  IMPACT: 0
 
   [3] !! SPLIT           tree.txt
-      WHY: 1252L, 0 classes, max CC=0
+      WHY: 1253L, 0 classes, max CC=0
       EFFORT: ~4h  IMPACT: 0
 
 
