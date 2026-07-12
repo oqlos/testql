@@ -1,35 +1,36 @@
-"""testql.adapters.proto — Protocol Buffers contract adapter (Phase 3).
+"""proto2testql — Protocol Buffers contract adapter plugin for TestQL.
 
-Optional `protobuf` dependency: install via `pip install testql[proto]` for
-binary serialisation. The adapter itself works without protobuf using a
-regex-based `.proto` parser and IR-level validation/round-trip checks.
+Registers the `proto` DSL adapter via the `testql.plugins` entry point and
+the `proto` generator source via the `testql.sources` entry point. Optional
+`protobuf` dependency: install via `pip install proto2testql[protobuf]` for
+binary serialisation — the adapter itself works without it using the
+regex-based `.proto` parser from `testql.proto_schema`.
 """
 
 from __future__ import annotations
 
+from testql.proto_schema import (
+    SCALAR_TYPES,
+    FieldDef,
+    MessageDef,
+    ProtoFile,
+    ValidationIssue,
+    ValidationResult,
+    coerce_scalar,
+    load_proto_file,
+    lookup_message,
+    parse_instance_fields,
+    parse_proto,
+    round_trip_equal,
+    validate_message_instance,
+)
+
+from .adapter import ProtoDSLAdapter, parse, render
 from .compatibility import (
     CompatibilityIssue,
     CompatibilityReport,
     compare_schemas,
 )
-from .descriptor_loader import (
-    SCALAR_TYPES,
-    FieldDef,
-    MessageDef,
-    ProtoFile,
-    load_proto_file,
-    parse_proto,
-)
-from .message_validator import (
-    ValidationIssue,
-    ValidationResult,
-    coerce_scalar,
-    lookup_message,
-    parse_instance_fields,
-    round_trip_equal,
-    validate_message_instance,
-)
-from .proto_adapter import ProtoDSLAdapter, parse, render
 
 
 def has_protobuf() -> bool:
@@ -41,6 +42,11 @@ def has_protobuf() -> bool:
     return True
 
 
+def register_testql_plugin(registry) -> None:
+    """`testql.plugins` entry-point hook — see `AdapterRegistry.load_plugins`."""
+    registry.register(ProtoDSLAdapter())
+
+
 __all__ = [
     "ProtoDSLAdapter", "parse", "render",
     "SCALAR_TYPES", "FieldDef", "MessageDef", "ProtoFile",
@@ -50,4 +56,5 @@ __all__ = [
     "validate_message_instance", "round_trip_equal", "lookup_message",
     "CompatibilityIssue", "CompatibilityReport", "compare_schemas",
     "has_protobuf",
+    "register_testql_plugin",
 ]

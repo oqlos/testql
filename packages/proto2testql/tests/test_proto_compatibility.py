@@ -1,13 +1,13 @@
-"""Tests for `testql.adapters.proto.compatibility`."""
+"""Tests for `proto2testql.compatibility`."""
 
 from __future__ import annotations
 
-from testql.adapters.proto.compatibility import (
+from proto2testql.compatibility import (
     CompatibilityIssue,
     CompatibilityReport,
     compare_schemas,
 )
-from testql.adapters.proto.descriptor_loader import parse_proto
+from testql.proto_schema import parse_proto
 
 
 V1 = """\

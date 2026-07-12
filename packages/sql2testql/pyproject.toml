@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sql2testql"
+version = "0.1.0"
+description = "SQL contract adapter and DDL generator source for TestQL"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+dependencies = [
+    "testql>=1.2.0",
+]
+
+[project.optional-dependencies]
+sqlglot = ["sqlglot>=20.0"]
+
+[project.entry-points."testql.plugins"]
+sql = "sql2testql"
+
+[project.entry-points."testql.sources"]
+sql = "sql2testql.source:SqlSource"
+
+[tool.setuptools.packages.find]
+where = ["src"]

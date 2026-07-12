@@ -1,11 +1,11 @@
-"""Tests for `testql.adapters.sql.query_parser`."""
+"""Tests for `sql2testql.query_parser`."""
 
 from __future__ import annotations
 
 import pytest
 
-from testql.adapters.sql.dialect_resolver import has_sqlglot
-from testql.adapters.sql.query_parser import QueryInfo, analyze_query, classify
+from testql.sql_schema import has_sqlglot
+from sql2testql.query_parser import QueryInfo, analyze_query, classify
 
 
 class TestClassify:

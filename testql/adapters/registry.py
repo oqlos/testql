@@ -19,9 +19,12 @@ class AdapterRegistry:
     Lookup happens by name, by file extension, or by content sniffing.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, *, autoload_plugins: bool = False) -> None:
         self._by_name: dict[str, BaseDSLAdapter] = {}
         self._plugins_loaded = False
+        # Only the module-level singleton autoloads entry-point plugins on
+        # lookup; ad-hoc registries stay fully isolated.
+        self._autoload_plugins = autoload_plugins
 
     # ── Registration ─────────────────────────────────────────────────────────
 
@@ -84,9 +87,10 @@ class AdapterRegistry:
     def ensure_plugins_loaded(self) -> list[str]:
         if self._plugins_loaded:
             return []
-        loaded = self.load_plugins()
+        # Flag first: a plugin's own import chain touches `testql.adapters`,
+        # so loading must not re-enter itself.
         self._plugins_loaded = True
-        return loaded
+        return self.load_plugins()
 
     def unregister(self, name: str) -> None:
         self._by_name.pop(name, None)
@@ -96,13 +100,20 @@ class AdapterRegistry:
 
     # ── Lookup ───────────────────────────────────────────────────────────────
 
+    def _autoload(self) -> None:
+        if self._autoload_plugins:
+            self.ensure_plugins_loaded()
+
     def get(self, name: str) -> Optional[BaseDSLAdapter]:
+        self._autoload()
         return self._by_name.get(name)
 
     def all(self) -> list[BaseDSLAdapter]:
+        self._autoload()
         return list(self._by_name.values())
 
     def by_extension(self, path: SourceLike) -> Optional[BaseDSLAdapter]:
+        self._autoload()
         s = str(path).lower()
         # Iterate adapters preferring the longest extension match (so
         # ".testql.toon.yaml" beats a generic ".yaml").
@@ -122,6 +133,7 @@ class AdapterRegistry:
         Tries extension match first (cheap), then falls back to running each
         adapter's `detect()` on the raw text.
         """
+        self._autoload()
         # 1) extension shortcut for path-like input
         if isinstance(source, Path) or (
             isinstance(source, str) and "\n" not in source and Path(source).is_file()
@@ -143,7 +155,7 @@ class AdapterRegistry:
 
 
 # Module-level singleton — usable as `from testql.adapters import registry`.
-_registry = AdapterRegistry()
+_registry = AdapterRegistry(autoload_plugins=True)
 
 
 def get_registry() -> AdapterRegistry:

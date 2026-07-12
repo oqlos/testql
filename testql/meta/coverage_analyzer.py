@@ -19,8 +19,8 @@ from typing import Iterable, Optional, Union
 
 import yaml
 
-from testql.adapters.proto.descriptor_loader import ProtoFile, parse_proto
-from testql.adapters.sql.ddl_parser import ParsedDDL, parse_ddl
+from testql.sql_schema import ParsedDDL, parse_ddl
+from testql.proto_schema import ProtoFile, parse_proto
 from testql.ir import ApiStep, ProtoStep, SqlStep, TestPlan
 
 _HTTP_METHODS = ("get", "post", "put", "delete", "patch", "head", "options")

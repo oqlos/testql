@@ -37,7 +37,7 @@ from testql.ir import (
     TestPlan,
 )
 
-from ..base import BaseDSLAdapter, DSLDetectionResult, SourceLike, read_source
+from testql.adapters.base import BaseDSLAdapter, DSLDetectionResult, SourceLike, read_source
 
 
 # ── Section translators ─────────────────────────────────────────────────────

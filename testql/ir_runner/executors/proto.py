@@ -20,10 +20,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from testql.adapters.proto.descriptor_loader import parse_proto
-from testql.adapters.proto.message_validator import (
+from testql.proto_schema import (
     lookup_message,
     parse_instance_fields,
+    parse_proto,
     round_trip_equal,
     validate_message_instance,
 )

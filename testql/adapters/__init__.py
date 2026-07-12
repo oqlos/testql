@@ -1,8 +1,9 @@
 """testql.adapters — DSL adapter registry and built-in adapters.
 
-Phase 0 introduces the abstraction. Subsequent phases (NL, SQL, Proto,
-GraphQL) plug in by registering a `BaseDSLAdapter` subclass with the
-module-level `registry`.
+Phase 0 introduces the abstraction. Subsequent phases (NL, SQL, Proto)
+plug in by registering a `BaseDSLAdapter` subclass with the module-level
+`registry`. Externally packaged adapters (e.g. `graphql2testql`) register
+through the `testql.plugins` entry-point group instead.
 """
 
 from __future__ import annotations
@@ -14,14 +15,11 @@ from .base import (
     ValidationIssue,
     read_source,
 )
-from .graphql import GraphQLDSLAdapter
 from .nl import NLDSLAdapter
 from .nlp2dsl import Nlp2DslAdapter
 from .nlp2env import Nlp2EnvAdapter
-from .proto import ProtoDSLAdapter
 from .registry import AdapterRegistry, get_registry
 from .scenario_yaml import ScenarioYamlAdapter
-from .sql import SqlDSLAdapter
 from .testtoon_adapter import TestToonAdapter
 
 # Module-level singleton registry, pre-populated with built-in adapters.
@@ -29,12 +27,11 @@ registry: AdapterRegistry = get_registry()
 registry.register(ScenarioYamlAdapter())
 registry.register(TestToonAdapter())
 registry.register(NLDSLAdapter())
-registry.register(SqlDSLAdapter())
-registry.register(ProtoDSLAdapter())
-registry.register(GraphQLDSLAdapter())
 registry.register(Nlp2DslAdapter())
 registry.register(Nlp2EnvAdapter())
-registry.ensure_plugins_loaded()
+# Entry-point plugins (`testql.plugins` group) are loaded lazily on first
+# registry lookup — NOT here. Loading them at import time re-enters any
+# plugin whose own import chain is what pulled `testql.adapters` in.
 
 __all__ = [
     "BaseDSLAdapter",
@@ -45,9 +42,6 @@ __all__ = [
     "TestToonAdapter",
     "ScenarioYamlAdapter",
     "NLDSLAdapter",
-    "SqlDSLAdapter",
-    "ProtoDSLAdapter",
-    "GraphQLDSLAdapter",
     "Nlp2DslAdapter",
     "Nlp2EnvAdapter",
     "registry",

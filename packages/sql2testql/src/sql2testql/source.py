@@ -14,11 +14,11 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
 
-from testql.adapters.sql.ddl_parser import ParsedDDL, Table, parse_ddl
-from testql.adapters.sql.fixtures import SchemaFixture
+from testql.sql_schema import ParsedDDL, Table, parse_ddl
+from .fixtures import SchemaFixture
 from testql.ir import Assertion, ScenarioMetadata, SqlStep, TestPlan
 
-from .base import BaseSource, SourceLike
+from testql.generators.sources.base import BaseSource, SourceLike
 
 
 def _load_sql_text(source: SourceLike) -> str:

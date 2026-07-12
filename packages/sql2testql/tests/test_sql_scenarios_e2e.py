@@ -6,11 +6,11 @@ from pathlib import Path
 
 import pytest
 
-from testql.adapters.sql import SqlDSLAdapter
+from sql2testql import SqlDSLAdapter
 from testql.ir import SqlStep, TestPlan
 
 
-SCENARIO_DIR = Path(__file__).resolve().parents[1] / "testql-scenarios" / "sql"
+SCENARIO_DIR = Path(__file__).resolve().parents[3] / "testql-scenarios" / "sql"
 
 
 def _scenarios() -> list[Path]:

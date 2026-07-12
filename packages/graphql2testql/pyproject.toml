@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "graphql2testql"
+version = "0.1.0"
+description = "GraphQL contract adapter and SDL generator source for TestQL"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+dependencies = [
+    "testql>=1.2.0",
+]
+
+[project.optional-dependencies]
+sdl = ["graphql-core>=3.2"]
+
+[project.entry-points."testql.plugins"]
+graphql = "graphql2testql"
+
+[project.entry-points."testql.sources"]
+graphql = "graphql2testql.source:GraphQLSource"
+
+[tool.setuptools.packages.find]
+where = ["src"]

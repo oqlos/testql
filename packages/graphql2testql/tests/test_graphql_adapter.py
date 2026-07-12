@@ -1,17 +1,17 @@
-"""Tests for `testql.adapters.graphql`."""
+"""Tests for the `graphql2testql` adapter."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
-from testql.adapters.graphql import (
+from graphql2testql import (
     GraphQLDSLAdapter,
     SubscriptionPlan,
     classify_operation,
     parse_schema,
     parse_variables,
 )
-from testql.adapters.graphql.schema_introspection import has_graphql_core
+from graphql2testql.schema_introspection import has_graphql_core
 from testql.ir import GraphqlStep, TestPlan
 
 
@@ -184,11 +184,18 @@ class TestAdapterRender:
 
 
 class TestRegistration:
-    def test_registered(self):
+    def test_registered_via_entry_point(self):
         from testql.adapters import registry
         a = registry.get("graphql")
         assert a is not None
         assert isinstance(a, GraphQLDSLAdapter)
+
+    def test_source_resolved_via_entry_point(self):
+        from testql.generators.sources import available_sources, get_source
+        src = get_source("graphql")
+        assert src is not None
+        assert type(src).__name__ == "GraphQLSource"
+        assert "graphql" in available_sources()
 
 
 class TestHasGraphQLCore:

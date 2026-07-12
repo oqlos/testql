@@ -5,10 +5,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from testql.adapters.graphql.schema_introspection import TypeDef, parse_schema
+from testql.generators.sources.base import BaseSource, SourceLike
 from testql.ir import Assertion, GraphqlStep, ScenarioMetadata, TestPlan
 
-from .base import BaseSource, SourceLike
+from .schema_introspection import TypeDef, parse_schema
 
 
 def _load_sdl(source: SourceLike) -> str:

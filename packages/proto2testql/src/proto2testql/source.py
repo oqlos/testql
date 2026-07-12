@@ -5,15 +5,14 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from testql.adapters.proto.descriptor_loader import (
+from testql.generators.sources.base import BaseSource, SourceLike
+from testql.ir import Assertion, Fixture, ProtoStep, ScenarioMetadata, TestPlan
+from testql.proto_schema import (
     MessageDef,
     ProtoFile,
     SCALAR_TYPES,
     parse_proto,
 )
-from testql.ir import Assertion, Fixture, ProtoStep, ScenarioMetadata, TestPlan
-
-from .base import BaseSource, SourceLike
 
 
 _SAMPLE_VALUES: dict[str, str] = {

@@ -1,4 +1,4 @@
-"""Tests for `testql.adapters.sql.sql_adapter`."""
+"""Tests for the `sql2testql` adapter."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from testql.adapters.sql import SqlDSLAdapter, parse, render
+from sql2testql import SqlDSLAdapter, parse, render
 from testql.ir import SqlStep, Step, TestPlan
 
 

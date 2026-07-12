@@ -2,33 +2,30 @@
 
 Each source class implements `BaseSource`. The module-level `SOURCES` mapping
 is auto-populated from the bundled built-ins and used by `pipeline.run()`.
+Externally packaged sources (e.g. `graphql2testql`) register through the
+`testql.sources` entry-point group and are resolved lazily by `get_source`.
 """
 
 from __future__ import annotations
 
+from importlib import metadata as importlib_metadata
 from typing import Optional
 
 from .base import BaseSource, SourceLike
 from .config_source import ConfigSource
 from .conversation import ConversationTestSource
-from .graphql_source import GraphQLSource
 from .nl_source import NLSource
 from .openapi_source import OpenAPISource
 from .oql_source import OqlSource
 from .oql_models import OqlCommand, ParsedScenario
 from .oql_parser import OqlParser
-from .proto_source import ProtoSource
 from .pytest_source import PytestSource
-from .sql_source import SqlSource
 from .ui_source import UISource
 from .page_source import PageSource
 
 
 _BUILTIN: dict[str, type[BaseSource]] = {
     "openapi": OpenAPISource,
-    "sql": SqlSource,
-    "proto": ProtoSource,
-    "graphql": GraphQLSource,
     "nl": NLSource,
     "ui": UISource,
     "page": PageSource,
@@ -47,12 +44,28 @@ def _get_config_source() -> type[BaseSource]:
     return ConfigSource
 
 
+def _plugin_entry_points(group: str = "testql.sources"):
+    entry_points = importlib_metadata.entry_points()
+    if hasattr(entry_points, "select"):
+        return entry_points.select(group=group)
+    return entry_points.get(group, [])
+
+
+def _get_plugin_source(key: str) -> Optional[type[BaseSource]]:
+    for entry_point in _plugin_entry_points():
+        if entry_point.name == key:
+            return entry_point.load()
+    return None
+
+
 def get_source(name: str) -> Optional[BaseSource]:
     """Instantiate a registered source by name (e.g. "openapi")."""
     key = name.lower()
     cls = _BUILTIN.get(key)
     if cls is None and key in _CONFIG_ALIASES:
         cls = _get_config_source()
+    if cls is None:
+        cls = _get_plugin_source(key)
     if cls is None:
         return None
     if cls is ConversationTestSource:
@@ -61,16 +74,14 @@ def get_source(name: str) -> Optional[BaseSource]:
 
 
 def available_sources() -> list[str]:
-    return sorted(set(_BUILTIN.keys()) | set(_CONFIG_ALIASES))
+    plugin_names = {ep.name for ep in _plugin_entry_points()}
+    return sorted(set(_BUILTIN.keys()) | set(_CONFIG_ALIASES) | plugin_names)
 
 
 __all__ = [
     "BaseSource",
     "SourceLike",
     "OpenAPISource",
-    "SqlSource",
-    "ProtoSource",
-    "GraphQLSource",
     "NLSource",
     "UISource",
     "PageSource",

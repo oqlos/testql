@@ -11,7 +11,7 @@ from typing import Iterable, Optional
 
 from testql.ir import Fixture
 
-from .ddl_parser import Column, Table
+from testql.sql_schema import Column, Table
 
 
 @dataclass

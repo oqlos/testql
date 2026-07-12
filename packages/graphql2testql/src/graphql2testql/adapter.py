@@ -34,7 +34,7 @@ from testql.ir import (
     TestPlan,
 )
 
-from ..base import BaseDSLAdapter, DSLDetectionResult, SourceLike, read_source
+from testql.adapters.base import BaseDSLAdapter, DSLDetectionResult, SourceLike, read_source
 from .query_executor import classify_operation, parse_variables
 
 

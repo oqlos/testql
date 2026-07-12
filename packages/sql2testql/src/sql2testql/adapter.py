@@ -39,8 +39,8 @@ from testql.interpreter._testtoon_parser import (
 )
 from testql.ir import Assertion, Capture, Fixture, ScenarioMetadata, SqlStep, Step, TestPlan
 
-from ..base import BaseDSLAdapter, DSLDetectionResult, SourceLike, read_source
-from .dialect_resolver import DEFAULT_DIALECT, normalize_dialect
+from testql.adapters.base import BaseDSLAdapter, DSLDetectionResult, SourceLike, read_source
+from testql.sql_schema import DEFAULT_DIALECT, normalize_dialect
 from .fixtures import ConnectionFixture, schema_fixture_from_rows
 
 

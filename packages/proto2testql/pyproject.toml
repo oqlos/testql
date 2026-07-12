@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "proto2testql"
+version = "0.1.0"
+description = "Protocol Buffers contract adapter and generator source for TestQL"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+dependencies = [
+    "testql>=1.2.0",
+]
+
+[project.optional-dependencies]
+protobuf = ["protobuf>=4.21"]
+
+[project.entry-points."testql.plugins"]
+proto = "proto2testql"
+
+[project.entry-points."testql.sources"]
+proto = "proto2testql.source:ProtoSource"
+
+[tool.setuptools.packages.find]
+where = ["src"]

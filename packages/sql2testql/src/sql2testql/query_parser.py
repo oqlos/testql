@@ -12,7 +12,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Optional
 
-from .dialect_resolver import has_sqlglot, normalize_dialect
+from testql.sql_schema import has_sqlglot, normalize_dialect
 
 _LEADING_KEYWORD_RE = re.compile(r"^\s*([A-Za-z]+)", re.MULTILINE)
 

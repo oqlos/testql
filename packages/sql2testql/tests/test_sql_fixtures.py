@@ -1,8 +1,8 @@
-"""Tests for `testql.adapters.sql.fixtures`."""
+"""Tests for `sql2testql.fixtures`."""
 
 from __future__ import annotations
 
-from testql.adapters.sql.fixtures import (
+from sql2testql.fixtures import (
     ConnectionFixture,
     SchemaFixture,
     schema_fixture_from_rows,

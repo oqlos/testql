@@ -17,7 +17,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional
 
-from .descriptor_loader import FieldDef, MessageDef, ProtoFile
+from testql.proto_schema import FieldDef, MessageDef, ProtoFile
 
 
 # Wire-compatible type substitutions (Google's compatibility table, simplified).

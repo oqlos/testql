@@ -1,10 +1,10 @@
-"""Tests for `testql.adapters.proto.proto_adapter`."""
+"""Tests for the `proto2testql` adapter."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
-from testql.adapters.proto import ProtoDSLAdapter, parse, render
+from proto2testql import ProtoDSLAdapter, parse, render
 from testql.ir import ProtoStep, TestPlan
 
 
@@ -120,8 +120,15 @@ class TestRender:
 
 
 class TestRegistration:
-    def test_registered(self):
+    def test_registered_via_entry_point(self):
         from testql.adapters import registry
         a = registry.get("proto")
         assert a is not None
         assert isinstance(a, ProtoDSLAdapter)
+
+    def test_source_resolved_via_entry_point(self):
+        from testql.generators.sources import available_sources, get_source
+        src = get_source("proto")
+        assert src is not None
+        assert type(src).__name__ == "ProtoSource"
+        assert "proto" in available_sources()
