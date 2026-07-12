@@ -1,0 +1,12 @@
+# local.dev.txt — locally developed dependencies of this project (generated 2026-07-04)
+# by ~/github/local.dev.sh — DO NOT EDIT; see ~/github/local.dev.md
+# project: mcp2testql 0.1.0 (python) at /home/tom/github/oqlos/testql/packages/mcp2testql
+# deps declared: 6 | with local source: 4
+
+## LOCAL DEPS  (dep | required | local source (version) | installed | status)
+dsl2testql | >=0.1.0 | /home/tom/github/oqlos/testql/packages/dsl2testql (0.1.0) | - | NOT-INSTALLED  [pyproject.toml]
+nlp2testql | >=0.1.0 | /home/tom/github/oqlos/testql/packages/nlp2testql (0.1.0) | - | NOT-INSTALLED  [pyproject.toml]
+testql | >=1.2.0 | /home/tom/github/oqlos/testql (1.2.60) | 1.2.59 editable | OK-EDITABLE  [pyproject.toml]
+uri2testql | >=0.1.0 | /home/tom/github/oqlos/testql/packages/uri2testql (0.1.0) | - | NOT-INSTALLED  [pyproject.toml]
+
+## EXTERNAL DEPS (no local source, 2): mcp, pytest
