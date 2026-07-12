@@ -1,0 +1,394 @@
+{
+  "encoder_coverage_matrix": {
+    "version": "1.0",
+    "generated_for": "C2004 Encoder Mode",
+    "modules": {
+      "total_modules": 9,
+      "modules": {
+        "connect-id": {
+          "encoder_mode_url": "http://localhost:8100/connect-id?mode=encoder",
+          "keyboard_mode_url": "http://localhost:8100/connect-id?mode=keyboard",
+          "default_url": "http://localhost:8100/connect-id",
+          "tested": false,
+          "shortcuts_applicable": [
+            "toggle",
+            "deactivate",
+            "navigateUp",
+            "navigateDown",
+            "accept",
+            "cancel",
+            "nextSection",
+            "prevSection",
+            "pageNext",
+            "pagePrev"
+          ]
+        },
+        "connect-data": {
+          "encoder_mode_url": "http://localhost:8100/connect-data?mode=encoder",
+          "keyboard_mode_url": "http://localhost:8100/connect-data?mode=keyboard",
+          "default_url": "http://localhost:8100/connect-data",
+          "tested": false,
+          "shortcuts_applicable": [
+            "toggle",
+            "deactivate",
+            "navigateUp",
+            "navigateDown",
+            "accept",
+            "cancel",
+            "nextSection",
+            "prevSection",
+            "pageNext",
+            "pagePrev"
+          ]
+        },
+        "connect-reports": {
+          "encoder_mode_url": "http://localhost:8100/connect-reports?mode=encoder",
+          "keyboard_mode_url": "http://localhost:8100/connect-reports?mode=keyboard",
+          "default_url": "http://localhost:8100/connect-reports",
+          "tested": false,
+          "shortcuts_applicable": [
+            "toggle",
+            "deactivate",
+            "navigateUp",
+            "navigateDown",
+            "accept",
+            "cancel",
+            "nextSection",
+            "prevSection",
+            "pageNext",
+            "pagePrev"
+          ]
+        },
+        "connect-manager": {
+          "encoder_mode_url": "http://localhost:8100/connect-manager?mode=encoder",
+          "keyboard_mode_url": "http://localhost:8100/connect-manager?mode=keyboard",
+          "default_url": "http://localhost:8100/connect-manager",
+          "tested": false,
+          "shortcuts_applicable": [
+            "toggle",
+            "deactivate",
+            "navigateUp",
+            "navigateDown",
+            "accept",
+            "cancel",
+            "nextSection",
+            "prevSection",
+            "pageNext",
+            "pagePrev"
+          ]
+        },
+        "connect-config": {
+          "encoder_mode_url": "http://localhost:8100/connect-config?mode=encoder",
+          "keyboard_mode_url": "http://localhost:8100/connect-config?mode=keyboard",
+          "default_url": "http://localhost:8100/connect-config",
+          "tested": false,
+          "shortcuts_applicable": [
+            "toggle",
+            "deactivate",
+            "navigateUp",
+            "navigateDown",
+            "accept",
+            "cancel",
+            "nextSection",
+            "prevSection",
+            "pageNext",
+            "pagePrev"
+          ]
+        },
+        "connect-scenario": {
+          "encoder_mode_url": "http://localhost:8100/connect-scenario?mode=encoder",
+          "keyboard_mode_url": "http://localhost:8100/connect-scenario?mode=keyboard",
+          "default_url": "http://localhost:8100/connect-scenario",
+          "tested": false,
+          "shortcuts_applicable": [
+            "toggle",
+            "deactivate",
+            "navigateUp",
+            "navigateDown",
+            "accept",
+            "cancel",
+            "nextSection",
+            "prevSection",
+            "pageNext",
+            "pagePrev"
+          ]
+        },
+        "connect-template": {
+          "encoder_mode_url": "http://localhost:8100/connect-template?mode=encoder",
+          "keyboard_mode_url": "http://localhost:8100/connect-template?mode=keyboard",
+          "default_url": "http://localhost:8100/connect-template",
+          "tested": false,
+          "shortcuts_applicable": [
+            "toggle",
+            "deactivate",
+            "navigateUp",
+            "navigateDown",
+            "accept",
+            "cancel",
+            "nextSection",
+            "prevSection",
+            "pageNext",
+            "pagePrev"
+          ]
+        },
+        "connect-test": {
+          "encoder_mode_url": "http://localhost:8100/connect-test?mode=encoder",
+          "keyboard_mode_url": "http://localhost:8100/connect-test?mode=keyboard",
+          "default_url": "http://localhost:8100/connect-test",
+          "tested": false,
+          "shortcuts_applicable": [
+            "toggle",
+            "deactivate",
+            "navigateUp",
+            "navigateDown",
+            "accept",
+            "cancel",
+            "nextSection",
+            "prevSection",
+            "pageNext",
+            "pagePrev"
+          ]
+        },
+        "connect-protocol": {
+          "encoder_mode_url": "http://localhost:8100/connect-protocol?mode=encoder",
+          "keyboard_mode_url": "http://localhost:8100/connect-protocol?mode=keyboard",
+          "default_url": "http://localhost:8100/connect-protocol",
+          "tested": false,
+          "shortcuts_applicable": [
+            "toggle",
+            "deactivate",
+            "navigateUp",
+            "navigateDown",
+            "accept",
+            "cancel",
+            "nextSection",
+            "prevSection",
+            "pageNext",
+            "pagePrev"
+          ]
+        }
+      }
+    },
+    "shortcuts": {
+      "total_shortcuts": 10,
+      "shortcuts": {
+        "toggle": {
+          "key": "Ctrl+E",
+          "tested": false,
+          "test_scenarios": [
+            "activate_encoder_from_default",
+            "toggle_encoder_on_off"
+          ]
+        },
+        "deactivate": {
+          "key": "Escape",
+          "tested": false,
+          "test_scenarios": [
+            "escape_encoder_mode",
+            "close_modal"
+          ]
+        },
+        "navigateUp": {
+          "key": "ArrowUp",
+          "tested": false,
+          "test_scenarios": [
+            "navigate_back_in_menu",
+            "navigate_back_in_table"
+          ]
+        },
+        "navigateDown": {
+          "key": "ArrowDown",
+          "tested": false,
+          "test_scenarios": [
+            "navigate_menu_items",
+            "navigate_table_rows",
+            "navigate_form_fields"
+          ]
+        },
+        "accept": {
+          "key": "Enter",
+          "tested": false,
+          "test_scenarios": [
+            "select_menu_item",
+            "confirm_action",
+            "submit_form"
+          ]
+        },
+        "cancel": {
+          "key": "Backspace",
+          "tested": false,
+          "test_scenarios": [
+            "cancel_action",
+            "clear_input"
+          ]
+        },
+        "nextSection": {
+          "key": "Tab",
+          "tested": false,
+          "test_scenarios": [
+            "tab_to_next_field",
+            "tab_to_next_section"
+          ]
+        },
+        "prevSection": {
+          "key": "Shift+Tab",
+          "tested": false,
+          "test_scenarios": [
+            "shift_tab_to_prev"
+          ]
+        },
+        "pageNext": {
+          "key": "PageDown",
+          "tested": false,
+          "test_scenarios": [
+            "scroll_page_down",
+            "next_page_in_table"
+          ]
+        },
+        "pagePrev": {
+          "key": "PageUp",
+          "tested": false,
+          "test_scenarios": [
+            "scroll_page_up",
+            "prev_page_in_table"
+          ]
+        }
+      }
+    },
+    "actions": {
+      "total_actions": 10,
+      "actions": {
+        "activate": {
+          "tested": false,
+          "required_shortcuts": [
+            "toggle"
+          ],
+          "test_modules": []
+        },
+        "navigate_menu": {
+          "tested": false,
+          "required_shortcuts": [
+            "navigateDown",
+            "navigateUp"
+          ],
+          "test_modules": []
+        },
+        "select_item": {
+          "tested": false,
+          "required_shortcuts": [
+            "accept"
+          ],
+          "test_modules": []
+        },
+        "navigate_within_page": {
+          "tested": false,
+          "required_shortcuts": [
+            "navigateDown",
+            "navigateUp"
+          ],
+          "test_modules": []
+        },
+        "navigate_up": {
+          "tested": false,
+          "required_shortcuts": [
+            "navigateUp"
+          ],
+          "test_modules": []
+        },
+        "confirm_selection": {
+          "tested": false,
+          "required_shortcuts": [
+            "accept"
+          ],
+          "test_modules": []
+        },
+        "cancel": {
+          "tested": false,
+          "required_shortcuts": [
+            "cancel",
+            "deactivate"
+          ],
+          "test_modules": []
+        },
+        "switch_section": {
+          "tested": false,
+          "required_shortcuts": [
+            "nextSection",
+            "prevSection"
+          ],
+          "test_modules": []
+        },
+        "page_scroll": {
+          "tested": false,
+          "required_shortcuts": [
+            "pageNext",
+            "pagePrev"
+          ],
+          "test_modules": []
+        },
+        "deactivate": {
+          "tested": false,
+          "required_shortcuts": [
+            "deactivate"
+          ],
+          "test_modules": []
+        }
+      }
+    },
+    "config": {
+      "config_options": {
+        "wheelThreshold": [
+          480,
+          360,
+          600
+        ],
+        "wheelResetMs": [
+          180,
+          150,
+          200
+        ],
+        "wheelLineUnit": [
+          10,
+          5,
+          15
+        ],
+        "clickConfirmDelayMs": [
+          240,
+          200,
+          300
+        ]
+      },
+      "total_combinations": 81,
+      "selected_test_configs": [
+        {
+          "name": "default",
+          "wheelThreshold": 480,
+          "wheelResetMs": 180,
+          "wheelLineUnit": 10,
+          "clickConfirmDelayMs": 240
+        },
+        {
+          "name": "fast",
+          "wheelThreshold": 360,
+          "wheelResetMs": 150,
+          "wheelLineUnit": 5,
+          "clickConfirmDelayMs": 200
+        },
+        {
+          "name": "slow",
+          "wheelThreshold": 600,
+          "wheelResetMs": 200,
+          "wheelLineUnit": 15,
+          "clickConfirmDelayMs": 300
+        }
+      ]
+    },
+    "summary": {
+      "total_modules": 9,
+      "total_shortcuts": 10,
+      "total_actions": 10,
+      "total_config_combinations": 81,
+      "minimum_test_scenarios": 22
+    }
+  }
+}

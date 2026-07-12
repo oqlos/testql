@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>TestQL Page Analysis Report</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .summary {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .page-result {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status-ok { color: #4CAF50; }
+        .status-error { color: #f44336; }
+        .status-warning { color: #ff9800; }
+        .metric { display: inline-block; margin-right: 20px; }
+        .screenshot { max-width: 200px; margin: 10px; cursor: pointer; }
+        h1 { color: #333; }
+        h2 { color: #666; margin-top: 0; }
+        .errors { background: #ffebee; padding: 10px; border-left: 4px solid #f44336; }
+        .warnings { background: #fff3e0; padding: 10px; border-left: 4px solid #ff9800; }
+    </style>
+</head>
+<body>
+    <h1>📊 TestQL Page Analysis Report</h1>
+
+    <div class="summary">
+        <h2>Summary</h2>
+        <div class="metric"><strong>Pages:</strong> 5</div>
+        <div class="metric"><strong>Errors:</strong> <span class="status-error">0</span></div>
+        <div class="metric"><strong>Warnings:</strong> <span class="status-warning">0</span></div>
+        <div class="metric"><strong>Duration:</strong> 34.2s</div>
+    </div>
+
+    <div class="page-result">
+        <h2>Step 1: Identification Service</h2>
+        <p><strong>URL:</strong> <code>http://localhost:8100/connect-id?mode=encoder</code></p>
+        <p><strong>Status:</strong> <span class="status-ok">200</span></p>
+
+        <p><strong>DOM Elements:</strong> 456
+           (Buttons: 70, Tables: 1)</p>
+
+        <div>
+            <strong>📸 Screenshots:</strong><br>
+            <img src="step_001_connect-id_encoder_full.png" class="screenshot"><br>
+            <img src="step_001_connect-id_encoder_viewport.png" class="screenshot"><br>
+        </div>
+    </div>
+
+    <div class="page-result">
+        <h2>Step 2: Identification Service</h2>
+        <p><strong>URL:</strong> <code>http://localhost:8100/connect-data?mode=encoder</code></p>
+        <p><strong>Status:</strong> <span class="status-ok">200</span></p>
+
+        <p><strong>DOM Elements:</strong> 838
+           (Buttons: 72, Tables: 1)</p>
+
+        <div>
+            <strong>📸 Screenshots:</strong><br>
+            <img src="step_002_connect-data_encoder_full.png" class="screenshot"><br>
+            <img src="step_002_connect-data_encoder_viewport.png" class="screenshot"><br>
+        </div>
+    </div>
+
+    <div class="page-result">
+        <h2>Step 3: Identification Service</h2>
+        <p><strong>URL:</strong> <code>http://localhost:8100/connect-reports?mode=encoder</code></p>
+        <p><strong>Status:</strong> <span class="status-ok">200</span></p>
+
+        <p><strong>DOM Elements:</strong> 572
+           (Buttons: 27, Tables: 0)</p>
+
+        <div>
+            <strong>📸 Screenshots:</strong><br>
+            <img src="step_003_connect-reports_encoder_full.png" class="screenshot"><br>
+            <img src="step_003_connect-reports_encoder_viewport.png" class="screenshot"><br>
+        </div>
+    </div>
+
+    <div class="page-result">
+        <h2>Step 4: Identification Service</h2>
+        <p><strong>URL:</strong> <code>http://localhost:8100/connect-manager?mode=encoder</code></p>
+        <p><strong>Status:</strong> <span class="status-ok">200</span></p>
+
+        <p><strong>DOM Elements:</strong> 376
+           (Buttons: 29, Tables: 1)</p>
+
+        <div>
+            <strong>📸 Screenshots:</strong><br>
+            <img src="step_004_connect-manager_encoder_full.png" class="screenshot"><br>
+            <img src="step_004_connect-manager_encoder_viewport.png" class="screenshot"><br>
+        </div>
+    </div>
+
+    <div class="page-result">
+        <h2>Step 5: Identification Service</h2>
+        <p><strong>URL:</strong> <code>http://localhost:8100/connect-config?mode=encoder</code></p>
+        <p><strong>Status:</strong> <span class="status-ok">200</span></p>
+
+        <p><strong>DOM Elements:</strong> 391
+           (Buttons: 28, Tables: 0)</p>
+
+        <div>
+            <strong>📸 Screenshots:</strong><br>
+            <img src="step_005_connect-config_encoder_full.png" class="screenshot"><br>
+            <img src="step_005_connect-config_encoder_viewport.png" class="screenshot"><br>
+        </div>
+    </div>
+
+</body>
+</html>

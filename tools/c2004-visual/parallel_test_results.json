@@ -1,0 +1,192 @@
+{
+  "summary": {
+    "total": 9,
+    "passed": 9,
+    "failed": 0,
+    "warnings": 0,
+    "total_time": 8.99,
+    "avg_load_time": 1536
+  },
+  "results": [
+    {
+      "module": "connect-id",
+      "url": "http://localhost:8100/connect-id?mode=encoder",
+      "step": 1,
+      "status": 200,
+      "start_time": "2026-07-06T16:44:08.554735",
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "load_time": 1685
+      },
+      "title": "Identification Service",
+      "dom": {
+        "elements": 458,
+        "buttons": 70,
+        "inputs": 3,
+        "tables": 1
+      },
+      "end_time": "2026-07-06T16:44:14.512953"
+    },
+    {
+      "module": "connect-data",
+      "url": "http://localhost:8100/connect-data?mode=encoder",
+      "step": 2,
+      "status": 200,
+      "start_time": "2026-07-06T16:44:08.556346",
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "load_time": 1664
+      },
+      "title": "Identification Service",
+      "dom": {
+        "elements": 840,
+        "buttons": 72,
+        "inputs": 6,
+        "tables": 1
+      },
+      "end_time": "2026-07-06T16:44:11.989634"
+    },
+    {
+      "module": "connect-reports",
+      "url": "http://localhost:8100/connect-reports?mode=encoder",
+      "step": 3,
+      "status": 200,
+      "start_time": "2026-07-06T16:44:08.556972",
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "load_time": 1702
+      },
+      "title": "Identification Service",
+      "dom": {
+        "elements": 747,
+        "buttons": 27,
+        "inputs": 1,
+        "tables": 0
+      },
+      "end_time": "2026-07-06T16:44:11.936858"
+    },
+    {
+      "module": "connect-manager",
+      "url": "http://localhost:8100/connect-manager?mode=encoder",
+      "step": 4,
+      "status": 200,
+      "start_time": "2026-07-06T16:44:08.557626",
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "load_time": 1689
+      },
+      "title": "Identification Service",
+      "dom": {
+        "elements": 378,
+        "buttons": 29,
+        "inputs": 1,
+        "tables": 1
+      },
+      "end_time": "2026-07-06T16:44:13.171334"
+    },
+    {
+      "module": "connect-config",
+      "url": "http://localhost:8100/connect-config?mode=encoder",
+      "step": 5,
+      "status": 200,
+      "start_time": "2026-07-06T16:44:08.558089",
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "load_time": 1681
+      },
+      "title": "Identification Service",
+      "dom": {
+        "elements": 393,
+        "buttons": 28,
+        "inputs": 3,
+        "tables": 0
+      },
+      "end_time": "2026-07-06T16:44:11.823136"
+    },
+    {
+      "module": "connect-scenario",
+      "url": "http://localhost:8100/connect-scenario?mode=encoder",
+      "step": 6,
+      "status": 200,
+      "start_time": "2026-07-06T16:44:14.648102",
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "load_time": 1349
+      },
+      "title": "Identification Service",
+      "dom": {
+        "elements": 357,
+        "buttons": 26,
+        "inputs": 1,
+        "tables": 1
+      },
+      "end_time": "2026-07-06T16:44:17.387466"
+    },
+    {
+      "module": "connect-template",
+      "url": "http://localhost:8100/connect-template?mode=encoder",
+      "step": 7,
+      "status": 200,
+      "start_time": "2026-07-06T16:44:14.649106",
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "load_time": 1343
+      },
+      "title": "Identification Service",
+      "dom": {
+        "elements": 351,
+        "buttons": 25,
+        "inputs": 1,
+        "tables": 1
+      },
+      "end_time": "2026-07-06T16:44:16.901696"
+    },
+    {
+      "module": "connect-test",
+      "url": "http://localhost:8100/connect-test?mode=encoder",
+      "step": 8,
+      "status": 200,
+      "start_time": "2026-07-06T16:44:14.650351",
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "load_time": 1354
+      },
+      "title": "Identification Service",
+      "dom": {
+        "elements": 359,
+        "buttons": 26,
+        "inputs": 1,
+        "tables": 1
+      },
+      "end_time": "2026-07-06T16:44:17.388884"
+    },
+    {
+      "module": "connect-protocol",
+      "url": "http://localhost:8100/connect-protocol?mode=encoder",
+      "step": 9,
+      "status": 200,
+      "start_time": "2026-07-06T16:44:14.651107",
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "load_time": 1357
+      },
+      "title": "Identification Service",
+      "dom": {
+        "elements": 304,
+        "buttons": 25,
+        "inputs": 2,
+        "tables": 0
+      },
+      "end_time": "2026-07-06T16:44:17.067771"
+    }
+  ]
+}

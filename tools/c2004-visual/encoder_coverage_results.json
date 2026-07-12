@@ -1,0 +1,42 @@
+{
+  "modules_tested": [
+    "connect-id",
+    "connect-data",
+    "connect-reports",
+    "connect-manager",
+    "connect-config",
+    "connect-scenario",
+    "connect-template",
+    "connect-test",
+    "connect-protocol"
+  ],
+  "shortcuts_tested": [
+    "cancel",
+    "navigateUp",
+    "pageNext",
+    "prevSection",
+    "accept",
+    "deactivate",
+    "pagePrev",
+    "toggle",
+    "nextSection",
+    "navigateDown"
+  ],
+  "actions_tested": [
+    "navigate_within_page",
+    "switch_section",
+    "activate",
+    "deactivate",
+    "page_scroll",
+    "navigate_up",
+    "cancel",
+    "select_item"
+  ],
+  "total_steps": 59,
+  "coverage_percentages": {
+    "modules": 100.0,
+    "shortcuts": 100.0,
+    "actions": 80.0,
+    "total": 93.33333333333333
+  }
+}

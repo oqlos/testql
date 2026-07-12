@@ -1,0 +1,221 @@
+{
+  "summary": {
+    "total_pages": 5,
+    "total_errors": 0,
+    "total_warnings": 0,
+    "duration_seconds": 34.2,
+    "timestamp": "2026-07-06T15:15:43.770193"
+  },
+  "pages": [
+    {
+      "step": 1,
+      "url": "http://localhost:8100/connect-id?mode=encoder",
+      "timestamp": "2026-07-06T15:15:09.732689",
+      "test_name": "connect-id_encoder",
+      "status": 200,
+      "errors": [],
+      "warnings": [],
+      "metrics": {},
+      "dom": {
+        "total_elements": 456,
+        "buttons": 70,
+        "inputs": 3,
+        "tables": 1,
+        "forms": 1,
+        "links": 2,
+        "images": 1,
+        "body_text_length": 643,
+        "has_header": false,
+        "has_footer": false,
+        "has_menu": true
+      },
+      "screenshots": [
+        "encoder-analysis-reports/step_001_connect-id_encoder_full.png",
+        "encoder-analysis-reports/step_001_connect-id_encoder_viewport.png"
+      ],
+      "status_text": "OK",
+      "title": "Identification Service",
+      "final_url": "http://localhost:8100/connect-id/account?mode=encoder&font=default&theme=dark&role=guest&lang=en&size=1280&router=demo&filter=manual",
+      "redirected": true,
+      "encoder_mode": {
+        "url_param_encoder": true,
+        "url_param_keyboard": false,
+        "encoder_indicator_present": false
+      },
+      "performance": {
+        "load_time": 892,
+        "dom_content_loaded": 883,
+        "dom_interactive": 142
+      },
+      "analysis_duration_ms": 5319
+    },
+    {
+      "step": 2,
+      "url": "http://localhost:8100/connect-data?mode=encoder",
+      "timestamp": "2026-07-06T15:15:19.696519",
+      "test_name": "connect-data_encoder",
+      "status": 200,
+      "errors": [],
+      "warnings": [],
+      "metrics": {},
+      "dom": {
+        "total_elements": 838,
+        "buttons": 72,
+        "inputs": 6,
+        "tables": 1,
+        "forms": 0,
+        "links": 2,
+        "images": 1,
+        "body_text_length": 1528,
+        "has_header": false,
+        "has_footer": false,
+        "has_menu": true
+      },
+      "screenshots": [
+        "encoder-analysis-reports/step_002_connect-data_encoder_full.png",
+        "encoder-analysis-reports/step_002_connect-data_encoder_viewport.png"
+      ],
+      "status_text": "OK",
+      "title": "Identification Service",
+      "final_url": "http://localhost:8100/connect-data?mode=encoder&font=default&theme=dark&role=admin&lang=en&size=1280&router=demo",
+      "redirected": true,
+      "encoder_mode": {
+        "url_param_encoder": true,
+        "url_param_keyboard": false,
+        "encoder_indicator_present": false
+      },
+      "performance": {
+        "load_time": 570,
+        "dom_content_loaded": 568,
+        "dom_interactive": 22
+      },
+      "analysis_duration_ms": 1931
+    },
+    {
+      "step": 3,
+      "url": "http://localhost:8100/connect-reports?mode=encoder",
+      "timestamp": "2026-07-06T15:15:26.193527",
+      "test_name": "connect-reports_encoder",
+      "status": 200,
+      "errors": [],
+      "warnings": [],
+      "metrics": {},
+      "dom": {
+        "total_elements": 572,
+        "buttons": 27,
+        "inputs": 1,
+        "tables": 0,
+        "forms": 0,
+        "links": 2,
+        "images": 1,
+        "body_text_length": 1355,
+        "has_header": false,
+        "has_footer": false,
+        "has_menu": true
+      },
+      "screenshots": [
+        "encoder-analysis-reports/step_003_connect-reports_encoder_full.png",
+        "encoder-analysis-reports/step_003_connect-reports_encoder_viewport.png"
+      ],
+      "status_text": "OK",
+      "title": "Identification Service",
+      "final_url": "http://localhost:8100/connect-reports?mode=encoder&font=default&theme=dark&role=admin&lang=en&size=1280&router=demo",
+      "redirected": true,
+      "encoder_mode": {
+        "url_param_encoder": true,
+        "url_param_keyboard": false,
+        "encoder_indicator_present": false
+      },
+      "performance": {
+        "load_time": 302,
+        "dom_content_loaded": 302,
+        "dom_interactive": 16
+      },
+      "analysis_duration_ms": 1273
+    },
+    {
+      "step": 4,
+      "url": "http://localhost:8100/connect-manager?mode=encoder",
+      "timestamp": "2026-07-06T15:15:31.954124",
+      "test_name": "connect-manager_encoder",
+      "status": 200,
+      "errors": [],
+      "warnings": [],
+      "metrics": {},
+      "dom": {
+        "total_elements": 376,
+        "buttons": 29,
+        "inputs": 1,
+        "tables": 1,
+        "forms": 0,
+        "links": 2,
+        "images": 1,
+        "body_text_length": 518,
+        "has_header": false,
+        "has_footer": false,
+        "has_menu": true
+      },
+      "screenshots": [
+        "encoder-analysis-reports/step_004_connect-manager_encoder_full.png",
+        "encoder-analysis-reports/step_004_connect-manager_encoder_viewport.png"
+      ],
+      "status_text": "OK",
+      "title": "Identification Service",
+      "final_url": "http://localhost:8100/connect-manager?mode=encoder&font=default&theme=dark&role=admin&lang=en&size=1280&router=demo",
+      "redirected": true,
+      "encoder_mode": {
+        "url_param_encoder": true,
+        "url_param_keyboard": false,
+        "encoder_indicator_present": false
+      },
+      "performance": {
+        "load_time": 282,
+        "dom_content_loaded": 280,
+        "dom_interactive": 13
+      },
+      "analysis_duration_ms": 1718
+    },
+    {
+      "step": 5,
+      "url": "http://localhost:8100/connect-config?mode=encoder",
+      "timestamp": "2026-07-06T15:15:38.180450",
+      "test_name": "connect-config_encoder",
+      "status": 200,
+      "errors": [],
+      "warnings": [],
+      "metrics": {},
+      "dom": {
+        "total_elements": 391,
+        "buttons": 28,
+        "inputs": 3,
+        "tables": 0,
+        "forms": 0,
+        "links": 2,
+        "images": 1,
+        "body_text_length": 692,
+        "has_header": false,
+        "has_footer": false,
+        "has_menu": true
+      },
+      "screenshots": [
+        "encoder-analysis-reports/step_005_connect-config_encoder_full.png",
+        "encoder-analysis-reports/step_005_connect-config_encoder_viewport.png"
+      ],
+      "status_text": "OK",
+      "title": "Identification Service",
+      "final_url": "http://localhost:8100/connect-config?mode=encoder&font=default&theme=dark&role=admin&lang=en&size=1280&router=demo",
+      "redirected": true,
+      "encoder_mode": {
+        "url_param_encoder": true,
+        "url_param_keyboard": false,
+        "encoder_indicator_present": false
+      },
+      "performance": {
+        "load_time": 300,
+        "dom_content_loaded": 300,
+        "dom_interactive": 16
+      },
+      "analysis_duration_ms": 1258
+    }
+  ]
+}
