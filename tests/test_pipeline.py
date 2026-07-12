@@ -59,7 +59,22 @@ class TestResolution:
 # ── Full matrix: 6 sources × 3 targets = 18 pairs ──────────────────────────
 
 
-@pytest.mark.parametrize("source", list(SOURCES_AND_FIXTURES.keys()))
+def _source_params():
+    """Sources that ship as plugins get a skip mark when not installed."""
+    from testql.generators.sources import get_source
+    return [
+        pytest.param(
+            name,
+            marks=pytest.mark.skipif(
+                get_source(name) is None,
+                reason=f"{name}2testql plugin not installed",
+            ),
+        )
+        for name in SOURCES_AND_FIXTURES
+    ]
+
+
+@pytest.mark.parametrize("source", _source_params())
 @pytest.mark.parametrize("target", TARGETS)
 class TestMatrix:
     def test_run_returns_result(self, source, target):
