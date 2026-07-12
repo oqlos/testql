@@ -10,12 +10,30 @@ from pathlib import Path
 from typing import Any
 
 from testql.base import StepResult, StepStatus
-from testql.desktop import get_desktop_backend
-from testql.desktop.element_assert import evaluate_element_assert
-from testql.desktop.models import DesktopSession
-from testql.desktop import vision as desktop_vision
 
 from ._parser import OqlLine
+
+
+def _desktop_api():
+    """Resolve the `desktop2testql` package lazily.
+
+    The backend ships separately so that core stays importable (and the
+    DESKTOP_* commands merely fail with a clear message) without it.
+    """
+    try:
+        import desktop2testql
+    except ImportError as exc:
+        raise RuntimeError(
+            "DESKTOP_* commands require the `desktop2testql` package: "
+            "pip install desktop2testql"
+        ) from exc
+    return desktop2testql
+
+
+def _vision():
+    _desktop_api()
+    from desktop2testql import vision
+    return vision
 
 
 class DesktopMixin:
@@ -40,13 +58,14 @@ class DesktopMixin:
       - DESKTOP_STOP — terminate launched apps from this session
     """
 
-    _desktop_session: DesktopSession | None = None
+    _desktop_session: Any = None
     _desktop_backend: Any = None
 
     def _desktop(self):
         if self._desktop_backend is None:
-            self._desktop_session = self._desktop_session or DesktopSession()
-            self._desktop_backend = get_desktop_backend(self._desktop_session)
+            api = _desktop_api()
+            self._desktop_session = self._desktop_session or api.DesktopSession()
+            self._desktop_backend = api.get_desktop_backend(self._desktop_session)
         return self._desktop_backend
 
     def _cmd_desktop_list(self, args: str, line: OqlLine) -> None:
@@ -351,7 +370,7 @@ class DesktopMixin:
 
     def _capture_is_stale_blank(self, path: str | Path) -> bool:
         try:
-            from testql.desktop.vdisplay_capture import is_blank_image
+            from desktop2testql.vdisplay_capture import is_blank_image
 
             return is_blank_image(path)
         except ImportError:
@@ -363,7 +382,7 @@ class DesktopMixin:
             self.results.append(StepResult(name="DESKTOP_MONITORS", status=StepStatus.PASSED))
             return
 
-        monitors = desktop_vision.list_monitors()
+        monitors = _vision().list_monitors()
         self.out.step("🖥️", f"DESKTOP_MONITORS: {len(monitors)} monitor(s)")
         for monitor in monitors:
             label = monitor.get("name") or monitor.get("label") or "?"
@@ -388,7 +407,7 @@ class DesktopMixin:
             self.results.append(StepResult(name="DESKTOP_INSPECT", status=StepStatus.PASSED))
             return
 
-        payload = desktop_vision.inspect_environment(capture_path=capture)
+        payload = _vision().inspect_environment(capture_path=capture)
         self.out.step("🔍", "DESKTOP_INSPECT")
         self.out.step("  ", f"display={payload.display_server} {payload.display}")
         self.out.step("  ", f"monitors={len(payload.monitors)} windows={len(payload.windows)}")
@@ -425,7 +444,7 @@ class DesktopMixin:
             self.results.append(StepResult(name="DESKTOP_DESCRIBE", status=StepStatus.PASSED))
             return
 
-        result = desktop_vision.describe_image(image)
+        result = _vision().describe_image(image)
         if not result.get("ok"):
             self.out.fail(f"DESKTOP_DESCRIBE error: {result.get('error', 'unknown')}")
             self.results.append(
@@ -459,7 +478,7 @@ class DesktopMixin:
             self.results.append(StepResult(name="DESKTOP_ANALYZE", status=StepStatus.PASSED))
             return
 
-        result = desktop_vision.analyze_layout(image)
+        result = _vision().analyze_layout(image)
         if not result.get("ok"):
             self.out.fail(f"DESKTOP_ANALYZE error: {result.get('error', 'unknown')}")
             self.results.append(
@@ -510,7 +529,7 @@ class DesktopMixin:
             return
 
         capture = self._ensure_capture(image, default="examples/desktop/assert-text.png")
-        result = desktop_vision.find_text(capture, needle)
+        result = _vision().find_text(capture, needle)
         if not result.get("ok"):
             self.out.fail(f"DESKTOP_ASSERT_TEXT error: {result.get('error', 'unknown')}")
             self.results.append(
@@ -563,12 +582,12 @@ class DesktopMixin:
             return
 
         capture = self._ensure_capture(image, default="examples/desktop/assert-elements.png")
-        from testql.desktop.vdisplay_capture import read_capture_meta
+        from desktop2testql.vdisplay_capture import read_capture_meta
 
         meta = read_capture_meta(capture) or {}
         mirrored_windows = int(meta.get("window_count") or 0)
 
-        result = desktop_vision.analyze_layout(capture)
+        result = _vision().analyze_layout(capture)
         if not result.get("ok"):
             self.out.fail(f"DESKTOP_ASSERT_ELEMENTS error: {result.get('error', 'unknown')}")
             self.results.append(
@@ -581,7 +600,7 @@ class DesktopMixin:
             return
 
         count = int(result.get("element_count") or 0)
-        outcome = evaluate_element_assert(
+        outcome = _desktop_api().evaluate_element_assert(
             minimum=minimum,
             element_count=count,
             mirrored_windows=mirrored_windows,
@@ -613,7 +632,7 @@ class DesktopMixin:
             return
 
         capture = self._ensure_capture(image, default="examples/desktop/click-text.png")
-        result = desktop_vision.find_text(capture, needle)
+        result = _vision().find_text(capture, needle)
         if not result.get("ok"):
             self.out.fail(f"DESKTOP_CLICK_TEXT error: {result.get('error', 'unknown')}")
             self.results.append(

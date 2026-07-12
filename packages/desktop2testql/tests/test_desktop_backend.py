@@ -7,8 +7,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from testql.desktop.backend import LinuxDesktopBackend
-from testql.desktop.wmctrl import parse_wmctrl_listing
+from desktop2testql.backend import LinuxDesktopBackend
+from desktop2testql.wmctrl import parse_wmctrl_listing
 
 
 WMCTRL_SAMPLE = """\
@@ -29,7 +29,7 @@ def test_focus_window_by_title(monkeypatch) -> None:
     backend = LinuxDesktopBackend()
 
     monkeypatch.setattr(
-        "testql.desktop.backend.shutil.which",
+        "desktop2testql.backend.shutil.which",
         lambda name: "/usr/bin/" + name if name in {"wmctrl", "xdotool"} else None,
     )
 
@@ -48,7 +48,7 @@ def test_focus_window_by_title(monkeypatch) -> None:
         proc.stderr = ""
         return proc
 
-    monkeypatch.setattr("testql.desktop.backend._run", fake_run)
+    monkeypatch.setattr("desktop2testql.backend._run", fake_run)
     monkeypatch.setattr(backend, "_list_windows_vdisplay", lambda: [])
 
     focused = backend.focus_window(title="Terminal")
@@ -65,7 +65,7 @@ def test_launch_executable(tmp_path: Path, monkeypatch) -> None:
     backend = LinuxDesktopBackend()
     fake_proc = MagicMock()
     fake_proc.pid = 4242
-    monkeypatch.setattr("testql.desktop.backend.subprocess.Popen", lambda *a, **k: fake_proc)
+    monkeypatch.setattr("desktop2testql.backend.subprocess.Popen", lambda *a, **k: fake_proc)
 
     pid = backend.launch(str(script), "--verbose")
     assert pid == 4242
@@ -74,7 +74,7 @@ def test_launch_executable(tmp_path: Path, monkeypatch) -> None:
 
 def test_type_text_wayland(monkeypatch) -> None:
     backend = LinuxDesktopBackend()
-    monkeypatch.setattr("testql.desktop.backend.detect_display_server", lambda: "wayland")
+    monkeypatch.setattr("desktop2testql.backend.detect_display_server", lambda: "wayland")
     backend._display_server = "wayland"
 
     calls: list[list[str]] = []
@@ -88,10 +88,10 @@ def test_type_text_wayland(monkeypatch) -> None:
         return proc
 
     monkeypatch.setattr(
-        "testql.desktop.backend.shutil.which",
+        "desktop2testql.backend.shutil.which",
         lambda name: "/usr/bin/wtype" if name == "wtype" else None,
     )
-    monkeypatch.setattr("testql.desktop.backend._run", fake_run)
+    monkeypatch.setattr("desktop2testql.backend._run", fake_run)
 
     backend.type_text("hello")
     assert calls == [["wtype", "hello"]]
@@ -99,7 +99,7 @@ def test_type_text_wayland(monkeypatch) -> None:
 
 def test_list_windows_xdotool_fallback(monkeypatch) -> None:
     backend = LinuxDesktopBackend()
-    monkeypatch.setattr("testql.desktop.backend.shutil.which", lambda name: None)
+    monkeypatch.setattr("desktop2testql.backend.shutil.which", lambda name: None)
 
     calls: list[list[str]] = []
 
@@ -108,7 +108,7 @@ def test_list_windows_xdotool_fallback(monkeypatch) -> None:
             return "/usr/bin/xdotool"
         return None
 
-    monkeypatch.setattr("testql.desktop.backend.shutil.which", fake_which)
+    monkeypatch.setattr("desktop2testql.backend.shutil.which", fake_which)
 
     def fake_run(argv, **kwargs):
         calls.append(argv)
@@ -125,7 +125,7 @@ def test_list_windows_xdotool_fallback(monkeypatch) -> None:
         proc.stderr = ""
         return proc
 
-    monkeypatch.setattr("testql.desktop.backend._run", fake_run)
+    monkeypatch.setattr("desktop2testql.backend._run", fake_run)
     monkeypatch.setattr(backend, "_list_windows_vdisplay", lambda: [])
     windows = backend.list_windows()
     assert len(windows) == 1
@@ -141,7 +141,7 @@ def test_screenshot_vdisplay_failure_does_not_raise(monkeypatch, tmp_path: Path)
         raise RuntimeError("xrandr missing")
 
     monkeypatch.setattr(
-        "testql.desktop.vdisplay_capture.capture_via_vdisplay",
+        "desktop2testql.vdisplay_capture.capture_via_vdisplay",
         boom,
     )
     assert backend._screenshot_vdisplay(out) is False
@@ -149,7 +149,7 @@ def test_screenshot_vdisplay_failure_does_not_raise(monkeypatch, tmp_path: Path)
 
 def test_screenshot_scrot_fallback_on_wayland(monkeypatch, tmp_path: Path) -> None:
     backend = LinuxDesktopBackend()
-    monkeypatch.setattr("testql.desktop.backend.detect_display_server", lambda: "wayland")
+    monkeypatch.setattr("desktop2testql.backend.detect_display_server", lambda: "wayland")
     backend._display_server = "wayland"
     monkeypatch.setenv("DISPLAY", ":0")
 
@@ -160,7 +160,7 @@ def test_screenshot_scrot_fallback_on_wayland(monkeypatch, tmp_path: Path) -> No
             return f"/usr/bin/{name}"
         return None
 
-    monkeypatch.setattr("testql.desktop.backend.shutil.which", fake_which)
+    monkeypatch.setattr("desktop2testql.backend.shutil.which", fake_which)
     monkeypatch.setattr(backend, "_screenshot_vdisplay", lambda path, monitor=None: False)
     monkeypatch.setattr(backend, "_screenshot_is_blank", lambda path: False)
     monkeypatch.setattr(backend, "_screenshot_mss", lambda path: False)
@@ -181,7 +181,7 @@ def test_screenshot_scrot_fallback_on_wayland(monkeypatch, tmp_path: Path) -> No
         proc.stdout = ""
         return proc
 
-    monkeypatch.setattr("testql.desktop.backend._run", fake_run)
+    monkeypatch.setattr("desktop2testql.backend._run", fake_run)
     backend.screenshot(str(out))
     assert out.is_file()
 

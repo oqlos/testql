@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from testql.desktop import window_discovery as wd
+from desktop2testql import window_discovery as wd
 
 
 def test_is_capture_window_rejects_root_and_junk() -> None:

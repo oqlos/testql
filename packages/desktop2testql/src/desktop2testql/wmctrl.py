@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import re
 
-from testql.desktop.models import DesktopWindow
+from desktop2testql.models import DesktopWindow
 
 _WMCTRL_LINE_RE = re.compile(
     r"^(0x[0-9a-fA-F]+)\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+(\d+)\s+(\d+)\s+\S+\s+(.+)$"

@@ -106,7 +106,7 @@ def list_monitors() -> list[dict[str, Any]]:
 def list_os_windows(*, apps_only: bool = True) -> list[dict[str, Any]]:
     """List OS windows via vdisplay or xdotool."""
     if check_vision_availability().vdisplay:
-        from testql.desktop.window_discovery import list_capture_windows, window_display_title
+        from desktop2testql.window_discovery import list_capture_windows, window_display_title
 
         windows = list_capture_windows(display=_display())
         if apps_only:
@@ -318,7 +318,7 @@ def inspect_environment(
     lang: str = "eng+pol",
 ) -> EnvironmentInspect:
     """Full desktop discovery: monitors, windows, optional capture + vision."""
-    from testql.desktop.backend import detect_display_server
+    from desktop2testql.backend import detect_display_server
 
     host_tools = [
         name
@@ -347,11 +347,11 @@ def inspect_environment(
     if capture_path is not None:
         path = Path(capture_path).expanduser()
         path.parent.mkdir(parents=True, exist_ok=True)
-        from testql.desktop.vdisplay_capture import capture_via_vdisplay, save_capture_with_meta
+        from desktop2testql.vdisplay_capture import capture_via_vdisplay, save_capture_with_meta
 
         capture = capture_via_vdisplay(path)
         if not capture.ok:
-            from testql.desktop.backend import get_desktop_backend
+            from desktop2testql.backend import get_desktop_backend
 
             get_desktop_backend().screenshot(str(path))
         else:

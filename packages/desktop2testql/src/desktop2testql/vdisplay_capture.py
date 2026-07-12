@@ -21,7 +21,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from testql.desktop.window_discovery import list_capture_windows
+from desktop2testql.window_discovery import list_capture_windows
 
 _VDISPLAY_IMPORT_ERROR: str | None = None
 

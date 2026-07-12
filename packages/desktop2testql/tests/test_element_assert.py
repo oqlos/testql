@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from testql.desktop.element_assert import evaluate_element_assert
+from desktop2testql.element_assert import evaluate_element_assert
 
 
 def test_element_assert_passes_on_imgl_count() -> None:

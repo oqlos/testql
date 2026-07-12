@@ -8,7 +8,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from testql.desktop import vdisplay_capture as vc
+from desktop2testql import vdisplay_capture as vc
 
 
 def _enable_vdisplay_mocks(monkeypatch) -> None:
@@ -174,14 +174,14 @@ def test_capture_via_vdisplay_falls_back(monkeypatch, tmp_path: Path) -> None:
 
 
 def test_backend_uses_vdisplay_when_scrot_blank(monkeypatch, tmp_path: Path) -> None:
-    from testql.desktop.backend import LinuxDesktopBackend
+    from desktop2testql.backend import LinuxDesktopBackend
 
     backend = LinuxDesktopBackend()
     out = tmp_path / "shot.png"
     out.write_bytes(b"blank")
 
     monkeypatch.setattr(
-        "testql.desktop.backend.shutil.which",
+        "desktop2testql.backend.shutil.which",
         lambda name: "/usr/bin/scrot" if name == "scrot" else None,
     )
 
@@ -192,7 +192,7 @@ def test_backend_uses_vdisplay_when_scrot_blank(monkeypatch, tmp_path: Path) -> 
         proc.stderr = ""
         return proc
 
-    monkeypatch.setattr("testql.desktop.backend._run", fake_run)
+    monkeypatch.setattr("desktop2testql.backend._run", fake_run)
     monkeypatch.setattr(backend, "_screenshot_is_blank", lambda path: True)
     monkeypatch.setattr(backend, "_screenshot_mss", lambda path: False)
 

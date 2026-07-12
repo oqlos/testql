@@ -7,7 +7,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from testql.desktop import vision as desktop_vision
+from desktop2testql import vision as desktop_vision
 from testql.interpreter import OqlInterpreter
 from testql.interpreter._parser import OqlLine
 
@@ -25,12 +25,12 @@ def test_check_vision_availability() -> None:
 
 def test_list_monitors_xrandr_fallback(monkeypatch) -> None:
     monkeypatch.setattr(desktop_vision, "check_vision_availability", lambda: desktop_vision.VisionAvailability())
-    monkeypatch.setattr("testql.desktop.vision.shutil.which", lambda name: "/usr/bin/xrandr" if name == "xrandr" else None)
+    monkeypatch.setattr("desktop2testql.vision.shutil.which", lambda name: "/usr/bin/xrandr" if name == "xrandr" else None)
 
     proc = MagicMock()
     proc.returncode = 0
     proc.stdout = "Monitors: 2\n 0: +*DP-1 1920/510x1080/290+0+0  DP-1\n"
-    monkeypatch.setattr("testql.desktop.vision.subprocess.run", lambda *a, **k: proc)
+    monkeypatch.setattr("desktop2testql.vision.subprocess.run", lambda *a, **k: proc)
 
     monitors = desktop_vision.list_monitors()
     assert len(monitors) == 1
@@ -112,7 +112,7 @@ def test_dispatcher_registers_vision_commands(interpreter: OqlInterpreter) -> No
 
 
 def test_collect_desktop_catalog_includes_vision_commands() -> None:
-    from testql.desktop.catalog import collect_desktop_catalog
+    from desktop2testql.catalog import collect_desktop_catalog
 
     catalog = collect_desktop_catalog()
     names = {item["name"] for item in catalog["commands"]}

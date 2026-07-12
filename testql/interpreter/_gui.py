@@ -254,9 +254,9 @@ class GuiMixin:
         else:
             path = Path(app_path).expanduser()
             if path.is_file():
-                from testql.desktop import get_desktop_backend
+                from ._desktop import _desktop_api
 
-                backend = get_desktop_backend()
+                backend = _desktop_api().get_desktop_backend()
                 pid = backend.launch(str(path), extra_args)
                 self._gui_driver = "desktop"
                 self._gui_app = backend

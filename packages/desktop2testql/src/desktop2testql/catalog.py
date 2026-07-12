@@ -182,7 +182,7 @@ RECOMMENDED_PYTHON_LIBS: tuple[dict[str, str], ...] = (
 
 def collect_desktop_catalog() -> dict[str, Any]:
     """Return desktop DSL + host-tool metadata for registry/MCP consumers."""
-    from testql.desktop.backend import detect_display_server
+    from desktop2testql.backend import detect_display_server
     import shutil
 
     host_tools = [

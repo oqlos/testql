@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from testql.desktop.catalog import collect_desktop_catalog
+from desktop2testql.catalog import collect_desktop_catalog
 
 
 def test_collect_desktop_catalog_has_commands() -> None:

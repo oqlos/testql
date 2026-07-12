@@ -10,9 +10,9 @@ import subprocess
 from abc import ABC, abstractmethod
 from pathlib import Path
 
-from testql.desktop.models import DesktopSession, DesktopWindow
-from testql.desktop.screenshot_tools import screenshot_candidates, try_screenshot_candidates
-from testql.desktop.wmctrl import parse_wmctrl_listing
+from desktop2testql.models import DesktopSession, DesktopWindow
+from desktop2testql.screenshot_tools import screenshot_candidates, try_screenshot_candidates
+from desktop2testql.wmctrl import parse_wmctrl_listing
 
 
 def _parse_xdotool_geometry(shell_output: str) -> tuple[int, int, int, int]:
@@ -31,7 +31,7 @@ def _parse_xdotool_geometry(shell_output: str) -> tuple[int, int, int, int]:
 
 
 def _desktop_window_from_vdisplay(item: dict) -> DesktopWindow | None:
-    from testql.desktop.window_discovery import window_display_title, window_to_hex_id
+    from desktop2testql.window_discovery import window_display_title, window_to_hex_id
 
     wid = item.get("window_id")
     if wid is None:
@@ -51,7 +51,7 @@ def _match_window_by_vdisplay_title(
     windows: list[DesktopWindow],
 ) -> DesktopWindow | None:
     try:
-        from testql.desktop.window_discovery import list_capture_windows, window_matches
+        from desktop2testql.window_discovery import list_capture_windows, window_matches
     except ImportError:
         return None
 
@@ -182,7 +182,7 @@ class LinuxDesktopBackend(DesktopBackend):
 
     def _list_windows_vdisplay(self) -> list[DesktopWindow]:
         try:
-            from testql.desktop.window_discovery import list_capture_windows
+            from desktop2testql.window_discovery import list_capture_windows
         except ImportError:
             return []
 
@@ -407,7 +407,7 @@ class LinuxDesktopBackend(DesktopBackend):
 
     def _screenshot_is_blank(self, out: Path) -> bool:
         try:
-            from testql.desktop.vdisplay_capture import is_blank_image
+            from desktop2testql.vdisplay_capture import is_blank_image
 
             return is_blank_image(out)
         except ImportError:
@@ -415,7 +415,7 @@ class LinuxDesktopBackend(DesktopBackend):
 
     def _screenshot_vdisplay(self, out: Path, *, monitor: str | int | None = None) -> bool:
         try:
-            from testql.desktop.vdisplay_capture import capture_via_vdisplay, save_capture_with_meta
+            from desktop2testql.vdisplay_capture import capture_via_vdisplay, save_capture_with_meta
 
             result = capture_via_vdisplay(out, monitor=monitor)
             if result.ok:
