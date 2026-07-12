@@ -34,6 +34,10 @@ testql = "testql.cli:main"
 #   - an `adapter` / `adapters` attribute with `BaseDSLAdapter` instance(s).
 
 [project.optional-dependencies]
+# NOTE: the sql/proto/graphql adapters and the desktop backend now live in
+# packages/{sql,proto,graphql,desktop}2testql. The extras below are kept for
+# backward compatibility; once those plugins are published they should point
+# at the plugin packages instead of raw libraries.
 playwright = ["playwright>=1.40"]
 desktop = [
     # Host tools (wmctrl, xdotool, wtype, ydotool, grim) are system packages.
@@ -78,7 +82,15 @@ model = "openrouter/qwen/qwen3-coder-next"
 
 [tool.pytest.ini_options]
 addopts = "--cov=testql --cov-report=term-missing --cov-report=json"
-testpaths = ["tests"]
+# Core suite + extracted plugin packages — bare `pytest` runs everything.
+# Core tests skip plugin-dependent cases when a plugin is not installed.
+testpaths = [
+    "tests",
+    "packages/graphql2testql/tests",
+    "packages/proto2testql/tests",
+    "packages/sql2testql/tests",
+    "packages/desktop2testql/tests",
+]
 markers = [
     "live_llm: optional live LLM integration (requires TESTQL_LIVE_LLM=1 and API key)",
     "live_desktop: optional live wmctrl/desktop probe on host with GUI session",

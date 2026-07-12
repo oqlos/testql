@@ -15,5 +15,11 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -e ".[dev]"
+      - run: >
+          pip install
+          -e packages/graphql2testql
+          -e packages/proto2testql
+          -e packages/sql2testql
+          -e packages/desktop2testql
       - run: pytest --cov=testql --cov-report=xml
       - run: bash examples/run-all.sh
