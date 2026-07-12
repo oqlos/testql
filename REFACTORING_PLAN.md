@@ -326,3 +326,61 @@ New features are additive:
 3. **Create issues** - Break down tasks into GitHub issues
 4. **Start Phase 1** - Begin MCP server implementation
 5. **Iterate** - Gather feedback and adjust plan
+
+---
+
+## Modularization: core + plugin packages (2026-07)
+
+Goal: keep the `testql` core small and stable, and ship optional verticals as
+standalone packages in `packages/`, so work on (or breakage of) one adapter
+never blocks the whole platform.
+
+### Extension points (already in core)
+
+- `testql.plugins` entry-point group — DSL adapters register via
+  `register_testql_plugin(registry)` (loaded by `AdapterRegistry.ensure_plugins_loaded`).
+- `testql.sources` entry-point group — generator sources resolved lazily by
+  `testql.generators.sources.get_source(name)`.
+
+### Status
+
+| Package | Contents | Status |
+|---------|----------|--------|
+| `packages/graphql2testql` | GraphQL DSL adapter + SDL generator source | ✅ Extracted (pilot) |
+| `packages/uri2testql` | `testql://` URI driver | ✅ Existing |
+| `packages/nlp2testql` | NL → spec pipeline | ✅ Existing |
+| `packages/mcp2testql` | MCP server | ✅ Existing |
+| `packages/cli2testql` | CLI bridge | ✅ Existing |
+| `packages/dsl2testql` | DSL engine | ✅ Existing |
+| `packages/proto2testql` | Proto DSL adapter + `.proto` generator source + compatibility checks | ✅ Extracted |
+| `packages/sql2testql` | SQL DSL adapter + DDL generator source + query analysis | ✅ Extracted |
+| `packages/desktop2testql` | Native desktop backend for `DESKTOP_*` commands (`control`/`vision` extras) | ✅ Extracted |
+
+Core keeps permanently: `ir/`, `interpreter/`, `ir_runner/`, adapter/source
+registries, CLI skeleton, `testtoon` + `scenario_yaml` built-in adapters, and
+`proto_schema/` (dependency-free `.proto` parsing/validation — the IR runner
+executes `ProtoStep`s even without the proto adapter installed) and
+`sql_schema/` (DDL parsing + dialect resolution — the meta coverage analyzer
+works even without the sql adapter installed).
+
+Note: entry-point plugins are loaded lazily on first registry lookup, not at
+`testql.adapters` import time — eager loading re-enters any plugin whose own
+import chain pulled `testql.adapters` in (circular import). Package test
+files need repo-unique basenames (pytest imports them without `__init__.py`).
+
+### Extraction checklist (per package, proven by the graphql pilot)
+
+1. `git mv` modules into `packages/<name>/src/<name>/`; point imports at
+   public `testql.*` paths (never relative into core).
+2. Add `pyproject.toml` with entry points (`testql.plugins`, `testql.sources`)
+   and move the optional dependency from the core extra into the package.
+3. Move the vertical's tests into `packages/<name>/tests/`; core tests that
+   touch the vertical go through the registry (`registry.get(name)`) and skip
+   when the plugin is absent.
+4. `pip install -e packages/<name>`, then run BOTH suites green:
+   `pytest tests/ packages/<name>/tests/`.
+   For backend packages resolved lazily from core (like `desktop2testql`),
+   additionally verify core imports AND fails with a clear install hint when
+   the package is absent (block it via a meta-path finder in a smoke test).
+5. Only then delete the old in-core code (the pilot used `git mv`, so there
+   was no window with the code duplicated or missing).
