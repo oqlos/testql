@@ -4,8 +4,12 @@ from __future__ import annotations
 
 from unittest.mock import MagicMock
 
+import pytest
+
 from testql.interpreter import OqlInterpreter
 from testql.interpreter._parser import OqlLine
+
+pytest.importorskip("desktop2testql", reason="desktop2testql plugin not installed")
 
 
 def test_assert_elements_passes_on_mirrored_windows(monkeypatch, tmp_path) -> None:
@@ -21,7 +25,7 @@ def test_assert_elements_passes_on_mirrored_windows(monkeypatch, tmp_path) -> No
         lambda image_arg, default="": str(image),
     )
     monkeypatch.setattr(
-        "testql.interpreter._desktop.desktop_vision.analyze_layout",
+        "desktop2testql.vision.analyze_layout",
         lambda path, **kw: {"ok": True, "element_count": 0, "window_count": 1},
     )
 
@@ -49,7 +53,7 @@ def test_assert_elements_fails_on_empty_capture(monkeypatch, tmp_path) -> None:
         lambda image_arg, default="": str(image),
     )
     monkeypatch.setattr(
-        "testql.interpreter._desktop.desktop_vision.analyze_layout",
+        "desktop2testql.vision.analyze_layout",
         lambda path, **kw: {"ok": True, "element_count": 0, "window_count": 1},
     )
     interpreter.out = MagicMock()
