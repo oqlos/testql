@@ -1,10 +1,10 @@
-"""Tests for `testql.adapters.sql.dialect_resolver`."""
+"""Tests for `testql.sql_schema.dialect_resolver`."""
 
 from __future__ import annotations
 
 import pytest
 
-from testql.adapters.sql.dialect_resolver import (
+from testql.sql_schema.dialect_resolver import (
     DEFAULT_DIALECT,
     SUPPORTED_DIALECTS,
     SqlglotMissing,
@@ -56,7 +56,7 @@ class TestSupportedDialectsConstant:
 class TestTranspile:
     def test_raises_when_sqlglot_missing(self, monkeypatch):
         monkeypatch.setattr(
-            "testql.adapters.sql.dialect_resolver.has_sqlglot", lambda: False
+            "testql.sql_schema.dialect_resolver.has_sqlglot", lambda: False
         )
         with pytest.raises(SqlglotMissing):
             transpile("SELECT 1", "postgres", "sqlite")

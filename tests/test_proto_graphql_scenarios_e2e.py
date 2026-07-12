@@ -7,9 +7,25 @@ from pathlib import Path
 
 import pytest
 
-from testql.adapters.graphql import GraphQLDSLAdapter
-from testql.adapters.proto import ProtoDSLAdapter
+from testql.adapters import registry
 from testql.ir import GraphqlStep, ProtoStep
+
+
+def _plugin_adapter(name: str):
+    """Contract adapters ship in `packages/<name>2testql` and register
+    themselves through the `testql.plugins` entry point."""
+    adapter = registry.get(name)
+    if adapter is None:
+        pytest.skip(f"{name}2testql plugin not installed")
+    return adapter
+
+
+def _graphql_adapter():
+    return _plugin_adapter("graphql")
+
+
+def _proto_adapter():
+    return _plugin_adapter("proto")
 
 
 SCENARIO_ROOT = Path(__file__).resolve().parents[1] / "testql-scenarios"
@@ -40,13 +56,13 @@ class TestProtoScenarios:
         assert _proto_scenarios()
 
     def test_parse(self, proto_scenario: Path):
-        plan = ProtoDSLAdapter().parse(proto_scenario)
+        plan = _proto_adapter().parse(proto_scenario)
         assert plan.metadata.type == "proto"
         steps = [s for s in plan.steps if isinstance(s, ProtoStep)]
         assert steps
 
     def test_round_trip_step_count(self, proto_scenario: Path):
-        adapter = ProtoDSLAdapter()
+        adapter = _proto_adapter()
         plan1 = adapter.parse(proto_scenario)
         plan2 = adapter.parse(adapter.render(plan1))
         n1 = sum(1 for s in plan1.steps if isinstance(s, ProtoStep))
@@ -59,13 +75,13 @@ class TestGraphQLScenarios:
         assert _graphql_scenarios()
 
     def test_parse(self, graphql_scenario: Path):
-        plan = GraphQLDSLAdapter().parse(graphql_scenario)
+        plan = _graphql_adapter().parse(graphql_scenario)
         assert plan.metadata.type == "graphql"
         steps = [s for s in plan.steps if isinstance(s, GraphqlStep)]
         assert steps
 
     def test_endpoint_propagated(self, graphql_scenario: Path):
-        plan = GraphQLDSLAdapter().parse(graphql_scenario)
+        plan = _graphql_adapter().parse(graphql_scenario)
         endpoint = plan.config.get("endpoint")
         assert endpoint
         for s in plan.steps:
@@ -73,7 +89,7 @@ class TestGraphQLScenarios:
                 assert s.endpoint == endpoint
 
     def test_round_trip_step_count(self, graphql_scenario: Path):
-        adapter = GraphQLDSLAdapter()
+        adapter = _graphql_adapter()
         plan1 = adapter.parse(graphql_scenario)
         plan2 = adapter.parse(adapter.render(plan1))
         n1 = sum(1 for s in plan1.steps if isinstance(s, GraphqlStep))

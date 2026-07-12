@@ -1,10 +1,10 @@
-"""Tests for `testql.adapters.proto.descriptor_loader`."""
+"""Tests for `testql.proto_schema.descriptor_loader`."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
-from testql.adapters.proto.descriptor_loader import (
+from testql.proto_schema import (
     SCALAR_TYPES,
     FieldDef,
     MessageDef,

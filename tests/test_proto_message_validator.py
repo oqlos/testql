@@ -1,9 +1,9 @@
-"""Tests for `testql.adapters.proto.message_validator`."""
+"""Tests for `testql.proto_schema.message_validator`."""
 
 from __future__ import annotations
 
-from testql.adapters.proto.descriptor_loader import parse_proto
-from testql.adapters.proto.message_validator import (
+from testql.proto_schema import parse_proto
+from testql.proto_schema.message_validator import (
     coerce_scalar,
     parse_instance_fields,
     round_trip_equal,

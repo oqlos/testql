@@ -8,9 +8,19 @@ from __future__ import annotations
 
 from textwrap import dedent
 
-from testql.adapters.sql.sql_adapter import SqlDSLAdapter
+import pytest
+
+from testql.adapters import registry
 from testql.adapters.testtoon_adapter import TestToonAdapter
 from testql.ir import ApiStep, SqlStep
+
+
+def SqlDSLAdapter():
+    """The sql adapter ships in `packages/sql2testql`; resolve via registry."""
+    adapter = registry.get("sql")
+    if adapter is None:
+        pytest.skip("sql2testql plugin not installed")
+    return adapter
 
 
 # ── TestToon: CAPTURE by step index ─────────────────────────────────────────

@@ -1,11 +1,11 @@
-"""Tests for `testql.adapters.sql.ddl_parser`."""
+"""Tests for `testql.sql_schema.ddl_parser`."""
 
 from __future__ import annotations
 
 import pytest
 
-from testql.adapters.sql.ddl_parser import Column, ParsedDDL, Table, parse_ddl
-from testql.adapters.sql.dialect_resolver import has_sqlglot
+from testql.sql_schema import Column, ParsedDDL, Table, parse_ddl
+from testql.sql_schema import has_sqlglot
 
 
 SIMPLE_DDL = """\
