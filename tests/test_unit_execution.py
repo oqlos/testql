@@ -64,6 +64,54 @@ class TestUnitExecution:
 
         assert interpreter.results[-1].status.value == "passed"
 
+    def test_unit_assert_expression_true(self, interpreter):
+        """Test single-expression UNIT_ASSERT (truthy passes)."""
+        from testql.interpreter._parser import OqlLine
+
+        line = OqlLine(number=1, command="UNIT_ASSERT", args='"1 + 1 == 2"', raw='UNIT_ASSERT "1 + 1 == 2"')
+        interpreter._cmd_unit_assert(line.args, line)
+
+        assert interpreter.results[-1].status.value == "passed"
+
+    def test_unit_assert_expression_false(self, interpreter):
+        """Test single-expression UNIT_ASSERT (falsy fails)."""
+        from testql.interpreter._parser import OqlLine
+
+        line = OqlLine(number=1, command="UNIT_ASSERT", args='"1 + 1 == 3"', raw='UNIT_ASSERT "1 + 1 == 3"')
+        interpreter._cmd_unit_assert(line.args, line)
+
+        assert interpreter.results[-1].status.value == "failed"
+
+    def test_unit_assert_expression_with_string_literals(self, interpreter):
+        """Quotes inside the expression must survive parsing."""
+        from testql.interpreter._parser import OqlLine
+
+        raw = "UNIT_ASSERT \"'hello'.upper() == 'HELLO'\""
+        line = OqlLine(number=1, command="UNIT_ASSERT", args="\"'hello'.upper() == 'HELLO'\"", raw=raw)
+        interpreter._cmd_unit_assert(line.args, line)
+
+        assert interpreter.results[-1].status.value == "passed"
+
+    def test_unit_assert_expression_uses_imported_module(self, interpreter):
+        """Expressions see modules loaded via UNIT_IMPORT."""
+        from testql.interpreter._parser import OqlLine
+
+        imp = OqlLine(number=1, command="UNIT_IMPORT", args='"math"', raw='UNIT_IMPORT "math"')
+        interpreter._cmd_unit_import(imp.args, imp)
+        line = OqlLine(number=2, command="UNIT_ASSERT", args='"math.sqrt(16) == 4"', raw='UNIT_ASSERT "math.sqrt(16) == 4"')
+        interpreter._cmd_unit_assert(line.args, line)
+
+        assert interpreter.results[-1].status.value == "passed"
+
+    def test_unit_assert_expression_syntax_error(self, interpreter):
+        """Broken expression reports ERROR, not a crash."""
+        from testql.interpreter._parser import OqlLine
+
+        line = OqlLine(number=1, command="UNIT_ASSERT", args='"[x*2"', raw='UNIT_ASSERT "[x*2"')
+        interpreter._cmd_unit_assert(line.args, line)
+
+        assert interpreter.results[-1].status.value == "error"
+
     def test_unit_pytest_no_args(self, interpreter):
         """Test UNIT_PYTEST with no arguments."""
         from testql.interpreter._parser import OqlLine

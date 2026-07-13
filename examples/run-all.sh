@@ -51,11 +51,13 @@ if [ -f "$ROOT_DIR/examples/api-testing/mock_server.py" ]; then
   sleep 2
 fi
 
-if curl -s http://localhost:8101/api/health >/dev/null 2>&1; then
+# Require an actual 200 from the health endpoint: a foreign service may
+# occupy the port and answer 404, which plain `curl -s` treats as success.
+if [ "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8101/api/health 2>/dev/null)" = "200" ]; then
   run_example "api-testing" "bash $ROOT_DIR/examples/api-testing/run.sh http://localhost:8101"
 else
   echo ""
-  echo "⏭️  api-testing — SKIPPED (mock server not available)"
+  echo "⏭️  api-testing — SKIPPED (mock server not available on :8101)"
   SKIP=$((SKIP + 1))
 fi
 

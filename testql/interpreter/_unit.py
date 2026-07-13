@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import shlex
 import subprocess
 import sys
 import json
@@ -17,6 +18,7 @@ class UnitMixin:
     """Mixin providing unit test execution: UNIT_PYTEST, UNIT_IMPORT, UNIT_ASSERT."""
 
     _last_unit_result: dict[str, Any] | None = None
+    _unit_namespace: dict[str, Any] | None = None
 
     def _parse_pytest_args(self, args: str) -> tuple[str, str, int]:
         """Parse UNIT_PYTEST arguments into (test_path, extra_args, timeout_ms)."""
@@ -48,7 +50,11 @@ class UnitMixin:
         """Execute pytest subprocess and return result."""
         cmd = [sys.executable, "-m", "pytest", test_path]
         if extra_args:
-            cmd.extend(extra_args.split())
+            # shlex keeps quoted values (e.g. -m "not slow") as one argument
+            try:
+                cmd.extend(shlex.split(extra_args))
+            except ValueError:
+                cmd.extend(extra_args.split())
 
         return subprocess.run(
             cmd,
@@ -178,7 +184,10 @@ class UnitMixin:
             return
 
         try:
-            __import__(module_name)
+            module = __import__(module_name)
+            if self._unit_namespace is None:
+                self._unit_namespace = {}
+            self._unit_namespace[module_name.split(".")[0]] = module
             self.out.step("✅", f'UNIT_IMPORT "{module_name}"')
             self.results.append(StepResult(
                 name=f'UNIT_IMPORT "{module_name}"', status=StepStatus.PASSED
@@ -199,20 +208,38 @@ class UnitMixin:
             ))
 
     def _cmd_unit_assert(self, args: str, line: OqlLine) -> None:
-        """UNIT_ASSERT "module.function" "args_json" "expected" — Assert function returns expected value.
+        """UNIT_ASSERT — assert on a function result or a Python expression.
+
+        Two forms:
+            UNIT_ASSERT "module.function" "args_json" "expected"
+            UNIT_ASSERT "<python expression>"        (truthy ⇒ pass)
 
         Examples:
             UNIT_ASSERT "math.sqrt" "[4]" "2.0"
             UNIT_ASSERT "len" "[[1,2,3]]" "3"
+            UNIT_ASSERT "math.sqrt(16) == 4"
+            UNIT_ASSERT "'hello'.upper() == 'HELLO'"
+
+        Expressions see modules previously loaded with UNIT_IMPORT.
         """
-        parts = args.strip().split(None, 2)
+        try:
+            parts = shlex.split(args.strip())
+        except ValueError:
+            parts = args.strip().split(None, 2)
+
+        if len(parts) == 1:
+            self._unit_assert_expression(parts[0], line)
+            return
         if len(parts) < 3:
-            self.out.fail(f"L{line.number}: UNIT_ASSERT requires module.function, args, expected")
+            self.out.fail(
+                f"L{line.number}: UNIT_ASSERT requires either a single expression "
+                "or module.function, args, expected"
+            )
             return
 
         func_path = parts[0].strip('"\'')
         args_json = parts[1].strip('"\'')
-        expected_str = parts[2].strip('"\'')
+        expected_str = " ".join(parts[2:]).strip('"\'')
 
         if self.dry_run:
             self.out.step("🧪", f'UNIT_ASSERT "{func_path[:40]}" (dry-run)')
@@ -262,6 +289,43 @@ class UnitMixin:
             self.out.fail(f'UNIT_ASSERT "{func_path}" error: {e}')
             self.results.append(StepResult(
                 name=f'UNIT_ASSERT "{func_path[:30]}"',
+                status=StepStatus.ERROR,
+                message=str(e),
+            ))
+
+    def _unit_assert_expression(self, expression: str, line: OqlLine) -> None:
+        """Single-expression UNIT_ASSERT: evaluate and assert truthiness.
+
+        The expression arrives already unquoted by shlex — do not strip
+        quote characters here; they may belong to string literals inside
+        the expression (e.g. 'hello'.upper() == 'HELLO').
+        """
+        expression = expression.strip()
+        label = f'UNIT_ASSERT "{expression[:40]}"'
+
+        if self.dry_run:
+            self.out.step("🧪", f"{label} (dry-run)")
+            self.results.append(StepResult(
+                name=f'UNIT_ASSERT "{expression[:30]}"', status=StepStatus.PASSED
+            ))
+            return
+
+        namespace = dict(self._unit_namespace or {})
+        try:
+            result = eval(expression, {"__builtins__": __builtins__}, namespace)  # noqa: S307
+            passed = bool(result)
+            icon = "✅" if passed else "❌"
+            status = StepStatus.PASSED if passed else StepStatus.FAILED
+            self.out.step(icon, f"{label} → {result!r}")
+            self.results.append(StepResult(
+                name=f'UNIT_ASSERT "{expression[:30]}"',
+                status=status,
+                details={"result": repr(result)},
+            ))
+        except Exception as e:
+            self.out.fail(f"{label} error: {e}")
+            self.results.append(StepResult(
+                name=f'UNIT_ASSERT "{expression[:30]}"',
                 status=StepStatus.ERROR,
                 message=str(e),
             ))

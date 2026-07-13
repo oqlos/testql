@@ -26,12 +26,24 @@ class PipelineResult:
     target_name: str
 
 
+# Sources that ship as separately-installable plugin packages.
+_PLUGIN_SOURCES = {
+    "sql": "sql2testql",
+    "proto": "proto2testql",
+    "graphql": "graphql2testql",
+}
+
+
 def _resolve_source(spec: BaseSource | str) -> BaseSource:
     if isinstance(spec, BaseSource):
         return spec
     src = get_source(spec)
     if src is None:
-        raise ValueError(f"unknown source {spec!r}; available: {sorted_sources()}")
+        message = f"unknown source {spec!r}; available: {sorted_sources()}"
+        plugin = _PLUGIN_SOURCES.get(str(spec).lower())
+        if plugin:
+            message += f" — the {spec!r} source ships separately: pip install {plugin}"
+        raise ValueError(message)
     return src
 
 
