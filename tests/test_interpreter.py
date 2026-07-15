@@ -161,8 +161,9 @@ class TestTestTOONExpansion:
             "  /connect-id,    300\n"
         )
         script = _testtoon_to_oql(source, "test.testql.toon.yaml")
-        assert len(script.lines) == 4  # 2 NAVIGATE + 2 WAIT
-        assert script.lines[0].command == "NAVIGATE"
+        assert len(script.lines) == 4  # GUI_START + WAIT + NAVIGATE + WAIT
+        assert script.lines[0].command == "GUI_START"
+        assert script.lines[2].command == "NAVIGATE"
         assert script.lines[1].command == "WAIT"
         assert script.lines[1].args == "500"
 
