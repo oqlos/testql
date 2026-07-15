@@ -46,6 +46,16 @@ class TestGuiExecution:
 
         assert interpreter.results[-1].status.value == "passed"
 
+    def test_gui_scroll_dry_run(self, interpreter):
+        """Test GUI_SCROLL in dry-run mode."""
+        from testql.interpreter._parser import OqlLine
+
+        line = OqlLine(number=1, command="GUI_SCROLL", args='".module-main-content" y=900', raw='GUI_SCROLL ".module-main-content" y=900')
+        interpreter._cmd_gui_scroll(line.args, line)
+
+        assert interpreter.results[-1].status.value == "passed"
+        assert 'GUI_SCROLL ".module-main-content"' in interpreter.results[-1].name
+
     def test_gui_assert_visible_dry_run(self, interpreter):
         """Test GUI_ASSERT_VISIBLE in dry-run mode."""
         from testql.interpreter._parser import OqlLine
@@ -63,6 +73,56 @@ class TestGuiExecution:
         interpreter._cmd_gui_assert_text(line.args, line)
 
         assert interpreter.results[-1].status.value == "passed"
+
+    def test_gui_eval_dry_run(self, interpreter):
+        """Test GUI_EVAL in dry-run mode."""
+        from testql.interpreter._parser import OqlLine
+
+        line = OqlLine(number=1, command="GUI_EVAL", args='"return location.href"', raw='GUI_EVAL "return location.href"')
+        interpreter._cmd_gui_eval(line.args, line)
+
+        assert interpreter.results[-1].status.value == "passed"
+        assert 'GUI_EVAL "return location.href"' in interpreter.results[-1].name
+
+    def test_gui_assert_count_dry_run(self, interpreter):
+        """Test GUI_ASSERT_COUNT in dry-run mode."""
+        from testql.interpreter._parser import OqlLine
+
+        line = OqlLine(number=1, command="GUI_ASSERT_COUNT", args='".task" == 12', raw='GUI_ASSERT_COUNT ".task" == 12')
+        interpreter._cmd_gui_assert_count(line.args, line)
+
+        assert interpreter.results[-1].status.value == "passed"
+        assert 'GUI_ASSERT_COUNT ".task" == 12' in interpreter.results[-1].name
+
+    def test_gui_wait_for_count_dry_run(self, interpreter):
+        """Test GUI_WAIT_FOR_COUNT in dry-run mode."""
+        from testql.interpreter._parser import OqlLine
+
+        line = OqlLine(number=1, command="GUI_WAIT_FOR_COUNT", args='".task" >= 2 3000', raw='GUI_WAIT_FOR_COUNT ".task" >= 2 3000')
+        interpreter._cmd_gui_wait_for_count(line.args, line)
+
+        assert interpreter.results[-1].status.value == "passed"
+        assert 'GUI_WAIT_FOR_COUNT ".task" >= 2' in interpreter.results[-1].name
+
+    def test_gui_assert_url_param_dry_run(self, interpreter):
+        """Test GUI_ASSERT_URL_PARAM in dry-run mode."""
+        from testql.interpreter._parser import OqlLine
+
+        line = OqlLine(number=1, command="GUI_ASSERT_URL_PARAM", args='"type" "36m"', raw='GUI_ASSERT_URL_PARAM "type" "36m"')
+        interpreter._cmd_gui_assert_url_param(line.args, line)
+
+        assert interpreter.results[-1].status.value == "passed"
+        assert 'GUI_ASSERT_URL_PARAM "type" == "36m"' in interpreter.results[-1].name
+
+    def test_gui_assert_value_dry_run(self, interpreter):
+        """Test GUI_ASSERT_VALUE in dry-run mode."""
+        from testql.interpreter._parser import OqlLine
+
+        line = OqlLine(number=1, command="GUI_ASSERT_VALUE", args='"#filter-kind-select" "36m"', raw='GUI_ASSERT_VALUE "#filter-kind-select" "36m"')
+        interpreter._cmd_gui_assert_value(line.args, line)
+
+        assert interpreter.results[-1].status.value == "passed"
+        assert 'GUI_ASSERT_VALUE "#filter-kind-select" == "36m"' in interpreter.results[-1].name
 
     def test_gui_capture_dry_run(self, interpreter):
         """Test GUI_CAPTURE in dry-run mode."""
@@ -92,6 +152,94 @@ class TestGuiExecution:
 
         assert interpreter.results[-1].status.value == "error"
         assert "No active GUI session" in interpreter.results[-1].message
+
+    def test_gui_scroll_no_session_error(self, interpreter):
+        """Test GUI_SCROLL without active session (non-dry-run)."""
+        interpreter.dry_run = False
+        from testql.interpreter._parser import OqlLine
+
+        line = OqlLine(number=1, command="GUI_SCROLL", args='".module-main-content" 900', raw='GUI_SCROLL ".module-main-content" 900')
+        interpreter._cmd_gui_scroll(line.args, line)
+
+        assert interpreter.results[-1].status.value == "error"
+        assert "No active GUI session" in interpreter.results[-1].message
+
+    def test_gui_assert_count_no_session_error(self, interpreter):
+        """Test GUI_ASSERT_COUNT without active session (non-dry-run)."""
+        interpreter.dry_run = False
+        from testql.interpreter._parser import OqlLine
+
+        line = OqlLine(number=1, command="GUI_ASSERT_COUNT", args='".task" 12', raw='GUI_ASSERT_COUNT ".task" 12')
+        interpreter._cmd_gui_assert_count(line.args, line)
+
+        assert interpreter.results[-1].status.value == "error"
+        assert "No active GUI session" in interpreter.results[-1].message
+
+    def test_gui_wait_for_count_no_session_error(self, interpreter):
+        """Test GUI_WAIT_FOR_COUNT without active session (non-dry-run)."""
+        interpreter.dry_run = False
+        from testql.interpreter._parser import OqlLine
+
+        line = OqlLine(number=1, command="GUI_WAIT_FOR_COUNT", args='".task" 12', raw='GUI_WAIT_FOR_COUNT ".task" 12')
+        interpreter._cmd_gui_wait_for_count(line.args, line)
+
+        assert interpreter.results[-1].status.value == "error"
+        assert "No active GUI session" in interpreter.results[-1].message
+
+    def test_gui_assert_url_param_no_session_error(self, interpreter):
+        """Test GUI_ASSERT_URL_PARAM without active session (non-dry-run)."""
+        interpreter.dry_run = False
+        from testql.interpreter._parser import OqlLine
+
+        line = OqlLine(number=1, command="GUI_ASSERT_URL_PARAM", args='"type" "36m"', raw='GUI_ASSERT_URL_PARAM "type" "36m"')
+        interpreter._cmd_gui_assert_url_param(line.args, line)
+
+        assert interpreter.results[-1].status.value == "error"
+        assert "No active GUI session" in interpreter.results[-1].message
+
+    def test_gui_assert_value_no_session_error(self, interpreter):
+        """Test GUI_ASSERT_VALUE without active session (non-dry-run)."""
+        interpreter.dry_run = False
+        from testql.interpreter._parser import OqlLine
+
+        line = OqlLine(number=1, command="GUI_ASSERT_VALUE", args='"#filter-kind-select" "36m"', raw='GUI_ASSERT_VALUE "#filter-kind-select" "36m"')
+        interpreter._cmd_gui_assert_value(line.args, line)
+
+        assert interpreter.results[-1].status.value == "error"
+        assert "No active GUI session" in interpreter.results[-1].message
+
+    def test_gui_eval_no_session_error(self, interpreter):
+        """Test GUI_EVAL without active session (non-dry-run)."""
+        interpreter.dry_run = False
+        from testql.interpreter._parser import OqlLine
+
+        line = OqlLine(number=1, command="GUI_EVAL", args='"return 1"', raw='GUI_EVAL "return 1"')
+        interpreter._cmd_gui_eval(line.args, line)
+
+        assert interpreter.results[-1].status.value == "error"
+        assert "No active GUI session" in interpreter.results[-1].message
+
+    def test_gui_assert_count_comparison_helper(self, interpreter):
+        """Test GUI_ASSERT_COUNT parser and comparison helpers."""
+        assert interpreter._parse_count_assertion_args('".task" 12') == (".task", "==", 12)
+        assert interpreter._parse_count_assertion_args('".task" >= 1') == (".task", ">=", 1)
+        assert interpreter._parse_wait_count_args('".task" >= 1 7000') == (".task", ">=", 1, 7000)
+        assert interpreter._parse_wait_count_args('".task" 12') == (".task", "==", 12, 5000)
+        assert interpreter._parse_value_assertion_args('"#kind" "36m"') == ("#kind", "==", "36m")
+        assert interpreter._parse_value_assertion_args('"#kind" != ""') == ("#kind", "!=", "")
+        assert interpreter._compare_count(12, "==", 12) is True
+        assert interpreter._compare_count(12, ">=", 10) is True
+        assert interpreter._compare_count(12, "<", 10) is False
+        assert interpreter._compare_value("36m", "==", "36m") is True
+        assert interpreter._compare_value("36m", "!=", "6m") is True
+        assert interpreter._compare_value("periodic-36m", "CONTAINS", "36m") is True
+
+    def test_gui_network_error_helpers(self, interpreter):
+        """Test transient browser network error detection."""
+        assert interpreter._same_url_without_hash("http://x.test/a?b=1#top", "http://x.test/a?b=1") is True
+        assert interpreter._is_transient_browser_network_error(Exception("TypeError: Failed to fetch")) is True
+        assert interpreter._is_transient_browser_network_error(Exception("Page.goto: net::ERR_ABORTED")) is True
+        assert interpreter._is_transient_browser_network_error(Exception("SyntaxError")) is False
 
     def test_gui_start_no_args_error(self, interpreter):
         """Test GUI_START without arguments."""

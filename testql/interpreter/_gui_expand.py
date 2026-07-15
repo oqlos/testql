@@ -10,6 +10,11 @@ _NAV_ACTIONS = frozenset({"open", "start", "navigate", "goto"})
 _INPUT_ACTIONS = frozenset({"input", "type", "fill"})
 _VISIBLE_ACTIONS = frozenset({"assert_visible", "visible"})
 _TEXT_ACTIONS = frozenset({"assert_text", "text"})
+_COUNT_ACTIONS = frozenset({"assert_count", "count"})
+_WAIT_COUNT_ACTIONS = frozenset({"wait_for_count", "wait_count"})
+_URL_PARAM_ACTIONS = frozenset({"assert_url_param", "url_param"})
+_VALUE_ACTIONS = frozenset({"assert_value", "value"})
+_EVAL_ACTIONS = frozenset({"eval", "js", "javascript"})
 _STOP_ACTIONS = frozenset({"stop", "close"})
 _SKIP_WAIT = frozenset({None, "-", "", 0, "0"})
 
@@ -58,6 +63,16 @@ def _gui_action_group(action: str) -> str:
         return "visible"
     if action in _TEXT_ACTIONS:
         return "text"
+    if action in _COUNT_ACTIONS:
+        return "count"
+    if action in _WAIT_COUNT_ACTIONS:
+        return "wait_count"
+    if action in _URL_PARAM_ACTIONS:
+        return "url_param"
+    if action in _VALUE_ACTIONS:
+        return "value"
+    if action in _EVAL_ACTIONS:
+        return "eval"
     if action in _STOP_ACTIONS:
         return "stop"
     if action:
@@ -106,6 +121,82 @@ def _expand_gui_text(
 ) -> int:
     args = f"{quote_gui_token(selector)} {_format_gui_expected(value)}".strip()
     return append(lines, line_num, "GUI_ASSERT_TEXT", args)
+
+
+def _expand_gui_count(
+    *,
+    selector: str,
+    value: object | None,
+    row: dict[str, object],
+    lines: list[OqlLine],
+    line_num: int,
+    append: AppendFn,
+) -> int:
+    op = str(row.get("op") or row.get("operator") or "==").strip() or "=="
+    expected = row.get("expected") if row.get("expected") not in (None, "-") else value
+    args = f"{quote_gui_token(selector)} {op} {expected}"
+    return append(lines, line_num, "GUI_ASSERT_COUNT", args)
+
+
+def _expand_gui_wait_count(
+    *,
+    selector: str,
+    value: object | None,
+    row: dict[str, object],
+    lines: list[OqlLine],
+    line_num: int,
+    append: AppendFn,
+) -> int:
+    op = str(row.get("op") or row.get("operator") or "==").strip() or "=="
+    expected = row.get("expected") if row.get("expected") not in (None, "-") else value
+    timeout = row.get("timeout_ms") or row.get("wait_ms") or 5000
+    args = f"{quote_gui_token(selector)} {op} {expected} {timeout}"
+    return append(lines, line_num, "GUI_WAIT_FOR_COUNT", args)
+
+
+def _expand_gui_url_param(
+    *,
+    selector: str,
+    value: object | None,
+    row: dict[str, object],
+    lines: list[OqlLine],
+    line_num: int,
+    append: AppendFn,
+) -> int:
+    param = row.get("param") or row.get("name") or selector
+    expected = row.get("expected") if row.get("expected") not in (None, "-") else value
+    args = f"{quote_gui_token(str(param or ''))} {quote_gui_token(str(expected or ''))}"
+    return append(lines, line_num, "GUI_ASSERT_URL_PARAM", args)
+
+
+def _expand_gui_value(
+    *,
+    selector: str,
+    value: object | None,
+    row: dict[str, object],
+    lines: list[OqlLine],
+    line_num: int,
+    append: AppendFn,
+) -> int:
+    op = str(row.get("op") or row.get("operator") or "==").strip() or "=="
+    expected = row.get("expected") if row.get("expected") not in (None, "-") else value
+    args = f"{quote_gui_token(selector)} {op} {quote_gui_token(str(expected or ''))}"
+    return append(lines, line_num, "GUI_ASSERT_VALUE", args)
+
+
+def _expand_gui_eval(
+    *,
+    selector: str,
+    value: object | None,
+    row: dict[str, object],
+    lines: list[OqlLine],
+    line_num: int,
+    append: AppendFn,
+) -> int:
+    script = row.get("script")
+    if script in (None, ""):
+        script = value if value not in (None, "-") else selector
+    return append(lines, line_num, "GUI_EVAL", quote_gui_token(str(script or "")))
 
 
 def _expand_gui_custom(
@@ -162,6 +253,51 @@ def expand_gui_row(
             line_num=line_num,
             append=append,
         )
+    elif group == "count":
+        line_num = _expand_gui_count(
+            selector=selector,
+            value=value,
+            row=row,
+            lines=lines,
+            line_num=line_num,
+            append=append,
+        )
+    elif group == "wait_count":
+        line_num = _expand_gui_wait_count(
+            selector=selector,
+            value=value,
+            row=row,
+            lines=lines,
+            line_num=line_num,
+            append=append,
+        )
+    elif group == "url_param":
+        line_num = _expand_gui_url_param(
+            selector=selector,
+            value=value,
+            row=row,
+            lines=lines,
+            line_num=line_num,
+            append=append,
+        )
+    elif group == "value":
+        line_num = _expand_gui_value(
+            selector=selector,
+            value=value,
+            row=row,
+            lines=lines,
+            line_num=line_num,
+            append=append,
+        )
+    elif group == "eval":
+        line_num = _expand_gui_eval(
+            selector=selector,
+            value=value,
+            row=row,
+            lines=lines,
+            line_num=line_num,
+            append=append,
+        )
     elif group == "stop":
         line_num = append(lines, line_num, "GUI_STOP", "")
         session_open = False
@@ -175,6 +311,6 @@ def expand_gui_row(
             append=append,
         )
 
-    if wait_ms not in _SKIP_WAIT:
+    if group != "wait_count" and wait_ms not in _SKIP_WAIT:
         line_num = append(lines, line_num, "WAIT", str(wait_ms))
     return line_num, session_open

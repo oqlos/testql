@@ -5,6 +5,9 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 from typing import Any
+import shlex
+import time
+from urllib.parse import parse_qs, urlparse
 
 from testql.base import StepResult, StepStatus
 
@@ -19,8 +22,14 @@ class GuiMixin:
       - GUI_NAVIGATE (NAVIGATE, GOTO) "path" — Navigate
       - GUI_CLICK (CLICK) "selector" — Click
       - GUI_INPUT (INPUT, TYPE) "selector" "text" — Type
+      - GUI_SCROLL (SCROLL, WHEEL) "selector" [delta_y] — Scroll page or element
       - GUI_ASSERT_VISIBLE (ASSERT_VISIBLE, VISIBLE) "selector" — Visible?
       - GUI_ASSERT_TEXT (ASSERT_TEXT, TEXT) "selector" "expected" — Text?
+      - GUI_EVAL (EVAL) "javascript" — Execute JavaScript in the active page
+      - GUI_ASSERT_COUNT (ASSERT_COUNT, COUNT) "selector" [op] expected — Count elements
+      - GUI_WAIT_FOR_COUNT (WAIT_FOR_COUNT) "selector" [op] expected [timeout_ms] — Wait for count
+      - GUI_ASSERT_URL_PARAM (ASSERT_URL_PARAM) "name" "value" — Assert URL query param
+      - GUI_ASSERT_VALUE (ASSERT_VALUE) "selector" [op] expected — Assert form control value
       - GUI_CAPTURE (CAPTURE, SCREENSHOT) "selector" "file" — Screenshot
       - GUI_STOP (STOP, CLOSE) — Close session
     """
@@ -33,15 +42,38 @@ class GuiMixin:
         "GUI_SELECT": "select",
         "INPUT": "input",
         "GUI_INPUT": "input",
+        "SCROLL": "scroll",
+        "GUI_SCROLL": "scroll",
+        "WHEEL": "scroll",
+        "GUI_WHEEL": "scroll",
         "SUBMIT": "submit",
         "GUI_SUBMIT": "submit",
         "GUI_ASSERT_VISIBLE": "assert_visible",
         "GUI_ASSERT_TEXT": "assert_text",
+        "GUI_EVAL": "eval",
+        "GUI_ASSERT_COUNT": "assert_count",
+        "GUI_WAIT_FOR_COUNT": "wait_for_count",
+        "GUI_ASSERT_URL_PARAM": "assert_url_param",
+        "GUI_ASSERT_VALUE": "assert_value",
     }
 
     _gui_driver: str | None = None  # "playwright" or "selenium"
     _gui_app: Any = None  # Playwright/Selenium instance
     _gui_page: Any = None  # Browser page/window
+
+    @staticmethod
+    def _same_url_without_hash(left: str, right: str) -> bool:
+        return left.split("#", 1)[0] == right.split("#", 1)[0]
+
+    @staticmethod
+    def _is_transient_browser_network_error(error: Exception) -> bool:
+        text = str(error)
+        return (
+            "Failed to fetch" in text
+            or "net::ERR_ABORTED" in text
+            or "net::ERR_CONNECTION" in text
+            or "net::ERR_TIMED_OUT" in text
+        )
 
     def _resolve_selector_with_fallback(self, selector: str) -> str | None:
         """Smart selector resolution with fallback strategies.
@@ -334,7 +366,19 @@ class GuiMixin:
                     target = f"{base_url.rstrip('/')}/{path.lstrip('/')}"
                 
                 timeout = self.timeout_ms if self.timeout_ms else 30000
-                self._gui_page.goto(target, timeout=timeout)
+                try:
+                    self._gui_page.goto(target, timeout=timeout)
+                except Exception as nav_error:
+                    # Chromium reports ERR_ABORTED when a client-side route or
+                    # redirect interrupts the initial document request. In SPA
+                    # apps page.url may be updated shortly after the exception.
+                    if "net::ERR_ABORTED" not in str(nav_error):
+                        raise
+                    try:
+                        self._gui_page.wait_for_url(target, wait_until="domcontentloaded", timeout=min(timeout, 5000))
+                    except Exception as wait_error:
+                        if not self._same_url_without_hash(self._gui_page.url, target):
+                            raise nav_error from wait_error
             elif self._gui_driver == "selenium":
                 target = path
                 if not (path.startswith("http://") or path.startswith("https://")):
@@ -469,6 +513,112 @@ class GuiMixin:
                 message=str(e),
             ))
 
+    def _parse_scroll_args(self, args: str) -> tuple[str, int, int]:
+        """Parse GUI_SCROLL args.
+
+        Supported forms:
+          GUI_SCROLL ".module-main-content" 900
+          GUI_SCROLL ".module-main-content" y=900 x=0
+          GUI_SCROLL 900
+        """
+        try:
+            parts = shlex.split(args)
+        except ValueError:
+            parts = args.strip().split()
+
+        selector = ""
+        delta_x = 0
+        delta_y = 900
+        if parts and "=" not in parts[0]:
+            if parts[0].lstrip("-").isdigit():
+                delta_y = int(parts[0])
+            else:
+                selector = parts[0]
+
+        for part in parts[1 if selector else 0:]:
+            if part.lstrip("-").isdigit():
+                delta_y = int(part)
+                continue
+            if "=" not in part:
+                continue
+            key, value = part.split("=", 1)
+            key = key.lower()
+            try:
+                number = int(float(value))
+            except ValueError:
+                continue
+            if key in ("x", "dx", "deltax", "delta_x"):
+                delta_x = number
+            elif key in ("y", "dy", "deltay", "delta_y"):
+                delta_y = number
+
+        return selector, delta_x, delta_y
+
+    def _cmd_gui_scroll(self, args: str, line: OqlLine) -> None:
+        """GUI_SCROLL "selector" [delta_y] — Scroll page or scrollable element."""
+        selector, delta_x, delta_y = self._parse_scroll_args(args)
+        label_target = selector or "window"
+
+        if self.dry_run:
+            self.out.step("↕️", f'GUI_SCROLL "{label_target}" x={delta_x} y={delta_y} (dry-run)')
+            self.results.append(StepResult(
+                name=f'GUI_SCROLL "{label_target}"', status=StepStatus.PASSED
+            ))
+            return
+
+        if not self._gui_page:
+            self.out.fail("GUI_SCROLL: No active GUI session. Call GUI_START first")
+            self.results.append(StepResult(
+                name=f'GUI_SCROLL "{label_target}"',
+                status=StepStatus.ERROR,
+                message="No active GUI session",
+            ))
+            return
+
+        try:
+            if self._gui_driver == "playwright":
+                if selector:
+                    resolved_selector, element = self._find_element_with_logging(selector, "scroll")
+                    if resolved_selector is None:
+                        self.out.fail(f'GUI_SCROLL "{selector}": Element not found')
+                        self.results.append(StepResult(
+                            name=f'GUI_SCROLL "{selector}"',
+                            status=StepStatus.FAILED,
+                            message="Element not found after trying fallback selectors",
+                        ))
+                        return
+                    element.evaluate(
+                        "(el, delta) => el.scrollBy({ left: delta.x, top: delta.y, behavior: 'auto' })",
+                        {"x": delta_x, "y": delta_y},
+                    )
+                    label_target = resolved_selector
+                else:
+                    self._gui_page.mouse.wheel(delta_x, delta_y)
+            elif self._gui_driver == "selenium":
+                if selector:
+                    from selenium.webdriver.common.by import By
+                    elem = self._gui_page.find_element(By.CSS_SELECTOR, selector)
+                    self._gui_page.execute_script(
+                        "arguments[0].scrollBy(arguments[1], arguments[2]);",
+                        elem,
+                        delta_x,
+                        delta_y,
+                    )
+                else:
+                    self._gui_page.execute_script("window.scrollBy(arguments[0], arguments[1]);", delta_x, delta_y)
+
+            self.out.step("↕️", f'GUI_SCROLL "{label_target}" x={delta_x} y={delta_y}')
+            self.results.append(StepResult(
+                name=f'GUI_SCROLL "{label_target}"', status=StepStatus.PASSED
+            ))
+        except Exception as e:
+            self.out.fail(f'GUI_SCROLL "{label_target}" error: {e}')
+            self.results.append(StepResult(
+                name=f'GUI_SCROLL "{label_target}"',
+                status=StepStatus.ERROR,
+                message=str(e),
+            ))
+
     def _cmd_gui_assert_visible(self, args: str, line: OqlLine) -> None:
         """GUI_ASSERT_VISIBLE "selector" — Assert element is visible."""
         selector = args.strip().strip('"\'')
@@ -587,6 +737,364 @@ class GuiMixin:
                 message=str(e),
             ))
 
+    def _cmd_gui_eval(self, args: str, line: OqlLine) -> None:
+        """GUI_EVAL "javascript" — Execute JavaScript in the active page.
+
+        The script can be synchronous or async. In Playwright it is wrapped as
+        an async function body, so `await fetch(...)` works directly.
+        """
+        script = args.strip()
+        if (script.startswith('"') and script.endswith('"')) or (script.startswith("'") and script.endswith("'")):
+            script = script[1:-1]
+
+        if not script:
+            self.out.fail(f"L{line.number}: GUI_EVAL requires JavaScript")
+            self.results.append(StepResult(
+                name="GUI_EVAL",
+                status=StepStatus.ERROR,
+                message="requires JavaScript",
+            ))
+            return
+
+        name = f'GUI_EVAL "{script[:60]}"'
+
+        if self.dry_run:
+            self.out.step("🧩", f"{name} (dry-run)")
+            self.results.append(StepResult(name=name, status=StepStatus.PASSED))
+            return
+
+        if not self._gui_page:
+            self.out.fail("GUI_EVAL: No active GUI session")
+            self.results.append(StepResult(
+                name=name,
+                status=StepStatus.ERROR,
+                message="No active GUI session",
+            ))
+            return
+
+        try:
+            attempts = 3
+            result = None
+            for attempt in range(1, attempts + 1):
+                try:
+                    if self._gui_driver == "playwright":
+                        result = self._gui_page.evaluate(f"async () => {{ {script} }}")
+                    elif self._gui_driver == "selenium":
+                        result = self._gui_page.execute_script(script)
+                    else:
+                        result = None
+                    break
+                except Exception as eval_error:
+                    if attempt >= attempts or not self._is_transient_browser_network_error(eval_error):
+                        raise
+                    time.sleep(0.25 * attempt)
+            self.out.step("🧩", f"{name} → {str(result)[:80]}")
+            self.results.append(StepResult(
+                name=name,
+                status=StepStatus.PASSED,
+                message=str(result) if result is not None else None,
+            ))
+        except Exception as e:
+            self.out.fail(f"{name} error: {e}")
+            self.results.append(StepResult(name=name, status=StepStatus.ERROR, message=str(e)))
+
+    def _parse_count_assertion_args(self, args: str) -> tuple[str, str, int] | None:
+        """Parse ASSERT_COUNT args.
+
+        Supported forms:
+          ASSERT_COUNT ".item" 12
+          ASSERT_COUNT ".item" == 12
+          ASSERT_COUNT ".item" >= 1
+        """
+        try:
+            parts = shlex.split(args)
+        except ValueError:
+            parts = args.strip().split()
+        if len(parts) == 2:
+            selector, expected = parts
+            return selector, "==", int(expected)
+        if len(parts) >= 3:
+            selector, op, expected = parts[0], parts[1], parts[2]
+            return selector, op, int(expected)
+        return None
+
+    def _parse_wait_count_args(self, args: str) -> tuple[str, str, int, int] | None:
+        """Parse WAIT_FOR_COUNT args.
+
+        Supported forms:
+          WAIT_FOR_COUNT ".item" 12
+          WAIT_FOR_COUNT ".item" == 12 5000
+          WAIT_FOR_COUNT ".item" >= 1 10000
+        """
+        try:
+            parts = shlex.split(args)
+        except ValueError:
+            parts = args.strip().split()
+        if len(parts) == 2:
+            selector, expected = parts
+            return selector, "==", int(expected), 5000
+        if len(parts) >= 3:
+            selector, op, expected = parts[0], parts[1], parts[2]
+            timeout_ms = 5000
+            if len(parts) >= 4:
+                timeout_ms = int(parts[3])
+            return selector, op, int(expected), timeout_ms
+        return None
+
+    @staticmethod
+    def _compare_count(actual: int, op: str, expected: int) -> bool:
+        if op in ("=", "==", "EQ"):
+            return actual == expected
+        if op in ("!=", "NE"):
+            return actual != expected
+        if op in (">", "GT"):
+            return actual > expected
+        if op in (">=", "GTE"):
+            return actual >= expected
+        if op in ("<", "LT"):
+            return actual < expected
+        if op in ("<=", "LTE"):
+            return actual <= expected
+        return False
+
+    def _cmd_gui_assert_count(self, args: str, line: OqlLine) -> None:
+        """GUI_ASSERT_COUNT "selector" [op] expected — Assert matching element count."""
+        parsed = self._parse_count_assertion_args(args)
+        if parsed is None:
+            self.out.fail(f"L{line.number}: GUI_ASSERT_COUNT requires selector and expected count")
+            self.results.append(StepResult(
+                name="GUI_ASSERT_COUNT",
+                status=StepStatus.ERROR,
+                message="requires selector and expected count",
+            ))
+            return
+        selector, op, expected = parsed
+        name = f'GUI_ASSERT_COUNT "{selector}" {op} {expected}'
+
+        if self.dry_run:
+            self.out.step("🔢", f"{name} (dry-run)")
+            self.results.append(StepResult(name=name, status=StepStatus.PASSED))
+            return
+
+        if not self._gui_page:
+            self.out.fail("GUI_ASSERT_COUNT: No active GUI session")
+            self.results.append(StepResult(
+                name=name,
+                status=StepStatus.ERROR,
+                message="No active GUI session",
+            ))
+            return
+
+        try:
+            if self._gui_driver == "playwright":
+                actual = self._gui_page.locator(selector).count()
+            elif self._gui_driver == "selenium":
+                from selenium.webdriver.common.by import By
+                actual = len(self._gui_page.find_elements(By.CSS_SELECTOR, selector))
+            else:
+                actual = 0
+
+            if self._compare_count(actual, op.upper(), expected):
+                self.out.step("✅", f"{name} (actual: {actual})")
+                self.results.append(StepResult(name=name, status=StepStatus.PASSED))
+            else:
+                self.out.step("❌", f"{name} (actual: {actual})")
+                self.results.append(StepResult(
+                    name=name,
+                    status=StepStatus.FAILED,
+                    message=f"expected count {op} {expected}, actual {actual}",
+                ))
+        except Exception as e:
+            self.out.fail(f"{name} error: {e}")
+            self.results.append(StepResult(name=name, status=StepStatus.ERROR, message=str(e)))
+
+    def _cmd_gui_wait_for_count(self, args: str, line: OqlLine) -> None:
+        """GUI_WAIT_FOR_COUNT "selector" [op] expected [timeout_ms] — Poll DOM until count matches."""
+        parsed = self._parse_wait_count_args(args)
+        if parsed is None:
+            self.out.fail(f"L{line.number}: GUI_WAIT_FOR_COUNT requires selector, expected count, optional timeout")
+            self.results.append(StepResult(
+                name="GUI_WAIT_FOR_COUNT",
+                status=StepStatus.ERROR,
+                message="requires selector, expected count, optional timeout",
+            ))
+            return
+        selector, op, expected, timeout_ms = parsed
+        name = f'GUI_WAIT_FOR_COUNT "{selector}" {op} {expected} timeout={timeout_ms}ms'
+
+        if self.dry_run:
+            self.out.step("⏳", f"{name} (dry-run)")
+            self.results.append(StepResult(name=name, status=StepStatus.PASSED))
+            return
+
+        if not self._gui_page:
+            self.out.fail("GUI_WAIT_FOR_COUNT: No active GUI session")
+            self.results.append(StepResult(name=name, status=StepStatus.ERROR, message="No active GUI session"))
+            return
+
+        deadline = time.monotonic() + max(timeout_ms, 0) / 1000
+        actual = 0
+        try:
+            while True:
+                if self._gui_driver == "playwright":
+                    actual = self._gui_page.locator(selector).count()
+                elif self._gui_driver == "selenium":
+                    from selenium.webdriver.common.by import By
+                    actual = len(self._gui_page.find_elements(By.CSS_SELECTOR, selector))
+                if self._compare_count(actual, op.upper(), expected):
+                    self.out.step("✅", f"{name} (actual: {actual})")
+                    self.results.append(StepResult(name=name, status=StepStatus.PASSED))
+                    return
+                if time.monotonic() >= deadline:
+                    break
+                time.sleep(0.1)
+            self.out.step("❌", f"{name} (actual: {actual})")
+            self.results.append(StepResult(
+                name=name,
+                status=StepStatus.FAILED,
+                message=f"expected count {op} {expected}, actual {actual}",
+            ))
+        except Exception as e:
+            self.out.fail(f"{name} error: {e}")
+            self.results.append(StepResult(name=name, status=StepStatus.ERROR, message=str(e)))
+
+    def _cmd_gui_assert_url_param(self, args: str, line: OqlLine) -> None:
+        """GUI_ASSERT_URL_PARAM "name" "value" — Assert current URL query parameter."""
+        try:
+            parts = shlex.split(args)
+        except ValueError:
+            parts = args.strip().split()
+        if len(parts) < 2:
+            self.out.fail(f"L{line.number}: GUI_ASSERT_URL_PARAM requires parameter name and expected value")
+            self.results.append(StepResult(
+                name="GUI_ASSERT_URL_PARAM",
+                status=StepStatus.ERROR,
+                message="requires parameter name and expected value",
+            ))
+            return
+        param, expected = parts[0], parts[1]
+        name = f'GUI_ASSERT_URL_PARAM "{param}" == "{expected}"'
+
+        if self.dry_run:
+            self.out.step("🔗", f"{name} (dry-run)")
+            self.results.append(StepResult(name=name, status=StepStatus.PASSED))
+            return
+
+        if not self._gui_page:
+            self.out.fail("GUI_ASSERT_URL_PARAM: No active GUI session")
+            self.results.append(StepResult(name=name, status=StepStatus.ERROR, message="No active GUI session"))
+            return
+
+        try:
+            if self._gui_driver == "playwright":
+                url = self._gui_page.url
+            elif self._gui_driver == "selenium":
+                url = self._gui_page.current_url
+            else:
+                url = ""
+            actual = parse_qs(urlparse(url).query).get(param, [""])[0]
+            if actual == expected:
+                self.out.step("✅", f'{name} (actual: "{actual}")')
+                self.results.append(StepResult(name=name, status=StepStatus.PASSED))
+            else:
+                self.out.step("❌", f'{name} (actual: "{actual}")')
+                self.results.append(StepResult(
+                    name=name,
+                    status=StepStatus.FAILED,
+                    message=f'expected "{expected}", actual "{actual}"',
+                ))
+        except Exception as e:
+            self.out.fail(f"{name} error: {e}")
+            self.results.append(StepResult(name=name, status=StepStatus.ERROR, message=str(e)))
+
+    def _parse_value_assertion_args(self, args: str) -> tuple[str, str, str] | None:
+        """Parse ASSERT_VALUE args.
+
+        Supported forms:
+          ASSERT_VALUE "#kind" "36m"
+          ASSERT_VALUE "#kind" == "36m"
+          ASSERT_VALUE "#kind" != ""
+        """
+        try:
+            parts = shlex.split(args)
+        except ValueError:
+            parts = args.strip().split()
+        if len(parts) == 2:
+            selector, expected = parts
+            return selector, "==", expected
+        if len(parts) >= 3:
+            selector, op, expected = parts[0], parts[1], parts[2]
+            return selector, op, expected
+        return None
+
+    @staticmethod
+    def _compare_value(actual: str, op: str, expected: str) -> bool:
+        if op in ("=", "==", "EQ"):
+            return actual == expected
+        if op in ("!=", "NE"):
+            return actual != expected
+        if op in ("CONTAINS", "~"):
+            return expected in actual
+        if op in ("NOT_CONTAINS", "!~"):
+            return expected not in actual
+        return False
+
+    def _read_gui_value(self, selector: str) -> str:
+        if self._gui_driver == "playwright":
+            locator = self._gui_page.locator(selector).first
+            try:
+                return locator.input_value()
+            except Exception:
+                value = locator.get_attribute("value")
+                return value or ""
+        if self._gui_driver == "selenium":
+            from selenium.webdriver.common.by import By
+
+            elem = self._gui_page.find_element(By.CSS_SELECTOR, selector)
+            value = elem.get_attribute("value")
+            return value or ""
+        return ""
+
+    def _cmd_gui_assert_value(self, args: str, line: OqlLine) -> None:
+        """GUI_ASSERT_VALUE "selector" [op] expected — Assert form control value."""
+        parsed = self._parse_value_assertion_args(args)
+        if parsed is None:
+            self.out.fail(f"L{line.number}: GUI_ASSERT_VALUE requires selector and expected value")
+            self.results.append(StepResult(
+                name="GUI_ASSERT_VALUE",
+                status=StepStatus.ERROR,
+                message="requires selector and expected value",
+            ))
+            return
+        selector, op, expected = parsed
+        name = f'GUI_ASSERT_VALUE "{selector}" {op} "{expected}"'
+
+        if self.dry_run:
+            self.out.step("🔎", f"{name} (dry-run)")
+            self.results.append(StepResult(name=name, status=StepStatus.PASSED))
+            return
+
+        if not self._gui_page:
+            self.out.fail("GUI_ASSERT_VALUE: No active GUI session")
+            self.results.append(StepResult(name=name, status=StepStatus.ERROR, message="No active GUI session"))
+            return
+
+        try:
+            actual = self._read_gui_value(selector)
+            if self._compare_value(actual, op.upper(), expected):
+                self.out.step("✅", f'{name} (actual: "{actual}")')
+                self.results.append(StepResult(name=name, status=StepStatus.PASSED))
+            else:
+                self.out.step("❌", f'{name} (actual: "{actual}")')
+                self.results.append(StepResult(
+                    name=name,
+                    status=StepStatus.FAILED,
+                    message=f'expected "{expected}", actual "{actual}"',
+                ))
+        except Exception as e:
+            self.out.fail(f"{name} error: {e}")
+            self.results.append(StepResult(name=name, status=StepStatus.ERROR, message=str(e)))
+
     def _cmd_gui_capture(self, args: str, line: OqlLine) -> None:
         """GUI_CAPTURE "selector" "screenshot.png" — Take screenshot of element or full page.
 
@@ -697,6 +1205,14 @@ class GuiMixin:
         """Alias for GUI_INPUT."""
         self._cmd_gui_input(args, line)
 
+    def _cmd_scroll(self, args: str, line: OqlLine) -> None:
+        """Alias for GUI_SCROLL."""
+        self._cmd_gui_scroll(args, line)
+
+    def _cmd_wheel(self, args: str, line: OqlLine) -> None:
+        """Alias for GUI_SCROLL."""
+        self._cmd_gui_scroll(args, line)
+
     def _cmd_assert_visible(self, args: str, line: OqlLine) -> None:
         """Alias for GUI_ASSERT_VISIBLE."""
         self._cmd_gui_assert_visible(args, line)
@@ -712,6 +1228,34 @@ class GuiMixin:
     def _cmd_text(self, args: str, line: OqlLine) -> None:
         """Alias for GUI_ASSERT_TEXT."""
         self._cmd_gui_assert_text(args, line)
+
+    def _cmd_assert_count(self, args: str, line: OqlLine) -> None:
+        """Alias for GUI_ASSERT_COUNT."""
+        self._cmd_gui_assert_count(args, line)
+
+    def _cmd_count(self, args: str, line: OqlLine) -> None:
+        """Alias for GUI_ASSERT_COUNT."""
+        self._cmd_gui_assert_count(args, line)
+
+    def _cmd_wait_for_count(self, args: str, line: OqlLine) -> None:
+        """Alias for GUI_WAIT_FOR_COUNT."""
+        self._cmd_gui_wait_for_count(args, line)
+
+    def _cmd_assert_url_param(self, args: str, line: OqlLine) -> None:
+        """Alias for GUI_ASSERT_URL_PARAM."""
+        self._cmd_gui_assert_url_param(args, line)
+
+    def _cmd_assert_value(self, args: str, line: OqlLine) -> None:
+        """Alias for GUI_ASSERT_VALUE."""
+        self._cmd_gui_assert_value(args, line)
+
+    def _cmd_value(self, args: str, line: OqlLine) -> None:
+        """Alias for GUI_ASSERT_VALUE."""
+        self._cmd_gui_assert_value(args, line)
+
+    def _cmd_eval(self, args: str, line: OqlLine) -> None:
+        """Alias for GUI_EVAL."""
+        self._cmd_gui_eval(args, line)
 
     def _cmd_capture(self, args: str, line: OqlLine) -> None:
         """Alias for GUI_CAPTURE."""

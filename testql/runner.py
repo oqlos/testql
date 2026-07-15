@@ -124,7 +124,7 @@ class DslCliExecutor:
             return ExecutionResult(False, cmd, None, str(e), duration)
 
     # Browser-only commands (skip in CLI)
-    BROWSER_COMMANDS = {'NAVIGATE', 'CLICK', 'SELECT', 'INPUT', 'SUBMIT'}
+    BROWSER_COMMANDS = {'NAVIGATE', 'CLICK', 'SELECT', 'INPUT', 'SUBMIT', 'SCROLL', 'WHEEL', 'GUI_SCROLL', 'GUI_WHEEL'}
     
     # Semantic commands (skip in CLI, log only)
     SEMANTIC_COMMANDS = {

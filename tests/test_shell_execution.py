@@ -31,6 +31,21 @@ class TestShellExecution:
         assert "hello world" in interpreter._last_shell_result["stdout"]
         assert interpreter.results[-1].status.value == "passed"
 
+    def test_shell_quoted_command_with_escaped_quotes(self, interpreter):
+        """SHELL should preserve escaped quotes inside a quoted command."""
+        from testql.interpreter._parser import OqlLine
+
+        line = OqlLine(
+            number=1,
+            command="SHELL",
+            args=r'"printf ''{\"ok\":true}'' | grep -q ''\"ok\":true''" 5000',
+            raw=r'SHELL "printf ''{\"ok\":true}'' | grep -q ''\"ok\":true''" 5000',
+        )
+        interpreter._cmd_shell(line.args, line)
+
+        assert interpreter._last_shell_result["returncode"] == 0
+        assert interpreter.results[-1].status.value == "passed"
+
     def test_shell_with_exit_code(self, interpreter):
         """Test SHELL command with non-zero exit code."""
         from testql.interpreter._parser import OqlLine

@@ -1,10 +1,10 @@
 TOPOLOGY{key, value}:
   root, testql
   confidence, full
-  nodes, 15
-  edges, 14
+  nodes, 17
+  edges, 16
 
-NODES[15]{id, kind, source}:
+NODES[17]{id, kind, source}:
   artifact.root, artifact, testql
   type.python_pkg, artifact_type, testql
   type.fastapi, artifact_type, testql
@@ -18,10 +18,12 @@ NODES[15]{id, kind, source}:
   dependency.costs, dependency, costs
   dependency.pfix, dependency, pfix
   dependency.websockets, dependency, websockets
+  dependency.pytest_cov, dependency, pytest-cov
+  dependency.fastapi, dependency, fastapi
   evidence.1, evidence, pyproject.toml
   evidence.2, evidence, openapi.yaml
 
-EDGES[14]{source_id, relation, target_id, protocol}:
+EDGES[16]{source_id, relation, target_id, protocol}:
   artifact.root, classified_as, type.python_pkg, manifest
   artifact.root, classified_as, type.fastapi, manifest
   artifact.root, classified_as, type.openapi3, manifest
@@ -34,8 +36,10 @@ EDGES[14]{source_id, relation, target_id, protocol}:
   artifact.root, depends_on, dependency.costs, package
   artifact.root, depends_on, dependency.pfix, package
   artifact.root, depends_on, dependency.websockets, package
+  artifact.root, depends_on, dependency.pytest_cov, package
+  artifact.root, depends_on, dependency.fastapi, package
   artifact.root, supported_by, evidence.1, file
   artifact.root, supported_by, evidence.2, file
 
 TRACES[1]{id, status, nodes, edges}:
-  trace.discovery.topology, planned, 15, 14
+  trace.discovery.topology, planned, 17, 16

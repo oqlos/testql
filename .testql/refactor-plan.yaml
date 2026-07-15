@@ -8,17 +8,15 @@ refactor_plan:
   findings:
   - id: finding.web.asset_status
     severity: high
-    summary: 5 of 61 assets returned error status.
+    summary: 4 of 61 assets returned error status.
     likely_cause: One or more page assets returned an error or were unreachable during
       HEAD validation.
     evidence_refs: []
     metadata:
       source_check: check.web.asset_status
       checked: 61
-      broken: 5
+      broken: 4
       details:
-      - url: http://gmpg.org/xfn/11
-        status: 404
       - url: https://tom.sapletta.com/xmlrpc.php
         status: 403
       - url: https://ws.sharethis.com
@@ -54,7 +52,7 @@ refactor_plan:
   actions:
   - id: action.web.asset_status
     type: investigate_broken_resources
-    summary: 'Resolve finding.web.asset_status: 5 of 61 assets returned error status.'
+    summary: 'Resolve finding.web.asset_status: 4 of 61 assets returned error status.'
     priority: high
     evidence_refs: []
     metadata:

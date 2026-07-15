@@ -24,18 +24,20 @@ class ShellMixin:
         Returns (command, timeout_ms).
         """
         if args_clean.startswith('"') or args_clean.startswith("'"):
-            # Quoted command - find closing quote
-            quote = args_clean[0]
-            close_idx = args_clean.find(quote, 1)
-            if close_idx == -1:
-                raise ValueError("Unclosed quote in command")
-            command = args_clean[1:close_idx]
-            rest = args_clean[close_idx + 1:].strip()
+            # Quoted command. Use shlex so escaped quotes inside the command
+            # don't terminate parsing early.
+            try:
+                parsed = shlex.split(args_clean)
+            except ValueError as exc:
+                raise ValueError(str(exc)) from exc
+            if not parsed:
+                raise ValueError("Empty command")
+            command = parsed[0]
             timeout_ms = 30000
-            if rest:
+            if len(parsed) > 1:
                 try:
-                    timeout_ms = int(rest.split()[0])
-                except (ValueError, IndexError):
+                    timeout_ms = int(parsed[1])
+                except ValueError:
                     pass
         else:
             # Unquoted - split by whitespace
@@ -87,7 +89,15 @@ class ShellMixin:
             self.results.append(StepResult(
                 name=f'SHELL "{command[:40]}"',
                 status=status,
-                details={"returncode": result.returncode, "stdout_len": len(result.stdout)},
+                details={
+                    "returncode": result.returncode,
+                    "stdout_len": len(result.stdout),
+                    "stderr_len": len(result.stderr),
+                    # Preserve bounded diagnostics in JSON reports. This is
+                    # especially important when ASSERT_EXIT_CODE fails later.
+                    "stdout": result.stdout[-4000:] if result.stdout else "",
+                    "stderr": result.stderr[-4000:] if result.stderr else "",
+                },
             ))
 
         except subprocess.TimeoutExpired:

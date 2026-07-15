@@ -235,6 +235,35 @@ class TestRender:
         inc_again = [s for s in plan2.steps if s.kind == "include"]
         assert len(inc_again) == 1
 
+    def test_gui_table_supports_eval_and_count_expansion(self):
+        """GUI rows should expand advanced browser diagnostics to OQL commands."""
+        from testql.interpreter._testtoon_parser import testtoon_to_oql
+
+        src = (
+            "# SCENARIO: gui-diagnostics\n"
+            "# TYPE: gui\n"
+            "\n"
+            "GUI[7]{action, selector, value, op, expected, wait_ms, param}:\n"
+            "  open, -, http://localhost:8100, -, -, 0\n"
+            "  eval, return location.pathname, -, -, -, 0\n"
+            "  assert_count, .item, -, ==, 3, 0\n"
+            "  wait_for_count, .item, -, >=, 3, 7000\n"
+            "  assert_url_param, -, 36m, -, -, 0, type\n"
+            "  assert_value, #filter-kind-select, 36m, ==, -, 0\n"
+            "  close, -, -, -, -, 0\n"
+        )
+
+        script = testtoon_to_oql(src)
+        raw = [line.raw for line in script.lines]
+        assert 'GUI_START "http://localhost:8100"' in raw
+        assert 'GUI_EVAL "return location.pathname"' in raw
+        assert 'GUI_ASSERT_COUNT ".item" == 3' in raw
+        assert 'GUI_WAIT_FOR_COUNT ".item" >= 3 7000' in raw
+        assert "WAIT 7000" not in raw
+        assert 'GUI_ASSERT_URL_PARAM "type" "36m"' in raw
+        assert 'GUI_ASSERT_VALUE "#filter-kind-select" == "36m"' in raw
+        assert "GUI_STOP" in raw
+
 
 class TestAdapterRegistration:
     def test_adapter_registered_in_default_registry(self):

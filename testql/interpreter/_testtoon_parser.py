@@ -131,11 +131,12 @@ def _expand_api(section: ToonSection, lines: list[OqlLine], line_num: int) -> in
 
 
 def _expand_navigate(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
-    """Expand NAVIGATE section → NAVIGATE + WAIT commands."""
-    for row in section.rows:
+    """Expand NAVIGATE rows, opening a GUI session for the first target."""
+    for index, row in enumerate(section.rows):
         path = row.get('path', '/')
-        raw = f'NAVIGATE "{path}"'
-        lines.append(OqlLine(number=line_num, command='NAVIGATE', args=f'"{path}"', raw=raw))
+        command = 'GUI_START' if index == 0 else 'NAVIGATE'
+        raw = f'{command} "{path}"'
+        lines.append(OqlLine(number=line_num, command=command, args=f'"{path}"', raw=raw))
         line_num += 1
 
         wait_ms = row.get('wait_ms')
