@@ -7,7 +7,7 @@ name = "testql"
 version = "1.2.61"
 description = "TestQL — Multi-DSL Test Platform: TestTOON / NL / SQL / Proto / GraphQL adapters with Unified IR, generator engine, and meta-testing"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11,<3.14"
 dependencies = [
     "httpx>=0.27",
     "click>=8.0",

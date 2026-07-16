@@ -111,3 +111,24 @@ class TestRunCommandInputs:
         data = json.loads(result.output)
         assert data["files"] == 2
         assert len(data["runs"]) == 2
+
+    def test_json_output_contains_actionable_failed_step_details(self, tmp_path: Path, monkeypatch) -> None:
+        class FailedInterpreter:
+            def __init__(self, **_: object) -> None:
+                pass
+
+            def run(self, source: str, filename: str) -> _FakeResult:
+                step = SimpleNamespace(status="failed", name='GUI_ASSERT_TEXT "main"', message="missing text")
+                return _FakeResult(source=filename, ok=False, passed=0, failed=1, steps=[step])
+
+        monkeypatch.setitem(sys.modules, "testql.interpreter", SimpleNamespace(OqlInterpreter=FailedInterpreter))
+        scenario = tmp_path / "failure.testql.toon.yaml"
+        _mk_scenario(scenario)
+
+        result = CliRunner().invoke(cli, ["run", str(scenario), "--output", "json", "--quiet"])
+
+        assert result.exit_code == 1
+        data = json.loads(result.output)
+        assert data["failures"] == [
+            {"name": 'GUI_ASSERT_TEXT "main"', "status": "failed", "message": "missing text"}
+        ]

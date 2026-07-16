@@ -70,6 +70,7 @@ def _run_single(path: Path, url: str, dry_run: bool, quiet: bool, timeout: int |
 
 
 def _emit_single_json(result) -> None:
+    failures = _failure_details(result)
     print(
         json.dumps(
             {
@@ -81,10 +82,29 @@ def _emit_single_json(result) -> None:
                 "duration_ms": round(result.duration_ms, 1),
                 "errors": result.errors,
                 "warnings": result.warnings,
+                "failures": failures,
             },
             indent=2,
         )
     )
+
+
+def _failure_details(result) -> list[dict[str, str]]:
+    """Expose actionable failed step names without dumping variables/secrets."""
+    details: list[dict[str, str]] = []
+    for step in result.steps:
+        status = getattr(step, "status", "")
+        status_text = str(getattr(status, "value", status)).lower()
+        if status_text not in {"failed", "error"}:
+            continue
+        details.append(
+            {
+                "name": str(getattr(step, "name", "unknown step")),
+                "status": status_text,
+                "message": str(getattr(step, "message", "") or ""),
+            }
+        )
+    return details
 
 
 def _emit_multi_json(results: list[tuple[Path, object]]) -> None:
@@ -108,6 +128,7 @@ def _emit_multi_json(results: list[tuple[Path, object]]) -> None:
                 "duration_ms": round(result.duration_ms, 1),
                 "errors": result.errors,
                 "warnings": result.warnings,
+                "failures": _failure_details(result),
             }
         )
 

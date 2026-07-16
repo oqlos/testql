@@ -9,9 +9,13 @@ TestQL (Test Query Language) is a declarative DSL for testing GUI, REST API, and
 ```
 SET <name> <value>        # SET api_url "http://localhost:8101"
 GET <name>                # Print variable value
+GETENV <env> [name]       # Read a non-secret environment variable
+GETENV_SECRET <env> [name] # Read a secret; redact it from logs and results
 ```
 
 Variables support `${var}` and `$var` interpolation in all arguments.
+Use `GETENV_SECRET` for passwords and API tokens. Secret variables are returned as
+`***REDACTED***` in result metadata, and GUI input logging never includes their value.
 
 ## Logging
 

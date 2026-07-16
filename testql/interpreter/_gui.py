@@ -61,6 +61,16 @@ class GuiMixin:
     _gui_app: Any = None  # Playwright/Selenium instance
     _gui_page: Any = None  # Browser page/window
 
+    def _gui_operation_timeout(self, default_ms: int = 5000) -> int:
+        """Return one bounded timeout for a single browser operation.
+
+        Playwright's implicit 30 second timeout made a missing selector look like
+        a hung TestQL run.  Keep the CLI override, but use a fail-fast default for
+        assertions and form actions.
+        """
+        configured = self.timeout_ms
+        return max(1, int(configured)) if configured is not None else default_ms
+
     @staticmethod
     def _same_url_without_hash(left: str, right: str) -> bool:
         return left.split("#", 1)[0] == right.split("#", 1)[0]
@@ -90,7 +100,10 @@ class GuiMixin:
             return None
             
         selectors_to_try = self._generate_fallback_selectors(selector)
-        timeout = self.timeout_ms if self.timeout_ms else 100
+        # Fallback probes are intentionally short. The operation-level timeout
+        # is enforced by the command itself and must not be multiplied by every
+        # generated selector candidate.
+        timeout = min(self._gui_operation_timeout(), 250)
         
         return self._try_selectors(selectors_to_try, timeout)
 
@@ -280,7 +293,9 @@ class GuiMixin:
             headless = str(self.vars.get("headless", "true")).lower() == "true"
             browser = p.chromium.launch(headless=headless, args=["--no-sandbox", "--disable-setuid-sandbox"])
             self._gui_page = browser.new_page()
-            self._gui_page.goto(app_path)
+            self._gui_page.set_default_timeout(self._gui_operation_timeout())
+            self._gui_page.set_default_navigation_timeout(self._gui_operation_timeout(15000))
+            self._gui_page.goto(app_path, timeout=self._gui_operation_timeout(15000))
             self._gui_app = (p, browser)
             self.out.step("🖥️", f"Playwright: Opened {app_path}")
         else:
@@ -365,7 +380,7 @@ class GuiMixin:
                     base_url = self.vars.get("base_url", "http://localhost:8100")
                     target = f"{base_url.rstrip('/')}/{path.lstrip('/')}"
                 
-                timeout = self.timeout_ms if self.timeout_ms else 30000
+                timeout = self._gui_operation_timeout(15000)
                 try:
                     self._gui_page.goto(target, timeout=timeout)
                 except Exception as nav_error:
@@ -475,9 +490,10 @@ class GuiMixin:
 
         selector = parts[0].strip('"\'')
         text = parts[1].strip('"\'')
+        display_text = "***REDACTED***" if getattr(self, "is_secret_value", lambda value: False)(text) else text[:20]
 
         if self.dry_run:
-            self.out.step("⌨️", f'GUI_INPUT "{selector}" "{text[:20]}" (dry-run)')
+            self.out.step("⌨️", f'GUI_INPUT "{selector}" "{display_text}" (dry-run)')
             self.results.append(StepResult(
                 name=f'GUI_INPUT "{selector}"', status=StepStatus.PASSED
             ))
@@ -501,7 +517,7 @@ class GuiMixin:
                 elem.clear()
                 elem.send_keys(text)
 
-            self.out.step("⌨️", f'GUI_INPUT "{selector}" → "{text[:20]}"')
+            self.out.step("⌨️", f'GUI_INPUT "{selector}" → "{display_text}"')
             self.results.append(StepResult(
                 name=f'GUI_INPUT "{selector}"', status=StepStatus.PASSED
             ))
@@ -512,6 +528,81 @@ class GuiMixin:
                 status=StepStatus.ERROR,
                 message=str(e),
             ))
+
+    def _cmd_gui_select(self, args: str, line: OqlLine) -> None:
+        """GUI_SELECT "selector" "value" — select an option by value, then by label."""
+        try:
+            parts = shlex.split(args)
+        except ValueError:
+            parts = args.strip().split(None, 1)
+        if len(parts) < 2:
+            self.out.fail(f"L{line.number}: GUI_SELECT requires selector and value")
+            self.results.append(StepResult(name="GUI_SELECT", status=StepStatus.ERROR, message="selector and value required"))
+            return
+        selector, value = parts[0], parts[1]
+        name = f'GUI_SELECT "{selector}"'
+        if self.dry_run:
+            self.out.step("🔽", f'{name} → "{value}" (dry-run)')
+            self.results.append(StepResult(name=name, status=StepStatus.PASSED))
+            return
+        if not self._gui_page:
+            self.out.fail("GUI_SELECT: No active GUI session")
+            self.results.append(StepResult(name=name, status=StepStatus.ERROR, message="No active GUI session"))
+            return
+        try:
+            if self._gui_driver == "playwright":
+                selected = self._gui_page.select_option(selector, value=value)
+                if not selected:
+                    selected = self._gui_page.select_option(selector, label=value)
+                if not selected:
+                    raise ValueError(f"option not found: {value}")
+            elif self._gui_driver == "selenium":
+                from selenium.webdriver.common.by import By
+                from selenium.webdriver.support.ui import Select
+                select = Select(self._gui_page.find_element(By.CSS_SELECTOR, selector))
+                try:
+                    select.select_by_value(value)
+                except Exception:
+                    select.select_by_visible_text(value)
+            self.out.step("🔽", f'{name} → "{value}"')
+            self.results.append(StepResult(name=name, status=StepStatus.PASSED))
+        except Exception as e:
+            self.out.fail(f'{name} error: {e}')
+            self.results.append(StepResult(name=name, status=StepStatus.ERROR, message=str(e)))
+
+    def _cmd_select(self, args: str, line: OqlLine) -> None:
+        self._cmd_gui_select(args, line)
+
+    def _cmd_gui_submit(self, args: str, line: OqlLine) -> None:
+        """GUI_SUBMIT "form-selector" — submit a form using browser-native validation."""
+        try:
+            parts = shlex.split(args)
+        except ValueError:
+            parts = args.strip().split()
+        selector = parts[0] if parts else "form"
+        name = f'GUI_SUBMIT "{selector}"'
+        if self.dry_run:
+            self.out.step("📨", f"{name} (dry-run)")
+            self.results.append(StepResult(name=name, status=StepStatus.PASSED))
+            return
+        if not self._gui_page:
+            self.out.fail("GUI_SUBMIT: No active GUI session")
+            self.results.append(StepResult(name=name, status=StepStatus.ERROR, message="No active GUI session"))
+            return
+        try:
+            if self._gui_driver == "playwright":
+                self._gui_page.locator(selector).evaluate("form => form.requestSubmit()")
+            elif self._gui_driver == "selenium":
+                from selenium.webdriver.common.by import By
+                self._gui_page.find_element(By.CSS_SELECTOR, selector).submit()
+            self.out.step("📨", name)
+            self.results.append(StepResult(name=name, status=StepStatus.PASSED))
+        except Exception as e:
+            self.out.fail(f'{name} error: {e}')
+            self.results.append(StepResult(name=name, status=StepStatus.ERROR, message=str(e)))
+
+    def _cmd_submit(self, args: str, line: OqlLine) -> None:
+        self._cmd_gui_submit(args, line)
 
     def _parse_scroll_args(self, args: str) -> tuple[str, int, int]:
         """Parse GUI_SCROLL args.
@@ -709,7 +800,7 @@ class GuiMixin:
 
         try:
             if self._gui_driver == "playwright":
-                actual = self._gui_page.inner_text(selector)
+                actual = self._gui_page.inner_text(selector, timeout=self._gui_operation_timeout())
             elif self._gui_driver == "selenium":
                 from selenium.webdriver.common.by import By
                 elem = self._gui_page.find_element(By.CSS_SELECTOR, selector)
@@ -1154,15 +1245,7 @@ class GuiMixin:
 
         try:
             if self._gui_app:
-                if self._gui_driver == "playwright":
-                    playwright, browser = self._gui_app
-                    browser.close()
-                    playwright.stop()
-                elif self._gui_driver == "selenium":
-                    self._gui_app.quit()
-
-                self._gui_app = None
-                self._gui_page = None
+                self._close_gui_session()
                 self.out.step("🖥️", "GUI_STOP: Closed")
                 self.results.append(StepResult(
                     name="GUI_STOP", status=StepStatus.PASSED
@@ -1174,6 +1257,23 @@ class GuiMixin:
                 status=StepStatus.ERROR,
                 message=str(e),
             ))
+
+    def _close_gui_session(self) -> None:
+        """Close an active browser without recording an extra TestQL step."""
+        app = self._gui_app
+        driver = self._gui_driver
+        self._gui_app = None
+        self._gui_page = None
+        if not app:
+            return
+        if driver == "playwright":
+            playwright, browser = app
+            try:
+                browser.close()
+            finally:
+                playwright.stop()
+        elif driver == "selenium":
+            app.quit()
 
     # --- Unified Command Aliases ---
 

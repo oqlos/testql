@@ -9,6 +9,7 @@ import pytest
 
 from testql.adapters.nlp2env import Nlp2EnvAdapter
 from testql.base import StepStatus
+from testql.nlp2env import mcp_client
 from testql.nlp2env.mcp_client import mcp_available
 from testql.nlp2env.runner import Nlp2EnvRunner
 from testql.nlp2env.scenarios import load_scenarios, scenario_count
@@ -77,6 +78,10 @@ class TestNlp2EnvAdapter:
 
 
 class TestNlp2EnvRunner:
+    def test_mcp_availability_requires_python_client(self, monkeypatch):
+        monkeypatch.setattr(mcp_client.importlib.util, "find_spec", lambda name: None)
+        assert mcp_available() is False
+
     def test_dry_run(self, tmp_path: Path):
         scenario = tmp_path / "inline.testql.toon.yaml"
         scenario.write_text(INLINE_SAMPLE, encoding="utf-8")

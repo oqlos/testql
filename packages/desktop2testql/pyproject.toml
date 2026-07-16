@@ -7,7 +7,7 @@ name = "desktop2testql"
 version = "0.1.0"
 description = "Native desktop control backend (X11/Wayland) for TestQL DESKTOP_* commands"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11,<3.14"
 license = "Apache-2.0"
 dependencies = [
     "testql>=1.2.0",

@@ -169,6 +169,53 @@ class TestTestTOONExpansion:
 
 
 class TestOqlInterpreter:
+    def test_execute_always_closes_an_active_gui_session(self):
+        class FakeDriver:
+            def __init__(self):
+                self.closed = False
+
+            def quit(self):
+                self.closed = True
+
+        driver = FakeDriver()
+        interp = OqlInterpreter(quiet=True)
+        interp._gui_driver = "selenium"
+        interp._gui_app = driver
+        interp._gui_page = driver
+
+        result = interp.run('SET example "value"', "cleanup.testql")
+
+        assert result.ok
+        assert driver.closed is True
+        assert interp._gui_app is None
+        assert interp._gui_page is None
+
+    def test_gui_operation_timeout_is_fail_fast_and_overridable(self):
+        assert OqlInterpreter(quiet=True)._gui_operation_timeout() == 5000
+        assert OqlInterpreter(quiet=True, timeout_ms=750)._gui_operation_timeout() == 750
+
+    def test_getenv_secret_interpolates_but_redacts_result_and_gui_log(self, monkeypatch):
+        monkeypatch.setenv("TESTQL_TEST_SECRET", "secret-value-never-log")
+        interp = OqlInterpreter(dry_run=True, quiet=True)
+        result = interp.run(
+            'GETENV_SECRET TESTQL_TEST_SECRET token\nGUI_INPUT "#token" "${token}"',
+            "secret-gui.testql",
+        )
+        assert result.ok
+        assert result.variables["token"] == "***REDACTED***"
+        output = "\n".join(interp.out.lines)
+        assert "secret-value-never-log" not in output
+        assert "***REDACTED***" in output
+
+    def test_gui_select_and_submit_are_first_class_dry_run_commands(self):
+        interp = OqlInterpreter(dry_run=True, quiet=True)
+        result = interp.run(
+            'GUI_SELECT "#role" "operations-lead"\nGUI_SUBMIT "form[data-ticket-response-form]"',
+            "role-gui.testql",
+        )
+        assert result.ok
+        assert result.passed == 2
+
     def test_dry_run_api(self):
         source = (
             'SET api_url "http://localhost:8101"\n'

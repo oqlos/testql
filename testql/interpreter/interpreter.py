@@ -7,6 +7,8 @@ Import path unchanged: `from testql.interpreter import OqlInterpreter`
 
 from __future__ import annotations
 
+import os
+import shlex
 import time
 from typing import Any
 
@@ -73,6 +75,8 @@ class OqlInterpreter(ApiRunnerMixin, AssertionsMixin, ContextMixin, EncoderMixin
         self.last_status: int = 0
         self.events: list[dict[str, Any]] = []
         self._included: set[str] = set()  # prevent circular includes
+        self._secret_variable_names: set[str] = set()
+        self._secret_values: set[str] = set()
         self.dispatcher = CommandDispatcher(self)  # Central command dispatcher
 
     def parse(self, source: str, filename: str = "<string>") -> OqlScript:
@@ -94,22 +98,36 @@ class OqlInterpreter(ApiRunnerMixin, AssertionsMixin, ContextMixin, EncoderMixin
         t0 = time.monotonic()
         self.out.step("📜", f"OQL: {parsed.filename}")
 
-        for line in parsed.lines:
-            args = self.vars.interpolate(line.args)
-            try:
-                self._dispatch(line.command, args, line)
-            except Exception as e:
-                self.errors.append(f"L{line.number}: {e}")
-                self.out.fail(f"L{line.number}: {e}")
-                self.results.append(StepResult(
-                    name=line.raw, status=StepStatus.ERROR, message=str(e),
-                ))
+        try:
+            for line in parsed.lines:
+                args = self.vars.interpolate(line.args)
+                try:
+                    self._dispatch(line.command, args, line)
+                except Exception as e:
+                    self.errors.append(f"L{line.number}: {e}")
+                    self.out.fail(f"L{line.number}: {e}")
+                    self.results.append(StepResult(
+                        name=line.raw, status=StepStatus.ERROR, message=str(e),
+                    ))
+        finally:
+            # A failed assertion can prevent GUI_STOP from being reached. Never
+            # leave Chromium/WebDriver processes behind after a scenario.
+            close_gui = getattr(self, "_close_gui_session", None)
+            if callable(close_gui) and self._gui_app:
+                try:
+                    close_gui()
+                except Exception as e:
+                    self.warnings.append(f"GUI cleanup failed: {e}")
 
         elapsed = (time.monotonic() - t0) * 1000
         ok = all(r.status in (StepStatus.PASSED, StepStatus.SKIPPED) for r in self.results)
+        reported_variables = self.vars.all()
+        for name in self._secret_variable_names:
+            if name in reported_variables:
+                reported_variables[name] = "***REDACTED***"
         sr = ScriptResult(
             source=parsed.filename, ok=ok, steps=self.results,
-            variables=self.vars.all(), errors=self.errors,
+            variables=reported_variables, errors=self.errors,
             warnings=self.warnings, duration_ms=elapsed,
         )
         self.out.emit("")
@@ -159,3 +177,24 @@ class OqlInterpreter(ApiRunnerMixin, AssertionsMixin, ContextMixin, EncoderMixin
         key = args.strip()
         val = self.vars.get(key, "<undefined>")
         self.out.step("📖", f"GET {key} = {val}")
+
+    def _cmd_getenv_secret(self, args: str, line: OqlLine) -> None:
+        """GETENV_SECRET ENV_NAME [variable] — import an environment secret without logging it."""
+        parts = shlex.split(args)
+        if not parts or len(parts) > 2:
+            raise ValueError("GETENV_SECRET requires ENV_NAME and optional variable name")
+        env_name = parts[0]
+        variable_name = parts[1] if len(parts) == 2 else env_name.lower()
+        value = os.environ.get(env_name, "")
+        if not value:
+            raise ValueError(f"required secret environment variable is missing: {env_name}")
+        self.vars.set(variable_name, value)
+        self._secret_variable_names.add(variable_name)
+        self._secret_values.add(value)
+        self.out.step("🔐", f'GETENV_SECRET "{env_name}" → "{variable_name}" (configured, redacted)')
+        self.results.append(StepResult(
+            name=f'GETENV_SECRET "{env_name}"', status=StepStatus.PASSED
+        ))
+
+    def is_secret_value(self, value: str) -> bool:
+        return any(secret and secret in value for secret in self._secret_values)

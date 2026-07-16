@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import importlib.util
 import json
 import os
 import shutil
@@ -67,12 +68,19 @@ def assert_ok(payload: dict[str, Any], label: str = "") -> dict[str, Any]:
 
 
 def mcp_available() -> bool:
+    # The adapter needs both sides of MCP: the stdio server executable and the
+    # Python client imported by ``_call_tool_async``.  They may come from
+    # different virtual environments, so finding only the executable is not
+    # sufficient and previously made the optional E2E test fail at runtime.
+    if importlib.util.find_spec("mcp") is None:
+        return False
     try:
-        subprocess.run([_find_mcp_command(), "--help"], capture_output=True, timeout=5)
-        return True
+        result = subprocess.run(
+            [_find_mcp_command(), "--help"],
+            capture_output=True,
+            timeout=5,
+            check=False,
+        )
+        return result.returncode == 0
     except (FileNotFoundError, subprocess.SubprocessError, OSError):
-        try:
-            _find_mcp_command()
-            return True
-        except FileNotFoundError:
-            return False
+        return False
