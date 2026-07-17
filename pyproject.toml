@@ -66,6 +66,10 @@ dev = ["pytest", "pytest-asyncio", "pytest-cov",
     "sqlglot>=20.0",
     "protobuf>=4.21",
     "graphql-core>=3.2",
+    # GUI scenarios (.testql GUI blocks) require a browser engine; keep the dev
+    # setup able to run them out of the box. Browser binaries still need a one-off
+    # `playwright install chromium`.
+    "playwright>=1.40",
 ]
 
 [tool.setuptools.packages.find]

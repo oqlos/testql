@@ -241,6 +241,59 @@ class TestGuiExecution:
         assert interpreter._is_transient_browser_network_error(Exception("Page.goto: net::ERR_ABORTED")) is True
         assert interpreter._is_transient_browser_network_error(Exception("SyntaxError")) is False
 
+    def test_gui_assert_text_polls_until_async_text_appears(self, interpreter):
+        """GUI_ASSERT_TEXT waits for asynchronously-rendered text instead of a single-shot read."""
+        from testql.interpreter._parser import OqlLine
+
+        interpreter.dry_run = False
+        interpreter._gui_driver = "playwright"
+
+        class _AsyncPage:
+            def __init__(self):
+                self.reads = 0
+
+            def inner_text(self, selector, timeout=None):
+                self.reads += 1
+                # Text renders only after a couple of polls (async LLM/fetch panel).
+                return "" if self.reads < 3 else "configured_models present"
+
+        interpreter._gui_page = _AsyncPage()
+        interpreter.timeout_ms = 3000
+        line = OqlLine(
+            number=1, command="GUI_ASSERT_TEXT",
+            args='"#llmStatusOutput" "configured_models"',
+            raw='GUI_ASSERT_TEXT "#llmStatusOutput" "configured_models"',
+        )
+        interpreter._cmd_gui_assert_text(line.args, line)
+
+        assert interpreter.results[-1].status.value == "passed"
+        assert interpreter._gui_page.reads >= 3
+
+    def test_gui_assert_text_fails_bounded_when_text_never_appears(self, interpreter):
+        """A stable wrong value still FAILS, and the poll stays bounded by the timeout budget."""
+        import time
+        from testql.interpreter._parser import OqlLine
+
+        interpreter.dry_run = False
+        interpreter._gui_driver = "playwright"
+
+        class _StablePage:
+            def inner_text(self, selector, timeout=None):
+                return "in progress"
+
+        interpreter._gui_page = _StablePage()
+        interpreter.timeout_ms = 300  # small budget → bounded failure, no hang
+        line = OqlLine(
+            number=1, command="GUI_ASSERT_TEXT",
+            args='"#x" "done"', raw='GUI_ASSERT_TEXT "#x" "done"',
+        )
+        started = time.monotonic()
+        interpreter._cmd_gui_assert_text(line.args, line)
+        elapsed = time.monotonic() - started
+
+        assert interpreter.results[-1].status.value == "failed"
+        assert elapsed < 2.0
+
     def test_gui_start_no_args_error(self, interpreter):
         """Test GUI_START without arguments."""
         interpreter.dry_run = False
@@ -275,3 +328,47 @@ class TestGuiDriverSelection:
         import sys
         monkeypatch.setitem(sys.modules, "selenium", None)
         assert interpreter._init_gui_driver() is False  # Returns False if not installed (dry-run)
+
+    def test_missing_engine_flags_unavailable(self, interpreter, monkeypatch):
+        """A missing browser engine marks the interpreter so later GUI steps can skip."""
+        import sys
+        interpreter.vars.set("gui_driver", "playwright")
+        monkeypatch.setitem(sys.modules, "playwright.sync_api", None)
+        assert interpreter._init_gui_driver() is False
+        assert interpreter._gui_engine_unavailable is True
+
+    def test_gui_start_missing_engine_reports_single_error(self, monkeypatch):
+        """GUI_START with no engine yields one actionable ERROR recorded in errors[]."""
+        import sys
+        from testql.interpreter._parser import OqlLine
+
+        interp = OqlInterpreter(api_url="http://localhost:8101", quiet=True, dry_run=False)
+        interp.vars.set("gui_driver", "playwright")
+        monkeypatch.setitem(sys.modules, "playwright.sync_api", None)
+
+        line = OqlLine(number=1, command="GUI_START", args='"http://localhost:5173"',
+                       raw='GUI_START "http://localhost:5173"')
+        interp._cmd_gui_start(line.args, line)
+
+        assert interp.results[-1].status.value == "error"
+        assert interp._gui_engine_unavailable is True
+        assert any("cannot run" in e for e in interp.errors)
+
+    def test_gui_steps_skip_after_engine_unavailable(self):
+        """Once the engine is unavailable, later GUI steps are SKIPPED, not cascaded failures."""
+        from testql.interpreter._parser import OqlLine
+
+        interp = OqlInterpreter(api_url="http://localhost:8101", quiet=True, dry_run=False)
+        interp._gui_engine_unavailable = True
+
+        for cmd, args in [("GUI_CLICK", '"#btn"'), ("GUI_ASSERT_TEXT", '"#x" "hi"')]:
+            line = OqlLine(number=2, command=cmd, args=args, raw=f"{cmd} {args}")
+            interp._dispatch(cmd, args, line)
+            assert interp.results[-1].status.value == "skipped"
+
+        # A non-GUI command is unaffected by the guard.
+        assert not any(
+            r.status.value == "skipped" and "GUI step skipped" in (r.message or "")
+            for r in interp.results
+            if r.name.startswith("API")
+        )

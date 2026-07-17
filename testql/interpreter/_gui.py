@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 from typing import Any
 import shlex
@@ -60,6 +59,7 @@ class GuiMixin:
     _gui_driver: str | None = None  # "playwright" or "selenium"
     _gui_app: Any = None  # Playwright/Selenium instance
     _gui_page: Any = None  # Browser page/window
+    _gui_engine_unavailable: bool = False  # set when the browser engine is not installed
 
     def _gui_operation_timeout(self, default_ms: int = 5000) -> int:
         """Return one bounded timeout for a single browser operation.
@@ -223,17 +223,19 @@ class GuiMixin:
 
         if self._gui_driver == "playwright":
             try:
-                from playwright.sync_api import sync_playwright
+                from playwright.sync_api import sync_playwright  # noqa: F401  (availability probe)
                 return True
             except ImportError:
                 self.out.warn("Playwright not installed. Install with: pip install playwright && playwright install")
+                self._gui_engine_unavailable = True
                 return False
         elif self._gui_driver == "selenium":
             try:
-                import selenium
+                import selenium  # noqa: F401  (availability probe)
                 return True
             except ImportError:
                 self.out.warn("Selenium not installed. Install with: pip install selenium")
+                self._gui_engine_unavailable = True
                 return False
         return False
 
@@ -263,10 +265,16 @@ class GuiMixin:
             return
 
         if not self._init_gui_driver():
+            message = (
+                f"{self._gui_driver} not installed — GUI scenario cannot run. "
+                f"Install with: pip install testql[playwright] && playwright install chromium"
+            )
+            self.out.fail(f"GUI_START: {message}")
+            self.errors.append(f"L{line.number}: {message}")
             self.results.append(StepResult(
                 name=f'GUI_START "{app_path[:40]}"',
                 status=StepStatus.ERROR,
-                message=f"{self._gui_driver} not installed",
+                message=message,
             ))
             return
 
@@ -324,7 +332,6 @@ class GuiMixin:
     def _start_selenium(self, app_path: str, extra_args: str) -> None:
         """Start Selenium WebDriver."""
         from selenium import webdriver
-        from selenium.webdriver.common.by import By
 
         if app_path.startswith("http://") or app_path.startswith("https://"):
             # Web app
@@ -799,20 +806,43 @@ class GuiMixin:
             return
 
         try:
-            if self._gui_driver == "playwright":
-                actual = self._gui_page.inner_text(selector, timeout=self._gui_operation_timeout())
-            elif self._gui_driver == "selenium":
-                from selenium.webdriver.common.by import By
-                elem = self._gui_page.find_element(By.CSS_SELECTOR, selector)
-                actual = elem.text
-            else:
-                actual = ""
+            # Poll until the expected substring appears or the operation budget
+            # elapses.  A single-shot read raced against asynchronous UI updates
+            # (LLM calls, fetch-driven panels) and reported a FAILED assertion
+            # while the text was still rendering.  When the text already matches,
+            # the first iteration breaks immediately — no added latency on green
+            # assertions.
+            budget_ms = self._gui_operation_timeout()
+            deadline = time.monotonic() + budget_ms / 1000.0
+            per_read_timeout = min(budget_ms, 1000)
+            actual = ""
+            last_error: Exception | None = None
+            while True:
+                try:
+                    if self._gui_driver == "playwright":
+                        actual = self._gui_page.inner_text(selector, timeout=per_read_timeout)
+                    elif self._gui_driver == "selenium":
+                        from selenium.webdriver.common.by import By
+                        elem = self._gui_page.find_element(By.CSS_SELECTOR, selector)
+                        actual = elem.text
+                    else:
+                        actual = ""
+                    last_error = None
+                except Exception as read_error:
+                    # Element not present/ready yet — keep polling within budget.
+                    last_error = read_error
+                    actual = ""
+                if expected in actual or time.monotonic() >= deadline:
+                    break
+                time.sleep(0.1)
 
             if expected in actual:
                 self.out.step("✅", f'GUI_ASSERT_TEXT "{selector}" → "{expected[:20]}"')
                 self.results.append(StepResult(
                     name=f'GUI_ASSERT_TEXT "{selector}"', status=StepStatus.PASSED
                 ))
+            elif last_error is not None and not actual:
+                raise last_error
             else:
                 self.out.step("❌", f'GUI_ASSERT_TEXT "{selector}" (expected "{expected[:20]}", got "{actual[:20]}")')
                 self.results.append(StepResult(

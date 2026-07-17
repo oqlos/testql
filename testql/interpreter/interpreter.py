@@ -138,6 +138,18 @@ class OqlInterpreter(ApiRunnerMixin, AssertionsMixin, ContextMixin, EncoderMixin
 
     def _dispatch(self, cmd: str, args: str, line: OqlLine) -> None:
         """Dispatch command using central dispatcher with auto-discovery."""
+        # When the browser engine is unavailable, GUI_START already reported one
+        # clear ERROR. Skip the remaining GUI steps with an explicit reason instead
+        # of cascading a "No active GUI session" failure per step.
+        upper = cmd.upper()
+        if getattr(self, "_gui_engine_unavailable", False) and upper.startswith("GUI_") and upper != "GUI_START":
+            self.results.append(StepResult(
+                name=line.raw,
+                status=StepStatus.SKIPPED,
+                message="GUI step skipped: browser engine not installed (see GUI_START)",
+            ))
+            return
+
         # Try dispatcher first (for registered _cmd_* handlers)
         if self.dispatcher.dispatch(cmd, args, line):
             return
