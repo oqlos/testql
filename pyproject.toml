@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "testql"
-version = "1.2.61"
+version = "1.2.62"
 description = "TestQL — Multi-DSL Test Platform: TestTOON / NL / SQL / Proto / GraphQL adapters with Unified IR, generator engine, and meta-testing"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
@@ -74,6 +74,9 @@ dev = ["pytest", "pytest-asyncio", "pytest-cov",
 
 [tool.setuptools.packages.find]
 include = ["testql*"]
+
+[tool.setuptools.package-data]
+testql = ["data/*.json"]
 
 [tool.uv.sources]
 vdisplay = { path = "../../wronai/vdisplay", editable = true }

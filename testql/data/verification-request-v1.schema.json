@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oqlos.github.io/testql/schemas/verification-request-v1.schema.json",
+  "title": "TestQL Verification Request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "file_specs", "project_dir", "url", "dry_run", "quiet",
+    "timeout", "context", "allow_semantic_events", "request_hash"
+  ],
+  "properties": {
+    "schema": {"const": "testql.verification-request.v1"},
+    "file_specs": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "project_dir": {"type": "string", "minLength": 1},
+    "url": {"type": "string", "minLength": 1},
+    "dry_run": {"type": "boolean"},
+    "quiet": {"type": "boolean"},
+    "timeout": {"type": ["integer", "null"], "minimum": 0},
+    "context": {"type": ["object", "null"]},
+    "allow_semantic_events": {"type": "boolean"},
+    "request_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

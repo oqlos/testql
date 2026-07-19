@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oqlos.github.io/testql/schemas/verification-result-v1.schema.json",
+  "title": "TestQL Verification Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "ok", "files", "passed_files", "failed_files", "runs",
+    "dry_run", "request_hash", "result_hash"
+  ],
+  "properties": {
+    "schema": {"const": "testql.verification-result.v1"},
+    "ok": {"type": "boolean"},
+    "files": {"type": "integer", "minimum": 0},
+    "passed_files": {"type": "integer", "minimum": 0},
+    "failed_files": {"type": "integer", "minimum": 0},
+    "runs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "file", "source", "ok", "passed", "failed", "steps", "skipped",
+          "validated", "executed", "profile", "duration_ms", "errors",
+          "warnings", "failures"
+        ],
+        "properties": {
+          "file": {"type": "string"},
+          "source": {"type": "string"},
+          "ok": {"type": "boolean"},
+          "passed": {"type": "integer", "minimum": 0},
+          "failed": {"type": "integer", "minimum": 0},
+          "steps": {"type": "integer", "minimum": 0},
+          "skipped": {"type": "integer", "minimum": 0},
+          "validated": {"type": "integer", "minimum": 0},
+          "executed": {"type": "integer", "minimum": 0},
+          "profile": {"type": ["string", "null"]},
+          "duration_ms": {"type": "number", "minimum": 0},
+          "errors": {"type": "array", "items": {"type": "string"}},
+          "warnings": {"type": "array", "items": {"type": "string"}},
+          "failures": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name", "status", "message"],
+              "properties": {
+                "name": {"type": "string"},
+                "status": {"type": "string"},
+                "message": {"type": "string"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "dry_run": {"type": "boolean"},
+    "request_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "result_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

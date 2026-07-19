@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- Public deterministic batch verification API with versioned request/result
+  contracts, canonical hashes, packaged JSON Schemas, typed request failures,
+  and centralized scenario resolution/execution for orchestration clients.
+
+## [1.2.62] - 2026-07-19
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+
+### Test
+- Update testql/data/__init__.py
+- Update testql/data/verification-request-v1.schema.json
+- Update testql/data/verification-result-v1.schema.json
+- Update testql/verification.py
+- Update tests/test_verification_api.py
+
+### Other
+- Update coverage.json
+
 ## [1.2.48] - 2026-05-08
 
 ### Added
@@ -1817,4 +1840,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Other
 - Update .env.example
-
