@@ -60,6 +60,7 @@ class OqlInterpreter(ApiRunnerMixin, AssertionsMixin, ContextMixin, EncoderMixin
         include_paths: list[str] | None = None,
         bridge_url: str | None = None,
         timeout_ms: int | None = None,
+        strict_commands: bool = False,
     ):
         # Handle bridge_url safely (BaseInterpreter in oqlos might not support it yet)
         try:
@@ -71,6 +72,7 @@ class OqlInterpreter(ApiRunnerMixin, AssertionsMixin, ContextMixin, EncoderMixin
         self.dry_run = dry_run
         self.include_paths = include_paths or ["."]
         self.timeout_ms = timeout_ms
+        self.strict_commands = strict_commands
         self.last_response: dict[str, Any] | None = None
         self.last_status: int = 0
         self.events: list[dict[str, Any]] = []
@@ -153,6 +155,9 @@ class OqlInterpreter(ApiRunnerMixin, AssertionsMixin, ContextMixin, EncoderMixin
         # Try dispatcher first (for registered _cmd_* handlers)
         if self.dispatcher.dispatch(cmd, args, line):
             return
+
+        if self.strict_commands:
+            raise ValueError(f"unknown_testql_command:{cmd}")
 
         # Fallback to event emission for semantic commands
         self._emit_event(cmd.lower(), args, line)
