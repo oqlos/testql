@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = "Apache-2.0"
 dependencies = [
-    "testql>=1.2.0",
+    "testql>=1.2.63",
     "dsl2testql>=0.1.0",
 ]
 
