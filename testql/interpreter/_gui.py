@@ -1243,10 +1243,29 @@ class GuiMixin:
             return
 
         try:
-            actual = self._read_gui_value(selector)
+            # Form values are often updated after an asynchronous request. Keep
+            # value assertions consistent with GUI_ASSERT_TEXT by polling within
+            # the configured operation budget instead of racing the first read.
+            budget_ms = self._gui_operation_timeout()
+            deadline = time.monotonic() + budget_ms / 1000.0
+            actual = ""
+            last_error: Exception | None = None
+            while True:
+                try:
+                    actual = self._read_gui_value(selector)
+                    last_error = None
+                except Exception as read_error:
+                    last_error = read_error
+                    actual = ""
+                if self._compare_value(actual, op.upper(), expected) or time.monotonic() >= deadline:
+                    break
+                time.sleep(0.1)
+
             if self._compare_value(actual, op.upper(), expected):
                 self.out.step("✅", f'{name} (actual: "{actual}")')
                 self.results.append(StepResult(name=name, status=StepStatus.PASSED))
+            elif last_error is not None and not actual:
+                raise last_error
             else:
                 self.out.step("❌", f'{name} (actual: "{actual}")')
                 self.results.append(StepResult(

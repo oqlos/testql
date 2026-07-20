@@ -294,6 +294,77 @@ class TestGuiExecution:
         assert interpreter.results[-1].status.value == "failed"
         assert elapsed < 2.0
 
+    def test_gui_assert_value_polls_until_async_value_appears(self, interpreter):
+        """GUI_ASSERT_VALUE waits for an asynchronously-updated form value."""
+        from testql.interpreter._parser import OqlLine
+
+        interpreter.dry_run = False
+        interpreter._gui_driver = "playwright"
+
+        class _Locator:
+            def __init__(self):
+                self.reads = 0
+
+            @property
+            def first(self):
+                return self
+
+            def input_value(self):
+                self.reads += 1
+                return "Analizowanie…" if self.reads < 3 else '{"kind":"organization_status"}'
+
+        class _AsyncPage:
+            def __init__(self):
+                self.value_locator = _Locator()
+
+            def locator(self, selector):
+                return self.value_locator
+
+        interpreter._gui_page = _AsyncPage()
+        interpreter.timeout_ms = 3000
+        line = OqlLine(
+            number=1, command="GUI_ASSERT_VALUE",
+            args='"#llmIntentJson" CONTAINS "organization_status"',
+            raw='GUI_ASSERT_VALUE "#llmIntentJson" CONTAINS "organization_status"',
+        )
+        interpreter._cmd_gui_assert_value(line.args, line)
+
+        assert interpreter.results[-1].status.value == "passed"
+        assert interpreter._gui_page.value_locator.reads >= 3
+
+    def test_gui_assert_value_fails_bounded_when_value_never_appears(self, interpreter):
+        """A stable wrong form value fails within the operation timeout."""
+        import time
+        from testql.interpreter._parser import OqlLine
+
+        interpreter.dry_run = False
+        interpreter._gui_driver = "playwright"
+
+        class _Locator:
+            @property
+            def first(self):
+                return self
+
+            def input_value(self):
+                return "Analizowanie…"
+
+        class _StablePage:
+            def locator(self, selector):
+                return _Locator()
+
+        interpreter._gui_page = _StablePage()
+        interpreter.timeout_ms = 300
+        line = OqlLine(
+            number=1, command="GUI_ASSERT_VALUE",
+            args='"#x" CONTAINS "done"', raw='GUI_ASSERT_VALUE "#x" CONTAINS "done"',
+        )
+        started = time.monotonic()
+        interpreter._cmd_gui_assert_value(line.args, line)
+        elapsed = time.monotonic() - started
+
+        assert interpreter.results[-1].status.value == "failed"
+        assert elapsed < 2.0
+
     def test_gui_start_no_args_error(self, interpreter):
         """Test GUI_START without arguments."""
         interpreter.dry_run = False
