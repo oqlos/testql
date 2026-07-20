@@ -49,7 +49,14 @@ def _apply_captures(step, result: StepResult, ctx: ExecutionContext) -> None:
         return
     payload = (result.details or {}).get("payload", {})
     for capture in captures:
-        value = navigate(payload, capture.from_path)
+        # API capture paths are relative to the response body (`response.data.id`
+        # is normalized to `data.id`). Other executors expose their result fields
+        # directly. Fall back to the full envelope so API status/header captures
+        # remain possible.
+        capture_root = payload.get("data", {}) if getattr(step, "kind", "") == "api" else payload
+        value = navigate(capture_root, capture.from_path)
+        if value is None and capture_root is not payload:
+            value = navigate(payload, capture.from_path)
         if value is None:
             ctx.warnings.append(
                 f"capture {capture.var_name!r} from {capture.from_path!r}: path not found"

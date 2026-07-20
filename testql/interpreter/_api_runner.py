@@ -72,7 +72,7 @@ class ApiRunnerMixin:
                     continue
                 # Re-raise non-retryable errors
                 raise
-            except Exception as e:
+            except Exception:
                 # Non-retryable errors
                 raise
 
@@ -128,7 +128,7 @@ class ApiRunnerMixin:
             return
 
         method = parts[0].upper()
-        url = parts[1].strip("\"'")
+        url = self.vars.interpolate(parts[1].strip("\"'"))
         body_str = parts[2] if len(parts) > 2 else ""
 
         if url.startswith("/"):

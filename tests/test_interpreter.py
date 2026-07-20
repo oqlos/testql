@@ -103,6 +103,34 @@ class TestTestTOONExpansion:
         assert script.lines[3].command == "ASSERT_STATUS"
         assert "201" in script.lines[3].args
 
+    def test_capture_is_interleaved_after_referenced_api_step(self):
+        source = (
+            "API[2]{method, endpoint, status}:\n"
+            "  POST, /devices, 201\n"
+            "  GET, /devices/${device_id}, 200\n"
+            "CAPTURE[1]{step, var, from}:\n"
+            "  1, device_id, data.id\n"
+        )
+
+        script = _testtoon_to_oql(source, "test.testql.toon.yaml")
+
+        assert [line.command for line in script.lines] == [
+            "API", "ASSERT_STATUS", "CAPTURE", "API", "ASSERT_STATUS",
+        ]
+        assert script.lines[2].args == 'device_id FROM "data.id"'
+
+    def test_capture_can_reference_named_api_step(self):
+        source = (
+            "API[1]{method, endpoint, status, name}:\n"
+            "  POST, /devices, 201, createDevice\n"
+            "CAPTURE[1]{step, var, from}:\n"
+            "  createDevice, device_id, data.id\n"
+        )
+
+        script = _testtoon_to_oql(source, "test.testql.toon.yaml")
+
+        assert script.lines[-1].command == "CAPTURE"
+
     def test_encoder_expansion(self):
         source = (
             "ENCODER[2]{action, target, value, wait_ms}:\n"
@@ -226,6 +254,22 @@ class TestOqlInterpreter:
         result = interp.run(source, "test.tql")
         assert result.ok
         assert result.passed >= 1
+
+    def test_api_interpolates_captured_variable_in_url(self, monkeypatch):
+        requested_urls = []
+
+        def fake_request(_self, _method, url, _body):
+            requested_urls.append(url)
+            return 200, {"ok": True}, {}
+
+        monkeypatch.setattr(OqlInterpreter, "_do_http_request_with_retry", fake_request)
+        interp = OqlInterpreter(quiet=True, api_url="http://localhost:8101")
+        interp.vars.set("device_id", "dev-7")
+
+        result = interp.run('API GET "/devices/${device_id}"', "test.tql")
+
+        assert result.ok
+        assert requested_urls == ["http://localhost:8101/devices/dev-7"]
 
     def test_set_get(self):
         source = 'SET foo "bar"\nGET foo'

@@ -77,6 +77,26 @@ class TestShellCaptures:
         assert "hello" in runner.ctx.vars.get("out")
 
 
+class TestApiCaptures:
+    def test_capture_is_relative_to_response_body(self, monkeypatch):
+        from testql.ir_runner.executors import api
+
+        monkeypatch.setattr(api, "_do_request", lambda *args: (201, {"data": {"id": "sc-1"}}))
+        plan = _plan(
+            ApiStep(
+                method="POST",
+                path="/api/v3/scenarios",
+                captures=[Capture(var_name="scenario_id", from_path="data.id")],
+            )
+        )
+        runner = IRRunner()
+
+        result = runner.run(plan)
+
+        assert result.ok
+        assert runner.ctx.vars.get("scenario_id") == "sc-1"
+
+
 # ── Missing path → warning, not failure ─────────────────────────────────────
 
 

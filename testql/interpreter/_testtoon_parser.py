@@ -19,9 +19,6 @@ import json
 
 from ._gui_expand import expand_gui_row
 from ._parser import OqlLine, OqlScript
-from .testtoon_models import ToonSection, ToonScript
-from .testtoon_parser import parse_testtoon
-
 # Backward compatibility: re-export classes that were moved
 from .testtoon_models import ToonSection, ToonScript  # noqa: F401
 from .testtoon_parser import parse_testtoon  # noqa: F401
@@ -110,9 +107,38 @@ def _append_api_asserts(row: dict, lines: list[OqlLine], line_num: int) -> int:
     return line_num
 
 
-def _expand_api(section: ToonSection, lines: list[OqlLine], line_num: int) -> int:
+def _append_api_captures(
+    row: dict,
+    api_step: int,
+    capture_rows: list[dict],
+    lines: list[OqlLine],
+    line_num: int,
+) -> int:
+    """Append captures assigned to an API row by its 1-based index or name."""
+    step_name = str(row.get('name', '')).strip()
+    for capture in capture_rows:
+        target = str(capture.get('step', '')).strip()
+        if target != str(api_step) and (not step_name or target != step_name):
+            continue
+        var_name = str(capture.get('var', '')).strip()
+        from_path = str(capture.get('from', '')).strip()
+        if not var_name or not from_path:
+            continue
+        args = f'{var_name} FROM "{from_path}"'
+        line_num = _append_raw_command(lines, line_num, 'CAPTURE', args)
+    return line_num
+
+
+def _expand_api(
+    section: ToonSection,
+    lines: list[OqlLine],
+    line_num: int,
+    *,
+    capture_rows: list[dict] | None = None,
+    step_offset: int = 0,
+) -> int:
     """Expand API section → API + ASSERT_STATUS commands."""
-    for row in section.rows:
+    for row_index, row in enumerate(section.rows, 1):
         method = row.get('method', 'GET')
         endpoint = row.get('endpoint', '/')
         body = row.get('body')
@@ -127,6 +153,13 @@ def _expand_api(section: ToonSection, lines: list[OqlLine], line_num: int) -> in
         raw = f'API {method} "{endpoint}"{body_str}'
         lines.append(OqlLine(number=line_num, command='API', args=f'{method} "{endpoint}"{body_str}', raw=raw))
         line_num = _append_api_asserts(row, lines, line_num + 1)
+        line_num = _append_api_captures(
+            row,
+            step_offset + row_index,
+            capture_rows or [],
+            lines,
+            line_num,
+        )
     return line_num
 
 
@@ -649,8 +682,29 @@ def testtoon_to_oql(text: str, filename: str = "<string>") -> OqlScript:
     toon = parse_testtoon(text, filename)
     lines: list[OqlLine] = []
     line_num = 1
+    api_step_count = 0
+    capture_rows = [
+        row
+        for section in toon.sections
+        if section.type == 'CAPTURE'
+        for row in section.rows
+    ]
 
     for section in toon.sections:
+        if section.type == 'CAPTURE':
+            # Captures must run while the referenced API response is still the
+            # current response, so API expansion interleaves them above.
+            continue
+        if section.type == 'API':
+            line_num = _expand_api(
+                section,
+                lines,
+                line_num,
+                capture_rows=capture_rows,
+                step_offset=api_step_count,
+            )
+            api_step_count += len(section.rows)
+            continue
         expander = _SECTION_EXPANDERS.get(section.type, _expand_generic)
         line_num = expander(section, lines, line_num)
 
