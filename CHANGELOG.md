@@ -11,6 +11,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Public deterministic batch verification API with versioned request/result
   contracts, canonical hashes, packaged JSON Schemas, typed request failures,
   and centralized scenario resolution/execution for orchestration clients.
+- Project-local Node Playwright fallback for legacy TestQL environments,
+  including automatic Chrome/Chromium discovery and support for the complete
+  `GUI_*` interaction lifecycle.
+
+### Changed
+- Playwright is now a core TestQL dependency so new installations can execute
+  browser GUI scenarios without selecting an optional extra.
+
+## [1.2.63] - 2026-07-20
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+
+### Test
+- Update testql/interpreter/_gui.py
+- Update testql/interpreter/_node_playwright.py
+- Update testql/interpreter/_node_playwright_bridge.cjs
+- Update tests/test_node_playwright_fallback.py
+
+### Other
+- Update coverage.json
 
 ## [1.2.62] - 2026-07-19
 

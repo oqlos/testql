@@ -11,6 +11,11 @@ from urllib.parse import parse_qs, urlparse
 from testql.base import StepResult, StepStatus
 
 from ._parser import OqlLine
+from ._node_playwright import (
+    NodePlaywrightSession,
+    find_browser_executable,
+    find_node_playwright,
+)
 
 
 class GuiMixin:
@@ -60,6 +65,8 @@ class GuiMixin:
     _gui_app: Any = None  # Playwright/Selenium instance
     _gui_page: Any = None  # Browser page/window
     _gui_engine_unavailable: bool = False  # set when the browser engine is not installed
+    _gui_playwright_backend: str | None = None  # "python" or "node"
+    _gui_node_playwright_path: Path | None = None
 
     def _gui_operation_timeout(self, default_ms: int = 5000) -> int:
         """Return one bounded timeout for a single browser operation.
@@ -224,9 +231,21 @@ class GuiMixin:
         if self._gui_driver == "playwright":
             try:
                 from playwright.sync_api import sync_playwright  # noqa: F401  (availability probe)
+                self._gui_playwright_backend = "python"
+                self._gui_engine_unavailable = False
                 return True
             except ImportError:
-                self.out.warn("Playwright not installed. Install with: pip install playwright && playwright install")
+                node_playwright = find_node_playwright()
+                if node_playwright is not None:
+                    self._gui_playwright_backend = "node"
+                    self._gui_node_playwright_path = node_playwright
+                    self._gui_engine_unavailable = False
+                    self.out.info(f"Using project Node Playwright: {node_playwright}")
+                    return True
+                self.out.warn(
+                    "Playwright not found in Python or the calling project's node_modules. "
+                    "Install TestQL normally or add Playwright to the project."
+                )
                 self._gui_engine_unavailable = True
                 return False
         elif self._gui_driver == "selenium":
@@ -266,8 +285,8 @@ class GuiMixin:
 
         if not self._init_gui_driver():
             message = (
-                f"{self._gui_driver} not installed — GUI scenario cannot run. "
-                f"Install with: pip install testql[playwright] && playwright install chromium"
+                "Playwright runtime unavailable — GUI scenario cannot run. "
+                "Upgrade TestQL or add Playwright to the calling project's node_modules."
             )
             self.out.fail(f"GUI_START: {message}")
             self.errors.append(f"L{line.number}: {message}")
@@ -293,19 +312,42 @@ class GuiMixin:
 
     def _start_playwright(self, app_path: str, extra_args: str) -> None:
         """Start Playwright and navigate to app_path."""
-        from playwright.sync_api import sync_playwright
-
         if app_path.startswith("http://") or app_path.startswith("https://"):
-            # Web app
-            p = sync_playwright().start()
             headless = str(self.vars.get("headless", "true")).lower() == "true"
-            browser = p.chromium.launch(headless=headless, args=["--no-sandbox", "--disable-setuid-sandbox"])
-            self._gui_page = browser.new_page()
-            self._gui_page.set_default_timeout(self._gui_operation_timeout())
-            self._gui_page.set_default_navigation_timeout(self._gui_operation_timeout(15000))
-            self._gui_page.goto(app_path, timeout=self._gui_operation_timeout(15000))
-            self._gui_app = (p, browser)
-            self.out.step("🖥️", f"Playwright: Opened {app_path}")
+            operation_timeout = self._gui_operation_timeout()
+            navigation_timeout = self._gui_operation_timeout(15000)
+            executable_path = find_browser_executable()
+            if self._gui_playwright_backend == "node":
+                if self._gui_node_playwright_path is None:
+                    raise RuntimeError("project Node Playwright path is unavailable")
+                session = NodePlaywrightSession.start(
+                    self._gui_node_playwright_path,
+                    app_path,
+                    headless=headless,
+                    timeout=operation_timeout,
+                    navigation_timeout=navigation_timeout,
+                    executable_path=executable_path,
+                )
+                self._gui_app = session
+                self._gui_page = session.page
+                self.out.step("🖥️", f"Node Playwright: Opened {app_path}")
+            else:
+                from playwright.sync_api import sync_playwright
+
+                p = sync_playwright().start()
+                launch_options: dict[str, Any] = {
+                    "headless": headless,
+                    "args": ["--no-sandbox", "--disable-setuid-sandbox"],
+                }
+                if executable_path:
+                    launch_options["executable_path"] = executable_path
+                browser = p.chromium.launch(**launch_options)
+                self._gui_page = browser.new_page()
+                self._gui_page.set_default_timeout(operation_timeout)
+                self._gui_page.set_default_navigation_timeout(navigation_timeout)
+                self._gui_page.goto(app_path, timeout=navigation_timeout)
+                self._gui_app = (p, browser)
+                self.out.step("🖥️", f"Playwright: Opened {app_path}")
         else:
             path = Path(app_path).expanduser()
             if path.is_file():
@@ -1297,11 +1339,14 @@ class GuiMixin:
         if not app:
             return
         if driver == "playwright":
-            playwright, browser = app
-            try:
-                browser.close()
-            finally:
-                playwright.stop()
+            if self._gui_playwright_backend == "node":
+                app.close()
+            else:
+                playwright, browser = app
+                try:
+                    browser.close()
+                finally:
+                    playwright.stop()
         elif driver == "selenium":
             app.quit()
 

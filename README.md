@@ -3,17 +3,17 @@
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-1.2.62-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$29.31-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-74.1h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-1.2.63-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$29.97-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-74.6h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $29.3128 (129 commits)
-- 👤 **Human dev:** ~$7413 (74.1h @ $100/h, 30min dedup)
+- 🤖 **LLM usage:** $29.9715 (130 commits)
+- 👤 **Human dev:** ~$7463 (74.6h @ $100/h, 30min dedup)
 
-Generated on 2026-07-19 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
+Generated on 2026-07-20 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 
 ---
 
-![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-1.2.62-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-1.2.63-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
 ![AI Cost](https://img.shields.io/badge/AI%20Cost-$7.50-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-49.4h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
 TestQL is a declarative DSL (Domain Specific Language) for testing GUI, REST API, and hardware encoder interfaces. It provides a simple, readable syntax for writing automated tests without programming overhead.
@@ -63,7 +63,9 @@ pip install -e ".[dev]"
 
 - Python 3.10+
 - HTTPX for API testing
-- Playwright for browser GUI testing (optional)
+- Chrome/Chromium for browser GUI testing. TestQL installs the Python
+  Playwright API and can also reuse Playwright from the calling project's
+  `node_modules` automatically.
 - Native desktop E2E (optional): `vdisplay`, `img2nl`, `imgl` — see [Desktop GUI E2E](docs/DESKTOP_GUI_E2E.md)
 
 ### Optional: native desktop + vision
@@ -338,6 +340,13 @@ ASSERT_JSON status != "error"
 ### GUI Navigation (Playwright)
 
 Browser-based GUI tests via Playwright. For **native OS desktop** (monitors, windows, OCR, mirror capture on Wayland), see [Desktop GUI E2E](docs/DESKTOP_GUI_E2E.md).
+
+`GUI_START` first uses the Python Playwright installed with TestQL. Existing
+environments that predate this dependency automatically fall back to
+`node_modules/playwright` in the calling project and its parent directories.
+An installed Chrome/Chromium executable is detected automatically. Custom
+locations can be supplied with `TESTQL_NODE_PLAYWRIGHT_PATH`,
+`TESTQL_PLAYWRIGHT_SEARCH_PATHS`, or `TESTQL_BROWSER_EXECUTABLE`.
 
 ```testql
 # Navigation

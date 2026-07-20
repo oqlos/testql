@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "testql"
-version = "1.2.62"
+version = "1.2.63"
 description = "TestQL — Multi-DSL Test Platform: TestTOON / NL / SQL / Proto / GraphQL adapters with Unified IR, generator engine, and meta-testing"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
@@ -19,6 +19,9 @@ dependencies = [
     "websockets>=13.0",
     "pytest-cov>=7.0",
     "fastapi>=0.100",
+    # GUI scenarios work immediately after installing TestQL. The runtime also
+    # supports a project-local Node Playwright when upgrading an older venv.
+    "playwright>=1.40",
 ]
 
 license = "Apache-2.0"
@@ -76,7 +79,7 @@ dev = ["pytest", "pytest-asyncio", "pytest-cov",
 include = ["testql*"]
 
 [tool.setuptools.package-data]
-testql = ["data/*.json"]
+testql = ["data/*.json", "interpreter/*.cjs"]
 
 [tool.uv.sources]
 vdisplay = { path = "../../wronai/vdisplay", editable = true }
