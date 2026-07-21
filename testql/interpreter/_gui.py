@@ -312,7 +312,7 @@ class GuiMixin:
 
     def _start_playwright(self, app_path: str, extra_args: str) -> None:
         """Start Playwright and navigate to app_path."""
-        if app_path.startswith("http://") or app_path.startswith("https://"):
+        if app_path.startswith(("http://", "https://", "about:")):
             headless = str(self.vars.get("headless", "true")).lower() == "true"
             operation_timeout = self._gui_operation_timeout()
             navigation_timeout = self._gui_operation_timeout(15000)
@@ -375,7 +375,7 @@ class GuiMixin:
         """Start Selenium WebDriver."""
         from selenium import webdriver
 
-        if app_path.startswith("http://") or app_path.startswith("https://"):
+        if app_path.startswith(("http://", "https://", "about:")):
             # Web app
             headless = str(self.vars.get("headless", "true")).lower() == "true"
             options = webdriver.ChromeOptions()

@@ -264,6 +264,12 @@ class NodePlaywrightPage:
     def goto(self, url: str, *, timeout: int | None = None) -> Any:
         return self._session.call("goto", url=url, timeout=timeout or self._navigation_timeout)
 
+    def add_init_script(self, script: str) -> None:
+        self._session.call("add_init_script", script=script)
+
+    def performance_metrics(self, expression: str) -> list[dict[str, Any]]:
+        return list(self._session.call("performance_metrics", expression=expression))
+
     def wait_for_url(self, url: str, *, wait_until: str, timeout: int) -> Any:
         return self._session.call(
             "wait_for_url", url=url, wait_until=wait_until, timeout=timeout

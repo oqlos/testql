@@ -19,6 +19,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Playwright is now a core TestQL dependency so new installations can execute
   browser GUI scenarios without selecting an optional extra.
 
+## [1.2.66] - 2026-07-21
+
+### Docs
+- Update README.md
+
+### Test
+- Update testql/__init__.py
+- Update testql/commands/templates/content.py
+- Update testql/interpreter/_gui.py
+- Update testql/interpreter/_node_playwright.py
+- Update testql/interpreter/_node_playwright_bridge.cjs
+- Update testql/interpreter/_performance.py
+- Update testql/interpreter/interpreter.py
+- Update tests/test_gui_performance.py
+
+### Other
+- Update VERSION
+
 ## [1.2.63] - 2026-07-20
 
 ### Docs

@@ -47,6 +47,17 @@ async function dispatch(command, args) {
     case "goto":
       await page.goto(args.url, {timeout: args.timeout});
       return {url: page.url()};
+    case "add_init_script":
+      await page.addInitScript({content: args.script});
+      return true;
+    case "performance_metrics":
+      return Promise.all(page.frames().map(async (frame) => {
+        try {
+          return await frame.evaluate(browserExpression(args.expression));
+        } catch (_) {
+          return null;
+        }
+      }));
     case "wait_for_url":
       await page.waitForURL(args.url, {waitUntil: args.wait_until, timeout: args.timeout});
       return {url: page.url()};

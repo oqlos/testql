@@ -3,17 +3,17 @@
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-1.2.63-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$30.60-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-75.8h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-1.2.66-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$30.30-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-77.4h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $30.6010 (133 commits)
-- 👤 **Human dev:** ~$7576 (75.8h @ $100/h, 30min dedup)
+- 🤖 **LLM usage:** $30.3028 (135 commits)
+- 👤 **Human dev:** ~$7745 (77.4h @ $100/h, 30min dedup)
 
-Generated on 2026-07-20 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
+Generated on 2026-07-21 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 
 ---
 
-![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-1.2.63-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![PyPI](https://img.shields.io/badge/pypi-testql-blue) ![Version](https://img.shields.io/badge/version-1.2.66-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
 ![AI Cost](https://img.shields.io/badge/AI%20Cost-$7.50-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-49.4h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
 TestQL is a declarative DSL (Domain Specific Language) for testing GUI, REST API, and hardware encoder interfaces. It provides a simple, readable syntax for writing automated tests without programming overhead.
@@ -363,6 +363,24 @@ CLICK "button[type='submit']"
 ASSERT_VISIBLE "[data-testid='results']"
 ASSERT_TEXT "#status" "Connected"
 ```
+
+### Browser performance
+
+`GUI_MEASURE_NAVIGATION` performs a real Playwright navigation and stores
+Navigation Timing, resource-transfer and long-task metrics. The ready selector
+is also detected in same-origin iframes.
+
+```testql
+GUI_START "about:blank"
+GUI_MEASURE_NAVIGATION "http://localhost:8100/connect-scenario" ".scenario-embedded-root" timeout=15000 as=_performance
+ASSERT_JSON _performance.ready_ms < 2000
+ASSERT_JSON _performance.response_ms < 500
+GUI_STOP
+```
+
+The result contains `navigation_ms`, `ready_ms`, `response_ms`,
+`dom_content_loaded_ms`, `load_event_ms`, `resource_count`, `transfer_bytes`,
+`script_bytes`, `long_task_count`, `long_task_ms`, and `frame_count`.
 
 ### Native Desktop (Linux)
 

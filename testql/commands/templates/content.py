@@ -106,19 +106,11 @@ SET base_url = "${{base_url:-http://localhost:8100}}"
 SET api_url = "${{api_url:-http://localhost:8101}}"
 
 # Warmup
-NAVIGATE "${{base_url}}/{meta_module}"
-WAIT 1000
-
-# Measure load time
-TIMESTAMP start_load
-NAVIGATE "${{base_url}}/{meta_module}"
-WAIT_FOR_SELECTOR "[data-loaded='true']" timeout=5000
-TIMESTAMP end_load
-
-CALC load_time = end_load - start_load
-LOG "Load time: ${{load_time}}ms"
-
-ASSERT ${{load_time}} < 2000 "Page load should be under 2s"
+GUI_START "about:blank"
+GUI_MEASURE_NAVIGATION "${{base_url}}/{meta_module}" "[data-loaded='true']" timeout=10000 as=_performance
+ASSERT_JSON _performance.ready_ms < 2000
+ASSERT_JSON _performance.response_ms < 500
+GUI_STOP
 
 LOG "Performance test {name} completed"
 '''
